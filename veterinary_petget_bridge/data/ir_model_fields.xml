@@ -426,8 +426,6 @@ for record in self:
         <field name="field_description">Breed Growth Milestones</field>
         <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
         <field name="ttype">one2many</field>
-        <field name="relation">petget.breed.growth</field>
-        <field name="relation_field">breed_id</field>
         <field name="related">x_petget_breed_id.growth_ids</field>
         <field name="readonly" eval="True"/>
     </record>

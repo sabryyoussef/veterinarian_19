@@ -1,6 +1,7 @@
 {
     'name': 'Point of Sale Stock',
     'version': '1.0',
+    'author': 'Odoo S.A.',
     'category': 'Hidden',
     'summary': 'Compatibility bridge for SaaS industry packages on Odoo 19.0',
     'depends': [

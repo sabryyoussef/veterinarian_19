@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_sync_all_x_pets_to_pet_management" model="ir.actions.server">
+        <field name="name">Sync to Pet Management</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="binding_model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+created, updated = env['pet.pet'].sync_from_clinic_pets(records)
+action = {
+    'type': 'ir.actions.client',
+    'tag': 'display_notification',
+    'params': {
+        'title': 'Pet Management sync',
+        'message': 'Created %s, updated %s pet(s).' % (created, updated),
+        'type': 'success',
+        'sticky': False,
+    },
+}
+        ]]></field>
+    </record>
+
+    <record id="action_open_pet_management_record" model="ir.actions.server">
+        <field name="name">Open Pet Management</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+pet = env['pet.pet'].search([('x_pets_id', '=', record.id)], limit=1)
+if not pet:
+    env['pet.pet'].sync_from_clinic_pets(record)
+    pet = env['pet.pet'].search([('x_pets_id', '=', record.id)], limit=1)
+if pet:
+    action = {
+        'type': 'ir.actions.act_window',
+        'name': pet.name,
+        'res_model': 'pet.pet',
+        'res_id': pet.id,
+        'view_mode': 'form',
+        'target': 'current',
+    }
+else:
+    action = {
+        'type': 'ir.actions.client',
+        'tag': 'display_notification',
+        'params': {
+            'title': 'Sync required',
+            'message': 'Could not link this pet to Pet Management (check owner is set).',
+            'type': 'warning',
+            'sticky': False,
+        },
+    }
+        ]]></field>
+    </record>
+
+</odoo>

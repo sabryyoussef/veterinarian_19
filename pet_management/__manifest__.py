@@ -26,7 +26,7 @@ Key Features:
     'author': 'WebbyCrown Solutions',
     'website': 'https://www.webbycrown.com',
     'license': 'LGPL-3',
-    'depends': ['base', 'mail', 'contacts', 'hr', 'product', 'account'],
+    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_pet_pet_form_clinic_bridge" model="ir.ui.view">
+        <field name="name">pet.pet.form.clinic.bridge</field>
+        <field name="model">pet.pet</field>
+        <field name="inherit_id" ref="pet_management.view_pet_pet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_clinic_pet" type="object"
+                        class="oe_stat_button" icon="fa-hospital-o"
+                        invisible="not x_pets_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Clinic</span>
+                        <span class="o_stat_text">Record</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='owner_id']" position="after">
+                <field name="x_pets_id" readonly="1" groups="base.group_no_one"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pet_pet_tree_clinic_bridge" model="ir.ui.view">
+        <field name="name">pet.pet.list.clinic.bridge</field>
+        <field name="model">pet.pet</field>
+        <field name="inherit_id" ref="pet_management.view_pet_pet_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="x_pets_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

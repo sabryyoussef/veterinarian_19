@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="species_map_cat" model="pet.clinic.species.map">
+        <field name="pet_species_id" ref="pet_management.species_cat"/>
+        <field name="x_species_id" ref="veterinary_clinic.x_species_1"/>
+    </record>
+    <record id="species_map_dog" model="pet.clinic.species.map">
+        <field name="pet_species_id" ref="pet_management.species_dog"/>
+        <field name="x_species_id" ref="veterinary_clinic.x_species_2"/>
+    </record>
+    <record id="species_map_hamster" model="pet.clinic.species.map">
+        <field name="pet_species_id" ref="pet_management.species_hamster"/>
+        <field name="x_species_id" ref="veterinary_clinic.x_species_3"/>
+    </record>
+    <record id="species_map_rabbit" model="pet.clinic.species.map">
+        <field name="pet_species_id" ref="pet_management.species_rabbit"/>
+        <field name="x_species_id" ref="veterinary_clinic.x_species_4"/>
+    </record>
+</odoo>

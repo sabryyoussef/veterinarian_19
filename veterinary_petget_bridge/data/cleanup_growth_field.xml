@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <delete model="ir.model.fields" search="[('name', '=', 'x_petget_breed_growth_ids'), ('model', '=', 'x_pets')]"/>
+</odoo>

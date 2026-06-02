@@ -25,6 +25,7 @@ Integrates the veterinary clinic pet registry with Petget dog knowledge:
         'data/base_automation.xml',
         'data/ir_actions_act_window.xml',
         'views/x_pets_views.xml',
+        'data/cleanup_growth_field.xml',
         'views/menus.xml',
     ],
     'post_init_hook': 'post_init_hook',

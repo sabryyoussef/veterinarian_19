@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    
+    <!-- Pet Notification Email Template -->
+    <record id="email_template_pet_notification" model="mail.template">
+      <field name="name">Pet Notification</field>
+      <field name="model_id" ref="model_pet_notification"/>
+      <field name="subject">${object.name}</field>
+      <field name="email_from">${(object.env.user.email_formatted or 'noreply@petmanagement.com')}</field>
+      <field name="email_to">${object.owner_id.email}</field>
+      <field name="body_html" type="html">
+        <div style="margin: 0px; padding: 0px; font-size: 13px;">
+          <p style="margin: 0px; padding: 0px; font-size: 13px;">
+            Dear ${object.owner_id.name or 'Pet Owner'},
+          </p>
+          <br/>
+          <p style="margin: 0px; padding: 0px; font-size: 13px;">
+            ${object.message}
+          </p>
+          <br/>
+          <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #007bff; margin: 20px 0;">
+            <h3 style="margin: 0 0 10px 0; color: #007bff;">Pet Information</h3>
+            <p style="margin: 0;"><strong>Pet Name:</strong> ${object.pet_id.name}</p>
+            <p style="margin: 0;"><strong>Species:</strong> ${object.pet_id.species_id.name}</p>
+            <p style="margin: 0;"><strong>Breed:</strong> ${object.pet_id.breed_id.name or 'Mixed'}</p>
+            <p style="margin: 0;"><strong>Age:</strong> ${object.pet_id.age_display}</p>
+          </div>
+          
+          <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0;" t-if="object.notification_type == 'vaccination_overdue'">
+            <h3 style="margin: 0 0 10px 0; color: #856404;">⚠️ URGENT ACTION REQUIRED</h3>
+            <p style="margin: 0; color: #856404;">
+              This is an urgent reminder. Please contact us immediately to schedule your pet's overdue vaccination.
+            </p>
+          </div>
+          
+          <div style="background-color: #d1ecf1; padding: 15px; border-left: 4px solid #17a2b8; margin: 20px 0;" t-if="object.notification_type == 'vaccination_due'">
+            <h3 style="margin: 0 0 10px 0; color: #0c5460;">📅 Upcoming Vaccination</h3>
+            <p style="margin: 0; color: #0c5460;">
+              Please schedule an appointment for your pet's upcoming vaccination.
+            </p>
+          </div>
+          
+          <div style="background-color: #d4edda; padding: 15px; border-left: 4px solid #28a745; margin: 20px 0;" t-if="object.notification_type == 'appointment_reminder'">
+            <h3 style="margin: 0 0 10px 0; color: #155724;">📞 Appointment Reminder</h3>
+            <p style="margin: 0; color: #155724;">
+              Don't forget about your upcoming appointment.
+            </p>
+          </div>
+          
+          <br/>
+          <p style="margin: 0px; padding: 0px; font-size: 13px;">
+            If you have any questions or need to reschedule, please contact us at your earliest convenience.
+          </p>
+          <br/>
+          <p style="margin: 0px; padding: 0px; font-size: 13px;">
+            Best regards,<br/>
+            Pet Management Team
+          </p>
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid #dee2e6;"/>
+          <p style="margin: 0px; padding: 0px; font-size: 11px; color: #6c757d;">
+            This is an automated notification. Please do not reply to this email.
+          </p>
+        </div>
+      </field>
+    </record>
+
+    <!-- Vaccination Due Email Template -->
+    <record id="email_template_vaccination_due" model="mail.template">
+      <field name="name">Vaccination Due Reminder</field>
+      <field name="model_id" ref="model_pet_vaccination"/>
+      <field name="subject">Vaccination Due: ${object.pet_id.name} - ${object.vaccine_id.name}</field>
+      <field name="email_from">${(object.env.user.email_formatted or 'noreply@petmanagement.com')}</field>
+      <field name="email_to">${object.pet_id.owner_id.email}</field>
+      <field name="body_html" type="html">
+        <div style="margin: 0px; padding: 0px; font-size: 13px;">
+          <p style="margin: 0px; padding: 0px; font-size: 13px;">
+            Dear ${object.pet_id.owner_id.name or 'Pet Owner'},
+          </p>
+          <br/>
+          <div style="background-color: #fff3cd; padding: 20px; border-left: 4px solid #ffc107; margin: 20px 0;">
+            <h2 style="margin: 0 0 15px 0; color: #856404;">📅 Vaccination Due Reminder</h2>
+            <p style="margin: 0 0 10px 0; font-size: 16px;">
+              <strong>${object.pet_id.name}</strong> is due for <strong>${object.vaccine_id.name}</strong> vaccination.
+            </p>
+            <p style="margin: 0; font-size: 14px; color: #856404;">
+              <strong>Due Date:</strong> ${object.next_due_date}<br/>
+              <strong>Days Until Due:</strong> ${object.days_since_vaccination} days
+            </p>
+          </div>
+          
+          <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin: 0 0 10px 0; color: #495057;">Pet Information</h3>
+            <p style="margin: 0;"><strong>Pet Name:</strong> ${object.pet_id.name}</p>
+            <p style="margin: 0;"><strong>Species:</strong> ${object.pet_id.species_id.name}</p>
+            <p style="margin: 0;"><strong>Breed:</strong> ${object.pet_id.breed_id.name or 'Mixed'}</p>
+            <p style="margin: 0;"><strong>Age:</strong> ${object.pet_id.age_display}</p>
+          </div>
+          
+          <div style="background-color: #d1ecf1; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin: 0 0 10px 0; color: #0c5460;">Vaccination Details</h3>
+            <p style="margin: 0;"><strong>Vaccine:</strong> ${object.vaccine_id.name}</p>
+            <p style="margin: 0;"><strong>Type:</strong> ${object.vaccination_type}</p>
+            <p style="margin: 0;"><strong>Last Administered:</strong> ${object.date_administered}</p>
+            <p style="margin: 0;"><strong>Next Due:</strong> ${object.next_due_date}</p>
+          </div>
+          
+          <p style="margin: 20px 0; padding: 15px; background-color: #e7f3ff; border-left: 4px solid #007bff; border-radius: 5px;">
+            <strong>Action Required:</strong> Please contact us to schedule your pet's vaccination appointment. 
+            Regular vaccinations are essential for your pet's health and well-being.
+          </p>
+          
+          <br/>
+          <p style="margin: 0px; padding: 0px; font-size: 13px;">
+            Best regards,<br/>
+            Pet Management Team
+          </p>
+        </div>
+      </field>
+    </record>
+
+  </data>
+</odoo>

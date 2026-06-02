@@ -1,0 +1,1193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- ======================================== -->
+  <!-- FOUNDATIONAL DATA (Must be created first) -->
+  <!-- ======================================== -->
+  
+  <!-- Pet Species -->
+  <record id="species_dog" model="pet.species">
+    <field name="name">Dog</field>
+    <field name="code">DOG</field>
+    <field name="color">1</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="species_cat" model="pet.species">
+    <field name="name">Cat</field>
+    <field name="code">CAT</field>
+    <field name="color">2</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="species_rabbit" model="pet.species">
+    <field name="name">Rabbit</field>
+    <field name="code">RABBIT</field>
+    <field name="color">3</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="species_bird" model="pet.species">
+    <field name="name">Bird</field>
+    <field name="code">BIRD</field>
+    <field name="color">4</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="species_hamster" model="pet.species">
+    <field name="name">Hamster</field>
+    <field name="code">HAMSTER</field>
+    <field name="color">5</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <!-- Pet Breeds -->
+  <record id="breed_labrador" model="pet.breed">
+    <field name="name">Labrador Retriever</field>
+    <field name="species_id" ref="species_dog"/>
+    <field name="color">3</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="life_expectancy_min">10</field>
+    <field name="life_expectancy_max">14</field>
+    <field name="average_weight_min">25.0</field>
+    <field name="average_weight_max">35.0</field>
+  </record>
+
+  <record id="breed_golden_retriever" model="pet.breed">
+    <field name="name">Golden Retriever</field>
+    <field name="species_id" ref="species_dog"/>
+    <field name="color">4</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="life_expectancy_min">10</field>
+    <field name="life_expectancy_max">12</field>
+    <field name="average_weight_min">25.0</field>
+    <field name="average_weight_max">35.0</field>
+  </record>
+
+  <record id="breed_persian" model="pet.breed">
+    <field name="name">Persian</field>
+    <field name="species_id" ref="species_cat"/>
+    <field name="color">2</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="life_expectancy_min">12</field>
+    <field name="life_expectancy_max">17</field>
+    <field name="average_weight_min">3.5</field>
+    <field name="average_weight_max">5.5</field>
+  </record>
+
+  <record id="breed_maine_coon" model="pet.breed">
+    <field name="name">Maine Coon</field>
+    <field name="species_id" ref="species_cat"/>
+    <field name="color">3</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="life_expectancy_min">12</field>
+    <field name="life_expectancy_max">15</field>
+    <field name="average_weight_min">4.5</field>
+    <field name="average_weight_max">8.0</field>
+  </record>
+
+  <record id="breed_angora" model="pet.breed">
+    <field name="name">Angora</field>
+    <field name="species_id" ref="species_rabbit"/>
+    <field name="color">1</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="life_expectancy_min">7</field>
+    <field name="life_expectancy_max">12</field>
+    <field name="average_weight_min">2.0</field>
+    <field name="average_weight_max">4.0</field>
+  </record>
+
+  <record id="breed_cockatiel" model="pet.breed">
+    <field name="name">Cockatiel</field>
+    <field name="species_id" ref="species_bird"/>
+    <field name="color">2</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="life_expectancy_min">15</field>
+    <field name="life_expectancy_max">25</field>
+    <field name="average_weight_min">0.08</field>
+    <field name="average_weight_max">0.12</field>
+  </record>
+
+  <record id="breed_syrian" model="pet.breed">
+    <field name="name">Syrian Hamster</field>
+    <field name="species_id" ref="species_hamster"/>
+    <field name="color">1</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="life_expectancy_min">2</field>
+    <field name="life_expectancy_max">3</field>
+    <field name="average_weight_min">0.1</field>
+    <field name="average_weight_max">0.2</field>
+  </record>
+
+  <!-- Vaccines -->
+  <record id="vaccine_rabies_dog" model="pet.vaccine">
+    <field name="name">Rabies</field>
+    <field name="species_id" ref="species_dog"/>
+    <field name="manufacturer">Zoetis</field>
+    <field name="dose_ml_default">1.0</field>
+    <field name="dose_ml_min">0.5</field>
+    <field name="dose_ml_max">2.0</field>
+    <field name="administration_route">subcutaneous</field>
+    <field name="booster_interval_days">365</field>
+    <field name="initial_age_weeks">12</field>
+    <field name="max_age_weeks">9999</field>
+    <field name="priority">critical</field>
+    <field name="fda_approved">True</field>
+    <field name="cost">25.00</field>
+    <field name="contraindications">Pregnant animals, animals with fever or illness</field>
+    <field name="side_effects">Mild lethargy, local swelling, fever</field>
+    <field name="storage_requirements">Store at 2-8°C, protect from light</field>
+    <field name="expiration_date">2025-12-31</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="currency_id" ref="base.USD"/>
+  </record>
+
+  <record id="vaccine_dhpp_dog" model="pet.vaccine">
+    <field name="name">DHPP</field>
+    <field name="species_id" ref="species_dog"/>
+    <field name="manufacturer">Merck</field>
+    <field name="dose_ml_default">1.0</field>
+    <field name="dose_ml_min">0.5</field>
+    <field name="dose_ml_max">2.0</field>
+    <field name="administration_route">subcutaneous</field>
+    <field name="booster_interval_days">365</field>
+    <field name="initial_age_weeks">6</field>
+    <field name="max_age_weeks">9999</field>
+    <field name="priority">high</field>
+    <field name="fda_approved">True</field>
+    <field name="cost">35.00</field>
+    <field name="contraindications">Severely immunocompromised animals</field>
+    <field name="side_effects">Mild fever, decreased appetite</field>
+    <field name="storage_requirements">Store at 2-8°C, do not freeze</field>
+    <field name="expiration_date">2025-11-30</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="currency_id" ref="base.USD"/>
+  </record>
+
+  <record id="vaccine_fvrcp_cat" model="pet.vaccine">
+    <field name="name">FVRCP</field>
+    <field name="species_id" ref="species_cat"/>
+    <field name="manufacturer">Boehringer Ingelheim</field>
+    <field name="dose_ml_default">1.0</field>
+    <field name="dose_ml_min">0.5</field>
+    <field name="dose_ml_max">1.5</field>
+    <field name="administration_route">subcutaneous</field>
+    <field name="booster_interval_days">365</field>
+    <field name="initial_age_weeks">6</field>
+    <field name="max_age_weeks">9999</field>
+    <field name="priority">high</field>
+    <field name="fda_approved">True</field>
+    <field name="cost">30.00</field>
+    <field name="contraindications">Pregnant queens, severely ill cats</field>
+    <field name="side_effects">Mild lethargy, temporary loss of appetite</field>
+    <field name="storage_requirements">Store at 2-8°C, protect from light</field>
+    <field name="expiration_date">2025-10-31</field>
+    <field name="company_id" ref="base.main_company"/>
+    <field name="currency_id" ref="base.USD"/>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- PET RECORDS -->
+  <!-- ======================================== -->
+  
+  <record id="pet_buddy" model="pet.pet">
+    <field name="name">Buddy</field>
+    <field name="species_id" ref="species_dog"/>
+    <field name="breed_id" ref="breed_labrador"/>
+    <field name="gender">male</field>
+    <field name="dob">2022-01-01</field>
+    <field name="owner_id" ref="base.partner_admin"/>
+  </record>
+
+  <record id="pet_luna" model="pet.pet">
+    <field name="name">Luna</field>
+    <field name="species_id" ref="species_cat"/>
+    <field name="breed_id" ref="breed_persian"/>
+    <field name="gender">female</field>
+    <field name="dob">2021-05-10</field>
+    <field name="owner_id" ref="base.partner_admin"/>
+  </record>
+
+  <record id="pet_max" model="pet.pet">
+    <field name="name">Max</field>
+    <field name="species_id" ref="species_dog"/>
+    <field name="breed_id" ref="breed_golden_retriever"/>
+    <field name="gender">male</field>
+    <field name="dob">2020-03-15</field>
+    <field name="owner_id" ref="base.partner_admin"/>
+  </record>
+
+  <record id="pet_whiskers" model="pet.pet">
+    <field name="name">Whiskers</field>
+    <field name="species_id" ref="species_cat"/>
+    <field name="breed_id" ref="breed_maine_coon"/>
+    <field name="gender">male</field>
+    <field name="dob">2019-08-20</field>
+    <field name="owner_id" ref="base.partner_admin"/>
+  </record>
+
+  <record id="pet_thumper" model="pet.pet">
+    <field name="name">Thumper</field>
+    <field name="species_id" ref="species_rabbit"/>
+    <field name="breed_id" ref="breed_angora"/>
+    <field name="gender">male</field>
+    <field name="dob">2023-03-15</field>
+    <field name="owner_id" ref="base.partner_admin"/>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- KENNEL EQUIPMENT -->
+  <!-- ======================================== -->
+  
+  <record id="equipment_bed" model="pet.kennel.equipment">
+    <field name="name">Comfortable Bed</field>
+    <field name="description">Soft, washable pet bed for comfortable rest</field>
+    <field name="category">comfort</field>
+    <field name="active">True</field>
+  </record>
+
+  <record id="equipment_food_bowl" model="pet.kennel.equipment">
+    <field name="name">Stainless Steel Food Bowl</field>
+    <field name="description">Durable stainless steel food bowl, easy to clean</field>
+    <field name="category">feeding</field>
+    <field name="active">True</field>
+  </record>
+
+  <record id="equipment_water_bowl" model="pet.kennel.equipment">
+    <field name="name">Water Bowl with Stand</field>
+    <field name="description">Elevated water bowl to reduce neck strain</field>
+    <field name="category">feeding</field>
+    <field name="active">True</field>
+  </record>
+
+  <record id="equipment_toys" model="pet.kennel.equipment">
+    <field name="name">Interactive Toys</field>
+    <field name="description">Assorted puzzle toys and chew toys</field>
+    <field name="category">exercise</field>
+    <field name="active">True</field>
+  </record>
+
+  <record id="equipment_blanket" model="pet.kennel.equipment">
+    <field name="name">Soft Blanket</field>
+    <field name="description">Warm, washable blanket for comfort</field>
+    <field name="category">comfort</field>
+    <field name="active">True</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- KENNELS -->
+  <!-- ======================================== -->
+  
+  <record id="kennel_1" model="pet.kennel">
+    <field name="name">Kennel A1 - Small Dog Suite</field>
+    <field name="code">KA1</field>
+    <field name="size">small</field>
+    <field name="capacity">1</field>
+    <field name="dimensions">4x6 feet</field>
+    <field name="daily_rate">45.00</field>
+    <field name="location">Building A, Ground Floor</field>
+    <field name="equipment_ids" eval="[(4, ref('equipment_bed')), (4, ref('equipment_food_bowl')), (4, ref('equipment_water_bowl'))]"/>
+    <field name="has_heating">True</field>
+    <field name="has_cooling">True</field>
+    <field name="has_webcam">True</field>
+    <field name="status">available</field>
+    <field name="last_cleaned">2024-09-13 14:00:00</field>
+    <field name="next_maintenance">2024-10-13</field>
+    <field name="notes">Cozy indoor kennel perfect for small dogs. Climate controlled, soundproof, natural lighting.</field>
+  </record>
+
+  <record id="kennel_2" model="pet.kennel">
+    <field name="name">Kennel B2 - Large Dog Suite</field>
+    <field name="code">KB2</field>
+    <field name="size">large</field>
+    <field name="capacity">1</field>
+    <field name="dimensions">6x8 feet</field>
+    <field name="daily_rate">65.00</field>
+    <field name="location">Building B, Ground Floor</field>
+    <field name="equipment_ids" eval="[(4, ref('equipment_bed')), (4, ref('equipment_food_bowl')), (4, ref('equipment_water_bowl')), (4, ref('equipment_toys'))]"/>
+    <field name="has_heating">True</field>
+    <field name="has_cooling">True</field>
+    <field name="has_webcam">True</field>
+    <field name="status">available</field>
+    <field name="last_cleaned">2024-09-13 15:00:00</field>
+    <field name="next_maintenance">2024-10-08</field>
+    <field name="notes">Spacious indoor kennel for large dogs. Climate controlled, soundproof, play area.</field>
+  </record>
+
+  <record id="kennel_3" model="pet.kennel">
+    <field name="name">Kennel C3 - Cat Condo</field>
+    <field name="code">KC3</field>
+    <field name="size">small</field>
+    <field name="capacity">2</field>
+    <field name="dimensions">3x4 feet</field>
+    <field name="daily_rate">35.00</field>
+    <field name="location">Building C, Second Floor</field>
+    <field name="equipment_ids" eval="[(4, ref('equipment_bed')), (4, ref('equipment_blanket'))]"/>
+    <field name="has_heating">True</field>
+    <field name="has_cooling">True</field>
+    <field name="has_webcam">True</field>
+    <field name="status">available</field>
+    <field name="last_cleaned">2024-09-13 13:00:00</field>
+    <field name="next_maintenance">2024-10-03</field>
+    <field name="notes">Multi-level cat condo with climbing areas. Climate controlled, scratching posts, hideaway spots.</field>
+  </record>
+
+  <record id="kennel_4" model="pet.kennel">
+    <field name="name">Kennel D4 - Outdoor Run</field>
+    <field name="code">KD4</field>
+    <field name="size">large</field>
+    <field name="capacity">1</field>
+    <field name="dimensions">8x12 feet</field>
+    <field name="daily_rate">55.00</field>
+    <field name="location">Outdoor Area, Section D</field>
+    <field name="equipment_ids" eval="[(4, ref('equipment_water_bowl')), (4, ref('equipment_toys'))]"/>
+    <field name="has_outdoor_access">True</field>
+    <field name="has_heating">False</field>
+    <field name="has_cooling">False</field>
+    <field name="has_webcam">True</field>
+    <field name="status">available</field>
+    <field name="last_cleaned">2024-09-13 12:00:00</field>
+    <field name="next_maintenance">2024-09-28</field>
+    <field name="notes">Large outdoor run with covered shelter. Weather protection, secure fencing, natural grass.</field>
+  </record>
+
+  <record id="kennel_5" model="pet.kennel">
+    <field name="name">Kennel E5 - Luxury Suite</field>
+    <field name="code">KE5</field>
+    <field name="size">xl</field>
+    <field name="capacity">1</field>
+    <field name="dimensions">8x10 feet</field>
+    <field name="daily_rate">95.00</field>
+    <field name="location">Building E, Penthouse Level</field>
+    <field name="equipment_ids" eval="[(4, ref('equipment_bed')), (4, ref('equipment_blanket')), (4, ref('equipment_toys'))]"/>
+    <field name="has_heating">True</field>
+    <field name="has_cooling">True</field>
+    <field name="has_webcam">True</field>
+    <field name="status">occupied</field>
+    <field name="last_cleaned">2024-09-13 10:00:00</field>
+    <field name="next_maintenance">2024-10-28</field>
+    <field name="notes">Premium luxury suite with all amenities. Climate controlled, TV, webcam access, premium bedding.</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- GROOMING SERVICES -->
+  <!-- ======================================== -->
+  
+  <record id="grooming_service_basic_bath" model="pet.grooming.service">
+    <field name="name">Basic Bath &amp; Brush</field>
+    <field name="code">BATH_BASIC</field>
+    <field name="category">basic</field>
+    <field name="description">Complete bath with shampoo, conditioner, and brush-out</field>
+    <field name="base_price">45.00</field>
+    <field name="duration_minutes">60</field>
+    <field name="skill_level">beginner</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="grooming_service_full_groom" model="pet.grooming.service">
+    <field name="name">Full Grooming Package</field>
+    <field name="code">GROOM_FULL</field>
+    <field name="category">premium</field>
+    <field name="description">Complete grooming including bath, brush, nail trim, ear cleaning, and styling</field>
+    <field name="base_price">85.00</field>
+    <field name="duration_minutes">120</field>
+    <field name="skill_level">intermediate</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="grooming_service_nail_trim" model="pet.grooming.service">
+    <field name="name">Nail Trim &amp; File</field>
+    <field name="code">NAIL_TRIM</field>
+    <field name="category">basic</field>
+    <field name="description">Professional nail trimming and filing</field>
+    <field name="base_price">25.00</field>
+    <field name="duration_minutes">30</field>
+    <field name="skill_level">beginner</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="grooming_service_medical_groom" model="pet.grooming.service">
+    <field name="name">Medical Grooming</field>
+    <field name="code">GROOM_MEDICAL</field>
+    <field name="category">medical</field>
+    <field name="description">Specialized grooming for pets with medical conditions or senior pets</field>
+    <field name="base_price">95.00</field>
+    <field name="duration_minutes">90</field>
+    <field name="skill_level">expert</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="grooming_service_de_shed" model="pet.grooming.service">
+    <field name="name">De-shedding Treatment</field>
+    <field name="code">DESHED</field>
+    <field name="category">specialty</field>
+    <field name="description">Professional de-shedding treatment to reduce loose hair</field>
+    <field name="base_price">65.00</field>
+    <field name="duration_minutes">75</field>
+    <field name="skill_level">intermediate</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- TRAINING PROGRAMS -->
+  <!-- ======================================== -->
+  
+  <record id="training_program_1" model="pet.training.program">
+    <field name="name">Basic Obedience Training</field>
+    <field name="code">OBED_BASIC</field>
+    <field name="description">Foundation training covering sit, stay, come, and leash walking</field>
+    <field name="level">basic</field>
+    <field name="category">obedience</field>
+    <field name="target_species_ids" eval="[(4, ref('species_dog'))]"/>
+    <field name="duration_sessions">12</field>
+    <field name="session_duration_minutes">45</field>
+    <field name="max_class_size">6</field>
+    <field name="base_price">299.00</field>
+    <field name="learning_objectives">Master basic commands, improve leash behavior, build confidence</field>
+    <field name="prerequisites">Puppies 4+ months, basic socialization</field>
+  </record>
+
+  <record id="training_program_2" model="pet.training.program">
+    <field name="name">Advanced Obedience</field>
+    <field name="code">OBED_ADVANCED</field>
+    <field name="description">Advanced training for dogs ready to take commands to the next level</field>
+    <field name="level">advanced</field>
+    <field name="category">obedience</field>
+    <field name="target_species_ids" eval="[(4, ref('species_dog'))]"/>
+    <field name="duration_sessions">16</field>
+    <field name="session_duration_minutes">60</field>
+    <field name="max_class_size">4</field>
+    <field name="base_price">399.00</field>
+    <field name="learning_objectives">Advanced commands, off-leash reliability, behavior modification</field>
+    <field name="prerequisites">Basic Obedience Training completed</field>
+  </record>
+
+  <record id="training_program_3" model="pet.training.program">
+    <field name="name">Puppy Socialization</field>
+    <field name="code">PUPPY_SOCIAL</field>
+    <field name="description">Early socialization and basic manners for young puppies</field>
+    <field name="level">beginner</field>
+    <field name="category">socialization</field>
+    <field name="target_species_ids" eval="[(4, ref('species_dog'))]"/>
+    <field name="duration_sessions">4</field>
+    <field name="session_duration_minutes">30</field>
+    <field name="max_class_size">8</field>
+    <field name="base_price">199.00</field>
+    <field name="learning_objectives">Socialization, bite inhibition, house training basics</field>
+    <field name="prerequisites">Puppies 8-16 weeks old</field>
+  </record>
+
+  <record id="training_program_4" model="pet.training.program">
+    <field name="name">Behavior Modification</field>
+    <field name="code">BEHAVIOR_MOD</field>
+    <field name="description">Addressing specific behavioral issues and problem solving</field>
+    <field name="level">intermediate</field>
+    <field name="category">behavioral</field>
+    <field name="target_species_ids" eval="[(4, ref('species_dog')), (4, ref('species_cat'))]"/>
+    <field name="duration_sessions">12</field>
+    <field name="session_duration_minutes">60</field>
+    <field name="max_class_size">3</field>
+    <field name="base_price">599.00</field>
+    <field name="learning_objectives">Address specific behavioral issues, build positive associations</field>
+    <field name="prerequisites">Veterinary consultation recommended</field>
+  </record>
+
+  <record id="training_program_5" model="pet.training.program">
+    <field name="name">Cat Training &amp; Enrichment</field>
+    <field name="code">CAT_TRAIN</field>
+    <field name="description">Training cats for better behavior and mental stimulation</field>
+    <field name="level">beginner</field>
+    <field name="category">tricks</field>
+    <field name="target_species_ids" eval="[(4, ref('species_cat'))]"/>
+    <field name="duration_sessions">6</field>
+    <field name="session_duration_minutes">45</field>
+    <field name="max_class_size">5</field>
+    <field name="base_price">249.00</field>
+    <field name="learning_objectives">Litter box training, scratching post use, basic commands</field>
+    <field name="prerequisites">Healthy adult cats</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- PET APPOINTMENTS -->
+  <!-- ======================================== -->
+  
+  <record id="appointment_1" model="pet.appointment">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="title">Annual Wellness Checkup</field>
+    <field name="primary_type">checkup</field>
+    <field name="is_medical">True</field>
+    <field name="is_vaccination">True</field>
+    <field name="start_datetime">2024-09-15 10:00:00</field>
+    <field name="end_datetime">2024-09-15 11:00:00</field>
+    <field name="state">confirmed</field>
+    <field name="room_id" ref="kennel_1"/>
+    <field name="notes">Annual wellness checkup and vaccination update</field>
+    <field name="follow_up_notes">Pet is in good health. Schedule next appointment in 6 months.</field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="appointment_2" model="pet.appointment">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="title">Grooming Session</field>
+    <field name="start_datetime">2024-09-16 14:00:00</field>
+    <field name="end_datetime">2024-09-16 15:00:00</field>
+    <field name="primary_type">comprehensive</field>
+    <field name="is_grooming">True</field>
+    <field name="state">confirmed</field>
+    <field name="room_id" ref="kennel_2"/>
+    <field name="service_id" ref="grooming_service_full_groom"/>
+    <field name="notes">Full grooming service including bath, brush, and nail trim</field>
+    <field name="follow_up_notes">Luna was cooperative during grooming. Recommend monthly visits.</field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="appointment_3" model="pet.appointment">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="title">Training Session</field>
+    <field name="start_datetime">2024-09-17 09:30:00</field>
+    <field name="end_datetime">2024-09-17 10:30:00</field>
+    <field name="primary_type">comprehensive</field>
+    <field name="is_training">True</field>
+    <field name="state">confirmed</field>
+    <field name="room_id" ref="kennel_3"/>
+    <field name="program_id" ref="training_program_1"/>
+    <field name="notes">Basic obedience training session</field>
+    <field name="follow_up_notes">Max showed good progress with sit and stay commands.</field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="appointment_4" model="pet.appointment">
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="title">Dental Cleaning</field>
+    <field name="start_datetime">2024-09-18 16:00:00</field>
+    <field name="end_datetime">2024-09-18 17:00:00</field>
+    <field name="primary_type">dental</field>
+    <field name="is_medical">True</field>
+    <field name="state">draft</field>
+    <field name="room_id" ref="kennel_1"/>
+    <field name="notes">Dental cleaning and examination</field>
+    <field name="follow_up_notes"></field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="appointment_5" model="pet.appointment">
+    <field name="pet_id" ref="pet_thumper"/>
+    <field name="title">Health Checkup</field>
+    <field name="start_datetime">2024-09-19 11:00:00</field>
+    <field name="end_datetime">2024-09-19 12:00:00</field>
+    <field name="primary_type">checkup</field>
+    <field name="is_medical">True</field>
+    <field name="state">confirmed</field>
+    <field name="room_id" ref="kennel_2"/>
+    <field name="notes">General health checkup for rabbit</field>
+    <field name="follow_up_notes">Thumper is healthy. Continue current diet and exercise routine.</field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="appointment_6" model="pet.appointment">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="title">Boarding Drop-off</field>
+    <field name="start_datetime">2024-09-20 15:00:00</field>
+    <field name="end_datetime">2024-09-20 16:00:00</field>
+    <field name="primary_type">comprehensive</field>
+    <field name="is_boarding">True</field>
+    <field name="state">done</field>
+    <field name="room_id" ref="kennel_4"/>
+    <field name="kennel_id" ref="kennel_4"/>
+    <field name="notes">Drop-off for 3-day boarding stay</field>
+    <field name="follow_up_notes">Buddy settled in well. Pick-up scheduled for Friday.</field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="appointment_7" model="pet.appointment">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="title">Nail Trim Session</field>
+    <field name="start_datetime">2024-09-21 13:00:00</field>
+    <field name="end_datetime">2024-09-21 14:00:00</field>
+    <field name="primary_type">comprehensive</field>
+    <field name="is_grooming">True</field>
+    <field name="state">cancelled</field>
+    <field name="room_id" ref="kennel_2"/>
+    <field name="service_id" ref="grooming_service_nail_trim"/>
+    <field name="notes">Nail trim and ear cleaning</field>
+    <field name="follow_up_notes">Appointment cancelled by owner. Reschedule for next week.</field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <record id="appointment_8" model="pet.appointment">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="title">Advanced Training</field>
+    <field name="start_datetime">2024-09-22 10:00:00</field>
+    <field name="end_datetime">2024-09-22 11:00:00</field>
+    <field name="primary_type">comprehensive</field>
+    <field name="is_training">True</field>
+    <field name="state">draft</field>
+    <field name="room_id" ref="kennel_3"/>
+    <field name="program_id" ref="training_program_2"/>
+    <field name="notes">Advanced training session - recall and heel commands</field>
+    <field name="follow_up_notes"></field>
+    <field name="auto_create_facility">True</field>
+    <field name="company_id" ref="base.main_company"/>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- PET BOARDING STAYS -->
+  <!-- ======================================== -->
+  
+  <record id="boarding_1" model="pet.boarding.stay">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="kennel_id" ref="kennel_1"/>
+    <field name="reason">Vacation boarding</field>
+    <field name="check_in">2024-09-15 15:00:00</field>
+    <field name="check_out">2024-09-18 10:00:00</field>
+    <field name="state">checked_in</field>
+    <field name="special_instructions">Feed twice daily with premium dog food. Regular exercise in outdoor area.</field>
+    <field name="emergency_contact">John Smith - (555) 123-4567</field>
+  </record>
+
+  <record id="boarding_2" model="pet.boarding.stay">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="kennel_id" ref="kennel_3"/>
+    <field name="reason">Business trip</field>
+    <field name="check_in">2024-09-14 09:00:00</field>
+    <field name="check_out">2024-09-17 17:00:00</field>
+    <field name="state">checked_in</field>
+    <field name="special_instructions">Luna prefers quiet environment. Provide extra blankets and her favorite toy.</field>
+    <field name="emergency_contact">Sarah Johnson - (555) 987-6543</field>
+  </record>
+
+  <record id="boarding_3" model="pet.boarding.stay">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="kennel_id" ref="kennel_2"/>
+    <field name="reason">Family emergency</field>
+    <field name="check_in">2024-09-17 08:00:00</field>
+    <field name="check_out">2024-09-20 16:00:00</field>
+    <field name="special_instructions">Max is very active. Needs multiple daily walks and play sessions.</field>
+    <field name="emergency_contact">Mike Davis - (555) 456-7890</field>
+  </record>
+
+  <record id="boarding_4" model="pet.boarding.stay">
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="kennel_id" ref="kennel_3"/>
+    <field name="reason">Medical procedure</field>
+    <field name="check_in">2024-09-18 14:00:00</field>
+    <field name="check_out">2024-09-21 11:00:00</field>
+    <field name="special_instructions">Whiskers is shy. Give him time to adjust and provide hiding spots.</field>
+    <field name="emergency_contact">Lisa Brown - (555) 321-0987</field>
+  </record>
+
+  <record id="boarding_5" model="pet.boarding.stay">
+    <field name="pet_id" ref="pet_thumper"/>
+    <field name="kennel_id" ref="kennel_4"/>
+    <field name="reason">Holiday travel</field>
+    <field name="check_in">2024-09-19 10:00:00</field>
+    <field name="check_out">2024-09-22 15:00:00</field>
+    <field name="special_instructions">Rabbit care: fresh hay daily, limited pellets, fresh vegetables twice daily.</field>
+    <field name="emergency_contact">Tom Wilson - (555) 654-3210</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- PET WEIGHT HISTORY -->
+  <!-- ======================================== -->
+  
+  <record id="weight_1" model="pet.weight.history">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="weight_kg">25.5</field>
+    <field name="date">2024-09-01</field>
+    <field name="notes">Initial weight measurement</field>
+  </record>
+
+  <record id="weight_2" model="pet.weight.history">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="weight_kg">24.8</field>
+    <field name="date">2024-09-15</field>
+    <field name="notes">Weight after exercise program</field>
+  </record>
+
+  <record id="weight_3" model="pet.weight.history">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="weight_kg">4.2</field>
+    <field name="date">2024-09-02</field>
+    <field name="notes">Regular checkup weight</field>
+  </record>
+
+  <record id="weight_4" model="pet.weight.history">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="weight_kg">4.1</field>
+    <field name="date">2024-09-16</field>
+    <field name="notes">Slight weight loss due to increased activity</field>
+  </record>
+
+  <record id="weight_5" model="pet.weight.history">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="weight_kg">32.0</field>
+    <field name="date">2024-09-03</field>
+    <field name="notes">Large dog - healthy weight range</field>
+  </record>
+
+  <record id="weight_6" model="pet.weight.history">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="weight_kg">31.5</field>
+    <field name="date">2024-09-17</field>
+    <field name="notes">Weight maintained with regular exercise</field>
+  </record>
+
+  <record id="weight_7" model="pet.weight.history">
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="weight_kg">5.8</field>
+    <field name="date">2024-09-04</field>
+    <field name="notes">Maine Coon - normal weight for breed</field>
+  </record>
+
+  <record id="weight_8" model="pet.weight.history">
+    <field name="pet_id" ref="pet_thumper"/>
+    <field name="weight_kg">1.2</field>
+    <field name="date">2024-09-05</field>
+    <field name="notes">Young rabbit - healthy weight</field>
+  </record>
+
+
+  <!-- ======================================== -->
+  <!-- EMPLOYEES (for groomer references) -->
+  <!-- ======================================== -->
+  
+  <record id="employee_groomer_1" model="hr.employee">
+    <field name="name">Sarah Johnson</field>
+    <field name="job_title">Pet Groomer</field>
+    <field name="work_email">sarah.johnson@petclinic.com</field>
+    <field name="active">True</field>
+  </record>
+
+  <record id="employee_groomer_2" model="hr.employee">
+    <field name="name">Mike Davis</field>
+    <field name="job_title">Senior Pet Groomer</field>
+    <field name="work_email">mike.davis@petclinic.com</field>
+    <field name="active">True</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- GROOMING SESSIONS -->
+  <!-- ======================================== -->
+  
+  <record id="grooming_session_1" model="pet.grooming.session">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="service_id" ref="grooming_service_full_groom"/>
+    <field name="groomer_id" ref="employee_groomer_1"/>
+    <field name="appointment_datetime">2024-09-16 14:00:00</field>
+    <field name="state">completed</field>
+    <field name="payment_status">paid</field>
+    <field name="special_requests">Please use hypoallergenic shampoo</field>
+    <field name="notes">Pet was very cooperative during the session</field>
+    <field name="rating">5</field>
+    <field name="customer_feedback">Excellent service, very happy with the results</field>
+  </record>
+
+  <record id="grooming_session_2" model="pet.grooming.session">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="service_id" ref="grooming_service_basic_bath"/>
+    <field name="groomer_id" ref="employee_groomer_2"/>
+    <field name="appointment_datetime">2024-09-17 10:00:00</field>
+    <field name="state">confirmed</field>
+    <field name="payment_status">pending</field>
+    <field name="special_requests">Luna is sensitive around her ears</field>
+    <field name="notes">Scheduled for next week</field>
+  </record>
+
+  <record id="grooming_session_3" model="pet.grooming.session">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="service_id" ref="grooming_service_de_shed"/>
+    <field name="groomer_id" ref="employee_groomer_1"/>
+    <field name="appointment_datetime">2024-09-18 15:30:00</field>
+    <field name="state">confirmed</field>
+    <field name="payment_status">pending</field>
+    <field name="special_requests">Max has a lot of loose hair, please be thorough</field>
+    <field name="notes">Owner requested extra attention to shedding</field>
+  </record>
+
+  <record id="grooming_session_4" model="pet.grooming.session">
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="service_id" ref="grooming_service_medical_groom"/>
+    <field name="groomer_id" ref="employee_groomer_2"/>
+    <field name="appointment_datetime">2024-09-19 09:00:00</field>
+    <field name="state">completed</field>
+    <field name="payment_status">paid</field>
+    <field name="special_requests">Senior cat - please be gentle and patient</field>
+    <field name="notes">Required extra care due to age, handled well</field>
+    <field name="rating">4</field>
+    <field name="customer_feedback">Good service, cat was comfortable</field>
+  </record>
+
+  <record id="grooming_session_5" model="pet.grooming.session">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="service_id" ref="grooming_service_nail_trim"/>
+    <field name="groomer_id" ref="employee_groomer_1"/>
+    <field name="appointment_datetime">2024-09-20 11:00:00</field>
+    <field name="state">completed</field>
+    <field name="payment_status">paid</field>
+    <field name="special_requests">Quick nail trim between full grooming sessions</field>
+    <field name="notes">Quick and efficient service</field>
+    <field name="rating">5</field>
+    <field name="customer_feedback">Fast and professional</field>
+  </record>
+
+
+  <!-- ======================================== -->
+  <!-- TRAINING SESSIONS -->
+  <!-- ======================================== -->
+  
+  <record id="training_session_1" model="pet.training.session">
+    <field name="program_id" ref="training_program_1"/>
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="session_datetime">2024-09-17 09:30:00</field>
+    <field name="state">completed</field>
+    <field name="payment_status">paid</field>
+    <field name="session_notes">First session - introduced sit command</field>
+    <field name="progress_notes">Buddy showed good focus and quick learning</field>
+  </record>
+
+  <record id="training_session_2" model="pet.training.session">
+    <field name="program_id" ref="training_program_1"/>
+    <field name="pet_id" ref="pet_max"/>
+    <field name="session_datetime">2024-09-18 10:00:00</field>
+    <field name="state">completed</field>
+    <field name="payment_status">paid</field>
+    <field name="session_notes">Review sit command, introduced stay</field>
+    <field name="progress_notes">Max needs more work on stay command</field>
+  </record>
+
+  <record id="training_session_3" model="pet.training.session">
+    <field name="program_id" ref="training_program_3"/>
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="session_datetime">2024-09-19 14:00:00</field>
+    <field name="state">confirmed</field>
+    <field name="payment_status">pending</field>
+    <field name="session_notes">Puppy socialization with other young dogs</field>
+    <field name="progress_notes"></field>
+  </record>
+
+  <record id="training_session_4" model="pet.training.session">
+    <field name="program_id" ref="training_program_2"/>
+    <field name="pet_id" ref="pet_max"/>
+    <field name="session_datetime">2024-09-20 15:00:00</field>
+    <field name="state">confirmed</field>
+    <field name="payment_status">pending</field>
+    <field name="session_notes">Advanced recall training in distracting environment</field>
+    <field name="progress_notes"></field>
+  </record>
+
+  <record id="training_session_5" model="pet.training.session">
+    <field name="program_id" ref="training_program_5"/>
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="session_datetime">2024-09-21 11:00:00</field>
+    <field name="state">completed</field>
+    <field name="payment_status">paid</field>
+    <field name="session_notes">Cat enrichment activities and positive reinforcement</field>
+    <field name="progress_notes">Whiskers responded well to clicker training</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- DIET PLANS -->
+  <!-- ======================================== -->
+  
+  <record id="diet_plan_1" model="pet.diet.plan">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="name">Weight Loss Program</field>
+    <field name="diet_type">weight_loss</field>
+    <field name="start_date">2024-09-01</field>
+    <field name="end_date">2025-03-01</field>
+    <field name="target_weight">22.0</field>
+    <field name="daily_calories">1200</field>
+    <field name="protein_percentage">30.0</field>
+    <field name="fat_percentage">15.0</field>
+    <field name="fiber_percentage">8.0</field>
+    <field name="feeding_frequency">3</field>
+    <field name="diet_purpose">Help Buddy reach ideal weight for better health and mobility</field>
+    <field name="medical_conditions">Overweight, mild joint stiffness</field>
+    <field name="allergies_considered">None known</field>
+    <field name="feeding_schedule_notes">Morning, afternoon, and evening meals with controlled portions</field>
+    <field name="estimated_monthly_cost">120.00</field>
+    <field name="state">active</field>
+    <field name="adherence_rating">good</field>
+    <field name="adherence_percentage">85.0</field>
+    <field name="next_review_date">2024-10-01</field>
+    <field name="review_frequency_days">30</field>
+    <field name="progress_notes">Pet is responding well to the diet. Weight loss of 0.7kg in first month.</field>
+    <field name="supplier_recommendations">Royal Canin Weight Control, Hill's Science Diet Perfect Weight</field>
+  </record>
+
+  <record id="diet_plan_2" model="pet.diet.plan">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="name">Senior Cat Diet</field>
+    <field name="diet_type">senior</field>
+    <field name="start_date">2024-08-15</field>
+    <field name="end_date">2025-02-15</field>
+    <field name="target_weight">4.0</field>
+    <field name="daily_calories">280</field>
+    <field name="protein_percentage">35.0</field>
+    <field name="fat_percentage">12.0</field>
+    <field name="fiber_percentage">5.0</field>
+    <field name="feeding_frequency">3</field>
+    <field name="diet_purpose">Specialized diet for senior cats with joint support and easy digestion</field>
+    <field name="medical_conditions">Arthritis, decreased activity level</field>
+    <field name="allergies_considered">Sensitive to chicken-based proteins</field>
+    <field name="feeding_schedule_notes">Small meals three times daily to aid digestion</field>
+    <field name="estimated_monthly_cost">45.00</field>
+    <field name="state">active</field>
+    <field name="adherence_rating">excellent</field>
+    <field name="adherence_percentage">95.0</field>
+    <field name="next_review_date">2024-10-15</field>
+    <field name="review_frequency_days">60</field>
+    <field name="progress_notes">Luna has shown improved mobility and energy levels</field>
+    <field name="supplier_recommendations">Hill's Science Diet Senior 11+, Purina Pro Plan Senior</field>
+  </record>
+
+  <record id="diet_plan_3" model="pet.diet.plan">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="name">Active Dog Maintenance</field>
+    <field name="diet_type">maintenance</field>
+    <field name="start_date">2024-07-01</field>
+    <field name="end_date">2025-07-01</field>
+    <field name="target_weight">32.0</field>
+    <field name="daily_calories">1800</field>
+    <field name="protein_percentage">25.0</field>
+    <field name="fat_percentage">18.0</field>
+    <field name="fiber_percentage">6.0</field>
+    <field name="feeding_frequency">2</field>
+    <field name="diet_purpose">Maintain optimal weight and energy for active Golden Retriever</field>
+    <field name="medical_conditions">None</field>
+    <field name="allergies_considered">None known</field>
+    <field name="feeding_schedule_notes">Morning and evening meals with exercise</field>
+    <field name="estimated_monthly_cost">80.00</field>
+    <field name="state">active</field>
+    <field name="adherence_rating">excellent</field>
+    <field name="adherence_percentage">98.0</field>
+    <field name="next_review_date">2024-10-01</field>
+    <field name="review_frequency_days">90</field>
+    <field name="progress_notes">Max maintains healthy weight and high energy levels</field>
+    <field name="supplier_recommendations">Royal Canin Golden Retriever, Eukanuba Adult</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- DIET PLAN LINES -->
+  <!-- ======================================== -->
+  
+  <record id="diet_plan_line_1" model="pet.diet.plan.line">
+    <field name="plan_id" ref="diet_plan_1"/>
+    <field name="food_name">Weight Control Dry Food</field>
+    <field name="quantity">200</field>
+    <field name="unit">grams</field>
+    <field name="time_of_day">morning</field>
+    <field name="food_category">dry_kibble</field>
+    <field name="calories">640</field>
+    <field name="protein_content">28.0</field>
+    <field name="fat_content">12.0</field>
+    <field name="fiber_content">9.0</field>
+    <field name="is_optional">False</field>
+    <field name="is_treat">False</field>
+  </record>
+
+  <record id="diet_plan_line_2" model="pet.diet.plan.line">
+    <field name="plan_id" ref="diet_plan_1"/>
+    <field name="food_name">Weight Control Wet Food</field>
+    <field name="quantity">150</field>
+    <field name="unit">grams</field>
+    <field name="time_of_day">evening</field>
+    <field name="food_category">wet_food</field>
+    <field name="calories">127.5</field>
+    <field name="protein_content">35.0</field>
+    <field name="fat_content">8.0</field>
+    <field name="fiber_content">6.0</field>
+    <field name="is_optional">False</field>
+    <field name="is_treat">False</field>
+  </record>
+
+  <record id="diet_plan_line_3" model="pet.diet.plan.line">
+    <field name="plan_id" ref="diet_plan_1"/>
+    <field name="food_name">Low-Calorie Treats</field>
+    <field name="quantity">20</field>
+    <field name="unit">grams</field>
+    <field name="time_of_day">afternoon</field>
+    <field name="food_category">treats</field>
+    <field name="calories">36</field>
+    <field name="protein_content">25.0</field>
+    <field name="fat_content">5.0</field>
+    <field name="fiber_content">15.0</field>
+    <field name="is_optional">True</field>
+    <field name="is_treat">True</field>
+  </record>
+
+  <record id="diet_plan_line_4" model="pet.diet.plan.line">
+    <field name="plan_id" ref="diet_plan_2"/>
+    <field name="food_name">Senior Cat Dry Food</field>
+    <field name="quantity">60</field>
+    <field name="unit">grams</field>
+    <field name="time_of_day">morning</field>
+    <field name="food_category">dry_kibble</field>
+    <field name="calories">228</field>
+    <field name="protein_content">36.0</field>
+    <field name="fat_content">14.0</field>
+    <field name="fiber_content">6.0</field>
+    <field name="is_optional">False</field>
+    <field name="is_treat">False</field>
+  </record>
+
+  <record id="diet_plan_line_5" model="pet.diet.plan.line">
+    <field name="plan_id" ref="diet_plan_2"/>
+    <field name="food_name">Senior Cat Wet Food</field>
+    <field name="quantity">80</field>
+    <field name="unit">grams</field>
+    <field name="time_of_day">evening</field>
+    <field name="food_category">wet_food</field>
+    <field name="calories">76</field>
+    <field name="protein_content">40.0</field>
+    <field name="fat_content">10.0</field>
+    <field name="fiber_content">4.0</field>
+    <field name="is_optional">False</field>
+    <field name="is_treat">False</field>
+  </record>
+
+  <record id="diet_plan_line_6" model="pet.diet.plan.line">
+    <field name="plan_id" ref="diet_plan_3"/>
+    <field name="food_name">Adult Dog Premium Dry Food</field>
+    <field name="quantity">300</field>
+    <field name="unit">grams</field>
+    <field name="time_of_day">morning</field>
+    <field name="food_category">dry_kibble</field>
+    <field name="calories">1050</field>
+    <field name="protein_content">26.0</field>
+    <field name="fat_content">16.0</field>
+    <field name="fiber_content">5.0</field>
+    <field name="is_optional">False</field>
+    <field name="is_treat">False</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- MEDICAL VISITS -->
+  <!-- ======================================== -->
+  
+  <record id="medical_visit_1" model="pet.medical.visit">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="date">2024-09-15</field>
+    <field name="reason">Annual wellness checkup</field>
+    <field name="visit_type">checkup</field>
+    <field name="diagnosis">Annual wellness checkup - healthy</field>
+    <field name="plan">Complete physical examination, weight check, vaccination update</field>
+    <field name="medications_prescribed">None</field>
+    <field name="follow_up_date">2025-09-15</field>
+    <field name="cost">85.00</field>
+  </record>
+
+  <record id="medical_visit_2" model="pet.medical.visit">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="date">2024-09-17</field>
+    <field name="reason">Joint pain consultation</field>
+    <field name="visit_type">other</field>
+    <field name="diagnosis">Mild arthritis in hind legs</field>
+    <field name="plan">Joint supplements recommended, gentle exercise</field>
+    <field name="medications_prescribed">Glucosamine supplement, pain management</field>
+    <field name="follow_up_date">2024-12-17</field>
+    <field name="cost">120.00</field>
+  </record>
+
+  <record id="medical_visit_3" model="pet.medical.visit">
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="date">2024-09-18</field>
+    <field name="reason">Dental cleaning and examination</field>
+    <field name="visit_type">dental</field>
+    <field name="diagnosis">Mild dental tartar buildup</field>
+    <field name="plan">Professional dental cleaning performed</field>
+    <field name="medications_prescribed">Antibiotics for 5 days</field>
+    <field name="follow_up_date">2024-12-18</field>
+    <field name="cost">250.00</field>
+  </record>
+
+  <record id="medical_visit_4" model="pet.medical.visit">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="date">2024-09-19</field>
+    <field name="reason">Emergency treatment for paw injury</field>
+    <field name="visit_type">emergency</field>
+    <field name="diagnosis">Minor cut on paw pad</field>
+    <field name="plan">Wound cleaned and bandaged, no stitches needed</field>
+    <field name="medications_prescribed">Topical antibiotic ointment</field>
+    <field name="follow_up_date">2024-09-26</field>
+    <field name="cost">95.00</field>
+  </record>
+
+  <record id="medical_visit_5" model="pet.medical.visit">
+    <field name="pet_id" ref="pet_thumper"/>
+    <field name="date">2024-09-20</field>
+    <field name="reason">General health checkup for rabbit</field>
+    <field name="visit_type">checkup</field>
+    <field name="diagnosis">Healthy young rabbit</field>
+    <field name="plan">General health check, diet review, housing recommendations</field>
+    <field name="medications_prescribed">None</field>
+    <field name="follow_up_date">2025-03-20</field>
+    <field name="cost">65.00</field>
+  </record>
+
+  <!-- ======================================== -->
+  <!-- VACCINATIONS -->
+  <!-- ======================================== -->
+  
+  <record id="vaccination_1" model="pet.vaccination">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="vaccine_id" ref="vaccine_rabies_dog"/>
+    <field name="date_administered">2024-09-15</field>
+    <field name="dose_ml">1.0</field>
+    <field name="batch_number">RAB2024001</field>
+    <field name="state">administered</field>
+    <field name="vaccination_type">annual</field>
+    <field name="notes">Rabies vaccination administered during annual checkup</field>
+  </record>
+
+  <record id="vaccination_2" model="pet.vaccination">
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="vaccine_id" ref="vaccine_dhpp_dog"/>
+    <field name="date_administered">2024-09-15</field>
+    <field name="dose_ml">1.0</field>
+    <field name="batch_number">DHPP2024002</field>
+    <field name="state">administered</field>
+    <field name="vaccination_type">booster</field>
+    <field name="notes">DHPP booster given with rabies vaccine</field>
+  </record>
+
+  <record id="vaccination_3" model="pet.vaccination">
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="vaccine_id" ref="vaccine_fvrcp_cat"/>
+    <field name="date_administered">2024-09-17</field>
+    <field name="dose_ml">1.0</field>
+    <field name="batch_number">FVRCP2024003</field>
+    <field name="state">administered</field>
+    <field name="vaccination_type">annual</field>
+    <field name="notes">Annual FVRCP vaccination for senior cat</field>
+  </record>
+
+  <record id="vaccination_4" model="pet.vaccination">
+    <field name="pet_id" ref="pet_max"/>
+    <field name="vaccine_id" ref="vaccine_rabies_dog"/>
+    <field name="date_administered">2024-08-01</field>
+    <field name="dose_ml">1.0</field>
+    <field name="batch_number">RAB2024004</field>
+    <field name="state">administered</field>
+    <field name="vaccination_type">annual</field>
+    <field name="notes">Rabies vaccination up to date</field>
+  </record>
+
+  <record id="vaccination_5" model="pet.vaccination">
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="vaccine_id" ref="vaccine_fvrcp_cat"/>
+    <field name="date_administered">2024-07-15</field>
+    <field name="dose_ml">1.0</field>
+    <field name="batch_number">FVRCP2024005</field>
+    <field name="state">administered</field>
+    <field name="vaccination_type">annual</field>
+    <field name="notes">FVRCP vaccination current</field>
+  </record>
+
+</odoo>

@@ -1,0 +1,341 @@
+<odoo>
+  <!-- Tree View -->
+  <record id="view_pet_vaccine_tree" model="ir.ui.view">
+    <field name="name">pet.vaccine.list</field>
+    <field name="model">pet.vaccine</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name" widget="badge" decoration-info="priority == 'high'" decoration-danger="priority == 'critical'" decoration-warning="priority == 'medium'" decoration-muted="priority == 'low'"/>
+        <field name="code"/>
+        <field name="species_id" widget="badge" decoration-info="species_id.color == 1" decoration-success="species_id.color == 2" decoration-warning="species_id.color == 3" decoration-danger="species_id.color == 4"/>
+        <field name="manufacturer"/>
+        <field name="dose_ml_default" string="Dose (ml)"/>
+        <field name="booster_interval_days" string="Booster (days)"/>
+        <field name="vaccination_count" string="Usage Count"/>
+        <field name="priority" widget="badge" decoration-info="priority == 'high'" decoration-danger="priority == 'critical'" decoration-warning="priority == 'medium'" decoration-muted="priority == 'low'"/>
+        <field name="is_expired" widget="boolean_toggle"/>
+        <field name="active" widget="boolean_toggle"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Kanban View -->
+  <record id="view_pet_vaccine_kanban" model="ir.ui.view">
+    <field name="name">pet.vaccine.kanban</field>
+    <field name="model">pet.vaccine</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="species_id"/>
+        <field name="manufacturer"/>
+        <field name="dose_ml_default"/>
+        <field name="booster_interval_days"/>
+        <field name="vaccination_count"/>
+        <field name="priority"/>
+        <field name="is_expired"/>
+        <field name="active"/>
+        <field name="expiration_date"/>
+        <field name="last_used_date"/>
+        <field name="usage_frequency"/>
+        <field name="cost"/>
+        <field name="fda_approved"/>
+        <field name="administration_route"/>
+        <field name="days_until_expiry"/>
+        <templates>
+          <t t-name="card">
+            <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.color and record.color.raw_value or '1')" class="oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccine-catalog">
+                <div class="pet-info">
+                  <div class="pet-icon theme-vaccine-catalog">
+                    <i class="fa fa-medkit" title="Vaccine"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.name and record.name.value or 'Unknown Vaccine'"/>
+                    <div class="pet-code">
+                      <i class="fa fa-barcode" title="Vaccine Code"/>
+                      <span t-esc="record.code and record.code.value or 'No Code'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.active and record.active.raw_value ? 'active' : 'inactive')">
+                    <i t-att-class="'fa fa-' + (record.active and record.active.raw_value ? 'check-circle' : 'times-circle')" title="Active Status"/>
+                    <span t-esc="record.active and record.active.value ? 'Active' : 'Inactive'"/>
+                  </div>
+                  <div t-if="record.is_expired and record.is_expired.raw_value" class="expired-indicator">
+                    <i class="fa fa-exclamation-triangle" title="Expired"/>
+                    <span>Expired</span>
+                  </div>
+                  <div t-elif="record.days_until_expiry and record.days_until_expiry.value and record.days_until_expiry.value &lt;= 30" class="expiring-indicator">
+                    <i class="fa fa-clock-o" title="Expiring Soon"/>
+                    <span t-esc="(record.days_until_expiry and record.days_until_expiry.value or '0') + ' days left'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-heart" title="Species"/>
+                    <span class="detail-label">Species:</span>
+                    <span class="detail-value" t-esc="record.species_id and record.species_id.value or 'Unknown'"/>
+                  </div>
+                  <div t-if="record.manufacturer and record.manufacturer.value" class="detail-row">
+                    <i class="fa fa-building" title="Manufacturer"/>
+                    <span class="detail-label">Manufacturer:</span>
+                    <span class="detail-value" t-esc="record.manufacturer and record.manufacturer.value or 'Unknown'"/>
+                  </div>
+                  <div class="detail-row">
+                    <i class="fa fa-tint" title="Dose"/>
+                    <span class="detail-label">Dose:</span>
+                    <span class="detail-value" t-esc="(record.dose_ml_default and record.dose_ml_default.value or '0') + ' ml'"/>
+                  </div>
+                  <div t-if="record.booster_interval_days and record.booster_interval_days.value" class="detail-row">
+                    <i class="fa fa-clock-o" title="Booster Interval"/>
+                    <span class="detail-label">Booster:</span>
+                    <span class="detail-value" t-esc="(record.booster_interval_days and record.booster_interval_days.value or '0') + ' days'"/>
+                  </div>
+                  <div class="detail-row">
+                    <i class="fa fa-route" title="Administration Route"/>
+                    <span class="detail-label">Route:</span>
+                    <span class="detail-value" t-esc="record.administration_route and record.administration_route.value or 'Subcutaneous'"/>
+                  </div>
+                  <div t-if="record.priority and record.priority.value" class="detail-row">
+                    <i class="fa fa-flag" title="Priority"/>
+                    <span class="detail-label">Priority:</span>
+                    <span t-att-class="'priority-badge priority-' + (record.priority and record.priority.raw_value or 'medium')" t-esc="record.priority and record.priority.value or 'Medium'"/>
+                  </div>
+                </div>
+
+                <div class="pet-regulatory-info">
+                  <div t-if="record.fda_approved and record.fda_approved.raw_value" class="fda-approved">
+                    <i class="fa fa-certificate" title="FDA Approved"/>
+                    <span>FDA Approved</span>
+                  </div>
+                  <div t-if="record.cost and record.cost.value" class="pet-cost-info">
+                    <i class="fa fa-dollar" title="Cost"/>
+                    <span class="pet-cost-amount" t-esc="record.cost and record.cost.value or '0'"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div class="pet-stat-item">
+                    <i class="fa fa-syringe" title="Usage Count"/>
+                    <span class="pet-stat-label">Used:</span>
+                    <span class="pet-stat-value" t-esc="record.vaccination_count and record.vaccination_count.value or '0'"/> times
+                  </div>
+                  <div t-if="record.last_used_date and record.last_used_date.value" class="pet-stat-item">
+                    <i class="fa fa-calendar" title="Last Used"/>
+                    <span class="pet-stat-label">Last Used:</span>
+                    <span class="pet-stat-value" t-esc="record.last_used_date and record.last_used_date.value or 'Never'"/>
+                  </div>
+                  <div t-if="record.usage_frequency and record.usage_frequency.value" class="pet-stat-item">
+                    <i class="fa fa-chart-line" title="Usage Frequency"/>
+                    <span class="pet-stat-label">Frequency:</span>
+                    <span t-att-class="'frequency-badge frequency-' + (record.usage_frequency and record.usage_frequency.raw_value or 'occasional')" t-esc="record.usage_frequency and record.usage_frequency.value or 'Occasional'"/>
+                  </div>
+                </div>
+
+                <div t-if="record.expiration_date and record.expiration_date.value" class="expiration-info">
+                    <i class="fa fa-calendar-times-o" title="Expiration Date"/>
+                  <span class="expiration-label">Expires:</span>
+                  <span class="expiration-date" t-esc="record.expiration_date and record.expiration_date.value or 'Not Set'"/>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button class="btn btn-sm btn-primary action-btn" 
+                        name="action_view_vaccinations" 
+                        type="object" 
+                        title="View Vaccinations"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-eye" title="View Vaccinations"/>
+                </button>
+                <button class="btn btn-sm btn-success action-btn" 
+                        name="action_create_vaccination" 
+                        type="object" 
+                        title="Create Vaccination"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-plus" title="Create Vaccination"/>
+                </button>
+                <button class="btn btn-sm btn-info action-btn" 
+                        name="action_check_expiry" 
+                        type="object" 
+                        title="Check Expiry"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-exclamation-triangle" title="Check Expiry"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Form View -->
+  <record id="view_pet_vaccine_form" model="ir.ui.view">
+    <field name="name">pet.vaccine.form</field>
+    <field name="model">pet.vaccine</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_check_expiry" type="object" string="Check Expiry" 
+                  class="btn-warning" icon="fa-exclamation-triangle"/>
+          <button name="action_view_vaccinations" type="object" string="View Vaccinations" 
+                  class="btn-info" icon="fa-syringe"/>
+          <button name="action_create_vaccination" type="object" string="Create Vaccination" 
+                  class="btn-success" icon="fa-plus"/>
+          <field name="active" widget="boolean_toggle"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_vaccinations" type="object" string="Vaccinations" icon="fa-syringe"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Vaccine Name"/>
+            </h1>
+          </div>
+          
+          <notebook>
+            <page string="Basic Information" name="basic_info">
+          <group>
+                <group name="vaccine_info">
+            <field name="name"/>
+                  <field name="code"/>
+            <field name="species_id"/>
+                  <field name="manufacturer"/>
+                  <field name="priority"/>
+                </group>
+                <group name="regulatory_info">
+                  <field name="fda_approved"/>
+                  <field name="fda_approval_date"/>
+                  <field name="license_number"/>
+                  <field name="batch_tracking"/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Dosage &amp; Administration" name="dosage">
+              <group>
+                <group name="dosage_info">
+                  <field name="dose_ml_default"/>
+                  <field name="dose_ml_min"/>
+                  <field name="dose_ml_max"/>
+                  <field name="administration_route"/>
+                </group>
+                <group name="timing_info">
+            <field name="booster_interval_days"/>
+                  <field name="initial_age_weeks"/>
+                  <field name="max_age_weeks"/>
+                  <field name="requires_multiple_doses"/>
+                  <field name="dose_interval_days" invisible="not requires_multiple_doses"/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Safety &amp; Storage" name="safety">
+              <group>
+                <group name="safety_info">
+                  <field name="contraindications" widget="text"/>
+                  <field name="side_effects" widget="text"/>
+                </group>
+                <group name="storage_info">
+                  <field name="storage_requirements" widget="text"/>
+                  <field name="handling_notes" widget="text"/>
+                  <field name="lot_number"/>
+                  <field name="expiration_date"/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Product &amp; Cost" name="product">
+              <group>
+                <group name="product_info">
+                  <field name="product_id"/>
+                  <field name="cost"/>
+                  <field name="currency_id"/>
+                </group>
+                <group name="usage_tracking">
+                  <field name="vaccination_count" readonly="1"/>
+                  <field name="last_used_date" readonly="1"/>
+                  <field name="usage_frequency" readonly="1"/>
+                  <field name="is_expired" readonly="1"/>
+                  <field name="days_until_expiry" readonly="1"/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Additional Information" name="additional">
+              <group>
+                <field name="notes" widget="text"/>
+          </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Search View -->
+  <record id="view_pet_vaccine_search" model="ir.ui.view">
+    <field name="name">pet.vaccine.search</field>
+    <field name="model">pet.vaccine</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="code"/>
+        <field name="species_id"/>
+        <field name="manufacturer"/>
+        <field name="priority"/>
+        
+        <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+        <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+        <filter name="expired" string="Expired" domain="[('is_expired', '=', True)]"/>
+        <filter name="expiring_soon" string="Expiring Soon" domain="[('days_until_expiry', '&lt;=', 30), ('days_until_expiry', '&gt;', 0)]"/>
+        
+        <filter name="high_priority" string="High Priority" domain="[('priority', 'in', ['high', 'critical'])]"/>
+        <filter name="fda_approved" string="FDA Approved" domain="[('fda_approved', '=', True)]"/>
+        <filter name="frequent_use" string="Frequently Used" domain="[('usage_frequency', '=', 'frequent')]"/>
+        <filter name="rare_use" string="Rarely Used" domain="[('usage_frequency', '=', 'rare')]"/>
+        
+        <separator/>
+        <filter name="dog_vaccines" string="Dog Vaccines" domain="[('species_id.name', 'ilike', 'dog')]"/>
+        <filter name="cat_vaccines" string="Cat Vaccines" domain="[('species_id.name', 'ilike', 'cat')]"/>
+        <filter name="rabbit_vaccines" string="Rabbit Vaccines" domain="[('species_id.name', 'ilike', 'rabbit')]"/>
+        <filter name="bird_vaccines" string="Bird Vaccines" domain="[('species_id.name', 'ilike', 'bird')]"/>
+        
+        <!-- Display Options -->
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <group>
+          <filter name="group_by_species" string="Species" context="{'group_by':'species_id'}"/>
+          <filter name="group_by_priority" string="Priority" context="{'group_by':'priority'}"/>
+          <filter name="group_by_manufacturer" string="Manufacturer" context="{'group_by':'manufacturer'}"/>
+          <filter name="group_by_usage_frequency" string="Usage Frequency" context="{'group_by':'usage_frequency'}"/>
+          <filter name="group_by_active" string="Active" context="{'group_by':'active'}"/>
+          <filter name="group_by_fda_approved" string="FDA Approved" context="{'group_by':'fda_approved'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Window Action -->
+  <record id="action_pet_vaccine" model="ir.actions.act_window">
+    <field name="name">Vaccine Catalog</field>
+    <field name="res_model">pet.vaccine</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="context">{'search_default_active': 1}</field>
+  </record>
+
+  <!-- Menu Item -->
+  <menuitem id="menu_pet_vaccine" parent="menu_pet_configuration" action="action_pet_vaccine" name="Vaccine Catalog" sequence="3" groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
+</odoo>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_x_pets_form_petget" model="ir.ui.view">
+        <field name="name">x_pets.form.petget</field>
+        <field name="model">x_pets</field>
+        <field name="inherit_id" ref="veterinary_clinic.form_view_for_x_pets"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="x_petget_status" widget="statusbar"
+                       invisible="not x_is_dog"
+                       options="{'clickable': '1'}"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(veterinary_petget_bridge.action_x_pet_documents)d"
+                        type="action" class="oe_stat_button" icon="fa-file-text-o">
+                    <field name="x_petget_document_count" widget="statinfo" string="Documents"/>
+                </button>
+                <button name="%(veterinary_petget_bridge.action_x_pet_reminders)d"
+                        type="action" class="oe_stat_button" icon="fa-bell-o">
+                    <field name="x_petget_reminder_count" widget="statinfo" string="Reminders"/>
+                </button>
+                <button name="%(veterinary_petget_bridge.action_open_pet_breed_profile)d"
+                        type="action" class="oe_stat_button" icon="fa-paw"
+                        invisible="not x_petget_breed_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">AKC Breed</span>
+                        <span class="o_stat_value"><field name="x_petget_breed_id" readonly="1" nolabel="1"/></span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='x_date_of_birth']" position="after">
+                <field name="x_petget_age_display" invisible="not x_is_dog" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='x_breed']" position="attributes">
+                <attribute name="invisible">x_is_dog</attribute>
+            </xpath>
+            <xpath expr="//field[@name='x_breed']" position="after">
+                <field name="x_is_dog" invisible="1"/>
+                <field name="x_petget_breed_id" invisible="not x_is_dog"
+                       options="{'no_create': True}"/>
+                <field name="x_petget_color_id" invisible="not x_is_dog"
+                       options="{'no_create': True}"/>
+                <field name="x_petget_coat_type" invisible="not x_is_dog"/>
+            </xpath>
+            <xpath expr="//field[@name='x_microchip_number']" position="after">
+                <field name="x_petget_registered_name" invisible="not x_is_dog"/>
+                <field name="x_petget_akc_number" invisible="not x_is_dog"/>
+                <field name="x_petget_temporary_id" invisible="not x_is_dog"/>
+                <field name="x_petget_collar_color" invisible="not x_is_dog"/>
+            </xpath>
+            <xpath expr="//group[@name='right_group']" position="after">
+                <group string="Pedigree" name="petget_pedigree" invisible="not x_is_dog">
+                    <field name="x_petget_sire_id"
+                           domain="[('x_gender', '=', 'Male'), ('x_species', '=', x_species), ('id', '!=', id)]"
+                           options="{'no_create': True}"/>
+                    <field name="x_petget_dam_id"
+                           domain="[('x_gender', '=', 'Female'), ('x_species', '=', x_species), ('id', '!=', id)]"
+                           options="{'no_create': True}"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Breed Profile" name="petget_breed_profile"
+                      invisible="not x_is_dog or not x_petget_breed_id">
+                    <div class="d-flex align-items-start mb-3">
+                        <field name="x_petget_breed_image_128" widget="image"
+                               class="oe_avatar me-3"
+                               options="{'size': [90, 90]}"/>
+                        <div>
+                            <h3><field name="x_petget_breed_id" readonly="1" nolabel="1"/></h3>
+                            <field name="x_petget_breed_origin_country_ids" widget="many2many_tags" readonly="1"/>
+                        </div>
+                    </div>
+                    <group>
+                        <group string="Overview">
+                            <field name="x_petget_breed_akc_group" readonly="1"/>
+                            <field name="x_petget_breed_size" readonly="1"/>
+                            <field name="x_petget_breed_temperament" readonly="1"/>
+                            <label for="x_petget_breed_weight_min_kg" string="Typical Weight (kg)"/>
+                            <div class="o_row">
+                                <field name="x_petget_breed_weight_min_kg" readonly="1"/>
+                                <span>–</span>
+                                <field name="x_petget_breed_weight_max_kg" readonly="1"/>
+                            </div>
+                            <label for="x_petget_breed_height_min_cm" string="Typical Height (cm)"/>
+                            <div class="o_row">
+                                <field name="x_petget_breed_height_min_cm" readonly="1"/>
+                                <span>–</span>
+                                <field name="x_petget_breed_height_max_cm" readonly="1"/>
+                            </div>
+                            <label for="x_petget_breed_life_expectancy_min" string="Lifespan (years)"/>
+                            <div class="o_row">
+                                <field name="x_petget_breed_life_expectancy_min" readonly="1"/>
+                                <span>–</span>
+                                <field name="x_petget_breed_life_expectancy_max" readonly="1"/>
+                            </div>
+                        </group>
+                        <group string="Care Ratings">
+                            <field name="x_petget_breed_exercise_need" readonly="1"/>
+                            <field name="x_petget_breed_grooming_need" readonly="1"/>
+                            <field name="x_petget_breed_shedding_level" readonly="1"/>
+                            <field name="x_petget_breed_trainability" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Reproduction">
+                        <group>
+                            <field name="x_petget_breed_first_heat_age_months" readonly="1"/>
+                            <field name="x_petget_breed_heat_cycle_months" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="x_petget_breed_gestation_days" readonly="1"/>
+                            <field name="x_petget_breed_avg_litter_size" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="x_petget_breed_description" readonly="1" nolabel="1"/>
+                    </group>
+                    <group string="Health &amp; Care">
+                        <field name="x_petget_breed_health_issues" readonly="1" nolabel="1"/>
+                        <field name="x_petget_breed_care_notes" readonly="1" nolabel="1"/>
+                    </group>
+                    <separator string="Growth &amp; Development"/>
+                    <p class="text-muted">Typical weight by age for this breed (estimates — varies by line and individual).</p>
+                    <field name="x_petget_breed_growth_ids" readonly="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="age_from_weeks"/>
+                            <field name="age_to_weeks"/>
+                            <field name="weight_min_kg"/>
+                            <field name="weight_max_kg"/>
+                            <field name="note"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Dog Care Guide" name="petget_dog_care" invisible="not x_is_dog">
+                    <group>
+                        <group string="Life Stage">
+                            <field name="x_petget_life_stage_id" readonly="1"/>
+                            <field name="x_petget_life_stage_feeding" readonly="1"/>
+                            <field name="x_petget_life_stage_care" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Documents" name="petget_documents">
+                    <field name="x_petget_document_ids" context="{'default_x_pet_id': id}">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="file" filename="file_name" widget="binary"/>
+                            <field name="file_name" column_invisible="1"/>
+                            <field name="issue_date"/>
+                            <field name="expiry_date"/>
+                            <field name="notes" optional="hide"/>
+                            <field name="x_pet_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Reminders" name="petget_reminders">
+                    <field name="x_petget_reminder_ids" context="{'default_x_pet_id': id}">
+                        <list editable="bottom"
+                              decoration-danger="is_overdue"
+                              decoration-muted="state == 'done'">
+                            <field name="name"/>
+                            <field name="reminder_type"/>
+                            <field name="due_date"/>
+                            <field name="user_id" optional="hide"/>
+                            <field name="state"/>
+                            <field name="is_overdue" column_invisible="1"/>
+                            <button name="action_done" type="object" string="Done"
+                                    icon="fa-check" invisible="state == 'done'"/>
+                            <field name="x_pet_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Activity Timeline" name="petget_timeline">
+                    <field name="x_petget_note_ids" context="{'default_x_pet_id': id}">
+                        <list editable="bottom">
+                            <field name="note_date"/>
+                            <field name="note_type"/>
+                            <field name="body"/>
+                            <field name="user_id" optional="hide"/>
+                            <field name="x_pet_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Internal Notes" name="petget_internal_notes" invisible="not x_is_dog">
+                    <field name="x_petget_internal_notes" placeholder="Internal notes (Petget-style)..." nolabel="1"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_x_pets_list_petget" model="ir.ui.view">
+        <field name="name">x_pets.list.petget</field>
+        <field name="model">x_pets</field>
+        <field name="inherit_id" ref="veterinary_clinic.list_view_for_x_pets_default"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='x_breed']" position="after">
+                <field name="x_petget_breed_id" string="AKC Breed" optional="hide"/>
+                <field name="x_petget_status" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_x_pets_kanban_petget" model="ir.ui.view">
+        <field name="name">x_pets.kanban.petget</field>
+        <field name="model">x_pets</field>
+        <field name="inherit_id" ref="veterinary_clinic.kanban_custom_view_for_x_pets"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='x_breed']" position="after">
+                <field name="x_petget_breed_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_petget_document_clinic_form" model="ir.ui.view">
+        <field name="name">petget.document.form.clinic</field>
+        <field name="model">petget.document</field>
+        <field name="inherit_id" ref="petget_core.petget_core_view_form_document"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='animal_id']" position="before">
+                <field name="x_pet_id" options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='animal_id']" position="attributes">
+                <attribute name="invisible">x_pet_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_petget_reminder_clinic_form" model="ir.ui.view">
+        <field name="name">petget.reminder.form.clinic</field>
+        <field name="model">petget.reminder</field>
+        <field name="inherit_id" ref="petget_core.petget_core_view_form_reminder"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='animal_id']" position="before">
+                <field name="x_pet_id" options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='animal_id']" position="attributes">
+                <attribute name="invisible">x_pet_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_petget_note_clinic_form" model="ir.ui.view">
+        <field name="name">petget.note.form.clinic</field>
+        <field name="model">petget.note</field>
+        <field name="inherit_id" ref="petget_core.petget_core_view_form_note"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='animal_id']" position="before">
+                <field name="x_pet_id" options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='animal_id']" position="attributes">
+                <attribute name="invisible">x_pet_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

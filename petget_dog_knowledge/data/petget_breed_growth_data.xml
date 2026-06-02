@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <record id="breed_labrador_retriever_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_labrador_retriever"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">4</field>
+      <field name="weight_max_kg">6</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_labrador_retriever_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_labrador_retriever"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">9</field>
+      <field name="weight_max_kg">12</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_labrador_retriever_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_labrador_retriever"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">18</field>
+      <field name="weight_max_kg">23</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_labrador_retriever_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_labrador_retriever"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">25</field>
+      <field name="weight_max_kg">32</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_labrador_retriever_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_labrador_retriever"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">25</field>
+      <field name="weight_max_kg">36</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_golden_retriever_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_golden_retriever"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">4</field>
+      <field name="weight_max_kg">6</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_golden_retriever_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_golden_retriever"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">9</field>
+      <field name="weight_max_kg">12</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_golden_retriever_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_golden_retriever"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">18</field>
+      <field name="weight_max_kg">22</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_golden_retriever_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_golden_retriever"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">24</field>
+      <field name="weight_max_kg">30</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_golden_retriever_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_golden_retriever"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">25</field>
+      <field name="weight_max_kg">34</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_german_shepherd_dog_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_german_shepherd_dog"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">5</field>
+      <field name="weight_max_kg">9</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_german_shepherd_dog_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_german_shepherd_dog"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">11</field>
+      <field name="weight_max_kg">18</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_german_shepherd_dog_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_german_shepherd_dog"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">19</field>
+      <field name="weight_max_kg">28</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_german_shepherd_dog_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_german_shepherd_dog"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">25</field>
+      <field name="weight_max_kg">37</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_german_shepherd_dog_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_german_shepherd_dog"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">22</field>
+      <field name="weight_max_kg">40</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_french_bulldog_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_french_bulldog"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">1.5</field>
+      <field name="weight_max_kg">2.5</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_french_bulldog_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_french_bulldog"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">3.5</field>
+      <field name="weight_max_kg">5</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_french_bulldog_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_french_bulldog"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">6</field>
+      <field name="weight_max_kg">9</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_french_bulldog_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_french_bulldog"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">8</field>
+      <field name="weight_max_kg">13</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_french_bulldog_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_french_bulldog"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">8</field>
+      <field name="weight_max_kg">14</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_bulldog_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_bulldog"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">3</field>
+      <field name="weight_max_kg">5</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_bulldog_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_bulldog"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">7</field>
+      <field name="weight_max_kg">10</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_bulldog_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_bulldog"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">12</field>
+      <field name="weight_max_kg">18</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_bulldog_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_bulldog"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">18</field>
+      <field name="weight_max_kg">23</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_bulldog_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_bulldog"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">18</field>
+      <field name="weight_max_kg">25</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_poodle_standard_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_poodle_standard"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">3</field>
+      <field name="weight_max_kg">5</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_poodle_standard_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_poodle_standard"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">7</field>
+      <field name="weight_max_kg">11</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_poodle_standard_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_poodle_standard"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">14</field>
+      <field name="weight_max_kg">20</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_poodle_standard_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_poodle_standard"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">19</field>
+      <field name="weight_max_kg">28</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_poodle_standard_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_poodle_standard"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">20</field>
+      <field name="weight_max_kg">32</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_beagle_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_beagle"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">1.5</field>
+      <field name="weight_max_kg">2.5</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_beagle_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_beagle"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">4</field>
+      <field name="weight_max_kg">5.5</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_beagle_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_beagle"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">6.5</field>
+      <field name="weight_max_kg">9</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_beagle_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_beagle"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">9</field>
+      <field name="weight_max_kg">11</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_beagle_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_beagle"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">9</field>
+      <field name="weight_max_kg">11</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_rottweiler_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_rottweiler"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">6</field>
+      <field name="weight_max_kg">9</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_rottweiler_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_rottweiler"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">13</field>
+      <field name="weight_max_kg">20</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_rottweiler_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_rottweiler"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">25</field>
+      <field name="weight_max_kg">36</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_rottweiler_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_rottweiler"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">33</field>
+      <field name="weight_max_kg">50</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_rottweiler_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_rottweiler"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">35</field>
+      <field name="weight_max_kg">60</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_dachshund_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_dachshund"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">1.5</field>
+      <field name="weight_max_kg">2.5</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_dachshund_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_dachshund"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">3</field>
+      <field name="weight_max_kg">5</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_dachshund_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_dachshund"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">5</field>
+      <field name="weight_max_kg">9</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_dachshund_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_dachshund"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">7</field>
+      <field name="weight_max_kg">14</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_dachshund_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_dachshund"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">7</field>
+      <field name="weight_max_kg">15</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_pembroke_welsh_corgi_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_pembroke_welsh_corgi"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">2.5</field>
+      <field name="weight_max_kg">4</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_pembroke_welsh_corgi_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_pembroke_welsh_corgi"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">5</field>
+      <field name="weight_max_kg">7</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_pembroke_welsh_corgi_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_pembroke_welsh_corgi"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">8</field>
+      <field name="weight_max_kg">11</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_pembroke_welsh_corgi_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_pembroke_welsh_corgi"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">10</field>
+      <field name="weight_max_kg">13</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_pembroke_welsh_corgi_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_pembroke_welsh_corgi"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">10</field>
+      <field name="weight_max_kg">14</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_yorkshire_terrier_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_yorkshire_terrier"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">0.5</field>
+      <field name="weight_max_kg">0.9</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_yorkshire_terrier_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_yorkshire_terrier"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">1</field>
+      <field name="weight_max_kg">1.6</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_yorkshire_terrier_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_yorkshire_terrier"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">1.5</field>
+      <field name="weight_max_kg">2.5</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_yorkshire_terrier_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_yorkshire_terrier"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">2</field>
+      <field name="weight_max_kg">3.5</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_yorkshire_terrier_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_yorkshire_terrier"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">2</field>
+      <field name="weight_max_kg">4</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_boxer_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_boxer"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">4.5</field>
+      <field name="weight_max_kg">7</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_boxer_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_boxer"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">10</field>
+      <field name="weight_max_kg">14</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_boxer_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_boxer"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">18</field>
+      <field name="weight_max_kg">24</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_boxer_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_boxer"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">24</field>
+      <field name="weight_max_kg">30</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_boxer_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_boxer"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">25</field>
+      <field name="weight_max_kg">32</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_siberian_husky_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_siberian_husky"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">3.5</field>
+      <field name="weight_max_kg">5.5</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_siberian_husky_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_siberian_husky"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">8</field>
+      <field name="weight_max_kg">12</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_siberian_husky_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_siberian_husky"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">13</field>
+      <field name="weight_max_kg">19</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_siberian_husky_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_siberian_husky"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">16</field>
+      <field name="weight_max_kg">25</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_siberian_husky_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_siberian_husky"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">16</field>
+      <field name="weight_max_kg">27</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_cavalier_king_charles_spaniel_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_cavalier_king_charles_spaniel"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">1.3</field>
+      <field name="weight_max_kg">2</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_cavalier_king_charles_spaniel_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_cavalier_king_charles_spaniel"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">2.5</field>
+      <field name="weight_max_kg">3.5</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_cavalier_king_charles_spaniel_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_cavalier_king_charles_spaniel"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">4.5</field>
+      <field name="weight_max_kg">6</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_cavalier_king_charles_spaniel_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_cavalier_king_charles_spaniel"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">5.5</field>
+      <field name="weight_max_kg">8</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_cavalier_king_charles_spaniel_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_cavalier_king_charles_spaniel"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">6</field>
+      <field name="weight_max_kg">8</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+    <record id="breed_chihuahua_g0" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_chihuahua"/>
+      <field name="sequence">10</field>
+      <field name="name">8 weeks</field>
+      <field name="age_from_weeks">8</field>
+      <field name="age_to_weeks">12</field>
+      <field name="weight_min_kg">0.4</field>
+      <field name="weight_max_kg">0.7</field>
+      <field name="note">Weaned onto puppy food, 3–4 meals/day. Ready to rehome (≥8 weeks).</field>
+    </record>
+    <record id="breed_chihuahua_g1" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_chihuahua"/>
+      <field name="sequence">20</field>
+      <field name="name">3 months</field>
+      <field name="age_from_weeks">12</field>
+      <field name="age_to_weeks">26</field>
+      <field name="weight_min_kg">0.8</field>
+      <field name="weight_max_kg">1.4</field>
+      <field name="note">Puppy food, 3 meals/day. Vaccination series and microchip due.</field>
+    </record>
+    <record id="breed_chihuahua_g2" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_chihuahua"/>
+      <field name="sequence">30</field>
+      <field name="name">6 months</field>
+      <field name="age_from_weeks">26</field>
+      <field name="age_to_weeks">52</field>
+      <field name="weight_min_kg">1.2</field>
+      <field name="weight_max_kg">2.2</field>
+      <field name="note">2–3 meals/day; roughly two-thirds of adult weight.</field>
+    </record>
+    <record id="breed_chihuahua_g3" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_chihuahua"/>
+      <field name="sequence">40</field>
+      <field name="name">12 months</field>
+      <field name="age_from_weeks">52</field>
+      <field name="age_to_weeks">78</field>
+      <field name="weight_min_kg">1.5</field>
+      <field name="weight_max_kg">3</field>
+      <field name="note">Small/medium breeds near adult weight; large/giant breeds keep growing to 18–24 months.</field>
+    </record>
+    <record id="breed_chihuahua_g4" model="petget.breed.growth">
+      <field name="breed_id" ref="petget_dog.breed_chihuahua"/>
+      <field name="sequence">50</field>
+      <field name="name">Adult</field>
+      <field name="age_from_weeks">78</field>
+      <field name="age_to_weeks">0</field>
+      <field name="weight_min_kg">1</field>
+      <field name="weight_max_kg">3</field>
+      <field name="note">Adult maintenance food, 2 meals/day. Keep lean.</field>
+    </record>
+
+  </data>
+</odoo>

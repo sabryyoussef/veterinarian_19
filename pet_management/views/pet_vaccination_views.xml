@@ -1,0 +1,322 @@
+<odoo>
+  <record id="view_pet_vaccination_tree" model="ir.ui.view">
+    <field name="name">pet.vaccination.list</field>
+    <field name="model">pet.vaccination</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="state_color" invisible="1"/>
+        <field name="pet_id" string="Pet" widget="badge" decoration-info="state_color == 2" decoration-success="state_color == 4" decoration-danger="state_color == 1" decoration-muted="state_color == 0"/>
+        <field name="vaccine_id" string="Vaccine" widget="badge" decoration-info="vaccination_type == 'initial'" decoration-warning="vaccination_type == 'booster'" decoration-success="vaccination_type == 'annual'" decoration-danger="vaccination_type == 'emergency'"/>
+        <field name="date_administered" string="Date Administered" widget="date"/>
+        <field name="next_due_date" string="Next Due" widget="date"/>
+        <field name="state" string="Status" widget="badge" decoration-info="state == 'scheduled'" decoration-success="state == 'administered'" decoration-danger="state == 'overdue'" decoration-muted="state == 'cancelled'"/>
+        <field name="vaccination_type" string="Type" widget="badge" decoration-info="vaccination_type == 'initial'" decoration-warning="vaccination_type == 'booster'" decoration-success="vaccination_type == 'annual'" decoration-danger="vaccination_type == 'emergency'"/>
+        <field name="cost" string="Cost" widget="monetary"/>
+        <field name="payment_status" string="Payment Status" widget="badge" decoration-info="payment_status == 'pending'" decoration-success="payment_status == 'paid'" decoration-warning="payment_status == 'partial'" decoration-muted="payment_status == 'cancelled'"/>
+        <field name="vet_id" string="Veterinarian"/>
+        <field name="is_overdue" string="Overdue" widget="boolean_toggle"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_pet_vaccination_search" model="ir.ui.view">
+    <field name="name">pet.vaccination.search</field>
+    <field name="model">pet.vaccination</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="pet_id"/>
+        <field name="vaccine_id"/>
+        <field name="vet_id"/>
+        <field name="state"/>
+        <field name="vaccination_type"/>
+        <field name="payment_status"/>
+        <field name="date_administered"/>
+        <field name="next_due_date"/>
+        <field name="batch_number"/>
+        
+        <filter name="administered" string="Administered" domain="[('state','=','administered')]"/>
+        <filter name="scheduled" string="Scheduled" domain="[('state','=','scheduled')]"/>
+        <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+        <filter name="overdue" string="Overdue" domain="[('is_overdue','=',True)]"/>
+        <filter name="due_soon" string="Due Soon" domain="[('next_due_date','&lt;=',context_today() + datetime.timedelta(days=7)),('state','=','scheduled')]"/>
+        <filter name="recent" string="Recent (30 days)" domain="[('date_administered','&gt;=',context_today() - datetime.timedelta(days=30))]"/>
+        <filter name="emergency" string="Emergency" domain="[('vaccination_type','=','emergency')]"/>
+        <filter name="booster" string="Booster" domain="[('vaccination_type','=','booster')]"/>
+        <filter name="annual" string="Annual" domain="[('vaccination_type','=','annual')]"/>
+        <filter name="pending_payment" string="Pending Payment" domain="[('payment_status','=','pending')]"/>
+        <filter name="paid" string="Paid" domain="[('payment_status','=','paid')]"/>
+        <filter name="partial_payment" string="Partial Payment" domain="[('payment_status','=','partial')]"/>
+        
+        <group>
+          <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+          <filter name="group_by_vaccine" string="Vaccine" context="{'group_by':'vaccine_id'}"/>
+          <filter name="group_by_vet" string="Veterinarian" context="{'group_by':'vet_id'}"/>
+          <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+          <filter name="group_by_type" string="Vaccination Type" context="{'group_by':'vaccination_type'}"/>
+          <filter name="group_by_payment" string="Payment Status" context="{'group_by':'payment_status'}"/>
+          <filter name="group_by_date" string="Date Administered" context="{'group_by':'date_administered'}"/>
+          <filter name="group_by_due_date" string="Next Due Date" context="{'group_by':'next_due_date'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="view_pet_vaccination_kanban" model="ir.ui.view">
+    <field name="name">pet.vaccination.kanban</field>
+    <field name="model">pet.vaccination</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="pet_id"/>
+        <field name="vaccine_id"/>
+        <field name="vet_id"/>
+        <field name="date_administered"/>
+        <field name="next_due_date"/>
+        <field name="state"/>
+        <field name="vaccination_type"/>
+        <field name="payment_status"/>
+        <field name="cost"/>
+        <field name="is_overdue"/>
+        <field name="overdue_days"/>
+        <field name="days_since_vaccination"/>
+        <field name="state_color"/>
+        <field name="batch_number"/>
+        <field name="dose_ml"/>
+        <templates>
+          <t t-name="card">
+            <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.state_color.raw_value or '1')" class="oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccination">
+                <div class="pet-info">
+                  <div class="pet-avatar">
+                    <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                         t-att-alt="record.pet_id.value" 
+                         class="pet-image"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.pet_id.value or 'Unknown Pet'"/>
+                    <div class="additional-info">
+                      <i class="fa fa-medkit" title="Vaccine"/>
+                      <span class="additional-info-name" t-esc="record.vaccine_id.value or 'Unknown Vaccine'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.state.raw_value or 'scheduled')" 
+                       t-att-style="record.state.raw_value == 'administered' ? 'background-color: #28a745; color: white;' : record.state.raw_value == 'cancelled' ? 'background-color: #dc3545; color: white;' : record.state.raw_value == 'overdue' ? 'background-color: #ffc107; color: #212529;' : 'background-color: #6c757d; color: white;'">
+                    <i t-att-class="'fa fa-' + (record.state.raw_value == 'administered' ? 'check-circle' : record.state.raw_value == 'cancelled' ? 'times-circle' : record.state.raw_value == 'overdue' ? 'exclamation-triangle' : 'clock-o')" title="Vaccination Status"/>
+                    <span t-esc="record.state.value or 'Scheduled'"/>
+                  </div>
+                  <div t-if="record.is_overdue.raw_value" class="overdue-indicator">
+                    <i class="fa fa-exclamation-triangle" title="Overdue"/>
+                    <span t-if="record.overdue_days and record.overdue_days.value" t-esc="record.overdue_days.value + ' days overdue'"/>
+                    <span t-else="">Overdue</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-calendar" title="Date Administered"/>
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value" t-esc="record.date_administered.value"/>
+                  </div>
+                  <div t-if="record.next_due_date and record.next_due_date.value" class="detail-row">
+                    <i class="fa fa-calendar-check-o" title="Next Due Date"/>
+                    <span class="detail-label">Next Due:</span>
+                    <span class="detail-value" t-esc="record.next_due_date.value"/>
+                  </div>
+                  <div t-if="record.vet_id and record.vet_id.value" class="detail-row">
+                    <i class="fa fa-user-md" title="Veterinarian"/>
+                    <span class="detail-label">Vet:</span>
+                    <span class="detail-value" t-esc="record.vet_id.value"/>
+                  </div>
+                  <div class="detail-row">
+                    <i class="fa fa-tag" title="Vaccination Type"/>
+                    <span class="detail-label">Type:</span>
+                    <span t-att-class="'vaccination-type-badge type-' + (record.vaccination_type.raw_value or 'initial')" t-esc="record.vaccination_type.value or 'Initial'"/>
+                  </div>
+                  <div t-if="record.dose_ml and record.dose_ml.value" class="detail-row">
+                    <i class="fa fa-tint" title="Dose"/>
+                    <span class="detail-label">Dose:</span>
+                    <span class="detail-value" t-esc="record.dose_ml.value + ' ml'"/>
+                  </div>
+                  <div t-if="record.batch_number and record.batch_number.value" class="detail-row">
+                    <i class="fa fa-barcode" title="Batch Number"/>
+                    <span class="detail-label">Batch:</span>
+                    <span class="detail-value" t-esc="record.batch_number.value"/>
+                  </div>
+                </div>
+
+                <div class="pet-financial-info">
+                  <div t-if="record.cost and record.cost.value" class="pet-cost-info">
+                    <i class="fa fa-dollar" title="Cost"/>
+                    <span class="pet-cost-amount" t-esc="record.cost.value"/>
+                  </div>
+                  <div t-if="record.payment_status and record.payment_status.value" class="payment-status" t-att-class="'payment-' + (record.payment_status.raw_value or 'pending')">
+                    <i t-att-class="'fa fa-' + (record.payment_status.raw_value == 'paid' ? 'check' : record.payment_status.raw_value == 'partial' ? 'minus' : record.payment_status.raw_value == 'cancelled' ? 'times' : 'clock-o')" title="Payment Status"/>
+                    <span t-esc="record.payment_status.value"/>
+                  </div>
+                </div>
+
+                <div t-if="record.days_since_vaccination and record.days_since_vaccination.value" class="time-info">
+                  <i class="fa fa-clock-o" title="Days Since Vaccination"/>
+                  <span t-esc="record.days_since_vaccination.value"/> days ago
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button t-if="record.state.raw_value == 'scheduled'" 
+                        class="btn btn-sm btn-success action-btn" 
+                        name="action_mark_administered" 
+                        type="object" 
+                        title="Mark Administered"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-check" title="Mark Administered"/>
+                </button>
+                <button t-if="record.state.raw_value != 'cancelled'" 
+                        class="btn btn-sm btn-warning action-btn" 
+                        name="action_mark_cancelled" 
+                        type="object" 
+                        title="Cancel"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-times" title="Cancel"/>
+                </button>
+                <button t-if="record.state.raw_value == 'cancelled'" 
+                        class="btn btn-sm btn-info action-btn" 
+                        name="action_reschedule" 
+                        type="object" 
+                        title="Reschedule"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-calendar" title="Reschedule"/>
+                </button>
+                <button class="btn btn-sm btn-primary action-btn" 
+                        name="action_send_notification" 
+                        type="object" 
+                        title="Send Notification"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-bell" title="Send Notification"/>
+                </button>
+                <button t-if="record.state.raw_value == 'scheduled'" 
+                        class="btn btn-sm btn-secondary action-btn" 
+                        name="action_create_reminder_notification" 
+                        type="object" 
+                        title="Create Reminder"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-clock-o" title="Create Reminder"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="view_pet_vaccination_form" model="ir.ui.view">
+    <field name="name">pet.vaccination.form</field>
+    <field name="model">pet.vaccination</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_mark_administered" type="object" string="Mark Administered" 
+                  invisible="state == 'administered'" class="btn-primary" icon="fa-check"/>
+          <button name="action_mark_cancelled" type="object" string="Cancel" 
+                  invisible="state == 'cancelled'" class="btn-secondary" icon="fa-times"/>
+          <button name="action_reschedule" type="object" string="Reschedule" 
+                  invisible="state != 'cancelled'" class="btn-info" icon="fa-calendar"/>
+          <button name="action_send_notification" type="object" string="Send Notification" 
+                  class="btn-success" icon="fa-bell"/>
+          <button name="action_create_reminder_notification" type="object" string="Create Reminder" 
+                  invisible="state != 'scheduled'" class="btn-warning" icon="fa-clock-o"/>
+          <field name="state" widget="statusbar" statusbar_visible="scheduled,administered"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pet" type="object" string="Pet" icon="fa-paw"
+                    groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
+            <button name="action_view_vaccine" type="object" string="Vaccine" icon="fa-medkit"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="pet_id" readonly="1"/>
+              <span> - </span>
+              <field name="vaccine_id" readonly="1"/>
+            </h1>
+          </div>
+          
+          <group>
+            <group name="vaccination_info">
+            <field name="pet_id"/>
+              <field name="appointment_id" string="Appointment"/>
+            <field name="vaccine_id"/>
+            <field name="date_administered"/>
+              <field name="next_due_date" readonly="1"/>
+            <field name="dose_ml"/>
+            <field name="vet_id"/>
+            </group>
+            <group name="status_info">
+              <field name="state"/>
+              <field name="vaccination_type"/>
+              <field name="payment_status"/>
+              <field name="cost"/>
+              <field name="is_overdue" readonly="1"/>
+              <field name="overdue_days" readonly="1"/>
+            </group>
+          </group>
+          
+          <group>
+            <group name="batch_info">
+              <field name="batch_number"/>
+              <field name="expiration_date"/>
+            </group>
+            <group name="computed_info">
+              <field name="days_since_vaccination" readonly="1"/>
+              <field name="state_color" invisible="1"/>
+            </group>
+          </group>
+          
+          <notebook>
+            <page string="Medical Details" name="medical_details">
+              <div class="alert alert-info" role="alert">
+                <h4><i class="fa fa-info-circle" title="Info"></i> Side Effects Tracking</h4>
+                <p>Document any adverse reactions or side effects observed after vaccination. This information is crucial for:</p>
+                <ul>
+                  <li><strong>Pet Safety:</strong> Track individual pet reactions to specific vaccines</li>
+                  <li><strong>Veterinary Records:</strong> Help veterinarians make informed decisions for future vaccinations</li>
+                  <li><strong>Breed Analysis:</strong> Identify patterns in breed-specific reactions</li>
+                  <li><strong>Legal Compliance:</strong> Maintain comprehensive medical records as required by law</li>
+                </ul>
+              </div>
+              <field name="side_effects" nolabel="1" placeholder="Enter any side effects observed (e.g., lethargy, swelling, allergic reactions, etc.)"/>
+            </page>
+            <page string="Notes" name="notes">
+              <div class="alert alert-warning" role="alert">
+                <h4><i class="fa fa-sticky-note" title="Notes"></i> Vaccination Notes</h4>
+                <p>Record additional information about the vaccination process. This field helps with:</p>
+                <ul>
+                  <li><strong>Administration Details:</strong> Note injection site, technique used, or special circumstances</li>
+                  <li><strong>Pet Behavior:</strong> Document how the pet reacted during the vaccination process</li>
+                  <li><strong>Follow-up Instructions:</strong> Record any special care instructions given to the owner</li>
+                  <li><strong>Veterinarian Comments:</strong> Additional observations or recommendations from the vet</li>
+                </ul>
+              </div>
+              <field name="notes" nolabel="1" placeholder="Enter additional notes about the vaccination (administration details, pet behavior, follow-up instructions, etc.)"/>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_pet_vaccination" model="ir.actions.act_window">
+    <field name="name">Vaccinations</field>
+    <field name="res_model">pet.vaccination</field>
+    <field name="view_mode">kanban,list,form</field>
+  </record>
+
+  <menuitem id="menu_pet_vaccination" parent="menu_pet_health" action="action_pet_vaccination" name="Vaccinations" sequence="2" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_health"/>
+</odoo>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="stage_neonatal" model="petget.dog.life.stage">
+            <field name="name">Neonatal (0–2 weeks)</field>
+            <field name="sequence">10</field>
+            <field name="age_from_weeks">0</field>
+            <field name="age_to_weeks">2</field>
+            <field name="feeding_guidance">Mother's milk only (colostrum is vital in the first hours). If orphaned, feed a puppy milk replacer every 2–3 hours, day and night — never cow's milk.</field>
+            <field name="care_focus">Keep warm (puppies cannot regulate temperature). Weigh daily — steady gain is the key health sign. No vaccines yet.</field>
+        </record>
+
+        <record id="stage_transitional" model="petget.dog.life.stage">
+            <field name="name">Transitional (2–4 weeks)</field>
+            <field name="sequence">20</field>
+            <field name="age_from_weeks">2</field>
+            <field name="age_to_weeks">4</field>
+            <field name="feeding_guidance">Still nursing. Near the end of this stage, introduce a soft gruel (puppy food soaked in warm water/milk replacer).</field>
+            <field name="care_focus">Eyes and ears open; first wobbly steps. First deworming around 2 weeks, then every 2 weeks. Gentle handling begins.</field>
+        </record>
+
+        <record id="stage_puppy" model="petget.dog.life.stage">
+            <field name="name">Puppy / Socialization (4–12 weeks)</field>
+            <field name="sequence">30</field>
+            <field name="age_from_weeks">4</field>
+            <field name="age_to_weeks">12</field>
+            <field name="feeding_guidance">Wean fully onto quality puppy food by ~6–8 weeks. Feed 3–4 small meals a day.</field>
+            <field name="care_focus">Critical socialization window — gentle exposure to people, sounds and handling. Core vaccination series starts ~6–8 weeks; continue deworming. Puppies must NOT be sold before 8 weeks of age.</field>
+        </record>
+
+        <record id="stage_juvenile" model="petget.dog.life.stage">
+            <field name="name">Juvenile (3–6 months)</field>
+            <field name="sequence">40</field>
+            <field name="age_from_weeks">12</field>
+            <field name="age_to_weeks">26</field>
+            <field name="feeding_guidance">Quality puppy food, 3 meals a day reducing to 2. Match the formula to expected adult size (large-breed puppy food for big breeds).</field>
+            <field name="care_focus">Complete the vaccination series; keep up parasite prevention. Microchip by 12 weeks of age. Begin basic training and lead work.</field>
+        </record>
+
+        <record id="stage_adolescent" model="petget.dog.life.stage">
+            <field name="name">Adolescent (6–12 months)</field>
+            <field name="sequence">50</field>
+            <field name="age_from_weeks">26</field>
+            <field name="age_to_weeks">52</field>
+            <field name="feeding_guidance">Two meals a day. Switch to adult food depends on size: small breeds ~9–12 months, large/giant breeds ~12–24 months.</field>
+            <field name="care_focus">Females may have their first heat (small breeds ~6 months, large breeds ~12–18 months) — monitor and plan. Discuss desexing timing with your vet. Continue training and exercise.</field>
+        </record>
+
+        <record id="stage_adult" model="petget.dog.life.stage">
+            <field name="name">Adult (1–7 years)</field>
+            <field name="sequence">60</field>
+            <field name="age_from_weeks">52</field>
+            <field name="age_to_weeks">364</field>
+            <field name="feeding_guidance">Adult maintenance food, usually 2 meals a day. Watch body condition closely — obesity is the most common avoidable health problem.</field>
+            <field name="care_focus">Annual vet check, vaccination boosters, dental care, year-round parasite prevention. This is the prime breeding age for healthy, screened dogs.</field>
+        </record>
+
+        <record id="stage_senior" model="petget.dog.life.stage">
+            <field name="name">Senior (7+ years)</field>
+            <field name="sequence">70</field>
+            <field name="age_from_weeks">364</field>
+            <field name="age_to_weeks">0</field>
+            <field name="feeding_guidance">Senior formula with adjusted calories and joint support; smaller, more frequent meals if needed. Large breeds reach senior earlier than small breeds.</field>
+            <field name="care_focus">Twice-yearly vet checks. Watch for arthritis, dental disease, weight change, and organ-related issues. Keep gentle daily exercise.</field>
+        </record>
+
+    </data>
+</odoo>

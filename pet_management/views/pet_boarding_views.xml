@@ -1,0 +1,267 @@
+<odoo>
+    <record id="view_pet_boarding_tree" model="ir.ui.view">
+        <field name="name">pet.boarding.stay.list</field>
+        <field name="model">pet.boarding.stay</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="pet_id" string="Pet"/>
+                <field name="kennel_id" string="Kennel"/>
+                <field name="reason" string="Reason"/>
+                <field name="check_in" string="Check In" widget="datetime"/>
+                <field name="check_out" string="Check Out" widget="datetime"/>
+                <field name="state" string="Status"/>
+                <field name="duration_days" string="Duration (Days)"/>
+                <field name="cost_per_day" string="Cost Per Day"/>
+                <field name="external_costs" string="External Costs"/>
+                <field name="total_cost" string="Total Cost"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_pet_boarding_search" model="ir.ui.view">
+        <field name="name">pet.boarding.stay.search</field>
+        <field name="model">pet.boarding.stay</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="pet_id"/>
+                <field name="kennel_id"/>
+                <field name="reason"/>
+                <field name="state"/>
+                <field name="check_in" string="Check In"/>
+                <field name="check_out" string="Check Out"/>
+                <field name="cost_per_day"/>
+                <field name="external_costs"/>
+                <field name="external_cost_label"/>
+                <field name="total_cost"/>
+                <filter name="current" string="Current Stays" domain="[('check_in','&lt;=',context_today()),('check_out','&gt;=',context_today())]"/>
+                <filter name="past" string="Past Stays" domain="[('check_out','&lt;',context_today())]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state','=','confirmed')]"/>
+                <filter name="done" string="Done" domain="[('state','=','done')]"/>
+                
+                <!-- Display Options -->
+                <separator/>
+                <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+                
+                <group>
+                    <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+                    <filter name="group_by_kennel" string="Kennel" context="{'group_by':'kennel_id'}"/>
+                    <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_pet_boarding_form" model="ir.ui.view">
+        <field name="name">pet.boarding.stay.form</field>
+        <field name="model">pet.boarding.stay</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <!-- Basic Information -->
+                    <group string="Basic Information">
+                        <group>
+                            <field name="pet_id"/>
+                            <field name="appointment_id" string="Appointment"/>
+                            <field name="kennel_id"/>
+                            <field name="reason"/>
+                        </group>
+                        <group>
+                            <field name="check_in"/>
+                            <field name="check_out"/>
+                            <field name="state"/>
+                            <field name="duration_days" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Cost Information -->
+                    <group string="Cost Information">
+                        <group>
+                            <field name="cost_per_day" readonly="1"/>
+                            <field name="external_costs"/>
+                            <field name="external_cost_label"/>
+                        </group>
+                        <group>
+                            <field name="total_cost" readonly="1"/>
+                            <field name="payment_status"/>
+                            <field name="staff_id"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Care Instructions -->
+                    <group string="Care Instructions">
+                        <group>
+                            <field name="feeding_notes"/>
+                        </group>
+                        <group>
+                            <field name="walk_schedule"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Incident Log -->
+                    <div class="oe_title">
+                        <label for="incident_log" class="oe_edit_only"/>
+                        <h2>Incident Log</h2>
+                    </div>
+                    <field name="incident_log" nolabel="1" placeholder="Record any incidents, observations, or special notes during the pet's stay..." style="width: 100%;"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pet_boarding_kanban" model="ir.ui.view">
+        <field name="name">pet.boarding.stay.kanban</field>
+        <field name="model">pet.boarding.stay</field>
+        <field name="arch" type="xml">
+            <kanban class="pet-kanban">
+                <field name="pet_id"/>
+                <field name="kennel_id"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <field name="state"/>
+                <field name="state_color"/>
+                <field name="staff_id"/>
+                <field name="cost_per_day"/>
+                <field name="total_cost"/>
+                <field name="payment_status"/>
+                <field name="duration_display"/>
+                <field name="days_remaining"/>
+                <field name="is_current"/>
+                <field name="is_overdue"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.state_color.raw_value or '0')" class="oe_kanban_global_click">
+                            <!-- Header Section -->
+                            <div class="pet-kanban-header theme-vaccination">
+                                <div class="pet-info">
+                                    <div class="pet-avatar">
+                                        <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                                             t-att-alt="record.pet_id.value" 
+                                             class="pet-image"/>
+                                    </div>
+                                    <div class="pet-details">
+                                        <h3 class="pet-name" t-esc="record.pet_id.value or 'Unknown Pet'"/>
+                                        <div class="additional-info">
+                                            <i class="fa fa-home" title="Kennel"/>
+                                            <span class="additional-info-name" t-esc="record.kennel_id.value or 'No Kennel'"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="status-section">
+                                    <div t-att-class="'status-badge status-' + (record.state.raw_value or 'draft')" 
+                                         t-att-style="record.state.raw_value == 'checked_out' ? 'background-color: #28a745; color: white;' : record.state.raw_value == 'cancelled' ? 'background-color: #dc3545; color: white;' : record.state.raw_value == 'checked_in' ? 'background-color: #ffc107; color: #212529;' : record.state.raw_value == 'confirmed' ? 'background-color: #17a2b8; color: white;' : 'background-color: #6c757d; color: white;'">
+                                        <i t-att-class="'fa fa-' + (record.state.raw_value == 'checked_in' ? 'sign-in' : record.state.raw_value == 'checked_out' ? 'sign-out' : record.state.raw_value == 'confirmed' ? 'check-circle' : record.state.raw_value == 'cancelled' ? 'times-circle' : 'clock-o')" title="Boarding Status"/>
+                                        <span t-esc="record.state.value or 'Draft'"/>
+                                    </div>
+                                    <div t-if="record.is_current and record.is_current.raw_value" class="overdue-indicator">
+                                        <i class="fa fa-home" title="Current Stay"/>
+                                        <span>Current Stay</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="pet-kanban-content">
+                                <div class="pet-details-section">
+                                    <div class="detail-row">
+                                        <i class="fa fa-calendar" title="Check In Date"/>
+                                        <span class="detail-label">Check In:</span>
+                                        <span class="detail-value" t-esc="record.check_in.value"/>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fa fa-calendar-check-o" title="Check Out Date"/>
+                                        <span class="detail-label">Check Out:</span>
+                                        <span class="detail-value" t-esc="record.check_out.value"/>
+                                    </div>
+                                    <div t-if="record.staff_id and record.staff_id.value" class="detail-row">
+                                        <i class="fa fa-user" title="Staff Member"/>
+                                        <span class="detail-label">Staff:</span>
+                                        <span class="detail-value" t-esc="record.staff_id.value"/>
+                                    </div>
+                                    <div t-if="record.special_instructions and record.special_instructions.value" class="detail-row">
+                                        <i class="fa fa-info-circle" title="Special Instructions"/>
+                                        <span class="detail-label">Instructions:</span>
+                                        <span class="detail-value" t-esc="record.special_instructions.value"/>
+                                    </div>
+                                </div>
+
+                                <div class="pet-usage-stats">
+                                    <div class="pet-stat-item">
+                                        <i class="fa fa-clock-o" title="Duration"/>
+                                        <span class="pet-stat-label">Duration:</span>
+                                        <span class="pet-stat-value" t-esc="record.duration_display.value or '0d'"/>
+                                    </div>
+                                    <div t-if="record.days_remaining and record.days_remaining.value" class="pet-stat-item">
+                                        <i class="fa fa-calendar-o" title="Days Remaining"/>
+                                        <span class="pet-stat-label">Days Left:</span>
+                                        <span class="pet-stat-value" t-esc="record.days_remaining.value + ' days'"/>
+                                    </div>
+                                    <div t-if="record.total_cost and record.total_cost.value" class="pet-stat-item">
+                                        <i class="fa fa-dollar" title="Total Cost"/>
+                                        <span class="pet-stat-label">Total Cost:</span>
+                                        <span class="pet-stat-value" t-esc="record.total_cost.value"/>
+                                    </div>
+                                </div>
+
+                                <div t-if="record.feeding_notes and record.feeding_notes.value" class="time-info">
+                                    <i class="fa fa-cutlery" title="Feeding Notes"/>
+                                    <span>Special feeding required</span>
+                                </div>
+
+                                <div t-if="record.walk_schedule and record.walk_schedule.value" class="time-info">
+                                    <i class="fa fa-walk" title="Walk Schedule"/>
+                                    <span>Exercise scheduled</span>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="pet-kanban-actions">
+                                <button t-if="record.state.raw_value == 'draft'" 
+                                        class="btn btn-sm btn-primary action-btn" 
+                                        name="set_to_confirmed" 
+                                        type="object" 
+                                        title="Confirm"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-check" title="Confirm"/>
+                                </button>
+                                <button t-if="record.state.raw_value == 'confirmed'" 
+                                        class="btn btn-sm btn-success action-btn" 
+                                        name="set_to_checked_in" 
+                                        type="object" 
+                                        title="Check In"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-sign-in" title="Check In"/>
+                                </button>
+                                <button t-if="record.state.raw_value == 'checked_in'" 
+                                        class="btn btn-sm btn-info action-btn" 
+                                        name="set_to_checked_out" 
+                                        type="object" 
+                                        title="Check Out"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-sign-out" title="Check Out"/>
+                                </button>
+                                <button t-if="record.state.raw_value != 'cancelled'" 
+                                        class="btn btn-sm btn-danger action-btn" 
+                                        name="set_to_cancel" 
+                                        type="object" 
+                                        title="Cancel"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-times" title="Cancel"/>
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_pet_boarding" model="ir.actions.act_window">
+        <field name="name">Boarding Stays</field>
+        <field name="res_model">pet.boarding.stay</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <menuitem id="menu_pet_boarding" name="Boarding" parent="menu_pet_root" sequence="4" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_operations_user_all"/>
+    <menuitem id="menu_pet_boarding_stays" parent="menu_pet_boarding" action="action_pet_boarding" name="Boarding Stays" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_boarding"/>
+</odoo>

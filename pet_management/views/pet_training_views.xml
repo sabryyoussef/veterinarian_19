@@ -1,0 +1,662 @@
+<odoo>
+  <!-- Training Program Search View -->
+  <record id="view_pet_training_program_search" model="ir.ui.view">
+    <field name="name">pet.training.program.search</field>
+    <field name="model">pet.training.program</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="code"/>
+        <field name="level"/>
+        <field name="category"/>
+        <field name="target_species_ids"/>
+        
+        <!-- Status Filters -->
+        <filter name="active" string="Active Programs" domain="[('active','=',True)]"/>
+        <filter name="inactive" string="Inactive Programs" domain="[('active','=',False)]"/>
+        
+        <!-- Level Filters -->
+        <separator/>
+        <filter name="beginner" string="Beginner Level" domain="[('level','=','beginner')]"/>
+        <filter name="basic" string="Basic Level" domain="[('level','=','basic')]"/>
+        <filter name="intermediate" string="Intermediate Level" domain="[('level','=','intermediate')]"/>
+        <filter name="advanced" string="Advanced Level" domain="[('level','=','advanced')]"/>
+        <filter name="expert" string="Expert Level" domain="[('level','=','expert')]"/>
+        
+        <!-- Category Filters -->
+        <separator/>
+        <filter name="obedience" string="Obedience Training" domain="[('category','=','obedience')]"/>
+        <filter name="behavioral" string="Behavioral Training" domain="[('category','=','behavioral')]"/>
+        <filter name="agility" string="Agility Training" domain="[('category','=','agility')]"/>
+        <filter name="puppy" string="Puppy Training" domain="[('category','=','puppy')]"/>
+        
+        <!-- Species Filters -->
+        <separator/>
+        <filter name="dogs_only" string="Dogs Only" domain="[('target_species_ids.name','ilike','dog')]"/>
+        <filter name="cats_only" string="Cats Only" domain="[('target_species_ids.name','ilike','cat')]"/>
+        <filter name="birds_only" string="Birds Only" domain="[('target_species_ids.name','ilike','bird')]"/>
+        <filter name="no_species" string="All Species" domain="[('target_species_ids','=',False)]"/>
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <group>
+          <filter name="group_by_level" string="Level" context="{'group_by':'level'}"/>
+          <filter name="group_by_category" string="Category" context="{'group_by':'category'}"/>
+          <filter name="group_by_species" string="Target Species" context="{'group_by':'target_species_ids'}"/>
+          <filter name="group_by_active" string="Active" context="{'group_by':'active'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Training Program Tree View -->
+  <record id="view_pet_training_program_tree" model="ir.ui.view">
+    <field name="name">pet.training.program.list</field>
+    <field name="model">pet.training.program</field>
+    <field name="arch" type="xml">
+      <list decoration-info="level == 'beginner'" decoration-warning="level == 'advanced'" decoration-danger="level == 'expert'">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="level" widget="badge"/>
+        <field name="category" widget="badge"/>
+        <field name="target_species_display"/>
+        <field name="duration_sessions"/>
+        <field name="total_duration_display"/>
+        <field name="enrollment_count"/>
+        <field name="completion_rate"/>
+        <field name="average_rating"/>
+        <field name="base_price"/>
+        <field name="active" widget="boolean_toggle"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Training Program Form View -->
+  <record id="view_pet_training_program_form" model="ir.ui.view">
+    <field name="name">pet.training.program.form</field>
+    <field name="model">pet.training.program</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_view_sessions" type="object" string="View Sessions" icon="fa-calendar"/>
+          <button name="action_view_enrollments" type="object" string="View Enrollments" icon="fa-users"/>
+          <button name="action_duplicate_program" type="object" string="Duplicate Program" icon="fa-copy"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_sessions" type="object" string="Sessions" icon="fa-calendar"
+                    groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin"/>
+            <button name="action_view_enrollments" type="object" string="Enrollments" icon="fa-users"
+                    groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Program Name"/>
+            </h1>
+            <h3>
+              <field name="code" readonly="1"/>
+            </h3>
+          </div>
+          
+          <group>
+            <group>
+              <field name="level" widget="radio"/>
+              <field name="category" widget="radio"/>
+              <field name="target_species_ids" widget="many2many_tags"/>
+              <field name="active"/>
+            </group>
+            <group>
+              <field name="duration_sessions"/>
+              <field name="session_duration_minutes"/>
+              <field name="total_duration_display" readonly="1"/>
+              <field name="base_price"/>
+            </group>
+          </group>
+          
+          <notebook>
+            <page string="Program Details">
+              <group>
+                <group>
+                  <field name="description" placeholder="Detailed description of the training program..."/>
+                  <field name="prerequisites" placeholder="Prerequisites or requirements for enrollment..."/>
+                  <field name="learning_objectives" placeholder="What pets will learn in this program..."/>
+                </group>
+                <group>
+                  <field name="training_methods" placeholder="Training methods and techniques used..."/>
+                  <field name="equipment_needed" placeholder="Equipment required for this program..."/>
+                  <field name="space_requirements" placeholder="Space and facility requirements..."/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Class Settings">
+              <group>
+                <group>
+                  <field name="min_age_months"/>
+                  <field name="max_age_months"/>
+                  <field name="min_class_size"/>
+                  <field name="max_class_size"/>
+                </group>
+                <group>
+                  <field name="currency_id" invisible="1"/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Analytics">
+              <group>
+                <group>
+                  <field name="enrollment_count" readonly="1"/>
+                  <field name="completion_rate" readonly="1"/>
+                  <field name="average_rating" readonly="1"/>
+                </group>
+                <group>
+                  <field name="total_revenue" readonly="1"/>
+                </group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Training Program Kanban View -->
+  <record id="view_pet_training_program_kanban" model="ir.ui.view">
+    <field name="name">pet.training.program.kanban</field>
+    <field name="model">pet.training.program</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="level" class="pet-kanban">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="level"/>
+        <field name="category"/>
+        <field name="target_species_ids"/>
+        <field name="target_species_display"/>
+        <field name="duration_sessions"/>
+        <field name="total_duration_display"/>
+        <field name="enrollment_count"/>
+        <field name="completion_rate"/>
+        <field name="average_rating"/>
+        <field name="base_price"/>
+        <field name="active"/>
+        <field name="description"/>
+        <templates>
+          <t t-name="card">
+            <div class="pet-kanban-card o_kanban_color_0 oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccine-catalog">
+                <div class="pet-info">
+                  <div class="pet-icon theme-vaccine-catalog">
+                    <i class="fa fa-graduation-cap" title="Training Program"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.name.value or 'Unknown Program'"/>
+                    <div class="pet-code">
+                      <i class="fa fa-tag" title="Program Code"/>
+                      <span t-esc="record.code.value or 'No Code'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.level.raw_value or 'beginner')">
+                    <i t-att-class="'fa fa-' + (record.level.raw_value == 'beginner' ? 'play-circle' : record.level.raw_value == 'intermediate' ? 'pause-circle' : record.level.raw_value == 'advanced' ? 'stop-circle' : 'question-circle')" title="Program Level"/>
+                    <span t-esc="record.level.value or 'Beginner'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-graduation-cap" title="Program"/>
+                    <span class="detail-label">Program:</span>
+                    <span class="detail-value" t-esc="record.name.value or 'Unknown'"/>
+                  </div>
+                  <div t-if="record.category and record.category.value" class="detail-row">
+                    <i class="fa fa-tag" title="Category"/>
+                    <span class="detail-label">Category:</span>
+                    <span class="detail-value" t-esc="record.category.value"/>
+                  </div>
+                  <div t-if="record.target_species_display and record.target_species_display.value" class="detail-row">
+                    <i class="fa fa-paw" title="Species"/>
+                    <span class="detail-label">Species:</span>
+                    <span class="detail-value" t-esc="record.target_species_display.value"/>
+                  </div>
+                  <div t-if="record.duration_sessions and record.duration_sessions.value" class="detail-row">
+                    <i class="fa fa-calendar" title="Sessions"/>
+                    <span class="detail-label">Sessions:</span>
+                    <span class="detail-value" t-esc="record.duration_sessions.value + ' sessions'"/>
+                  </div>
+                  <div t-if="record.total_duration_display and record.total_duration_display.value" class="detail-row">
+                    <i class="fa fa-clock-o" title="Duration"/>
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value" t-esc="record.total_duration_display.value"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div t-if="record.enrollment_count and record.enrollment_count.value" class="pet-stat-item">
+                    <i class="fa fa-users" title="Enrolled"/>
+                    <span class="pet-stat-label">Enrolled:</span>
+                    <span class="pet-stat-value" t-esc="record.enrollment_count.value + ' pets'"/>
+                  </div>
+                  <div t-if="record.completion_rate and record.completion_rate.value" class="pet-stat-item">
+                    <i class="fa fa-check-circle" title="Completion Rate"/>
+                    <span class="pet-stat-label">Completion:</span>
+                    <span class="pet-stat-value" t-esc="record.completion_rate.value + '%'"/>
+                  </div>
+                  <div t-if="record.average_rating and record.average_rating.value" class="pet-stat-item">
+                    <i class="fa fa-star" title="Rating"/>
+                    <span class="pet-stat-label">Rating:</span>
+                    <span class="pet-stat-value" t-esc="record.average_rating.value + '★'"/>
+                  </div>
+                  <div t-if="record.base_price and record.base_price.value" class="pet-stat-item">
+                    <i class="fa fa-dollar" title="Price"/>
+                    <span class="pet-stat-label">Price:</span>
+                    <span class="pet-stat-value" t-esc="'$' + record.base_price.value"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button class="btn btn-sm btn-primary action-btn" 
+                        name="action_view_sessions" 
+                        type="object" 
+                        title="View Sessions"
+                        groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin">
+                  <i class="fa fa-calendar" title="View Sessions"/>
+                </button>
+                <button class="btn btn-sm btn-success action-btn" 
+                        name="action_view_enrollments" 
+                        type="object" 
+                        title="View Enrollments"
+                        groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin">
+                  <i class="fa fa-users" title="View Enrollments"/>
+                </button>
+                <button class="btn btn-sm btn-info action-btn" 
+                        name="action_duplicate_program" 
+                        type="object" 
+                        title="Duplicate"
+                        groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin">
+                  <i class="fa fa-copy" title="Duplicate"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Training Program Actions -->
+  <record id="action_pet_training_program" model="ir.actions.act_window">
+    <field name="name">Training Programs</field>
+    <field name="res_model">pet.training.program</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="context">{'search_default_active': 1}</field>
+  </record>
+
+
+  <!-- Training Session Search View -->
+  <record id="view_pet_training_session_search" model="ir.ui.view">
+    <field name="name">pet.training.session.search</field>
+    <field name="model">pet.training.session</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="pet_id"/>
+        <field name="program_id"/>
+        <field name="trainer_id"/>
+        <field name="session_datetime"/>
+        <field name="state"/>
+        <field name="payment_status"/>
+        <field name="session_rating"/>
+        
+        <!-- Status Filters -->
+        <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+        <filter name="confirmed" string="Confirmed" domain="[('state','=','confirmed')]"/>
+        <filter name="in_progress" string="In Progress" domain="[('state','=','in_progress')]"/>
+        <filter name="completed" string="Completed" domain="[('state','=','completed')]"/>
+        <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+        <filter name="no_show" string="No Show" domain="[('state','=','no_show')]"/>
+        
+        <!-- Time-based Filters -->
+        <separator/>
+        <filter name="today" string="Today" domain="[('is_today','=',True)]"/>
+        <filter name="upcoming" string="Upcoming" domain="[('is_upcoming','=',True)]"/>
+        <filter name="overdue" string="Overdue" domain="[('is_overdue','=',True)]"/>
+        <filter name="this_week" string="This Week" domain="[('session_datetime','&gt;=',(context_today()-datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),('session_datetime','&lt;',(context_today()-datetime.timedelta(days=context_today().weekday())+datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+        
+        <!-- Payment Filters -->
+        <separator/>
+        <filter name="payment_pending" string="Payment Pending" domain="[('payment_status','=','pending')]"/>
+        <filter name="payment_paid" string="Payment Paid" domain="[('payment_status','=','paid')]"/>
+        
+        <!-- Rating Filters -->
+        <separator/>
+        <filter name="high_rating" string="High Rating (4-5)" domain="[('session_rating','in',['4','5'])]"/>
+        <filter name="low_rating" string="Low Rating (1-2)" domain="[('session_rating','in',['1','2'])]"/>
+        
+        <group>
+          <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+          <filter name="group_by_program" string="Program" context="{'group_by':'program_id'}"/>
+          <filter name="group_by_trainer" string="Trainer" context="{'group_by':'trainer_id'}"/>
+          <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+          <filter name="group_by_date" string="Date" context="{'group_by':'session_datetime:day'}"/>
+          <filter name="group_by_payment" string="Payment Status" context="{'group_by':'payment_status'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Training Session Tree View -->
+  <record id="view_pet_training_session_tree" model="ir.ui.view">
+    <field name="name">pet.training.session.list</field>
+    <field name="model">pet.training.session</field>
+    <field name="arch" type="xml">
+      <list decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'completed'" decoration-muted="state in ['cancelled', 'no_show']">
+        <field name="name"/>
+        <field name="pet_id"/>
+        <field name="program_id"/>
+        <field name="trainer_id"/>
+        <field name="session_datetime" widget="datetime"/>
+        <field name="duration_display"/>
+        <field name="state" widget="badge"/>
+        <field name="pet_performance"/>
+        <field name="session_rating"/>
+        <field name="payment_status" widget="badge"/>
+        <field name="session_cost"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Training Session Form View -->
+  <record id="view_pet_training_session_form" model="ir.ui.view">
+    <field name="name">pet.training.session.form</field>
+    <field name="model">pet.training.session</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_confirm_session" type="object" string="Confirm" 
+                  invisible="state != 'draft'" class="btn-primary" icon="fa-check"/>
+          <button name="action_start_session" type="object" string="Start Session" 
+                  invisible="state != 'confirmed'" class="btn-success" icon="fa-play"/>
+          <button name="action_complete_session" type="object" string="Complete Session" 
+                  invisible="state != 'in_progress'" class="btn-primary" icon="fa-check-circle"/>
+          <button name="action_cancel_session" type="object" string="Cancel" 
+                  invisible="state in ['completed', 'cancelled', 'no_show']" class="btn-secondary" icon="fa-times"/>
+          <button name="action_no_show" type="object" string="No Show" 
+                  invisible="state not in ['confirmed', 'in_progress']" class="btn-warning" icon="fa-user-times"/>
+          <button name="action_reschedule_session" type="object" string="Reschedule" 
+                  invisible="state in ['completed', 'cancelled']" class="btn-info" icon="fa-calendar"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,completed"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pet" type="object" string="Pet Details" icon="fa-paw"
+                    groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
+            <button name="action_view_program" type="object" string="Program Details" icon="fa-trophy"
+                    groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" readonly="1"/>
+            </h1>
+          </div>
+          
+          <group>
+            <group>
+              <field name="pet_id"/>
+              <field name="appointment_id" string="Appointment"/>
+              <field name="program_id"/>
+              <field name="trainer_id"/>
+              <field name="session_datetime" widget="datetime"/>
+            </group>
+            <group>
+              <field name="location"/>
+              <field name="weather_conditions"/>
+              <field name="session_cost"/>
+              <field name="payment_status"/>
+            </group>
+          </group>
+          
+          <notebook>
+            <page string="Session Details">
+              <group>
+                <group>
+                  <field name="actual_start_datetime" widget="datetime"/>
+                  <field name="actual_end_datetime" widget="datetime"/>
+                  <field name="duration_display" readonly="1"/>
+                  <field name="equipment_used"/>
+                </group>
+                <group>
+                  <field name="special_requirements"/>
+                  <field name="currency_id" invisible="1"/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Session Content">
+              <group>
+                <group>
+                  <field name="session_notes" placeholder="General session notes and observations..."/>
+                  <field name="progress_notes" placeholder="Pet's progress and improvements..."/>
+                  <field name="behavior_notes" placeholder="Behavioral observations during session..."/>
+                </group>
+                <group>
+                  <field name="training_exercises" placeholder="Exercises performed during session..."/>
+                  <field name="homework_assigned" placeholder="Homework or practice assigned to pet owner..."/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Evaluation">
+              <group>
+                <group>
+                  <field name="pet_performance"/>
+                  <field name="owner_participation"/>
+                  <field name="session_rating"/>
+                </group>
+                <group>
+                  <field name="feedback_notes" placeholder="Trainer feedback and recommendations..."/>
+                  <field name="owner_feedback" placeholder="Owner feedback about the session..."/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Analytics">
+              <group>
+                <group>
+                  <field name="days_since_session" readonly="1"/>
+                  <field name="is_today" readonly="1"/>
+                  <field name="is_overdue" readonly="1"/>
+                  <field name="is_upcoming" readonly="1"/>
+                </group>
+                <group>
+                  <field name="owner_id" readonly="1"/>
+                  <field name="program_level" readonly="1"/>
+                  <field name="program_category" readonly="1"/>
+                </group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Training Session Kanban View -->
+  <record id="view_pet_training_session_kanban" model="ir.ui.view">
+    <field name="name">pet.training.session.kanban</field>
+    <field name="model">pet.training.session</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="state" class="pet-kanban">
+        <field name="name"/>
+        <field name="pet_id"/>
+        <field name="program_id"/>
+        <field name="trainer_id"/>
+        <field name="session_datetime"/>
+        <field name="actual_start_datetime"/>
+        <field name="actual_end_datetime"/>
+        <field name="duration_display"/>
+        <field name="state"/>
+        <field name="state_color"/>
+        <field name="pet_performance"/>
+        <field name="session_rating"/>
+        <field name="payment_status"/>
+        <field name="session_cost"/>
+        <field name="is_today"/>
+        <field name="is_overdue"/>
+        <field name="is_upcoming"/>
+        <field name="session_notes"/>
+        <field name="progress_notes"/>
+        <field name="owner_id"/>
+        <templates>
+          <t t-name="card">
+            <div class="pet-kanban-card o_kanban_color_0 oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccination">
+                <div class="pet-info">
+                  <div class="pet-avatar">
+                    <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                         t-att-alt="record.pet_id.value" 
+                         class="pet-image"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.pet_id.value or 'Unknown Pet'"/>
+                    <div class="additional-info">
+                      <i class="fa fa-trophy" title="Program"/>
+                      <span class="additional-info-name" t-esc="record.program_id.value or 'No Program'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.state.raw_value or 'draft')" 
+                       t-att-style="record.state.raw_value == 'completed' ? 'background-color: #28a745; color: white;' : record.state.raw_value == 'cancelled' ? 'background-color: #dc3545; color: white;' : record.state.raw_value == 'no_show' ? 'background-color: #dc3545; color: white;' : record.state.raw_value == 'in_progress' ? 'background-color: #ffc107; color: #212529;' : record.state.raw_value == 'confirmed' ? 'background-color: #17a2b8; color: white;' : 'background-color: #6c757d; color: white;'">
+                    <i t-att-class="'fa fa-' + (record.state.raw_value == 'confirmed' ? 'check-circle' : record.state.raw_value == 'in_progress' ? 'play-circle' : record.state.raw_value == 'completed' ? 'check-circle' : record.state.raw_value == 'cancelled' ? 'times-circle' : record.state.raw_value == 'no_show' ? 'times-circle' : 'clock-o')" title="Session Status"/>
+                    <span t-esc="record.state.value or 'Draft'"/>
+                  </div>
+                  <div t-if="record.is_today and record.is_today.raw_value" class="overdue-indicator">
+                    <i class="fa fa-calendar-check-o" title="Today"/>
+                    <span>Today</span>
+                  </div>
+                  <div t-if="record.is_overdue and record.is_overdue.raw_value" class="overdue-indicator">
+                    <i class="fa fa-exclamation-triangle" title="Overdue"/>
+                    <span>Overdue</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-calendar" title="Session"/>
+                    <span class="detail-label">Session:</span>
+                    <span class="detail-value" t-esc="record.session_datetime.value"/>
+                  </div>
+                  <div t-if="record.trainer_id and record.trainer_id.value" class="detail-row">
+                    <i class="fa fa-user" title="Trainer"/>
+                    <span class="detail-label">Trainer:</span>
+                    <span class="detail-value" t-esc="record.trainer_id.value"/>
+                  </div>
+                  <div t-if="record.duration_display and record.duration_display.value" class="detail-row">
+                    <i class="fa fa-clock-o" title="Duration"/>
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value" t-esc="record.duration_display.value"/>
+                  </div>
+                  <div t-if="record.pet_performance and record.pet_performance.value" class="detail-row">
+                    <i class="fa fa-star" title="Performance"/>
+                    <span class="detail-label">Performance:</span>
+                    <span class="detail-value" t-esc="record.pet_performance.value"/>
+                  </div>
+                  <div t-if="record.session_rating and record.session_rating.value" class="detail-row">
+                    <i class="fa fa-thumbs-up" title="Rating"/>
+                    <span class="detail-label">Rating:</span>
+                    <span class="detail-value" t-esc="record.session_rating.value + '★'"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div t-if="record.session_cost and record.session_cost.value" class="pet-stat-item">
+                    <i class="fa fa-dollar" title="Cost"/>
+                    <span class="pet-stat-label">Cost:</span>
+                    <span class="pet-stat-value" t-esc="'$' + record.session_cost.value"/>
+                  </div>
+                  <div t-if="record.payment_status and record.payment_status.value" class="pet-stat-item">
+                    <i class="fa fa-credit-card" title="Payment Status"/>
+                    <span class="pet-stat-label">Payment:</span>
+                    <span class="pet-stat-value" t-esc="record.payment_status.value"/>
+                  </div>
+                  <div class="pet-stat-item">
+                    <i class="fa fa-trophy" title="Program"/>
+                    <span class="pet-stat-label">Program:</span>
+                    <span class="pet-stat-value" t-esc="record.program_id.value or 'N/A'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button t-if="record.state.raw_value == 'draft'" 
+                        class="btn btn-sm btn-primary action-btn" 
+                        name="action_confirm_session" 
+                        type="object" 
+                        title="Confirm"
+                        groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin">
+                  <i class="fa fa-check" title="Confirm"/>
+                </button>
+                <button t-if="record.state.raw_value == 'confirmed'" 
+                        class="btn btn-sm btn-success action-btn" 
+                        name="action_start_session" 
+                        type="object" 
+                        title="Start"
+                        groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin">
+                  <i class="fa fa-play" title="Start"/>
+                </button>
+                <button t-if="record.state.raw_value == 'in_progress'" 
+                        class="btn btn-sm btn-primary action-btn" 
+                        name="action_complete_session" 
+                        type="object" 
+                        title="Complete"
+                        groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin">
+                  <i class="fa fa-check-circle" title="Complete"/>
+                </button>
+                <button t-if="record.state.raw_value and record.state.raw_value != 'completed' and record.state.raw_value != 'cancelled'" 
+                        class="btn btn-sm btn-danger action-btn" 
+                        name="action_cancel_session" 
+                        type="object" 
+                        title="Cancel"
+                        groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin">
+                  <i class="fa fa-times" title="Cancel"/>
+                </button>
+                <button class="btn btn-sm btn-info action-btn" 
+                        name="action_view_pet" 
+                        type="object" 
+                        title="View Pet"
+                        groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin">
+                  <i class="fa fa-paw" title="View Pet"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+    <record id="action_pet_training_session" model="ir.actions.act_window">
+        <field name="name">Training Sessions</field>
+        <field name="res_model">pet.training.session</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <menuitem id="menu_pet_training" name="Training" parent="menu_pet_root" sequence="6" groups="pet_management.group_pet_training_user_own,pet_management.group_pet_operations_user_all"/>
+    <menuitem id="menu_pet_training_program" parent="menu_pet_configuration" action="action_pet_training_program" name="Training Programs" sequence="6" groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
+    <menuitem id="menu_pet_training_session" parent="menu_pet_training" action="action_pet_training_session" name="Sessions" groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_training"/>
+</odoo>

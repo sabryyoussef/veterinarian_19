@@ -1,0 +1,339 @@
+<odoo>
+  <!-- Weight History Kanban View -->
+  <record id="view_pet_weight_kanban" model="ir.ui.view">
+    <field name="name">pet.weight.kanban</field>
+    <field name="model">pet.weight.history</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="pet_id" class="pet-kanban">
+        <field name="pet_id"/>
+        <field name="date"/>
+        <field name="weight_kg"/>
+        <field name="weight_lbs"/>
+        <field name="weight_change"/>
+        <field name="weight_change_percent"/>
+        <field name="health_status"/>
+        <field name="trend_direction"/>
+        <field name="trend_strength"/>
+        <field name="is_concerning"/>
+        <field name="alert_message"/>
+        <field name="bmi"/>
+        <field name="days_since_previous"/>
+        <field name="measurement_method"/>
+        <field name="recorded_by"/>
+        <field name="notes"/>
+        <templates>
+          <t t-name="card">
+            <div class="pet-kanban-card o_kanban_color_0 oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-medical">
+                <div class="pet-info">
+                  <div class="pet-avatar">
+                    <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                         t-att-alt="record.pet_id.value" 
+                         class="pet-image"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.pet_id.value or 'Unknown Pet'"/>
+                    <div class="pet-code">
+                      <i class="fa fa-calendar" title="Date"/>
+                      <span t-esc="record.date.value or 'No Date'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.health_status.raw_value or 'healthy')">
+                    <i t-att-class="'fa fa-' + (record.health_status.raw_value == 'healthy' ? 'check-circle' : record.health_status.raw_value == 'underweight' ? 'exclamation-triangle' : record.health_status.raw_value == 'overweight' ? 'exclamation-triangle' : record.health_status.raw_value == 'obese' ? 'times-circle' : 'question-circle')" title="Health Status Icon"/>
+                    <span t-esc="record.health_status.value or 'Healthy'"/>
+                  </div>
+                  <div t-if="record.is_concerning and record.is_concerning.raw_value" class="overdue-indicator">
+                    <i class="fa fa-exclamation-triangle" title="Health Alert"/>
+                    <span>Health Alert</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-balance-scale" title="Weight"/>
+                    <span class="detail-label">Weight:</span>
+                    <span class="detail-value" t-esc="(record.weight_kg and record.weight_kg.value or '0.0') + ' kg (' + (record.weight_lbs and record.weight_lbs.value or '0.0') + ' lbs)'"/>
+                  </div>
+                  <div t-if="record.bmi and record.bmi.value" class="detail-row">
+                    <i class="fa fa-heartbeat" title="BMI"/>
+                    <span class="detail-label">BMI:</span>
+                    <span class="detail-value" t-esc="record.bmi.value"/>
+                  </div>
+                  <div t-if="record.weight_change and record.weight_change.value != 0" class="detail-row">
+                    <i t-att-class="'fa fa-' + (record.weight_change.value > 0 ? 'arrow-up' : 'arrow-down')" title="Weight Change"/>
+                    <span class="detail-label">Change:</span>
+                    <span t-att-class="'detail-value ' + (record.weight_change.value > 0 ? 'text-success' : 'text-danger')" t-esc="(record.weight_change.value > 0 ? '+' : '') + record.weight_change.value + ' kg'"/>
+                  </div>
+                  <div t-if="record.weight_change_percent and record.weight_change_percent.value" class="detail-row">
+                    <i class="fa fa-percent" title="Weight Change Percentage"/>
+                    <span class="detail-label">Change %:</span>
+                    <span class="detail-value" t-esc="record.weight_change_percent.value + '%'"/>
+                  </div>
+                  <div t-if="record.trend_direction and record.trend_direction.value and record.trend_direction.value != 'unknown'" class="detail-row">
+                    <i class="fa fa-trending-up" title="Weight Trend"/>
+                    <span class="detail-label">Trend:</span>
+                    <span class="detail-value" t-esc="record.trend_direction.value + ' (' + (record.trend_strength.value or 'Unknown') + ')'"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div t-if="record.measurement_method and record.measurement_method.value" class="pet-stat-item">
+                    <i class="fa fa-cog" title="Measurement Method"/>
+                    <span class="pet-stat-label">Method:</span>
+                    <span class="pet-stat-value" t-esc="record.measurement_method.value"/>
+                  </div>
+                  <div t-if="record.days_since_previous and record.days_since_previous.value > 0" class="pet-stat-item">
+                    <i class="fa fa-clock-o" title="Days Since Previous"/>
+                    <span class="pet-stat-label">Days Since:</span>
+                    <span class="pet-stat-value" t-esc="record.days_since_previous.value + ' days'"/>
+                  </div>
+                  <div class="pet-stat-item">
+                    <i class="fa fa-user" title="Recorded By"/>
+                    <span class="pet-stat-label">Recorded By:</span>
+                    <span class="pet-stat-value" t-esc="record.recorded_by.value or 'Unknown'"/>
+                  </div>
+                </div>
+
+                <div t-if="record.is_concerning and record.is_concerning.raw_value" class="follow-up-info">
+                  <i class="fa fa-exclamation-triangle" title="Health Alert"/>
+                  <span class="follow-up-label">Alert:</span>
+                  <span class="follow-up-date" t-esc="record.alert_message.value or 'Health concern detected'"/>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button class="btn btn-sm btn-primary action-btn" 
+                        name="action_view_pet" 
+                        type="object" 
+                        title="View Pet"
+                        groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin">
+                  <i class="fa fa-paw" title="View Pet"/>
+                </button>
+                <button class="btn btn-sm btn-success action-btn" 
+                        name="action_create_follow_up" 
+                        type="object" 
+                        title="Follow-up"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-plus" title="Follow-up"/>
+                </button>
+                <button class="btn btn-sm btn-info action-btn" 
+                        name="action_view_weight_chart" 
+                        type="object" 
+                        title="View Chart"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-line-chart" title="View Chart"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Enhanced Weight History Tree View -->
+  <record id="view_pet_weight_tree" model="ir.ui.view">
+    <field name="name">pet.weight.list</field>
+    <field name="model">pet.weight.history</field>
+    <field name="arch" type="xml">
+      <list decoration-info="health_status == 'healthy'" 
+            decoration-warning="health_status == 'underweight' or health_status == 'overweight'"
+            decoration-danger="health_status == 'obese' or is_concerning == 1"
+            decoration-muted="health_status == 'unknown'">
+        <field name="id" column_invisible="1"/>
+        <field name="display_name" optional="show"/>
+        <field name="pet_id" widget="many2one_tags"/>
+        <field name="date" widget="date"/>
+        <field name="weight_kg" widget="float" digits="[16,3]"/>
+        <field name="weight_lbs" widget="float" digits="[16,3]" column_invisible="1"/>
+        <field name="previous_weight" widget="float" digits="[16,3]" column_invisible="1"/>
+        <field name="health_status" widget="badge"/>
+        <field name="weight_change" widget="float" digits="[16,3]" column_invisible="1"/>
+        <field name="weight_change_percent" widget="float" digits="[16,2]" column_invisible="1"/>
+        <field name="trend_direction" widget="badge"/>
+        <field name="trend_strength" widget="badge"/>
+        <field name="bmi" widget="float" digits="[16,2]" column_invisible="1"/>
+        <field name="days_since_previous" column_invisible="1"/>
+        <field name="measurement_method" widget="badge"/>
+        <field name="recorded_by" widget="many2one_tags"/>
+        <field name="is_concerning" widget="boolean_toggle" column_invisible="1"/>
+        <field name="alert_message" optional="hide"/>
+        <field name="notes" optional="hide"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Enhanced Weight History Search View -->
+  <record id="view_pet_weight_search" model="ir.ui.view">
+    <field name="name">pet.weight.search</field>
+    <field name="model">pet.weight.history</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="pet_id"/>
+        <field name="date"/>
+        <field name="weight_kg"/>
+        <field name="health_status"/>
+        <field name="trend_direction"/>
+        <field name="measurement_method"/>
+        <field name="recorded_by"/>
+        <field name="notes"/>
+        
+        <!-- Time-based Filters -->
+        <separator/>
+        <filter name="today" string="Today" domain="[('date','=',context_today())]"/>
+        <filter name="this_week" string="This Week" domain="[('date','&gt;=',(context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+        <filter name="this_month" string="This Month" domain="[('date','&gt;=',(context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+        <filter name="this_year" string="This Year" domain="[('date','&gt;=',(context_today() - datetime.timedelta(days=365)).strftime('%Y-%m-%d'))]"/>
+        
+        <!-- Health Status Filters -->
+        <separator/>
+        <filter name="healthy" string="Healthy" domain="[('health_status','=','healthy')]"/>
+        <filter name="underweight" string="Underweight" domain="[('health_status','=','underweight')]"/>
+        <filter name="overweight" string="Overweight" domain="[('health_status','=','overweight')]"/>
+        <filter name="obese" string="Obese" domain="[('health_status','=','obese')]"/>
+        <filter name="concerning" string="Concerning" domain="[('is_concerning','=',True)]"/>
+        
+        <!-- Trend Filters (Removed - fields are non-stored) -->
+        <!-- Note: Trend analysis is available in form view but not searchable -->
+        
+        <!-- Weight Change Filters -->
+        <separator/>
+        <filter name="weight_gain" string="Weight Gain" domain="[('weight_change','&gt;',0)]"/>
+        <filter name="weight_loss" string="Weight Loss" domain="[('weight_change','&lt;',0)]"/>
+        <filter name="significant_change" string="Significant Change" domain="[('weight_change_percent','&gt;',10)]"/>
+        
+        <!-- Display Options -->
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <!-- Group By Options -->
+        <group>
+          <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+          <filter name="group_by_date" string="Date" context="{'group_by':'date'}"/>
+          <filter name="group_by_health" string="Health Status" context="{'group_by':'health_status'}"/>
+          <filter name="group_by_method" string="Measurement Method" context="{'group_by':'measurement_method'}"/>
+          <filter name="group_by_user" string="Recorded By" context="{'group_by':'recorded_by'}"/>
+          <filter name="group_by_concerning" string="Health Concern" context="{'group_by':'is_concerning'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Enhanced Weight History Form View -->
+  <record id="view_pet_weight_form" model="ir.ui.view">
+    <field name="name">pet.weight.form</field>
+    <field name="model">pet.weight.history</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_view_pet" type="object" string="View Pet" class="oe_highlight" icon="fa-paw"/>
+          <button name="action_create_follow_up" type="object" string="Follow-up" icon="fa-plus"/>
+          <button name="action_view_weight_chart" type="object" string="Weight Chart" icon="fa-line-chart"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pet" type="object" class="oe_stat_button" icon="fa-paw"
+                    groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin">
+              <field name="pet_id" widget="statinfo" string="Pet"/>
+            </button>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="display_name" readonly="1"/>
+            </h1>
+          </div>
+          
+          <group>
+            <group>
+              <field name="pet_id" options="{'no_create': True}"/>
+              <field name="date"/>
+              <field name="weight_kg"/>
+              <field name="weight_lbs" readonly="1"/>
+              <field name="measurement_method"/>
+              <field name="recorded_by" readonly="1"/>
+            </group>
+            <group>
+              <field name="health_status" widget="badge"/>
+              <field name="bmi" readonly="1"/>
+              <field name="weight_change" readonly="1"/>
+              <field name="weight_change_percent" readonly="1"/>
+              <field name="days_since_previous" readonly="1"/>
+              <field name="is_concerning" readonly="1"/>
+            </group>
+          </group>
+          
+          <group invisible="not is_concerning">
+            <group>
+              <field name="alert_message" readonly="1" widget="text"/>
+            </group>
+          </group>
+          
+          <notebook>
+            <page string="Trend Analysis">
+              <group>
+                <group>
+                  <field name="trend_direction" readonly="1"/>
+                  <field name="trend_strength" readonly="1"/>
+                  <field name="previous_weight" readonly="1"/>
+                </group>
+                <group>
+                  <field name="notes" placeholder="Additional notes about this weight measurement..."/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Health Information">
+              <group>
+                <group>
+                  <label for="health_status" string="Health Assessment"/>
+                  <div>
+                    <field name="health_status" readonly="1"/>
+                    <p class="text-muted" invisible="health_status != 'healthy'">Your pet is within the healthy weight range for its breed.</p>
+                    <p class="text-warning" invisible="health_status != 'underweight'">Your pet is underweight. Consider consulting with a veterinarian.</p>
+                    <p class="text-warning" invisible="health_status != 'overweight'">Your pet is overweight. Consider dietary adjustments and exercise.</p>
+                    <p class="text-danger" invisible="health_status != 'obese'">Your pet is obese. Immediate veterinary consultation recommended.</p>
+                  </div>
+                </group>
+                <group>
+                  <label for="bmi" string="Body Mass Index"/>
+                  <div>
+                    <field name="bmi" readonly="1"/>
+                    <p class="text-muted">BMI is calculated based on your pet's weight compared to breed standards.</p>
+                  </div>
+                </group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Weight History Action -->
+  <record id="action_pet_weight" model="ir.actions.act_window">
+    <field name="name">Weight History</field>
+    <field name="res_model">pet.weight.history</field>
+    <field name="view_mode">kanban,list,form,graph</field>
+    <field name="context">{'search_default_this_month': 1}</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Track your pet's weight history!
+      </p>
+      <p>
+        Monitor your pet's weight changes over time to ensure they maintain a healthy weight.
+        Regular weight tracking helps identify health issues early.
+      </p>
+    </field>
+  </record>
+
+  <!-- Weight History Menu -->
+  <menuitem id="menu_pet_weight" parent="menu_pet_health" action="action_pet_weight" name="Weight History" sequence="4" groups="pet_management.group_pet_health_user_own"/>
+</odoo>

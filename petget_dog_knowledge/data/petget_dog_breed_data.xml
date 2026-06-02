@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="petget_dog.breed_labrador_retriever" model="petget.dog.breed">
+            <field name="temperament">Friendly, outgoing, eager to please</field>
+            <field name="description">One of the world's most popular family and working dogs — gentle, trainable and food-motivated.</field>
+            <field name="weight_min_kg">25</field><field name="weight_max_kg">36</field>
+            <field name="height_min_cm">55</field><field name="height_max_cm">62</field>
+            <field name="life_expectancy_min">10</field><field name="life_expectancy_max">12</field>
+            <field name="grooming_need">low</field><field name="shedding_level">high</field>
+            <field name="exercise_need">high</field><field name="trainability">high</field>
+            <field name="common_health_issues">Hip &amp; elbow dysplasia, obesity, eye conditions (PRA), exercise-induced collapse.</field>
+            <field name="first_heat_age_months">10</field><field name="avg_litter_size">7</field>
+        </record>
+
+        <record id="petget_dog.breed_golden_retriever" model="petget.dog.breed">
+            <field name="temperament">Intelligent, friendly, devoted</field>
+            <field name="description">Affectionate, biddable retriever; excellent family and assistance dog with a dense water-repellent coat.</field>
+            <field name="weight_min_kg">25</field><field name="weight_max_kg">34</field>
+            <field name="height_min_cm">51</field><field name="height_max_cm">61</field>
+            <field name="life_expectancy_min">10</field><field name="life_expectancy_max">12</field>
+            <field name="grooming_need">high</field><field name="shedding_level">high</field>
+            <field name="exercise_need">high</field><field name="trainability">high</field>
+            <field name="common_health_issues">Hip/elbow dysplasia, cancer predisposition, heart disease (SAS), eye conditions.</field>
+            <field name="first_heat_age_months">10</field><field name="avg_litter_size">8</field>
+        </record>
+
+        <record id="petget_dog.breed_german_shepherd_dog" model="petget.dog.breed">
+            <field name="temperament">Confident, courageous, smart</field>
+            <field name="description">Versatile working and protection breed; highly trainable and loyal, needs a job and exercise.</field>
+            <field name="weight_min_kg">22</field><field name="weight_max_kg">40</field>
+            <field name="height_min_cm">55</field><field name="height_max_cm">65</field>
+            <field name="life_expectancy_min">9</field><field name="life_expectancy_max">13</field>
+            <field name="grooming_need">medium</field><field name="shedding_level">high</field>
+            <field name="exercise_need">high</field><field name="trainability">high</field>
+            <field name="common_health_issues">Hip/elbow dysplasia, degenerative myelopathy, bloat (GDV), allergies.</field>
+            <field name="first_heat_age_months">12</field><field name="avg_litter_size">7</field>
+        </record>
+
+        <record id="petget_dog.breed_french_bulldog" model="petget.dog.breed">
+            <field name="temperament">Playful, adaptable, affectionate</field>
+            <field name="description">Compact companion with bat ears; charming and low-exercise, but a brachycephalic breed needing care in heat.</field>
+            <field name="weight_min_kg">8</field><field name="weight_max_kg">14</field>
+            <field name="height_min_cm">28</field><field name="height_max_cm">33</field>
+            <field name="life_expectancy_min">10</field><field name="life_expectancy_max">12</field>
+            <field name="grooming_need">low</field><field name="shedding_level">low</field>
+            <field name="exercise_need">low</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Brachycephalic airway syndrome, spinal disease (IVDD), skin-fold dermatitis, heat intolerance; often requires C-section.</field>
+            <field name="first_heat_age_months">8</field><field name="avg_litter_size">3</field>
+        </record>
+
+        <record id="petget_dog.breed_bulldog" model="petget.dog.breed">
+            <field name="temperament">Calm, courageous, friendly</field>
+            <field name="description">Stocky, gentle companion. A brachycephalic breed that needs weight and temperature management.</field>
+            <field name="weight_min_kg">18</field><field name="weight_max_kg">25</field>
+            <field name="height_min_cm">31</field><field name="height_max_cm">40</field>
+            <field name="life_expectancy_min">8</field><field name="life_expectancy_max">10</field>
+            <field name="grooming_need">low</field><field name="shedding_level">medium</field>
+            <field name="exercise_need">low</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Brachycephalic airway syndrome, hip dysplasia, skin-fold infections, heat sensitivity; C-section common.</field>
+            <field name="first_heat_age_months">8</field><field name="avg_litter_size">4</field>
+        </record>
+
+        <record id="petget_dog.breed_poodle_standard" model="petget.dog.breed">
+            <field name="temperament">Intelligent, active, elegant</field>
+            <field name="description">Highly intelligent, low-shedding coat needing regular clipping; excellent trainability.</field>
+            <field name="weight_min_kg">20</field><field name="weight_max_kg">32</field>
+            <field name="height_min_cm">45</field><field name="height_max_cm">60</field>
+            <field name="life_expectancy_min">12</field><field name="life_expectancy_max">15</field>
+            <field name="grooming_need">high</field><field name="shedding_level">low</field>
+            <field name="exercise_need">high</field><field name="trainability">high</field>
+            <field name="common_health_issues">Hip dysplasia, Addison's disease, bloat (GDV), eye conditions (PRA), epilepsy.</field>
+            <field name="first_heat_age_months">10</field><field name="avg_litter_size">7</field>
+        </record>
+
+        <record id="petget_dog.breed_beagle" model="petget.dog.breed">
+            <field name="temperament">Curious, friendly, merry</field>
+            <field name="description">Scent hound with a happy nature and big appetite; sociable but independent on a trail.</field>
+            <field name="weight_min_kg">9</field><field name="weight_max_kg">11</field>
+            <field name="height_min_cm">33</field><field name="height_max_cm">41</field>
+            <field name="life_expectancy_min">12</field><field name="life_expectancy_max">15</field>
+            <field name="grooming_need">low</field><field name="shedding_level">medium</field>
+            <field name="exercise_need">medium</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Obesity, ear infections, epilepsy, intervertebral disc disease, hypothyroidism.</field>
+            <field name="first_heat_age_months">8</field><field name="avg_litter_size">6</field>
+        </record>
+
+        <record id="petget_dog.breed_rottweiler" model="petget.dog.breed">
+            <field name="temperament">Loyal, confident, guardian</field>
+            <field name="description">Powerful, devoted protector; needs early socialization, training and firm guidance.</field>
+            <field name="weight_min_kg">35</field><field name="weight_max_kg">60</field>
+            <field name="height_min_cm">56</field><field name="height_max_cm">69</field>
+            <field name="life_expectancy_min">9</field><field name="life_expectancy_max">10</field>
+            <field name="grooming_need">low</field><field name="shedding_level">medium</field>
+            <field name="exercise_need">high</field><field name="trainability">high</field>
+            <field name="common_health_issues">Hip/elbow dysplasia, bloat (GDV), cardiac disease, cancer (osteosarcoma).</field>
+            <field name="first_heat_age_months">12</field><field name="avg_litter_size">8</field>
+        </record>
+
+        <record id="petget_dog.breed_dachshund" model="petget.dog.breed">
+            <field name="temperament">Curious, lively, courageous</field>
+            <field name="description">Long-bodied scent hound bred to go to ground; bold and clever, prone to back problems.</field>
+            <field name="weight_min_kg">7</field><field name="weight_max_kg">15</field>
+            <field name="height_min_cm">20</field><field name="height_max_cm">22</field>
+            <field name="life_expectancy_min">12</field><field name="life_expectancy_max">16</field>
+            <field name="grooming_need">medium</field><field name="shedding_level">medium</field>
+            <field name="exercise_need">medium</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Intervertebral disc disease (back), obesity, dental disease, patellar luxation.</field>
+            <field name="first_heat_age_months">8</field><field name="avg_litter_size">4</field>
+        </record>
+
+        <record id="petget_dog.breed_pembroke_welsh_corgi" model="petget.dog.breed">
+            <field name="temperament">Smart, alert, affectionate</field>
+            <field name="description">Short-legged herding dog, bright and active; loves work and tends to overeat.</field>
+            <field name="weight_min_kg">10</field><field name="weight_max_kg">14</field>
+            <field name="height_min_cm">25</field><field name="height_max_cm">30</field>
+            <field name="life_expectancy_min">12</field><field name="life_expectancy_max">13</field>
+            <field name="grooming_need">medium</field><field name="shedding_level">high</field>
+            <field name="exercise_need">medium</field><field name="trainability">high</field>
+            <field name="common_health_issues">Intervertebral disc disease, hip dysplasia, obesity, eye conditions (PRA).</field>
+            <field name="first_heat_age_months">8</field><field name="avg_litter_size">6</field>
+        </record>
+
+        <record id="petget_dog.breed_yorkshire_terrier" model="petget.dog.breed">
+            <field name="temperament">Affectionate, sprightly, bold</field>
+            <field name="description">Tiny long-coated terrier with a big personality; needs regular coat care and dental attention.</field>
+            <field name="weight_min_kg">2</field><field name="weight_max_kg">4</field>
+            <field name="height_min_cm">18</field><field name="height_max_cm">23</field>
+            <field name="life_expectancy_min">11</field><field name="life_expectancy_max">15</field>
+            <field name="grooming_need">high</field><field name="shedding_level">low</field>
+            <field name="exercise_need">low</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Patellar luxation, dental disease, tracheal collapse, portosystemic shunt, hypoglycaemia in pups.</field>
+            <field name="first_heat_age_months">6</field><field name="avg_litter_size">3</field>
+        </record>
+
+        <record id="petget_dog.breed_boxer" model="petget.dog.breed">
+            <field name="temperament">Playful, energetic, loyal</field>
+            <field name="description">Athletic, fun-loving companion and guardian; stays puppy-like for years and needs exercise.</field>
+            <field name="weight_min_kg">25</field><field name="weight_max_kg">32</field>
+            <field name="height_min_cm">53</field><field name="height_max_cm">63</field>
+            <field name="life_expectancy_min">10</field><field name="life_expectancy_max">12</field>
+            <field name="grooming_need">low</field><field name="shedding_level">medium</field>
+            <field name="exercise_need">high</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Cardiomyopathy and aortic stenosis, cancer, hip dysplasia, brachycephalic tendencies.</field>
+            <field name="first_heat_age_months">10</field><field name="avg_litter_size">6</field>
+        </record>
+
+        <record id="petget_dog.breed_siberian_husky" model="petget.dog.breed">
+            <field name="temperament">Outgoing, mischievous, loyal</field>
+            <field name="description">Energetic sled dog with a thick double coat; friendly but independent and a known escape artist.</field>
+            <field name="weight_min_kg">16</field><field name="weight_max_kg">27</field>
+            <field name="height_min_cm">50</field><field name="height_max_cm">60</field>
+            <field name="life_expectancy_min">12</field><field name="life_expectancy_max">14</field>
+            <field name="grooming_need">medium</field><field name="shedding_level">high</field>
+            <field name="exercise_need">high</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Hip dysplasia, eye conditions (cataracts, PRA), hypothyroidism.</field>
+            <field name="first_heat_age_months">10</field><field name="avg_litter_size">6</field>
+        </record>
+
+        <record id="petget_dog.breed_cavalier_king_charles_spaniel" model="petget.dog.breed">
+            <field name="temperament">Affectionate, gentle, graceful</field>
+            <field name="description">Sweet-natured toy spaniel that thrives on company; an ideal family lap dog.</field>
+            <field name="weight_min_kg">6</field><field name="weight_max_kg">8</field>
+            <field name="height_min_cm">30</field><field name="height_max_cm">33</field>
+            <field name="life_expectancy_min">12</field><field name="life_expectancy_max">15</field>
+            <field name="grooming_need">medium</field><field name="shedding_level">medium</field>
+            <field name="exercise_need">medium</field><field name="trainability">high</field>
+            <field name="common_health_issues">Mitral valve heart disease, syringomyelia, hip dysplasia, eye conditions.</field>
+            <field name="first_heat_age_months">8</field><field name="avg_litter_size">4</field>
+        </record>
+
+        <record id="petget_dog.breed_chihuahua" model="petget.dog.breed">
+            <field name="temperament">Charming, sassy, devoted</field>
+            <field name="description">The smallest breed — bold and loyal, long-lived, sensitive to cold and prone to dental issues.</field>
+            <field name="weight_min_kg">1</field><field name="weight_max_kg">3</field>
+            <field name="height_min_cm">15</field><field name="height_max_cm">23</field>
+            <field name="life_expectancy_min">14</field><field name="life_expectancy_max">16</field>
+            <field name="grooming_need">low</field><field name="shedding_level">medium</field>
+            <field name="exercise_need">low</field><field name="trainability">medium</field>
+            <field name="common_health_issues">Patellar luxation, dental disease, heart disease, hydrocephalus, hypoglycaemia in pups; C-section sometimes needed.</field>
+            <field name="first_heat_age_months">6</field><field name="avg_litter_size">3</field>
+        </record>
+
+    </data>
+</odoo>

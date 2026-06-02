@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Search -->
+    <record id="petget_core_view_search_animal" model="ir.ui.view">
+        <field name="name">petget.animal.search</field>
+        <field name="model">petget.animal</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Animal"
+                       filter_domain="['|', '|', ('name', 'ilike', self), ('system_id', 'ilike', self), ('microchip', 'ilike', self)]"/>
+                <field name="owner_id"/>
+                <field name="sire_id"/>
+                <field name="dam_id"/>
+                <separator/>
+                <filter name="filter_male" string="Male" domain="[('sex', '=', 'male')]"/>
+                <filter name="filter_female" string="Female" domain="[('sex', '=', 'female')]"/>
+                <separator/>
+                <filter name="filter_breeding" string="Breeding" domain="[('status', '=', 'breeding')]"/>
+                <filter name="filter_active" string="Active" domain="[('status', '=', 'active')]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="group_species" string="Species" context="{'group_by': 'species'}"/>
+                <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                <filter name="group_sex" string="Sex" context="{'group_by': 'sex'}"/>
+                <filter name="group_owner" string="Owner" context="{'group_by': 'owner_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- List -->
+    <record id="petget_core_view_list_animal" model="ir.ui.view">
+        <field name="name">petget.animal.list</field>
+        <field name="model">petget.animal</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="system_id"/>
+                <field name="name"/>
+                <field name="species"/>
+                <field name="sex"/>
+                <field name="date_of_birth"/>
+                <field name="age_display"/>
+                <field name="owner_id" optional="show"/>
+                <field name="microchip" optional="hide"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'active'"
+                       decoration-info="status == 'breeding'"
+                       decoration-muted="status in ('retired', 'deceased')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Kanban -->
+    <record id="petget_core_view_kanban_animal" model="ir.ui.view">
+        <field name="name">petget.animal.kanban</field>
+        <field name="model">petget.animal</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <aside>
+                            <field name="image_128" widget="image" options="{'size': [64, 64]}" alt="Animal"/>
+                        </aside>
+                        <main class="ms-2">
+                            <field name="name" class="fw-bold fs-5"/>
+                            <div class="text-muted"><field name="system_id"/></div>
+                            <div class="mt-1">
+                                <field name="species"/> · <field name="sex"/>
+                            </div>
+                            <div class="mt-1">
+                                <field name="status" widget="badge"
+                                       decoration-success="status == 'active'"
+                                       decoration-info="status == 'breeding'"/>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="petget_core_view_form_animal" model="ir.ui.view">
+        <field name="name">petget.animal.form</field>
+        <field name="model">petget.animal</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_documents" type="object"
+                                class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="document_count" widget="statinfo" string="Documents"/>
+                        </button>
+                        <button name="action_view_reminders" type="object"
+                                class="oe_stat_button" icon="fa-bell-o">
+                            <field name="reminder_count" widget="statinfo" string="Reminders"/>
+                        </button>
+                    </div>
+                    <field name="image_1920" widget="image" class="oe_avatar"
+                           options="{'preview_image': 'image_128'}"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Rex"/></h1>
+                        <field name="system_id" readonly="1"/>
+                    </div>
+                    <group>
+                        <group name="group_profile" string="Profile">
+                            <field name="species"/>
+                            <field name="sex"/>
+                            <field name="date_of_birth"/>
+                            <field name="age_display"/>
+                            <field name="color"/>
+                        </group>
+                        <group name="group_identification" string="Identification">
+                            <field name="registered_name"/>
+                            <field name="microchip"/>
+                            <field name="registration_number"/>
+                        </group>
+                        <group name="group_ownership" string="Ownership">
+                            <field name="owner_id"/>
+                            <field name="bred_by_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group name="group_pedigree" string="Pedigree">
+                            <field name="sire_id"/>
+                            <field name="dam_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documents" name="documents">
+                            <field name="document_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="category"/>
+                                    <field name="file" filename="file_name" widget="binary"/>
+                                    <field name="file_name" column_invisible="1"/>
+                                    <field name="issue_date"/>
+                                    <field name="expiry_date"/>
+                                    <field name="notes" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Reminders" name="reminders">
+                            <field name="reminder_ids">
+                                <list editable="bottom"
+                                      decoration-danger="is_overdue"
+                                      decoration-muted="state == 'done'">
+                                    <field name="name"/>
+                                    <field name="reminder_type"/>
+                                    <field name="due_date"/>
+                                    <field name="user_id" optional="hide"/>
+                                    <field name="state"/>
+                                    <field name="is_overdue" column_invisible="1"/>
+                                    <button name="action_done" type="object" string="Done"
+                                            icon="fa-check" invisible="state == 'done'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Timeline" name="timeline">
+                            <field name="note_ids">
+                                <list editable="bottom">
+                                    <field name="note_date"/>
+                                    <field name="note_type"/>
+                                    <field name="body"/>
+                                    <field name="user_id" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes..." nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="petget_core_action_animal" model="ir.actions.act_window">
+        <field name="name">Animals</field>
+        <field name="res_model">petget.animal</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="petget_core_view_search_animal"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first animal profile</p>
+            <p>Track each animal across its whole lifecycle: identity, pedigree, documents, and history.</p>
+        </field>
+    </record>
+
+</odoo>

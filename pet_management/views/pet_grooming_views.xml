@@ -1,0 +1,630 @@
+<odoo>
+  <!-- Grooming Service Views -->
+  <record id="view_pet_grooming_service_tree" model="ir.ui.view">
+    <field name="name">pet.grooming.service.list</field>
+    <field name="model">pet.grooming.service</field>
+    <field name="arch" type="xml">
+      <list decoration-success="active == True" decoration-muted="active == False">
+        <field name="name" string="Name"/>
+        <field name="code" string="Code"/>
+        <field name="category" string="Category" widget="badge"/>
+        <field name="base_price" string="Base Price"/>
+        <field name="duration_display" string="Duration"/>
+        <field name="skill_level" string="Skill Level"/>
+        <field name="session_count" string="Sessions"/>
+        <field name="average_rating" string="Rating"/>
+        <field name="active" string="Active"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_service_search" model="ir.ui.view">
+    <field name="name">pet.grooming.service.search</field>
+    <field name="model">pet.grooming.service</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="code"/>
+        <field name="category"/>
+        <field name="skill_level"/>
+        <field name="species_restrictions"/>
+        
+        <!-- Category Filters -->
+        <separator/>
+        <filter name="basic" string="Basic Grooming" domain="[('category','=','basic')]"/>
+        <filter name="premium" string="Premium Grooming" domain="[('category','=','premium')]"/>
+        <filter name="spa" string="Spa Treatment" domain="[('category','=','spa')]"/>
+        <filter name="medical" string="Medical Grooming" domain="[('category','=','medical')]"/>
+        <filter name="specialty" string="Specialty Service" domain="[('category','=','specialty')]"/>
+        
+        <!-- Skill Level Filters -->
+        <separator/>
+        <filter name="beginner" string="Beginner Level" domain="[('skill_level','=','beginner')]"/>
+        <filter name="intermediate" string="Intermediate Level" domain="[('skill_level','=','intermediate')]"/>
+        <filter name="advanced" string="Advanced Level" domain="[('skill_level','=','advanced')]"/>
+        <filter name="expert" string="Expert Level" domain="[('skill_level','=','expert')]"/>
+        
+        <!-- Species Filters -->
+        <separator/>
+        <filter name="all_species" string="All Species" domain="[('species_restrictions','=','all')]"/>
+        <filter name="dogs_only" string="Dogs Only" domain="[('species_restrictions','=','dogs_only')]"/>
+        <filter name="cats_only" string="Cats Only" domain="[('species_restrictions','=','cats_only')]"/>
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <group>
+          <filter name="group_by_category" string="Category" context="{'group_by':'category'}"/>
+          <filter name="group_by_skill_level" string="Skill Level" context="{'group_by':'skill_level'}"/>
+          <filter name="group_by_species" string="Species Restrictions" context="{'group_by':'species_restrictions'}"/>
+          <filter name="group_by_active" string="Active" context="{'group_by':'active'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_service_form" model="ir.ui.view">
+    <field name="name">pet.grooming.service.form</field>
+    <field name="model">pet.grooming.service</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_view_sessions" type="object" string="View Sessions" icon="fa-calendar"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_sessions" type="object" string="Sessions" icon="fa-calendar"
+                    groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Service Name"/>
+            </h1>
+          </div>
+          
+          <group>
+            <group>
+              <field name="code"/>
+              <field name="category"/>
+              <field name="base_price"/>
+              <field name="duration_minutes"/>
+              <field name="duration_display" readonly="1"/>
+            </group>
+            <group>
+              <field name="skill_level"/>
+              <field name="species_restrictions"/>
+              <field name="min_age_months"/>
+              <field name="max_age_months"/>
+              <field name="active"/>
+            </group>
+          </group>
+          
+          <group>
+            <group>
+              <field name="required_equipment_ids" widget="many2many_tags"/>
+              <field name="product_id"/>
+            </group>
+            <group>
+              <field name="session_count" readonly="1"/>
+              <field name="total_revenue" readonly="1"/>
+              <field name="average_rating" readonly="1"/>
+            </group>
+          </group>
+          
+          <notebook>
+            <page string="Service Details">
+              <group>
+                <field name="description" string="Service Description" colspan="4"/>
+              </group>
+              <group>
+                <field name="preparation_notes" string="Preparation Instructions" colspan="4"/>
+              </group>
+              <group>
+                <field name="aftercare_notes" string="Aftercare Instructions" colspan="4"/>
+              </group>
+              <group>
+                <field name="contraindications" string="Contraindications" colspan="4"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_service_kanban" model="ir.ui.view">
+    <field name="name">pet.grooming.service.kanban</field>
+    <field name="model">pet.grooming.service</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="category"/>
+        <field name="base_price"/>
+        <field name="duration_display"/>
+        <field name="skill_level"/>
+        <field name="session_count"/>
+        <field name="average_rating"/>
+        <field name="active"/>
+        <templates>
+          <t t-name="card">
+            <div class="pet-kanban-card o_kanban_color_0 oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccine-catalog">
+                <div class="pet-info">
+                  <div class="pet-icon theme-vaccine-catalog">
+                    <i class="fa fa-scissors" title="Grooming Service"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.name.value or 'Unknown Service'"/>
+                    <div class="pet-code">
+                      <i class="fa fa-tag" title="Service Code"/>
+                      <span t-esc="record.code.value or 'No Code'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div class="status-badge status-active">
+                    <i class="fa fa-scissors" title="Category"/>
+                    <span t-esc="record.category.value or 'General'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-scissors" title="Service"/>
+                    <span class="detail-label">Service:</span>
+                    <span class="detail-value" t-esc="record.name.value or 'Unknown'"/>
+                  </div>
+                  <div t-if="record.category and record.category.value" class="detail-row">
+                    <i class="fa fa-tag" title="Category"/>
+                    <span class="detail-label">Category:</span>
+                    <span class="detail-value" t-esc="record.category.value"/>
+                  </div>
+                  <div t-if="record.duration_display and record.duration_display.value" class="detail-row">
+                    <i class="fa fa-clock-o" title="Duration"/>
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value" t-esc="record.duration_display.value"/>
+                  </div>
+                  <div t-if="record.skill_level and record.skill_level.value" class="detail-row">
+                    <i class="fa fa-star" title="Skill Level"/>
+                    <span class="detail-label">Skill Level:</span>
+                    <span class="detail-value" t-esc="record.skill_level.value"/>
+                  </div>
+                  <div t-if="record.species_restrictions and record.species_restrictions.value" class="detail-row">
+                    <i class="fa fa-paw" title="Species"/>
+                    <span class="detail-label">Species:</span>
+                    <span class="detail-value" t-esc="record.species_restrictions.value"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div t-if="record.base_price and record.base_price.value" class="pet-stat-item">
+                    <i class="fa fa-dollar" title="Price"/>
+                    <span class="pet-stat-label">Price:</span>
+                    <span class="pet-stat-value" t-esc="'$' + record.base_price.value"/>
+                  </div>
+                  <div t-if="record.session_count and record.session_count.value" class="pet-stat-item">
+                    <i class="fa fa-calendar" title="Sessions"/>
+                    <span class="pet-stat-label">Sessions:</span>
+                    <span class="pet-stat-value" t-esc="record.session_count.value + ' sessions'"/>
+                  </div>
+                  <div t-if="record.average_rating and record.average_rating.value > 0" class="pet-stat-item">
+                    <i class="fa fa-star" title="Rating"/>
+                    <span class="pet-stat-label">Rating:</span>
+                    <span class="pet-stat-value" t-esc="record.average_rating.value + '★'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button class="btn btn-sm btn-primary action-btn" 
+                        name="action_view_sessions" 
+                        type="object" 
+                        title="View Sessions"
+                        groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin">
+                  <i class="fa fa-calendar" title="View Sessions"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Grooming Session Views -->
+  <record id="view_pet_grooming_session_tree" model="ir.ui.view">
+    <field name="name">pet.grooming.session.list</field>
+    <field name="model">pet.grooming.session</field>
+    <field name="arch" type="xml">
+      <list decoration-success="state == 'completed'" decoration-warning="state == 'in_progress'" decoration-info="state == 'confirmed'" decoration-danger="state == 'draft'" decoration-muted="state == 'cancelled'">
+        <field name="name" string="Reference"/>
+        <field name="pet_id" string="Pet"/>
+        <field name="service_id" string="Service"/>
+        <field name="groomer_id" string="Groomer"/>
+        <field name="appointment_datetime" string="Appointment" widget="datetime"/>
+        <field name="state" string="Status" widget="badge"/>
+        <field name="total_cost" string="Total Cost"/>
+        <field name="payment_status" string="Payment Status" widget="badge"/>
+        <field name="rating" string="Rating"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_session_search" model="ir.ui.view">
+    <field name="name">pet.grooming.session.search</field>
+    <field name="model">pet.grooming.session</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="pet_id"/>
+        <field name="service_id"/>
+        <field name="groomer_id"/>
+        <field name="appointment_datetime"/>
+        <field name="state"/>
+        <field name="payment_status"/>
+        <field name="rating"/>
+        
+        <!-- Status Filters -->
+        <separator/>
+        <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+        <filter name="confirmed" string="Confirmed" domain="[('state','=','confirmed')]"/>
+        <filter name="in_progress" string="In Progress" domain="[('state','=','in_progress')]"/>
+        <filter name="completed" string="Completed" domain="[('state','=','completed')]"/>
+        <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+        
+        <!-- Payment Status Filters -->
+        <separator/>
+        <filter name="payment_pending" string="Payment Pending" domain="[('payment_status','=','pending')]"/>
+        <filter name="payment_partial" string="Partially Paid" domain="[('payment_status','=','partial')]"/>
+        <filter name="payment_paid" string="Paid" domain="[('payment_status','=','paid')]"/>
+        
+        <!-- Time Filters -->
+        <separator/>
+        <filter name="today" string="Today" domain="[('appointment_datetime','>=',datetime.datetime.combine(context_today(),datetime.time(0,0,0))),('appointment_datetime','&lt;',datetime.datetime.combine(context_today()+datetime.timedelta(days=1),datetime.time(0,0,0)))]"/>
+        <filter name="this_week" string="This Week" domain="[('appointment_datetime','>=',(context_today()-datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),('appointment_datetime','&lt;',(context_today()-datetime.timedelta(days=context_today().weekday())+datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+        <filter name="overdue" string="Overdue" domain="[('is_overdue','=',True)]"/>
+        
+        <!-- Rating Filters -->
+        <separator/>
+        <filter name="rating_5" string="5 Stars" domain="[('rating','=',5)]"/>
+        <filter name="rating_4" string="4+ Stars" domain="[('rating','&gt;=',4)]"/>
+        <filter name="no_rating" string="No Rating" domain="[('rating','=',False)]"/>
+        
+        <!-- Display Options -->
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <group>
+          <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+          <filter name="group_by_service" string="Service" context="{'group_by':'service_id'}"/>
+          <filter name="group_by_groomer" string="Groomer" context="{'group_by':'groomer_id'}"/>
+          <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+          <filter name="group_by_payment" string="Payment Status" context="{'group_by':'payment_status'}"/>
+          <filter name="group_by_date" string="Date" context="{'group_by':'appointment_datetime'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_session_form" model="ir.ui.view">
+    <field name="name">pet.grooming.session.form</field>
+    <field name="model">pet.grooming.session</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_confirm" type="object" string="Confirm" 
+                  invisible="state != 'draft'" class="btn-primary" icon="fa-check"/>
+          <button name="action_start_session" type="object" string="Start Session" 
+                  invisible="state != 'confirmed'" class="btn-success" icon="fa-play"/>
+          <button name="action_complete_session" type="object" string="Complete Session" 
+                  invisible="state != 'in_progress'" class="btn-primary" icon="fa-check-circle"/>
+          <button name="action_cancel_session" type="object" string="Cancel" 
+                  invisible="state in ['completed', 'cancelled']" class="btn-secondary" icon="fa-times"/>
+          <button name="action_send_grooming_reminder" type="object" string="Send Reminder" 
+                  invisible="state in ['completed', 'cancelled']" class="btn-info" icon="fa-bell"/>
+          <button name="action_reschedule_session" type="object" string="Reschedule" 
+                  invisible="state in ['completed', 'cancelled']" class="btn-warning" icon="fa-calendar"/>
+          <button name="action_create_follow_up_appointment" type="object" string="Follow-up" 
+                  invisible="state != 'completed'" class="btn-success" icon="fa-plus-circle"/>
+          <button name="action_link_to_appointment" type="object" string="Link Appointment" 
+                  invisible="state in ['completed', 'cancelled']" class="btn-info" icon="fa-link"/>
+          <button name="action_add_to_medical_history" type="object" string="Add to Medical History" 
+                  invisible="not behavior_notes" class="btn-info" icon="fa-medkit"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,completed"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pet" type="object" string="Pet Details" icon="fa-paw"
+                    groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" readonly="1"/>
+            </h1>
+          </div>
+          
+          <group>
+            <group>
+              <field name="pet_id"/>
+              <field name="appointment_id" string="Appointment"/>
+              <field name="service_id"/>
+              <field name="groomer_id"/>
+              <field name="appointment_datetime"/>
+            </group>
+            <group>
+              <field name="state"/>
+              <field name="payment_status"/>
+              <field name="total_cost"/>
+              <field name="rating"/>
+            </group>
+          </group>
+          
+          <group>
+            <group>
+              <field name="actual_start_datetime"/>
+              <field name="actual_end_datetime"/>
+              <field name="duration_display" readonly="1"/>
+            </group>
+            <group>
+              <field name="base_price" readonly="1"/>
+              <field name="additional_services_cost"/>
+              <field name="is_today" readonly="1"/>
+              <field name="is_overdue" readonly="1"/>
+            </group>
+          </group>
+          
+          <notebook>
+            <page string="Session Details">
+              <group>
+                <field name="special_requests" string="Special Requests" colspan="4"/>
+              </group>
+              <group>
+                <field name="notes" string="Session Notes" colspan="4"/>
+              </group>
+              <group>
+                <field name="behavior_notes" string="Behavior Notes" colspan="4"/>
+              </group>
+            </page>
+            <page string="Photos">
+              <group>
+                <field name="before_photo" string="Before Photo" widget="image" class="oe_avatar"/>
+                <field name="after_photo" string="After Photo" widget="image" class="oe_avatar"/>
+              </group>
+            </page>
+            <page string="Customer Feedback">
+              <group>
+                <field name="customer_feedback" string="Customer Feedback" colspan="4"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_session_kanban" model="ir.ui.view">
+    <field name="name">pet.grooming.session.kanban</field>
+    <field name="model">pet.grooming.session</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="name"/>
+        <field name="pet_id"/>
+        <field name="service_id"/>
+        <field name="groomer_id"/>
+        <field name="appointment_datetime"/>
+        <field name="state"/>
+        <field name="state_color"/>
+        <field name="total_cost"/>
+        <field name="payment_status"/>
+        <field name="rating"/>
+        <field name="duration_display"/>
+        <field name="is_today"/>
+        <field name="is_overdue"/>
+        <templates>
+          <t t-name="card">
+            <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.state_color and record.state_color.raw_value or '0')" class="oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccination">
+                <div class="pet-info">
+                  <div class="pet-avatar">
+                    <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                         t-att-alt="record.pet_id.value" 
+                         class="pet-image"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.pet_id.value or 'Unknown Pet'"/>
+                    <div class="additional-info">
+                      <i class="fa fa-scissors" title="Service"/>
+                      <span class="additional-info-name" t-esc="record.service_id.value or 'No Service'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.state.raw_value or 'draft')" 
+                       t-att-style="record.state.raw_value == 'completed' ? 'background-color: #28a745; color: white;' : record.state.raw_value == 'cancelled' ? 'background-color: #dc3545; color: white;' : record.state.raw_value == 'in_progress' ? 'background-color: #ffc107; color: #212529;' : record.state.raw_value == 'confirmed' ? 'background-color: #17a2b8; color: white;' : 'background-color: #6c757d; color: white;'">
+                    <i t-att-class="'fa fa-' + (record.state.raw_value == 'confirmed' ? 'check-circle' : record.state.raw_value == 'in_progress' ? 'play-circle' : record.state.raw_value == 'completed' ? 'check-circle' : record.state.raw_value == 'cancelled' ? 'times-circle' : 'clock-o')" title="Session Status"/>
+                    <span t-esc="record.state.value or 'Draft'"/>
+                  </div>
+                  <div t-if="record.is_today and record.is_today.raw_value" class="overdue-indicator">
+                    <i class="fa fa-calendar-check-o" title="Today"/>
+                    <span>Today</span>
+                  </div>
+                  <div t-if="record.is_overdue and record.is_overdue.raw_value" class="overdue-indicator">
+                    <i class="fa fa-exclamation-triangle" title="Overdue"/>
+                    <span>Overdue</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-calendar" title="Appointment"/>
+                    <span class="detail-label">Appointment:</span>
+                    <span class="detail-value" t-esc="record.appointment_datetime.value"/>
+                  </div>
+                  <div t-if="record.groomer_id and record.groomer_id.value" class="detail-row">
+                    <i class="fa fa-user" title="Groomer"/>
+                    <span class="detail-label">Groomer:</span>
+                    <span class="detail-value" t-esc="record.groomer_id.value"/>
+                  </div>
+                  <div t-if="record.duration_display and record.duration_display.value" class="detail-row">
+                    <i class="fa fa-clock-o" title="Duration"/>
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value" t-esc="record.duration_display.value"/>
+                  </div>
+                  <div t-if="record.rating and record.rating.value" class="detail-row">
+                    <i class="fa fa-star" title="Rating"/>
+                    <span class="detail-label">Rating:</span>
+                    <span class="detail-value" t-esc="record.rating.value + '★'"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div t-if="record.total_cost and record.total_cost.value" class="pet-stat-item">
+                    <i class="fa fa-dollar" title="Cost"/>
+                    <span class="pet-stat-label">Cost:</span>
+                    <span class="pet-stat-value" t-esc="'$' + record.total_cost.value"/>
+                  </div>
+                  <div t-if="record.payment_status and record.payment_status.value" class="pet-stat-item">
+                    <i class="fa fa-credit-card" title="Payment Status"/>
+                    <span class="pet-stat-label">Payment:</span>
+                    <span class="pet-stat-value" t-esc="record.payment_status.value"/>
+                  </div>
+                  <div class="pet-stat-item">
+                    <i class="fa fa-scissors" title="Service"/>
+                    <span class="pet-stat-label">Service:</span>
+                    <span class="pet-stat-value" t-esc="record.service_id.value or 'N/A'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button t-if="record.state.raw_value == 'draft'" 
+                        class="btn btn-sm btn-primary action-btn" 
+                        name="action_confirm" 
+                        type="object" 
+                        title="Confirm"
+                        groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin">
+                  <i class="fa fa-check" title="Confirm"/>
+                </button>
+                <button t-if="record.state.raw_value == 'confirmed'" 
+                        class="btn btn-sm btn-success action-btn" 
+                        name="action_start_session" 
+                        type="object" 
+                        title="Start"
+                        groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin">
+                  <i class="fa fa-play" title="Start"/>
+                </button>
+                <button t-if="record.state.raw_value == 'in_progress'" 
+                        class="btn btn-sm btn-primary action-btn" 
+                        name="action_complete_session" 
+                        type="object" 
+                        title="Complete"
+                        groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin">
+                  <i class="fa fa-check-circle" title="Complete"/>
+                </button>
+                <button t-if="record.state.raw_value and record.state.raw_value != 'completed' and record.state.raw_value != 'cancelled'" 
+                        class="btn btn-sm btn-danger action-btn" 
+                        name="action_cancel_session" 
+                        type="object" 
+                        title="Cancel"
+                        groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin">
+                  <i class="fa fa-times" title="Cancel"/>
+                </button>
+                <button class="btn btn-sm btn-info action-btn" 
+                        name="action_view_pet" 
+                        type="object" 
+                        title="View Pet"
+                        groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin">
+                  <i class="fa fa-paw" title="View Pet"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Grooming Analytics Dashboard -->
+  <record id="view_pet_grooming_analytics" model="ir.ui.view">
+    <field name="name">pet.grooming.session.analytics</field>
+    <field name="model">pet.grooming.session</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="appointment_datetime"/>
+        <field name="service_id"/>
+        <field name="groomer_id"/>
+        <field name="state"/>
+        <field name="total_cost"/>
+        <field name="rating"/>
+        
+        <filter name="completed" string="Completed Sessions" domain="[('state','=','completed')]"/>
+        <filter name="this_month" string="This Month" domain="[('appointment_datetime','&gt;=',(context_today()-datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+        <filter name="high_rating" string="High Rating (4-5)" domain="[('rating','in',['4','5'])]"/>
+        
+        <group>
+          <filter name="group_by_service" string="Service" context="{'group_by':'service_id'}"/>
+          <filter name="group_by_groomer" string="Groomer" context="{'group_by':'groomer_id'}"/>
+          <filter name="group_by_month" string="Month" context="{'group_by':'appointment_datetime:month'}"/>
+          <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_session_graph" model="ir.ui.view">
+    <field name="name">pet.grooming.session.graph</field>
+    <field name="model">pet.grooming.session</field>
+    <field name="arch" type="xml">
+      <graph string="Grooming Sessions Analytics" type="bar">
+        <field name="appointment_datetime" type="row"/>
+        <field name="total_cost" type="measure"/>
+      </graph>
+    </field>
+  </record>
+
+  <record id="view_pet_grooming_session_pivot" model="ir.ui.view">
+    <field name="name">pet.grooming.session.pivot</field>
+    <field name="model">pet.grooming.session</field>
+    <field name="arch" type="xml">
+      <pivot string="Grooming Sessions Analysis">
+        <field name="service_id" type="row"/>
+        <field name="groomer_id" type="col"/>
+        <field name="total_cost" type="measure"/>
+        <field name="rating" type="measure"/>
+      </pivot>
+    </field>
+  </record>
+
+  <!-- Actions -->
+  <record id="action_pet_grooming_service" model="ir.actions.act_window">
+    <field name="name">Grooming Services</field>
+    <field name="res_model">pet.grooming.service</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="context">{'search_default_active': 1}</field>
+  </record>
+
+  <record id="action_pet_grooming_session" model="ir.actions.act_window">
+    <field name="name">Grooming Sessions</field>
+    <field name="res_model">pet.grooming.session</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="context">{'search_default_draft': 1}</field>
+  </record>
+
+
+  <!-- Menu Items -->
+  <menuitem id="menu_pet_grooming" name="Grooming" parent="menu_pet_root" sequence="5" groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_operations_user_all"/>
+  <menuitem id="menu_pet_grooming_service" parent="menu_pet_configuration" action="action_pet_grooming_service" name="Grooming Services" sequence="5" groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
+  <menuitem id="menu_pet_grooming_session" parent="menu_pet_grooming" action="action_pet_grooming_session" name="Sessions" groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_grooming"/>
+</odoo>

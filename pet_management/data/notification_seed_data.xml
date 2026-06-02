@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Sample Notification Data -->
+  <record id="notification_vaccination_due_1" model="pet.notification">
+    <field name="name">Vaccination Due Reminder - Buddy</field>
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="notification_type">vaccination_due</field>
+    <field name="message">Buddy's annual vaccination is due soon. Please schedule an appointment to keep your pet healthy and protected.</field>
+    <field name="priority">medium</field>
+    <field name="status">draft</field>
+    <field name="date_scheduled">2024-09-20 09:00:00</field>
+    <field name="send_email">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">pending</field>
+  </record>
+
+  <record id="notification_vaccination_overdue_1" model="pet.notification">
+    <field name="name">URGENT: Overdue Vaccination - Thumper</field>
+    <field name="pet_id" ref="pet_thumper"/>
+    <field name="notification_type">vaccination_overdue</field>
+    <field name="message">Thumper's vaccination is overdue! Please contact us immediately to schedule this critical health appointment.</field>
+    <field name="priority">urgent</field>
+    <field name="status">draft</field>
+    <field name="date_scheduled">2024-09-15 08:00:00</field>
+    <field name="send_email">True</field>
+    <field name="send_sms">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">pending</field>
+  </record>
+
+  <record id="notification_appointment_reminder_1" model="pet.notification">
+    <field name="name">Appointment Reminder - Luna</field>
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="notification_type">appointment_reminder</field>
+    <field name="message">Don't forget about Luna's grooming appointment tomorrow. Please arrive 10 minutes early.</field>
+    <field name="priority">low</field>
+    <field name="status">draft</field>
+    <field name="date_scheduled">2024-09-18 14:00:00</field>
+    <field name="send_email">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">pending</field>
+  </record>
+
+  <record id="notification_medical_visit_1" model="pet.notification">
+    <field name="name">Medical Follow-up Required - Whiskers</field>
+    <field name="pet_id" ref="pet_whiskers"/>
+    <field name="notification_type">medical_visit_due</field>
+    <field name="message">Whiskers' recent medical visit requires a follow-up appointment. Please schedule within the next week.</field>
+    <field name="priority">high</field>
+    <field name="status">draft</field>
+    <field name="date_scheduled">2024-09-22 10:00:00</field>
+    <field name="send_email">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">pending</field>
+  </record>
+
+  <record id="notification_sent_1" model="pet.notification">
+    <field name="name">Vaccination Confirmation - Max</field>
+    <field name="pet_id" ref="pet_max"/>
+    <field name="notification_type">vaccination_due</field>
+    <field name="message">Max's vaccination has been successfully scheduled for next week. Thank you for keeping your pet healthy!</field>
+    <field name="priority">low</field>
+    <field name="status">sent</field>
+    <field name="date_created">2024-09-10 09:30:00</field>
+    <field name="date_sent">2024-09-10 09:35:00</field>
+    <field name="send_email">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">delivered</field>
+  </record>
+
+</odoo>

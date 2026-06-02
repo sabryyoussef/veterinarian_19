@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="petget_core_sequence_animal" model="ir.sequence">
+            <field name="name">Petget Animal</field>
+            <field name="code">petget.animal</field>
+            <field name="prefix">PG-%(year)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

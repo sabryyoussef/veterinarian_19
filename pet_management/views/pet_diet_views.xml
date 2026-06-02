@@ -1,0 +1,364 @@
+<odoo>
+  <!-- Diet Plan Search View -->
+  <record id="view_pet_diet_plan_search" model="ir.ui.view">
+    <field name="name">pet.diet.plan.search</field>
+    <field name="model">pet.diet.plan</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="code"/>
+        <field name="pet_id"/>
+        <field name="veterinarian_id"/>
+        <field name="diet_type"/>
+        <field name="state"/>
+        <field name="start_date"/>
+        <field name="end_date"/>
+        
+        <!-- Status Filters -->
+        <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+        <filter name="active" string="Active" domain="[('state','=','active')]"/>
+        <filter name="paused" string="Paused" domain="[('state','=','paused')]"/>
+        <filter name="completed" string="Completed" domain="[('state','=','completed')]"/>
+        <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+        
+        <!-- Time-based Filters -->
+        <separator/>
+        <filter name="current" string="Current" domain="[('is_current','=',True)]"/>
+        <filter name="expired" string="Expired" domain="[('is_expired','=',True)]"/>
+        <filter name="this_month" string="This Month" domain="[('start_date','&gt;=',(context_today()-datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+        
+        <!-- Diet Type Filters -->
+        <separator/>
+        <filter name="weight_loss" string="Weight Loss" domain="[('diet_type','=','weight_loss')]"/>
+        <filter name="weight_gain" string="Weight Gain" domain="[('diet_type','=','weight_gain')]"/>
+        <filter name="medical" string="Medical Diet" domain="[('diet_type','=','medical')]"/>
+        <filter name="allergy" string="Allergy Management" domain="[('diet_type','=','allergy')]"/>
+        
+        <!-- Adherence Filters -->
+        <separator/>
+        <filter name="excellent_adherence" string="Excellent Adherence" domain="[('adherence_rating','=','excellent')]"/>
+        <filter name="poor_adherence" string="Poor Adherence" domain="[('adherence_rating','=','poor')]"/>
+        
+        <!-- Display Options -->
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <group>
+          <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+          <filter name="group_by_veterinarian" string="Veterinarian" context="{'group_by':'veterinarian_id'}"/>
+          <filter name="group_by_diet_type" string="Diet Type" context="{'group_by':'diet_type'}"/>
+          <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+          <filter name="group_by_date" string="Start Date" context="{'group_by':'start_date:month'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Diet Plan Tree View -->
+  <record id="view_pet_diet_plan_tree" model="ir.ui.view">
+    <field name="name">pet.diet.plan.list</field>
+    <field name="model">pet.diet.plan</field>
+    <field name="arch" type="xml">
+      <list decoration-info="state == 'draft'" decoration-success="state == 'active'" decoration-muted="state in ['completed', 'cancelled']" decoration-warning="state == 'paused'">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="pet_id"/>
+        <field name="diet_type"/>
+        <field name="state" widget="badge"/>
+        <field name="start_date"/>
+        <field name="end_date"/>
+        <field name="duration_days"/>
+        <field name="target_weight"/>
+        <field name="weight_change"/>
+        <field name="adherence_rating"/>
+        <field name="estimated_monthly_cost"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Diet Plan Form View -->
+  <record id="view_pet_diet_plan_form" model="ir.ui.view">
+    <field name="name">pet.diet.plan.form</field>
+    <field name="model">pet.diet.plan</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_activate_diet" type="object" string="Activate" 
+                  invisible="state != 'draft'" class="btn-primary" icon="fa-play"/>
+          <button name="action_pause_diet" type="object" string="Pause" 
+                  invisible="state != 'active'" class="btn-warning" icon="fa-pause"/>
+          <button name="action_complete_diet" type="object" string="Complete" 
+                  invisible="state not in ['active', 'paused']" class="btn-success" icon="fa-check"/>
+          <button name="action_cancel_diet" type="object" string="Cancel" 
+                  invisible="state in ['completed', 'cancelled']" class="btn-secondary" icon="fa-times"/>
+          <button name="action_review_diet" type="object" string="Review" 
+                  invisible="state not in ['active', 'paused']" class="btn-info" icon="fa-calendar"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,active,paused,completed"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pet" type="object" string="Pet Details" icon="fa-paw"
+                    groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
+            <button name="action_view_weight_history" type="object" string="Weight History" icon="fa-line-chart"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Diet Plan Name"/>
+            </h1>
+            <h3>
+              <field name="code" readonly="1"/>
+            </h3>
+          </div>
+          
+          <group>
+            <group>
+              <field name="pet_id"/>
+              <field name="veterinarian_id"/>
+              <field name="diet_type"/>
+              <field name="feeding_frequency"/>
+            </group>
+            <group>
+              <field name="start_date"/>
+              <field name="end_date"/>
+              <field name="duration_days" readonly="1"/>
+              <field name="next_review_date"/>
+            </group>
+          </group>
+          
+          <notebook>
+            <page string="Diet Details">
+              <group>
+                <group>
+                  <field name="diet_purpose" placeholder="Purpose and goals of this diet plan..."/>
+                  <field name="medical_conditions" placeholder="Medical conditions this diet addresses..."/>
+                  <field name="allergies_considered" placeholder="Allergies and restrictions considered..."/>
+                </group>
+                <group>
+                  <field name="feeding_schedule_notes" placeholder="Special feeding schedule instructions..."/>
+                  <field name="supplier_recommendations" placeholder="Recommended suppliers or brands..."/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Nutritional Information">
+              <group>
+                <group>
+                  <field name="current_weight" readonly="1"/>
+                  <field name="target_weight"/>
+                  <field name="weight_change" readonly="1"/>
+                  <field name="daily_calories"/>
+                </group>
+                <group>
+                  <field name="protein_percentage"/>
+                  <field name="fat_percentage"/>
+                  <field name="fiber_percentage"/>
+                  <field name="estimated_monthly_cost"/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Progress Tracking">
+              <group>
+                <group>
+                  <field name="days_active" readonly="1"/>
+                  <field name="adherence_rating"/>
+                  <field name="adherence_percentage"/>
+                  <field name="last_review_date"/>
+                  <field name="review_frequency_days"/>
+                </group>
+                <group>
+                  <field name="weight_progress" readonly="1"/>
+                  <field name="progress_notes" placeholder="Progress notes and observations..."/>
+                  <field name="review_notes" placeholder="Notes from the last review..."/>
+                </group>
+              </group>
+            </page>
+            
+            <page string="Diet Plan Lines">
+              <field name="line_ids">
+                <list editable="bottom">
+                  <field name="sequence" widget="handle"/>
+                  <field name="time_of_day"/>
+                  <field name="custom_time"/>
+                  <field name="food_name"/>
+                  <field name="food_category"/>
+                  <field name="quantity"/>
+                  <field name="unit"/>
+                  <field name="calories"/>
+                  <field name="is_optional"/>
+                  <field name="is_treat"/>
+                  <field name="instructions"/>
+                  <field name="notes"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Diet Plan Kanban View -->
+  <record id="view_pet_diet_plan_kanban" model="ir.ui.view">
+    <field name="name">pet.diet.plan.kanban</field>
+    <field name="model">pet.diet.plan</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="state" class="pet-kanban">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="pet_id"/>
+        <field name="veterinarian_id"/>
+        <field name="diet_type"/>
+        <field name="state"/>
+        <field name="state_color"/>
+        <field name="start_date"/>
+        <field name="end_date"/>
+        <field name="duration_days"/>
+        <field name="target_weight"/>
+        <field name="weight_change"/>
+        <field name="adherence_rating"/>
+        <field name="estimated_monthly_cost"/>
+        <field name="is_current"/>
+        <field name="is_expired"/>
+        <field name="diet_purpose"/>
+        <field name="owner_id"/>
+        <templates>
+          <t t-name="card">
+            <div class="pet-kanban-card o_kanban_color_0 oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccine-catalog">
+                <div class="pet-info">
+                  <div class="pet-avatar">
+                    <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                         t-att-alt="record.pet_id.value" 
+                         class="pet-image"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.pet_id.value or 'Unknown Pet'"/>
+                    <div class="additional-info">
+                      <i class="fa fa-cutlery" title="Diet Plan"/>
+                      <span class="additional-info-name" t-esc="record.name.value or 'Diet Plan'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.state.raw_value or 'draft')">
+                    <i t-att-class="'fa fa-' + (record.state.raw_value == 'active' ? 'play-circle' : record.state.raw_value == 'paused' ? 'pause-circle' : record.state.raw_value == 'completed' ? 'check-circle' : record.state.raw_value == 'cancelled' ? 'times-circle' : 'clock-o')" title="Status Icon"/>
+                    <span t-esc="record.state.value or 'Draft'"/>
+                  </div>
+                  <div t-if="record.is_current and record.is_current.raw_value" class="overdue-indicator">
+                    <i class="fa fa-check-circle" title="Current"/>
+                    <span>Current</span>
+                  </div>
+                  <div t-if="record.is_expired and record.is_expired.raw_value" class="overdue-indicator">
+                    <i class="fa fa-exclamation-triangle" title="Expired"/>
+                    <span>Expired</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-calendar" title="Start Date"/>
+                    <span class="detail-label">Start Date:</span>
+                    <span class="detail-value" t-esc="record.start_date.value"/>
+                  </div>
+                  <div t-if="record.diet_type and record.diet_type.value" class="detail-row">
+                    <i class="fa fa-cutlery" title="Diet Type"/>
+                    <span class="detail-label">Type:</span>
+                    <span class="detail-value" t-esc="record.diet_type.value"/>
+                  </div>
+                  <div t-if="record.veterinarian_id and record.veterinarian_id.value" class="detail-row">
+                    <i class="fa fa-user-md" title="Veterinarian"/>
+                    <span class="detail-label">Vet:</span>
+                    <span class="detail-value" t-esc="record.veterinarian_id.value"/>
+                  </div>
+                  <div t-if="record.duration_days and record.duration_days.value" class="detail-row">
+                    <i class="fa fa-clock-o" title="Duration"/>
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value" t-esc="record.duration_days.value + ' days'"/>
+                  </div>
+                  <div t-if="record.target_weight and record.target_weight.value" class="detail-row">
+                    <i class="fa fa-bullseye" title="Target Weight"/>
+                    <span class="detail-label">Target:</span>
+                    <span class="detail-value" t-esc="record.target_weight.value + 'kg'"/>
+                  </div>
+                  <div t-if="record.weight_change and record.weight_change.value" class="detail-row">
+                    <i class="fa fa-line-chart" title="Weight Change"/>
+                    <span class="detail-label">Change:</span>
+                    <span class="detail-value" t-esc="record.weight_change.value + 'kg'"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div t-if="record.adherence_rating and record.adherence_rating.value" class="pet-stat-item">
+                    <i class="fa fa-star" title="Adherence Rating"/>
+                    <span class="pet-stat-label">Adherence:</span>
+                    <span class="pet-stat-value" t-esc="record.adherence_rating.value"/>
+                  </div>
+                  <div t-if="record.estimated_monthly_cost and record.estimated_monthly_cost.value" class="pet-stat-item">
+                    <i class="fa fa-dollar" title="Monthly Cost"/>
+                    <span class="pet-stat-label">Monthly Cost:</span>
+                    <span class="pet-stat-value" t-esc="'$' + record.estimated_monthly_cost.value"/>
+                  </div>
+                  <div class="pet-stat-item">
+                    <i class="fa fa-cutlery" title="Diet Plan"/>
+                    <span class="pet-stat-label">Plan:</span>
+                    <span class="pet-stat-value" t-esc="record.name.value or 'Diet Plan'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button t-if="record.state.raw_value == 'draft'" 
+                        class="btn btn-sm btn-primary action-btn" 
+                        name="action_activate_diet" 
+                        type="object" 
+                        title="Activate">
+                  <i class="fa fa-play" title="Activate"/>
+                </button>
+                <button t-if="record.state.raw_value == 'active'" 
+                        class="btn btn-sm btn-warning action-btn" 
+                        name="action_pause_diet" 
+                        type="object" 
+                        title="Pause">
+                  <i class="fa fa-pause" title="Pause"/>
+                </button>
+                <button t-if="record.state.raw_value == 'active' or record.state.raw_value == 'paused'" 
+                        class="btn btn-sm btn-success action-btn" 
+                        name="action_complete_diet" 
+                        type="object" 
+                        title="Complete">
+                  <i class="fa fa-check-circle" title="Complete"/>
+                </button>
+                <button class="btn btn-sm btn-info action-btn" 
+                        name="action_view_pet" 
+                        type="object" 
+                        title="View Pet">
+                  <i class="fa fa-paw" title="View Pet"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Diet Plan Actions -->
+  <record id="action_pet_diet_plan" model="ir.actions.act_window">
+    <field name="name">Diet Plans</field>
+    <field name="res_model">pet.diet.plan</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="context">{'search_default_active': 1}</field>
+  </record>
+
+  <!-- Menu Items -->
+  <menuitem id="menu_pet_diet" name="Diet" parent="menu_pet_root" sequence="7" groups="pet_management.group_pet_diet_user_own,pet_management.group_pet_operations_user_all"/>
+  <menuitem id="menu_pet_diet_plan" parent="menu_pet_diet" action="action_pet_diet_plan" name="Diet Plans" groups="pet_management.group_pet_diet_user_own,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_diet"/>
+</odoo>

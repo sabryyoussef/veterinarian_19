@@ -1,0 +1,432 @@
+<odoo>
+    <record id="view_pet_pet_tree" model="ir.ui.view">
+        <field name="name">pet.pet.list</field>
+        <field name="model">pet.pet</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="species_id" widget="badge" decoration-info="species_color == 1" decoration-success="species_color == 2" decoration-warning="species_color == 3" decoration-primary="species_color == 4" decoration-muted="species_color == 5" decoration-danger="species_color == 6" decoration-bf="species_color == 7"/>
+                <field name="breed_id" widget="badge" decoration-info="breed_color == 1" decoration-success="breed_color == 2" decoration-warning="breed_color == 3" decoration-primary="breed_color == 4" decoration-muted="breed_color == 5" decoration-danger="breed_color == 6" decoration-bf="breed_color == 7"/>
+                <field name="species_color" column_invisible="1"/>
+                <field name="breed_color" column_invisible="1"/>
+                <field name="gender" widget="badge" decoration-primary="gender == 'male'" decoration-info="gender == 'female'" decoration-muted="gender == 'unknown'"/>
+                <field name="owner_id"/>
+                <field name="preferred_vet_id"/>
+                <field name="age_display"/>
+                <field name="latest_weight_kg"/>
+                <field name="neutered"/>
+                <field name="microchip_no" readonly="1"/>
+                <field name="status" widget="badge" decoration-success="status == 'active'" decoration-muted="status == 'inactive'" decoration-danger="status == 'deceased'" decoration-warning="status == 'lost'" decoration-primary="status == 'adopted'"/>
+                <field name="vaccination_count" string="Vaccinations" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                <field name="medical_visit_count" string="Medical Visits" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                <field name="boarding_count" string="Boarding" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin"/>
+                <field name="appointment_count" string="Appointments" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+                <field name="grooming_count" string="Grooming" groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin"/>
+                <field name="training_count" string="Training" groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_pet_pet_form" model="ir.ui.view">
+        <field name="name">pet.pet.form</field>
+        <field name="model">pet.pet</field>
+        <field name="arch" type="xml">
+            <form string="Pet">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_vaccinations" type="object" string="Vaccinations" icon="fa-medkit"
+                                groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                        <button name="action_open_medical_visits" type="object" string="Medical Visits"
+                            icon="fa-stethoscope"
+                                groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                        <button name="action_open_boarding" type="object" string="Boarding" 
+                                icon="fa-home"
+                                groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin"/>
+                        <button name="action_open_appointments" type="object" string="Appointments" 
+                                icon="fa-calendar"
+                                groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+                        <button name="action_open_grooming" type="object" string="Grooming" 
+                                icon="fa-cut"
+                                groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin"/>
+                        <button name="action_open_training" type="object" string="Training" 
+                            icon="fa-trophy"
+                                groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin"/>
+                        <button name="action_open_weight_history" type="object" string="Weight History" 
+                            icon="fa-balance-scale"
+                                groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="name"/>
+                            <field name="species_id" options="{'no_create': True}"/>
+                            <field name="breed_id" options="{'no_create': True}"/>
+                            <field name="gender"/>
+                            <field name="color_markings"/>
+                            <field name="microchip_no" readonly="1"/>
+                            <field name="tag_id"/>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                        <group>
+                            <field name="owner_id" readonly="not context.get('can_edit_owner', True)" options="{'no_create': not context.get('can_edit_owner', True)}"/>
+                            <field name="co_owner_ids" widget="many2many_tags" readonly="not context.get('can_edit_owner', True)" options="{'no_create': not context.get('can_edit_owner', True)}"/>
+                            <field name="emergency_contact_id" readonly="not context.get('can_edit_owner', True)" options="{'no_create': not context.get('can_edit_owner', True)}"/>
+                            <field name="preferred_vet_id"/>
+                            <field name="image_1920" widget="image"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Lifecycle" groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin">
+                            <group>
+                                <field name="dob" string="Date of Birth"/>
+                                <field name="dod" string="Date of Death"/>
+                                <field name="age_years" string="Age (Years)" readonly="1"/>
+                                <field name="age_display" string="Age Display" readonly="1"/>
+                                <field name="neutered" string="Neutered"/>
+                                <field name="status" string="Status"/>
+                            </group>
+                        </page>
+
+                        <page string="Health" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                            <group>
+                                <field name="allergies"/>
+                                <field name="chronic_conditions"/>
+                                <field name="dietary_restrictions"/>
+                                <field name="behavior_notes"/>
+                            </group>
+                        </page>
+
+                        <page string="Weight &amp; Health" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                            <div class="oe_read_only" style="margin-bottom: 16px; padding: 16px; background-color: #f8f9fa; border-radius: 4px; border-left: 4px solid #007cba;">
+                                <h3 style="margin-top: 0; color: #007cba;">Weight Summary</h3>
+                                <p>Track your pet's weight over time to monitor health and growth.</p>
+                                <ul style="margin-bottom: 0;">
+                                    <li><strong>Health Status:</strong> Based on breed standards and weight trends</li>
+                                    <li><strong>Trend Analysis:</strong> Shows weight change direction and strength</li>
+                                    <li><strong>BMI:</strong> Body Mass Index calculated from weight and breed data</li>
+                                    <li><strong>Alerts:</strong> Automatic notifications for concerning weight changes</li>
+                                </ul>
+                            </div>
+                            <group>
+                                <field name="latest_weight_kg" readonly="1"/>
+                            </group>
+                            <field name="weight_history_ids" widget="one2many" nolabel="1">
+                                <list decoration-info="health_status == 'healthy'" 
+                                      decoration-warning="health_status == 'underweight' or health_status == 'overweight'"
+                                      decoration-danger="health_status == 'obese' or is_concerning == 1"
+                                      decoration-muted="health_status == 'unknown'"
+                                      create="true" edit="true" delete="true">
+                                    <field name="date" widget="date"/>
+                                    <field name="weight_kg" widget="float" digits="[16,3]"/>
+                                    <field name="weight_lbs" widget="float" digits="[16,3]" column_invisible="1"/>
+                                    <field name="health_status" widget="badge"/>
+                                    <field name="weight_change" widget="float" digits="[16,3]" column_invisible="1"/>
+                                    <field name="weight_change_percent" widget="float" digits="[16,2]" column_invisible="1"/>
+                                    <field name="trend_direction" widget="badge"/>
+                                    <field name="trend_strength" widget="badge"/>
+                                    <field name="bmi" widget="float" digits="[16,2]" column_invisible="1"/>
+                                    <field name="measurement_method" widget="badge"/>
+                                    <field name="recorded_by" widget="many2one_tags" column_invisible="1"/>
+                                    <field name="is_concerning" widget="boolean_toggle" column_invisible="1"/>
+                                    <field name="alert_message" optional="hide"/>
+                                    <field name="notes" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Vaccinations" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                            <field name="vaccination_ids">
+                                <list>
+                                    <field name="date_administered" string="Date Administered"/>
+                                    <field name="vaccine_id"/>
+                                    <field name="next_due_date"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Visits" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                            <field name="medical_visit_ids">
+                                <list>
+                                    <field name="date" string="Date"/>
+                                    <field name="reason" string="Reason"/>
+                                    <field name="vet_id" string="Veterinarian"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Boarding" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                            <field name="boarding_stay_ids">
+                                <list>
+                                    <field name="kennel_id" string="Kennel"/>
+                                    <field name="check_in" string="Check In"/>
+                                    <field name="check_out" string="Check Out"/>
+                                    <field name="state" string="Status"/>
+                                    <field name="duration_days" string="Duration (Days)"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Appointments" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
+                            <field name="appointment_ids">
+                                <list>
+                                    <field name="title" string="Title"/>
+                                    <field name="primary_type" string="Type"/>
+                                    <field name="start_datetime" string="Start Time"/>
+                                    <field name="end_datetime" string="End Time"/>
+                                    <field name="state" string="Status"/>
+                                </list>
+                            </field>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pet_pet_kanban" model="ir.ui.view">
+        <field name="name">pet.pet.kanban</field>
+        <field name="model">pet.pet</field>
+        <field name="arch" type="xml">
+            <kanban class="pet-kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="color"/>
+                <field name="species_id" options="{'no_create': True}"/>
+                <field name="breed_id" options="{'no_create': True}"/>
+                <field name="gender"/>
+                <field name="species_color"/>
+                <field name="breed_color"/>
+                <field name="vaccination_count"/>
+                <field name="medical_visit_count"/>
+                <field name="boarding_count"/>
+                <field name="appointment_count"/>
+                <field name="grooming_count"/>
+                <field name="training_count"/>
+                <field name="owner_id"/>
+                <field name="preferred_vet_id"/>
+                <field name="age_display"/>
+                <field name="latest_weight_kg"/>
+                <field name="microchip_no"/>
+                <field name="neutered"/>
+                <field name="image_1920"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.species_color.raw_value or '0')" class="oe_kanban_global_click">
+                            <!-- Header Section -->
+                            <div class="pet-kanban-header theme-medical">
+                                <div class="pet-info">
+                                    <div class="pet-avatar">
+                                        <img t-att-src="'/web/image/pet.pet/' + record.id.raw_value + '/image_1920'" 
+                                             t-att-alt="record.name and record.name.value or 'Pet Image'" 
+                                             class="pet-image"/>
+                                    </div>
+                                    <div class="pet-details">
+                                        <h3 class="pet-name" t-esc="record.name and record.name.value or 'Unknown Pet'"/>
+                                        <div class="pet-code">
+                                            <i class="fa fa-tag" title="Pet Code"/>
+                                            <span t-esc="record.code and record.code.value or 'No Code'"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="status-section">
+                                    <div t-att-class="'status-badge status-' + (record.status and record.status.raw_value or 'active')">
+                                        <i t-att-class="'fa fa-' + (record.status and record.status.raw_value == 'active' ? 'check-circle' : record.status and record.status.raw_value == 'inactive' ? 'pause-circle' : record.status and record.status.raw_value == 'deceased' ? 'times-circle' : record.status and record.status.raw_value == 'lost' ? 'exclamation-triangle' : record.status and record.status.raw_value == 'adopted' ? 'heart' : 'question-circle')" title="Pet Status"/>
+                                        <span t-esc="record.status and record.status.value or 'Active'"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="pet-kanban-content">
+                                <div class="pet-details-section">
+                                    <div class="detail-row">
+                                        <i class="fa fa-paw" title="Species"/>
+                                        <span class="detail-label">Species:</span>
+                                        <span class="detail-value" t-esc="record.species_id and record.species_id.value or 'Unknown'"/>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fa fa-tag" title="Breed"/>
+                                        <span class="detail-label">Breed:</span>
+                                        <span class="detail-value" t-esc="record.breed_id and record.breed_id.value or 'Unknown'"/>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fa fa-venus-mars" title="Gender"/>
+                                        <span class="detail-label">Gender:</span>
+                                        <span class="detail-value" t-esc="record.gender and record.gender.value or 'Unknown'"/>
+                                    </div>
+                                    <div t-if="record.owner_id and record.owner_id.value" class="detail-row">
+                                        <i class="fa fa-user" title="Owner"/>
+                                        <span class="detail-label">Owner:</span>
+                                        <span class="detail-value" t-esc="record.owner_id.value"/>
+                                    </div>
+                                    <div t-if="record.preferred_vet_id and record.preferred_vet_id.value" class="detail-row">
+                                        <i class="fa fa-user-md" title="Veterinarian"/>
+                                        <span class="detail-label">Vet:</span>
+                                        <span class="detail-value" t-esc="record.preferred_vet_id.value"/>
+                                    </div>
+                                    <div t-if="record.age_display and record.age_display.value" class="detail-row">
+                                        <i class="fa fa-calendar" title="Age"/>
+                                        <span class="detail-label">Age:</span>
+                                        <span class="detail-value" t-esc="record.age_display.value"/>
+                                    </div>
+                                    <div t-if="record.latest_weight_kg and record.latest_weight_kg.value" class="detail-row">
+                                        <i class="fa fa-balance-scale" title="Weight"/>
+                                        <span class="detail-label">Weight:</span>
+                                        <span class="detail-value" t-esc="record.latest_weight_kg.value + ' kg'"/>
+                                    </div>
+                                </div>
+
+                                <div class="pet-usage-stats">
+                                    <div class="pet-stat-item">
+                                        <i class="fa fa-medkit" title="Vaccines Count"/>
+                                        <span class="pet-stat-label">Vaccines:</span>
+                                        <span class="pet-stat-value" t-esc="record.vaccination_count.value or '0'"/>
+                                    </div>
+                                    <div class="pet-stat-item">
+                                        <i class="fa fa-stethoscope" title="Medical Visits Count"/>
+                                        <span class="pet-stat-label">Visits:</span>
+                                        <span class="pet-stat-value" t-esc="record.medical_visit_count.value or '0'"/>
+                                    </div>
+                                    <div class="pet-stat-item">
+                                        <i class="fa fa-home" title="Boarding Count"/>
+                                        <span class="pet-stat-label">Boarding:</span>
+                                        <span class="pet-stat-value" t-esc="record.boarding_count.value or '0'"/>
+                                    </div>
+                                    <div class="pet-stat-item">
+                                        <i class="fa fa-calendar" title="Appointments Count"/>
+                                        <span class="pet-stat-label">Appointments:</span>
+                                        <span class="pet-stat-value" t-esc="record.appointment_count.value or '0'"/>
+                                    </div>
+                                    <div class="pet-stat-item">
+                                        <i class="fa fa-cut" title="Grooming Count"/>
+                                        <span class="pet-stat-label">Grooming:</span>
+                                        <span class="pet-stat-value" t-esc="record.grooming_count.value or '0'"/>
+                                    </div>
+                                    <div class="pet-stat-item">
+                                        <i class="fa fa-trophy" title="Training Count"/>
+                                        <span class="pet-stat-label">Training:</span>
+                                        <span class="pet-stat-value" t-esc="record.training_count.value or '0'"/>
+                                    </div>
+                                </div>
+
+                                    <div t-if="record.neutered and record.neutered.raw_value" class="time-info">
+                                        <i class="fa fa-check-circle" title="Neutered"/>
+                                        <span>Neutered</span>
+                                    </div>
+
+                                <div t-if="record.microchip_no and record.microchip_no.value" class="time-info">
+                                    <i class="fa fa-microchip" title="Microchip"/>
+                                    <span>Microchip: <t t-esc="record.microchip_no.value"/></span>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="pet-kanban-actions">
+                                <button class="btn btn-sm btn-primary action-btn" 
+                                        name="action_open_vaccinations" 
+                                        type="object" 
+                                        title="Vaccinations"
+                                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                                    <i class="fa fa-medkit" title="Vaccinations"/>
+                                </button>
+                                <button class="btn btn-sm btn-info action-btn" 
+                                        name="action_open_medical_visits" 
+                                        type="object" 
+                                        title="Medical Visits"
+                                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                                    <i class="fa fa-stethoscope" title="Medical Visits"/>
+                                </button>
+                                <button class="btn btn-sm btn-success action-btn" 
+                                        name="action_open_boarding" 
+                                        type="object" 
+                                        title="Boarding"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-home" title="Boarding"/>
+                                </button>
+                                <button class="btn btn-sm btn-warning action-btn" 
+                                        name="action_open_appointments" 
+                                        type="object" 
+                                        title="Appointments"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-calendar" title="Appointments"/>
+                                </button>
+                                <button class="btn btn-sm btn-secondary action-btn" 
+                                        name="action_open_grooming" 
+                                        type="object" 
+                                        title="Grooming"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-cut" title="Grooming"/>
+                                </button>
+                                <button class="btn btn-sm btn-dark action-btn" 
+                                        name="action_open_training" 
+                                        type="object" 
+                                        title="Training"
+                                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                                    <i class="fa fa-trophy" title="Training"/>
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_pet_pet_search" model="ir.ui.view">
+        <field name="name">pet.pet.search</field>
+        <field name="model">pet.pet</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="owner_id"/>
+                <field name="species_id" options="{'no_create': True}"/>
+                <field name="breed_id" options="{'no_create': True}"/>
+                <field name="status"/>
+                <field name="gender"/>
+                <field name="microchip_no"/>
+                <field name="neutered"/>
+                <filter name="active" string="Active" domain="[('status','=','active')]"/>
+                <filter name="adopted" string="Adopted" domain="[('status','=','adopted')]"/>
+                <filter name="deceased" string="Deceased" domain="[('status','=','deceased')]"/>
+                <filter name="lost" string="Lost" domain="[('status','=','lost')]"/>
+                <filter name="neutered_yes" string="Neutered" domain="[('neutered','=',True)]"/>
+                <filter name="neutered_no" string="Not Neutered" domain="[('neutered','=',False)]"/>
+                <filter name="has_vaccinations" string="Has Vaccinations" domain="[('vaccination_count','&gt;',0)]" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                <filter name="has_boarding" string="Has Boarding" domain="[('boarding_count','&gt;',0)]" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin"/>
+                <filter name="has_medical" string="Has Medical Visits" domain="[('medical_visit_count','&gt;',0)]" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                <separator/>
+                <filter name="vaccination_today" string="Today's Vaccination" domain="[('has_vaccination_today','=',True)]" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                <filter name="training_today" string="Today's Training" domain="[('has_training_today','=',True)]" groups="pet_management.group_pet_training_user_own,pet_management.group_pet_training_user_all,pet_management.group_pet_training_admin"/>
+                <filter name="appointment_today" string="Today's Appointment" domain="[('has_appointment_today','=',True)]" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+                <filter name="grooming_today" string="Today's Grooming" domain="[('has_grooming_today','=',True)]" groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_grooming_user_all,pet_management.group_pet_grooming_admin"/>
+                <filter name="boarding_today" string="Today's Boarding" domain="[('has_boarding_today','=',True)]" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin"/>
+                <filter name="medical_today" string="Today's Medical Visit" domain="[('has_medical_today','=',True)]" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+                <separator/>
+                <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+                <group>
+                    <filter name="group_by_owner" string="Owner" context="{'group_by':'owner_id'}"/>
+                    <filter name="group_by_species" string="Species" context="{'group_by':'species_id'}"/>
+                    <filter name="group_by_breed" string="Breed" context="{'group_by':'breed_id'}"/>
+                    <filter name="group_by_status" string="Status" context="{'group_by':'status'}"/>
+                    <filter name="group_by_gender" string="Gender" context="{'group_by':'gender'}"/>
+                    <filter name="group_by_neutered" string="Neutered" context="{'group_by':'neutered'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pet_pet" model="ir.actions.act_window">
+        <field name="name">Pets</field>
+        <field name="res_model">pet.pet</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <menuitem id="menu_pet_pets" parent="menu_pet_core" action="action_pet_pet" name="Pets" sequence="1" groups="pet_management.group_pet_core_user_own,pet_management.group_pet_staff_core"/>
+</odoo>

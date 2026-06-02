@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- ======================================== -->
+        <!-- PET MANAGEMENT SECURITY GROUPS -->
+        <!-- ======================================== -->
+        
+        <!-- Core Category -->
+        <record id="pet_core_category" model="ir.module.category">
+            <field name="name">[ Pet ] Core</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_core_privilege">
+            <field name="name">Pet Core</field>
+            <field name="sequence">9</field>
+            <field name="category_id" ref="pet_management.pet_core_category"/>
+        </record>
+
+        <record id="group_pet_core_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_management.pet_core_privilege"/>
+            <field name="comment">Can only access their own core pet data</field>
+        </record>
+        
+        <record id="group_pet_core_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_management.pet_core_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_core_user_own'))]"/>
+            <field name="comment">Can access all core pet data</field>
+        </record>
+        
+        <record id="group_pet_core_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_management.pet_core_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_core_user_all'))]"/>
+            <field name="comment">Full administrative access to core pet management</field>
+        </record>
+        <!-- Health Category -->
+        <record id="pet_health_category" model="ir.module.category">
+            <field name="name">[ Pet ] Health</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_health_privilege">
+            <field name="name">Pet Health</field>
+            <field name="sequence">20</field>
+            <field name="category_id" ref="pet_health_category"/>
+        </record>
+
+        <record id="group_pet_health_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_health_privilege"/>
+            <field name="comment">Can only access their own health data</field>
+        </record>
+
+        <record id="group_pet_health_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_health_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_health_user_own'))]"/>
+            <field name="comment">Can access all health data</field>
+        </record>
+
+        <record id="group_pet_health_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_health_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_health_user_all'))]"/>
+            <field name="comment">Full administrative access to health management</field>
+        </record>
+
+        <record id="pet_appointments_category" model="ir.module.category">
+            <field name="name">[ Pet ] Appointments</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_appointments_privilege">
+            <field name="name">Pet Appointments</field>
+            <field name="sequence">30</field>
+            <field name="category_id" ref="pet_appointments_category"/>
+        </record>
+
+        <record id="group_pet_appointments_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_appointments_privilege"/>
+            <field name="comment">Can only access their own appointment data</field>
+        </record>
+
+        <record id="group_pet_appointments_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_appointments_privilege"/>
+            <field name="comment">Can access all appointment data</field>
+        </record>
+
+        <record id="group_pet_appointments_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_appointments_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_appointments_user_own'))]"/>
+            <field name="comment">Full administrative access to appointment management</field>
+        </record>
+
+        <record id="pet_boarding_category" model="ir.module.category">
+            <field name="name">[ Pet ] Boarding</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_boarding_privilege">
+            <field name="name">Pet Boarding</field>
+            <field name="sequence">40</field>
+            <field name="category_id" ref="pet_boarding_category"/>
+        </record>
+
+        <record id="group_pet_boarding_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_boarding_privilege"/>
+            <field name="comment">Can only access their own boarding data</field>
+        </record>
+
+        <record id="group_pet_boarding_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_boarding_privilege"/>
+            <field name="comment">Can access all boarding data</field>
+        </record>
+
+        <record id="group_pet_boarding_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_boarding_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_boarding_user_own'))]"/>
+            <field name="comment">Full administrative access to boarding management</field>
+        </record>
+
+        <record id="pet_grooming_category" model="ir.module.category">
+            <field name="name">[ Pet ] Grooming</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_grooming_privilege">
+            <field name="name">Pet Grooming</field>
+            <field name="sequence">50</field>
+            <field name="category_id" ref="pet_grooming_category"/>
+        </record>
+
+        <record id="group_pet_grooming_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_grooming_privilege"/>
+            <field name="comment">Can only access their own grooming data</field>
+        </record>
+
+        <record id="group_pet_grooming_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_grooming_privilege"/>
+            <field name="comment">Can access all grooming data</field>
+        </record>
+
+        <record id="group_pet_grooming_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_grooming_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_grooming_user_own'))]"/>
+            <field name="comment">Full administrative access to grooming management</field>
+        </record>
+
+        <record id="pet_training_category" model="ir.module.category">
+            <field name="name">[ Pet ] Training</field>
+            <field name="sequence">60</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_training_privilege">
+            <field name="name">Pet Training</field>
+            <field name="sequence">60</field>
+            <field name="category_id" ref="pet_training_category"/>
+        </record>
+
+        <record id="group_pet_training_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_training_privilege"/>
+            <field name="comment">Can only access their own training data</field>
+        </record>
+
+        <record id="group_pet_training_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_training_privilege"/>
+            <field name="comment">Can access all training data</field>
+        </record>
+
+        <record id="group_pet_training_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_training_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_training_user_own'))]"/>
+            <field name="comment">Full administrative access to training management</field>
+        </record>
+
+        <record id="pet_diet_category" model="ir.module.category">
+            <field name="name">[ Pet ] Diet</field>
+            <field name="sequence">70</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_diet_privilege">
+            <field name="name">Pet Diet</field>
+            <field name="sequence">70</field>
+            <field name="category_id" ref="pet_diet_category"/>
+        </record>
+
+        <record id="group_pet_diet_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_diet_privilege"/>
+            <field name="comment">Can only access their own diet data</field>
+        </record>
+
+        <record id="group_pet_diet_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_diet_privilege"/>
+            <field name="comment">Can access all diet data</field>
+        </record>
+
+        <record id="group_pet_diet_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_diet_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_diet_user_own'))]"/>
+            <field name="comment">Full administrative access to diet management</field>
+        </record>
+
+        <record id="pet_operations_category" model="ir.module.category">
+            <field name="name">[ Pet ] Operations</field>
+            <field name="sequence">80</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_operations_privilege">
+            <field name="name">Pet Operations</field>
+            <field name="sequence">80</field>
+            <field name="category_id" ref="pet_operations_category"/>
+        </record>
+
+        <record id="group_pet_operations_user_own" model="res.groups">
+            <field name="name">User: Own Data</field>
+            <field name="privilege_id" ref="pet_operations_privilege"/>
+            <field name="comment">Can only access their own operations data</field>
+        </record>
+
+        <record id="group_pet_operations_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_operations_privilege"/>
+            <field name="comment">Can access all operations data</field>
+        </record>
+
+        <record id="group_pet_operations_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_operations_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_operations_user_own'))]"/>
+            <field name="comment">Full administrative access to operations management</field>
+        </record>
+
+        <record id="pet_configuration_category" model="ir.module.category">
+            <field name="name">[ Pet ] Configuration</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_configuration_privilege">
+            <field name="name">Pet Configuration</field>
+            <field name="sequence">100</field>
+            <field name="category_id" ref="pet_configuration_category"/>
+        </record>
+
+        <record id="group_pet_configuration_user_all" model="res.groups">
+            <field name="name">User: All Data</field>
+            <field name="privilege_id" ref="pet_configuration_privilege"/>
+            <field name="comment">Can access all configuration and master data</field>
+        </record>
+
+        <record id="group_pet_configuration_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="pet_configuration_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_configuration_user_all'))]"/>
+            <field name="comment">Full administrative access to configuration and master data</field>
+        </record>
+
+<!--        <record id="pet_staff_category" model="ir.module.category">-->
+<!--            <field name="name">[ Pet ] Staff</field>-->
+<!--            <field name="sequence">90</field>-->
+<!--        </record>-->
+
+<!--        <record model="res.groups.privilege" id="pet_staff_privilege">-->
+<!--            <field name="name">Pet Staff</field>-->
+<!--            <field name="sequence">90</field>-->
+<!--            <field name="category_id" ref="pet_staff_category"/>-->
+<!--        </record>-->
+
+        <record id="group_pet_staff_health" model="res.groups">
+            <field name="name">Health</field>
+        </record>
+
+        <record id="group_pet_staff_appointments" model="res.groups">
+            <field name="name">Appointments</field>
+        </record>
+
+        <record id="group_pet_staff_core" model="res.groups">
+            <field name="name">Core</field>
+            <field name="comment">Staff access to core pet management functions</field>
+        </record>
+
+        <record id="group_pet_staff_boarding" model="res.groups">
+            <field name="name">Boarding</field>
+            <field name="comment">Staff access to boarding management functions</field>
+        </record>
+
+        <record id="group_pet_staff_grooming" model="res.groups">
+            <field name="name">Grooming</field>
+            <field name="comment">Staff access to grooming management functions</field>
+        </record>
+
+        <record id="group_pet_staff_training" model="res.groups">
+            <field name="name">Training</field>
+            <field name="comment">Staff access to training management functions</field>
+        </record>
+
+        <record id="group_pet_staff_diet" model="res.groups">
+            <field name="name">Diet</field>
+            <field name="comment">Staff access to diet management functions</field>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add dog-specific fields to the animal form (only shown for dogs) -->
+    <record id="petget_dog_view_form_animal" model="ir.ui.view">
+        <field name="name">petget.animal.form.dog</field>
+        <field name="model">petget.animal</field>
+        <field name="inherit_id" ref="petget_core.petget_core_view_form_animal"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_pedigree']" position="after">
+                <group name="group_dog" string="Dog Details" invisible="species != 'dog'">
+                    <field name="breed_id"/>
+                    <field name="coat_type"/>
+                    <field name="akc_number"/>
+                    <field name="temporary_id"/>
+                    <field name="collar_color"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Show breed as an optional column in the animal list -->
+    <record id="petget_dog_view_list_animal" model="ir.ui.view">
+        <field name="name">petget.animal.list.dog</field>
+        <field name="model">petget.animal</field>
+        <field name="inherit_id" ref="petget_core.petget_core_view_list_animal"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='species']" position="after">
+                <field name="breed_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

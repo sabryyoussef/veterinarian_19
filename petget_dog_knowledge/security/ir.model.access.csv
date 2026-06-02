@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_petget_dog_life_stage_user,petget.dog.life.stage.user,model_petget_dog_life_stage,petget_core.group_user,1,0,0,0
+access_petget_dog_life_stage_manager,petget.dog.life.stage.manager,model_petget_dog_life_stage,petget_core.group_manager,1,1,1,1
+access_petget_breed_growth_user,petget.breed.growth.user,model_petget_breed_growth,petget_core.group_user,1,1,1,1
+access_petget_breed_growth_manager,petget.breed.growth.manager,model_petget_breed_growth,petget_core.group_manager,1,1,1,1
+access_petget_dog_color_user,petget.dog.color.user,model_petget_dog_color,petget_core.group_user,1,1,1,0
+access_petget_dog_color_manager,petget.dog.color.manager,model_petget_dog_color,petget_core.group_manager,1,1,1,1

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_sync_petget_breed_to_x_breed" model="ir.actions.server">
+        <field name="name">Sync Petget breed to clinic breed</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+dog_species = env.ref('veterinary_clinic.x_species_2', raise_if_not_found=False)
+if not dog_species:
+    dog_species = env['x_species'].search([('x_name', '=', 'Dog')], limit=1)
+for pet in records:
+    if not pet.x_is_dog or not pet.x_petget_breed_id or not dog_species:
+        continue
+    line = env['x_species_line'].search([
+        ('x_name', '=', pet.x_petget_breed_id.name),
+        ('x_species_id', '=', dog_species.id),
+    ], limit=1)
+    if not line:
+        line = env['x_species_line'].create({
+            'x_name': pet.x_petget_breed_id.name,
+            'x_species_id': dog_species.id,
+        })
+    if pet.x_breed != line:
+        pet.write({'x_breed': line.id})
+        ]]></field>
+    </record>
+
+    <record id="action_sync_x_breed_to_petget" model="ir.actions.server">
+        <field name="name">Sync clinic breed to Petget breed</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for pet in records:
+    if not pet.x_is_dog or not pet.x_breed or pet.x_petget_breed_id:
+        continue
+    breed = env['petget.dog.breed'].search([('name', '=', pet.x_breed.x_name)], limit=1)
+    if breed:
+        pet.write({'x_petget_breed_id': breed.id})
+        ]]></field>
+    </record>
+
+    <record id="action_open_pet_breed_profile" model="ir.actions.server">
+        <field name="name">Open AKC Breed Card</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+if not record.x_petget_breed_id:
+    action = {'type': 'ir.actions.client', 'tag': 'display_notification', 'params': {
+        'title': 'No breed selected',
+        'message': 'Choose an AKC breed on this pet first.',
+        'type': 'warning',
+        'sticky': False,
+    }}
+else:
+    action = {
+        'type': 'ir.actions.act_window',
+        'name': record.x_petget_breed_id.name,
+        'res_model': 'petget.dog.breed',
+        'res_id': record.x_petget_breed_id.id,
+        'view_mode': 'form',
+        'target': 'current',
+    }
+        ]]></field>
+    </record>
+
+</odoo>

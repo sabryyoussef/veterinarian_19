@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Application category -->
+    <record id="module_category_petget" model="ir.module.category">
+        <field name="name">Petget</field>
+        <field name="description">Petget breeding management platform</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Group privilege (Odoo 19 groups the access levels under a privilege) -->
+    <record id="res_groups_privilege_petget" model="res.groups.privilege">
+        <field name="name">Petget</field>
+        <field name="category_id" ref="module_category_petget"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Access groups -->
+    <record id="group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="privilege_id" ref="res_groups_privilege_petget"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Day-to-day access to animals and documents.</field>
+    </record>
+
+    <record id="group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="res_groups_privilege_petget"/>
+        <field name="implied_ids" eval="[(4, ref('group_user'))]"/>
+        <field name="comment">Full access, including deletion and configuration.</field>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+    <!-- Multi-company record rules (no groups = global rule) -->
+    <record id="petget_core_rule_animal_company" model="ir.rule">
+        <field name="name">Petget Animal: multi-company</field>
+        <field name="model_id" ref="model_petget_animal"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="petget_core_rule_document_company" model="ir.rule">
+        <field name="name">Petget Document: multi-company</field>
+        <field name="model_id" ref="model_petget_document"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="petget_core_rule_reminder_company" model="ir.rule">
+        <field name="name">Petget Reminder: multi-company</field>
+        <field name="model_id" ref="model_petget_reminder"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="petget_core_rule_note_company" model="ir.rule">
+        <field name="name">Petget Note: multi-company</field>
+        <field name="model_id" ref="model_petget_note"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+</odoo>

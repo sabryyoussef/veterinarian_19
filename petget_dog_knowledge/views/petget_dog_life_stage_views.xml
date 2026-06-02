@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="petget_dog_knowledge_view_list_life_stage" model="ir.ui.view">
+        <field name="name">petget.dog.life.stage.list</field>
+        <field name="model">petget.dog.life.stage</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="age_from_weeks"/>
+                <field name="age_to_weeks"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="petget_dog_knowledge_view_form_life_stage" model="ir.ui.view">
+        <field name="name">petget.dog.life.stage.form</field>
+        <field name="model">petget.dog.life.stage</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Puppy (4–12 weeks)"/></h1>
+                    </div>
+                    <group>
+                        <field name="age_from_weeks"/>
+                        <field name="age_to_weeks"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="Feeding &amp; Nutrition">
+                        <field name="feeding_guidance" nolabel="1"/>
+                    </group>
+                    <group string="Care Focus">
+                        <field name="care_focus" nolabel="1"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="petget_dog_knowledge_action_life_stage" model="ir.actions.act_window">
+        <field name="name">Dog Life Stages</field>
+        <field name="res_model">petget.dog.life.stage</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,57 @@
+<odoo>
+  <record id="seq_pet_pet" model="ir.sequence">
+    <field name="name">Pet</field>
+    <field name="code">pet.pet</field>
+    <field name="prefix">PET%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+
+  <record id="seq_pet_grooming_session" model="ir.sequence">
+    <field name="name">Grooming Session</field>
+    <field name="code">pet.grooming.session</field>
+    <field name="prefix">GROOM%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+
+  <record id="seq_pet_training_program" model="ir.sequence">
+    <field name="name">Training Program</field>
+    <field name="code">pet.training.program</field>
+    <field name="prefix">TRAIN%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+
+  <record id="seq_pet_training_session" model="ir.sequence">
+    <field name="name">Training Session</field>
+    <field name="code">pet.training.session</field>
+    <field name="prefix">SESSION%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+
+  <record id="seq_pet_diet_plan" model="ir.sequence">
+    <field name="name">Diet Plan</field>
+    <field name="code">pet.diet.plan</field>
+    <field name="prefix">DIET%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+
+  <record id="seq_pet_appointment" model="ir.sequence">
+    <field name="name">Pet Appointment</field>
+    <field name="code">pet.appointment</field>
+    <field name="prefix">APT%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+
+  <record id="seq_pet_microchip" model="ir.sequence">
+    <field name="name">Pet Microchip</field>
+    <field name="code">pet.microchip</field>
+    <field name="prefix">MC</field>
+    <field name="padding">8</field>
+    <field name="company_id" eval="False"/>
+  </record>
+</odoo>

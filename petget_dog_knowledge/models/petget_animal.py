@@ -8,6 +8,7 @@ class PetgetAnimal(models.Model):
     life_stage_id = fields.Many2one(
         'petget.dog.life.stage', string='Current Life Stage',
         compute='_compute_life_stage',
+        store=True, index=True,
     )
     life_stage_feeding = fields.Text(
         string='Feeding Guidance', related='life_stage_id.feeding_guidance',

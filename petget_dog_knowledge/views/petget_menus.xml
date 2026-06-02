@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="petget_dog_knowledge_menu_life_stages"
+              name="Dog Life Stages"
+              parent="petget_dog.petget_dog_menu_config"
+              action="petget_dog_knowledge_action_life_stage"
+              sequence="20"/>
+
+    <menuitem id="petget_dog_knowledge_menu_colours"
+              name="Dog Colours"
+              parent="petget_dog.petget_dog_menu_config"
+              action="petget_dog_knowledge_action_color"
+              sequence="30"/>
+
+</odoo>

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="field_x_pets_is_dog" model="ir.model.fields">
+        <field name="name">x_is_dog</field>
+        <field name="field_description">Is Dog</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">boolean</field>
+        <field name="store" eval="False"/>
+        <field name="depends">x_species.x_name</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    record['x_is_dog'] = (record.x_species.x_name or '').lower() == 'dog'
+        ]]></field>
+    </record>
+
+    <record id="field_x_pets_petget_breed" model="ir.model.fields">
+        <field name="name">x_petget_breed_id</field>
+        <field name="field_description">Dog Breed (AKC)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">many2one</field>
+        <field name="relation">petget.dog.breed</field>
+        <field name="on_delete">set null</field>
+    </record>
+
+    <record id="field_x_pets_petget_color" model="ir.model.fields">
+        <field name="name">x_petget_color_id</field>
+        <field name="field_description">Coat Color</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">many2one</field>
+        <field name="relation">petget.dog.color</field>
+        <field name="on_delete">set null</field>
+    </record>
+
+    <record id="field_x_pets_petget_coat" model="ir.model.fields">
+        <field name="name">x_petget_coat_type</field>
+        <field name="field_description">Coat Type</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="selection">[
+            ('smooth', 'Smooth'),
+            ('wire', 'Wire'),
+            ('long', 'Long'),
+            ('double', 'Double'),
+            ('curly', 'Curly'),
+        ]</field>
+    </record>
+
+    <record id="field_x_pets_petget_life_stage" model="ir.model.fields">
+        <field name="name">x_petget_life_stage_id</field>
+        <field name="field_description">Life Stage</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">many2one</field>
+        <field name="relation">petget.dog.life.stage</field>
+        <field name="store" eval="False"/>
+        <field name="depends">x_date_of_birth,x_is_dog</field>
+        <field name="compute"><![CDATA[
+stages = self.env['petget.dog.life.stage'].search([])
+today = datetime.date.today()
+for record in self:
+    stage = self.env['petget.dog.life.stage']
+    if record.x_is_dog and record.x_date_of_birth and record.x_date_of_birth <= today:
+        weeks = (today - record.x_date_of_birth).days // 7
+        for candidate in stages:
+            age_from = candidate.age_from_weeks or 0
+            age_to = candidate.age_to_weeks or 0
+            if weeks >= age_from and (age_to == 0 or weeks < age_to):
+                stage = candidate
+                break
+    record['x_petget_life_stage_id'] = stage.id
+        ]]></field>
+    </record>
+
+    <record id="field_x_pets_petget_feeding" model="ir.model.fields">
+        <field name="name">x_petget_life_stage_feeding</field>
+        <field name="field_description">Feeding Guidance</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">text</field>
+        <field name="related">x_petget_life_stage_id.feeding_guidance</field>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+    </record>
+
+    <record id="field_x_pets_petget_care" model="ir.model.fields">
+        <field name="name">x_petget_life_stage_care</field>
+        <field name="field_description">Care Focus</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">text</field>
+        <field name="related">x_petget_life_stage_id.care_focus</field>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+    </record>
+
+    <!-- Dog registration / identity (Petget dog module fields) -->
+    <record id="field_x_pets_petget_akc" model="ir.model.fields">
+        <field name="name">x_petget_akc_number</field>
+        <field name="field_description">AKC Registration #</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">char</field>
+    </record>
+    <record id="field_x_pets_petget_registered_name" model="ir.model.fields">
+        <field name="name">x_petget_registered_name</field>
+        <field name="field_description">Registered Name</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">char</field>
+    </record>
+    <record id="field_x_pets_petget_collar" model="ir.model.fields">
+        <field name="name">x_petget_collar_color</field>
+        <field name="field_description">Collar Colour</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">char</field>
+    </record>
+    <record id="field_x_pets_petget_temp_id" model="ir.model.fields">
+        <field name="name">x_petget_temporary_id</field>
+        <field name="field_description">Temporary ID (puppy)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">char</field>
+    </record>
+
+    <!-- Breed knowledge (related from AKC breed card) -->
+    <record id="field_x_pets_breed_temperament" model="ir.model.fields">
+        <field name="name">x_petget_breed_temperament</field>
+        <field name="field_description">Breed Temperament</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">char</field>
+        <field name="related">x_petget_breed_id.temperament</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_description" model="ir.model.fields">
+        <field name="name">x_petget_breed_description</field>
+        <field name="field_description">Breed Description</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">text</field>
+        <field name="related">x_petget_breed_id.description</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_exercise" model="ir.model.fields">
+        <field name="name">x_petget_breed_exercise_need</field>
+        <field name="field_description">Exercise Need</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="related">x_petget_breed_id.exercise_need</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_grooming" model="ir.model.fields">
+        <field name="name">x_petget_breed_grooming_need</field>
+        <field name="field_description">Grooming Need</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="related">x_petget_breed_id.grooming_need</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_shedding" model="ir.model.fields">
+        <field name="name">x_petget_breed_shedding_level</field>
+        <field name="field_description">Shedding</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="related">x_petget_breed_id.shedding_level</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_trainability" model="ir.model.fields">
+        <field name="name">x_petget_breed_trainability</field>
+        <field name="field_description">Trainability</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="related">x_petget_breed_id.trainability</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_health" model="ir.model.fields">
+        <field name="name">x_petget_breed_health_issues</field>
+        <field name="field_description">Common Health Issues</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">text</field>
+        <field name="related">x_petget_breed_id.common_health_issues</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_care_notes" model="ir.model.fields">
+        <field name="name">x_petget_breed_care_notes</field>
+        <field name="field_description">Breed Care Notes</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">text</field>
+        <field name="related">x_petget_breed_id.care_notes</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_akc_group" model="ir.model.fields">
+        <field name="name">x_petget_breed_akc_group</field>
+        <field name="field_description">AKC Group</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="related">x_petget_breed_id.akc_group</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_size" model="ir.model.fields">
+        <field name="name">x_petget_breed_size</field>
+        <field name="field_description">Breed Size</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="related">x_petget_breed_id.size</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_weight_min" model="ir.model.fields">
+        <field name="name">x_petget_breed_weight_min_kg</field>
+        <field name="field_description">Typical Weight Min (kg)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">float</field>
+        <field name="related">x_petget_breed_id.weight_min_kg</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_weight_max" model="ir.model.fields">
+        <field name="name">x_petget_breed_weight_max_kg</field>
+        <field name="field_description">Typical Weight Max (kg)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">float</field>
+        <field name="related">x_petget_breed_id.weight_max_kg</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_life_min" model="ir.model.fields">
+        <field name="name">x_petget_breed_life_expectancy_min</field>
+        <field name="field_description">Lifespan Min (years)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="related">x_petget_breed_id.life_expectancy_min</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_life_max" model="ir.model.fields">
+        <field name="name">x_petget_breed_life_expectancy_max</field>
+        <field name="field_description">Lifespan Max (years)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="related">x_petget_breed_id.life_expectancy_max</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <!-- Petget documents / reminders / timeline linked to clinic pets -->
+    <record id="field_x_pets_document_ids" model="ir.model.fields">
+        <field name="name">x_petget_document_ids</field>
+        <field name="field_description">Pet Documents</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">one2many</field>
+        <field name="relation">petget.document</field>
+        <field name="relation_field">x_pet_id</field>
+    </record>
+    <record id="field_x_pets_reminder_ids" model="ir.model.fields">
+        <field name="name">x_petget_reminder_ids</field>
+        <field name="field_description">Pet Reminders</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">one2many</field>
+        <field name="relation">petget.reminder</field>
+        <field name="relation_field">x_pet_id</field>
+    </record>
+    <record id="field_x_pets_note_ids" model="ir.model.fields">
+        <field name="name">x_petget_note_ids</field>
+        <field name="field_description">Activity Timeline</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">one2many</field>
+        <field name="relation">petget.note</field>
+        <field name="relation_field">x_pet_id</field>
+    </record>
+    <record id="field_x_pets_document_count" model="ir.model.fields">
+        <field name="name">x_petget_document_count</field>
+        <field name="field_description">Document Count</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="store" eval="False"/>
+        <field name="depends">x_petget_document_ids</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    record['x_petget_document_count'] = len(record.x_petget_document_ids)
+        ]]></field>
+    </record>
+    <record id="field_x_pets_reminder_count" model="ir.model.fields">
+        <field name="name">x_petget_reminder_count</field>
+        <field name="field_description">Pending Reminders</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="store" eval="False"/>
+        <field name="depends">x_petget_reminder_ids,x_petget_reminder_ids.state</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    count = 0
+    for reminder in record.x_petget_reminder_ids:
+        if reminder.state == 'pending':
+            count += 1
+    record['x_petget_reminder_count'] = count
+        ]]></field>
+    </record>
+
+    <!-- Lifecycle / pedigree (Petget animal card parity) -->
+    <record id="field_x_pets_petget_status" model="ir.model.fields">
+        <field name="name">x_petget_status</field>
+        <field name="field_description">Pet Status</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">selection</field>
+        <field name="selection">[
+            ('young', 'Young (Puppy/Kitten)'),
+            ('active', 'Active'),
+            ('breeding', 'Breeding'),
+            ('retired', 'Retired'),
+            ('sold', 'Sold'),
+            ('rehomed', 'Rehomed'),
+            ('deceased', 'Deceased'),
+        ]</field>
+    </record>
+
+    <record id="field_x_pets_petget_age" model="ir.model.fields">
+        <field name="name">x_petget_age_display</field>
+        <field name="field_description">Age</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">char</field>
+        <field name="store" eval="False"/>
+        <field name="depends">x_date_of_birth</field>
+        <field name="compute"><![CDATA[
+today = datetime.date.today()
+for record in self:
+    age = ''
+    dob = record.x_date_of_birth
+    if dob and dob <= today:
+        delta_days = (today - dob).days
+        years = delta_days // 365
+        months = (delta_days % 365) // 30
+        age = '%dy %dm' % (years, months)
+    record['x_petget_age_display'] = age
+        ]]></field>
+    </record>
+
+    <record id="field_x_pets_petget_sire" model="ir.model.fields">
+        <field name="name">x_petget_sire_id</field>
+        <field name="field_description">Sire</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_pets</field>
+        <field name="on_delete">set null</field>
+    </record>
+
+    <record id="field_x_pets_petget_dam" model="ir.model.fields">
+        <field name="name">x_petget_dam_id</field>
+        <field name="field_description">Dam</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_pets</field>
+        <field name="on_delete">set null</field>
+    </record>
+
+    <record id="field_x_pets_petget_notes" model="ir.model.fields">
+        <field name="name">x_petget_internal_notes</field>
+        <field name="field_description">Internal Notes</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">text</field>
+    </record>
+
+    <!-- Breed card extras (photo, growth, reproduction) -->
+    <record id="field_x_pets_breed_image" model="ir.model.fields">
+        <field name="name">x_petget_breed_image_128</field>
+        <field name="field_description">Breed Photo</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">binary</field>
+        <field name="related">x_petget_breed_id.image_128</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <record id="field_x_pets_breed_origin" model="ir.model.fields">
+        <field name="name">x_petget_breed_origin_country_ids</field>
+        <field name="field_description">Breed Origin</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">many2many</field>
+        <field name="relation">res.country</field>
+        <field name="relation_table">x_pets_petget_breed_origin_rel</field>
+        <field name="column1">pet_id</field>
+        <field name="column2">country_id</field>
+        <field name="related">x_petget_breed_id.origin_country_ids</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <record id="field_x_pets_breed_height_min" model="ir.model.fields">
+        <field name="name">x_petget_breed_height_min_cm</field>
+        <field name="field_description">Typical Height Min (cm)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">float</field>
+        <field name="related">x_petget_breed_id.height_min_cm</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_height_max" model="ir.model.fields">
+        <field name="name">x_petget_breed_height_max_cm</field>
+        <field name="field_description">Typical Height Max (cm)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">float</field>
+        <field name="related">x_petget_breed_id.height_max_cm</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <record id="field_x_pets_breed_first_heat" model="ir.model.fields">
+        <field name="name">x_petget_breed_first_heat_age_months</field>
+        <field name="field_description">First Heat (months)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="related">x_petget_breed_id.first_heat_age_months</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_heat_cycle" model="ir.model.fields">
+        <field name="name">x_petget_breed_heat_cycle_months</field>
+        <field name="field_description">Heat Cycle Interval (months)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="related">x_petget_breed_id.heat_cycle_interval_months</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_gestation" model="ir.model.fields">
+        <field name="name">x_petget_breed_gestation_days</field>
+        <field name="field_description">Gestation (days)</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="related">x_petget_breed_id.gestation_days</field>
+        <field name="readonly" eval="True"/>
+    </record>
+    <record id="field_x_pets_breed_litter" model="ir.model.fields">
+        <field name="name">x_petget_breed_avg_litter_size</field>
+        <field name="field_description">Average Litter Size</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">integer</field>
+        <field name="related">x_petget_breed_id.avg_litter_size</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <record id="field_x_pets_breed_growth" model="ir.model.fields">
+        <field name="name">x_petget_breed_growth_ids</field>
+        <field name="field_description">Breed Growth Milestones</field>
+        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
+        <field name="ttype">one2many</field>
+        <field name="related">x_petget_breed_id.growth_ids</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+</odoo>

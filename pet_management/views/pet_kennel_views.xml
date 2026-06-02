@@ -1,0 +1,311 @@
+<odoo>
+  <record id="view_pet_kennel_tree" model="ir.ui.view">
+    <field name="name">pet.kennel.list</field>
+    <field name="model">pet.kennel</field>
+    <field name="arch" type="xml">
+      <list decoration-success="status == 'available'" decoration-warning="status == 'occupied'" decoration-info="status == 'cleaning'" decoration-danger="status == 'maintenance'">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="location"/>
+        <field name="size"/>
+        <field name="capacity"/>
+        <field name="status" widget="badge"/>
+        <field name="current_occupancy"/>
+        <field name="daily_rate"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_pet_kennel_form" model="ir.ui.view">
+    <field name="name">pet.kennel.form</field>
+    <field name="model">pet.kennel</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_refresh_occupancy" type="object" string="Refresh Data" 
+                  class="btn-info" icon="fa-refresh"/>
+          <button name="action_mark_cleaned" type="object" string="Mark Cleaned" 
+                  invisible="status != 'cleaning'" class="btn-success" icon="fa-check"/>
+          <button name="action_mark_maintenance" type="object" string="Maintenance" 
+                  invisible="status != 'available'" class="btn-warning" icon="fa-wrench"/>
+          <button name="action_mark_available" type="object" string="Mark Available" 
+                  invisible="status != 'maintenance'" class="btn-primary" icon="fa-check-circle"/>
+          <field name="status" widget="statusbar" statusbar_visible="available,occupied,maintenance"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_boarding_stays" type="object" string="Boarding Stays" icon="fa-bed"
+                    groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Kennel Name"/>
+            </h1>
+          </div>
+          
+          <group>
+            <group>
+              <field name="code"/>
+              <field name="location"/>
+              <field name="size"/>
+              <field name="capacity"/>
+              <field name="dimensions"/>
+            </group>
+            <group>
+              <field name="status"/>
+              <field name="daily_rate"/>
+              <field name="current_occupancy" readonly="1"/>
+              <field name="occupancy_rate" readonly="1"/>
+              <field name="is_available" readonly="1"/>
+            </group>
+          </group>
+          
+          <group>
+            <group>
+              <field name="has_outdoor_access"/>
+              <field name="has_heating"/>
+              <field name="has_cooling"/>
+              <field name="has_webcam"/>
+            </group>
+            <group>
+              <field name="last_cleaned"/>
+              <field name="days_since_cleaning" readonly="1"/>
+              <field name="next_maintenance"/>
+              <field name="maintenance_due" readonly="1"/>
+            </group>
+          </group>
+          
+          <group>
+            <field name="equipment_ids" widget="many2many_tags"/>
+          </group>
+          
+          <group>
+            <field name="maintenance_notes" string="Maintenance Notes" help="Maintenance notes and history" colspan="4"/>
+          </group>
+          
+          <group>
+            <field name="notes" string="Additional Notes" help="Additional notes about this kennel" colspan="4"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_pet_kennel_search" model="ir.ui.view">
+    <field name="name">pet.kennel.search</field>
+    <field name="model">pet.kennel</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="code"/>
+        <field name="location"/>
+        <field name="size"/>
+        <field name="status"/>
+        <field name="capacity"/>
+        <field name="daily_rate"/>
+        
+        <!-- Status Filters -->
+        <separator/>
+        <filter name="available" string="Available" domain="[('status','=','available')]"/>
+        <filter name="occupied" string="Occupied" domain="[('status','=','occupied')]"/>
+        <filter name="maintenance" string="Under Maintenance" domain="[('status','=','maintenance')]"/>
+        <filter name="cleaning" string="Being Cleaned" domain="[('status','=','cleaning')]"/>
+        <filter name="reserved" string="Reserved" domain="[('status','=','reserved')]"/>
+        
+        <!-- Size Filters -->
+        <separator/>
+        <filter name="small" string="Small" domain="[('size','=','small')]"/>
+        <filter name="medium" string="Medium" domain="[('size','=','medium')]"/>
+        <filter name="large" string="Large" domain="[('size','=','large')]"/>
+        <filter name="xl" string="Extra Large" domain="[('size','=','xl')]"/>
+        
+        <!-- Amenities Filters -->
+        <separator/>
+        <filter name="outdoor_access" string="Outdoor Access" domain="[('has_outdoor_access','=',True)]"/>
+        <filter name="heating" string="Heating" domain="[('has_heating','=',True)]"/>
+        <filter name="cooling" string="Cooling" domain="[('has_cooling','=',True)]"/>
+        <filter name="webcam" string="Webcam" domain="[('has_webcam','=',True)]"/>
+        
+        <!-- Availability Filters -->
+        <separator/>
+        <filter name="available_kennels" string="Available Kennels" domain="[('is_available','=',True)]"/>
+        <filter name="maintenance_due" string="Maintenance Due" domain="[('maintenance_due','=',True)]"/>
+        
+        <!-- Display Options -->
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <group>
+          <filter name="group_by_location" string="Location" context="{'group_by':'location'}"/>
+          <filter name="group_by_size" string="Size" context="{'group_by':'size'}"/>
+          <filter name="group_by_status" string="Status" context="{'group_by':'status'}"/>
+          <filter name="group_by_active" string="Active" context="{'group_by':'active'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="view_pet_kennel_kanban" model="ir.ui.view">
+    <field name="name">pet.kennel.kanban</field>
+    <field name="model">pet.kennel</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="name"/>
+        <field name="code"/>
+        <field name="location"/>
+        <field name="size"/>
+        <field name="status"/>
+        <field name="status_color"/>
+        <field name="capacity"/>
+        <field name="daily_rate"/>
+        <field name="current_occupancy"/>
+        <field name="occupancy_rate"/>
+        <field name="is_available"/>
+        <field name="days_since_cleaning"/>
+        <field name="maintenance_due"/>
+        <field name="has_outdoor_access"/>
+        <field name="has_heating"/>
+        <field name="has_cooling"/>
+        <field name="has_webcam"/>
+        <field name="equipment_ids"/>
+        <templates>
+          <t t-name="card">
+            <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.status_color.raw_value or '0')" class="oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccine-catalog">
+                <div class="pet-info">
+                  <div class="pet-icon theme-vaccine-catalog">
+                    <i class="fa fa-home" title="Kennel"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.name.value or 'Unknown Kennel'"/>
+                    <div class="pet-code">
+                      <i class="fa fa-tag" title="Kennel Code"/>
+                      <span t-esc="record.code.value or 'No Code'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.status.raw_value or 'available')">
+                    <i t-att-class="'fa fa-' + (record.status.raw_value == 'available' ? 'check-circle' : record.status.raw_value == 'occupied' ? 'users' : record.status.raw_value == 'maintenance' ? 'wrench' : record.status.raw_value == 'cleaning' ? 'broom' : 'question-circle')" title="Kennel Status"/>
+                    <span t-esc="record.status.value or 'Available'"/>
+                  </div>
+                  <div t-if="record.maintenance_due and record.maintenance_due.raw_value" class="overdue-indicator">
+                    <i class="fa fa-wrench" title="Maintenance Due"/>
+                    <span>Maintenance Due</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-home" title="Kennel Name"/>
+                    <span class="detail-label">Kennel:</span>
+                    <span class="detail-value" t-esc="record.name.value or 'Unknown'"/>
+                  </div>
+                  <div t-if="record.location and record.location.value" class="detail-row">
+                    <i class="fa fa-map-marker" title="Location"/>
+                    <span class="detail-label">Location:</span>
+                    <span class="detail-value" t-esc="record.location.value"/>
+                  </div>
+                  <div t-if="record.size and record.size.value" class="detail-row">
+                    <i class="fa fa-expand" title="Size"/>
+                    <span class="detail-label">Size:</span>
+                    <span class="detail-value" t-esc="record.size.value"/>
+                  </div>
+                  <div class="detail-row">
+                    <i class="fa fa-users" title="Capacity"/>
+                    <span class="detail-label">Capacity:</span>
+                    <span class="detail-value" t-esc="(record.current_occupancy.value or '0') + '/' + (record.capacity.value or '1') + ' pets'"/>
+                  </div>
+                  <div t-if="record.daily_rate and record.daily_rate.value" class="detail-row">
+                    <i class="fa fa-dollar" title="Daily Rate"/>
+                    <span class="detail-label">Rate:</span>
+                    <span class="detail-value" t-esc="'$' + record.daily_rate.value + '/day'"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div class="pet-stat-item">
+                    <i class="fa fa-percent" title="Occupancy Rate"/>
+                    <span class="pet-stat-label">Occupancy:</span>
+                    <span class="pet-stat-value" t-esc="(record.occupancy_rate.value or '0') + '%'"/>
+                  </div>
+                  <div t-if="record.days_since_cleaning and record.days_since_cleaning.value" class="pet-stat-item">
+                    <i class="fa fa-broom" title="Last Cleaned"/>
+                    <span class="pet-stat-label">Last Cleaned:</span>
+                    <span class="pet-stat-value" t-esc="record.days_since_cleaning.value + ' days ago'"/>
+                  </div>
+                  <div t-if="record.is_available and record.is_available.raw_value" class="pet-stat-item">
+                    <i class="fa fa-check-circle" title="Available Status"/>
+                    <span class="pet-stat-label">Status:</span>
+                    <span class="pet-stat-value">Available</span>
+                  </div>
+                </div>
+
+                <div t-if="record.has_outdoor_access or record.has_heating or record.has_cooling or record.has_webcam" class="follow-up-info">
+                  <i class="fa fa-star" title="Amenities"/>
+                  <span class="follow-up-label">Amenities:</span>
+                  <span class="follow-up-date">
+                    <span t-if="record.has_outdoor_access.raw_value">Outdoor</span>
+                    <span t-if="record.has_heating.raw_value">Heating</span>
+                    <span t-if="record.has_cooling.raw_value">Cooling</span>
+                    <span t-if="record.has_webcam.raw_value">Webcam</span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button t-if="record.status.raw_value == 'cleaning'" 
+                        class="btn btn-sm btn-success action-btn" 
+                        name="action_mark_cleaned" 
+                        type="object" 
+                        title="Mark Cleaned"
+                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                  <i class="fa fa-check" title="Mark Cleaned"/>
+                </button>
+                <button t-if="record.status.raw_value == 'available'" 
+                        class="btn btn-sm btn-warning action-btn" 
+                        name="action_mark_maintenance" 
+                        type="object" 
+                        title="Maintenance"
+                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                  <i class="fa fa-wrench" title="Maintenance"/>
+                </button>
+                <button t-if="record.status.raw_value == 'maintenance'" 
+                        class="btn btn-sm btn-primary action-btn" 
+                        name="action_mark_available" 
+                        type="object" 
+                        title="Mark Available"
+                        groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_boarding_user_all,pet_management.group_pet_boarding_admin">
+                  <i class="fa fa-check-circle" title="Mark Available"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="action_pet_kennel" model="ir.actions.act_window">
+    <field name="name">Kennels</field>
+    <field name="res_model">pet.kennel</field>
+    <field name="view_mode">kanban,list,form</field>
+  </record>
+
+  <menuitem id="menu_pet_kennel" parent="menu_pet_configuration" action="action_pet_kennel" name="Kennels" sequence="4" groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
+
+  <!-- Server Action to Refresh All Kennel Occupancy -->
+  <record id="action_refresh_all_kennel_occupancy" model="ir.actions.server">
+    <field name="name">Refresh All Kennel Occupancy</field>
+    <field name="model_id" ref="model_pet_kennel"/>
+    <field name="state">code</field>
+    <field name="code">model.refresh_all_occupancy()</field>
+  </record>
+</odoo>

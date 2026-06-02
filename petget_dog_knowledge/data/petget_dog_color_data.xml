@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="color_black" model="petget.dog.color"><field name="name">Black</field></record>
+        <record id="color_yellow" model="petget.dog.color"><field name="name">Yellow</field></record>
+        <record id="color_chocolate" model="petget.dog.color"><field name="name">Chocolate (Liver)</field></record>
+        <record id="color_fox_red" model="petget.dog.color"><field name="name">Fox Red</field></record>
+        <record id="color_cream" model="petget.dog.color"><field name="name">Cream</field></record>
+        <record id="color_white" model="petget.dog.color"><field name="name">White</field></record>
+        <record id="color_golden" model="petget.dog.color"><field name="name">Golden</field></record>
+        <record id="color_red" model="petget.dog.color"><field name="name">Red</field></record>
+        <record id="color_apricot" model="petget.dog.color"><field name="name">Apricot</field></record>
+        <record id="color_fawn" model="petget.dog.color"><field name="name">Fawn</field></record>
+        <record id="color_brindle" model="petget.dog.color"><field name="name">Brindle</field></record>
+        <record id="color_black_tan" model="petget.dog.color"><field name="name">Black &amp; Tan</field></record>
+        <record id="color_tan" model="petget.dog.color"><field name="name">Tan</field></record>
+        <record id="color_tricolour" model="petget.dog.color"><field name="name">Tricolour</field></record>
+        <record id="color_sable" model="petget.dog.color"><field name="name">Sable</field></record>
+        <record id="color_merle" model="petget.dog.color"><field name="name">Merle</field></record>
+        <record id="color_blue" model="petget.dog.color"><field name="name">Blue</field></record>
+        <record id="color_grey" model="petget.dog.color"><field name="name">Grey</field></record>
+        <record id="color_silver" model="petget.dog.color"><field name="name">Silver</field></record>
+        <record id="color_brown" model="petget.dog.color"><field name="name">Brown</field></record>
+        <record id="color_particolour" model="petget.dog.color"><field name="name">Particolour</field></record>
+    </data>
+</odoo>

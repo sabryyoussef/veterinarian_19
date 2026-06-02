@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Search -->
+    <record id="petget_core_view_search_note" model="ir.ui.view">
+        <field name="name">petget.note.search</field>
+        <field name="model">petget.note</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="body" string="Note"/>
+                <field name="animal_id"/>
+                <field name="note_type"/>
+                <separator/>
+                <filter name="group_type" string="Type" context="{'group_by': 'note_type'}"/>
+                <filter name="group_animal" string="Animal" context="{'group_by': 'animal_id'}"/>
+                <filter name="group_user" string="Logged By" context="{'group_by': 'user_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- List -->
+    <record id="petget_core_view_list_note" model="ir.ui.view">
+        <field name="name">petget.note.list</field>
+        <field name="model">petget.note</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="note_date"/>
+                <field name="animal_id"/>
+                <field name="note_type"/>
+                <field name="body"/>
+                <field name="user_id" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="petget_core_view_form_note" model="ir.ui.view">
+        <field name="name">petget.note.form</field>
+        <field name="model">petget.note</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="animal_id"/>
+                            <field name="note_type"/>
+                        </group>
+                        <group>
+                            <field name="note_date"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                    <group string="Note">
+                        <field name="body" nolabel="1" placeholder="Write the note..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="petget_core_action_note" model="ir.actions.act_window">
+        <field name="name">Activity Log</field>
+        <field name="res_model">petget.note</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="petget_core_view_search_note"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Log your first activity note</p>
+            <p>Keep a dated, typed history of care, health and breeding notes per animal.</p>
+        </field>
+    </record>
+
+</odoo>

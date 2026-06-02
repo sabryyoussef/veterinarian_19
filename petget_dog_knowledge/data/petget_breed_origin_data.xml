@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- noupdate=0: re-asserts seeded origins on each upgrade (existing + fresh DBs) -->
+  <data>
+
+    <record id="petget_dog.breed_labrador_retriever" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.ca'), ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_golden_retriever" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_german_shepherd_dog" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.de')])]"/>
+    </record>
+    <record id="petget_dog.breed_french_bulldog" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.fr'), ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_bulldog" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_poodle_standard" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.de'), ref('base.fr')])]"/>
+    </record>
+    <record id="petget_dog.breed_beagle" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_rottweiler" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.de')])]"/>
+    </record>
+    <record id="petget_dog.breed_dachshund" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.de')])]"/>
+    </record>
+    <record id="petget_dog.breed_pembroke_welsh_corgi" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_yorkshire_terrier" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_boxer" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.de')])]"/>
+    </record>
+    <record id="petget_dog.breed_siberian_husky" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.ru')])]"/>
+    </record>
+    <record id="petget_dog.breed_cavalier_king_charles_spaniel" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.uk')])]"/>
+    </record>
+    <record id="petget_dog.breed_chihuahua" model="petget.dog.breed">
+      <field name="origin_country_ids" eval="[(6, 0, [ref('base.mx')])]"/>
+    </record>
+
+  </data>
+</odoo>

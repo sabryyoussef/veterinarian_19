@@ -1,0 +1,974 @@
+/* ======================================== */
+/* GLOBAL PET MANAGEMENT KANBAN CSS */
+/* ======================================== */
+
+/* Global Kanban Card Styles */
+.pet-kanban-card {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0 !important;
+}
+
+
+.pet-kanban-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-2px);
+}
+
+/* Color-coded borders for different statuses */
+.pet-kanban-card.o_kanban_color_1 {
+  border-left: 4px solid #007bff;
+}
+
+.pet-kanban-card.o_kanban_color_2 {
+  border-left: 4px solid #28a745;
+}
+
+.pet-kanban-card.o_kanban_color_3 {
+  border-left: 4px solid #ffc107;
+}
+
+.pet-kanban-card.o_kanban_color_4 {
+  border-left: 4px solid #dc3545;
+}
+
+.pet-kanban-card.o_kanban_color_5 {
+  border-left: 4px solid #6f42c1;
+}
+
+/* Global Header Styles */
+.pet-kanban-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Theme-specific header backgrounds */
+.pet-kanban-header.theme-medical {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.pet-kanban-header.theme-vaccination {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-bottom-color: #a5d6a7;
+}
+
+.pet-kanban-header.theme-vaccine-catalog {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-bottom-color: #90caf9;
+}
+
+/* Global Info Section */
+.pet-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.pet-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pet-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pet-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.pet-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 4px 0;
+  white-space: break-spaces;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Global Icon Styles */
+.pet-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pet-icon.theme-medical {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+}
+
+.pet-icon.theme-vaccination {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.pet-icon.theme-vaccine-catalog {
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+}
+
+.visit-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.visit-type-checkup {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.visit-type-emergency {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.visit-type-vaccination {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+.visit-type-surgery {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.visit-type-dental {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.visit-type-grooming {
+  background: #e0f2f1;
+  color: #00695c;
+}
+
+.visit-type-other {
+  background: #f5f5f5;
+  color: #616161;
+}
+
+.status-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-scheduled {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-in_progress {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.status-completed {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+.status-cancelled {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.status-rescheduled {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.overdue-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #ffebee;
+  color: #d32f2f;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Global Content Styles */
+.pet-kanban-content {
+  padding: 16px;
+  padding-bottom: 60px;
+}
+
+.pet-details-section {
+  margin-bottom: 16px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.detail-row i {
+  width: 16px;
+  color: #6c757d;
+  text-align: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #495057;
+  min-width: 60px;
+}
+
+.detail-value {
+  color: #212529;
+  flex: 1;
+  word-break: break-word;
+}
+
+.financial-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.cost-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #28a745;
+}
+
+.cost-amount {
+  font-size: 16px;
+}
+
+.payment-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.payment-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.payment-paid {
+  background: #d4edda;
+  color: #155724;
+}
+
+.payment-partial {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.payment-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.time-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6c757d;
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.follow-up-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #e3f2fd;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.follow-up-label {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.follow-up-date {
+  color: #1976d2;
+  font-weight: 500;
+}
+
+/* Global Action Buttons */
+.pet-kanban-actions {
+  display: flex !important;
+  gap: 6px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  justify-content: flex-end;
+  visibility: visible !important;
+  opacity: 1 !important;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
+
+/* Ensure action buttons are always visible */
+.pet-kanban-card .pet-kanban-actions {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.pet-kanban-card .pet-kanban-actions .action-btn {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+/* Force visibility for all pet kanban action buttons */
+.pet-kanban .pet-kanban-actions {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 57px;
+}
+
+.pet-kanban .pet-kanban-actions .action-btn {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.action-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional Info Styles */
+.additional-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.additional-info-name {
+  font-weight: 600;
+}
+
+.vaccination-type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.type-initial {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.type-booster {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.type-annual {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+.type-emergency {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+/* Vaccination Actions */
+.vaccination-actions {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  justify-content: flex-end;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .medical-visit-header,
+  .vaccination-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .status-section {
+    align-items: flex-start;
+  }
+  
+  .financial-info {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .medical-visit-actions,
+  .vaccination-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .action-btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+}
+
+/* Global Code Display */
+.pet-code {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+.status-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-active {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.status-inactive {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.expired-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #ffebee;
+  color: #d32f2f;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+.expiring-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #fff3e0;
+  color: #f57c00;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Global Usage Statistics */
+.pet-usage-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pet-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.pet-stat-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.pet-stat-value {
+  color: #212529;
+  font-weight: 500;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.detail-row i {
+  width: 16px;
+  color: #6c757d;
+  text-align: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #495057;
+  min-width: 80px;
+}
+
+.detail-value {
+  color: #212529;
+  flex: 1;
+  word-break: break-word;
+}
+
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priority-low {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.priority-medium {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.priority-high {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.priority-critical {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.regulatory-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.fda-approved {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.cost-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #28a745;
+}
+
+.cost-amount {
+  font-size: 16px;
+}
+
+.usage-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.stat-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.stat-value {
+  color: #212529;
+  font-weight: 500;
+}
+
+.frequency-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.frequency-rare {
+  background: #f5f5f5;
+  color: #616161;
+}
+
+.frequency-occasional {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.frequency-common {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+.frequency-frequent {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.expiration-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #fff3e0;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.expiration-label {
+  font-weight: 600;
+  color: #f57c00;
+}
+
+.expiration-date {
+  color: #f57c00;
+  font-weight: 500;
+}
+
+/* Global Action Buttons (already defined above) */
+
+.action-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Breed-specific Badge Styles */
+.size-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.size-tiny {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.size-small {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.size-medium {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+.size-large {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.size-giant {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.temperament-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.temperament-calm {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.temperament-energetic {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.temperament-aggressive {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.temperament-friendly {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.temperament-shy {
+  background: #f5f5f5;
+  color: #616161;
+}
+
+.temperament-playful {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.care-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.care-low {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.care-medium {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.care-high {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+/* Global Financial Info */
+.pet-financial-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.pet-cost-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #28a745;
+}
+
+.pet-cost-amount {
+  font-size: 16px;
+}
+
+/* Payment Status */
+.payment-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.payment-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.payment-paid {
+  background: #d4edda;
+  color: #155724;
+}
+
+.payment-partial {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.payment-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Time Info */
+.time-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6c757d;
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+/* Follow-up Info */
+.follow-up-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #e3f2fd;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.follow-up-label {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.follow-up-date {
+  color: #1976d2;
+  font-weight: 500;
+}

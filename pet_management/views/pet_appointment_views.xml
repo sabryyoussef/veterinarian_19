@@ -1,0 +1,702 @@
+<odoo>
+  <record id="view_pet_appointment_tree" model="ir.ui.view">
+    <field name="name">pet.appointment.list</field>
+    <field name="model">pet.appointment</field>
+    <field name="arch" type="xml">
+      <list decoration-success="state == 'done'" decoration-info="state == 'in_progress'" decoration-warning="state == 'confirmed'" decoration-danger="state == 'cancelled'">
+        <field name="name"/>
+        <field name="pet_id"/>
+        <field name="primary_type" widget="badge"/>
+        <field name="title"/>
+        <field name="start_datetime" widget="datetime"/>
+        <field name="end_datetime" widget="datetime"/>
+        <field name="duration_display"/>
+        <field name="state" widget="badge"/>
+        <field name="resource_id"/>
+        <field name="room_id"/>
+        <field name="cost"/>
+        <field name="payment_status"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_pet_appointment_search" model="ir.ui.view">
+    <field name="name">pet.appointment.search</field>
+    <field name="model">pet.appointment</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="pet_id"/>
+        <field name="primary_type"/>
+        <field name="state"/>
+        <field name="title"/>
+        <field name="start_datetime" string="Start Date"/>
+        <field name="end_datetime" string="End Date"/>
+        <field name="resource_id"/>
+        <field name="room_id"/>
+        
+        <!-- Status Filters -->
+        <separator/>
+        <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+        <filter name="confirmed" string="Confirmed" domain="[('state','=','confirmed')]"/>
+        <filter name="in_progress" string="In Progress" domain="[('state','=','in_progress')]"/>
+        <filter name="done" string="Done" domain="[('state','=','done')]"/>
+        <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+        <filter name="rescheduled" string="Rescheduled" domain="[('state','=','rescheduled')]"/>
+        <filter name="overdue" string="Overdue" domain="[('is_overdue','=',True)]"/>
+        
+        <!-- Time-based Filters -->
+        <separator/>
+        <filter name="today" string="Today" domain="[('start_datetime','&gt;=',context_today()),('start_datetime','&lt;',context_today() + datetime.timedelta(days=1))]"/>
+        <filter name="upcoming" string="Upcoming" domain="[('start_datetime','&gt;=',context_today())]"/>
+        <filter name="past" string="Past" domain="[('end_datetime','&lt;',context_today())]"/>
+        <filter name="this_week" string="This Week" domain="[('start_datetime','&gt;=',context_today()),('start_datetime','&lt;=',context_today() + datetime.timedelta(days=7))]"/>
+        <filter name="overdue_time" string="Overdue by Time" domain="[('start_datetime','&lt;',context_today()),('state','in',['draft','confirmed'])]"/>
+        
+        <!-- Type Filters -->
+        <separator/>
+        <filter name="checkup" string="Checkup" domain="[('primary_type','=','checkup')]"/>
+        <filter name="vaccination" string="Vaccination" domain="[('is_vaccination','=','True')]"/>
+        <filter name="grooming" string="Grooming" domain="[('is_grooming','=','True')]"/>
+        <filter name="training" string="Training" domain="[('is_training','=','True')]"/>
+        <filter name="boarding" string="Boarding" domain="[('is_boarding','=','True')]"/>
+        <filter name="emergency" string="Emergency" domain="[('primary_type','=','emergency')]"/>
+        <filter name="surgery" string="Surgery" domain="[('primary_type','=','surgery')]"/>
+        <filter name="dental" string="Dental" domain="[('primary_type','=','dental')]"/>
+        <filter name="comprehensive" string="Comprehensive" domain="[('primary_type','=','comprehensive')]"/>
+        <filter name="medical" string="Medical" domain="[('is_medical','=','True')]"/>
+        
+        <!-- Display Options -->
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <!-- Group By Options -->
+        <group>
+          <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+          <filter name="group_by_primary_type" string="Primary Type" context="{'group_by':'primary_type'}"/>
+          <filter name="group_by_medical" string="Medical Services" context="{'group_by':'is_medical'}"/>
+          <filter name="group_by_grooming" string="Grooming Services" context="{'group_by':'is_grooming'}"/>
+          <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+          <filter name="group_by_resource" string="Resource" context="{'group_by':'resource_id'}"/>
+          <filter name="group_by_room" string="Room" context="{'group_by':'room_id'}"/>
+          <filter name="group_by_start_date" string="Start Date" context="{'group_by':'start_datetime:day'}"/>
+          <filter name="group_by_start_week" string="Start Week" context="{'group_by':'start_datetime:week'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="view_pet_appointment_form" model="ir.ui.view">
+    <field name="name">pet.appointment.form</field>
+    <field name="model">pet.appointment</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="set_to_confirmed" type="object" string="Confirm" 
+                  invisible="state == 'confirmed'" class="btn-primary" icon="fa-check"/>
+          <button name="set_to_in_progress" type="object" string="Start" 
+                  invisible="state != 'confirmed'" class="btn-info" icon="fa-play"/>
+          <button name="set_to_done" type="object" string="Complete" 
+                  invisible="state != 'in_progress'" class="btn-success" icon="fa-check-circle"/>
+          <button name="set_to_reschedule" type="object" string="Reschedule" 
+                  invisible="state not in ['draft', 'confirmed']" class="btn-warning" icon="fa-calendar-plus-o"/>
+          <button name="set_to_cancel" type="object" string="Cancel" 
+                  invisible="state == 'cancelled'" class="btn-secondary" icon="fa-times"/>
+          <button name="action_send_notification" type="object" string="Send Notification" 
+                  class="btn-info" icon="fa-bell"/>
+          <button name="action_create_reminder_notification" type="object" string="Create Reminder" 
+                  invisible="state in ['done', 'cancelled']" class="btn-warning" icon="fa-clock-o"/>
+          <button name="action_sync_to_calendar" type="object" string="Sync to Calendar" 
+                  invisible="not enable_calendar_integration or not sync_to_calendar or has_calendar_event" class="btn-primary" icon="fa-calendar"/>
+          <button name="action_create_facility_entry" type="object" string="Create Facility Entry" 
+                  invisible="state in ['done', 'cancelled'] or (medical_visit_id or vaccination_id or grooming_session_id or training_session_id or boarding_stay_id)" 
+                  class="btn-primary" icon="fa-plus"/>
+          
+          <!-- Manual Facility Creation Buttons -->
+          <button name="action_create_medical_visit" type="object" string="Create Medical Visit" 
+                  invisible="state in ['done', 'cancelled'] or medical_visit_id or not is_medical" 
+                  class="btn-info" icon="fa-stethoscope"/>
+          <button name="action_create_vaccination" type="object" string="Create Vaccination" 
+                  invisible="state in ['done', 'cancelled'] or vaccination_id or not is_vaccination or not vaccine_id" 
+                  class="btn-success" icon="fa-medkit"/>
+          <button name="action_create_grooming_session" type="object" string="Create Grooming Session" 
+                  invisible="state in ['done', 'cancelled'] or grooming_session_id or not is_grooming or not service_id" 
+                  class="btn-warning" icon="fa-scissors"/>
+          <button name="action_create_training_session" type="object" string="Create Training Session" 
+                  invisible="state in ['done', 'cancelled'] or training_session_id or not is_training or not program_id" 
+                  class="btn-primary" icon="fa-graduation-cap"/>
+          <button name="action_create_boarding_stay" type="object" string="Create Boarding Stay" 
+                  invisible="state in ['done', 'cancelled'] or boarding_stay_id or not is_boarding or not kennel_id" 
+                  class="btn-secondary" icon="fa-home"/>
+          
+          <!-- Invoice Buttons -->
+          <button name="action_create_invoice" type="object" string="Create Invoice" 
+                  invisible="invoice_id" class="btn-primary" icon="fa-file-text-o"/>
+          <button name="action_view_invoice" type="object" string="View Invoice" 
+                  invisible="not invoice_id" class="btn-info" icon="fa-file-text-o"/>
+          <button name="action_refresh_invoice" type="object" string="Refresh Invoice" 
+                  invisible="not invoice_id or invoice_state != 'draft'" class="btn-warning" icon="fa-refresh"/>
+          <button name="action_cancel_invoice" type="object" string="Cancel Invoice" 
+                  invisible="invoice_state not in ['draft', 'posted']" class="btn-danger" icon="fa-times"/>
+          
+          <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,done"/>
+          
+        </header>
+        <sheet>
+          <field name="enable_calendar_integration" invisible="1"/>
+          <field name="has_calendar_event" invisible="1"/>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pet" type="object" string="Pet" icon="fa-paw"
+                    groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
+            <button name="action_view_medical_visit" type="object" string="Medical Visit" icon="fa-stethoscope" 
+                    invisible="not medical_visit_id"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+            <button name="action_view_vaccination" type="object" string="Vaccination" icon="fa-shield" 
+                    invisible="not vaccination_id"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+            <button name="action_view_vaccine" type="object" string="Vaccine" icon="fa-medkit" 
+                    invisible="not vaccine_id"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+            <button name="action_view_grooming_session" type="object" string="Grooming Session" icon="fa-cut" 
+                    invisible="not grooming_session_id"
+                    groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+            <button name="action_view_grooming_service" type="object" string="Grooming Service" icon="fa-scissors" 
+                    invisible="not service_id"
+                    groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+            <button name="action_view_boarding_stay" type="object" string="Boarding Stay" icon="fa-home" 
+                    invisible="not boarding_stay_id"
+                    groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+            <button name="action_view_kennel" type="object" string="Kennel" icon="fa-building" 
+                    invisible="not kennel_id"
+                    groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+            <button name="action_view_training_session" type="object" string="Training Session" icon="fa-graduation-cap" 
+                    invisible="not training_session_id"
+                    groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+            <button name="action_view_training_program" type="object" string="Training Program" icon="fa-book" 
+                    invisible="not program_id"
+                    groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin"/>
+          </div>
+          
+          <div class="oe_title">
+            <h1>
+              <field name="name" readonly="1"/>
+              <field name="title" placeholder="Appointment Title"/>
+            </h1>
+          </div>
+          
+          <group>
+            <group>
+              <field name="pet_id"/>
+              <field name="primary_type"/>
+              <field name="title"/>
+              <field name="state"/>
+            </group>
+            <group>
+              <field name="start_datetime"/>
+              <field name="end_datetime"/>
+              <field name="duration_display" readonly="1"/>
+              <field name="resource_id" invisible="primary_type in ['checkup', 'emergency', 'surgery', 'dental', 'other']"/>
+              <field name="room_id"/>
+              <field name="sync_to_calendar" invisible="not enable_calendar_integration"/>
+            </group>
+          </group>
+          
+          <!-- Notebook with Services and Advance tabs -->
+          <notebook>
+            <!-- Services Tab -->
+            <page string="Services" name="services">
+              <!-- Service Type Selection -->
+              <group string="Service Types">
+                <group>
+                  <field name="is_medical" widget="boolean_toggle"/>
+                  <field name="is_vaccination" widget="boolean_toggle"/>
+                  <field name="is_grooming" widget="boolean_toggle"/>
+                </group>
+                <group>
+                  <field name="is_training" widget="boolean_toggle"/>
+                  <field name="is_boarding" widget="boolean_toggle"/>
+                </group>
+              </group>
+              
+              <separator string="Service Selections"/>
+              
+              <group>
+                <group string="Medical Visit Selection" invisible="not is_medical">
+                  <field name="medical_visit_id" string="Medical Visit" placeholder="Select medical visit for this appointment" 
+                         domain="[('pet_id', '=', pet_id)]"
+                         context="{'search_default_reason': 1}"/>
+                </group>
+                <group string="Vaccination Selection" invisible="not is_vaccination">
+                  <field name="vaccination_id" string="Vaccination" placeholder="Select vaccination for this appointment"
+                         domain="[('pet_id', '=', pet_id)]"/>
+                  <field name="vaccine_id" string="Vaccine" placeholder="Select vaccine for this appointment"/>
+                </group>
+                <group string="Grooming Selection" invisible="not is_grooming">
+                  <field name="grooming_session_id" string="Grooming Session" placeholder="Select grooming session for this appointment"
+                         domain="[('pet_id', '=', pet_id)]"/>
+                  <field name="service_id" string="Grooming Service" placeholder="Select grooming service for this appointment"/>
+                </group>
+                <group string="Boarding Selection" invisible="not is_boarding">
+                  <field name="boarding_stay_id" string="Boarding Stay" placeholder="Select boarding stay for this appointment"
+                         domain="[('pet_id', '=', pet_id)]"/>
+                  <field name="kennel_id" string="Boarding Facility" placeholder="Select boarding facility for this appointment"/>
+                </group>
+               
+                <!-- Training Program Selection -->
+                <group string="Training Selection" invisible="not is_training">
+                  <field name="program_id" string="Training Program" placeholder="Select training program for this appointment"/>
+                  <field name="training_session_id" string="Training Session" placeholder="Select training session for this appointment"
+                         domain="[('pet_id', '=', pet_id)]"/>
+                </group>
+              </group>
+            </page>
+            
+            <!-- Cost Details Tab -->
+            <page string="Cost Details" name="cost_details">
+              <group string="Summary">
+                <group>
+                  <field name="cost" string="Total Cost" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </group>
+                <group>
+                  <field name="payment_status"/>
+                </group>
+              </group>
+              
+              <separator string="Service Cost Breakdown"/>
+              
+              <!-- Cost Details Table -->
+             
+                <div class="table-responsive">
+                  <table class="table table-bordered o_list_table o_list_table_ungrouped" style="width: 100%;">
+                  <thead>
+                    <tr class="o_list_record_selector">
+                      <th class="o_column_sortable" style="width: 15%;">Type</th>
+                      <th class="o_column_sortable" style="width: 30%;">Name</th>
+                      <th class="o_column_sortable" style="width: 20%;">Status</th>
+                      <th class="o_column_sortable" style="width: 20%;">Cost</th>
+                      <th class="o_column_sortable" style="width: 15%;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Medical Visit Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not medical_visit_id">
+                      <td class="o_data_cell ">
+                        <span class="badge badge-primary" style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-stethoscope" title="Medical"/> Medical
+                        </span>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="medical_visit_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="medical_visit_status" readonly="1" nolabel="1" widget="badge"/>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="medical_visit_cost" readonly="1" nolabel="1" 
+                               invisible="not medical_visit_id" widget="float" 
+                               digits="[16,2]"/>
+                        <div class="text-muted" invisible="medical_visit_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell ">
+                        <button name="action_view_medical_visit" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not medical_visit_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Vaccination Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not vaccination_id">
+                      <td class="o_data_cell ">
+                        <span class="badge badge-success" style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-shield" title="Vaccination"/> Vaccination
+                        </span>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="vaccination_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="vaccination_status" readonly="1" nolabel="1" widget="badge"/>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="vaccination_cost" readonly="1" nolabel="1" 
+                               invisible="not vaccination_id" widget="monetary" 
+                               options="{'currency_field': 'currency_id'}"/>
+                        <div class="text-muted" invisible="vaccination_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell ">
+                        <button name="action_view_vaccination" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not vaccination_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Vaccine Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not vaccine_id">
+                      <td class="o_data_cell ">
+                        <span class="badge badge-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-medkit" title="Vaccine"/> Vaccine
+                        </span>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="vaccine_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell ">
+                        <span class="badge badge-success" style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Completed</span>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="vaccine_cost" readonly="1" nolabel="1" 
+                               invisible="not vaccine_id" widget="float" 
+                               digits="[16,2]"/>
+                        <div class="text-muted" invisible="vaccine_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell ">
+                        <button name="action_view_vaccine" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not vaccine_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Grooming Session Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not grooming_session_id">
+                      <td class="o_data_cell ">
+                        <span class="badge badge-warning" style="background-color: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-cut" title="Grooming"/> Grooming
+                        </span>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="grooming_session_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="grooming_session_status" readonly="1" nolabel="1" widget="badge"/>
+                      </td>
+                      <td class="o_data_cell ">
+                        <field name="grooming_session_cost" readonly="1" nolabel="1" 
+                               invisible="not grooming_session_id" widget="float" 
+                               digits="[16,2]"/>
+                        <div class="text-muted" invisible="grooming_session_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell ">
+                        <button name="action_view_grooming_session" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not grooming_session_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Grooming Service Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not service_id">
+                      <td class="o_data_cell">
+                        <span class="badge badge-warning" style="background-color: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-scissors" title="Service"/> Service
+                        </span>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="service_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell">
+                        <span class="badge badge-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Service</span>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="grooming_service_cost" readonly="1" nolabel="1" 
+                               invisible="not service_id" widget="float" 
+                               digits="[16,2]"/>
+                        <div class="text-muted" invisible="service_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell">
+                        <button name="action_view_grooming_service" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not service_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Training Session Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not training_session_id">
+                      <td class="o_data_cell">
+                        <span class="badge badge-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-graduation-cap" title="Training"/> Training
+                        </span>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="training_session_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="training_session_status" readonly="1" nolabel="1" widget="badge"/>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="training_session_cost" readonly="1" nolabel="1" 
+                               invisible="not training_session_id" widget="monetary" 
+                               options="{'currency_field': 'currency_id'}"/>
+                        <div class="text-muted" invisible="training_session_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell">
+                        <button name="action_view_training_session" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not training_session_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Training Program Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not program_id">
+                      <td class="o_data_cell">
+                        <span class="badge badge-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-book" title="Program"/> Program
+                        </span>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="program_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell">
+                        <span class="badge badge-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Program</span>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="training_program_cost" readonly="1" nolabel="1" 
+                               invisible="not program_id" widget="monetary" 
+                               options="{'currency_field': 'currency_id'}"/>
+                        <div class="text-muted" invisible="program_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell">
+                        <button name="action_view_training_program" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not program_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Boarding Stay Row -->
+                    <tr class="o_data_row o_row_hover" invisible="not boarding_stay_id">
+                      <td class="o_data_cell">
+                        <span class="badge badge-secondary" style="background-color: #6c757d; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                          <i class="fa fa-home" title="Boarding"/> Boarding
+                        </span>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="boarding_stay_id" readonly="1" nolabel="1"/>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="boarding_stay_status" readonly="1" nolabel="1" widget="badge"/>
+                      </td>
+                      <td class="o_data_cell">
+                        <field name="boarding_stay_cost" readonly="1" nolabel="1" 
+                               invisible="not boarding_stay_id" widget="float" 
+                               digits="[16,2]"/>
+                        <div class="text-muted" invisible="boarding_stay_id">No Cost</div>
+                      </td>
+                      <td class="o_data_cell">
+                        <button name="action_view_boarding_stay" type="object" 
+                                string="View" icon="fa-eye" class="btn btn-primary btn-sm"
+                                invisible="not boarding_stay_id"/>
+                      </td>
+                    </tr>
+                    
+                    <!-- Empty State Row -->
+                    <tr class="o_data_row o_row_hover" invisible="medical_visit_id or vaccination_id or vaccine_id or grooming_session_id or service_id or training_session_id or program_id or boarding_stay_id">
+                      <td class="o_data_cell" colspan="5">
+                        <div class="text-center text-muted">
+                          <i class="fa fa-info-circle" title="Info"/> No services selected
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  </table>
+                </div>
+              
+            </page>
+            
+            <!-- Advance Tab -->
+            <page string="Advance" name="advance">
+              <group string="Facility Connection Fields">
+                <group>
+                  <field name="follow_up_date"/>
+                  <field name="auto_create_facility"/>
+                </group>
+                <group>
+                  <field name="invoice_id" readonly="1"/>
+                  <field name="invoice_state" readonly="1"/>
+                  <field name="invoice_amount" readonly="1"/>
+                </group>
+                <group>
+                  <field name="is_overdue" readonly="1"/>
+                  <field name="days_since_appointment" readonly="1"/>
+                </group>
+              </group>
+              
+              <separator string="Notes and Instructions"/>
+              
+              <group>
+                <field name="notes" string="Appointment Notes" help="Additional notes and observations about this appointment" colspan="4"/>
+              </group>
+              
+              <group>
+                <field name="follow_up_notes" string="Follow-up Instructions" help="Instructions and recommendations for follow-up care or actions" colspan="4"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_pet_appointment_kanban" model="ir.ui.view">
+    <field name="name">pet.appointment.kanban</field>
+    <field name="model">pet.appointment</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="pet_id"/>
+        <field name="primary_type"/>
+        <field name="title"/>
+        <field name="start_datetime"/>
+        <field name="end_datetime"/>
+        <field name="state"/>
+        <field name="state_color"/>
+        <field name="resource_id"/>
+        <field name="room_id"/>
+        <field name="notes"/>
+        <field name="cost"/>
+        <field name="payment_status"/>
+        <field name="invoice_state" widget="badge"/>
+        <field name="invoice_amount"/>
+        <field name="follow_up_date"/>
+        <field name="follow_up_notes"/>
+        <field name="duration_display"/>
+        <templates>
+          <t t-name="card">
+            <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.state_color and record.state_color.raw_value or '0')" class="oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-medical">
+                <div class="pet-info">
+                  <div class="pet-avatar">
+                    <img t-att-src="record.pet_id and '/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                         t-att-alt="record.pet_id and record.pet_id.value" 
+                         class="pet-image"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.pet_id and record.pet_id.value or 'Unknown Pet'"/>
+                    <div class="pet-code">
+                      <i class="fa fa-calendar" title="Appointment Type"/>
+                      <span t-esc="record.primary_type and record.primary_type.value or 'General'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.state and record.state.raw_value or 'draft')" 
+                       t-att-style="record.state and record.state.raw_value == 'done' ? 'background-color: #28a745; color: white;' : record.state and record.state.raw_value == 'cancelled' ? 'background-color: #dc3545; color: white;' : record.state and record.state.raw_value == 'in_progress' ? 'background-color: #ffc107; color: #212529;' : record.state and record.state.raw_value == 'confirmed' ? 'background-color: #17a2b8; color: white;' : record.state and record.state.raw_value == 'rescheduled' ? 'background-color: #6c757d; color: white;' : 'background-color: #6c757d; color: white;'">
+                    <i t-att-class="'fa fa-' + (record.state and record.state.raw_value == 'confirmed' ? 'check-circle' : record.state and record.state.raw_value == 'in_progress' ? 'play-circle' : record.state and record.state.raw_value == 'done' ? 'check-circle' : record.state and record.state.raw_value == 'cancelled' ? 'times-circle' : record.state and record.state.raw_value == 'rescheduled' ? 'calendar' : 'clock-o')" title="Appointment Status"/>
+                    <span t-esc="record.state and record.state.value or 'Draft'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-calendar" title="Start Time"/>
+                    <span class="detail-label">Start:</span>
+                    <span class="detail-value" t-esc="record.start_datetime and record.start_datetime.value"/>
+                  </div>
+                  <div class="detail-row">
+                    <i class="fa fa-calendar-check-o" title="End Time"/>
+                    <span class="detail-label">End:</span>
+                    <span class="detail-value" t-esc="record.end_datetime and record.end_datetime.value"/>
+                  </div>
+                  <div t-if="record.title and record.title.value" class="detail-row">
+                    <i class="fa fa-header" title="Title"/>
+                    <span class="detail-label">Title:</span>
+                    <span class="detail-value" t-esc="record.title.value"/>
+                  </div>
+                  <div t-if="record.room_id and record.room_id.value" class="detail-row">
+                    <i class="fa fa-home" title="Room"/>
+                    <span class="detail-label">Room:</span>
+                    <span class="detail-value" t-esc="record.room_id.value"/>
+                  </div>
+                  <div t-if="record.resource_id and record.resource_id.value" class="detail-row">
+                    <i class="fa fa-user" title="Resource"/>
+                    <span class="detail-label">Resource:</span>
+                    <span class="detail-value" t-esc="record.resource_id.value"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div class="pet-stat-item">
+                    <i class="fa fa-clock-o" title="Duration"/>
+                    <span class="pet-stat-label">Duration:</span>
+                    <span class="pet-stat-value" t-esc="record.duration_display and record.duration_display.value or '0m'"/>
+                  </div>
+                  <div t-if="record.cost and record.cost.value" class="pet-stat-item">
+                    <i class="fa fa-dollar" title="Cost"/>
+                    <span class="pet-stat-label">Cost:</span>
+                    <span class="pet-stat-value" t-esc="record.cost.value"/>
+                  </div>
+                  <div t-if="record.payment_status and record.payment_status.value" class="pet-stat-item">
+                    <i class="fa fa-credit-card" title="Payment Status"/>
+                    <span class="pet-stat-label">Payment:</span>
+                    <span class="pet-stat-value" t-esc="record.payment_status.value"/>
+                  </div>
+                </div>
+
+                <div t-if="record.follow_up_date and record.follow_up_date.value" class="follow-up-info">
+                  <i class="fa fa-calendar-plus-o" title="Follow-up Date"/>
+                  <span class="follow-up-label">Follow-up:</span>
+                  <span class="follow-up-date" t-esc="record.follow_up_date.value"/>
+                </div>
+
+                <div t-if="record.notes and record.notes.value" class="time-info">
+                  <i class="fa fa-sticky-note" title="Notes"/>
+                  <span t-esc="record.notes.value"/>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button t-if="record.state.raw_value == 'draft'" 
+                        class="btn btn-sm btn-primary action-btn" 
+                        name="set_to_confirmed" 
+                        type="object" 
+                        title="Confirm"
+                        groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
+                  <i class="fa fa-check" title="Confirm"/>
+                </button>
+                <button t-if="record.state.raw_value == 'confirmed'" 
+                        class="btn btn-sm btn-info action-btn" 
+                        name="set_to_in_progress" 
+                        type="object" 
+                        title="Start"
+                        groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
+                  <i class="fa fa-play" title="Start"/>
+                </button>
+                <button t-if="record.state.raw_value == 'in_progress'" 
+                        class="btn btn-sm btn-success action-btn" 
+                        name="set_to_done" 
+                        type="object" 
+                        title="Complete"
+                        groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
+                  <i class="fa fa-check-circle" title="Complete"/>
+                </button>
+                <button t-if="record.state.raw_value == 'draft' or record.state.raw_value == 'confirmed'" 
+                        class="btn btn-sm btn-warning action-btn" 
+                        name="set_to_reschedule" 
+                        type="object" 
+                        title="Reschedule"
+                        groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
+                  <i class="fa fa-calendar-plus-o" title="Reschedule"/>
+                </button>
+                <button t-if="record.state.raw_value != 'cancelled'" 
+                        class="btn btn-sm btn-danger action-btn" 
+                        name="set_to_cancel" 
+                        type="object" 
+                        title="Cancel"
+                        groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
+                  <i class="fa fa-times" title="Cancel"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="action_pet_appointment" model="ir.actions.act_window">
+    <field name="name">Appointments</field>
+    <field name="res_model">pet.appointment</field>
+    <field name="view_mode">kanban,list,form</field>
+  </record>
+
+  <menuitem id="menu_pet_appointment" parent="menu_pet_root" action="action_pet_appointment" name="Appointments" sequence="2" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_appointments"/>
+</odoo>

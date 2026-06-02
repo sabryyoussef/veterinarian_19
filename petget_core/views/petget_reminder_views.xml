@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Search -->
+    <record id="petget_core_view_search_reminder" model="ir.ui.view">
+        <field name="name">petget.reminder.search</field>
+        <field name="model">petget.reminder</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title"/>
+                <field name="animal_id"/>
+                <field name="reminder_type"/>
+                <filter name="filter_pending" string="Pending" domain="[('state', '=', 'pending')]"/>
+                <filter name="filter_done" string="Completed" domain="[('state', '=', 'done')]"/>
+                <filter name="filter_overdue" string="Overdue" domain="[('is_overdue', '=', True)]"/>
+                <filter name="filter_due_today" string="Due Today"
+                        domain="[('due_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="group_type" string="Type" context="{'group_by': 'reminder_type'}"/>
+                <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                <filter name="group_animal" string="Animal" context="{'group_by': 'animal_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- List -->
+    <record id="petget_core_view_list_reminder" model="ir.ui.view">
+        <field name="name">petget.reminder.list</field>
+        <field name="model">petget.reminder</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="is_overdue" decoration-muted="state == 'done'">
+                <field name="due_date"/>
+                <field name="name"/>
+                <field name="animal_id"/>
+                <field name="reminder_type"/>
+                <field name="user_id" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-warning="state == 'pending'"/>
+                <field name="is_overdue" column_invisible="1"/>
+                <button name="action_done" type="object" string="Done"
+                        icon="fa-check" invisible="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="petget_core_view_form_reminder" model="ir.ui.view">
+        <field name="name">petget.reminder.form</field>
+        <field name="model">petget.reminder</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_done" type="object" string="Mark Completed"
+                            class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset" type="object" string="Reset to Pending"
+                            invisible="state == 'pending'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Annual vaccination"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="animal_id"/>
+                            <field name="reminder_type"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="due_date"/>
+                            <field name="is_overdue" invisible="1"/>
+                            <field name="completed_date" invisible="state != 'done'"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="note" nolabel="1" placeholder="Optional notes..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="petget_core_action_reminder" model="ir.actions.act_window">
+        <field name="name">Reminders</field>
+        <field name="res_model">petget.reminder</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="petget_core_view_search_reminder"/>
+        <field name="context">{'search_default_filter_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first reminder</p>
+            <p>Track vaccinations, worming, vet visits and more — never miss a due date.</p>
+        </field>
+    </record>
+
+</odoo>

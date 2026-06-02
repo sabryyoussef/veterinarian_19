@@ -1,0 +1,12 @@
+<odoo>
+    <menuitem id="menu_pet_root" name="Pets" sequence="10"/>
+    <menuitem id="menu_pet_core" name="Core" parent="menu_pet_root" sequence="1" groups="pet_management.group_pet_core_user_own,pet_management.group_pet_staff_core"/>
+    <menuitem id="menu_pet_appointments" name="Appointments" parent="menu_pet_root" sequence="2" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_staff_appointments"/>
+    <menuitem id="menu_pet_health" name="Health" parent="menu_pet_root" sequence="3" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_staff_health"/>
+    <menuitem id="menu_pet_boarding" name="Boarding" parent="menu_pet_root" sequence="4" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_staff_boarding"/>
+    <menuitem id="menu_pet_grooming" name="Grooming" parent="menu_pet_root" sequence="5" groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_staff_grooming"/>
+    <menuitem id="menu_pet_training" name="Training" parent="menu_pet_root" sequence="6" groups="pet_management.group_pet_training_user_own,pet_management.group_pet_staff_training"/>
+    <menuitem id="menu_pet_diet" name="Diet" parent="menu_pet_root" sequence="7" groups="pet_management.group_pet_diet_user_own,pet_management.group_pet_staff_diet"/>
+    <menuitem id="menu_pet_operations" name="Operations" parent="menu_pet_root" sequence="8" groups="pet_management.group_pet_operations_user_own"/>
+    <menuitem id="menu_pet_configuration" name="Configuration" parent="menu_pet_root" sequence="9" groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Phase 1: server actions only (Studio x_pets validates actions, not object methods). -->
+    <record id="view_x_pets_form_pm_bridge" model="ir.ui.view">
+        <field name="name">x_pets.form.pm.bridge</field>
+        <field name="model">x_pets</field>
+        <field name="inherit_id" ref="veterinary_clinic.form_view_for_x_pets"/>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(veterinary_pet_management_bridge.action_open_pet_management_record)d"
+                        type="action"
+                        class="oe_stat_button" icon="fa-paw">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Pet</span>
+                        <span class="o_stat_text">Management</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="%(veterinary_pet_management_bridge.action_sync_all_x_pets_to_pet_management)d"
+                        type="action"
+                        string="Sync to Pet Management"
+                        class="btn-secondary"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

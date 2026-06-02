@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_petget_document_clinic,petget.document.clinic,petget_core.model_petget_document,base.group_user,1,1,1,1
+access_petget_reminder_clinic,petget.reminder.clinic,petget_core.model_petget_reminder,base.group_user,1,1,1,1
+access_petget_note_clinic,petget.note.clinic,petget_core.model_petget_note,base.group_user,1,1,1,1
+access_petget_dog_breed_clinic,petget.dog.breed.clinic,petget_dog.model_petget_dog_breed,base.group_user,1,0,0,0
+access_petget_dog_color_clinic,petget.dog.color.clinic,petget_dog_knowledge.model_petget_dog_color,base.group_user,1,0,0,0
+access_petget_dog_life_stage_clinic,petget.dog.life.stage.clinic,petget_dog_knowledge.model_petget_dog_life_stage,base.group_user,1,0,0,0
+access_petget_breed_growth_clinic,petget.breed.growth.clinic,petget_dog_knowledge.model_petget_breed_growth,base.group_user,1,0,0,0

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Simple Notification Data without complex references -->
+  <record id="notification_test_1" model="pet.notification">
+    <field name="name">Test Notification 1</field>
+    <field name="pet_id" ref="pet_buddy"/>
+    <field name="notification_type">vaccination_due</field>
+    <field name="message">This is a test notification for vaccination reminders.</field>
+    <field name="priority">medium</field>
+    <field name="status">draft</field>
+    <field name="date_scheduled">2024-09-20 09:00:00</field>
+    <field name="send_email">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">pending</field>
+  </record>
+
+  <record id="notification_test_2" model="pet.notification">
+    <field name="name">Test Notification 2</field>
+    <field name="pet_id" ref="pet_luna"/>
+    <field name="notification_type">appointment_reminder</field>
+    <field name="message">This is a test notification for appointment reminders.</field>
+    <field name="priority">high</field>
+    <field name="status">draft</field>
+    <field name="date_scheduled">2024-09-18 14:00:00</field>
+    <field name="send_email">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">pending</field>
+  </record>
+
+  <record id="notification_test_3" model="pet.notification">
+    <field name="name">Test Notification 3</field>
+    <field name="pet_id" ref="pet_max"/>
+    <field name="notification_type">medical_visit_due</field>
+    <field name="message">This is a test notification for medical visit reminders.</field>
+    <field name="priority">low</field>
+    <field name="status">sent</field>
+    <field name="date_created">2024-09-10 09:30:00</field>
+    <field name="date_sent">2024-09-10 09:35:00</field>
+    <field name="send_email">True</field>
+    <field name="send_in_app">True</field>
+    <field name="is_enabled">True</field>
+    <field name="auto_send">True</field>
+    <field name="preferred_time">morning</field>
+    <field name="delivery_status">delivered</field>
+  </record>
+
+</odoo>

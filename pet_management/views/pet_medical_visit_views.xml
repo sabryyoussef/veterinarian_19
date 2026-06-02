@@ -1,0 +1,287 @@
+<odoo>
+  <!-- Tree View -->
+  <record id="view_pet_medical_visit_tree" model="ir.ui.view">
+    <field name="name">pet.medical.visit.list</field>
+    <field name="model">pet.medical.visit</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="pet_id" string="Pet"/>
+        <field name="date" string="Date" widget="datetime"/>
+        <field name="visit_type" string="Visit Type" widget="badge" decoration-info="visit_type == 'checkup'" decoration-success="visit_type == 'vaccination'" decoration-warning="visit_type == 'emergency'" decoration-primary="visit_type == 'surgery'" decoration-muted="visit_type == 'dental'" decoration-danger="visit_type == 'grooming'" decoration-bf="visit_type == 'other'"/>
+        <field name="reason" string="Reason"/>
+        <field name="status" string="Status" widget="badge" decoration-info="status == 'scheduled'" decoration-success="status == 'in_progress'" decoration-warning="status == 'completed'" decoration-danger="status == 'cancelled'" decoration-primary="status == 'rescheduled'"/>
+        <field name="vet_id" string="Veterinarian"/>
+        <field name="cost" string="Cost" widget="monetary"/>
+        <field name="payment_status" string="Payment Status" widget="badge" decoration-success="payment_status == 'paid'" decoration-warning="payment_status == 'partial'" decoration-danger="payment_status == 'pending'" decoration-muted="payment_status == 'cancelled'"/>
+        <field name="days_since_visit" column_invisible="1"/>
+        <field name="is_overdue" column_invisible="1"/>
+        <field name="state_color" column_invisible="1"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Kanban View -->
+  <record id="view_pet_medical_visit_kanban" model="ir.ui.view">
+    <field name="name">pet.medical.visit.kanban</field>
+    <field name="model">pet.medical.visit</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="pet_id"/>
+        <field name="date"/>
+        <field name="visit_type"/>
+        <field name="reason"/>
+        <field name="status"/>
+        <field name="vet_id"/>
+        <field name="cost"/>
+        <field name="payment_status"/>
+        <field name="days_since_visit"/>
+        <field name="is_overdue"/>
+        <field name="state_color"/>
+        <field name="diagnosis"/>
+        <field name="follow_up_date"/>
+        <templates>
+          <t t-name="card">
+            <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.state_color.raw_value or '1')" class="oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-medical">
+                <div class="pet-info">
+                  <div class="pet-avatar">
+                    <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" 
+                         t-att-alt="record.pet_id.value" 
+                         class="pet-image"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.pet_id.value or 'Unknown Pet'"/>
+                    <div class="visit-type-badge" t-att-class="'visit-type-' + (record.visit_type.raw_value or 'other')">
+                      <i t-att-class="'fa fa-' + (record.visit_type.raw_value == 'checkup' ? 'stethoscope' : record.visit_type.raw_value == 'emergency' ? 'ambulance' : record.visit_type.raw_value == 'vaccination' ? 'medkit' : record.visit_type.raw_value == 'surgery' ? 'scissors' : record.visit_type.raw_value == 'dental' ? 'tooth' : record.visit_type.raw_value == 'grooming' ? 'scissors' : 'file-text-o')" title="Visit Type"/>
+                      <span t-esc="record.visit_type.value or 'General'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.status.raw_value or 'scheduled')" 
+                       t-att-style="record.status.raw_value == 'completed' ? 'background-color: #28a745; color: white;' : record.status.raw_value == 'cancelled' ? 'background-color: #dc3545; color: white;' : record.status.raw_value == 'in_progress' ? 'background-color: #ffc107; color: #212529;' : record.status.raw_value == 'rescheduled' ? 'background-color: #17a2b8; color: white;' : 'background-color: #6c757d; color: white;'">
+                    <i t-att-class="'fa fa-' + (record.status.raw_value == 'completed' ? 'check-circle' : record.status.raw_value == 'cancelled' ? 'times-circle' : record.status.raw_value == 'in_progress' ? 'play-circle' : record.status.raw_value == 'rescheduled' ? 'calendar' : 'clock-o')" title="Visit Status"/>
+                    <span t-esc="record.status.value or 'Scheduled'"/>
+                  </div>
+                  <div t-if="record.is_overdue.raw_value" class="overdue-indicator">
+                    <i class="fa fa-exclamation-triangle" title="Overdue"/>
+                    <span>Overdue</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-calendar" title="Visit Date"/>
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value" t-esc="record.date.value"/>
+                  </div>
+                  <div t-if="record.reason and record.reason.value" class="detail-row">
+                    <i class="fa fa-stethoscope" title="Reason"/>
+                    <span class="detail-label">Reason:</span>
+                    <span class="detail-value" t-esc="record.reason.value"/>
+                  </div>
+                  <div t-if="record.vet_id and record.vet_id.value" class="detail-row">
+                    <i class="fa fa-user-md" title="Veterinarian"/>
+                    <span class="detail-label">Vet:</span>
+                    <span class="detail-value" t-esc="record.vet_id.value"/>
+                  </div>
+                  <div t-if="record.diagnosis and record.diagnosis.value" class="detail-row">
+                    <i class="fa fa-clipboard" title="Diagnosis"/>
+                    <span class="detail-label">Diagnosis:</span>
+                    <span class="detail-value" t-esc="record.diagnosis.value"/>
+                  </div>
+                </div>
+
+                <div class="pet-financial-info">
+                  <div t-if="record.cost and record.cost.value" class="pet-cost-info">
+                    <i class="fa fa-dollar" title="Cost"/>
+                    <span class="pet-cost-amount" t-esc="record.cost.value"/>
+                  </div>
+                  <div t-if="record.payment_status and record.payment_status.value" class="payment-status" t-att-class="'payment-' + (record.payment_status.raw_value or 'pending')">
+                    <i t-att-class="'fa fa-' + (record.payment_status.raw_value == 'paid' ? 'check' : record.payment_status.raw_value == 'partial' ? 'minus' : record.payment_status.raw_value == 'cancelled' ? 'times' : 'clock-o')" title="Payment Status"/>
+                    <span t-esc="record.payment_status.value"/>
+                  </div>
+                </div>
+
+                <div t-if="record.days_since_visit and record.days_since_visit.value" class="time-info">
+                  <i class="fa fa-clock-o" title="Days Since Visit"/>
+                  <span t-esc="record.days_since_visit.value"/> days ago
+                </div>
+
+                <div t-if="record.follow_up_date and record.follow_up_date.value" class="follow-up-info">
+                  <i class="fa fa-calendar-check-o" title="Follow-up Date"/>
+                  <span class="follow-up-label">Follow-up:</span>
+                  <span class="follow-up-date" t-esc="record.follow_up_date.value"/>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button t-if="record.status.raw_value == 'scheduled'" 
+                        class="btn btn-sm btn-success action-btn" 
+                        name="action_mark_completed" 
+                        type="object" 
+                        title="Mark Completed"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-check" title="Mark Completed"/>
+                </button>
+                <button t-if="record.status.raw_value != 'cancelled'" 
+                        class="btn btn-sm btn-warning action-btn" 
+                        name="action_mark_cancelled" 
+                        type="object" 
+                        title="Cancel"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-times" title="Cancel"/>
+                </button>
+                <button t-if="record.status.raw_value != 'completed' and record.status.raw_value != 'cancelled'" 
+                        class="btn btn-sm btn-info action-btn" 
+                        name="action_reschedule" 
+                        type="object" 
+                        title="Reschedule"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-calendar" title="Reschedule"/>
+                </button>
+                <button class="btn btn-sm btn-primary action-btn" 
+                        name="action_send_notification" 
+                        type="object" 
+                        title="Send Notification"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-bell" title="Send Notification"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Form View -->
+  <record id="view_pet_medical_visit_form" model="ir.ui.view">
+    <field name="name">pet.medical.visit.form</field>
+    <field name="model">pet.medical.visit</field>
+    <field name="arch" type="xml">
+      <form string="Medical Visit">
+        <header>
+          <button name="action_mark_completed" type="object" string="Mark Completed" class="oe_highlight" invisible="status != 'scheduled'"/>
+          <button name="action_mark_cancelled" type="object" string="Cancel" invisible="status in ['completed', 'cancelled']"/>
+          <button name="action_reschedule" type="object" string="Reschedule" invisible="status in ['completed', 'cancelled']"/>
+          <button name="action_send_notification" type="object" string="Send Notification" 
+                  class="btn-success" icon="fa-bell"/>
+          <button name="action_create_followup_notification" type="object" string="Create Follow-up" 
+                  invisible="status != 'completed' or not follow_up_date" class="btn-warning" icon="fa-calendar-plus-o"/>
+          <field name="status" widget="statusbar" statusbar_visible="scheduled,in_progress,completed"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pet" type="object" string="Pet" icon="fa-paw"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+          </div>
+          <div class="oe_title">
+            <h1>
+              <field name="reason" placeholder="Visit Reason"/>
+            </h1>
+          </div>
+          <group>
+            <group>
+              <field name="pet_id" string="Pet"/>
+              <field name="appointment_id" string="Appointment"/>
+              <field name="date" string="Date"/>
+              <field name="visit_type" string="Visit Type"/>
+              <field name="vet_id" string="Veterinarian"/>
+            </group>
+            <group>
+              <field name="status" string="Status"/>
+              <field name="cost" string="Cost"/>
+              <field name="payment_status" string="Payment Status"/>
+              <field name="follow_up_date" string="Follow-up Date"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="SOAP Notes" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+              <group>
+                <group>
+                  <field name="subjective" string="Subjective"/>
+                  <field name="objective" string="Objective"/>
+                </group>
+                <group>
+                  <field name="assessment" string="Assessment"/>
+                  <field name="plan" string="Plan"/>
+                </group>
+              </group>
+            </page>
+            <page string="Medical Details" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+              <group>
+                <group>
+                  <field name="diagnosis" string="Diagnosis"/>
+                  <field name="procedure_performed" string="Procedure Performed"/>
+                  <field name="vital_signs" string="Vital Signs"/>
+                </group>
+                <group>
+                  <field name="medications_prescribed" string="Medications Prescribed"/>
+                  <field name="follow_up_notes" string="Follow-up Notes"/>
+                  <field name="vet_notes" string="Veterinarian Notes"/>
+                </group>
+              </group>
+            </page>
+            <page string="Follow-up" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+              <group>
+                <field name="follow_up_date" string="Follow-up Date"/>
+                <field name="follow_up_notes" string="Follow-up Notes"/>
+                <field name="is_overdue" string="Is Overdue" readonly="1"/>
+                <field name="days_since_visit" string="Days Since Visit" readonly="1"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+
+  <!-- Search View -->
+  <record id="view_pet_medical_visit_search" model="ir.ui.view">
+    <field name="name">pet.medical.visit.search</field>
+    <field name="model">pet.medical.visit</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="pet_id"/>
+        <field name="vet_id"/>
+        <field name="reason"/>
+        <field name="diagnosis"/>
+        <filter name="filter_scheduled" string="Scheduled" domain="[('status', '=', 'scheduled')]"/>
+        <filter name="filter_completed" string="Completed" domain="[('status', '=', 'completed')]"/>
+        <filter name="filter_cancelled" string="Cancelled" domain="[('status', '=', 'cancelled')]"/>
+        <filter name="filter_overdue" string="Overdue Follow-up" domain="[('is_overdue', '=', True)]"/>
+        <filter name="filter_emergency" string="Emergency" domain="[('visit_type', '=', 'emergency')]"/>
+        <filter name="filter_recent" string="Recent (30 days)" domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+        <separator/>
+        <filter name="filter_pending_payment" string="Pending Payment" domain="[('payment_status', '=', 'pending')]"/>
+        <filter name="filter_paid" string="Paid" domain="[('payment_status', '=', 'paid')]"/>
+        <group>
+          <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
+          <filter name="group_by_vet" string="Veterinarian" context="{'group_by':'vet_id'}"/>
+          <filter name="group_by_status" string="Status" context="{'group_by':'status'}"/>
+          <filter name="group_by_visit_type" string="Visit Type" context="{'group_by':'visit_type'}"/>
+          <filter name="group_by_payment_status" string="Payment Status" context="{'group_by':'payment_status'}"/>
+          <filter name="group_by_date" string="Date" context="{'group_by':'date:month'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Window Action -->
+  <record id="action_pet_medical_visit" model="ir.actions.act_window">
+    <field name="name">Medical Visits</field>
+    <field name="res_model">pet.medical.visit</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="context">{'search_default_filter_scheduled': 1}</field>
+  </record>
+
+  <!-- Menu Item -->
+  <menuitem id="menu_pet_medical_visit" parent="menu_pet_health" action="action_pet_medical_visit" name="Medical Visits" sequence="1" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_staff_health"/>
+</odoo>

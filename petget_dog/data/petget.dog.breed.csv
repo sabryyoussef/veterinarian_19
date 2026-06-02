@@ -1,0 +1,202 @@
+id,name,akc_group
+breed_labrador_retriever,Labrador Retriever,sporting
+breed_golden_retriever,Golden Retriever,sporting
+breed_chesapeake_bay_retriever,Chesapeake Bay Retriever,sporting
+breed_flat_coated_retriever,Flat-Coated Retriever,sporting
+breed_curly_coated_retriever,Curly-Coated Retriever,sporting
+breed_nova_scotia_duck_tolling_retriever,Nova Scotia Duck Tolling Retriever,sporting
+breed_german_shorthaired_pointer,German Shorthaired Pointer,sporting
+breed_german_wirehaired_pointer,German Wirehaired Pointer,sporting
+breed_pointer,Pointer,sporting
+breed_english_setter,English Setter,sporting
+breed_irish_setter,Irish Setter,sporting
+breed_gordon_setter,Gordon Setter,sporting
+breed_irish_red_and_white_setter,Irish Red and White Setter,sporting
+breed_cocker_spaniel,Cocker Spaniel,sporting
+breed_english_cocker_spaniel,English Cocker Spaniel,sporting
+breed_english_springer_spaniel,English Springer Spaniel,sporting
+breed_welsh_springer_spaniel,Welsh Springer Spaniel,sporting
+breed_field_spaniel,Field Spaniel,sporting
+breed_sussex_spaniel,Sussex Spaniel,sporting
+breed_clumber_spaniel,Clumber Spaniel,sporting
+breed_boykin_spaniel,Boykin Spaniel,sporting
+breed_american_water_spaniel,American Water Spaniel,sporting
+breed_irish_water_spaniel,Irish Water Spaniel,sporting
+breed_brittany,Brittany,sporting
+breed_vizsla,Vizsla,sporting
+breed_wirehaired_vizsla,Wirehaired Vizsla,sporting
+breed_weimaraner,Weimaraner,sporting
+breed_spinone_italiano,Spinone Italiano,sporting
+breed_wirehaired_pointing_griffon,Wirehaired Pointing Griffon,sporting
+breed_lagotto_romagnolo,Lagotto Romagnolo,sporting
+breed_bracco_italiano,Bracco Italiano,sporting
+breed_beagle,Beagle,hound
+breed_bloodhound,Bloodhound,hound
+breed_basset_hound,Basset Hound,hound
+breed_dachshund,Dachshund,hound
+breed_black_and_tan_coonhound,Black and Tan Coonhound,hound
+breed_bluetick_coonhound,Bluetick Coonhound,hound
+breed_redbone_coonhound,Redbone Coonhound,hound
+breed_american_english_coonhound,American English Coonhound,hound
+breed_treeing_walker_coonhound,Treeing Walker Coonhound,hound
+breed_plott,Plott,hound
+breed_american_foxhound,American Foxhound,hound
+breed_english_foxhound,English Foxhound,hound
+breed_harrier,Harrier,hound
+breed_otterhound,Otterhound,hound
+breed_petit_basset_griffon_vendeen,Petit Basset Griffon Vendeen,hound
+breed_grand_basset_griffon_vendeen,Grand Basset Griffon Vendeen,hound
+breed_afghan_hound,Afghan Hound,hound
+breed_basenji,Basenji,hound
+breed_borzoi,Borzoi,hound
+breed_greyhound,Greyhound,hound
+breed_irish_wolfhound,Irish Wolfhound,hound
+breed_norwegian_elkhound,Norwegian Elkhound,hound
+breed_pharaoh_hound,Pharaoh Hound,hound
+breed_rhodesian_ridgeback,Rhodesian Ridgeback,hound
+breed_saluki,Saluki,hound
+breed_scottish_deerhound,Scottish Deerhound,hound
+breed_whippet,Whippet,hound
+breed_ibizan_hound,Ibizan Hound,hound
+breed_cirneco_dell_etna,Cirneco dell'Etna,hound
+breed_sloughi,Sloughi,hound
+breed_azawakh,Azawakh,hound
+breed_akita,Akita,working
+breed_alaskan_malamute,Alaskan Malamute,working
+breed_anatolian_shepherd_dog,Anatolian Shepherd Dog,working
+breed_bernese_mountain_dog,Bernese Mountain Dog,working
+breed_black_russian_terrier,Black Russian Terrier,working
+breed_boerboel,Boerboel,working
+breed_boxer,Boxer,working
+breed_bullmastiff,Bullmastiff,working
+breed_cane_corso,Cane Corso,working
+breed_doberman_pinscher,Doberman Pinscher,working
+breed_dogue_de_bordeaux,Dogue de Bordeaux,working
+breed_german_pinscher,German Pinscher,working
+breed_giant_schnauzer,Giant Schnauzer,working
+breed_standard_schnauzer,Standard Schnauzer,working
+breed_great_dane,Great Dane,working
+breed_great_pyrenees,Great Pyrenees,working
+breed_greater_swiss_mountain_dog,Greater Swiss Mountain Dog,working
+breed_komondor,Komondor,working
+breed_kuvasz,Kuvasz,working
+breed_leonberger,Leonberger,working
+breed_mastiff,Mastiff,working
+breed_neapolitan_mastiff,Neapolitan Mastiff,working
+breed_newfoundland,Newfoundland,working
+breed_portuguese_water_dog,Portuguese Water Dog,working
+breed_rottweiler,Rottweiler,working
+breed_saint_bernard,Saint Bernard,working
+breed_samoyed,Samoyed,working
+breed_siberian_husky,Siberian Husky,working
+breed_tibetan_mastiff,Tibetan Mastiff,working
+breed_chinook,Chinook,working
+breed_dogo_argentino,Dogo Argentino,working
+breed_airedale_terrier,Airedale Terrier,terrier
+breed_american_staffordshire_terrier,American Staffordshire Terrier,terrier
+breed_staffordshire_bull_terrier,Staffordshire Bull Terrier,terrier
+breed_australian_terrier,Australian Terrier,terrier
+breed_bedlington_terrier,Bedlington Terrier,terrier
+breed_border_terrier,Border Terrier,terrier
+breed_bull_terrier,Bull Terrier,terrier
+breed_miniature_bull_terrier,Miniature Bull Terrier,terrier
+breed_cairn_terrier,Cairn Terrier,terrier
+breed_cesky_terrier,Cesky Terrier,terrier
+breed_dandie_dinmont_terrier,Dandie Dinmont Terrier,terrier
+breed_smooth_fox_terrier,Smooth Fox Terrier,terrier
+breed_wire_fox_terrier,Wire Fox Terrier,terrier
+breed_glen_of_imaal_terrier,Glen of Imaal Terrier,terrier
+breed_irish_terrier,Irish Terrier,terrier
+breed_kerry_blue_terrier,Kerry Blue Terrier,terrier
+breed_lakeland_terrier,Lakeland Terrier,terrier
+breed_manchester_terrier,Manchester Terrier,terrier
+breed_miniature_schnauzer,Miniature Schnauzer,terrier
+breed_norfolk_terrier,Norfolk Terrier,terrier
+breed_norwich_terrier,Norwich Terrier,terrier
+breed_parson_russell_terrier,Parson Russell Terrier,terrier
+breed_russell_terrier,Russell Terrier,terrier
+breed_rat_terrier,Rat Terrier,terrier
+breed_scottish_terrier,Scottish Terrier,terrier
+breed_sealyham_terrier,Sealyham Terrier,terrier
+breed_skye_terrier,Skye Terrier,terrier
+breed_soft_coated_wheaten_terrier,Soft Coated Wheaten Terrier,terrier
+breed_welsh_terrier,Welsh Terrier,terrier
+breed_west_highland_white_terrier,West Highland White Terrier,terrier
+breed_affenpinscher,Affenpinscher,toy
+breed_brussels_griffon,Brussels Griffon,toy
+breed_cavalier_king_charles_spaniel,Cavalier King Charles Spaniel,toy
+breed_chihuahua,Chihuahua,toy
+breed_chinese_crested,Chinese Crested,toy
+breed_english_toy_spaniel,English Toy Spaniel,toy
+breed_havanese,Havanese,toy
+breed_italian_greyhound,Italian Greyhound,toy
+breed_japanese_chin,Japanese Chin,toy
+breed_maltese,Maltese,toy
+breed_manchester_terrier_toy,Manchester Terrier (Toy),toy
+breed_miniature_pinscher,Miniature Pinscher,toy
+breed_papillon,Papillon,toy
+breed_pekingese,Pekingese,toy
+breed_pomeranian,Pomeranian,toy
+breed_poodle_toy,Poodle (Toy),toy
+breed_pug,Pug,toy
+breed_shih_tzu,Shih Tzu,toy
+breed_silky_terrier,Silky Terrier,toy
+breed_toy_fox_terrier,Toy Fox Terrier,toy
+breed_yorkshire_terrier,Yorkshire Terrier,toy
+breed_russian_toy,Russian Toy,toy
+breed_biewer_terrier,Biewer Terrier,toy
+breed_american_eskimo_dog,American Eskimo Dog,non_sporting
+breed_bichon_frise,Bichon Frise,non_sporting
+breed_boston_terrier,Boston Terrier,non_sporting
+breed_bulldog,Bulldog,non_sporting
+breed_chinese_shar_pei,Chinese Shar-Pei,non_sporting
+breed_chow_chow,Chow Chow,non_sporting
+breed_coton_de_tulear,Coton de Tulear,non_sporting
+breed_dalmatian,Dalmatian,non_sporting
+breed_finnish_spitz,Finnish Spitz,non_sporting
+breed_french_bulldog,French Bulldog,non_sporting
+breed_keeshond,Keeshond,non_sporting
+breed_lhasa_apso,Lhasa Apso,non_sporting
+breed_lowchen,Lowchen,non_sporting
+breed_norwegian_lundehund,Norwegian Lundehund,non_sporting
+breed_poodle_standard,Poodle (Standard),non_sporting
+breed_poodle_miniature,Poodle (Miniature),non_sporting
+breed_schipperke,Schipperke,non_sporting
+breed_shiba_inu,Shiba Inu,non_sporting
+breed_tibetan_spaniel,Tibetan Spaniel,non_sporting
+breed_tibetan_terrier,Tibetan Terrier,non_sporting
+breed_xoloitzcuintli,Xoloitzcuintli,non_sporting
+breed_australian_cattle_dog,Australian Cattle Dog,herding
+breed_australian_shepherd,Australian Shepherd,herding
+breed_bearded_collie,Bearded Collie,herding
+breed_beauceron,Beauceron,herding
+breed_belgian_malinois,Belgian Malinois,herding
+breed_belgian_sheepdog,Belgian Sheepdog,herding
+breed_belgian_tervuren,Belgian Tervuren,herding
+breed_belgian_laekenois,Belgian Laekenois,herding
+breed_bergamasco_sheepdog,Bergamasco Sheepdog,herding
+breed_berger_picard,Berger Picard,herding
+breed_border_collie,Border Collie,herding
+breed_bouvier_des_flandres,Bouvier des Flandres,herding
+breed_briard,Briard,herding
+breed_canaan_dog,Canaan Dog,herding
+breed_cardigan_welsh_corgi,Cardigan Welsh Corgi,herding
+breed_pembroke_welsh_corgi,Pembroke Welsh Corgi,herding
+breed_collie_rough,Collie (Rough),herding
+breed_collie_smooth,Collie (Smooth),herding
+breed_entlebucher_mountain_dog,Entlebucher Mountain Dog,herding
+breed_finnish_lapphund,Finnish Lapphund,herding
+breed_german_shepherd_dog,German Shepherd Dog,herding
+breed_icelandic_sheepdog,Icelandic Sheepdog,herding
+breed_miniature_american_shepherd,Miniature American Shepherd,herding
+breed_norwegian_buhund,Norwegian Buhund,herding
+breed_old_english_sheepdog,Old English Sheepdog,herding
+breed_polish_lowland_sheepdog,Polish Lowland Sheepdog,herding
+breed_puli,Puli,herding
+breed_pumi,Pumi,herding
+breed_pyrenean_shepherd,Pyrenean Shepherd,herding
+breed_shetland_sheepdog,Shetland Sheepdog,herding
+breed_spanish_water_dog,Spanish Water Dog,herding
+breed_swedish_vallhund,Swedish Vallhund,herding
+breed_mixed_breed,Mixed Breed,other
+breed_other,Other,other

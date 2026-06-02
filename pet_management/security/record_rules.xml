@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- ======================================== -->
+        <!-- CORE FACILITY RECORD RULES -->
+        <!-- ======================================== -->
+        
+        <!-- CORE: Pet Records - Own Data Only -->
+        <record id="rule_pet_pet_own_data" model="ir.rule">
+            <field name="name">Core: Pet Own Data Only</field>
+            <field name="model_id" ref="model_pet_pet"/>
+            <field name="domain_force">[('owner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_core_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- CORE: Pet Records - All Data -->
+        <record id="rule_pet_pet_all_data" model="ir.rule">
+            <field name="name">Core: Pet All Data</field>
+            <field name="model_id" ref="model_pet_pet"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_core_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- CORE: Pet Records - Administrator -->
+        <record id="rule_pet_pet_admin" model="ir.rule">
+            <field name="name">Core: Pet Administrator</field>
+            <field name="model_id" ref="model_pet_pet"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_core_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- HEALTH: Weight History - Own Data Only -->
+        <record id="rule_pet_weight_own_data" model="ir.rule">
+            <field name="name">Health: Weight Own Data Only</field>
+            <field name="model_id" ref="model_pet_weight_history"/>
+            <field name="domain_force">[('pet_id.owner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- HEALTH: Weight History - Diet Staff Assigned Pets Only -->
+        <record id="rule_pet_weight_staff_diet" model="ir.rule">
+            <field name="name">Health: Weight History for Diet Staff Assigned Pets</field>
+            <field name="model_id" ref="model_pet_weight_history"/>
+            <field name="domain_force">[('pet_id.diet_plan_ids.veterinarian_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_diet'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- HEALTH: Weight History - All Data -->
+        <record id="rule_pet_weight_all_data" model="ir.rule">
+            <field name="name">Health: Weight All Data</field>
+            <field name="model_id" ref="model_pet_weight_history"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- HEALTH: Weight History - Administrator -->
+        <record id="rule_pet_weight_admin" model="ir.rule">
+            <field name="name">Health: Weight Administrator</field>
+            <field name="model_id" ref="model_pet_weight_history"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- HEALTH: Vaccination - Own Data Only -->
+        <record id="rule_pet_vaccination_own_data" model="ir.rule">
+            <field name="name">Health: Vaccination Own Data Only</field>
+            <field name="model_id" ref="model_pet_vaccination"/>
+            <field name="domain_force">['|', ('pet_id.owner_id', '=', user.partner_id.id), ('vet_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- HEALTH: Vaccination - All Data -->
+        <record id="rule_pet_vaccination_all_data" model="ir.rule">
+            <field name="name">Health: Vaccination All Data</field>
+            <field name="model_id" ref="model_pet_vaccination"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- HEALTH: Vaccination - Administrator -->
+        <record id="rule_pet_vaccination_admin" model="ir.rule">
+            <field name="name">Health: Vaccination Administrator</field>
+            <field name="model_id" ref="model_pet_vaccination"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- HEALTH: Medical Visit - Own Data Only -->
+        <record id="rule_pet_medical_visit_own_data" model="ir.rule">
+            <field name="name">Health: Medical Visit Own Data Only</field>
+            <field name="model_id" ref="model_pet_medical_visit"/>
+            <field name="domain_force">['|', ('pet_id.owner_id', '=', user.partner_id.id), ('vet_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- HEALTH: Medical Visit - All Data -->
+        <record id="rule_pet_medical_visit_all_data" model="ir.rule">
+            <field name="name">Health: Medical Visit All Data</field>
+            <field name="model_id" ref="model_pet_medical_visit"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- HEALTH: Medical Visit - Administrator -->
+        <record id="rule_pet_medical_visit_admin" model="ir.rule">
+            <field name="name">Health: Medical Visit Administrator</field>
+            <field name="model_id" ref="model_pet_medical_visit"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_health_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- BOARDING: Boarding Stay - Own Data Only -->
+        <record id="rule_pet_boarding_own_data" model="ir.rule">
+            <field name="name">Boarding: Own Data Only</field>
+            <field name="model_id" ref="model_pet_boarding_stay"/>
+            <field name="domain_force">[('pet_id.owner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_boarding_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- BOARDING: Boarding Stay - All Data -->
+        <record id="rule_pet_boarding_all_data" model="ir.rule">
+            <field name="name">Boarding: All Data</field>
+            <field name="model_id" ref="model_pet_boarding_stay"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_boarding_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- BOARDING: Boarding Stay - Administrator -->
+        <record id="rule_pet_boarding_admin" model="ir.rule">
+            <field name="name">Boarding: Administrator</field>
+            <field name="model_id" ref="model_pet_boarding_stay"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_boarding_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- APPOINTMENTS: Appointment - Own Data Only -->
+        <record id="rule_pet_appointment_own_data" model="ir.rule">
+            <field name="name">Appointments: Own Data Only</field>
+            <field name="model_id" ref="model_pet_appointment"/>
+            <field name="domain_force">[('pet_id.owner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_appointments_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- APPOINTMENTS: Appointment - All Data -->
+        <record id="rule_pet_appointment_all_data" model="ir.rule">
+            <field name="name">Appointments: All Data</field>
+            <field name="model_id" ref="model_pet_appointment"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_appointments_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- APPOINTMENTS: Appointment - Administrator -->
+        <record id="rule_pet_appointment_admin" model="ir.rule">
+            <field name="name">Appointments: Administrator</field>
+            <field name="model_id" ref="model_pet_appointment"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_appointments_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- GROOMING: Grooming Session - Own Data Only -->
+        <record id="rule_pet_grooming_own_data" model="ir.rule">
+            <field name="name">Grooming: Own Data Only</field>
+            <field name="model_id" ref="model_pet_grooming_session"/>
+            <field name="domain_force">[('pet_id.owner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_grooming_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- GROOMING: Grooming Session - All Data -->
+        <record id="rule_pet_grooming_all_data" model="ir.rule">
+            <field name="name">Grooming: All Data</field>
+            <field name="model_id" ref="model_pet_grooming_session"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_grooming_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- GROOMING: Grooming Session - Administrator -->
+        <record id="rule_pet_grooming_admin" model="ir.rule">
+            <field name="name">Grooming: Administrator</field>
+            <field name="model_id" ref="model_pet_grooming_session"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_grooming_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- TRAINING: Training Session - Own Data Only -->
+        <record id="rule_pet_training_own_data" model="ir.rule">
+            <field name="name">Training: Own Data Only</field>
+            <field name="model_id" ref="model_pet_training_session"/>
+            <field name="domain_force">[('pet_id.owner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_training_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- TRAINING: Training Session - All Data -->
+        <record id="rule_pet_training_all_data" model="ir.rule">
+            <field name="name">Training: All Data</field>
+            <field name="model_id" ref="model_pet_training_session"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_training_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- TRAINING: Training Session - Administrator -->
+        <record id="rule_pet_training_admin" model="ir.rule">
+            <field name="name">Training: Administrator</field>
+            <field name="model_id" ref="model_pet_training_session"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_training_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- DIET: Diet Plan - Own Data Only -->
+        <record id="rule_pet_diet_own_data" model="ir.rule">
+            <field name="name">Diet: Own Data Only</field>
+            <field name="model_id" ref="model_pet_diet_plan"/>
+            <field name="domain_force">[('pet_id.owner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_diet_user_own'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- DIET: Diet Plan - All Data -->
+        <record id="rule_pet_diet_all_data" model="ir.rule">
+            <field name="name">Diet: All Data</field>
+            <field name="model_id" ref="model_pet_diet_plan"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_diet_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- DIET: Diet Plan - Administrator -->
+        <record id="rule_pet_diet_admin" model="ir.rule">
+            <field name="name">Diet: Administrator</field>
+            <field name="model_id" ref="model_pet_diet_plan"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_diet_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        
+        <!-- ======================================== -->
+        <!-- SPECIES AND BREED SECURITY RULES -->
+        <!-- ======================================== -->
+        
+        <!-- SPECIES: Configuration All Data -->
+        <record id="rule_pet_species_all_data" model="ir.rule">
+            <field name="name">Configuration: Species All Data</field>
+            <field name="model_id" ref="model_pet_species"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- SPECIES: Configuration Administrator -->
+        <record id="rule_pet_species_admin" model="ir.rule">
+            <field name="name">Configuration: Species Administrator</field>
+            <field name="model_id" ref="model_pet_species"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- BREED: Configuration All Data -->
+        <record id="rule_pet_breed_all_data" model="ir.rule">
+            <field name="name">Configuration: Breed All Data</field>
+            <field name="model_id" ref="model_pet_breed"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- BREED: Configuration Administrator -->
+        <record id="rule_pet_breed_admin" model="ir.rule">
+            <field name="name">Configuration: Breed Administrator</field>
+            <field name="model_id" ref="model_pet_breed"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- ======================================== -->
+        <!-- VACCINE CATALOG SECURITY RULES -->
+        <!-- ======================================== -->
+        
+        <!-- VACCINE: Configuration All Data -->
+        <record id="rule_pet_vaccine_all_data" model="ir.rule">
+            <field name="name">Configuration: Vaccine All Data</field>
+            <field name="model_id" ref="model_pet_vaccine"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- VACCINE: Configuration Administrator -->
+        <record id="rule_pet_vaccine_admin" model="ir.rule">
+            <field name="name">Configuration: Vaccine Administrator</field>
+            <field name="model_id" ref="model_pet_vaccine"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- ======================================== -->
+        <!-- KENNEL SECURITY RULES -->
+        <!-- ======================================== -->
+        
+        <!-- KENNEL: Configuration All Data -->
+        <record id="rule_pet_kennel_all_data" model="ir.rule">
+            <field name="name">Configuration: Kennel All Data</field>
+            <field name="model_id" ref="model_pet_kennel"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- KENNEL: Configuration Administrator -->
+        <record id="rule_pet_kennel_admin" model="ir.rule">
+            <field name="name">Configuration: Kennel Administrator</field>
+            <field name="model_id" ref="model_pet_kennel"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- ======================================== -->
+        <!-- GROOMING SERVICE SECURITY RULES -->
+        <!-- ======================================== -->
+        
+        <!-- GROOMING SERVICE: Configuration All Data -->
+        <record id="rule_pet_grooming_service_all_data" model="ir.rule">
+            <field name="name">Configuration: Grooming Service All Data</field>
+            <field name="model_id" ref="model_pet_grooming_service"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- GROOMING SERVICE: Configuration Administrator -->
+        <record id="rule_pet_grooming_service_admin" model="ir.rule">
+            <field name="name">Configuration: Grooming Service Administrator</field>
+            <field name="model_id" ref="model_pet_grooming_service"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- ======================================== -->
+        <!-- TRAINING PROGRAM SECURITY RULES -->
+        <!-- ======================================== -->
+        
+        <!-- TRAINING PROGRAM: Configuration All Data -->
+        <record id="rule_pet_training_program_all_data" model="ir.rule">
+            <field name="name">Configuration: Training Program All Data</field>
+            <field name="model_id" ref="model_pet_training_program"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_user_all'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- TRAINING PROGRAM: Configuration Administrator -->
+        <record id="rule_pet_training_program_admin" model="ir.rule">
+            <field name="name">Configuration: Training Program Administrator</field>
+            <field name="model_id" ref="model_pet_training_program"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_configuration_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- ======================================== -->
+        <!-- STAFF RECORD RULES -->
+        <!-- ======================================== -->
+        
+        <!-- HEALTH STAFF: Medical Visit - Staff Assigned Only -->
+        <record id="rule_pet_medical_visit_staff" model="ir.rule">
+            <field name="name">Health Staff: Medical Visit Assigned Only</field>
+            <field name="model_id" ref="model_pet_medical_visit"/>
+            <field name="domain_force">[('vet_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_health'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- HEALTH STAFF: Vaccination - Staff Assigned Only -->
+        <record id="rule_pet_vaccination_staff" model="ir.rule">
+            <field name="name">Health Staff: Vaccination Assigned Only</field>
+            <field name="model_id" ref="model_pet_vaccination"/>
+            <field name="domain_force">[('vet_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_health'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- BOARDING STAFF: Boarding Stay - Staff Assigned Only -->
+        <record id="rule_pet_boarding_stay_staff" model="ir.rule">
+            <field name="name">Boarding Staff: Boarding Stay Assigned Only</field>
+            <field name="model_id" ref="model_pet_boarding_stay"/>
+            <field name="domain_force">[('staff_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_boarding'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- GROOMING STAFF: Grooming Session - Staff Assigned Only -->
+        <record id="rule_pet_grooming_session_staff" model="ir.rule">
+            <field name="name">Grooming Staff: Grooming Session Assigned Only</field>
+            <field name="model_id" ref="model_pet_grooming_session"/>
+            <field name="domain_force">[('groomer_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_grooming'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- TRAINING STAFF: Training Session - Staff Assigned Only -->
+        <record id="rule_pet_training_session_staff" model="ir.rule">
+            <field name="name">Training Staff: Training Session Assigned Only</field>
+            <field name="model_id" ref="model_pet_training_session"/>
+            <field name="domain_force">[('trainer_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_training'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- DIET STAFF: Diet Plan - Staff Assigned Only -->
+        <record id="rule_pet_diet_plan_staff" model="ir.rule">
+            <field name="name">Diet Staff: Diet Plan Assigned Only</field>
+            <field name="model_id" ref="model_pet_diet_plan"/>
+            <field name="domain_force">[('veterinarian_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_diet'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- APPOINTMENTS STAFF: Appointment - Staff Assigned Only -->
+        <record id="rule_pet_appointment_staff" model="ir.rule">
+            <field name="name">Appointment Staff: Appointment Assigned Only</field>
+            <field name="model_id" ref="model_pet_appointment"/>
+            <field name="domain_force">['|', '|', '|', '|', '|',
+                ('resource_id', '=', user.partner_id.id),
+                ('medical_visit_id.vet_id', '=', user.partner_id.id),
+                ('vaccination_id.vet_id', '=', user.partner_id.id),
+                ('grooming_session_id.groomer_id', '=', user.partner_id.id),
+                ('training_session_id.trainer_id', '=', user.partner_id.id),
+                ('boarding_stay_id.staff_id', '=', user.partner_id.id)
+            ]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_appointments'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- CORE STAFF: Pet - Related Work Only -->
+        <record id="rule_pet_pet_core_staff" model="ir.rule">
+            <field name="name">Core Staff: Pet Related Work Only</field>
+            <field name="model_id" ref="model_pet_pet"/>
+            <field name="domain_force">['|', '|', '|', '|', '|', '|', '|', 
+                ('medical_visit_ids.vet_id', '=', user.partner_id.id),
+                ('vaccination_ids.vet_id', '=', user.partner_id.id),
+                ('grooming_session_ids.groomer_id', '=', user.partner_id.id),
+                ('training_session_ids.trainer_id', '=', user.partner_id.id),
+                ('boarding_stay_ids.staff_id', '=', user.partner_id.id),
+                ('diet_plan_ids.veterinarian_id', '=', user.partner_id.id),
+                ('preferred_vet_id', '=', user.partner_id.id),
+                ('appointment_ids.resource_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_staff_core'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+    </data>
+</odoo>

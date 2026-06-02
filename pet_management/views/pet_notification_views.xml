@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION TREE VIEW -->
+    <!-- ======================================== -->
+    <record id="view_pet_notification_tree" model="ir.ui.view">
+      <field name="name">pet.notification.list</field>
+      <field name="model">pet.notification</field>
+      <field name="arch" type="xml">
+        <list string="Pet Notifications" decoration-success="status == 'sent'" decoration-info="status == 'draft'" decoration-warning="status == 'failed'" decoration-danger="status == 'cancelled' or priority == 'urgent'">
+          <field name="name" string="Title"/>
+          <field name="pet_id" string="Pet"/>
+          <field name="notification_type" string="Type"/>
+          <field name="priority" widget="priority" string="Priority"/>
+          <field name="status" widget="badge" decoration-info="status == 'draft'" decoration-success="status == 'sent'" decoration-warning="status == 'failed'" decoration-danger="status == 'cancelled'"/>
+          <field name="date_scheduled" string="Scheduled Date"/>
+          <field name="date_sent" string="Sent Date" optional="hide"/>
+          <field name="delivery_status" widget="badge" decoration-success="delivery_status == 'delivered'" decoration-warning="delivery_status == 'pending'" decoration-danger="delivery_status == 'failed'" optional="hide"/>
+          <field name="is_enabled" widget="boolean_toggle"/>
+          <field name="auto_send" widget="boolean_toggle"/>
+        </list>
+      </field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION KANBAN VIEW -->
+    <!-- ======================================== -->
+    <record id="view_pet_notification_kanban" model="ir.ui.view">
+      <field name="name">pet.notification.kanban</field>
+      <field name="model">pet.notification</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="status" class="o_kanban_small_column">
+          <field name="name"/>
+          <field name="pet_id"/>
+          <field name="notification_type"/>
+          <field name="priority"/>
+          <field name="status"/>
+          <field name="date_scheduled"/>
+          <field name="date_sent"/>
+          <field name="delivery_status"/>
+          <field name="is_enabled"/>
+          <field name="auto_send"/>
+          <field name="message"/>
+          <templates>
+            <t t-name="card">
+              <div class="oe_kanban_card oe_kanban_global_click pet-notification-kanban">
+                <div class="o_kanban_record_top">
+                  <div class="o_kanban_record_headings">
+                    <div class="o_kanban_record_title">
+                      <div class="pet-name" t-esc="record.pet_id and record.pet_id.value"/>
+                      <div class="owner-name">
+                        <i class="fa fa-user" title="Pet Owner"/> <span t-esc="record.owner_id and record.owner_id.value"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="o_kanban_image_small">
+                    <t t-if="record.pet_id and record.pet_id.value">
+                      <img t-att-src="'/web/image/pet.pet/' + record.pet_id.raw_value + '/image_1920'" alt="Pet Image" class="pet-avatar"/>
+                    </t>
+                    <t t-else="">
+                      <div class="pet-avatar" style="background: linear-gradient(135deg, #74b9ff, #0984e3); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-paw fa-2x" style="color: white;" title="Pet Icon"/>
+                      </div>
+                    </t>
+                  </div>
+                </div>
+                
+                <div class="oe_kanban_content">
+                  <div class="o_kanban_record_body">
+                    <div class="notification-type-badge" t-esc="record.notification_type and record.notification_type.value"/>
+                    <div class="notification-message" t-esc="record.message and record.message.value"/>
+                    
+                    <div class="mt8" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                      <span t-attf-class="priority-badge #{record.priority and record.priority.value}" t-esc="record.priority and record.priority.value"/>
+                      <span t-attf-class="status-badge #{record.status and record.status.value}" t-esc="record.status and record.status.value"/>
+                    </div>
+                    
+                    <div class="delivery-status" t-if="(record.send_email and record.send_email.value) or (record.send_sms and record.send_sms.value) or (record.send_in_app and record.send_in_app.value)">
+                      <span t-if="record.send_email and record.send_email.value" class="delivery-indicator email" title="Email"/>
+                      <span t-if="record.send_sms and record.send_sms.value" class="delivery-indicator sms" title="SMS"/>
+                      <span t-if="record.send_in_app and record.send_in_app.value" class="delivery-indicator in-app" title="In-App"/>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="oe_kanban_bottom_left">
+                  <div class="notification-date">
+                    <i class="fa fa-calendar" title="Scheduled Date"/> <span t-esc="record.date_scheduled and record.date_scheduled.value"/>
+                  </div>
+                  <div t-if="record.date_sent and record.date_sent.value" class="notification-date" style="margin-top: 4px;">
+                    <i class="fa fa-check-circle" title="Sent Date"/> Sent: <span t-esc="record.date_sent.value"/>
+                  </div>
+                </div>
+                
+                <div class="oe_kanban_bottom_right">
+                  <div class="o_switch" t-attf-class="o_switch #{record.is_enabled and record.is_enabled.value ? 'o_switch_on' : ''}">
+                    <input type="checkbox" t-att-checked="record.is_enabled and record.is_enabled.value" class="o_switch_input"/>
+                    <span class="o_switch_slider"/>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION FORM VIEW -->
+    <!-- ======================================== -->
+    <record id="view_pet_notification_form" model="ir.ui.view">
+      <field name="name">pet.notification.form</field>
+      <field name="model">pet.notification</field>
+      <field name="arch" type="xml">
+        <form string="Pet Notification">
+          <header>
+            <button name="action_send_notification" type="object" string="Send Now" class="btn-primary" invisible="status != 'draft'"/>
+            <button name="action_mark_sent" type="object" string="Mark as Sent" invisible="status != 'draft'"/>
+            <button name="action_retry" type="object" string="Retry" invisible="status != 'failed'"/>
+            <button name="action_cancel" type="object" string="Cancel" invisible="status in ['sent', 'cancelled']"/>
+            <field name="status" widget="statusbar" statusbar_visible="draft,sent"/>
+          </header>
+          
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="name" placeholder="Notification Title..."/>
+              </h1>
+            </div>
+            
+            <group>
+              <group name="notification_details">
+                <field name="pet_id" options="{'no_create': True}"/>
+                <field name="notification_type"/>
+                <field name="priority" widget="priority"/>
+                <field name="date_scheduled" widget="datetime"/>
+                <field name="date_sent" readonly="1" invisible="status != 'sent'"/>
+              </group>
+              
+              <group name="delivery_settings">
+                <field name="send_email" widget="boolean_toggle"/>
+                <field name="send_sms" widget="boolean_toggle"/>
+                <field name="send_in_app" widget="boolean_toggle"/>
+                <field name="preferred_time"/>
+                <field name="is_enabled" widget="boolean_toggle"/>
+                <field name="auto_send" widget="boolean_toggle"/>
+                <field name="delivery_status" widget="badge" readonly="1"/>
+              </group>
+            </group>
+            
+            <notebook>
+              <page string="Message Content" name="message">
+                <group>
+                  <field name="message" widget="text" placeholder="Enter notification message..."/>
+                </group>
+              </page>
+              
+              <page string="Related Records" name="related">
+                <group>
+                  <field name="related_vaccination_id" invisible="notification_type not in ['vaccination_due', 'vaccination_overdue']"/>
+                  <field name="related_appointment_id" invisible="notification_type != 'appointment_reminder'"/>
+                  <field name="related_medical_visit_id" invisible="notification_type != 'medical_visit_due'"/>
+                </group>
+              </page>
+              
+              <page string="Delivery Log" name="delivery_log">
+                <field name="delivery_notes" widget="text" readonly="1"/>
+                <field name="retry_count" readonly="1"/>
+                <field name="last_retry_date" readonly="1"/>
+              </page>
+              
+              <page string="Settings" name="settings">
+                <group>
+                  <group>
+                    <field name="owner_id" readonly="1"/>
+                  </group>
+                  <group>
+                    <field name="date_created" readonly="1"/>
+                  </group>
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+          
+        </form>
+      </field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION SEARCH VIEW -->
+    <!-- ======================================== -->
+    <record id="view_pet_notification_search" model="ir.ui.view">
+      <field name="name">pet.notification.search</field>
+      <field name="model">pet.notification</field>
+      <field name="arch" type="xml">
+        <search string="Search Pet Notifications">
+          <field name="name" string="Title"/>
+          <field name="pet_id" string="Pet"/>
+          <field name="notification_type" string="Type"/>
+          <field name="message" string="Message"/>
+          <field name="owner_id" string="Pet Owner"/>
+          
+          <filter string="Draft" name="draft" domain="[('status', '=', 'draft')]"/>
+          <filter string="Sent" name="sent" domain="[('status', '=', 'sent')]"/>
+          <filter string="Failed" name="failed" domain="[('status', '=', 'failed')]"/>
+          <filter string="Cancelled" name="cancelled" domain="[('status', '=', 'cancelled')]"/>
+          
+          <separator/>
+          <filter string="High Priority" name="high_priority" domain="[('priority', 'in', ['high', 'urgent'])]"/>
+          <filter string="Urgent" name="urgent" domain="[('priority', '=', 'urgent')]"/>
+          
+          <separator/>
+          <filter string="Email Enabled" name="email_enabled" domain="[('send_email', '=', True)]"/>
+          <filter string="SMS Enabled" name="sms_enabled" domain="[('send_sms', '=', True)]"/>
+          <filter string="Auto Send" name="auto_send" domain="[('auto_send', '=', True)]"/>
+          
+          <separator/>
+          <filter string="Today" name="today" domain="[('date_scheduled', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date_scheduled', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+          <filter string="This Week" name="this_week" domain="[('date_scheduled', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('date_scheduled', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+          <filter string="Overdue" name="overdue" domain="[('date_scheduled', '&lt;', context_today()), ('status', '=', 'draft')]"/>
+          
+          <group>
+            <filter string="Pet" name="group_pet" context="{'group_by': 'pet_id'}"/>
+            <filter string="Type" name="group_type" context="{'group_by': 'notification_type'}"/>
+            <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+            <filter string="Priority" name="group_priority" context="{'group_by': 'priority'}"/>
+            <filter string="Owner" name="group_owner" context="{'group_by': 'owner_id'}"/>
+            <filter string="Scheduled Date" name="group_date" context="{'group_by': 'date_scheduled:day'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION CALENDAR VIEW -->
+    <!-- ======================================== -->
+    <record id="view_pet_notification_calendar" model="ir.ui.view">
+      <field name="name">pet.notification.calendar</field>
+      <field name="model">pet.notification</field>
+      <field name="arch" type="xml">
+        <calendar string="Notification Calendar" date_start="date_scheduled" color="notification_type" event_open_popup="true">
+          <field name="name"/>
+          <field name="pet_id"/>
+          <field name="notification_type"/>
+          <field name="priority"/>
+          <field name="status"/>
+          <field name="message"/>
+        </calendar>
+      </field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION PIVOT VIEW -->
+    <!-- ======================================== -->
+    <record id="view_pet_notification_pivot" model="ir.ui.view">
+      <field name="name">pet.notification.pivot</field>
+      <field name="model">pet.notification</field>
+      <field name="arch" type="xml">
+        <pivot string="Notification Analytics">
+          <field name="notification_type" type="row"/>
+          <field name="status" type="col"/>
+          <field name="priority" type="col"/>
+          <field name="pet_id" type="row"/>
+          <field name="owner_id" type="row"/>
+        </pivot>
+      </field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION GRAPH VIEW -->
+    <!-- ======================================== -->
+    <record id="view_pet_notification_graph" model="ir.ui.view">
+      <field name="name">pet.notification.graph</field>
+      <field name="model">pet.notification</field>
+      <field name="arch" type="xml">
+        <graph string="Notification Statistics" type="bar">
+          <field name="notification_type" type="row"/>
+          <field name="status" type="col"/>
+          <field name="priority" type="col"/>
+        </graph>
+      </field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- PET NOTIFICATION ACTIONS -->
+    <!-- ======================================== -->
+    
+    <!-- Main Action -->
+    <record id="action_pet_notification" model="ir.actions.act_window">
+      <field name="name">Pet Notifications</field>
+      <field name="res_model">pet.notification</field>
+      <field name="view_mode">kanban,list,form,calendar</field>
+      <field name="context">{'search_default_today': 1}</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          Create your first pet notification!
+        </p>
+        <p>
+          Keep pet owners informed about appointments, vaccinations, and important updates.
+        </p>
+      </field>
+    </record>
+
+    <!-- Draft Notifications Action -->
+    <record id="action_pet_notification_draft" model="ir.actions.act_window">
+      <field name="name">Draft Notifications</field>
+      <field name="res_model">pet.notification</field>
+      <field name="view_mode">list,form</field>
+      <field name="domain">[('status', '=', 'draft')]</field>
+      <field name="context">{'search_default_draft': 1}</field>
+    </record>
+
+    <!-- Failed Notifications Action -->
+    <record id="action_pet_notification_failed" model="ir.actions.act_window">
+      <field name="name">Failed Notifications</field>
+      <field name="res_model">pet.notification</field>
+      <field name="view_mode">list,form</field>
+      <field name="domain">[('status', '=', 'failed')]</field>
+      <field name="context">{'search_default_failed': 1}</field>
+    </record>
+
+    <!-- Overdue Notifications Action -->
+    <record id="action_pet_notification_overdue" model="ir.actions.act_window">
+      <field name="name">Overdue Notifications</field>
+      <field name="res_model">pet.notification</field>
+      <field name="view_mode">list,form</field>
+      <field name="domain">[('date_scheduled', '&lt;', context_today()), ('status', '=', 'draft')]</field>
+      <field name="context">{'search_default_overdue': 1}</field>
+    </record>
+
+    <!-- Urgent Notifications Action -->
+    <record id="action_pet_notification_urgent" model="ir.actions.act_window">
+      <field name="name">Urgent Notifications</field>
+      <field name="res_model">pet.notification</field>
+      <field name="view_mode">list,form</field>
+      <field name="domain">[('priority', '=', 'urgent')]</field>
+      <field name="context">{'search_default_urgent': 1}</field>
+    </record>
+
+    <!-- Analytics Action -->
+    <record id="action_pet_notification_analytics" model="ir.actions.act_window">
+      <field name="name">Notification Analytics</field>
+      <field name="res_model">pet.notification</field>
+      <field name="view_mode">pivot,graph</field>
+      <field name="context">{}</field>
+    </record>
+
+    <!-- ======================================== -->
+    <!-- MENU ITEMS -->
+    <!-- ======================================== -->
+    
+    <!-- Main Menu -->
+    <menuitem id="menu_pet_notification_main" name="Notifications" parent="menu_pet_operations" sequence="50" groups="pet_management.group_pet_operations_user_own"/>
+
+    <!-- Sub Menus -->
+    <menuitem id="menu_pet_notification_all" name="All Notifications" parent="menu_pet_notification_main" action="action_pet_notification" sequence="10"/>
+    <menuitem id="menu_pet_notification_draft" name="Draft" parent="menu_pet_notification_main" action="action_pet_notification_draft" sequence="20"/>
+    <menuitem id="menu_pet_notification_failed" name="Failed" parent="menu_pet_notification_main" action="action_pet_notification_failed" sequence="30"/>
+    <menuitem id="menu_pet_notification_overdue" name="Overdue" parent="menu_pet_notification_main" action="action_pet_notification_overdue" sequence="40"/>
+    <menuitem id="menu_pet_notification_urgent" name="Urgent" parent="menu_pet_notification_main" action="action_pet_notification_urgent" sequence="50"/>
+
+    <!-- Separator -->
+    <menuitem id="menu_pet_notification_separator" parent="menu_pet_notification_main" sequence="60"/>
+
+    <!-- Analytics -->
+    <menuitem id="menu_pet_notification_analytics" name="Analytics" parent="menu_pet_notification_main" action="action_pet_notification_analytics" sequence="70"/>
+
+  </data>
+</odoo>

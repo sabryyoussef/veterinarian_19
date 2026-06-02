@@ -1,0 +1,16 @@
+{
+  "name": "veterinary-demo-playwright",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:screenshots": "playwright test veterinary_scenarios.spec.ts",
+    "copy:screenshots": "node -e \"const fs=require('fs');const p=require('path');const s=p.join('screenshots');const d=p.join('..','..','docs','screenshots');fs.mkdirSync(d,{recursive:true});for(const f of fs.readdirSync(s)) if(f.endsWith('.png')) fs.copyFileSync(p.join(s,f),p.join(d,f));\"",
+    "install:browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  }
+}

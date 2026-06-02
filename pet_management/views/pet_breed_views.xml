@@ -1,0 +1,267 @@
+<odoo>
+  <!-- Tree View -->
+  <record id="view_pet_breed_tree" model="ir.ui.view">
+    <field name="name">pet.breed.list</field>
+    <field name="model">pet.breed</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name" widget="badge" decoration-info="color == 1" decoration-success="color == 2" decoration-warning="color == 3" decoration-primary="color == 4" decoration-muted="color == 5" decoration-danger="color == 6" decoration-bf="color == 7"/>
+        <field name="species_id" widget="badge" decoration-info="species_id.color == 1" decoration-success="species_id.color == 2" decoration-warning="species_id.color == 3" decoration-primary="species_id.color == 4" decoration-muted="species_id.color == 5" decoration-danger="species_id.color == 6" decoration-bf="species_id.color == 7"/>
+        <field name="size" widget="badge" decoration-info="size == 'tiny'" decoration-success="size == 'small'" decoration-warning="size == 'medium'" decoration-primary="size == 'large'" decoration-muted="size == 'giant'"/>
+        <field name="temperament" widget="badge" decoration-info="temperament == 'calm'" decoration-success="temperament == 'friendly'" decoration-warning="temperament == 'energetic'" decoration-primary="temperament == 'playful'" decoration-danger="temperament == 'aggressive'" decoration-muted="temperament == 'shy'"/>
+        <field name="care_level" widget="badge" decoration-success="care_level == 'low'" decoration-warning="care_level == 'medium'" decoration-danger="care_level == 'high'"/>
+        <field name="pet_count" widget="badge" decoration-info="pet_count > 0"/>
+        <field name="active" widget="boolean_toggle"/>
+        <field name="color" column_invisible="1"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Kanban View -->
+  <record id="view_pet_breed_kanban" model="ir.ui.view">
+    <field name="name">pet.breed.kanban</field>
+    <field name="model">pet.breed</field>
+    <field name="arch" type="xml">
+      <kanban class="pet-kanban">
+        <field name="name"/>
+        <field name="species_id"/>
+        <field name="size"/>
+        <field name="temperament"/>
+        <field name="care_level"/>
+        <field name="pet_count"/>
+        <field name="vaccination_count"/>
+        <field name="medical_visit_count"/>
+        <field name="life_expectancy_min"/>
+        <field name="life_expectancy_max"/>
+        <field name="average_weight_min"/>
+        <field name="average_weight_max"/>
+        <field name="active"/>
+        <field name="color"/>
+        <templates>
+          <t t-name="card">
+            <div t-att-class="'pet-kanban-card o_kanban_color_' + (record.color.raw_value or '1')" class="oe_kanban_global_click">
+              <!-- Header Section -->
+              <div class="pet-kanban-header theme-vaccination">
+                <div class="pet-info">
+                  <div class="pet-icon theme-vaccination">
+                    <i class="fa fa-tags" title="Breed Icon"/>
+                  </div>
+                  <div class="pet-details">
+                    <h3 class="pet-name" t-esc="record.name.value or 'Unknown Breed'"/>
+                    <div class="additional-info">
+                      <i class="fa fa-paw" title="Species"/>
+                      <span class="additional-info-name" t-esc="record.species_id.value or 'Unknown Species'"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-section">
+                  <div t-att-class="'status-badge status-' + (record.active.raw_value ? 'active' : 'inactive')">
+                    <i t-att-class="'fa fa-' + (record.active.raw_value ? 'check-circle' : 'times-circle')" title="Active Status"/>
+                    <span t-esc="record.active.value ? 'Active' : 'Inactive'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="pet-kanban-content">
+                <div class="pet-details-section">
+                  <div class="detail-row">
+                    <i class="fa fa-tags" title="Breed"/>
+                    <span class="detail-label">Breed:</span>
+                    <span class="detail-value" t-esc="record.name.value or 'Unknown'"/>
+                  </div>
+                  <div class="detail-row">
+                    <i class="fa fa-paw" title="Species"/>
+                    <span class="detail-label">Species:</span>
+                    <span class="detail-value" t-esc="record.species_id.value or 'Unknown'"/>
+                  </div>
+                  <div t-if="record.size and record.size.value" class="detail-row">
+                    <i class="fa fa-expand" title="Size"/>
+                    <span class="detail-label">Size:</span>
+                    <span t-att-class="'size-badge size-' + (record.size.raw_value or 'medium')" t-esc="record.size.value"/>
+                  </div>
+                  <div t-if="record.temperament and record.temperament.value" class="detail-row">
+                    <i class="fa fa-heart" title="Temperament"/>
+                    <span class="detail-label">Temperament:</span>
+                    <span t-att-class="'temperament-badge temperament-' + (record.temperament.raw_value or 'friendly')" t-esc="record.temperament.value"/>
+                  </div>
+                  <div t-if="record.care_level and record.care_level.value" class="detail-row">
+                    <i class="fa fa-star" title="Care Level"/>
+                    <span class="detail-label">Care Level:</span>
+                    <span t-att-class="'care-badge care-' + (record.care_level.raw_value or 'medium')" t-esc="record.care_level.value"/>
+                  </div>
+                </div>
+
+                <div t-if="record.life_expectancy_min and record.life_expectancy_max and record.life_expectancy_min.value and record.life_expectancy_max.value" class="pet-usage-stats">
+                  <div class="pet-stat-item">
+                    <i class="fa fa-clock-o" title="Life Span"/>
+                    <span class="pet-stat-label">Life Span:</span>
+                    <span class="pet-stat-value" t-esc="record.life_expectancy_min.value + '-' + record.life_expectancy_max.value + ' years'"/>
+                  </div>
+                  <div t-if="record.average_weight_min and record.average_weight_max and record.average_weight_min.value and record.average_weight_max.value" class="pet-stat-item">
+                    <i class="fa fa-balance-scale" title="Weight Range"/>
+                    <span class="pet-stat-label">Weight:</span>
+                    <span class="pet-stat-value" t-esc="record.average_weight_min.value + '-' + record.average_weight_max.value + ' kg'"/>
+                  </div>
+                </div>
+
+                <div class="pet-usage-stats">
+                  <div class="pet-stat-item">
+                    <i class="fa fa-paw" title="Pets Count"/>
+                    <span class="pet-stat-label">Pets:</span>
+                    <span class="pet-stat-value" t-esc="record.pet_count.value or '0'"/>
+                  </div>
+                  <div class="pet-stat-item">
+                    <i class="fa fa-medkit" title="Vaccinations Count"/>
+                    <span class="pet-stat-label">Vaccinations:</span>
+                    <span class="pet-stat-value" t-esc="record.vaccination_count.value or '0'"/>
+                  </div>
+                  <div class="pet-stat-item">
+                    <i class="fa fa-stethoscope" title="Medical Visits Count"/>
+                    <span class="pet-stat-label">Medical Visits:</span>
+                    <span class="pet-stat-value" t-esc="record.medical_visit_count.value or '0'"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="pet-kanban-actions">
+                <button class="btn btn-sm btn-primary action-btn" 
+                        name="action_view_pets" 
+                        type="object" 
+                        title="View Pets"
+                        groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin">
+                  <i class="fa fa-paw" title="View Pets"/>
+                </button>
+                <button class="btn btn-sm btn-success action-btn" 
+                        name="action_view_vaccinations" 
+                        type="object" 
+                        title="View Vaccinations"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-medkit" title="View Vaccinations"/>
+                </button>
+                <button class="btn btn-sm btn-info action-btn" 
+                        name="action_view_medical_visits" 
+                        type="object" 
+                        title="View Medical Visits"
+                        groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+                  <i class="fa fa-stethoscope" title="View Medical Visits"/>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Form View -->
+  <record id="view_pet_breed_form" model="ir.ui.view">
+    <field name="name">pet.breed.form</field>
+    <field name="model">pet.breed</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_view_pets" type="object" string="Pets" icon="fa-paw"
+                    groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
+            <button name="action_view_vaccinations" type="object" string="Vaccinations" icon="fa-medkit"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+            <button name="action_view_medical_visits" type="object" string="Medical Visits" icon="fa-stethoscope"
+                    groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+          </div>
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Breed Name"/>
+            </h1>
+          </div>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="species_id"/>
+              <field name="description"/>
+              <field name="active"/>
+            </group>
+            <group>
+              <field name="color" widget="color_picker"/>
+              <field name="company_id"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Characteristics">
+              <group>
+                <group>
+                  <field name="size"/>
+                  <field name="temperament"/>
+                  <field name="care_level"/>
+                </group>
+                <group>
+                  <field name="life_expectancy_min"/>
+                  <field name="life_expectancy_max"/>
+                  <field name="average_weight_min"/>
+                  <field name="average_weight_max"/>
+                </group>
+              </group>
+            </page>
+            <page string="Statistics">
+              <group>
+                <group>
+                  <field name="pet_count" readonly="1"/>
+                  <field name="vaccination_count" readonly="1"/>
+                  <field name="medical_visit_count" readonly="1"/>
+                </group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Search View -->
+  <record id="view_pet_breed_search" model="ir.ui.view">
+    <field name="name">pet.breed.search</field>
+    <field name="model">pet.breed</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="species_id"/>
+        <field name="size"/>
+        <field name="temperament"/>
+        <field name="care_level"/>
+        <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+        <filter name="filter_inactive" string="Inactive" domain="[('active', '=', False)]"/>
+        <filter name="filter_with_pets" string="With Pets" domain="[('pet_count', '&gt;', 0)]"/>
+        <filter name="filter_low_care" string="Low Care" domain="[('care_level', '=', 'low')]"/>
+        <filter name="filter_high_care" string="High Care" domain="[('care_level', '=', 'high')]"/>
+        <filter name="filter_small_breeds" string="Small Breeds" domain="[('size', 'in', ['tiny', 'small'])]"/>
+        <filter name="filter_large_breeds" string="Large Breeds" domain="[('size', 'in', ['large', 'giant'])]"/>
+        <separator/>
+        <filter name="filter_friendly_breeds" string="Friendly Breeds" domain="[('temperament', 'in', ['friendly', 'calm', 'playful'])]"/>
+        
+        <!-- Display Options -->
+        <separator/>
+        <filter name="show_details" string="Show More Details" context="{'show_details': True}"/>
+        
+        <group>
+          <filter name="group_by_species" string="Species" context="{'group_by':'species_id'}"/>
+          <filter name="group_by_active" string="Active Status" context="{'group_by':'active'}"/>
+          <filter name="group_by_size" string="Size" context="{'group_by':'size'}"/>
+          <filter name="group_by_temperament" string="Temperament" context="{'group_by':'temperament'}"/>
+          <filter name="group_by_care_level" string="Care Level" context="{'group_by':'care_level'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Window Action -->
+  <record id="action_pet_breed" model="ir.actions.act_window">
+    <field name="name">Breeds</field>
+    <field name="res_model">pet.breed</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="context">{'search_default_filter_active': 1}</field>
+  </record>
+
+  <!-- Menu Item -->
+  <menuitem id="menu_pet_breed" parent="menu_pet_configuration" action="action_pet_breed" name="Breeds" sequence="2" groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
+</odoo>

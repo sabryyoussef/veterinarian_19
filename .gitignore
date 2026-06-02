@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Playwright
+tests/playwright/node_modules/
+tests/playwright/screenshots/
+tests/playwright/test-results/
+tests/playwright/report/
+tests/playwright/.env

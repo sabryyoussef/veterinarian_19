@@ -1,0 +1,122 @@
+/* Pet Management - Image Widget Styling */
+/* Enhanced image field appearance with hover effects and smooth interactions */
+
+/* Container styling */
+.o_field_image {
+  display: inline-block;
+  position: relative;
+  max-width: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Image styling */
+.o_field_image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  display: block;
+  pointer-events: none; /* critical fix - prevents image from blocking button clicks */
+}
+
+.o_field_image:hover img {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
+/* Action buttons container (appears on hover) */
+.o_field_image .opacity-trigger-hover {
+  position: relative;
+}
+
+.o_field_image .opacity-trigger-hover > div {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.o_field_image:hover .opacity-trigger-hover > div {
+  opacity: 1;
+}
+
+/* Button overlay */
+.o_field_image .position-absolute {
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* Optional hover fade-in effect */
+.o_field_image:hover .position-absolute {
+  opacity: 1 !important;
+  transition: opacity 0.3s ease;
+}
+
+/* Buttons */
+.o_select_file_button,
+.o_clear_file_button {
+  background-color: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
+  margin: 5px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  z-index: 3;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.o_select_file_button:hover,
+.o_clear_file_button:hover {
+  background-color: #007bff !important;
+  color: #fff !important;
+  transform: scale(1.1);
+}
+
+/* Tooltip styling (optional enhancement) */
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+}
+
+/* Empty state styling */
+.o_field_image .o_form_image_empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+  min-height: 150px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.o_field_image .o_form_image_empty:hover {
+  border-color: #007bff;
+  background-color: #e7f3ff;
+  color: #007bff;
+  cursor: pointer;
+}

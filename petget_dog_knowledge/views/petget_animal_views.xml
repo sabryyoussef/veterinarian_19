@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="petget_dog_knowledge_view_form_animal" model="ir.ui.view">
+        <field name="name">petget.animal.form.knowledge</field>
+        <field name="model">petget.animal</field>
+        <field name="inherit_id" ref="petget_core.petget_core_view_form_animal"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="replace">
+                <field name="color_id" options="{'no_quick_create': True}"/>
+            </xpath>
+            <xpath expr="//group[@name='group_dog']" position="after">
+                <group name="group_development" string="Development &amp; Care"
+                       invisible="species != 'dog'">
+                    <field name="life_stage_id"/>
+                    <field name="life_stage_feeding"/>
+                    <field name="life_stage_care"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

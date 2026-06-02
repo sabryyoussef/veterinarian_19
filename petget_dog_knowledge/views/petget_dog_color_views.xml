@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="petget_dog_knowledge_view_list_color" model="ir.ui.view">
+        <field name="name">petget.dog.color.list</field>
+        <field name="model">petget.dog.color</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="petget_dog_knowledge_view_form_color" model="ir.ui.view">
+        <field name="name">petget.dog.color.form</field>
+        <field name="model">petget.dog.color</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="petget_dog_knowledge_action_color" model="ir.actions.act_window">
+        <field name="name">Dog Colours</field>
+        <field name="res_model">petget.dog.color</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

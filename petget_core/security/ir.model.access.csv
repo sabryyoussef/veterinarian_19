@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_petget_animal_user,petget.animal.user,model_petget_animal,petget_core.group_user,1,1,1,0
+access_petget_animal_manager,petget.animal.manager,model_petget_animal,petget_core.group_manager,1,1,1,1
+access_petget_document_user,petget.document.user,model_petget_document,petget_core.group_user,1,1,1,1
+access_petget_document_manager,petget.document.manager,model_petget_document,petget_core.group_manager,1,1,1,1
+access_petget_reminder_user,petget.reminder.user,model_petget_reminder,petget_core.group_user,1,1,1,1
+access_petget_reminder_manager,petget.reminder.manager,model_petget_reminder,petget_core.group_manager,1,1,1,1
+access_petget_note_user,petget.note.user,model_petget_note,petget_core.group_user,1,1,1,0
+access_petget_note_manager,petget.note.manager,model_petget_note,petget_core.group_manager,1,1,1,1

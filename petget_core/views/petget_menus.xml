@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="petget_core_menu_root"
+              name="Petget"
+              sequence="10"/>
+
+    <menuitem id="petget_core_menu_animals"
+              name="Animals"
+              parent="petget_core_menu_root"
+              action="petget_core_action_animal"
+              sequence="10"/>
+
+    <menuitem id="petget_core_menu_documents"
+              name="Documents"
+              parent="petget_core_menu_root"
+              action="petget_core_action_document"
+              sequence="20"/>
+
+    <menuitem id="petget_core_menu_reminders"
+              name="Reminders"
+              parent="petget_core_menu_root"
+              action="petget_core_action_reminder"
+              sequence="30"/>
+
+    <menuitem id="petget_core_menu_notes"
+              name="Activity Log"
+              parent="petget_core_menu_root"
+              action="petget_core_action_note"
+              sequence="40"/>
+
+</odoo>

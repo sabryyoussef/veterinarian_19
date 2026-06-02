@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Help Page Form View -->
+    <record id="view_pet_help_form" model="ir.ui.view">
+        <field name="name">pet.help.form</field>
+        <field name="model">pet.help</field>
+        <field name="arch" type="xml">
+            <form string="Pet Management Help Guide" create="false" edit="false" delete="false">
+                <div class="oe_title" style="text-align: center; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin: 0;max-width:100%;">
+                    <h1 style="color: white; margin: 0; font-size: 36px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+                        <i class="fa fa-paw" style="margin-right: 15px;" title="Pet"></i>Pet Management - Complete Help Guide
+                    </h1>
+                    <h3 style="color: white; margin: 15px 0 0 0; font-size: 18px; font-weight: normal; opacity: 0.95;">
+                        <i class="fa fa-building" title="Company"></i> Webbycrown Solutions | User Guide for All Facilities
+                    </h3>
+                </div>
+                
+                <sheet>
+                    <notebook>
+                        <!-- Getting Started Tab -->
+                        <page string="Getting Started" name="getting_started">
+                            <div style="padding: 30px; background: #f5f7fa;">
+                                <!-- Welcome Banner -->
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                    <h1 style="color: white; margin: 0; font-size: 32px;">
+                                        <i class="fa fa-paw" style="margin-right: 10px;" title="Pet"></i>Welcome to Pet Management
+                                    </h1>
+                                    <p style="color: white; font-size: 16px; margin: 10px 0 0 0; opacity: 0.95;">Your complete solution for veterinary clinics, pet care facilities, and training centers</p>
+                                </div>
+                                
+                                <!-- Quick Start Guide -->
+                                <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h2 style="color: #667eea; margin-top: 0; font-size: 24px; display: flex; align-items: center;">
+                                        <span style="background: #667eea; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 20px;">
+                                            <i class="fa fa-lock" title="Security"></i>
+                                        </span>
+                                        Accessing the Module
+                                    </h2>
+                                    <div style="margin-left: 55px;">
+                                        <div style="display: flex; margin: 15px 0; align-items: start;">
+                                            <span style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0;">1</span>
+                                            <p style="margin: 5px 0; font-size: 15px; line-height: 1.6;"><b>Login to Odoo</b><br/>Use your credentials to access your Odoo account</p>
+                                        </div>
+                                        <div style="display: flex; margin: 15px 0; align-items: start;">
+                                            <span style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0;">2</span>
+                                            <p style="margin: 5px 0; font-size: 15px; line-height: 1.6;"><b>Find the "Pets" Menu</b><br/>Look for <b style="color: #667eea;">Pets</b> in the main menu bar at the top</p>
+                                        </div>
+                                        <div style="display: flex; margin: 15px 0; align-items: start;">
+                                            <span style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0;">3</span>
+                                            <p style="margin: 5px 0; font-size: 15px; line-height: 1.6;"><b>Click to Access</b><br/>Click on "Pets" to open the dropdown and access all facilities</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Menu Structure -->
+                                <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h2 style="color: #667eea; margin-top: 0; font-size: 24px; display: flex; align-items: center;">
+                                        <span style="background: #0077be; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 20px;">
+                                            <i class="fa fa-list" title="Menu"></i>
+                                        </span>
+                                        Complete Menu Structure
+                                    </h2>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
+                                        <div style="background: #f0f4ff; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #667eea;"><i class="fa fa-paw fa-2x" title="Core"></i></div>
+                                            <div style="font-weight: bold; color: #667eea; margin-bottom: 5px;">Core</div>
+                                            <div style="font-size: 13px; color: #666;">Manage pet records</div>
+                                        </div>
+                                        <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #0ea5e9;"><i class="fa fa-calendar fa-2x" title="Appointments"></i></div>
+                                            <div style="font-weight: bold; color: #0ea5e9; margin-bottom: 5px;">Appointments</div>
+                                            <div style="font-size: 13px; color: #666;">Schedule all services</div>
+                                        </div>
+                                        <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #dc2626;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #dc2626;"><i class="fa fa-heartbeat fa-2x" title="Health"></i></div>
+                                            <div style="font-weight: bold; color: #dc2626; margin-bottom: 5px;">Health</div>
+                                            <div style="font-size: 13px; color: #666;">Medical records &amp; vaccinations</div>
+                                        </div>
+                                        <div style="background: #fffbeb; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #f59e0b;"><i class="fa fa-hotel fa-2x" title="Boarding"></i></div>
+                                            <div style="font-weight: bold; color: #f59e0b; margin-bottom: 5px;">Boarding</div>
+                                            <div style="font-size: 13px; color: #666;">Pet boarding stays</div>
+                                        </div>
+                                        <div style="background: #f5f3ff; padding: 15px; border-radius: 8px; border-left: 4px solid #9333ea;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #9333ea;"><i class="fa fa-scissors fa-2x" title="Grooming"></i></div>
+                                            <div style="font-weight: bold; color: #9333ea; margin-bottom: 5px;">Grooming</div>
+                                            <div style="font-size: 13px; color: #666;">Grooming appointments</div>
+                                        </div>
+                                        <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #16a34a;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #16a34a;"><i class="fa fa-graduation-cap fa-2x" title="Training"></i></div>
+                                            <div style="font-weight: bold; color: #16a34a; margin-bottom: 5px;">Training</div>
+                                            <div style="font-size: 13px; color: #666;">Training sessions</div>
+                                        </div>
+                                        <div style="background: #fef7ed; padding: 15px; border-radius: 8px; border-left: 4px solid #ea580c;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #ea580c;"><i class="fa fa-cutlery fa-2x" title="Diet"></i></div>
+                                            <div style="font-weight: bold; color: #ea580c; margin-bottom: 5px;">Diet</div>
+                                            <div style="font-size: 13px; color: #666;">Diet plans</div>
+                                        </div>
+                                        <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #ef4444;"><i class="fa fa-bell fa-2x" title="Notifications"></i></div>
+                                            <div style="font-weight: bold; color: #ef4444; margin-bottom: 5px;">Operations</div>
+                                            <div style="font-size: 13px; color: #666;">Notifications</div>
+                                        </div>
+                                        <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #64748b;">
+                                            <div style="font-size: 20px; margin-bottom: 8px; color: #64748b;"><i class="fa fa-cog fa-2x" title="Configuration"></i></div>
+                                            <div style="font-weight: bold; color: #64748b; margin-bottom: 5px;">Configuration</div>
+                                            <div style="font-size: 13px; color: #666;">System setup</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- User Roles -->
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h2 style="color: #667eea; margin-top: 0; font-size: 24px; display: flex; align-items: center;">
+                                        <span style="background: #f59e0b; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 20px;">
+                                            <i class="fa fa-users" title="Users"></i>
+                                        </span>
+                                        User Roles &amp; Permissions
+                                    </h2>
+                                    <div style="margin-top: 20px;">
+                                        <div style="background: linear-gradient(90deg, #dbeafe 0%, #f0f9ff 100%); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #3b82f6;">
+                                            <div style="display: flex; align-items: start;">
+                                                <div style="background: #3b82f6; color: white; width: 50px; height: 50px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 24px; flex-shrink: 0;">
+                                                    <i class="fa fa-user" title="User"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 style="margin: 0 0 8px 0; color: #1e40af; font-size: 18px;">Own Data Users</h3>
+                                                    <p style="margin: 0; color: #475569; font-size: 14px; line-height: 1.6;">Can only view and manage their own pet records. Perfect for pet owners who want to track their pets.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="background: linear-gradient(90deg, #ddd6fe 0%, #f5f3ff 100%); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #8b5cf6;">
+                                            <div style="display: flex; align-items: start;">
+                                                <div style="background: #8b5cf6; color: white; width: 50px; height: 50px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 24px; flex-shrink: 0;">
+                                                    <i class="fa fa-users" title="Users"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 style="margin: 0 0 8px 0; color: #6d28d9; font-size: 18px;">All Data Users</h3>
+                                                    <p style="margin: 0; color: #475569; font-size: 14px; line-height: 1.6;">Can view and manage all records across the system. Ideal for staff members handling multiple pets.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="background: linear-gradient(90deg, #fecaca 0%, #fee2e2 100%); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #ef4444;">
+                                            <div style="display: flex; align-items: start;">
+                                                <div style="background: #ef4444; color: white; width: 50px; height: 50px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 24px; flex-shrink: 0;">
+                                                    <i class="fa fa-user-md" title="Administrator"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 style="margin: 0 0 8px 0; color: #b91c1c; font-size: 18px;">Administrators</h3>
+                                                    <p style="margin: 0; color: #475569; font-size: 14px; line-height: 1.6;">Full access including configuration, security settings, and system management. Can delete records and manage all users.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="background: linear-gradient(90deg, #d1fae5 0%, #ecfdf5 100%); padding: 20px; border-radius: 10px; border-left: 5px solid #10b981;">
+                                            <div style="display: flex; align-items: start;">
+                                                <div style="background: #10b981; color: white; width: 50px; height: 50px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; margin-right: 20px; font-size: 24px; flex-shrink: 0;">
+                                                    <i class="fa fa-stethoscope" title="Staff"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 style="margin: 0 0 8px 0; color: #047857; font-size: 18px;">Staff Users</h3>
+                                                    <p style="margin: 0; color: #475569; font-size: 14px; line-height: 1.6;">Department-specific access (Health Staff, Grooming Staff, Training Staff, etc.). Can manage records in their assigned departments.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Core Tab -->
+                        <page string="1. Core - Pets" name="core">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-paw" style="margin-right: 10px;" title="Pet"></i>Core Pet Management
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Core → Pets</p>
+                                </div>
+                                
+                                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #764ba2;"><i class="fa fa-lightbulb-o" title="Tip"></i> What is This Facility?</h3>
+                                    <p style="font-size: 14px; line-height: 1.8;">
+                                        The Core module is where you create and manage all pet records. Each pet has a complete profile with health information, photos, and quick access to all related services.
+                                    </p>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #667eea; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #667eea;"><i class="fa fa-pencil" title="Edit"></i> How to Create a New Pet</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li><b>Navigate:</b> Pets → Core → Pets</li>
+                                        <li><b>Click:</b> "Create" button</li>
+                                        <li><b>Fill Basic Information:</b>
+                                            <ul>
+                                                <li>Name (Required) - e.g., "Max"</li>
+                                                <li>Species (Required) - Dog, Cat, Bird, etc.</li>
+                                                <li>Breed - Select after choosing species</li>
+                                                <li>Owner (Required) - Select from contacts</li>
+                                                <li>Date of Birth - Age calculates automatically</li>
+                                                <li>Gender - Male, Female, or Unknown</li>
+                                            </ul>
+                                        </li>
+                                        <li><b>Add Identification:</b> Microchip (auto-generated), Tag ID</li>
+                                        <li><b>Add Photo:</b> Upload pet's image</li>
+                                        <li><b>Add Health Info:</b> Allergies, Chronic Conditions, Dietary Restrictions</li>
+                                        <li><b>Set Status:</b> Active, Adopted, Deceased, Lost, or Inactive</li>
+                                        <li><b>Save:</b> Click "Save" button</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #d4edda; border: 2px solid #28a745; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #155724;"><i class="fa fa-star" title="Star"></i> Smart Buttons (Top Right of Pet Form)</h3>
+                                    <ul style="font-size: 14px; line-height: 2;">
+                                        <li><b><i class="fa fa-medkit" style="color: #dc3545;" title="Vaccination"></i> Vaccinations</b> - Shows count, click to view all vaccinations</li>
+                                        <li><b><i class="fa fa-heartbeat" style="color: #dc2626;" title="Medical"></i> Medical Visits</b> - View complete medical history</li>
+                                        <li><b><i class="fa fa-calendar" style="color: #0ea5e9;" title="Appointment"></i> Appointments</b> - View all appointments</li>
+                                        <li><b><i class="fa fa-hotel" style="color: #f59e0b;" title="Boarding"></i> Boarding</b> - View boarding stays</li>
+                                        <li><b><i class="fa fa-scissors" style="color: #9333ea;" title="Grooming"></i> Grooming</b> - View grooming sessions</li>
+                                        <li><b><i class="fa fa-graduation-cap" style="color: #16a34a;" title="Training"></i> Training</b> - View training sessions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Appointments Tab -->
+                        <page string="2. Appointments" name="appointments">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-calendar" style="margin-right: 10px;" title="Appointments"></i>Unified Appointment System
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Appointments</p>
+                                </div>
+                                
+                                <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #856404;"><i class="fa fa-star" title="Star"></i> Key Feature: Auto-Facility Creation!</h3>
+                                    <p style="font-size: 14px;">When you <b>Confirm</b> an appointment, the system automatically creates records in the respective facility modules:</p>
+                                    <ul style="font-size: 14px; line-height: 2;">
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Medical Checked → Creates Medical Visit</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Vaccination Checked → Creates Vaccination Record</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Grooming Checked → Creates Grooming Session</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Training Checked → Creates Training Session</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Boarding Checked → Creates Boarding Stay</li>
+                                    </ul>
+                                    <p style="color: #d32f2f; font-weight: bold;">All records are automatically linked together!</p>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #667eea; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #667eea;"><i class="fa fa-pencil" title="Edit"></i> How to Create an Appointment</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li>Navigate to: <b>Pets → Appointments</b></li>
+                                        <li>Click <b>"Create"</b> button</li>
+                                        <li>Select <b>Pet</b> and enter <b>Title</b></li>
+                                        <li>Choose <b>Primary Type</b>: Checkup, Emergency, Surgery, Dental, Comprehensive, Other</li>
+                                        <li><b>Check Service Types</b> (all that apply):
+                                            <ul>
+                                                <li>☐ Medical</li>
+                                                <li>☐ Include Vaccination</li>
+                                                <li>☐ Grooming</li>
+                                                <li>☐ Training</li>
+                                                <li>☐ Boarding</li>
+                                            </ul>
+                                        </li>
+                                        <li>Set <b>Start &amp; End Date/Time</b></li>
+                                        <li>Assign <b>Resource</b> (vet/staff) and <b>Room</b></li>
+                                        <li>Add service details (vaccine, service, program, kennel)</li>
+                                        <li>Click <b>"Confirm"</b> to auto-create facility entries!</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #2e7d32;"><i class="fa fa-money" title="Money"></i> Generate Invoice</h3>
+                                    <p style="font-size: 14px; line-height: 1.8;">
+                                        After completing services, you can generate invoices directly from appointments with all service line items included automatically!
+                                    </p>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Health Tab -->
+                        <page string="3. Health" name="health">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-heartbeat" style="margin-right: 10px;" title="Health"></i>Health Management
+                                </h2>
+                                
+                                <div style="background: #fff; border: 2px solid #dc3545; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #dc3545;"><i class="fa fa-clipboard" title="Notes"></i> Medical Visits - SOAP Notes Format</h3>
+                                    <p style="font-size: 14px;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Health → Medical Visits</p>
+                                    <table style="width: 100%; font-size: 14px; margin-top: 10px;">
+                                        <tr style="background: #f8f9fa;">
+                                            <td style="padding: 10px; width: 150px;"><b>S - Subjective</b></td>
+                                            <td style="padding: 10px;">What the owner says (symptoms, observations)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px;"><b>O - Objective</b></td>
+                                            <td style="padding: 10px;">What you observe (examination findings, vital signs)</td>
+                                        </tr>
+                                        <tr style="background: #f8f9fa;">
+                                            <td style="padding: 10px;"><b>A - Assessment</b></td>
+                                            <td style="padding: 10px;">Your diagnosis (medical assessment)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px;"><b>P - Plan</b></td>
+                                            <td style="padding: 10px;">Treatment plan (medications, follow-up)</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                
+                                <div style="background: #e1f5fe; border-left: 5px solid #03a9f4; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #01579b;"><i class="fa fa-medkit" title="Medical"></i> Vaccinations</h3>
+                                    <p style="font-size: 14px;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Health → Vaccinations</p>
+                                    <p style="font-size: 14px; line-height: 1.8;"><b>Quick Steps:</b></p>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li>Create → Select Pet &amp; Vaccine</li>
+                                        <li>Enter Date Administered</li>
+                                        <li>Add Batch Number (for safety tracking)</li>
+                                        <li>Select Veterinarian</li>
+                                        <li>System auto-calculates Next Due Date <i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i></li>
+                                        <li>Mark as Administered</li>
+                                        <li>Reminder notification created automatically! <i class="fa fa-bell" title="Notification"></i></li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #fce4ec; border-left: 5px solid #e91e63; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #880e4f;"><i class="fa fa-line-chart" title="Chart"></i> Weight History</h3>
+                                    <p style="font-size: 14px;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Health → Weight History</p>
+                                    <p style="font-size: 14px; line-height: 1.8;">
+                                        <b>Record Weight:</b> Create → Select Pet → Enter Date &amp; Weight (kg) → Save<br/>
+                                        <b>View Trends:</b> Switch to Graph view to see weight trends over time <i class="fa fa-bar-chart" title="Chart"></i>
+                                    </p>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Boarding Tab -->
+                        <page string="4. Boarding" name="boarding">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-hotel" style="margin-right: 10px;" title="Boarding"></i>Boarding Facilities
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Boarding → Boarding Stays</p>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #ff9800; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #e65100;"><i class="fa fa-pencil" title="Edit"></i> How to Book a Boarding Stay</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li>Create → Select Pet &amp; Kennel</li>
+                                        <li>Set Check-In &amp; Check-Out dates (duration auto-calculates)</li>
+                                        <li>Assign Staff caretaker</li>
+                                        <li>Add Care Instructions:
+                                            <ul>
+                                                <li><i class="fa fa-cutlery" title="Food"></i> Feeding Notes (meal times, portions)</li>
+                                                <li><i class="fa fa-male" title="Walk"></i> Walk Schedule</li>
+                                                <li>📋 Special Instructions</li>
+                                                <li>🏥 Health Notes</li>
+                                                <li><i class="fa fa-pencil" title="Edit"></i> Incident Log</li>
+                                            </ul>
+                                        </li>
+                                        <li>Add Emergency Contact &amp; Pickup Person</li>
+                                        <li>Confirm Booking</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #f3e5f5; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #4a148c;">🏠 Kennel Management</h3>
+                                    <p style="font-size: 14px;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Configuration → Kennels</p>
+                                    <p style="font-size: 14px; line-height: 1.8;">
+                                        <b>Set Up Kennels:</b> Create → Enter Name → Set Capacity &amp; Daily Rate → Add Amenities<br/>
+                                        <b><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> System tracks occupancy automatically!</b><br/>
+                                        <b><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Prevents double-booking!</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Grooming Tab -->
+                        <page string="5. Grooming" name="grooming">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-scissors" style="margin-right: 10px;" title="Grooming"></i>Grooming Services
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Grooming → Sessions</p>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #9c27b0; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #9c27b0;"><i class="fa fa-pencil" title="Edit"></i> How to Book a Grooming Session</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li>Create → Select Pet &amp; Service</li>
+                                        <li>Assign Groomer</li>
+                                        <li>Schedule Date &amp; Time</li>
+                                        <li>Add Special Requests</li>
+                                        <li>Confirm Session</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #e8f5e9; border-left: 5px solid #4caf50; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #1b5e20;"><i class="fa fa-camera" title="Photo"></i> During Grooming</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li>Click "Start" button</li>
+                                        <li>Upload <b>Before Photo</b> <i class="fa fa-camera" title="Photo"></i></li>
+                                        <li>Record behavior notes</li>
+                                        <li>Upload <b>After Photo</b> <i class="fa fa-camera" title="Photo"></i></li>
+                                        <li>Click "Complete" button</li>
+                                        <li>Add customer rating (<i class="fa fa-star" title="Star"></i><i class="fa fa-star" title="Star"></i><i class="fa fa-star" title="Star"></i><i class="fa fa-star" title="Star"></i><i class="fa fa-star" title="Star"></i> 1-5 stars)</li>
+                                        <li>Record feedback</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #fff3e0; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #e65100;">📋 Service Categories</h3>
+                                    <p style="font-size: 14px;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Configuration → Grooming Services</p>
+                                    <ul style="font-size: 14px; line-height: 2;">
+                                        <li>Basic Grooming</li>
+                                        <li>Premium Grooming</li>
+                                        <li>Spa Treatment</li>
+                                        <li>Medical Grooming</li>
+                                        <li>Specialty Service</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Training Tab -->
+                        <page string="6. Training" name="training">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-graduation-cap" style="margin-right: 10px;" title="Training"></i>Training Programs
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Training → Sessions</p>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #3f51b5; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #1a237e;"><i class="fa fa-pencil" title="Edit"></i> How to Enroll in Training</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li>Create → Select Pet &amp; Program</li>
+                                        <li>Assign Trainer</li>
+                                        <li>Schedule Session Date &amp; Time</li>
+                                        <li>Confirm Session</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #e1f5fe; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #01579b;"><i class="fa fa-trophy" title="Achievement"></i> During Training Session</h3>
+                                    <ul style="font-size: 14px; line-height: 2;">
+                                        <li>Record <b>Achievements</b> <i class="fa fa-trophy" title="Achievement"></i></li>
+                                        <li>Document <b>Skills Learned</b> <i class="fa fa-book" title="Book"></i></li>
+                                        <li>Note <b>Behavior Observations</b> <i class="fa fa-eye" title="View"></i></li>
+                                        <li>Assign <b>Homework</b> for owner <i class="fa fa-pencil" title="Edit"></i></li>
+                                        <li>Get customer feedback <i class="fa fa-star" title="Star"></i></li>
+                                    </ul>
+                                </div>
+                                
+                                <div style="background: #f3e5f5; border-left: 5px solid #9c27b0; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #4a148c;"><i class="fa fa-book" title="Book"></i> 10 Training Categories</h3>
+                                    <p style="font-size: 14px;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Configuration → Training Programs</p>
+                                    <table style="width: 100%; font-size: 14px;">
+                                        <tr><td style="padding: 5px;">1. Obedience Training</td><td style="padding: 5px;">6. Service Dog Training</td></tr>
+                                        <tr><td style="padding: 5px;">2. Behavioral Training</td><td style="padding: 5px;">7. Protection Training</td></tr>
+                                        <tr><td style="padding: 5px;">3. Socialization</td><td style="padding: 5px;">8. Trick Training</td></tr>
+                                        <tr><td style="padding: 5px;">4. Agility Training</td><td style="padding: 5px;">9. Puppy Training</td></tr>
+                                        <tr><td style="padding: 5px;">5. Therapy Training</td><td style="padding: 5px;">10. Senior Dog Training</td></tr>
+                                    </table>
+                                    <p style="font-size: 14px; margin-top: 10px;"><b>5 Levels:</b> Beginner → Basic → Intermediate → Advanced → Expert</p>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Diet Tab -->
+                        <page string="7. Diet" name="diet">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-cutlery" style="margin-right: 10px;" title="Diet"></i>Diet Management
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Diet → Diet Plans</p>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #4caf50; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #1b5e20;"><i class="fa fa-pencil" title="Edit"></i> How to Create a Diet Plan</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li>Create → Select Pet</li>
+                                        <li>Choose Diet Type (see below)</li>
+                                        <li>Set nutritional targets (calories, protein, fat, fiber)</li>
+                                        <li>Configure feeding frequency (1-6 times daily)</li>
+                                        <li>Add meal details in Diet Plan Lines</li>
+                                        <li>Activate Plan</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #2e7d32;"><i class="fa fa-leaf" title="Nutrition"></i> 12 Diet Types Available</h3>
+                                    <table style="width: 100%; font-size: 14px;">
+                                        <tr><td style="padding: 5px;">1. Weight Loss</td><td style="padding: 5px;">7. Allergy Management</td></tr>
+                                        <tr><td style="padding: 5px;">2. Weight Gain</td><td style="padding: 5px;">8. Digestive Health</td></tr>
+                                        <tr><td style="padding: 5px;">3. Weight Maintenance</td><td style="padding: 5px;">9. Dental Health</td></tr>
+                                        <tr><td style="padding: 5px;">4. Medical Diet</td><td style="padding: 5px;">10. Performance Diet</td></tr>
+                                        <tr><td style="padding: 5px;">5. Puppy/Kitten Diet</td><td style="padding: 5px;">11. Recovery Diet</td></tr>
+                                        <tr><td style="padding: 5px;">6. Senior Diet</td><td style="padding: 5px;">12. Custom Diet</td></tr>
+                                    </table>
+                                </div>
+                                
+                                <div style="background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #e65100;"><i class="fa fa-bar-chart" title="Chart"></i> Automatic Progress Tracking</h3>
+                                    <ul style="font-size: 14px; line-height: 2;">
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Weight Change calculated automatically</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Days Active counted</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Weight Progress with trends</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Adherence Rating (Excellent, Good, Fair, Poor)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Notifications Tab -->
+                        <page string="8. Notifications" name="notifications">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-bell" style="margin-right: 10px;" title="Notifications"></i>Automated Notifications
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Operations → Notifications</p>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #f44336; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #b71c1c;"><i class="fa fa-inbox" title="Inbox"></i> 8 Notification Types</h3>
+                                    <ol style="font-size: 14px; line-height: 2;">
+                                        <li><b>Vaccination Due</b> - Sent 7 days before due date</li>
+                                        <li><b>Vaccination Overdue</b> - For overdue vaccinations</li>
+                                        <li><b>Appointment Reminder</b> - Sent 24 hours before</li>
+                                        <li><b>Medical Visit Due</b> - Follow-up reminders</li>
+                                        <li><b>Boarding Reminder</b> - Check-in reminders</li>
+                                        <li><b>Grooming Reminder</b> - Session reminders</li>
+                                        <li><b>Training Reminder</b> - Class reminders</li>
+                                        <li><b>General Reminder</b> - Custom notifications</li>
+                                    </ol>
+                                </div>
+                                
+                                <div style="background: #e1f5fe; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #01579b;"><i class="fa fa-cog" title="Settings"></i> Automated CRON Jobs</h3>
+                                    <p style="font-size: 14px; line-height: 2;">
+                                        <b>8:00 AM</b> - Create vaccination reminders<br/>
+                                        <b>9:00 AM</b> - Create overdue alerts<br/>
+                                        <b>10:00 AM</b> - Create appointment reminders<br/>
+                                        <b>Every Hour</b> - Send scheduled notifications
+                                    </p>
+                                </div>
+                                
+                                <div style="background: #e8f5e9; border-left: 5px solid #4caf50; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #1b5e20;"><i class="fa fa-send" title="Send"></i> Multi-Channel Delivery</h3>
+                                    <ul style="font-size: 14px; line-height: 2;">
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> <b>Email Notifications</b></li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> <b>SMS Notifications</b> (if configured)</li>
+                                        <li><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> <b>In-App Notifications</b> (always enabled)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Configuration Tab -->
+                        <page string="9. Settings" name="configuration">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-cog" style="margin-right: 10px;" title="Settings"></i>Configuration &amp; Settings Guide
+                                </h2>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-left: 5px solid #2196f3; margin: 10px 0;">
+                                    <p style="margin: 0;"><b><i class="fa fa-map-marker" title="Location"></i> Location:</b> Pets → Configuration → Settings</p>
+                                </div>
+                                
+                                <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #f57f17;"><i class="fa fa-info-circle" title="Info"></i> About Settings</h3>
+                                    <p style="font-size: 14px; line-height: 1.8;">
+                                        The Settings page allows you to configure how the Pet Management module works. All settings are centralized in one place for easy management.
+                                    </p>
+                                </div>
+                                
+                                <!-- Microchip Settings -->
+                                <div style="background: #fff; border: 2px solid #607d8b; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h3 style="color: #263238; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #607d8b; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-wrench" title="Tools"></i></span>
+                                        Microchip Management
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;"><i class="fa fa-check-square-o" style="color: #667eea;" title="Checkbox"></i> Auto-Generate Microchip Numbers</b><br/>
+                                                <span style="color: #666;">Enable/disable automatic microchip number generation when creating new pets</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Recommended: Enable for consistency</span>
+                                            </p>
+                                        </div>
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;">Microchip Prefix</b><br/>
+                                                <span style="color: #666;">Set your clinic's prefix for microchip numbers</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Default: "MC" | Example: "VET", "CLINIC", "PET"</span>
+                                            </p>
+                                        </div>
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;">Microchip Padding</b><br/>
+                                                <span style="color: #666;">Number of digits for the microchip sequence</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Default: 8 | Example: MC00000001, MC00000002</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Display Preferences -->
+                                <div style="background: #fff; border: 2px solid #9c27b0; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h3 style="color: #6a1b9a; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #9c27b0; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;">📅</span>
+                                        Display Preferences
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;">Date Format</b><br/>
+                                                <span style="color: #666;">How dates appear throughout the system</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Example: "Sep 16, 2024" or "16/09/2024"</span>
+                                            </p>
+                                        </div>
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;">Datetime Format</b><br/>
+                                                <span style="color: #666;">How date and time appear together</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Example: "Sep 16, 2024 - 4:30 PM"</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Appointment Settings -->
+                                <div style="background: #fff; border: 2px solid #00bcd4; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h3 style="color: #006064; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #00bcd4; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;">📆</span>
+                                        Appointment Defaults
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;">Default Appointment Duration</b><br/>
+                                                <span style="color: #666;">Default duration in hours when creating new appointments</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Default: 1.0 hour | Adjustable based on your clinic needs</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Boarding Settings -->
+                                <div style="background: #fff; border: 2px solid #ff9800; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h3 style="color: #e65100; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #ff9800; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;">🏨</span>
+                                        Boarding Configuration
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;">Check-In Advance Hours</b><br/>
+                                                <span style="color: #666;">Hours before scheduled check-in that pets can arrive</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Default: 0 hours | Example: Set to 2 for early arrivals</span>
+                                            </p>
+                                        </div>
+                                        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #667eea;">Check-Out Advance Hours</b><br/>
+                                                <span style="color: #666;">Hours before scheduled check-out for pickup</span><br/>
+                                                <span style="color: #999; font-size: 13px;">Default: 2 hours | Allows time for grooming/preparation</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Integration Settings -->
+                                <div style="background: #fff; border: 2px solid #4caf50; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h3 style="color: #1b5e20; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #4caf50; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-link" title="Link"></i></span>
+                                        Integration Toggles
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #4caf50;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #2e7d32;"><i class="fa fa-check-square-o" style="color: #667eea;" title="Checkbox"></i> Enable Calendar Integration</b><br/>
+                                                <span style="color: #666;">Sync appointments to Odoo Calendar module</span><br/>
+                                                <span style="color: #d32f2f; font-size: 13px;"><i class="fa fa-exclamation-triangle" style="color: #ff9800;" title="Warning"></i> Requires: calendar module to be installed</span><br/>
+                                                <span style="color: #999; font-size: 13px;"><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Benefit: See all appointments in calendar view with drag &amp; drop scheduling</span>
+                                            </p>
+                                        </div>
+                                        <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #4caf50;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #2e7d32;"><i class="fa fa-check-square-o" style="color: #667eea;" title="Checkbox"></i> Enable Inventory Integration</b><br/>
+                                                <span style="color: #666;">Track items used during appointments</span><br/>
+                                                <span style="color: #d32f2f; font-size: 13px;"><i class="fa fa-exclamation-triangle" style="color: #ff9800;" title="Warning"></i> Requires: stock module to be installed</span><br/>
+                                                <span style="color: #999; font-size: 13px;"><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Benefit: Track medications, supplies, and equipment usage</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification Settings -->
+                                <div style="background: #fff; border: 2px solid #f44336; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h3 style="color: #b71c1c; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #f44336; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-bell" title="Notification"></i></span>
+                                        Notification Settings
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #f44336;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #c62828;"><i class="fa fa-check-square-o" style="color: #667eea;" title="Checkbox"></i> Enable Email Notifications</b><br/>
+                                                <span style="color: #666;">Send automated reminders via email</span><br/>
+                                                <span style="color: #999; font-size: 13px;"><i class="fa fa-envelope" title="Email"></i> Emails sent to pet owner's registered email address</span><br/>
+                                                <span style="color: #999; font-size: 13px;"><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> Used for: Vaccination reminders, Appointment alerts, Overdue notices</span>
+                                            </p>
+                                        </div>
+                                        <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #f44336;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #c62828;"><i class="fa fa-check-square-o" style="color: #667eea;" title="Checkbox"></i> Enable SMS Notifications</b><br/>
+                                                <span style="color: #666;">Send automated reminders via SMS</span><br/>
+                                                <span style="color: #d32f2f; font-size: 13px;"><i class="fa fa-exclamation-triangle" style="color: #ff9800;" title="Warning"></i> Requires: SMS gateway configuration</span><br/>
+                                                <span style="color: #999; font-size: 13px;"><i class="fa fa-mobile" title="Mobile"></i> SMS sent to pet owner's mobile number</span>
+                                            </p>
+                                        </div>
+                                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #2196f3;">
+                                            <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                <b style="color: #1565c0;"><i class="fa fa-check-circle" style="color: #4caf50;" title="Success"></i> In-App Notifications</b><br/>
+                                                <span style="color: #666;">Always enabled - show notifications within Odoo</span><br/>
+                                                <span style="color: #999; font-size: 13px;"><i class="fa fa-bell" title="Notification"></i> Users see notifications in their notification center</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- How to Configure Settings -->
+                                <div style="background: linear-gradient(90deg, #e8eaf6 0%, #f3e5f5 100%); padding: 25px; border-radius: 12px; margin: 20px 0; border: 2px solid #673ab7;">
+                                    <h3 style="color: #4a148c; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #673ab7; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-pencil" title="Edit"></i></span>
+                                        How to Access Settings
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <ol style="font-size: 14px; line-height: 2;">
+                                            <li><b>Navigate to:</b> Pets → Configuration → Settings</li>
+                                            <li><b>All settings</b> are on one page</li>
+                                            <li><b>Make changes:</b> Toggle checkboxes or enter values</li>
+                                            <li><b>Click "Save"</b> to apply changes</li>
+                                            <li><b>Settings apply</b> immediately to all new records</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                
+                                <!-- Master Data Configuration -->
+                                <div style="background: #fff; border: 2px solid #795548; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h3 style="color: #3e2723; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: #795548; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-book" title="Book"></i></span>
+                                        Master Data Management
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <p style="font-size: 14px; color: #666; margin-bottom: 15px;">All master data catalogs are also accessible from the Configuration menu:</p>
+                                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                                            <div style="background: #efebe9; padding: 12px; border-radius: 6px; border-left: 3px solid #795548;">
+                                                <b style="color: #5d4037;">🐕 Species</b><br/>
+                                                <span style="font-size: 13px; color: #666;">Animal types catalog</span>
+                                            </div>
+                                            <div style="background: #efebe9; padding: 12px; border-radius: 6px; border-left: 3px solid #795548;">
+                                                <b style="color: #5d4037;">🐾 Breeds</b><br/>
+                                                <span style="font-size: 13px; color: #666;">Breed definitions</span>
+                                            </div>
+                                            <div style="background: #efebe9; padding: 12px; border-radius: 6px; border-left: 3px solid #795548;">
+                                                <b style="color: #5d4037;">💉 Vaccine Catalog</b><br/>
+                                                <span style="font-size: 13px; color: #666;">Vaccine inventory</span>
+                                            </div>
+                                            <div style="background: #efebe9; padding: 12px; border-radius: 6px; border-left: 3px solid #795548;">
+                                                <b style="color: #5d4037;">🏠 Kennels</b><br/>
+                                                <span style="font-size: 13px; color: #666;">Boarding facilities</span>
+                                            </div>
+                                            <div style="background: #efebe9; padding: 12px; border-radius: 6px; border-left: 3px solid #795548;">
+                                                <b style="color: #5d4037;">✂️ Grooming Services</b><br/>
+                                                <span style="font-size: 13px; color: #666;">Service offerings</span>
+                                            </div>
+                                            <div style="background: #efebe9; padding: 12px; border-radius: 6px; border-left: 3px solid #795548;">
+                                                <b style="color: #5d4037;">🎓 Training Programs</b><br/>
+                                                <span style="font-size: 13px; color: #666;">Training curriculum</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Best Practices -->
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                    <h3 style="color: white; font-size: 20px; margin-top: 0; display: flex; align-items: center;">
+                                        <span style="background: rgba(255,255,255,0.2); color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-lightbulb-o" title="Tip"></i></span>
+                                        Configuration Best Practices
+                                    </h3>
+                                    <div style="margin-left: 47px;">
+                                        <ul style="font-size: 14px; line-height: 2.2; color: white;">
+                                            <li><b>Set up master data first</b> before creating pet records (species, breeds, vaccines)</li>
+                                            <li><b>Enable auto-microchip</b> to ensure all pets have unique identifiers</li>
+                                            <li><b>Configure date formats</b> to match your region preferences</li>
+                                            <li><b>Enable calendar integration</b> if you use Odoo Calendar for scheduling</li>
+                                            <li><b>Test notification settings</b> by sending a test notification</li>
+                                            <li><b>Review settings regularly</b> to ensure they match your clinic's workflow</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- Troubleshooting Tab -->
+                        <page string="Troubleshooting" name="troubleshooting">
+                            <div style="padding: 20px;">
+                                <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                    <i class="fa fa-wrench" style="margin-right: 10px;" title="Tools"></i>Common Issues &amp; Solutions
+                                </h2>
+                                
+                                <div style="background: #ffebee; border-left: 5px solid #f44336; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #c62828;"><i class="fa fa-times-circle" style="color: #f44336;" title="Error"></i> "I can't see any pets"</h3>
+                                    <p style="font-size: 14px;"><b>Solution:</b> Check your security groups. You may only have "Own Data" access which restricts you to pets you own.</p>
+                                </div>
+                                
+                                <div style="background: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #e65100;"><i class="fa fa-times-circle" style="color: #f44336;" title="Error"></i> "Microchip number shows 'New'"</h3>
+                                    <p style="font-size: 14px;"><b>Solution:</b> Enable auto-generation in Settings or enter manually.</p>
+                                </div>
+                                
+                                <div style="background: #e3f2fd; border-left: 5px solid #2196f3; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #0d47a1;"><i class="fa fa-times-circle" style="color: #f44336;" title="Error"></i> "Can't create appointment - resource already booked"</h3>
+                                    <p style="font-size: 14px;"><b>Solution:</b> Overlap prevention is working! Choose a different time or resource.</p>
+                                </div>
+                                
+                                <div style="background: #f3e5f5; border-left: 5px solid #9c27b0; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #4a148c;"><i class="fa fa-times-circle" style="color: #f44336;" title="Error"></i> "Facility record not created after confirming appointment"</h3>
+                                    <p style="font-size: 14px;"><b>Solution:</b></p>
+                                    <ul style="font-size: 14px;">
+                                        <li>Check you selected the service type (medical, grooming, etc.)</li>
+                                        <li>Verify you clicked "Confirm" not just "Save"</li>
+                                        <li>For vaccination, ensure vaccine is selected</li>
+                                    </ul>
+                                </div>
+                                
+                                <div style="background: #e8f5e9; border-left: 5px solid #4caf50; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #1b5e20;"><i class="fa fa-times-circle" style="color: #f44336;" title="Error"></i> "Can't see breed options"</h3>
+                                    <p style="font-size: 14px;"><b>Solution:</b> First select species, then breed field will populate with options for that species.</p>
+                                </div>
+                                
+                                <div style="background: #fce4ec; border-left: 5px solid #e91e63; padding: 20px; margin: 15px 0;">
+                                    <h3 style="color: #880e4f;"><i class="fa fa-times-circle" style="color: #f44336;" title="Error"></i> "Notification not sent"</h3>
+                                    <p style="font-size: 14px;"><b>Solution:</b></p>
+                                    <ul style="font-size: 14px;">
+                                        <li>Check email is configured in pet owner's contact</li>
+                                        <li>Verify notification settings are enabled in Configuration</li>
+                                        <li>Check "Failed" notifications menu for error details</li>
+                                    </ul>
+                                </div>
+                                
+                                <div style="background: #fff; border: 2px solid #4caf50; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #2e7d32;"><i class="fa fa-phone" title="Phone"></i> Getting Help</h3>
+                                    <p style="font-size: 14px; line-height: 2;">
+                                        <b><i class="fa fa-envelope" title="Email"></i> Support Email:</b> sales@webbycrown.com<br/>
+                                        <b><i class="fa fa-globe" title="Website"></i> Website:</b> www.webbycrown.com<br/>
+                                        <b><i class="fa fa-book" title="Book"></i> Documentation:</b> Check README.md in module folder<br/>
+                                        <b>🎓 Training:</b> Contact us for professional training sessions
+                                    </p>
+                                </div>
+                            </div>
+                        </page>
+                        
+                        <!-- Contact Support Tab -->
+                        <page string="Contact Support" name="contact_support">
+                            <div style="padding: 30px; background: #f5f7fa;">
+                                <!-- Header -->
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                    <h1 style="color: white; margin: 0; font-size: 32px;">
+                                        <i class="fa fa-envelope" style="margin-right: 10px;" title="Email"></i>Contact Support
+                                    </h1>
+                                    <p style="color: white; font-size: 16px; margin: 10px 0 0 0; opacity: 0.95;">Get help from Webbycrown Solutions team</p>
+                                </div>
+                                
+                                <!-- Contact Info Cards -->
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+                                    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 4px solid #f44336; display: flex; align-items: center; gap: 15px;">
+                                        <div style="color: #f44336; flex-shrink: 0;"><i class="fa fa-envelope" style="font-size: 32px;" title="Email"></i></div>
+                                        <div style="text-align: left;">
+                                            <h3 style="color: #f44336; margin: 0 0 8px 0; font-size: 16px;">Email Support</h3>
+                                            <p style="font-size: 14px; font-weight: bold; color: #667eea; margin: 0 0 5px 0;">sales@webbycrown.com</p>
+                                            <p style="font-size: 12px; color: #999; margin: 0;">Response within 24 hours</p>
+                                        </div>
+                                    </div>
+                                    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 4px solid #2196f3; display: flex; align-items: center; gap: 15px;">
+                                        <div style="color: #2196f3; flex-shrink: 0;"><i class="fa fa-globe" style="font-size: 32px;" title="Website"></i></div>
+                                        <div style="text-align: left;">
+                                            <h3 style="color: #2196f3; margin: 0 0 8px 0; font-size: 16px;">Website</h3>
+                                            <p style="font-size: 14px; font-weight: bold; color: #667eea; margin: 0 0 5px 0;">www.webbycrown.com</p>
+                                            <p style="font-size: 12px; color: #999; margin: 0;">Documentation &amp; Resources</p>
+                                        </div>
+                                    </div>
+                                    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 4px solid #4caf50; display: flex; align-items: center; gap: 15px;">
+                                        <div style="color: #4caf50; flex-shrink: 0;"><i class="fa fa-graduation-cap" style="font-size: 32px;" title="Training"></i></div>
+                                        <div style="text-align: left;">
+                                            <h3 style="color: #4caf50; margin: 0 0 8px 0; font-size: 16px;">Training</h3>
+                                            <p style="font-size: 14px; font-weight: bold; color: #667eea; margin: 0 0 5px 0;">Available</p>
+                                            <p style="font-size: 12px; color: #999; margin: 0;">Professional training sessions</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Contact Form Instructions -->
+                                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                    <h2 style="color: #667eea; margin-top: 0; font-size: 24px; display: flex; align-items: center;">
+                                        <span style="background: #667eea; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 20px;">
+                                            <i class="fa fa-send" title="Send"></i>
+                                        </span>
+                                        How to Contact Support
+                                    </h2>
+                                    
+                                    <div style="background: #e3f2fd; border-left: 5px solid #2196f3; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                        <h3 style="color: #1565c0; margin-top: 0;"><i class="fa fa-envelope" title="Email"></i> Send Email Directly</h3>
+                                        <p style="font-size: 14px; line-height: 1.8; margin-bottom: 15px;">
+                                            To contact support, compose an email with the following information:
+                                        </p>
+                                        <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #90caf9;">
+                                            <p style="font-size: 14px; margin: 5px 0;"><b>To:</b> <a href="mailto:sales@webbycrown.com" style="color: #667eea; text-decoration: none; font-weight: bold;">sales@webbycrown.com</a></p>
+                                            <p style="font-size: 14px; margin: 5px 0;"><b>Subject:</b> Pet Management - [Your Issue Type]</p>
+                                            <p style="font-size: 14px; margin: 15px 0 5px 0;"><b>Include in your email:</b></p>
+                                            <ul style="font-size: 14px; line-height: 1.8; color: #666;">
+                                                <li>Your name and organization</li>
+                                                <li>Odoo version you're using</li>
+                                                <li>Detailed description of your issue or question</li>
+                                                <li>Screenshots if applicable</li>
+                                                <li>Steps to reproduce (for bugs)</li>
+                                                <li>Your contact information</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Quick Email Template -->
+                                    <div style="background: #f3e5f5; border-left: 5px solid #9c27b0; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                        <h3 style="color: #6a1b9a; margin-top: 0;"><i class="fa fa-pencil" title="Edit"></i> Email Template</h3>
+                                        <div style="background: white; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 13px; line-height: 1.8; border: 1px solid #ce93d8;">
+                                            <p style="margin: 0;"><b>Subject:</b> Pet Management - [Help Request/Bug Report/Feature Request]</p>
+                                            <hr style="border: 1px solid #eee; margin: 15px 0;"/>
+                                            <p style="margin: 5px 0;"><b>Name:</b> [Your Name]</p>
+                                            <p style="margin: 5px 0;"><b>Organization:</b> [Your Clinic/Company Name]</p>
+                                            <p style="margin: 5px 0;"><b>Odoo Version:</b> 17.0</p>
+                                            <p style="margin: 5px 0;"><b>Module Version:</b> 17.0.1.0.0</p>
+                                            <p style="margin: 5px 0;"><b>Contact Email:</b> [Your Email]</p>
+                                            <p style="margin: 5px 0;"><b>Contact Phone:</b> [Your Phone] (optional)</p>
+                                            <hr style="border: 1px solid #eee; margin: 15px 0;"/>
+                                            <p style="margin: 5px 0;"><b>Issue/Question:</b></p>
+                                            <p style="margin: 5px 0; color: #999;">[Describe your issue or question in detail]</p>
+                                            <br/>
+                                            <p style="margin: 5px 0;"><b>Steps to Reproduce (if applicable):</b></p>
+                                            <p style="margin: 5px 0; color: #999;">1. [First step]</p>
+                                            <p style="margin: 5px 0; color: #999;">2. [Second step]</p>
+                                            <p style="margin: 5px 0; color: #999;">3. [Result/Error]</p>
+                                            <br/>
+                                            <p style="margin: 5px 0;"><b>Additional Information:</b></p>
+                                            <p style="margin: 5px 0; color: #999;">[Any other relevant details]</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Quick Contact Button -->
+                                    <div style="text-align: center; margin: 30px 0;">
+                                        <a href="mailto:sales@webbycrown.com?subject=Pet Management - Support Request&amp;body=Name:%0D%0AOrganization:%0D%0AOdoo Version: 18.0%0D%0AModule Version: 18.0.1.0.0%0D%0A%0D%0ADescription:%0D%0A[Describe your issue here]%0D%0A%0D%0ASteps to Reproduce:%0D%0A1. %0D%0A2. %0D%0A3. %0D%0A%0D%0AAdditional Information:%0D%0A" 
+                                           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 18px 40px; border-radius: 30px; text-decoration: none; font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.2s;">
+                                            <i class="fa fa-envelope" title="Email"></i> Open Email Client
+                                        </a>
+                                    </div>
+                                    
+                                    <!-- Support Types -->
+                                    <div style="margin-top: 40px;">
+                                        <h3 style="color: #667eea; text-align: center; font-size: 20px; margin-bottom: 25px;"><i class="fa fa-bullseye" title="Target"></i> What We Can Help With</h3>
+                                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                                            <div style="background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%); padding: 20px; border-radius: 10px; border-left: 4px solid #2196f3;">
+                                                <div style="font-size: 24px; margin-bottom: 10px; color: #2196f3;"><i class="fa fa-bug fa-2x" title="Bug"></i></div>
+                                                <h4 style="color: #1565c0; margin: 0 0 8px 0;">Bug Reports</h4>
+                                                <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.6;">Found a bug? Let us know with detailed steps to reproduce</p>
+                                            </div>
+                                            <div style="background: linear-gradient(90deg, #f3e5f5 0%, #e1bee7 100%); padding: 20px; border-radius: 10px; border-left: 4px solid #9c27b0;">
+                                                <div style="font-size: 24px; margin-bottom: 10px; color: #9c27b0;"><i class="fa fa-lightbulb-o fa-2x" title="Idea"></i></div>
+                                                <h4 style="color: #6a1b9a; margin: 0 0 8px 0;">Feature Requests</h4>
+                                                <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.6;">Have an idea? Share your feature suggestions with us</p>
+                                            </div>
+                                            <div style="background: linear-gradient(90deg, #fff3e0 0%, #ffe0b2 100%); padding: 20px; border-radius: 10px; border-left: 4px solid #ff9800;">
+                                                <div style="font-size: 24px; margin-bottom: 10px; color: #ff9800;"><i class="fa fa-question-circle fa-2x" title="Question"></i></div>
+                                                <h4 style="color: #e65100; margin: 0 0 8px 0;">How-To Questions</h4>
+                                                <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.6;">Need help with a specific task? Ask us how to do it</p>
+                                            </div>
+                                            <div style="background: linear-gradient(90deg, #e8f5e9 0%, #c8e6c9 100%); padding: 20px; border-radius: 10px; border-left: 4px solid #4caf50;">
+                                                <div style="font-size: 24px; margin-bottom: 10px; color: #4caf50;"><i class="fa fa-graduation-cap fa-2x" title="Training"></i></div>
+                                                <h4 style="color: #2e7d32; margin: 0 0 8px 0;">Training Requests</h4>
+                                                <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.6;">Request professional training for your team</p>
+                                            </div>
+                                            <div style="background: linear-gradient(90deg, #fce4ec 0%, #f8bbd0 100%); padding: 20px; border-radius: 10px; border-left: 4px solid #e91e63;">
+                                                <div style="font-size: 24px; margin-bottom: 10px; color: #e91e63;"><i class="fa fa-wrench fa-2x" title="Development"></i></div>
+                                                <h4 style="color: #c2185b; margin: 0 0 8px 0;">Custom Development</h4>
+                                                <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.6;">Need customizations? We offer development services</p>
+                                            </div>
+                                            <div style="background: linear-gradient(90deg, #fff9c4 0%, #fff59d 100%); padding: 20px; border-radius: 10px; border-left: 4px solid #fbc02d;">
+                                                <div style="font-size: 24px; margin-bottom: 10px; color: #fbc02d;"><i class="fa fa-cog fa-2x" title="Configuration"></i></div>
+                                                <h4 style="color: #f57f17; margin: 0 0 8px 0;">Installation Help</h4>
+                                                <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.6;">Having trouble installing? We can help with setup</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Response Time -->
+                                    <div style="background: linear-gradient(90deg, #e8f5e9 0%, #c8e6c9 100%); padding: 25px; border-radius: 12px; border: 2px solid #4caf50; margin: 20px 0;">
+                                        <h3 style="color: #1b5e20; margin-top: 0; display: flex; align-items: center;">
+                                            <span style="background: #4caf50; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-clock-o" title="Time"></i></span>
+                                            Support Response Times
+                                        </h3>
+                                        <div style="margin-left: 47px;">
+                                            <table style="width: 100%; font-size: 14px; line-height: 2;">
+                                                <tr>
+                                                    <td style="padding: 8px;"><b><i class="fa fa-bug" title="Bug"></i> Critical Bugs:</b></td>
+                                                    <td style="padding: 8px; color: #d32f2f; font-weight: bold;">Within 4 hours</td>
+                                                </tr>
+                                                <tr style="background: rgba(255,255,255,0.5);">
+                                                    <td style="padding: 8px;"><b>❓ General Questions:</b></td>
+                                                    <td style="padding: 8px; color: #f57c00; font-weight: bold;">Within 24 hours</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px;"><b><i class="fa fa-lightbulb-o" title="Tip"></i> Feature Requests:</b></td>
+                                                    <td style="padding: 8px; color: #1976d2; font-weight: bold;">Within 48 hours</td>
+                                                </tr>
+                                                <tr style="background: rgba(255,255,255,0.5);">
+                                                    <td style="padding: 8px;"><b>🎓 Training Inquiries:</b></td>
+                                                    <td style="padding: 8px; color: #388e3c; font-weight: bold;">Within 48 hours</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Tips for Better Support -->
+                                    <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 25px; border-radius: 8px; margin: 20px 0;">
+                                        <h3 style="color: #f57f17; margin-top: 0;"><i class="fa fa-lightbulb-o" title="Tip"></i> Tips for Faster Support</h3>
+                                        <ol style="font-size: 14px; line-height: 2; color: #666;">
+                                            <li><b>Be specific:</b> Describe the exact issue you're facing</li>
+                                            <li><b>Include screenshots:</b> Visual information helps us understand better</li>
+                                            <li><b>List steps:</b> Tell us what you did before the issue occurred</li>
+                                            <li><b>Mention your setup:</b> Include Odoo version, module version, browser</li>
+                                            <li><b>Provide error messages:</b> Copy the full error text if you see one</li>
+                                            <li><b>Check this help guide first:</b> Your answer might already be here!</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <!-- Alternative Contact Methods -->
+                                    <div style="background: white; border: 2px solid #607d8b; padding: 25px; border-radius: 12px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                        <h3 style="color: #37474f; margin-top: 0; display: flex; align-items: center;">
+                                            <span style="background: #607d8b; color: white; width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 18px;"><i class="fa fa-phone" title="Phone"></i></span>
+                                            Alternative Contact Methods
+                                        </h3>
+                                        <div style="margin-left: 47px;">
+                                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                                <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                    <b style="color: #667eea;"><i class="fa fa-globe" title="Website"></i> Website Contact Form</b><br/>
+                                                    <span style="color: #666;">Visit www.webbycrown.com and use our online contact form</span><br/>
+                                                    <a href="https://www.webbycrown.com" target="_blank" style="color: #667eea; font-size: 13px; text-decoration: none;">→ Visit Website</a>
+                                                </p>
+                                            </div>
+                                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                                <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                    <b style="color: #667eea;"><i class="fa fa-book" title="Book"></i> Documentation</b><br/>
+                                                    <span style="color: #666;">Check README.md in the module folder for detailed documentation</span><br/>
+                                                    <span style="color: #999; font-size: 13px;">Location: pet_management/README.md</span>
+                                                </p>
+                                            </div>
+                                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                                <p style="font-size: 14px; margin: 0; line-height: 1.8;">
+                                                    <b style="color: #667eea;"><i class="fa fa-mobile" title="Mobile"></i> Social Media</b><br/>
+                                                    <span style="color: #666;">Follow us for updates, tips, and announcements</span><br/>
+                                                    <span style="color: #999; font-size: 13px;">Find us on LinkedIn, Twitter, and Facebook</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Support Hours -->
+                                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 12px; text-align: center; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                        <h3 style="color: white; margin: 0 0 15px 0; font-size: 20px;"><i class="fa fa-clock-o" title="Time"></i> Support Hours</h3>
+                                        <p style="color: white; font-size: 16px; margin: 0; line-height: 1.8;">
+                                            <b>Monday - Friday:</b> 9:00 AM - 6:00 PM (Your Timezone)<br/>
+                                            <b>Saturday:</b> 10:00 AM - 2:00 PM<br/>
+                                            <b>Sunday:</b> Closed (Emergency support available)
+                                        </p>
+                                        <p style="color: white; font-size: 13px; margin: 15px 0 0 0; opacity: 0.9;">
+                                            <i class="fa fa-envelope" title="Email"></i> Email support is available 24/7. We'll respond during business hours.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; border-radius: 10px;">
+                        <h3 style="color: white; margin: 0;">Thank you for using Pet Management by Webbycrown Solutions!</h3>
+                        <p style="color: white; margin: 10px 0 0 0;">For more information: www.webbycrown.com | sales@webbycrown.com</p>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Help Menu Action -->
+    <record id="action_pet_help_page" model="ir.actions.act_window">
+        <field name="name">Pet Management Help</field>
+        <field name="res_model">pet.help</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Help Menu under Configuration -->
+    <menuitem 
+        id="menu_pet_help" 
+        name="Help Guide" 
+        parent="menu_pet_configuration" 
+        action="action_pet_help_page" 
+        sequence="99"
+        groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
+
+</odoo>

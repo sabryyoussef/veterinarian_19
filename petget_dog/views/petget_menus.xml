@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="petget_dog_menu_config"
+              name="Configuration"
+              parent="petget_core.petget_core_menu_root"
+              sequence="90"/>
+
+    <menuitem id="petget_dog_menu_breeds"
+              name="Dog Breeds"
+              parent="petget_dog_menu_config"
+              action="petget_dog_action_breed"
+              sequence="10"/>
+
+</odoo>

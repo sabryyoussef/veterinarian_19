@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pet Management Settings Form View - Inherit from res.config.settings -->
+    <record id="res_config_settings_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.inherit.form.view</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Pet Management" string="Pet Management" name="pet_management">
+                    <block title="General Settings" name="pet_general_settings">
+                        <setting id="auto_generate_microchip" 
+                                help="Automatically generate unique microchip numbers for new pets">
+                            <field name="auto_generate_microchip"/>
+                        </setting>
+                        
+                        <setting id="microchip_prefix" 
+                                help="Prefix for auto-generated microchip numbers (e.g., MC00000001)"
+                                invisible="not auto_generate_microchip">
+                            <field name="microchip_prefix"/>
+                        </setting>
+                        
+                        <setting id="microchip_padding" 
+                                help="Number of digits for auto-generated microchip numbers (e.g., 8 for MC00000001)"
+                                invisible="not auto_generate_microchip">
+                            <field name="microchip_padding"/>
+                        </setting>
+                        
+                    </block>
+                    
+                    <block title="Notification Settings" name="pet_notification_settings">
+                        <setting id="enable_email_notifications" 
+                                help="Send email notifications for important pet events">
+                            <field name="enable_email_notifications"/>
+                        </setting>
+                        
+                        <setting id="enable_sms_notifications" 
+                                help="Send SMS notifications for important pet events">
+                            <field name="enable_sms_notifications"/>
+                        </setting>
+                        
+                    </block>
+                    
+                    <block title="Appointment Settings" name="pet_appointment_settings">
+                        <setting id="appointment_duration_default" 
+                                help="Default duration for new appointments in hours">
+                            <field name="appointment_duration_default"/>
+                        </setting>
+                    </block>
+                    
+                    <block title="Vaccination Settings" name="pet_vaccination_settings">
+                        <setting id="auto_schedule_boosters" 
+                                help="Automatically create follow-up booster vaccination records">
+                            <field name="auto_schedule_boosters"/>
+                        </setting>
+                    </block>
+                    
+                    <block title="Boarding Settings" name="pet_boarding_settings">
+                        <setting id="boarding_check_out_advance" 
+                                help="Allow check-out this many hours after scheduled time">
+                            <field name="boarding_check_out_advance"/>
+                        </setting>
+                    </block>
+                    
+                    <block title="Grooming Settings" name="pet_grooming_settings">
+                        <setting id="grooming_session_duration" 
+                                help="Default duration for new grooming sessions in hours">
+                            <field name="grooming_session_duration"/>
+                        </setting>
+                    </block>
+                    
+                    <block title="Training Settings" name="pet_training_settings">
+                        <setting id="training_session_duration" 
+                                help="Default duration for new training sessions in hours">
+                            <field name="training_session_duration"/>
+                        </setting>
+                    </block>
+                    
+                    
+                    <block title="Diet Settings" name="pet_diet_settings">
+                        <setting id="diet_plan_duration_days" 
+                                help="Default duration for new diet plans in days">
+                            <field name="diet_plan_duration_days"/>
+                        </setting>
+                    </block>
+                    
+                    <block title="Integration Settings" name="pet_integration_settings">
+                        <setting id="enable_calendar_integration" 
+                                help="Integrate pet appointments and events with Odoo's calendar module">
+                            <field name="enable_calendar_integration"/>
+                        </setting>
+                        
+                        <setting id="enable_inventory_integration" 
+                                help="Integrate pet products (food, medicine) with Odoo's inventory module">
+                            <field name="enable_inventory_integration"/>
+                        </setting>
+                    </block>
+                    
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_pet_management_settings" model="ir.actions.act_window">
+        <field name="name">Pet Management Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'module': 'pet_management'}</field>
+    </record>
+
+    <menuitem id="menu_pet_management_settings"
+              name="Pet Management"
+              parent="base.menu_administration"
+              sequence="10"
+              action="action_pet_management_settings"
+              groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
+
+</odoo>

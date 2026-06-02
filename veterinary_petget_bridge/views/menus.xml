@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Hide standalone Petget app — clinic x_pets is the single pet registry -->
+    <record id="petget_core.petget_core_menu_root" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <!-- Move dog knowledge configuration under Pets > Configuration -->
+    <record id="petget_dog.petget_dog_menu_breeds" model="ir.ui.menu">
+        <field name="parent_id" ref="veterinary_clinic.menu_pets_configuration"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="petget_dog_knowledge.petget_dog_knowledge_menu_life_stages" model="ir.ui.menu">
+        <field name="parent_id" ref="veterinary_clinic.menu_pets_configuration"/>
+        <field name="sequence">21</field>
+    </record>
+
+    <record id="petget_dog_knowledge.petget_dog_knowledge_menu_colours" model="ir.ui.menu">
+        <field name="parent_id" ref="veterinary_clinic.menu_pets_configuration"/>
+        <field name="sequence">22</field>
+    </record>
+
+    <!-- Hide empty Petget configuration parent -->
+    <record id="petget_dog.petget_dog_menu_config" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <menuitem id="menu_pets_documents"
+              name="Pet Documents"
+              parent="veterinary_clinic.menu_pets_root"
+              action="action_all_pet_documents"
+              sequence="25"/>
+
+    <menuitem id="menu_pets_reminders"
+              name="Pet Reminders"
+              parent="veterinary_clinic.menu_pets_root"
+              action="action_all_pet_reminders"
+              sequence="26"/>
+
+</odoo>

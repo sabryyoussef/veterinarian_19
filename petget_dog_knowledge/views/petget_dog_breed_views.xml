@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Kanban with breed photo -->
+    <record id="petget_dog_knowledge_view_kanban_breed" model="ir.ui.view">
+        <field name="name">petget.dog.breed.kanban</field>
+        <field name="model">petget.dog.breed</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <aside>
+                            <field name="image_128" widget="image" options="{'size': [64, 64]}" alt="Breed"/>
+                        </aside>
+                        <main class="ms-2">
+                            <field name="name" class="fw-bold fs-5"/>
+                            <div class="text-muted"><field name="akc_group"/></div>
+                            <div><field name="size"/></div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Rebuild the breed form into a compact, two-column layout with tabs -->
+    <record id="petget_dog_knowledge_view_form_breed" model="ir.ui.view">
+        <field name="name">petget.dog.breed.form.knowledge</field>
+        <field name="model">petget.dog.breed</field>
+        <field name="inherit_id" ref="petget_dog.petget_dog_view_form_breed"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"
+                           options="{'preview_image': 'image_128'}"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Labrador Retriever"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="akc_group"/>
+                            <field name="size"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="origin_country_ids" widget="many2many_tags"
+                                   options="{'no_create': True}"/>
+                            <field name="temperament"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Profile">
+                            <label for="weight_min_kg" string="Weight (kg)"/>
+                            <div class="o_row">
+                                <field name="weight_min_kg"/> <span>–</span> <field name="weight_max_kg"/>
+                            </div>
+                            <label for="height_min_cm" string="Height (cm)"/>
+                            <div class="o_row">
+                                <field name="height_min_cm"/> <span>–</span> <field name="height_max_cm"/>
+                            </div>
+                            <label for="life_expectancy_min" string="Lifespan (years)"/>
+                            <div class="o_row">
+                                <field name="life_expectancy_min"/> <span>–</span> <field name="life_expectancy_max"/>
+                            </div>
+                        </group>
+                        <group string="Care">
+                            <field name="grooming_need"/>
+                            <field name="shedding_level"/>
+                            <field name="exercise_need"/>
+                            <field name="trainability"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Reproduction">
+                            <field name="first_heat_age_months"/>
+                            <field name="heat_cycle_interval_months"/>
+                            <field name="gestation_days"/>
+                            <field name="avg_litter_size"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Growth &amp; Development" name="growth">
+                            <p class="text-muted">Typical weight by age (estimates — varies by line and individual).</p>
+                            <field name="growth_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="age_from_weeks"/>
+                                    <field name="age_to_weeks"/>
+                                    <field name="weight_min_kg"/>
+                                    <field name="weight_max_kg"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description &amp; Health" name="info">
+                            <group>
+                                <field name="description" nolabel="1" placeholder="Breed description..."/>
+                            </group>
+                            <separator string="Common Health Issues"/>
+                            <field name="common_health_issues" nolabel="1"
+                                   placeholder="Common health issues..."/>
+                            <separator string="Care Notes"/>
+                            <field name="care_notes" nolabel="1" placeholder="Care notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Show the kanban in the breed action -->
+    <record id="petget_dog.petget_dog_action_breed" model="ir.actions.act_window">
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+</odoo>

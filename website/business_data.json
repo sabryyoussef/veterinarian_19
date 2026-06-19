@@ -1,0 +1,108 @@
+{
+  "brand": {
+    "name_en": "PetSpot El Sahel",
+    "name_ar": "بيت سبوت الساحل",
+    "legal_name": "Pet Spot Veterinary Clinic",
+    "tagline_en": "Trusted Pet Care in El Sahel",
+    "tagline_ar": "رعاية بيطرية موثوقة لحيوانك الأليف في الساحل",
+    "subheadline_en": "Veterinary care, grooming, boarding, vaccinations, and home visits for your pets during the North Coast season.",
+    "subheadline_ar": "كشف بيطري، تطعيمات، جروومينج، بوردينج، وزيارات منزلية طوال موسم الساحل.",
+    "positioning_en": "Your pet's trusted summer care destination on Egypt's North Coast — clinic, grooming, boarding, and pet care in one place.",
+    "positioning_ar": "وجهتكم الموثوقة لرعاية أليفكم في الساحل — عيادة، جروومينج، بوردينج، وخدمات رعاية في مكان واحد."
+  },
+  "contact": {
+    "phone_primary": "+201201568888",
+    "phone_alternate": "+201000059085",
+    "phone_note": "TODO: Confirm official campaign number — sources list 01000059085 and 01201568888",
+    "whatsapp": "201201568888",
+    "email": "vetelsahel@gmail.com",
+    "email_alternate": "animalcarecenterpetspots@gmail.com",
+    "facebook": "https://www.facebook.com/animalcarecenterpetspots/",
+    "instagram": "https://www.instagram.com/pet_spot_clinic/",
+    "google_maps": "https://share.google/uSM5VJCFUzO2WFCpG"
+  },
+  "location": {
+    "area_en": "North Coast / El Sahel — Sidi Abdel Rahman",
+    "area_ar": "الساحل الشمالي / الساحل — سيدي عبد الرحمن",
+    "address_note": "TODO: Confirm exact pin — sources mention Sky Court Mall Km 136, Agora/Marassi Km 128, and Amwaj/Wahat Khattab",
+    "hours_en": "Summer season · Open daily",
+    "hours_ar": "موسم الصيف · مفتوح يومياً"
+  },
+  "seo": {
+    "title": "PetSpot El Sahel | Veterinary Clinic, Grooming & Boarding",
+    "description": "PetSpot El Sahel provides veterinary consultations, vaccinations, grooming, boarding, and home visits for pets in the North Coast."
+  },
+  "services": [
+    {
+      "id": "consultation",
+      "title_en": "Veterinary Consultation",
+      "title_ar": "كشف بيطري",
+      "desc_en": "Expert exams for cats, dogs, and exotic pets.",
+      "desc_ar": "كشف متخصص للقطط والكلاب والحيوانات الأليفة.",
+      "price_egp": 1000,
+      "cta_en": "Book on WhatsApp",
+      "cta_ar": "احجز على واتساب"
+    },
+    {
+      "id": "vaccination",
+      "title_en": "Vaccination",
+      "title_ar": "تطعيمات",
+      "desc_en": "Keep your pet protected before and during vacation.",
+      "desc_ar": "حماية أليفك قبل وأثناء الإجازة.",
+      "price_egp": 1000,
+      "cta_en": "Book on WhatsApp",
+      "cta_ar": "احجز على واتساب"
+    },
+    {
+      "id": "grooming",
+      "title_en": "Grooming",
+      "title_ar": "جروومينج",
+      "desc_en": "Professional grooming for a fresh summer look.",
+      "desc_ar": "جرومينج احترافي لمظهر صيفي أنيق.",
+      "price_egp": 1500,
+      "cta_en": "Book on WhatsApp",
+      "cta_ar": "احجز على واتساب"
+    },
+    {
+      "id": "boarding",
+      "title_en": "Boarding",
+      "title_ar": "بوردينج",
+      "desc_en": "Safe supervised stay while you enjoy the coast.",
+      "desc_ar": "إقامة آمنة تحت الإشراف أثناء استمتاعكم بالساحل.",
+      "price_note_en": "From 250 EGP/hour · 500 EGP/day",
+      "price_note_ar": "من 250 جنيه/ساعة · 500 جنيه/يوم",
+      "cta_en": "Book on WhatsApp",
+      "cta_ar": "احجز على واتساب"
+    },
+    {
+      "id": "home_visit",
+      "title_en": "Home Visit",
+      "title_ar": "زيارة منزلية",
+      "desc_en": "Mobile vet care for North Coast compounds.",
+      "desc_ar": "رعاية بيطرية متنقلة لكمبوندات الساحل.",
+      "price_note_en": "From 1000 EGP + transport",
+      "price_note_ar": "من 1000 جنيه + انتقالات",
+      "cta_en": "Book on WhatsApp",
+      "cta_ar": "احجز على واتساب"
+    },
+    {
+      "id": "pet_supplies",
+      "title_en": "Pet Supplies",
+      "title_ar": "مستلزمات الحيوانات",
+      "desc_en": "Pet shop essentials when available on site.",
+      "desc_ar": "مستلزمات الحيوانات الأليفة في المكان.",
+      "cta_en": "Call us",
+      "cta_ar": "اتصل بنا"
+    }
+  ],
+  "gallery_slots": [
+    {"id": "clinic_front", "alt": "PetSpot El Sahel clinic front", "file": "clinic-front.jpg"},
+    {"id": "grooming", "alt": "PetSpot grooming area", "file": "grooming-area.jpg"},
+    {"id": "boarding", "alt": "PetSpot boarding area", "file": "boarding-area.jpg"},
+    {"id": "veterinary", "alt": "PetSpot veterinary care", "file": "veterinary-care.jpg"}
+  ],
+  "logo": {
+    "path": "assets/logo/petspot-logo.png",
+    "note": "TODO: Replace with final brand logo from 03_logo_brief — current file is placeholder"
+  }
+}

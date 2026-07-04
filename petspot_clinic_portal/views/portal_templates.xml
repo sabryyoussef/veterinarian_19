@@ -51,7 +51,6 @@
                 <t t-if="error"><div class="err" t-esc="error"/></t>
                 <form method="post" t-att-action="form_action or ''">
                     <label>اسم المالك</label>
-
                     <input type="text" name="owner_name" required="required" t-att-value="form.get('owner_name')"/>
                     <label>رقم الهاتف</label>
                     <input type="tel" name="phone" required="required" t-att-value="form.get('phone')"/>
@@ -63,6 +62,18 @@
                             <option t-att-value="sp.id" t-esc="sp.name"/>
                         </t>
                     </select>
+                    <label>السلالة (اختياري)</label>
+                    <input type="text" name="breed_name" t-att-value="form.get('breed_name')"/>
+                    <div class="row">
+                        <div>
+                            <label>العمر بالسنوات (اختياري)</label>
+                            <input type="number" step="0.1" name="age_years" t-att-value="form.get('age_years')"/>
+                        </div>
+                        <div>
+                            <label>الوزن كجم (اختياري)</label>
+                            <input type="number" step="0.1" name="weight_kg" t-att-value="form.get('weight_kg')"/>
+                        </div>
+                    </div>
                     <label>نوع الخدمة</label>
                     <select name="service_type">
                         <option value="checkup">كشف طبي</option>
@@ -73,8 +84,18 @@
                         <option value="emergency">طوارئ</option>
                     </select>
                     <label>موعد الزيارة</label>
-                    <input type="datetime-local" name="start_datetime" required="required"
-                           t-att-value="form.get('start_datetime')"/>
+                    <t t-if="slots">
+                        <select name="slot_id" required="required">
+                            <option value="">— اختر موعدًا —</option>
+                            <t t-foreach="slots" t-as="slot">
+                                <option t-att-value="slot.id" t-esc="slot.start_datetime"/>
+                            </t>
+                        </select>
+                    </t>
+                    <t t-else="">
+                        <input type="datetime-local" name="start_datetime" required="required"
+                               t-att-value="form.get('start_datetime')"/>
+                    </t>
                     <label>ملاحظات</label>
                     <textarea name="notes" t-esc="form.get('notes')"/>
                     <button type="submit">تأكيد الحجز</button>
@@ -93,9 +114,8 @@
                     <t t-if="appointment"><br/>موعد: <t t-esc="appointment.name"/></t>
                 </div>
                 <t t-if="error"><div class="err" t-esc="error"/></t>
-                <form method="post" t-att-action="form_action or ''">
+                <form method="post" t-att-action="form_action or ''" enctype="multipart/form-data">
                     <label>سبب الزيارة</label>
-
                     <input type="text" name="reason" required="required" t-att-value="form.get('reason') or 'كشف روتيني'"/>
                     <label>نوع الزيارة</label>
                     <select name="visit_type">
@@ -128,6 +148,8 @@
                     </div>
                     <label>نص التذكير</label>
                     <textarea name="reminder_text" placeholder="مثال: إعادة كشف بعد أسبوع" t-esc="form.get('reminder_text')"/>
+                    <label>صور (اختياري)</label>
+                    <input type="file" name="photos" accept="image/*" multiple="multiple"/>
                     <button type="submit">حفظ الكشف</button>
                 </form>
             </div>
@@ -153,7 +175,11 @@
                     </a>
                 </t>
                 <t t-if="token_rec.odoo_case_url and token_rec.role == 'vet'">
-                    <p class="muted" style="margin-top:14px">أكمل البيانات الناقصة في أودو:</p>
+                    <p class="muted" style="margin-top:14px">الحالة غير مكتملة — أكمل البيانات في أودو:</p>
+                    <t t-if="token_rec.medical_visit_id and token_rec.medical_visit_id.portal_missing_fields">
+                        <div class="err" style="white-space:pre-line; margin-bottom:10px;"
+                             t-esc="token_rec.medical_visit_id.portal_missing_fields"/>
+                    </t>
                     <a class="btn" t-att-href="token_rec.odoo_case_url" t-att-title="token_rec.odoo_case_url" target="_blank">
                         فتح الحالة في أودو
                     </a>

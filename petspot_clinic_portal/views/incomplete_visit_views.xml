@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_petspot_incomplete_visit_list" model="ir.ui.view">
+        <field name="name">pet.medical.visit.portal.incomplete.list</field>
+        <field name="model">pet.medical.visit</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date"/>
+                <field name="pet_id"/>
+                <field name="appointment_id"/>
+                <field name="reason"/>
+                <field name="status"/>
+                <field name="portal_missing_fields"/>
+                <field name="portal_source"/>
+                <field name="vet_id"/>
+                <button name="action_open_odoo_case" type="object" string="Open" class="btn-primary"/>
+                <button name="action_mark_portal_complete" type="object" string="Mark Complete" confirm="Mark this case complete even if checklist is incomplete?"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_petspot_incomplete_visit_kanban" model="ir.ui.view">
+        <field name="name">pet.medical.visit.portal.incomplete.kanban</field>
+        <field name="model">pet.medical.visit</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="pet_id"/>
+                <field name="date"/>
+                <field name="portal_missing_fields"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <strong><field name="pet_id"/></strong>
+                            <div><field name="date"/></div>
+                            <div class="text-muted"><field name="portal_missing_fields"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_petspot_visit_form_portal" model="ir.ui.view">
+        <field name="name">pet.medical.visit.form.portal.inherit</field>
+        <field name="model">pet.medical.visit</field>
+        <field name="inherit_id" ref="pet_management.view_pet_medical_visit_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_mark_portal_complete" type="object" string="Mark Portal Complete"
+                        invisible="not portal_incomplete" class="btn-primary"/>
+                <field name="portal_incomplete" invisible="1"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <group string="Clinic Portal" invisible="portal_source == 'backend' and not portal_incomplete">
+                    <field name="portal_source"/>
+                    <field name="portal_incomplete"/>
+                    <field name="portal_missing_fields"/>
+                    <field name="portal_completed_at"/>
+                    <field name="portal_sale_order_id"/>
+                    <field name="chatwoot_conversation_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_petspot_visit_search_portal" model="ir.ui.view">
+        <field name="name">pet.medical.visit.search.portal</field>
+        <field name="model">pet.medical.visit</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="portal_incomplete" string="Portal Incomplete" domain="[('portal_incomplete','=',True)]"/>
+                <group>
+                    <filter name="group_vet" string="Vet" context="{'group_by': 'vet_id'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'date'}"/>
+                    <filter name="group_appt" string="Appointment" context="{'group_by': 'appointment_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_petspot_incomplete_cases" model="ir.actions.act_window">
+        <field name="name">Incomplete Cases</field>
+        <field name="res_model">pet.medical.visit</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('portal_incomplete', '=', True)]</field>
+        <field name="context">{'search_default_portal_incomplete': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No incomplete portal cases</p>
+            <p>Visits from the WhatsApp clinic portal that still need staff data in Odoo.</p>
+        </field>
+    </record>
+</odoo>

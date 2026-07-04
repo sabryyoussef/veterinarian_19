@@ -2,6 +2,29 @@
 <odoo>
     <menuitem id="menu_petspot_clinic_portal_root"
               name="Clinic Portal"
-              action="action_petspot_portal_token"
               sequence="26"/>
+
+    <menuitem id="menu_petspot_portal_tokens"
+              name="Portal Tokens"
+              parent="menu_petspot_clinic_portal_root"
+              action="action_petspot_portal_token"
+              sequence="10"/>
+
+    <menuitem id="menu_petspot_incomplete_cases"
+              name="Incomplete Cases"
+              parent="menu_petspot_clinic_portal_root"
+              action="action_petspot_incomplete_cases"
+              sequence="20"/>
+
+    <menuitem id="menu_petspot_clinic_slots"
+              name="Booking Slots"
+              parent="menu_petspot_clinic_portal_root"
+              action="action_petspot_clinic_slot"
+              sequence="30"/>
+
+    <menuitem id="menu_petspot_submit_log"
+              name="Submit Log"
+              parent="menu_petspot_clinic_portal_root"
+              action="action_petspot_submit_log"
+              sequence="40"/>
 </odoo>

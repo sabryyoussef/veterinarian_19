@@ -65,6 +65,7 @@ class PetspotWaIntake(models.Model):
     partner_id = fields.Many2one('res.partner', string='Owner / Customer', tracking=True)
     pet_id = fields.Many2one('pet.pet', string='Pet', tracking=True)
     appointment_id = fields.Many2one('pet.appointment', string='Appointment', tracking=True)
+    medical_visit_id = fields.Many2one('pet.medical.visit', string='Medical Visit', tracking=True)
     sale_order_id = fields.Many2one('sale.order', string='Sale Order', tracking=True)
 
     @api.model_create_multi
@@ -296,6 +297,12 @@ class PetspotWaIntake(models.Model):
 
     def _confirm_visit(self):
         self.ensure_one()
+        # Reuse portal-created appointment/visit — do not duplicate
+        if self.appointment_id:
+            return self.appointment_id
+        if self.medical_visit_id and self.medical_visit_id.appointment_id:
+            self.appointment_id = self.medical_visit_id.appointment_id.id
+            return self.appointment_id
         pet = self.pet_id
         if not pet:
             if self.pet_name:
@@ -312,6 +319,8 @@ class PetspotWaIntake(models.Model):
             'end_datetime': now + timedelta(minutes=30),
             'notes': self.message_text,
             'state': 'draft',
+            'sync_to_calendar': False,
+            'auto_create_facility': False,
         })
         self.appointment_id = appointment.id
         return appointment

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import logging
-import re
 import secrets
 from datetime import timedelta
 
-
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
+
+from .phone_utils import normalize_eg_phone, phone_match_variants, normalize_pet_name
 
 _logger = logging.getLogger(__name__)
 
@@ -14,6 +14,7 @@ _logger = logging.getLogger(__name__)
 class PetspotPortalToken(models.Model):
     _name = 'petspot.portal.token'
     _description = 'PetSpot Clinic Portal Token'
+    _inherit = ['petspot.notify.mixin']
     _order = 'id desc'
 
     name = fields.Char(default='New', required=True, copy=False)
@@ -25,9 +26,7 @@ class PetspotPortalToken(models.Model):
         default=lambda self: secrets.token_hex(4),
         help='Short public path /p/b/CODE or /p/e/CODE',
     )
-
     role = fields.Selection(
-
         [
             ('patient', 'Patient / Owner'),
             ('vet', 'Veterinarian'),
@@ -54,6 +53,7 @@ class PetspotPortalToken(models.Model):
     pet_id = fields.Many2one('pet.pet')
     appointment_id = fields.Many2one('pet.appointment')
     medical_visit_id = fields.Many2one('pet.medical.visit')
+    intake_id = fields.Many2one('petspot.wa.intake', string='Linked Intake')
     prefill_owner_name = fields.Char()
     prefill_phone = fields.Char()
     prefill_pet_name = fields.Char()
@@ -62,12 +62,6 @@ class PetspotPortalToken(models.Model):
     exam_token_id = fields.Many2one('petspot.portal.token', string='Auto Exam Token', readonly=True)
     exam_access_url = fields.Char(string='Exam Portal URL', readonly=True)
     odoo_case_url = fields.Char(string='Odoo Case URL', readonly=True)
-
-
-    _sql_constraints = [
-        ('token_uniq', 'unique(token)', 'Portal token must be unique.'),
-        ('short_code_uniq', 'unique(short_code)', 'Short code must be unique.'),
-    ]
 
     @api.model
     def _generate_short_code(self):
@@ -89,8 +83,9 @@ class PetspotPortalToken(models.Model):
                 vals['token'] = secrets.token_urlsafe(32)
             if not vals.get('short_code'):
                 vals['short_code'] = self._generate_short_code()
+            if vals.get('prefill_phone'):
+                vals['prefill_phone'] = normalize_eg_phone(vals['prefill_phone'])
         return super().create(vals_list)
-
 
     @api.model
     def _ttl_hours(self, role):
@@ -108,23 +103,14 @@ class PetspotPortalToken(models.Model):
         )
 
     def _public_base_url(self):
-        return (
-            self.env['ir.config_parameter']
-            .sudo()
-            .get_param('web.base.url', 'http://127.0.0.1:8027')
-            .rstrip('/')
-        )
+        return self._petspot_public_base_url()
 
     def _compute_access_url(self):
         base = self._public_base_url()
         for rec in self:
             code = rec.short_code or rec.token
-            if rec.role == 'vet':
-                path = f'/p/e/{code}'
-            else:
-                path = f'/p/b/{code}'
+            path = f'/p/e/{code}' if rec.role == 'vet' else f'/p/b/{code}'
             rec.access_url = f'{base}{path}'
-
 
     def validate_token(self, allow_used=False):
         self.ensure_one()
@@ -138,6 +124,82 @@ class PetspotPortalToken(models.Model):
         if self.state == 'used' and not allow_used:
             raise ValidationError(_('This link was already used.'))
         return True
+
+    @api.model
+    def find_partner_by_phone(self, phone, name=None):
+        Partner = self.env['res.partner'].sudo()
+        variants = phone_match_variants(phone)
+        if not variants:
+            return Partner.browse()
+        phone_fields = ['phone']
+        if 'mobile' in Partner._fields:
+            phone_fields.append('mobile')
+        partners = Partner.browse()
+        for v in variants:
+            domain = [(phone_fields[0], 'ilike', v)]
+            for fname in phone_fields[1:]:
+                domain = ['|', (fname, 'ilike', v)] + domain
+            partners |= Partner.search(domain, limit=20)
+        # Prefer exact last-10 match
+        norm = normalize_eg_phone(phone)
+        last10 = norm[-10:] if len(norm) >= 10 else norm
+        for p in partners:
+            for fname in phone_fields:
+                field = p[fname]
+                if field and normalize_eg_phone(field)[-10:] == last10:
+                    return p
+        return partners[:1]
+
+    @api.model
+    def find_or_create_partner(self, phone, name):
+        Partner = self.env['res.partner'].sudo()
+        partner = self.find_partner_by_phone(phone, name)
+        norm = normalize_eg_phone(phone)
+        display_phone = ('0' + norm[2:]) if norm.startswith('20') and len(norm) > 2 else norm
+        if partner:
+            vals = {}
+            if name and partner.name != name:
+                vals['name'] = name
+            if display_phone and not partner.phone:
+                vals['phone'] = display_phone
+            if display_phone and 'mobile' in Partner._fields and not partner.mobile:
+                vals['mobile'] = display_phone
+            if vals:
+                partner.write(vals)
+            return partner
+        vals = {
+            'name': name or display_phone or _('عميل PetSpot'),
+            'phone': display_phone or False,
+            'comment': _('من بوابة PetSpot / Chatwoot'),
+        }
+        if 'mobile' in Partner._fields:
+            vals['mobile'] = display_phone or False
+        return Partner.create(vals)
+
+    @api.model
+    def find_or_create_pet(self, partner, pet_name, species, extra=None):
+        Pet = self.env['pet.pet'].sudo()
+        extra = extra or {}
+        key = normalize_pet_name(pet_name)
+        pets = Pet.search([('owner_id', '=', partner.id)], limit=50)
+        for pet in pets:
+            if normalize_pet_name(pet.name) == key:
+                vals = {}
+                if extra.get('breed_id') and not pet.breed_id:
+                    vals['breed_id'] = extra['breed_id']
+                if vals:
+                    pet.write(vals)
+                return pet
+        vals = {
+            'name': (pet_name or _('حيوان'))[:64],
+            'species_id': species.id,
+            'owner_id': partner.id,
+        }
+        if extra.get('breed_id'):
+            vals['breed_id'] = extra['breed_id']
+        if extra.get('notes'):
+            vals['behavior_notes'] = extra['notes']
+        return Pet.create(vals)
 
     @api.model
     def create_patient_token(self, vals=None):
@@ -157,70 +219,135 @@ class PetspotPortalToken(models.Model):
 
     @api.model
     def lookup_open_appointment(self, payload=None):
-        """Find latest open appointment for a phone / sender jid."""
+        """Find latest open appointment / incomplete visit for a phone."""
         payload = payload or {}
-        phone = re.sub(r'\D', '', str(payload.get('phone') or payload.get('sender_phone') or ''))
+        phone = normalize_eg_phone(
+            payload.get('phone') or payload.get('sender_phone') or ''
+        )
         sender_jid = str(payload.get('sender_jid') or '')
         if not phone and sender_jid:
-            phone = re.sub(r'\D', '', sender_jid.split('@')[0])
+            phone = normalize_eg_phone(sender_jid)
         if not phone:
-            return {
-                'ok': True,
-                'has_open_appointment': False,
-                'appointment_id': False,
-                'appointment_name': '',
-                'pet_name': '',
-                'partner_id': False,
-            }
+            return self._empty_status()
 
-        Partner = self.env['res.partner'].sudo()
-        variants = {phone, phone[-10:] if len(phone) >= 10 else phone}
-        if phone.startswith('20') and len(phone) > 2:
-            variants.add('0' + phone[2:])
-        partners = Partner.browse()
-        for v in variants:
-            partners |= Partner.search([('phone', 'ilike', v)], limit=20)
-
+        partner = self.find_partner_by_phone(phone)
         Appointment = self.env['pet.appointment'].sudo()
-        domain = [('state', 'in', ('draft', 'confirmed', 'in_progress'))]
-        if partners:
-            domain = [('owner_id', 'in', partners.ids)] + domain
-        else:
-            return {
-                'ok': True,
-                'has_open_appointment': False,
-                'appointment_id': False,
-                'appointment_name': '',
-                'pet_name': '',
-                'partner_id': False,
-            }
+        Visit = self.env['pet.medical.visit'].sudo()
 
-        appt = Appointment.search(domain, order='start_datetime desc', limit=1)
+        appt = Appointment.browse()
+        if partner:
+            appt = Appointment.search(
+                [
+                    ('owner_id', '=', partner.id),
+                    ('state', 'in', ('draft', 'confirmed', 'in_progress')),
+                ],
+                order='start_datetime desc',
+                limit=1,
+            )
 
-        if not appt:
-            return {
-                'ok': True,
-                'has_open_appointment': False,
-                'appointment_id': False,
-                'appointment_name': '',
-                'pet_name': '',
-                'partner_id': partners[:1].id if partners else False,
-            }
+        incomplete = Visit.browse()
+        if partner:
+            incomplete = Visit.search(
+                [
+                    ('pet_id.owner_id', '=', partner.id),
+                    ('portal_incomplete', '=', True),
+                ],
+                order='id desc',
+                limit=1,
+            )
+
+        # Exam pending: open appointment without incomplete visit yet, or open exam token
+        exam_url = ''
+        exam_pending = False
+        if appt:
+            open_exam = self.search(
+                [
+                    ('appointment_id', '=', appt.id),
+                    ('role', '=', 'vet'),
+                    ('state', '=', 'open'),
+                ],
+                order='id desc',
+                limit=1,
+            )
+            if open_exam:
+                exam_url = open_exam.access_url
+                exam_pending = True
+            elif appt.exam_access_url if hasattr(appt, 'exam_access_url') else False:
+                exam_url = appt.exam_access_url
+                exam_pending = True
+
+        # Also check patient tokens that minted exam links
+        if appt and not exam_url:
+            book_tok = self.search(
+                [('appointment_id', '=', appt.id), ('exam_access_url', '!=', False)],
+                order='id desc',
+                limit=1,
+            )
+            if book_tok and book_tok.exam_token_id and book_tok.exam_token_id.state == 'open':
+                exam_url = book_tok.exam_access_url
+                exam_pending = True
+
+        case_url = ''
+        missing = ''
+        visit_id = False
+        visit_status = ''
+        if incomplete:
+            case_url = incomplete._petspot_record_form_url(incomplete)
+            missing = incomplete.portal_missing_fields or ''
+            visit_id = incomplete.id
+            visit_status = incomplete.status
+        elif appt and appt.medical_visit_id:
+            visit = appt.medical_visit_id
+            case_url = visit._petspot_record_form_url(visit)
+            visit_id = visit.id
+            visit_status = visit.status
+            if visit.portal_incomplete:
+                missing = visit.portal_missing_fields or ''
+
         return {
             'ok': True,
-            'has_open_appointment': True,
-            'appointment_id': appt.id,
-            'appointment_name': appt.name,
-            'pet_name': appt.pet_id.name if appt.pet_id else '',
-            'partner_id': appt.owner_id.id if appt.owner_id else False,
-            'start_datetime': fields.Datetime.to_string(appt.start_datetime),
-            'state': appt.state,
+            'has_open_appointment': bool(appt),
+            'appointment_id': appt.id if appt else False,
+            'appointment_name': appt.name if appt else '',
+            'appointment_state': appt.state if appt else '',
+            'pet_name': (appt.pet_id.name if appt and appt.pet_id else (
+                incomplete.pet_id.name if incomplete and incomplete.pet_id else ''
+            )),
+            'partner_id': partner.id if partner else False,
+            'partner_name': partner.name if partner else '',
+            'start_datetime': fields.Datetime.to_string(appt.start_datetime) if appt else '',
+            'state': appt.state if appt else '',
+            'exam_pending': exam_pending,
+            'exam_url': exam_url,
+            'visit_id': visit_id,
+            'visit_status': visit_status,
+            'portal_incomplete': bool(incomplete) or bool(missing),
+            'portal_missing_fields': missing,
+            'odoo_case_url': case_url,
+        }
+
+    @api.model
+    def _empty_status(self):
+        return {
+            'ok': True,
+            'has_open_appointment': False,
+            'appointment_id': False,
+            'appointment_name': '',
+            'appointment_state': '',
+            'pet_name': '',
+            'partner_id': False,
+            'partner_name': '',
+            'exam_pending': False,
+            'exam_url': '',
+            'visit_id': False,
+            'visit_status': '',
+            'portal_incomplete': False,
+            'portal_missing_fields': '',
+            'odoo_case_url': '',
         }
 
     @api.model
     def mint_from_api(self, payload):
-
-        """Create token from Chatwoot / bridge payload."""
         if not isinstance(payload, dict):
             raise ValidationError(_('Invalid payload.'))
         role = (payload.get('role') or 'patient').strip().lower()
@@ -231,7 +358,9 @@ class PetspotPortalToken(models.Model):
             'chatwoot_conversation_id': payload.get('chatwoot_conversation_id') or False,
             'chatwoot_inbox_id': payload.get('chatwoot_inbox_id') or False,
             'prefill_owner_name': payload.get('owner_name') or payload.get('sender_name') or '',
-            'prefill_phone': payload.get('phone') or payload.get('sender_phone') or '',
+            'prefill_phone': normalize_eg_phone(
+                payload.get('phone') or payload.get('sender_phone') or ''
+            ),
             'prefill_pet_name': payload.get('pet_name') or '',
         }
         if payload.get('partner_id'):
@@ -241,9 +370,12 @@ class PetspotPortalToken(models.Model):
         if payload.get('appointment_id'):
             vals['appointment_id'] = int(payload['appointment_id'])
 
-        # Auto-pick latest open appointment for vet tokens when only conversation given
         if role == 'vet' and not vals.get('appointment_id'):
             appt = self._find_appointment_for_conversation(vals.get('chatwoot_conversation_id'))
+            if not appt and vals.get('prefill_phone'):
+                status = self.lookup_open_appointment({'phone': vals['prefill_phone']})
+                if status.get('appointment_id'):
+                    vals['appointment_id'] = status['appointment_id']
             if appt:
                 vals['appointment_id'] = appt.id
                 vals['pet_id'] = appt.pet_id.id
@@ -284,7 +416,6 @@ class PetspotPortalToken(models.Model):
         }
 
     def create_exam_token_and_notify(self):
-        """After booking: mint vet exam link and post it to WhatsApp / Chatwoot."""
         self.ensure_one()
         if not self.appointment_id:
             return False
@@ -295,6 +426,7 @@ class PetspotPortalToken(models.Model):
             'partner_id': self.partner_id.id if self.partner_id else False,
             'chatwoot_conversation_id': self.chatwoot_conversation_id or False,
             'chatwoot_inbox_id': self.chatwoot_inbox_id or False,
+            'intake_id': self.intake_id.id if self.intake_id else False,
             'prefill_owner_name': self.prefill_owner_name or (self.partner_id.name if self.partner_id else ''),
             'prefill_phone': self.prefill_phone or '',
             'prefill_pet_name': self.pet_id.name if self.pet_id else '',
@@ -314,39 +446,35 @@ class PetspotPortalToken(models.Model):
 
         msg = _(
             'تم تأكيد الموعد %(appt)s للحيوان %(pet)s.\n\n'
-            'للفريق الطبي: اضغط الزر «فتح نموذج الكشف»\n'
+            'للفريق الطبي: افتح نموذج الكشف:\n'
             '%(url)s'
-        ) % {
-            'appt': appt.name,
-            'pet': pet_name,
-            'url': exam_url,
-        }
+        ) % {'appt': appt.name, 'pet': pet_name, 'url': exam_url}
 
-
-        self._notify_whatsapp_group(msg)
-        self._notify_chatwoot(msg)
-        # Also send interactive URL button when possible
-        self._notify_whatsapp_exam_button(exam_url, appt.name, pet_name)
+        self.petspot_notify_whatsapp_group(msg)
+        self.petspot_notify_chatwoot(self.chatwoot_conversation_id, msg)
+        self.petspot_notify_whatsapp_button(
+            _('كشف بيطري — %s') % (appt.name or ''),
+            _('افتح نموذج الكشف للحيوان %s') % (pet_name or ''),
+            _('فتح نموذج الكشف'),
+            exam_url,
+        )
         return exam_token
 
     def _record_form_url(self, record):
-        """Backend form URL for staff (Odoo 19 deep link)."""
-        self.ensure_one()
-        if not record:
-            return ''
-        return f'{self._public_base_url()}/odoo/{record._name}/{record.id}'
+        return self._petspot_record_form_url(record)
 
     def notify_odoo_case_after_exam(self):
-        """After portal exam: send Odoo case link so staff can complete missing fields."""
         self.ensure_one()
         visit = self.medical_visit_id
         if not visit:
             return False
 
+        visit.refresh_portal_incomplete_state(notify_complete=False)
         case_url = self._record_form_url(visit)
         appt_url = self._record_form_url(self.appointment_id) if self.appointment_id else ''
         pet_name = visit.pet_id.name if visit.pet_id else (self.pet_id.name if self.pet_id else '')
         appt_name = self.appointment_id.name if self.appointment_id else ''
+        missing = visit.portal_missing_fields or _('لا توجد نواقص مسجلة')
 
         summary = (self.result_summary or '').strip()
         if summary:
@@ -359,169 +487,64 @@ class PetspotPortalToken(models.Model):
         })
 
         msg = _(
-            'تم حفظ الكشف للحيوان %(pet)s%(appt)s.\n\n'
-            'أكمل البيانات الناقصة في أودو:\n%(url)s'
+            'تم إنشاء حالة كشف جديدة في Odoo.\n\n'
+            'الحيوان: %(pet)s%(appt)s\n\n'
+            'الحالة ما زالت غير مكتملة وتحتاج مراجعة:\n\n'
+            'النواقص:\n%(missing)s\n\n'
+            'رابط الحالة:\n%(url)s'
         ) % {
             'pet': pet_name or '—',
             'appt': (' — %s' % appt_name) if appt_name else '',
+            'missing': missing,
             'url': case_url,
         }
         if appt_url:
             msg += _('\n\nالموعد:\n%s') % appt_url
 
-        self._notify_whatsapp_group(msg)
-        self._notify_chatwoot(msg)
-        self._notify_whatsapp_odoo_button(case_url, appt_name, pet_name)
+        self.petspot_notify_whatsapp_group(msg)
+        self.petspot_notify_chatwoot(self.chatwoot_conversation_id, msg)
+        self.petspot_notify_whatsapp_button(
+            _('أكمل الحالة في أودو — %s') % (appt_name or pet_name or ''),
+            _('افتح كشف %s وأكمل البيانات الناقصة') % (pet_name or ''),
+            _('فتح الحالة في أودو'),
+            case_url,
+        )
         return case_url
 
-    def _notify_whatsapp_odoo_button(self, case_url, appt_name, pet_name):
-        import requests
-        from urllib.parse import quote
-
-        ICP = self.env['ir.config_parameter'].sudo()
-        evo_url = ICP.get_param('integration_bridge.evolution_url', 'http://127.0.0.1:8080').rstrip('/')
-        evo_key = ICP.get_param('integration_bridge.evolution_key', '')
-        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
-        group_jid = ICP.get_param(
-            'petspot_wa_intake.group_jid',
-            '120363409395291215@g.us',
-        ).strip()
-        if not evo_key or not group_jid or not case_url:
-            return False
-        number = group_jid.split('@')[0]
-        payload = {
-            'number': number,
-            'title': _('أكمل الحالة في أودو — %s') % (appt_name or pet_name or ''),
-            'description': _('افتح كشف %s وأكمل البيانات الناقصة') % (pet_name or ''),
-            'footer': 'PetSpot El Sahel',
-            'buttons': [
-                {'type': 'url', 'displayText': _('فتح الحالة في أودو'), 'url': case_url},
-            ],
-        }
-        try:
-            resp = requests.post(
-                f"{evo_url}/message/sendButtons/{quote(instance, safe='')}",
-                headers={'apikey': evo_key, 'Content-Type': 'application/json'},
-                json=payload,
-                timeout=20,
-            )
-            _logger.info('portal notify Odoo button status=%s', resp.status_code)
-            return resp.ok
-        except Exception:
-            _logger.exception('portal notify Odoo button failed')
-            return False
-
-    def _notify_whatsapp_group(self, text):
-        """Send plain text to PetSpot WhatsApp group via Evolution."""
-        import requests
-        from urllib.parse import quote
-
-        ICP = self.env['ir.config_parameter'].sudo()
-        evo_url = ICP.get_param('integration_bridge.evolution_url', 'http://127.0.0.1:8080').rstrip('/')
-        evo_key = ICP.get_param('integration_bridge.evolution_key', '')
-        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
-        group_jid = ICP.get_param(
-            'petspot_wa_intake.group_jid',
-            '120363409395291215@g.us',
-        ).strip()
-        if not evo_key or not group_jid:
-            _logger.warning('portal notify: Evolution not configured')
-            return False
-        number = group_jid.split('@')[0]
-        try:
-            resp = requests.post(
-                f"{evo_url}/message/sendText/{quote(instance, safe='')}",
-                headers={'apikey': evo_key, 'Content-Type': 'application/json'},
-                json={'number': number, 'text': text},
-                timeout=20,
-            )
-            _logger.info('portal notify WA text status=%s', resp.status_code)
-            return resp.ok
-        except Exception:
-            _logger.exception('portal notify WA text failed')
-            return False
-
-    def _notify_whatsapp_exam_button(self, exam_url, appt_name, pet_name):
-        import requests
-        from urllib.parse import quote
-
-        ICP = self.env['ir.config_parameter'].sudo()
-        evo_url = ICP.get_param('integration_bridge.evolution_url', 'http://127.0.0.1:8080').rstrip('/')
-        evo_key = ICP.get_param('integration_bridge.evolution_key', '')
-        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
-        group_jid = ICP.get_param(
-            'petspot_wa_intake.group_jid',
-            '120363409395291215@g.us',
-        ).strip()
-        if not evo_key or not group_jid:
-            return False
-        number = group_jid.split('@')[0]
-        payload = {
-            'number': number,
-            'title': _('كشف بيطري — %s') % (appt_name or ''),
-            'description': _('اضغط الزر لفتح نموذج الكشف للحيوان %s') % (pet_name or ''),
-            'footer': 'PetSpot El Sahel',
-            'buttons': [
-                {'type': 'url', 'displayText': _('فتح نموذج الكشف'), 'url': exam_url},
-            ],
-        }
-        try:
-            resp = requests.post(
-                f"{evo_url}/message/sendButtons/{quote(instance, safe='')}",
-                headers={'apikey': evo_key, 'Content-Type': 'application/json'},
-                json=payload,
-                timeout=20,
-            )
-            _logger.info('portal notify WA button status=%s', resp.status_code)
-            return resp.ok
-        except Exception:
-            _logger.exception('portal notify WA button failed')
-            return False
-
-    def _notify_chatwoot(self, text):
-        """Post exam link into Chatwoot conversation when linked."""
-        import requests
-
+    def link_or_create_intake(self, intent='visit', message_text=''):
+        """Link portal action to a single WA intake record."""
         self.ensure_one()
-        if not self.chatwoot_conversation_id:
-            return False
-        ICP = self.env['ir.config_parameter'].sudo()
-
-        def _param(key, default=''):
-            val = ICP.get_param(key, default) or ''
-            if val:
-                return val
-            # Bypass registry cache if param was inserted outside ORM
-            self.env.cr.execute(
-                'SELECT value FROM ir_config_parameter WHERE key = %s LIMIT 1',
-                (key,),
+        Intake = self.env['petspot.wa.intake'].sudo()
+        intake = self.intake_id
+        if not intake and self.chatwoot_conversation_id:
+            intake = Intake.search(
+                [('chatwoot_conversation_id', '=', self.chatwoot_conversation_id)],
+                order='id desc',
+                limit=1,
             )
-            row = self.env.cr.fetchone()
-            return (row[0] if row else default) or default
-
-        base = _param('petspot_clinic_portal.chatwoot_url', 'http://127.0.0.1:3000').rstrip('/')
-        token = _param('petspot_clinic_portal.chatwoot_api_token', '')
-        account = _param('petspot_clinic_portal.chatwoot_account_id', '2')
-        if not token:
-            _logger.warning('portal notify: Chatwoot token not configured')
-            return False
-        try:
-            resp = requests.post(
-                f"{base}/api/v1/accounts/{account}/conversations/{self.chatwoot_conversation_id}/messages",
-                headers={
-                    'api_access_token': token,
-                    'Content-Type': 'application/json',
-                },
-                json={
-                    'content': text,
-                    'message_type': 'outgoing',
-                    'private': False,
-                },
-                timeout=20,
+        if not intake and self.prefill_phone:
+            intake = Intake.search(
+                [('sender_phone', 'ilike', self.prefill_phone[-10:])],
+                order='id desc',
+                limit=1,
             )
-            _logger.info('portal notify Chatwoot status=%s', resp.status_code)
-            return resp.ok
-        except Exception:
-            _logger.exception('portal notify Chatwoot failed')
-            return False
-
+        vals = {
+            'intent': intent,
+            'message_text': message_text or intent,
+            'sender_name': self.prefill_owner_name or '',
+            'sender_phone': self.prefill_phone or '',
+            'chatwoot_conversation_id': self.chatwoot_conversation_id or False,
+            'chatwoot_inbox_id': self.chatwoot_inbox_id or False,
+            'partner_id': self.partner_id.id if self.partner_id else False,
+            'pet_id': self.pet_id.id if self.pet_id else False,
+            'appointment_id': self.appointment_id.id if self.appointment_id else False,
+            'state': 'confirmed',
+        }
+        if 'medical_visit_id' in Intake._fields and self.medical_visit_id:
+            vals['medical_visit_id'] = self.medical_visit_id.id
+        if intake:
+            intake.write({k: v for k, v in vals.items() if v})
+        else:
+            intake = Intake.create(vals)
+        self.intake_id = intake.id
+        return intake

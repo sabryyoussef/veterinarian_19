@@ -1,0 +1,22 @@
+[Unit]
+Description=PetSpot El Sahel Odoo 19
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=sabry
+Group=sabry
+WorkingDirectory=/home/sabry/odoo_base/base_odoo_19
+Environment=PATH=/home/sabry/odoo_base/base_odoo_19/venv19/bin:/usr/bin
+ExecStart=/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 \
+  /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin \
+  -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf \
+  -d pet_spot_elsahel
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/odoo.log
+StandardError=append:/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/odoo.log
+
+[Install]
+WantedBy=default.target

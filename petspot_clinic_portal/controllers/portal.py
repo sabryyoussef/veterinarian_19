@@ -154,10 +154,13 @@ class PetspotClinicPortalController(BridgeControllerBase):
 
         form_action = request.httprequest.path
 
+        Slot = request.env['petspot.clinic.slot'].sudo()
+        Slot.ensure_upcoming_slots(days=7)
+        slots = Slot.get_available_slots(limit=30)
+
         if request.httprequest.method == 'POST':
             try:
                 self._submit_booking(rec, post)
-                # Render in-place (no redirect) — WhatsApp in-app browser often fails on 3xx.
                 return request.render('petspot_clinic_portal.done_page', {'token_rec': rec})
             except Exception as exc:
                 _logger.warning('portal book failed: %s', exc)
@@ -165,6 +168,7 @@ class PetspotClinicPortalController(BridgeControllerBase):
                     'token_rec': rec,
                     'error': str(exc),
                     'species_list': request.env['pet.species'].sudo().search([]),
+                    'slots': slots,
                     'form': post,
                     'form_action': form_action,
                 })
@@ -173,6 +177,7 @@ class PetspotClinicPortalController(BridgeControllerBase):
             'token_rec': rec,
             'error': False,
             'species_list': request.env['pet.species'].sudo().search([]),
+            'slots': slots,
             'form': {
                 'owner_name': rec.prefill_owner_name or (rec.partner_id.name if rec.partner_id else ''),
                 'phone': rec.prefill_phone or '',
@@ -181,41 +186,46 @@ class PetspotClinicPortalController(BridgeControllerBase):
             'form_action': form_action,
         })
 
-
     def _submit_booking(self, token_rec, post):
+        from odoo.addons.petspot_clinic_portal.models.phone_utils import normalize_eg_phone
+
         owner_name = (post.get('owner_name') or '').strip()
-        phone = re.sub(r'\D', '', post.get('phone') or '')
+        phone = normalize_eg_phone(post.get('phone') or '')
         pet_name = (post.get('pet_name') or '').strip()
         notes = (post.get('notes') or '').strip()
         service = (post.get('service_type') or 'checkup').strip()
         species_id = post.get('species_id')
-        start_raw = (post.get('start_datetime') or '').strip()
+        breed_name = (post.get('breed_name') or '').strip()
+        age_years = (post.get('age_years') or '').strip()
+        weight_kg = (post.get('weight_kg') or '').strip()
+        slot_id = post.get('slot_id')
 
         if not owner_name or not phone or not pet_name:
             raise UserError(_('الاسم ورقم الهاتف واسم الحيوان مطلوبة.'))
-        if not start_raw:
-            raise UserError(_('موعد الزيارة مطلوب.'))
 
-        start_norm = start_raw.replace('T', ' ').strip()
-        if len(start_norm) == 16:
-            start_norm += ':00'
-        start_dt = fields.Datetime.to_datetime(start_norm[:19])
-
-        duration = token_rec._default_duration_minutes()
-        end_dt = start_dt + timedelta(minutes=duration)
-
-        Partner = request.env['res.partner'].sudo()
-        partner = token_rec.partner_id
-        if not partner:
-            partner = Partner.search([('phone', 'ilike', phone[-10:])], limit=1)
-        if not partner:
-            partner = Partner.create({
-                'name': owner_name,
-                'phone': phone,
-                'comment': _('من بوابة PetSpot / Chatwoot'),
-            })
+        Slot = request.env['petspot.clinic.slot'].sudo()
+        slot = Slot.browse()
+        if slot_id:
+            slot = Slot.browse(int(slot_id))
+            if not slot.exists():
+                raise UserError(_('الموعد المختار غير صالح.'))
+            slot.reserve_for_appointment()
+            start_dt = slot.start_datetime
+            end_dt = slot.end_datetime
         else:
-            partner.write({'name': owner_name, 'phone': phone})
+            # Fallback free datetime if no slots configured
+            start_raw = (post.get('start_datetime') or '').strip()
+            if not start_raw:
+                raise UserError(_('اختر موعدًا من القائمة.'))
+            start_norm = start_raw.replace('T', ' ').strip()
+            if len(start_norm) == 16:
+                start_norm += ':00'
+            start_dt = fields.Datetime.to_datetime(start_norm[:19])
+            duration = token_rec._default_duration_minutes()
+            end_dt = start_dt + timedelta(minutes=duration)
+
+        Token = request.env['petspot.portal.token'].sudo()
+        partner = token_rec.partner_id or Token.find_or_create_partner(phone, owner_name)
 
         Species = request.env['pet.species'].sudo()
         species = Species.browse(int(species_id)) if species_id else Species.browse()
@@ -224,20 +234,33 @@ class PetspotClinicPortalController(BridgeControllerBase):
         if not species:
             raise UserError(_('لا يوجد نوع حيوان معرّف في النظام.'))
 
-        Pet = request.env['pet.pet'].sudo()
-        pet = token_rec.pet_id
-        if not pet:
-            pet = Pet.search([
-                ('owner_id', '=', partner.id),
-                ('name', 'ilike', pet_name),
+        breed_id = False
+        if breed_name and 'pet.breed' in request.env:
+            breed = request.env['pet.breed'].sudo().search([
+                ('name', 'ilike', breed_name),
             ], limit=1)
-        if not pet:
-            pet = Pet.create({
-                'name': pet_name[:64],
-                'species_id': species.id,
-                'owner_id': partner.id,
-                'behavior_notes': notes or False,
-            })
+            if breed:
+                breed_id = breed.id
+
+        extra = {'notes': notes, 'breed_id': breed_id}
+        pet = token_rec.pet_id or Token.find_or_create_pet(partner, pet_name, species, extra)
+        if age_years and 'date_of_birth' in pet._fields:
+            try:
+                years = float(age_years)
+                # store approximate note only
+                note = (pet.behavior_notes or '') + (f'\nعمر تقريبي: {years} سنة')
+                pet.write({'behavior_notes': note.strip()})
+            except Exception:
+                pass
+        if weight_kg and 'pet.weight.history' in request.env:
+            try:
+                request.env['pet.weight.history'].sudo().create({
+                    'pet_id': pet.id,
+                    'weight_kg': float(weight_kg),
+                    'date': fields.Date.today(),
+                })
+            except Exception:
+                _logger.warning('portal booking: weight history skipped', exc_info=True)
 
         service_flags = {
             'checkup': {'is_medical': True, 'primary_type': 'checkup', 'title': 'كشف طبي'},
@@ -249,6 +272,7 @@ class PetspotClinicPortalController(BridgeControllerBase):
         }
         flags = service_flags.get(service) or service_flags['checkup']
 
+        Appointment = request.env['pet.appointment'].sudo()
         appt_vals = {
             'pet_id': pet.id,
             'title': flags['title'],
@@ -257,18 +281,17 @@ class PetspotClinicPortalController(BridgeControllerBase):
             'end_datetime': end_dt,
             'notes': notes or False,
             'state': 'confirmed',
-            # Avoid broken calendar_event_id dependency on this DB
+            # Portal appointments: calendar sync permanently gated (broken path in pet_management)
             'sync_to_calendar': False,
             'auto_create_facility': False,
+            'portal_source': 'chatwoot' if token_rec.chatwoot_conversation_id else 'portal',
+            'chatwoot_conversation_id': token_rec.chatwoot_conversation_id or False,
         }
-        # Optional audit fields (module extension)
-        Appointment = request.env['pet.appointment'].sudo()
-        if 'portal_source' in Appointment._fields:
-            appt_vals['portal_source'] = (
-                'chatwoot' if token_rec.chatwoot_conversation_id else 'portal'
-            )
-        if 'chatwoot_conversation_id' in Appointment._fields:
-            appt_vals['chatwoot_conversation_id'] = token_rec.chatwoot_conversation_id or False
+        if slot:
+            appt_vals['portal_slot_id'] = slot.id
+        resource_id = Appointment._portal_default_resource()
+        if resource_id:
+            appt_vals['resource_id'] = resource_id
         for flag_name in ('is_medical', 'is_grooming', 'is_boarding', 'is_vaccination', 'is_training'):
             if flag_name in Appointment._fields and flags.get(flag_name):
                 appt_vals[flag_name] = True
@@ -279,29 +302,28 @@ class PetspotClinicPortalController(BridgeControllerBase):
             'partner_id': partner.id,
             'pet_id': pet.id,
             'appointment_id': appointment.id,
+            'prefill_phone': phone,
+            'prefill_owner_name': owner_name,
             'result_summary': _('موعد %s — %s — %s') % (appointment.name, pet.name, partner.name),
         })
 
-        # Optional intake link
-        if 'petspot.wa.intake' in request.env:
-            try:
-                request.env['petspot.wa.intake'].sudo().create({
-                    'intent': 'visit',
-                    'message_text': notes or str(flags['title']),
-                    'sender_name': owner_name,
-                    'sender_phone': phone,
-                    'pet_name': pet_name,
-                    'chatwoot_conversation_id': token_rec.chatwoot_conversation_id or False,
-                    'chatwoot_inbox_id': token_rec.chatwoot_inbox_id or False,
-                    'partner_id': partner.id,
-                    'pet_id': pet.id,
-                    'appointment_id': appointment.id,
-                    'state': 'confirmed',
-                })
-            except Exception:
-                _logger.warning('portal booking: intake create skipped', exc_info=True)
+        try:
+            token_rec.link_or_create_intake(intent='visit', message_text=notes or flags['title'])
+        except Exception:
+            _logger.warning('portal booking: intake link skipped', exc_info=True)
 
-        # Auto-create vet exam token + post link to WhatsApp group / Chatwoot
+        request.env['petspot.portal.submit.log'].sudo().create({
+            'name': _('حجز %s') % appointment.name,
+            'submit_type': 'book',
+            'token_id': token_rec.id,
+            'phone': phone,
+            'partner_id': partner.id,
+            'pet_id': pet.id,
+            'appointment_id': appointment.id,
+            'chatwoot_conversation_id': token_rec.chatwoot_conversation_id or False,
+            'source': 'chatwoot' if token_rec.chatwoot_conversation_id else 'whatsapp_group',
+        })
+
         try:
             token_rec.create_exam_token_and_notify()
         except Exception:
@@ -364,13 +386,16 @@ class PetspotClinicPortalController(BridgeControllerBase):
 
     def _submit_exam(self, token_rec, pet, appointment, post):
         reason = (post.get('reason') or '').strip() or _('كشف روتيني')
+        source = 'chatwoot' if token_rec.chatwoot_conversation_id else 'portal'
         visit_vals = {
             'pet_id': pet.id,
             'appointment_id': appointment.id if appointment else False,
             'date': fields.Datetime.now(),
             'reason': reason,
             'visit_type': post.get('visit_type') or 'checkup',
-            'status': 'completed',
+            # Incomplete until staff fills required checklist in Odoo
+            'status': 'in_progress',
+            'portal_incomplete': True,
             'subjective': post.get('subjective') or False,
             'objective': post.get('objective') or False,
             'assessment': post.get('assessment') or False,
@@ -379,22 +404,42 @@ class PetspotClinicPortalController(BridgeControllerBase):
             'vital_signs': post.get('vital_signs') or False,
             'medications_prescribed': post.get('medications') or False,
             'follow_up_notes': post.get('reminder_text') or False,
-            'portal_source': 'chatwoot' if token_rec.chatwoot_conversation_id else 'portal',
+            'portal_source': source,
             'chatwoot_conversation_id': token_rec.chatwoot_conversation_id or False,
         }
         follow_up = (post.get('follow_up_date') or '').strip()
         if follow_up:
             visit_vals['follow_up_date'] = follow_up
 
-        visit = request.env['pet.medical.visit'].sudo().create(visit_vals)
+        Visit = request.env['pet.medical.visit'].sudo()
+        visit = Visit.with_context(skip_portal_incomplete_recalc=True).create(visit_vals)
+        visit.refresh_portal_incomplete_state(notify_complete=False)
 
         if appointment:
             appointment.sudo().write({
-                'state': 'done',
+                'state': 'in_progress',
                 'follow_up_date': follow_up or False,
                 'follow_up_notes': post.get('reminder_text') or False,
                 'medical_visit_id': visit.id,
             })
+
+        # Optional exam photos
+        files = request.httprequest.files.getlist('photos') if request.httprequest.files else []
+        for upload in files:
+            if not upload or not upload.filename:
+                continue
+            try:
+                import base64
+                data = base64.b64encode(upload.read())
+                request.env['ir.attachment'].sudo().create({
+                    'name': upload.filename,
+                    'datas': data,
+                    'res_model': 'pet.medical.visit',
+                    'res_id': visit.id,
+                    'mimetype': upload.content_type or 'application/octet-stream',
+                })
+            except Exception:
+                _logger.warning('portal exam: photo attach skipped', exc_info=True)
 
         if follow_up:
             reminder_text = (post.get('reminder_text') or '').strip() or _(
@@ -413,7 +458,6 @@ class PetspotClinicPortalController(BridgeControllerBase):
                 'send_email': False,
                 'send_in_app': True,
             })
-            # Activity for staff
             if appointment:
                 try:
                     appointment.sudo().activity_schedule(
@@ -429,9 +473,30 @@ class PetspotClinicPortalController(BridgeControllerBase):
             'state': 'used',
             'medical_visit_id': visit.id,
             'pet_id': pet.id,
-            'result_summary': _('كشف %s — %s') % (pet.name, reason),
+            'result_summary': _('كشف %s — %s (غير مكتمل)') % (pet.name, reason),
         })
-        # Send Odoo case link so staff can open the visit and fill missing data
+
+        try:
+            token_rec.link_or_create_intake(intent='visit', message_text=reason)
+        except Exception:
+            _logger.warning('portal exam: intake link skipped', exc_info=True)
+
+        request.env['petspot.portal.submit.log'].sudo().create({
+            'name': _('كشف %s') % pet.name,
+            'submit_type': 'exam',
+            'token_id': token_rec.id,
+            'phone': token_rec.prefill_phone or '',
+            'partner_id': token_rec.partner_id.id if token_rec.partner_id else (
+                pet.owner_id.id if pet.owner_id else False
+            ),
+            'pet_id': pet.id,
+            'appointment_id': appointment.id if appointment else False,
+            'medical_visit_id': visit.id,
+            'chatwoot_conversation_id': token_rec.chatwoot_conversation_id or False,
+            'source': 'chatwoot' if token_rec.chatwoot_conversation_id else 'whatsapp_group',
+            'notes': visit.portal_missing_fields or '',
+        })
+
         try:
             token_rec.notify_odoo_case_after_exam()
         except Exception:

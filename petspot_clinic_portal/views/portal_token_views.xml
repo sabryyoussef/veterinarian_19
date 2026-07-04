@@ -46,6 +46,7 @@
                             <field name="exam_token_id"/>
                             <field name="exam_access_url" widget="url"/>
                             <field name="odoo_case_url" widget="url"/>
+                            <field name="intake_id"/>
                         </group>
                     </group>
                     <group>

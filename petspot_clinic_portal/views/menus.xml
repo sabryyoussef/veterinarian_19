@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_petspot_clinic_portal_root"
+              name="Clinic Portal"
+              action="action_petspot_portal_token"
+              sequence="26"/>
+</odoo>

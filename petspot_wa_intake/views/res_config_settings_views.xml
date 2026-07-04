@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_petspot_wa_intake" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.petspot.wa.intake</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="PetSpot WA Intake" name="petspot_wa_intake">
+                    <block title="PetSpot Sahel WhatsApp / Chatwoot">
+                        <setting string="WhatsApp group JID" help="Only messages from this group are accepted.">
+                            <field name="petspot_wa_group_jid"/>
+                        </setting>
+                        <setting string="Chatwoot inbox ID" help="Dedicated PetSpot Sahel inbox (id 3).">
+                            <field name="petspot_wa_chatwoot_inbox_id"/>
+                        </setting>
+                        <setting string="Chatwoot label">
+                            <field name="petspot_wa_chatwoot_label"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

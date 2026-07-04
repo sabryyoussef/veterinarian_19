@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- No groups: visible to any backend user (admin on this DB is not in base.group_user). -->
+    <menuitem id="menu_petspot_wa_intake_root"
+              name="WA Intake"
+              action="action_petspot_wa_intake"
+              web_icon="petspot_wa_intake,static/description/icon.png"
+              sequence="25"/>
+
+    <menuitem id="menu_petspot_wa_intake_pets"
+              name="WA Intake"
+              parent="pet_management.menu_pet_root"
+              action="action_petspot_wa_intake"
+              sequence="90"/>
+</odoo>

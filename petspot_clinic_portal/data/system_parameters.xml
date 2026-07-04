@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.patient_token_ttl_hours</value>
+            <value>48</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.vet_token_ttl_hours</value>
+            <value>12</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.default_appointment_minutes</value>
+            <value>30</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.chatwoot_url</value>
+            <value>http://127.0.0.1:3000</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.chatwoot_account_id</value>
+            <value>2</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.chatwoot_api_token</value>
+            <value>KEGgfDcERMWJYRzA8Ft78ozD</value>
+        </function>
+        <record id="seq_petspot_portal_token" model="ir.sequence">
+            <field name="name">PetSpot Portal Token</field>
+            <field name="code">petspot.portal.token</field>
+            <field name="prefix">PTK/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

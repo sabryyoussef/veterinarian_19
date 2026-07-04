@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_petspot_wa_intake_list" model="ir.ui.view">
+        <field name="name">petspot.wa.intake.list</field>
+        <field name="model">petspot.wa.intake</field>
+        <field name="arch" type="xml">
+            <list string="WhatsApp Intakes" decoration-info="state=='draft'" decoration-success="state=='confirmed'" decoration-muted="state=='cancelled'" decoration-danger="state=='error'">
+                <field name="name"/>
+                <field name="intent"/>
+                <field name="pet_name"/>
+                <field name="sender_name"/>
+                <field name="sender_phone"/>
+                <field name="amount"/>
+                <field name="chatwoot_conversation_id"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_petspot_wa_intake_form" model="ir.ui.view">
+        <field name="name">petspot.wa.intake.form</field>
+        <field name="model">petspot.wa.intake</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Intake">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm to Odoo" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state not in ('draft', 'error')"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft" invisible="state not in ('cancelled', 'error')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Message">
+                            <field name="intent"/>
+                            <field name="message_text"/>
+                            <field name="confidence"/>
+                            <field name="error_message" invisible="not error_message"/>
+                        </group>
+                        <group string="Extracted">
+                            <field name="pet_name"/>
+                            <field name="product_name"/>
+                            <field name="amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Sender">
+                            <field name="sender_name"/>
+                            <field name="sender_phone"/>
+                            <field name="sender_jid"/>
+                            <field name="group_name"/>
+                            <field name="group_jid"/>
+                        </group>
+                        <group string="Links">
+                            <field name="partner_id"/>
+                            <field name="pet_id"/>
+                            <field name="appointment_id"/>
+                            <field name="sale_order_id"/>
+                        </group>
+                    </group>
+                    <group string="Chatwoot / Evolution">
+                        <field name="chatwoot_conversation_id"/>
+                        <field name="chatwoot_inbox_id"/>
+                        <field name="chatwoot_message_id"/>
+                        <field name="evolution_message_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Raw payload">
+                            <field name="raw_payload" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_petspot_wa_intake_search" model="ir.ui.view">
+        <field name="name">petspot.wa.intake.search</field>
+        <field name="model">petspot.wa.intake</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="message_text"/>
+                <field name="pet_name"/>
+                <field name="sender_phone"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <group>
+                    <filter name="group_intent" string="Intent" context="{'group_by': 'intent'}"/>
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_petspot_wa_intake" model="ir.actions.act_window">
+        <field name="name">WhatsApp Intakes</field>
+        <field name="res_model">petspot.wa.intake</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_draft': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No WhatsApp intakes yet</p>
+            <p>Messages from the PetSpot Sahel Chatwoot inbox / group appear here as drafts.</p>
+        </field>
+    </record>
+</odoo>

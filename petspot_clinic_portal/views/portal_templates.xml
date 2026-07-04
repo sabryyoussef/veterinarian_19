@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_layout" name="PetSpot Portal Layout">
+        <t t-translation="off">&lt;!DOCTYPE html&gt;</t>
+        <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <title>PetSpot Clinic</title>
+            <style>
+                * { box-sizing: border-box; }
+                body { font-family: Tahoma, Arial, sans-serif; margin: 0; background: #f4f7fb; color: #1a1a1a; }
+                .wrap { max-width: 480px; margin: 0 auto; padding: 16px; }
+                .card { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+                h1 { font-size: 1.25rem; margin: 0 0 8px; color: #0b5; }
+                h1.brand { color: #0d6e4f; }
+                .muted { color: #666; font-size: .9rem; margin-bottom: 14px; }
+                label { display: block; font-weight: 600; margin: 12px 0 4px; font-size: .92rem; }
+                input, select, textarea {
+                    width: 100%; padding: 12px; border: 1px solid #ccd; border-radius: 10px;
+                    font-size: 1rem; background: #fafbfc;
+                }
+                textarea { min-height: 80px; resize: vertical; }
+                button, .btn {
+                    display: block; width: 100%; margin-top: 18px; padding: 14px;
+                    border: 0; border-radius: 10px; background: #0d6e4f; color: #fff;
+                    font-size: 1.05rem; font-weight: 700; cursor: pointer; text-align: center;
+                    text-decoration: none;
+                }
+                button.secondary { background: #345; }
+                .err { background: #fee; color: #900; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+                .ok { background: #e8fff3; color: #064; padding: 12px; border-radius: 8px; }
+                .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+                @media (max-width: 420px) { .row { grid-template-columns: 1fr; } }
+                .pet-chip { background: #eef8f3; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+            </style>
+        </head>
+        <body>
+            <div class="wrap">
+                <t t-out="0"/>
+            </div>
+        </body>
+        </html>
+    </template>
+
+    <template id="book_form" name="PetSpot Book Appointment">
+        <t t-call="petspot_clinic_portal.portal_layout">
+            <div class="card">
+                <h1 class="brand">PetSpot — حجز موعد</h1>
+                <p class="muted">املأ البيانات لحجز موعد في العيادة</p>
+                <t t-if="error"><div class="err" t-esc="error"/></t>
+                <form method="post" t-att-action="form_action or ''">
+                    <label>اسم المالك</label>
+
+                    <input type="text" name="owner_name" required="required" t-att-value="form.get('owner_name')"/>
+                    <label>رقم الهاتف</label>
+                    <input type="tel" name="phone" required="required" t-att-value="form.get('phone')"/>
+                    <label>اسم الحيوان</label>
+                    <input type="text" name="pet_name" required="required" t-att-value="form.get('pet_name')"/>
+                    <label>النوع</label>
+                    <select name="species_id">
+                        <t t-foreach="species_list" t-as="sp">
+                            <option t-att-value="sp.id" t-esc="sp.name"/>
+                        </t>
+                    </select>
+                    <label>نوع الخدمة</label>
+                    <select name="service_type">
+                        <option value="checkup">كشف طبي</option>
+                        <option value="vaccination">تطعيم</option>
+                        <option value="grooming">تجميل / عناية</option>
+                        <option value="boarding">إيواء</option>
+                        <option value="training">تدريب</option>
+                        <option value="emergency">طوارئ</option>
+                    </select>
+                    <label>موعد الزيارة</label>
+                    <input type="datetime-local" name="start_datetime" required="required"
+                           t-att-value="form.get('start_datetime')"/>
+                    <label>ملاحظات</label>
+                    <textarea name="notes" t-esc="form.get('notes')"/>
+                    <button type="submit">تأكيد الحجز</button>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="exam_form" name="PetSpot Vet Exam">
+        <t t-call="petspot_clinic_portal.portal_layout">
+            <div class="card">
+                <h1 class="brand">PetSpot — كشف بيطري</h1>
+                <div class="pet-chip">
+                    <strong t-esc="pet.name"/>
+                    <t t-if="pet.owner_id"> — <t t-esc="pet.owner_id.name"/></t>
+                    <t t-if="appointment"><br/>موعد: <t t-esc="appointment.name"/></t>
+                </div>
+                <t t-if="error"><div class="err" t-esc="error"/></t>
+                <form method="post" t-att-action="form_action or ''">
+                    <label>سبب الزيارة</label>
+
+                    <input type="text" name="reason" required="required" t-att-value="form.get('reason') or 'كشف روتيني'"/>
+                    <label>نوع الزيارة</label>
+                    <select name="visit_type">
+                        <option value="checkup">كشف روتيني</option>
+                        <option value="emergency">طوارئ</option>
+                        <option value="vaccination">تطعيم</option>
+                        <option value="dental">أسنان</option>
+                        <option value="surgery">جراحة</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                    <label>العلامات الحيوية</label>
+                    <textarea name="vital_signs" placeholder="حرارة، نبض، تنفس..." t-esc="form.get('vital_signs')"/>
+                    <label>Subjective (شكوى المالك)</label>
+                    <textarea name="subjective" t-esc="form.get('subjective')"/>
+                    <label>Objective (الفحص)</label>
+                    <textarea name="objective" t-esc="form.get('objective')"/>
+                    <label>Assessment (التشخيص)</label>
+                    <textarea name="assessment" t-esc="form.get('assessment')"/>
+                    <label>Plan (الخطة)</label>
+                    <textarea name="plan" t-esc="form.get('plan')"/>
+                    <label>التشخيص المختصر</label>
+                    <input type="text" name="diagnosis" t-att-value="form.get('diagnosis')"/>
+                    <label>أدوية</label>
+                    <textarea name="medications" t-esc="form.get('medications')"/>
+                    <div class="row">
+                        <div>
+                            <label>موعد المتابعة</label>
+                            <input type="date" name="follow_up_date" t-att-value="form.get('follow_up_date')"/>
+                        </div>
+                    </div>
+                    <label>نص التذكير</label>
+                    <textarea name="reminder_text" placeholder="مثال: إعادة كشف بعد أسبوع" t-esc="form.get('reminder_text')"/>
+                    <button type="submit">حفظ الكشف</button>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="done_page" name="PetSpot Portal Done">
+        <t t-call="petspot_clinic_portal.portal_layout">
+            <div class="card">
+                <h1 class="brand">تم بنجاح ✓</h1>
+                <div class="ok">
+                    <t t-if="token_rec.result_summary">
+                        <t t-esc="token_rec.result_summary"/>
+                    </t>
+                    <t t-else="">
+                        تم حفظ البيانات في نظام العيادة.
+                    </t>
+                </div>
+                <t t-if="token_rec.exam_access_url and token_rec.role != 'vet'">
+                    <p class="muted" style="margin-top:14px">تم إرسال زر الكشف للجروب. أو اضغط هنا:</p>
+                    <a class="btn" t-att-href="token_rec.exam_access_url" t-att-title="token_rec.exam_access_url" target="_blank">
+                        فتح نموذج الكشف
+                    </a>
+                </t>
+                <t t-if="token_rec.odoo_case_url and token_rec.role == 'vet'">
+                    <p class="muted" style="margin-top:14px">أكمل البيانات الناقصة في أودو:</p>
+                    <a class="btn" t-att-href="token_rec.odoo_case_url" t-att-title="token_rec.odoo_case_url" target="_blank">
+                        فتح الحالة في أودو
+                    </a>
+                </t>
+
+                <p class="muted" style="margin-top:14px">يمكنك إغلاق هذه الصفحة.</p>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="error_page" name="PetSpot Portal Error">
+        <t t-call="petspot_clinic_portal.portal_layout">
+            <div class="card">
+                <h1 style="color:#a00">تعذر فتح الرابط</h1>
+                <div class="err" t-esc="message"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="cw_app" name="PetSpot Chatwoot App Hint">
+        <t t-call="petspot_clinic_portal.portal_layout">
+            <div class="card">
+                <h1 class="brand">PetSpot Portal</h1>
+                <p class="muted">استخدم تطبيق Chatwoot الجانبي على المنفذ 3010:</p>
+                <p><code>/dashboard/petspot?conversation_id=<t t-esc="conversation_id"/></code></p>
+            </div>
+        </t>
+    </template>
+</odoo>
+

@@ -1,6 +1,6 @@
 # PetSpot El Sahel — Gallery photos
 
-Add real clinic photos here (web-safe filenames, JPEG/PNG, optimized).
+Add **your own** clinic photos here (JPEG/PNG, web-optimized).
 
 | File | Alt text |
 |------|----------|
@@ -9,9 +9,16 @@ Add real clinic photos here (web-safe filenames, JPEG/PNG, optimized).
 | `boarding-area.jpg` | PetSpot boarding area |
 | `veterinary-care.jpg` | PetSpot veterinary care |
 
-Source manifest: `../../petspot_marketing_assets/02_photos_from_links/photo_manifest.csv`
+## Scrape from Facebook
 
-Photos were not auto-downloaded (Facebook/Google blocked). Follow manual export steps in
-`../../petspot_marketing_assets/05_manual_export_needed/manual_export_steps.md`.
+In Odoo: **Social Media Connector → Settings → Scrape Facebook Gallery**, or:
 
-After adding files, re-run `deploy.py` to upload and refresh the homepage gallery.
+```bash
+python3 social_media_connector/scripts/scrape_facebook_gallery.py --max 200
+```
+
+Photos are saved under `facebook/` with a `manifest.json`. With default options, the scraper also copies the best matches into the four homepage slot files above.
+
+Do not use third-party stock photos unless you own the rights.
+
+After adding or scraping files, re-run `deploy.py` to upload and refresh the homepage gallery.

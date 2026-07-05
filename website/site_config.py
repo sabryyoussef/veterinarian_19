@@ -36,12 +36,15 @@ def load_config() -> dict[str, Any]:
 
     area_en = os.getenv("CLINIC_AREA_EN", data["location"]["area_en"])
     area_ar = os.getenv("CLINIC_AREA_AR", data["location"]["area_ar"])
+    address_en = os.getenv("CLINIC_ADDRESS_EN", data["location"].get("address_en", area_en))
+    address_ar = os.getenv("CLINIC_ADDRESS_AR", data["location"].get("address_ar", area_ar))
 
     return {
         "brand": data["brand"],
         "seo": data["seo"],
         "services": data["services"],
         "gallery_slots": data["gallery_slots"],
+        "gallery_extra_count": int(data.get("gallery_extra_count", 12)),
         "phone": phone,
         "phone_tel": phone.replace(" ", ""),
         "phone_marassi": os.getenv("CLINIC_PHONE_MARASSI", ""),
@@ -54,6 +57,8 @@ def load_config() -> dict[str, Any]:
         "maps_url": maps_url,
         "area_en": area_en,
         "area_ar": area_ar,
+        "address_en": address_en,
+        "address_ar": address_ar,
         "hours_en": data["location"]["hours_en"],
         "hours_ar": data["location"]["hours_ar"],
         "address_note": data["location"]["address_note"],

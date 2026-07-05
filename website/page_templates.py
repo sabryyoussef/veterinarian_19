@@ -4,31 +4,43 @@ from __future__ import annotations
 from typing import Any
 
 
+def _service_card_style(svc: dict[str, Any], gallery_urls: dict[str, str]) -> str:
+    color = svc.get("color", "#1a5f7a")
+    slot_id = svc.get("gallery_slot")
+    image_url = gallery_urls.get(slot_id) if slot_id else None
+    if image_url:
+        return (
+            f"background: linear-gradient(165deg, {color}e6 0%, {color}bf 55%, {color}99 100%), "
+            f"url('{image_url}') center/cover no-repeat;"
+        )
+    return (
+        f"background: linear-gradient(165deg, {color} 0%, {color}dd 45%, {color}bb 100%);"
+    )
+
+
 def _service_cards(c: dict[str, Any]) -> str:
     rows = []
     wa = c["whatsapp_url"]
     phone_tel = c["phone_tel"]
+    gallery_urls = c.get("gallery_urls") or {}
     for svc in c["services"]:
-        price = ""
-        if svc.get("price_egp"):
-            price = f'<p class="text-primary fw-semibold mb-2">{svc["price_egp"]:,} EGP</p>'
-        elif svc.get("price_note_en"):
-            price = (
-                f'<p class="text-primary fw-semibold mb-2">{svc["price_note_en"]}</p>'
-                f'<p dir="rtl" class="text-primary small mb-2">{svc.get("price_note_ar", "")}</p>'
-            )
         cta_href = wa if svc.get("id") != "pet_supplies" else f"tel:{phone_tel}"
+        icon = svc.get("icon", "fa-paw")
+        style = _service_card_style(svc, gallery_urls)
         rows.append(
             f"""<div class="col-md-6 col-lg-4">
-  <div class="card h-100 shadow-sm border-0 p-4">
-    <h5>{svc["title_en"]}</h5>
-    <p dir="rtl" class="text-muted small mb-2">{svc["title_ar"]}</p>
-    <p class="text-muted">{svc["desc_en"]}</p>
-    <p dir="rtl" class="text-muted">{svc["desc_ar"]}</p>
-    {price}
-    <a class="btn btn-outline-primary btn-sm mt-auto" href="{cta_href}" target="_blank" rel="noopener">
-      {svc.get("cta_en", "Book on WhatsApp")}
-    </a>
+  <div class="card h-100 border-0 shadow-sm overflow-hidden">
+    <div class="card-body d-flex flex-column text-white p-4"
+         style="min-height:300px; {style}">
+      <div class="mb-3 opacity-75"><i class="fa {icon} fa-2x"/></div>
+      <h5 class="fw-bold mb-1">{svc["title_en"]}</h5>
+      <p dir="rtl" class="small mb-2 opacity-90">{svc["title_ar"]}</p>
+      <p class="small mb-2 opacity-90">{svc["desc_en"]}</p>
+      <p dir="rtl" class="small mb-3 opacity-90">{svc["desc_ar"]}</p>
+      <a class="btn btn-light btn-sm mt-auto align-self-start" href="{cta_href}" target="_blank" rel="noopener">
+        {svc.get("cta_en", "Book on WhatsApp")}
+      </a>
+    </div>
   </div>
 </div>"""
         )
@@ -36,21 +48,41 @@ def _service_cards(c: dict[str, Any]) -> str:
 
 
 def _gallery_items(c: dict[str, Any]) -> str:
-    items = []
+    rows = []
+    gallery_items = c.get("gallery_items")
+    if gallery_items:
+        for item in gallery_items:
+            rows.append(
+                f"""<div class="col-6 col-md-4 col-lg-3">
+  <img src="{item["url"]}" alt="{item["alt"]}" class="img-fluid rounded shadow-sm w-100"
+       style="min-height:200px; object-fit:cover;"/>
+</div>"""
+            )
+        return "\n".join(rows)
+
+    gallery_urls = c.get("gallery_urls") or {}
     for slot in c["gallery_slots"]:
-        items.append(
-            f"""<div class="col-md-6 col-lg-3">
+        url = gallery_urls.get(slot["id"])
+        if url:
+            rows.append(
+                f"""<div class="col-6 col-md-4 col-lg-3">
+  <img src="{url}" alt="{slot["alt"]}" class="img-fluid rounded shadow-sm w-100"
+       style="min-height:200px; object-fit:cover;"/>
+</div>"""
+            )
+        else:
+            rows.append(
+                f"""<div class="col-6 col-md-4 col-lg-3">
   <div class="border rounded bg-light d-flex align-items-center justify-content-center text-center p-4"
        style="min-height:200px;" role="img" aria-label="{slot["alt"]}">
     <div>
       <i class="fa fa-camera fa-2x text-muted mb-2"/>
       <p class="small text-muted mb-0">{slot["alt"]}</p>
-      <p class="small text-muted mb-0"><!-- TODO: add {slot["file"]} to website/assets/gallery/ --></p>
     </div>
   </div>
 </div>"""
-        )
-    return "\n".join(items)
+            )
+    return "\n".join(rows)
 
 
 def build_homepage_arch(c: dict[str, Any]) -> str:
@@ -70,31 +102,62 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
             f'<a href="tel:{marassi_tel}">{marassi}</a></p>'
         )
 
+    logo_url = c.get("logo_url", "/web/image/res.company/1/logo")
+    hero_url = c.get("hero_image_url", "")
+    grooming_url = (c.get("gallery_urls") or {}).get("grooming", "")
+    clinic_front_url = (c.get("gallery_urls") or {}).get("clinic_front", "")
+    hero_col = ""
+    if hero_url:
+        hero_col = f"""<div class="col-lg-6 order-lg-2 text-center">
+              <div class="p-2 p-lg-0">
+                <img src="{hero_url}" alt="{b["name_en"]} — veterinary clinic on the North Coast"
+                     class="img-fluid rounded-3 shadow-lg"
+                     style="max-height:460px; width:100%; object-fit:contain; object-position:center;"/>
+              </div>
+            </div>"""
+    about_image = (
+        f'<img src="{clinic_front_url}" alt="{b["name_en"]} clinic" '
+        f'class="img-fluid rounded shadow-sm w-100" style="max-height:400px; object-fit:cover;"/>'
+        if clinic_front_url
+        else '<div class="border rounded bg-light p-5 text-muted text-center"><i class="fa fa-hospital-o fa-3x mb-3"/></div>'
+    )
+
     return f"""<t name="Homepage" t-name="website.homepage">
   <t t-call="website.layout" pageName.f="homepage">
     <div id="wrap" class="oe_structure">
       <!-- PetSpot El Sahel marketing homepage — see website/business_data.json -->
-      <section class="s_cover pt96 pb96 o_colored_level" data-snippet="s_cover" data-name="Hero"
+      <section class="s_cover pt48 pb64 o_colored_level" data-snippet="s_cover" data-name="Hero"
                style="background: linear-gradient(135deg, #1a5f7a 0%, #2d8f6f 100%);">
         <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-8 pt32 pb32">
-              <h1 class="display-4 fw-bold text-white">{b["tagline_en"]}</h1>
-              <h2 class="h3 text-white mb-3" dir="rtl">{b["tagline_ar"]}</h2>
-              <p class="lead text-white">{b["subheadline_en"]}</p>
-              <p class="lead text-white" dir="rtl">{b["subheadline_ar"]}</p>
-              <div class="mt-4 d-flex flex-wrap gap-3">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-6 order-lg-1">
+              <h1 class="display-5 fw-bold text-white mb-1">{b["name_en"]}</h1>
+              <p class="h5 text-white-50 mb-4" dir="rtl">{b["name_ar"]}</p>
+              <p class="h4 text-white fw-semibold mb-1">{b["tagline_en"]}</p>
+              <p class="h5 text-white mb-4" dir="rtl">{b["tagline_ar"]}</p>
+              <p class="lead text-white mb-2" style="opacity:0.92;">{b["subheadline_en"]}</p>
+              <p class="mb-4 text-white" dir="rtl" style="opacity:0.85;">{b["subheadline_ar"]}</p>
+              <div class="d-grid gap-2" style="max-width:420px;">
                 <a class="btn btn-success btn-lg" href="{wa}" target="_blank" rel="noopener">
-                  <i class="fa fa-whatsapp me-2"/> Book on WhatsApp / احجز على واتساب
+                  <i class="fa fa-whatsapp me-2"/> Book on WhatsApp
+                  <span class="mx-1">·</span>
+                  <span dir="rtl">احجز على واتساب</span>
                 </a>
-                <a class="btn btn-light btn-lg" href="{maps}" target="_blank" rel="noopener">
-                  <i class="fa fa-map-marker me-2"/> Get Directions / افتح الموقع
-                </a>
-                <a class="btn btn-outline-light btn-lg" href="tel:{phone_tel}">
-                  <i class="fa fa-phone me-2"/> Call / اتصل
-                </a>
+                <div class="row g-2">
+                  <div class="col-6">
+                    <a class="btn btn-light w-100" href="{maps}" target="_blank" rel="noopener">
+                      <i class="fa fa-map-marker me-1"/> Directions
+                    </a>
+                  </div>
+                  <div class="col-6">
+                    <a class="btn btn-outline-light w-100" href="tel:{phone_tel}">
+                      <i class="fa fa-phone me-1"/> Call
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
+            {hero_col}
           </div>
         </div>
       </section>
@@ -107,7 +170,7 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
           </div>
           <div class="row text-center g-4">
             <div class="col-md-3"><div class="p-3"><i class="fa fa-user-md fa-2x text-primary mb-2"/><h5>Experienced team</h5><p class="text-muted">Trusted vets for cats, dogs &amp; exotics.</p><p dir="rtl" class="mb-0 small">فريق بيطري خبير.</p></div></div>
-            <div class="col-md-3"><div class="p-3"><i class="fa fa-map-marker fa-2x text-primary mb-2"/><h5>El Sahel location</h5><p class="text-muted">Convenient North Coast care.</p><p dir="rtl" class="mb-0 small">موقع مميز على الساحل.</p></div></div>
+            <div class="col-md-3"><div class="p-3"><i class="fa fa-map-marker fa-2x text-primary mb-2"/><h5>Amwaj 1 location</h5><p class="text-muted">Beside Amwaj 1 gate on the main road.</p><p dir="rtl" class="mb-0 small">بجوار بوابة أمواج 1 على الطريق الرئيسي.</p></div></div>
             <div class="col-md-3"><div class="p-3"><i class="fa fa-sun-o fa-2x text-primary mb-2"/><h5>Seasonal pet care</h5><p class="text-muted">Full services all summer long.</p><p dir="rtl" class="mb-0 small">رعاية طوال موسم الصيف.</p></div></div>
             <div class="col-md-3"><div class="p-3"><i class="fa fa-whatsapp fa-2x text-success mb-2"/><h5>Easy WhatsApp booking</h5><p class="text-muted">Book in seconds from your phone.</p><p dir="rtl" class="mb-0 small">حجز سريع عبر واتساب.</p></div></div>
           </div>
@@ -139,11 +202,12 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
               <a class="btn btn-outline-primary" href="{wa}" target="_blank" rel="noopener">Book boarding / احجز بوردينج</a>
             </div>
             <div class="col-lg-6">
-              <div class="border rounded bg-light p-5 text-center text-muted">
-                <i class="fa fa-paw fa-3x mb-3"/>
-                <p class="mb-0"><!-- TODO: PetSpot grooming area photo — assets/gallery/grooming-area.jpg --></p>
-                <p class="small">PetSpot grooming &amp; boarding area</p>
-              </div>
+              {(
+                f'<img src="{grooming_url}" alt="PetSpot grooming and boarding area" '
+                f'class="img-fluid rounded shadow-sm w-100" style="max-height:360px; object-fit:cover;"/>'
+                if grooming_url
+                else '<div class="border rounded bg-light p-5 text-center text-muted"><i class="fa fa-paw fa-3x mb-3"/><p class="small">PetSpot grooming &amp; boarding area</p></div>'
+              )}
             </div>
           </div>
         </div>
@@ -154,7 +218,7 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
           <div class="text-center mb-5">
             <h2>Clinic Gallery</h2>
             <h3 dir="rtl" class="h4">معرض العيادة</h3>
-            <p class="text-muted small">Real photos coming soon — add images to <code>website/assets/gallery/</code></p>
+            <p class="text-muted small">Real photos from our clinic and Facebook page</p>
           </div>
           <div class="row g-3">
             {_gallery_items(c)}
@@ -164,17 +228,19 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
 
       <section class="s_text_block pt64 pb64 bg-200" data-snippet="s_text_block" data-name="About">
         <div class="container">
-          <div class="row align-items-center">
+          <div class="row align-items-center g-4">
             <div class="col-lg-6">
               <h2>About {c["company_name"]}</h2>
+              <h3 dir="rtl" class="h4 mb-3">{b["name_ar"]}</h3>
+              <p class="lead">{b["legal_name"] if b.get("legal_name") else b["name_en"]} — {b["subheadline_en"]}</p>
+              <p dir="rtl" class="lead">{b["subheadline_ar"]}</p>
               <p>{b["positioning_en"]}</p>
               <p dir="rtl">{b["positioning_ar"]}</p>
+              <p class="mb-0"><strong>{c["address_en"]}</strong></p>
+              <p dir="rtl" class="mb-0"><strong>{c["address_ar"]}</strong></p>
             </div>
             <div class="col-lg-6 text-center">
-              <div class="border rounded bg-light p-5 text-muted">
-                <i class="fa fa-hospital-o fa-3x mb-3"/>
-                <p class="small mb-0"><!-- TODO: PetSpot El Sahel clinic front — assets/gallery/clinic-front.jpg --></p>
-              </div>
+              {about_image}
             </div>
           </div>
         </div>
@@ -188,24 +254,28 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
           </div>
           <div class="row g-4">
             <div class="col-lg-5">
+              <p><strong>Address:</strong> {c["address_en"]}</p>
+              <p dir="rtl"><strong>العنوان:</strong> {c["address_ar"]}</p>
               <p><strong>Area:</strong> {c["area_en"]}</p>
               <p dir="rtl"><strong>المنطقة:</strong> {c["area_ar"]}</p>
-              <p class="small text-muted"><!-- TODO: {c["address_note"]} --></p>
               <p><strong>Hours:</strong> {c["hours_en"]}</p>
               <p dir="rtl"><strong>المواعيد:</strong> {c["hours_ar"]}</p>
               <p><strong>Phone:</strong> <a href="tel:{phone_tel}">{phone}</a></p>
               {marassi_block}
               <div class="d-flex flex-wrap gap-2 mt-3">
-                <a class="btn btn-primary" href="{maps}" target="_blank" rel="noopener">Google Maps</a>
+                <a class="btn btn-primary" href="{maps}" target="_blank" rel="noopener">Get Directions / افتح الموقع</a>
                 <a class="btn btn-success" href="{wa}" target="_blank" rel="noopener">WhatsApp</a>
                 <a class="btn btn-outline-primary" href="tel:{phone_tel}">Call now</a>
               </div>
             </div>
             <div class="col-lg-7">
-              <div class="border rounded bg-light p-5 text-center text-muted" style="min-height:280px;">
-                <i class="fa fa-map fa-3x mb-3"/>
-                <p><a href="{maps}" target="_blank" rel="noopener">Open location in Google Maps</a></p>
-                <p class="small mb-0">Map embed pending exact address confirmation</p>
+              <div class="border rounded bg-light p-5 text-center" style="min-height:280px;">
+                <i class="fa fa-map-marker fa-3x text-primary mb-3"/>
+                <p class="lead mb-2">{c["address_en"]}</p>
+                <p dir="rtl" class="mb-4">{c["address_ar"]}</p>
+                <a class="btn btn-primary btn-lg" href="{maps}" target="_blank" rel="noopener">
+                  Open in Google Maps
+                </a>
               </div>
             </div>
           </div>
@@ -262,8 +332,8 @@ def build_contact_arch(c: dict[str, Any]) -> str:
           <p><strong>Phone:</strong> <a href="tel:{phone_tel}">{phone}</a></p>
           <p><strong>WhatsApp:</strong> <a href="{wa}" target="_blank" rel="noopener">{c["whatsapp"]}</a></p>
           <p><strong>Email:</strong> <a href="mailto:{c["email"]}">{c["email"]}</a></p>
-          <p>{c["area_en"]}</p>
-          <p dir="rtl">{c["area_ar"]}</p>
+          <p>{c["address_en"]}</p>
+          <p dir="rtl">{c["address_ar"]}</p>
           <p class="mt-3">
             <a class="btn btn-primary me-2" href="{maps}" target="_blank" rel="noopener">Google Maps</a>
             <a class="btn btn-outline-primary" href="{fb}" target="_blank" rel="noopener">Facebook</a>
@@ -300,3 +370,75 @@ def build_contact_arch(c: dict[str, Any]) -> str:
     </div>
   </t>
 </t>"""
+
+
+def build_footer_inherit_arch(c: dict[str, Any]) -> str:
+    """QWeb inherit arch replacing Odoo default footer with PetSpot data."""
+    b = c["brand"]
+    phone = c["phone"]
+    phone_tel = c["phone_tel"]
+    alt = c.get("phone_alternate", "")
+    alt_line = ""
+    if alt:
+        alt_tel = alt.replace(" ", "")
+        alt_line = (
+            f'<li><i class="fa fa-phone fa-fw me-2"/>'
+            f'<a href="tel:{alt_tel}"><span class="o_force_ltr">{alt}</span></a></li>'
+        )
+    return f"""<data>
+  <xpath expr="//div[@id='footer']" position="replace">
+    <div id="footer" class="oe_structure oe_structure_solo border text-break" t-ignore="true" t-if="not no_footer"
+         style="--box-border-left-width: 0px; --box-border-right-width: 0px;">
+      <section class="s_text_block pt40 pb16" data-snippet="s_text_block" data-name="PetSpot Footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 pt24 pb24">
+              <h5>Useful Links</h5>
+              <ul class="list-unstyled">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#services">Services</a></li>
+                <li><a href="/#gallery">Gallery</a></li>
+                <li><a href="/#location">Location</a></li>
+                <li><a href="/contactus">Contact us</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-5 pt24 pb24">
+              <h5>About {c["company_name"]}</h5>
+              <p>{b["positioning_en"]}</p>
+              <p dir="rtl">{b["positioning_ar"]}</p>
+              <p class="mb-0"><strong>{c["address_en"]}</strong></p>
+              <p dir="rtl" class="mb-0"><strong>{c["address_ar"]}</strong></p>
+              <p class="text-muted small mt-2 mb-0">{c["hours_en"]} · {c["hours_ar"]}</p>
+            </div>
+            <div class="col-lg-4 pt24 pb24">
+              <h5>Connect with us</h5>
+              <ul class="list-unstyled">
+                <li><i class="fa fa-comment fa-fw me-2"/><a href="/contactus">Contact us</a></li>
+                <li><i class="fa fa-envelope fa-fw me-2"/><a href="mailto:{c["email"]}">{c["email"]}</a></li>
+                <li><i class="fa fa-phone fa-fw me-2"/><a href="tel:{phone_tel}"><span class="o_force_ltr">{phone}</span></a></li>
+                {alt_line}
+                <li><i class="fa fa-whatsapp fa-fw me-2"/><a href="{c["whatsapp_url"]}" target="_blank" rel="noopener">WhatsApp</a></li>
+                <li><i class="fa fa-map-marker fa-fw me-2"/><a href="{c["maps_url"]}" target="_blank" rel="noopener">Google Maps</a></li>
+              </ul>
+              <div class="s_social_media text-start o_not_editable" data-snippet="s_social_media" data-name="Social Media" contenteditable="false">
+                <h5 class="s_social_media_title d-none">Follow us</h5>
+                <a href="{c["facebook"]}" class="s_social_media_facebook" target="_blank" rel="noopener" aria-label="Facebook">
+                  <i class="fa fa-facebook rounded-circle shadow-sm o_editable_media"/>
+                </a>
+                <a href="{c["instagram"]}" class="s_social_media_instagram" target="_blank" rel="noopener" aria-label="Instagram">
+                  <i class="fa fa-instagram rounded-circle shadow-sm o_editable_media"/>
+                </a>
+                <a href="{c["whatsapp_url"]}" class="s_social_media_whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">
+                  <i class="fa fa-whatsapp rounded-circle shadow-sm o_editable_media"/>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </xpath>
+  <xpath expr="//footer//span[hasclass('o_footer_copyright_name')]" position="replace">
+    <span class="o_footer_copyright_name me-2 small">Copyright &amp;copy; {c["company_name"]}</span>
+  </xpath>
+</data>"""

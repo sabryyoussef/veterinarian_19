@@ -1,10 +1,22 @@
 .env
 .env.*
 !.env.example
+**/.env
+**/.env.*
+!**/.env.example
 
 # Python
 __pycache__/
 *.py[cod]
+
+# Odoo runtime / local dev (not source)
+.filestore/
+.https-proxy/
+backups/
+*.log
+odoo.log
+bin/cloudflared
+evolution-api/
 
 # Playwright
 tests/playwright/node_modules/
@@ -12,3 +24,4 @@ tests/playwright/screenshots/
 tests/playwright/test-results/
 tests/playwright/report/
 tests/playwright/.env
+tests/playwright/browsers/

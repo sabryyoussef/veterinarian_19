@@ -48,6 +48,12 @@ class PetMedicalVisit(models.Model):
     portal_incomplete_reminded_at = fields.Datetime(copy=False)
     follow_up_reminded_at = fields.Datetime(copy=False)
     portal_sale_order_id = fields.Many2one('sale.order', string='Portal Sale Draft', copy=False)
+    portal_registration_token_id = fields.Many2one(
+        'petspot.portal.token',
+        string='Staff Registration Token',
+        copy=False,
+        index=True,
+    )
 
     @api.model
     def _portal_required_fields(self):

@@ -273,12 +273,14 @@ class PetspotPortalToken(models.Model):
             return {}
         appt = visit.appointment_id
         invoice = appt.invoice_id if appt else self.env['account.move']
-        amount_total = visit.cost or 0.0
+        amount_total = visit.amount_total or visit.cost or 0.0
         if invoice:
             amount_total = invoice.amount_total
         return {
             'visit_payment_status': visit.payment_status or 'pending',
             'visit_cost': visit.cost or 0.0,
+            'visit_amount_total': visit.amount_total or visit.cost or 0.0,
+            'visit_line_count': len(visit.line_ids),
             'appointment_payment_status': appt.payment_status if appt else '',
             'invoice_id': invoice.id if invoice else False,
             'invoice_name': invoice.name if invoice else '',

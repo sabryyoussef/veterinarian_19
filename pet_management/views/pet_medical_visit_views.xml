@@ -228,6 +228,26 @@
                 </group>
               </group>
             </page>
+            <page string="Services &amp; Products" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+              <field name="line_ids">
+                <list editable="bottom">
+                  <field name="sequence" widget="handle"/>
+                  <field name="line_type"/>
+                  <field name="product_id"/>
+                  <field name="name"/>
+                  <field name="quantity"/>
+                  <field name="price_unit"/>
+                  <field name="discount"/>
+                  <field name="price_subtotal"/>
+                </list>
+              </field>
+              <group>
+                <field name="amount_subtotal" readonly="1"/>
+                <field name="discount_amount"/>
+                <field name="amount_total" readonly="1"/>
+                <field name="cost" readonly="1"/>
+              </group>
+            </page>
             <page string="Follow-up" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
               <group>
                 <field name="follow_up_date" string="Follow-up Date"/>

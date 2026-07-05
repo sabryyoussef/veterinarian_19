@@ -43,6 +43,31 @@ class PetMedicalVisit(models.Model):
     vet_notes = fields.Text(help="Additional notes from the veterinarian")
     
     # Financial
+    currency_id = fields.Many2one(
+        'res.currency',
+        related='company_id.currency_id',
+        store=True,
+        readonly=True,
+    )
+    line_ids = fields.One2many(
+        'pet.medical.visit.line',
+        'visit_id',
+        string='Visit Lines',
+    )
+    discount_amount = fields.Float(
+        string='Discount Amount',
+        help='Fixed discount applied to visit line subtotal.',
+    )
+    amount_subtotal = fields.Float(
+        compute='_compute_visit_amounts',
+        store=True,
+        string='Subtotal',
+    )
+    amount_total = fields.Float(
+        compute='_compute_visit_amounts',
+        store=True,
+        string='Total',
+    )
     cost = fields.Float(help="Cost of the medical visit")
     payment_status = fields.Selection([
         ('pending', 'Pending'), ('paid', 'Paid'), ('partial', 'Partial'), ('cancelled', 'Cancelled')
@@ -54,6 +79,15 @@ class PetMedicalVisit(models.Model):
     state_color = fields.Integer(compute='_compute_state_color', string='State Color', store=True, help="Color index for status display")
     
     company_id = fields.Many2one('res.company', required=True, default=lambda s: s.env.company, help="Company this visit belongs to")
+
+    @api.depends('line_ids.price_subtotal', 'discount_amount')
+    def _compute_visit_amounts(self):
+        for visit in self:
+            subtotal = sum(visit.line_ids.mapped('price_subtotal'))
+            visit.amount_subtotal = subtotal
+            total = max(subtotal - (visit.discount_amount or 0.0), 0.0)
+            visit.amount_total = total
+            visit.cost = total
 
     @api.depends('date')
     def _compute_days_since_visit(self):

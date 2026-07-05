@@ -5,6 +5,7 @@ from . import pet_weight
 from . import pet_vaccine
 from . import pet_vaccination
 from . import pet_medical_visit
+from . import pet_medical_visit_line
 from . import pet_kennel
 from . import pet_boarding
 from . import pet_appointment

@@ -49,6 +49,22 @@
             <value>petspot_clinic_portal.staff_payment_token_ttl_hours</value>
             <value>4</value>
         </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.category_services</value>
+            <value>Services</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.category_medicines</value>
+            <value>Drugs</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.category_vaccines</value>
+            <value>Drugs</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.auto_sale_draft</value>
+            <value>False</value>
+        </function>
         <record id="seq_petspot_portal_token" model="ir.sequence">
             <field name="name">PetSpot Portal Token</field>
             <field name="code">petspot.portal.token</field>

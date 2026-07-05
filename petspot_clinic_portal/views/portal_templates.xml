@@ -31,7 +31,13 @@
                 .err { background: #fee; color: #900; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
                 .ok { background: #e8fff3; color: #064; padding: 12px; border-radius: 8px; }
                 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-                @media (max-width: 420px) { .row { grid-template-columns: 1fr; } }
+                .row3 { display: grid; grid-template-columns: 2fr 1fr auto; gap: 8px; align-items: end; margin-bottom: 8px; }
+                .line-block { border: 1px solid #e6ebf0; border-radius: 10px; padding: 12px; margin: 12px 0; }
+                .line-block h2 { font-size: 1rem; margin: 0 0 10px; color: #0d6e4f; }
+                .totals { background: #eef8f3; border-radius: 10px; padding: 12px; margin-top: 12px; }
+                .totals p { margin: 6px 0; display: flex; justify-content: space-between; }
+                .btn-lite { background: #345; margin-top: 8px; padding: 10px; font-size: .95rem; }
+                @media (max-width: 420px) { .row { grid-template-columns: 1fr; } .row3 { grid-template-columns: 1fr; } }
                 .pet-chip { background: #eef8f3; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
             </style>
         </head>
@@ -140,8 +146,142 @@
                     <textarea name="plan" t-esc="form.get('plan')"/>
                     <label>التشخيص المختصر</label>
                     <input type="text" name="diagnosis" t-att-value="form.get('diagnosis')"/>
-                    <label>أدوية</label>
+                    <label>أدوية (نص حر)</label>
                     <textarea name="medications" t-esc="form.get('medications')"/>
+
+                    <div class="line-block">
+                        <h2>رسوم الكشف والخدمات</h2>
+                        <label>رسوم الكشف (منتج)</label>
+                        <select name="consultation_product_id" id="consultation_product_id">
+                            <option value="">— اختياري —</option>
+                            <t t-if="catalog and catalog.get('consultation_product')">
+                                <option t-att-value="catalog['consultation_product'].id"
+                                        t-att-data-price="catalog['consultation_product'].list_price"
+                                        t-esc="catalog['consultation_product'].display_name"/>
+                            </t>
+                            <t t-foreach="(catalog or {}).get('service_products') or []" t-as="sp">
+                                <option t-att-value="sp.id" t-att-data-price="sp.list_price" t-esc="sp.display_name"/>
+                            </t>
+                        </select>
+                        <label>رسوم الكشف (مبلغ)</label>
+                        <input type="number" step="0.01" min="0" name="consultation_fee" id="consultation_fee"
+                               t-att-value="form.get('consultation_fee')"/>
+                    </div>
+
+                    <div class="line-block" id="services_block">
+                        <h2>خدمات</h2>
+                        <div class="row3 line-row">
+                            <select name="service_product_id">
+                                <option value="">— خدمة —</option>
+                                <t t-foreach="(catalog or {}).get('service_products') or []" t-as="p">
+                                    <option t-att-value="p.id" t-att-data-price="p.list_price" t-esc="p.display_name"/>
+                                </t>
+                            </select>
+                            <input type="number" step="0.01" min="0" name="service_qty" value="1"/>
+                            <span class="muted line-subtotal">0</span>
+                        </div>
+                        <button type="button" class="btn-lite" onclick="petspotAddLine('services_block','service_product_id','service_qty')">+ خدمة</button>
+                    </div>
+
+                    <div class="line-block" id="medicines_block">
+                        <h2>أدوية</h2>
+                        <div class="row3 line-row">
+                            <select name="medicine_product_id">
+                                <option value="">— دواء —</option>
+                                <t t-foreach="(catalog or {}).get('medicine_products') or []" t-as="p">
+                                    <option t-att-value="p.id" t-att-data-price="p.list_price" t-esc="p.display_name"/>
+                                </t>
+                            </select>
+                            <input type="number" step="0.01" min="0" name="medicine_qty" value="1"/>
+                            <span class="muted line-subtotal">0</span>
+                        </div>
+                        <button type="button" class="btn-lite" onclick="petspotAddLine('medicines_block','medicine_product_id','medicine_qty')">+ دواء</button>
+                    </div>
+
+                    <div class="line-block" id="vaccines_block">
+                        <h2>تطعيمات</h2>
+                        <div class="row3 line-row">
+                            <select name="vaccine_product_id">
+                                <option value="">— تطعيم —</option>
+                                <t t-foreach="(catalog or {}).get('vaccine_products') or []" t-as="p">
+                                    <option t-att-value="p.id" t-att-data-price="p.list_price" t-esc="p.display_name"/>
+                                </t>
+                            </select>
+                            <input type="number" step="0.01" min="0" name="vaccine_qty" value="1"/>
+                            <span class="muted line-subtotal">0</span>
+                        </div>
+                        <button type="button" class="btn-lite" onclick="petspotAddLine('vaccines_block','vaccine_product_id','vaccine_qty')">+ تطعيم</button>
+                    </div>
+
+                    <label>خصم (جنيه)</label>
+                    <input type="number" step="0.01" min="0" name="discount_amount" id="discount_amount"
+                           t-att-value="form.get('discount_amount') or 0"/>
+
+                    <div class="totals">
+                        <p><span>الإجمالي قبل الخصم</span><strong id="subtotal_display">0</strong></p>
+                        <p><span>الخصم</span><strong id="discount_display">0</strong></p>
+                        <p><span>الإجمالي</span><strong id="total_display">0</strong></p>
+                    </div>
+
+                    <script>
+                        function petspotLineSubtotal(row) {
+                            var sel = row.querySelector('select');
+                            var qty = parseFloat(row.querySelector('input[type=number]')?.value || '0');
+                            var price = 0;
+                            if (sel &amp;&amp; sel.selectedOptions.length) {
+                                price = parseFloat(sel.selectedOptions[0].dataset.price || '0');
+                            }
+                            return (price * qty) || 0;
+                        }
+                        function petspotRecalcTotals() {
+                            var subtotal = 0;
+                            document.querySelectorAll('.line-row').forEach(function(row) {
+                                var lineTotal = petspotLineSubtotal(row);
+                                subtotal += lineTotal;
+                                var label = row.querySelector('.line-subtotal');
+                                if (label) label.textContent = lineTotal.toFixed(2);
+                            });
+                            var feeInput = document.getElementById('consultation_fee');
+                            var feeSel = document.getElementById('consultation_product_id');
+                            var fee = parseFloat(feeInput?.value || '0');
+                            if (!fee &amp;&amp; feeSel &amp;&amp; feeSel.selectedOptions.length) {
+                                fee = parseFloat(feeSel.selectedOptions[0].dataset.price || '0');
+                            }
+                            subtotal += fee || 0;
+                            var discount = parseFloat(document.getElementById('discount_amount')?.value || '0');
+                            var total = Math.max(subtotal - discount, 0);
+                            document.getElementById('subtotal_display').textContent = subtotal.toFixed(2);
+                            document.getElementById('discount_display').textContent = discount.toFixed(2);
+                            document.getElementById('total_display').textContent = total.toFixed(2);
+                        }
+                        function petspotAddLine(blockId, selectName, qtyName) {
+                            var block = document.getElementById(blockId);
+                            var first = block.querySelector('.line-row');
+                            if (!first) return;
+                            var clone = first.cloneNode(true);
+                            clone.querySelectorAll('select,input').forEach(function(el) {
+                                if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                                if (el.type === 'number') el.value = '1';
+                            });
+                            var label = clone.querySelector('.line-subtotal');
+                            if (label) label.textContent = '0';
+                            block.insertBefore(clone, block.querySelector('.btn-lite'));
+                            clone.querySelectorAll('select,input').forEach(function(el) {
+                                el.addEventListener('change', petspotRecalcTotals);
+                                el.addEventListener('input', petspotRecalcTotals);
+                            });
+                            petspotRecalcTotals();
+                        }
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.querySelectorAll('.line-row select, .line-row input, #consultation_fee, #consultation_product_id, #discount_amount')
+                                .forEach(function(el) {
+                                    el.addEventListener('change', petspotRecalcTotals);
+                                    el.addEventListener('input', petspotRecalcTotals);
+                                });
+                            petspotRecalcTotals();
+                        });
+                    </script>
+
                     <div class="row">
                         <div>
                             <label>موعد المتابعة</label>

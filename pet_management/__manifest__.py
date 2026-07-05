@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management
@@ -26,7 +26,7 @@ Key Features:
     'author': 'WebbyCrown Solutions',
     'website': 'https://www.webbycrown.com',
     'license': 'LGPL-3',
-    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account'],
+    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account', 'calendar'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

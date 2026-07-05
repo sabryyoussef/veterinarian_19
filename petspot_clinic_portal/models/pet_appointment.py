@@ -20,6 +20,13 @@ class PetAppointment(models.Model):
     chatwoot_conversation_id = fields.Integer(index=True, string='Chatwoot Conversation')
     portal_slot_id = fields.Many2one('petspot.clinic.slot', string='Portal Slot', index=True)
     appointment_reminded_at = fields.Datetime(copy=False)
+    portal_registration_token_id = fields.Many2one(
+        'petspot.portal.token',
+        string='Staff Registration Token',
+        copy=False,
+        index=True,
+        help='Portal token used when staff registered this visit from WhatsApp.',
+    )
 
     @api.model
     def _portal_default_resource(self):

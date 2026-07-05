@@ -16,7 +16,11 @@ backups/
 *.log
 odoo.log
 bin/cloudflared
-evolution-api/
+# Evolution API docker (track compose + example only)
+evolution-api/*
+!evolution-api/.env.example
+!evolution-api/README.md
+!evolution-api/docker-compose.yml
 
 # Playwright
 tests/playwright/node_modules/

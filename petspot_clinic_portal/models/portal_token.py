@@ -311,12 +311,29 @@ class PetspotPortalToken(models.Model):
             'amount_residual': amount_total,
         }
 
-        vals = dict(vals or {})
-        vals['role'] = 'vet'
-        vals.setdefault('state', 'open')
-        if not vals.get('appointment_id') and not vals.get('pet_id'):
-            raise UserError(_('Vet token requires an appointment or pet.'))
-        return self.create(vals)
+    @api.model
+    def _token_api_response(self, token):
+        return {
+            'token_id': token.id,
+            'token': token.token,
+            'role': token.role,
+            'url': token.access_url,
+            'expires_at': fields.Datetime.to_string(token.expires_at),
+        }
+
+    @api.model
+    def _find_open_vet_token(self, appointment_id):
+        if not appointment_id:
+            return self.browse()
+        return self.sudo().search(
+            [
+                ('appointment_id', '=', int(appointment_id)),
+                ('role', '=', 'vet'),
+                ('state', '=', 'open'),
+            ],
+            order='id desc',
+            limit=1,
+        )
 
     @api.model
     def lookup_open_appointment(self, payload=None):
@@ -531,6 +548,11 @@ class PetspotPortalToken(models.Model):
 
         if role == 'vet':
             vals['portal_action'] = 'exam'
+            appointment_id = vals.get('appointment_id')
+            if appointment_id:
+                existing = self._find_open_vet_token(appointment_id)
+                if existing:
+                    return self._token_api_response(existing)
             token = self.create_vet_token(vals)
         elif role == 'staff_register':
             token = self.create_staff_register_token(vals)
@@ -540,13 +562,7 @@ class PetspotPortalToken(models.Model):
             vals['portal_action'] = 'book'
             token = self.create_patient_token(vals)
 
-        return {
-            'token_id': token.id,
-            'token': token.token,
-            'role': token.role,
-            'url': token.access_url,
-            'expires_at': fields.Datetime.to_string(token.expires_at),
-        }
+        return self._token_api_response(token)
 
     @api.model
     def _find_appointment_for_conversation(self, conversation_id):
@@ -573,6 +589,20 @@ class PetspotPortalToken(models.Model):
         self.ensure_one()
         if not self.appointment_id:
             return False
+
+        appt = self.appointment_id
+        existing = self._find_open_vet_token(appt.id)
+        if existing:
+            exam_token = existing
+            exam_url = exam_token._live_portal_url()
+            # Re-link booking token to the existing open exam token if needed.
+            if self.exam_token_id != exam_token:
+                self.write({
+                    'exam_token_id': exam_token.id,
+                    'exam_access_url': exam_url,
+                })
+            # TODO: notify cooldown — skip duplicate WhatsApp notify for same appointment.
+            return exam_token
 
         exam_token = self.create_vet_token({
             'appointment_id': self.appointment_id.id,

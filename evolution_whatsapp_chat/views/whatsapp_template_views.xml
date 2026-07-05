@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_template_tree" model="ir.ui.view">
+        <field name="name">evo.wa.template.tree</field>
+        <field name="model">evo.wa.template</field>
+        <field name="arch" type="xml">
+            <list string="WhatsApp Templates">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="category" widget="badge"/>
+                <field name="language" widget="badge"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_whatsapp_template_form" model="ir.ui.view">
+        <field name="name">evo.wa.template.form</field>
+        <field name="model">evo.wa.template</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Template">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Template name..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="category"/>
+                            <field name="language"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="note" placeholder="Internal note..."/>
+                        </group>
+                    </group>
+                    <group string="Message Body">
+                        <field name="body" nolabel="1" placeholder="Use {name}, {first}, {company}, {phone} as placeholders..."/>
+                    </group>
+                    <div class="alert alert-info" role="status">
+                        <b>Available placeholders:</b>
+                        <code>{name}</code> full contact name,
+                        <code>{first}</code> first name only,
+                        <code>{company}</code> company name,
+                        <code>{phone}</code> phone number
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_whatsapp_template_search" model="ir.ui.view">
+        <field name="name">evo.wa.template.search</field>
+        <field name="model">evo.wa.template</field>
+        <field name="arch" type="xml">
+            <search string="WhatsApp Templates">
+                <field name="name"/>
+                <field name="body"/>
+                <filter string="Active"   name="active"   domain="[('active','=',True)]"/>
+                <filter string="English"  name="english"  domain="[('language','=','en')]"/>
+                <filter string="Arabic"   name="arabic"   domain="[('language','=','ar')]"/>
+                <separator/>
+                <filter string="Intro"     name="intro"     domain="[('category','=','intro')]"/>
+                <filter string="Follow-up" name="followup"  domain="[('category','=','followup')]"/>
+                <filter string="Interview" name="interview" domain="[('category','=','interview')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_whatsapp_template" model="ir.actions.act_window">
+        <field name="name">WhatsApp Templates</field>
+        <field name="res_model">evo.wa.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No templates yet</p>
+            <p>Create message templates to quickly send WhatsApp messages from leads and contacts.</p>
+        </field>
+    </record>
+</odoo>

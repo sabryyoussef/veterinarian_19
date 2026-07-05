@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_social_media_post_list" model="ir.ui.view">
+        <field name="name">social.media.post.list</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'draft'"
+                  decoration-success="state == 'pushed'"
+                  decoration-danger="state == 'failed'"
+                  decoration-info="state == 'ready'">
+                <field name="title"/>
+                <field name="page_id"/>
+                <field name="message_preview"/>
+                <field name="post_method"/>
+                <field name="scheduled_date" optional="show"/>
+                <field name="pushed_date" optional="show"/>
+                <field name="remote_post_id" optional="hide"/>
+                <field name="remote_stream_post_id" optional="hide"/>
+                <field name="facebook_post_id" optional="hide"/>
+                <field name="remote_state" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'pushed'"
+                       decoration-danger="state == 'failed'"
+                       decoration-info="state == 'ready'"
+                       decoration-muted="state == 'draft'"/>
+                <button name="action_push_to_remote" type="object" string="Push"
+                        invisible="state != 'ready'" class="btn-primary btn-sm"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_social_media_post_form" model="ir.ui.view">
+        <field name="name">social.media.post.form</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <form string="Facebook Post">
+                <header>
+                    <button name="action_mark_ready" type="object" string="Mark Ready"
+                            class="btn-secondary"
+                            invisible="state not in ('draft', 'failed')"/>
+                    <button name="action_push_to_remote" type="object" string="Push to Remote"
+                            class="btn-primary"
+                            invisible="state != 'ready'"/>
+                    <button name="action_push_now" type="object" string="Push Now"
+                            class="btn-primary"
+                            invisible="state in ('pushed',)"/>
+                    <button name="action_repush" type="object" string="Re-push"
+                            class="btn-secondary"
+                            invisible="state != 'pushed'"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft"
+                            invisible="state not in ('ready', 'failed')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,ready,pushed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Post">
+                            <field name="title"/>
+                            <field name="page_id"/>
+                            <field name="post_method"/>
+                            <field name="scheduled_date"
+                                   readonly="post_method == 'now' or state == 'pushed'"/>
+                        </group>
+                        <group string="Remote">
+                            <field name="remote_post_id" readonly="1"/>
+                            <field name="remote_stream_post_id" readonly="1"/>
+                            <field name="facebook_post_id" readonly="1"/>
+                            <field name="remote_state" readonly="1"/>
+                            <field name="pushed_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="message" widget="text" placeholder="Write your post…"/>
+                    <field name="image_ids" widget="many2many_binary" string="Images"/>
+                    <field name="failure_reason" readonly="1"
+                           invisible="state != 'failed'"
+                           string="Error"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_social_media_post_search" model="ir.ui.view">
+        <field name="name">social.media.post.search</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="title"/>
+                <field name="message_preview"/>
+                <field name="page_id"/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="campaign_drafts" string="Campaign Drafts"
+                        domain="[('state','=','draft'),('message','ilike','[PetSpot Contact]')]"/>
+                <filter name="ready" string="Ready" domain="[('state','=','ready')]"/>
+                <filter name="pushed" string="Pushed" domain="[('state','=','pushed')]"/>
+                <filter name="failed" string="Failed" domain="[('state','=','failed')]"/>
+                <separator/>
+                <filter name="group_page" string="Page" context="{'group_by': 'page_id'}"/>
+                <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_social_media_post" model="ir.actions.act_window">
+        <field name="name">Posts</field>
+        <field name="res_model">social.media.post</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_social_media_post_import_all" model="ir.actions.server">
+        <field name="name">Fetch All Posts</field>
+        <field name="model_id" ref="model_social_media_post"/>
+        <field name="binding_model_id" ref="model_social_media_post"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = model.import_all_posts()</field>
+    </record>
+
+    <record id="action_social_media_post_prepare_campaign" model="ir.actions.server">
+        <field name="name">Prepare Campaign Reposts</field>
+        <field name="model_id" ref="model_social_media_post"/>
+        <field name="binding_model_id" ref="model_social_media_post"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = model.prepare_campaign_reposts()</field>
+    </record>
+
+    <record id="action_social_media_post_push_selected" model="ir.actions.server">
+        <field name="name">Push Selected</field>
+        <field name="model_id" ref="model_social_media_post"/>
+        <field name="binding_model_id" ref="model_social_media_post"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_push_selected()</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_linkedin_account_user,linkedin.account user,model_linkedin_account,base.group_user,1,1,1,1
+access_linkedin_post_user,linkedin.post user,model_linkedin_post,base.group_user,1,1,1,1
+access_linkedin_stream_post_user,linkedin.stream.post user,model_linkedin_stream_post,base.group_user,1,1,1,1
+access_linkedin_job_user,linkedin.job user,model_linkedin_job,base.group_user,1,1,1,1
+access_linkedin_job_search_user,linkedin.job.search user,model_linkedin_job_search,base.group_user,1,1,1,1
+access_linkedin_resume_user,linkedin.resume user,model_linkedin_resume,base.group_user,1,1,1,1
+access_linkedin_conversation_user,linkedin.conversation user,model_linkedin_conversation,base.group_user,1,1,1,1
+access_linkedin_message_user,linkedin.message user,model_linkedin_message,base.group_user,1,1,1,1
+access_linkedin_message_reply_user,linkedin.message.reply user,model_linkedin_message_reply,base.group_user,1,1,1,1
+access_linkedin_post_bulk_schedule_user,linkedin.post.bulk.schedule user,model_linkedin_post_bulk_schedule,base.group_user,1,1,1,1

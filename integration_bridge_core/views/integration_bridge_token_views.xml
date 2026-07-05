@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Integration Bridge Token List View -->
+    <record id="view_integration_bridge_token_tree" model="ir.ui.view">
+        <field name="name">integration.bridge.token.tree</field>
+        <field name="model">integration.bridge.token</field>
+        <field name="arch" type="xml">
+            <list string="Bridge Tokens">
+                <field name="name"/>
+                <field name="platform" widget="badge"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="last_used" widget="datetime" optional="show"/>
+                <field name="usage_count" optional="show"/>
+                <field name="expires_at" widget="datetime" optional="hide"/>
+                <field name="created_by" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Integration Bridge Token Form View -->
+    <record id="view_integration_bridge_token_form" model="ir.ui.view">
+        <field name="name">integration.bridge.token.form</field>
+        <field name="model">integration.bridge.token</field>
+        <field name="arch" type="xml">
+            <form string="Bridge Token">
+                <header>
+                    <button name="action_generate_token" string="Generate New Token" type="object" class="btn-primary"/>
+                    <field name="active" widget="boolean_button" options="{'terminology': 'active'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Token name (e.g., 'n8n Production')..."/></h1>
+                    </div>
+                    <group>
+                        <group string="Token Details">
+                            <field name="platform" widget="radio"/>
+                            <field name="token" password="True" placeholder="Click 'Generate New Token' button above"/>
+                            <field name="expires_at" widget="datetime"/>
+                        </group>
+                        <group string="Security">
+                            <field name="allowed_ips" placeholder="192.168.1.100,10.0.0.50 (leave empty for all IPs)"/>
+                            <field name="last_used" widget="datetime" readonly="1"/>
+                            <field name="usage_count" readonly="1"/>
+                            <field name="created_by" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" placeholder="Purpose, owner, environment notes..." nolabel="1"/>
+                    </group>
+                    <div class="alert alert-warning" role="alert" invisible="active != True">
+                        <strong>⚠️ Security Notice:</strong> Keep this token secret! Do not share or commit to version control.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Integration Bridge Token Search View -->
+    <record id="view_integration_bridge_token_search" model="ir.ui.view">
+        <field name="name">integration.bridge.token.search</field>
+        <field name="model">integration.bridge.token</field>
+        <field name="arch" type="xml">
+            <search string="Bridge Tokens">
+                <field name="name"/>
+                <field name="platform"/>
+                <separator/>
+                <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="filter_inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Chatwoot" name="filter_chatwoot" domain="[('platform', '=', 'chatwoot')]"/>
+                <filter string="Typebot" name="filter_typebot" domain="[('platform', '=', 'typebot')]"/>
+                <filter string="Evolution" name="filter_evolution" domain="[('platform', '=', 'evolution')]"/>
+                <filter string="n8n" name="filter_n8n" domain="[('platform', '=', 'n8n')]"/>
+                <filter string="Dify" name="filter_dify" domain="[('platform', '=', 'dify')]"/>
+                <filter string="Flowise" name="filter_flowise" domain="[('platform', '=', 'flowise')]"/>
+                <filter string="Platform" name="group_by_platform" context="{'group_by': 'platform'}"/>
+                    <filter string="Active Status" name="group_by_active" context="{'group_by': 'active'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Integration Bridge Token Action -->
+    <record id="action_integration_bridge_token" model="ir.actions.act_window">
+        <field name="name">Bridge Tokens</field>
+        <field name="res_model">integration.bridge.token</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first bridge token
+            </p>
+            <p>
+                Bridge tokens authenticate external platforms like Chatwoot, Typebot, and n8n.
+                Click 'New' to create a token, then use the 'Generate New Token' button to create a secure random token.
+            </p>
+        </field>
+    </record>
+</odoo>

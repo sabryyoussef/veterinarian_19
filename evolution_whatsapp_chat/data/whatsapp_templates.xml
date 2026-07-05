@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- CV Introduction Template -->
+        <record id="tmpl_cv_intro_en" model="evo.wa.template">
+            <field name="name">CV Introduction (English)</field>
+            <field name="sequence">1</field>
+            <field name="language">en</field>
+            <field name="category">intro</field>
+            <field name="note">Standard intro message with CV reference</field>
+            <field name="body">Dear Hiring Manager,
+
+I am writing to express my interest in Odoo opportunities within your company.
+
+I am a Senior Odoo Developer with 7+ years of experience delivering end-to-end Odoo solutions, including custom development, upgrades, automation, integrations, security, and production support. My background includes working on Odoo 14–19 projects for companies in UAE, KSA, and Egypt, with proven results in migration readiness, process automation, and ERP stabilization.
+
+Some of my key strengths include:
+- Custom Odoo module development
+- Odoo upgrades and migration planning
+- REST API and third-party integrations
+- n8n, Jenkins, and Docker automation
+- ACL, record rules, and multi-company security
+- Production issue analysis and system optimization
+
+I have attached my CV and would welcome the opportunity to speak with you about how I can add value to your organization.
+
+Kind regards,
+Sabry Youssef
++20 100 005 9085
+abhorya@gmail.com</field>
+        </record>
+
+        <!-- Follow-up Template -->
+        <record id="tmpl_followup_en" model="evo.wa.template">
+            <field name="name">Follow-up (English)</field>
+            <field name="sequence">2</field>
+            <field name="language">en</field>
+            <field name="category">followup</field>
+            <field name="body">Dear {first},
+
+I hope this message finds you well. I wanted to follow up on my previous message regarding Odoo development opportunities at {company}.
+
+I remain very interested in contributing to your team and would love to discuss how my experience can add value.
+
+Would you have 15 minutes for a quick call this week?
+
+Best regards,
+Sabry Youssef
++20 100 005 9085</field>
+        </record>
+
+        <!-- Interview Invitation Response -->
+        <record id="tmpl_interview_en" model="evo.wa.template">
+            <field name="name">Interview Confirmation (English)</field>
+            <field name="sequence">3</field>
+            <field name="language">en</field>
+            <field name="category">interview</field>
+            <field name="body">Dear {first},
+
+Thank you for reaching out! I am very excited about the opportunity to discuss the Odoo position at {company}.
+
+I am available for an interview at your convenience. Please let me know your preferred time and I will confirm immediately.
+
+Looking forward to speaking with you.
+
+Best regards,
+Sabry Youssef
++20 100 005 9085</field>
+        </record>
+
+        <!-- Arabic CV Introduction -->
+        <record id="tmpl_cv_intro_ar" model="evo.wa.template">
+            <field name="name">تقديم السيرة الذاتية (عربي)</field>
+            <field name="sequence">4</field>
+            <field name="language">ar</field>
+            <field name="category">intro</field>
+            <field name="body">السلام عليكم،
+
+أتواصل معكم للتعبير عن اهتمامي بفرص عمل في مجال Odoo لدى شركتكم.
+
+أنا مطور Odoo أول بخبرة تزيد على 7 سنوات في تقديم حلول Odoo متكاملة، تشمل التطوير المخصص، والترقيات، والأتمتة، والتكاملات، والأمان، ودعم الإنتاج.
+
+أتطلع إلى فرصة للحديث عن كيفية إضافة قيمة لمؤسستكم.
+
+مع خالص التحية،
+صبري يوسف
++20 100 005 9085</field>
+        </record>
+
+        <!-- Quick Intro (short) -->
+        <record id="tmpl_quick_intro" model="evo.wa.template">
+            <field name="name">Quick Intro (Short)</field>
+            <field name="sequence">5</field>
+            <field name="language">en</field>
+            <field name="category">intro</field>
+            <field name="body">Hi {first}, I'm Sabry Youssef, a Senior Odoo Developer with 7+ years of experience. I'd love to discuss any Odoo opportunities at {company}. Would you be available for a quick call? +20 100 005 9085</field>
+        </record>
+
+    </data>
+
+    <!-- PetSpot El Sahel — Clinic WhatsApp Templates (noupdate=0 so upgrades refresh them) -->
+    <data noupdate="0">
+
+        <!-- 1. Grand Opening -->
+        <record id="tmpl_petspot_grand_opening" model="evo.wa.template">
+            <field name="name">PetSpot — Grand Opening 🎉</field>
+            <field name="sequence">10</field>
+            <field name="language">both</field>
+            <field name="category">general</field>
+            <field name="note">Summer 2026 campaign opener — send to pet-owner contacts</field>
+            <field name="body">🎉 PetSpot El Sahel is open this summer on the North Coast!
+
+Hi {first}! 🐾
+
+We're excited to be your pet's trusted care destination all season long.
+
+✅ Veterinary consultation
+✅ Vaccinations
+✅ Professional grooming
+✅ Safe boarding
+✅ Home visits
+✅ Pet supplies
+
+📍 Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman
+📞 Call: 01201568888
+💬 WhatsApp: wa.me/201000059085
+🌐 https://petspot.odoo.com
+🗺️ https://maps.app.goo.gl/AaHup6NEFodZEs7S7
+🕘 Summer season · Open daily
+
+---
+
+🎉 بيت سبوت الساحل فتح أبوابه هذا الصيف!
+
+أهلاً {first}! 🐾
+
+أليفك يستحق أفضل رعاية طوال موسم الصيف.
+
+✅ كشف بيطري
+✅ تطعيمات
+✅ جروومينج احترافي
+✅ بوردينج آمن
+✅ زيارات منزلية
+✅ مستلزمات حيوانات
+
+📍 بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن
+📞 اتصل: 01201568888
+💬 واتساب: wa.me/201000059085
+🌐 https://petspot.odoo.com
+🕘 موسم الصيف · مفتوح يومياً</field>
+        </record>
+
+        <!-- 2. Book Appointment CTA -->
+        <record id="tmpl_petspot_book_now" model="evo.wa.template">
+            <field name="name">PetSpot — Book Appointment 📅</field>
+            <field name="sequence">11</field>
+            <field name="language">both</field>
+            <field name="category">general</field>
+            <field name="note">Primary booking CTA — use for follow-up outreach</field>
+            <field name="body">🐾 Hi {first}!
+
+Your pet deserves trusted care this summer — and PetSpot El Sahel is here for them on the North Coast.
+
+👉 Book now on WhatsApp: wa.me/201000059085
+📞 Or call us: 01201568888
+🌐 https://petspot.odoo.com
+📍 Amwaj 1 · Sidi Abdel Rahman
+🕘 Open daily all summer
+
+We can't wait to meet your furry friend! 🐶🐱
+
+---
+
+🐾 أهلاً {first}!
+
+أليفك يستحق رعاية موثوقة هذا الصيف — وبيت سبوت الساحل موجود لخدمتكم.
+
+👉 احجز الآن على واتساب: wa.me/201000059085
+📞 أو اتصل بنا: 01201568888
+🌐 https://petspot.odoo.com
+📍 أمواج 1 · سيدي عبد الرحمن
+🕘 مفتوح يومياً طوال الصيف
+
+نتطلع لاستقبال أليفكم! 🐶🐱</field>
+        </record>
+
+        <!-- 3. Services Overview -->
+        <record id="tmpl_petspot_services" model="evo.wa.template">
+            <field name="name">PetSpot — Services Overview 🏥</field>
+            <field name="sequence">12</field>
+            <field name="language">both</field>
+            <field name="category">general</field>
+            <field name="note">Full services list — suitable for first-time contacts</field>
+            <field name="body">🐾 Everything your pet needs — in one place!
+
+Hi {first}, at PetSpot El Sahel we offer:
+
+🩺 Veterinary consultation — expert exams for cats, dogs &amp; exotic pets
+💉 Vaccinations — keep your pet protected all season
+✂️ Professional grooming — fresh &amp; comfortable summer look
+🏠 Safe boarding — supervised stay while you enjoy the coast
+🚐 Home visits — mobile vet care for North Coast compounds
+🛒 Pet supplies — essentials available on site
+
+📞 01201568888 | 💬 wa.me/201000059085
+📍 Beside Amwaj 1 gate, Sidi Abdel Rahman
+🌐 https://petspot.odoo.com
+🕘 Open daily · Summer season
+
+---
+
+🐾 كل ما يحتاجه أليفك في مكان واحد!
+
+أهلاً {first}، في بيت سبوت الساحل نقدم:
+
+🩺 كشف بيطري — فحص متخصص للقطط والكلاب والحيوانات
+💉 تطعيمات — حماية أليفك طوال الموسم
+✂️ جروومينج احترافي — مظهر أنيق وراحة تامة
+🏠 بوردينج آمن — إقامة تحت الإشراف أثناء استمتاعكم
+🚐 زيارات منزلية — رعاية بيطرية لكمبوندات الساحل
+🛒 مستلزمات الحيوانات — متوفرة في المكان
+
+📞 01201568888 | 💬 wa.me/201000059085
+📍 بجوار بوابة أمواج 1، سيدي عبد الرحمن
+🌐 https://petspot.odoo.com
+🕘 مفتوح يومياً · موسم الصيف</field>
+        </record>
+
+        <!-- 4. Location & Directions -->
+        <record id="tmpl_petspot_location" model="evo.wa.template">
+            <field name="name">PetSpot — Location &amp; Directions 📍</field>
+            <field name="sequence">13</field>
+            <field name="language">both</field>
+            <field name="category">general</field>
+            <field name="note">Send when a contact asks where the clinic is</field>
+            <field name="body">📍 Find us on the North Coast!
+
+Hi {first} — here's how to reach PetSpot El Sahel:
+
+📌 Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman, North Coast
+
+🗺️ Open in Google Maps:
+https://maps.app.goo.gl/AaHup6NEFodZEs7S7
+
+📞 Call: 01201568888
+💬 WhatsApp: wa.me/201000059085
+🌐 https://petspot.odoo.com
+🕘 Open daily · Summer season
+
+Your pet's care spot is closer than you think! 🐾
+
+---
+
+📍 موقعنا على الساحل!
+
+أهلاً {first} — هكذا تصلنا:
+
+📌 بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن، الساحل الشمالي
+
+🗺️ افتح على خرائط جوجل:
+https://maps.app.goo.gl/AaHup6NEFodZEs7S7
+
+📞 اتصل: 01201568888
+💬 واتساب: wa.me/201000059085
+🌐 https://petspot.odoo.com
+🕘 مفتوح يومياً · موسم الصيف
+
+أليفك أقرب مما تتخيل! 🐾</field>
+        </record>
+
+        <!-- 5. Grooming -->
+        <record id="tmpl_petspot_grooming" model="evo.wa.template">
+            <field name="name">PetSpot — Grooming ✂️</field>
+            <field name="sequence">14</field>
+            <field name="language">both</field>
+            <field name="category">general</field>
+            <field name="note">Grooming-specific promo message</field>
+            <field name="body">✂️ Summer grooming at PetSpot El Sahel!
+
+Hi {first}! Keep your pet fresh, clean &amp; comfortable all summer long.
+
+🐶 Dogs | 🐱 Cats | All breeds welcome
+✅ Professional grooming by trained staff
+✅ Safe &amp; stress-free environment
+✅ Walk-in or book in advance
+
+📞 01201568888
+💬 Book now: wa.me/201000059085
+📍 Amwaj 1 · Sidi Abdel Rahman · North Coast
+🌐 https://petspot.odoo.com
+🕘 Open daily · Summer season
+
+---
+
+✂️ جروومينج صيفي في بيت سبوت الساحل!
+
+أهلاً {first}! خلّي أليفك نظيف ومرتاح طوال الصيف.
+
+🐶 كلاب | 🐱 قطط | جميع السلالات
+✅ جروومينج احترافي بأيدي متخصصين
+✅ بيئة آمنة وخالية من الإجهاد
+✅ حجز مسبق أو زيارة مباشرة
+
+📞 01201568888
+💬 احجز الآن: wa.me/201000059085
+📍 أمواج 1 · سيدي عبد الرحمن · الساحل الشمالي
+🌐 https://petspot.odoo.com
+🕘 مفتوح يومياً · موسم الصيف</field>
+        </record>
+
+        <!-- 6. Emergency / 24-7 -->
+        <record id="tmpl_petspot_emergency" model="evo.wa.template">
+            <field name="name">PetSpot — Emergency &amp; Urgent Care 🚨</field>
+            <field name="sequence">15</field>
+            <field name="language">both</field>
+            <field name="category">general</field>
+            <field name="note">Emergency contacts — send immediately when pet is in distress</field>
+            <field name="body">🚨 PetSpot El Sahel — Emergency Veterinary Care
+
+Hi {first}, if your pet needs urgent attention, we're here for you.
+
+📞 Emergency numbers:
+• 01201568888
+• 01000059085
+
+📍 Beside Amwaj 1 gate, Sidi Abdel Rahman, North Coast
+🗺️ https://maps.app.goo.gl/AaHup6NEFodZEs7S7
+
+🏥 Immediate emergency treatment
+💉 First aid &amp; triage
+🩺 Expert veterinary assessment
+
+Please call us right away — your pet's health comes first. 🐾
+
+---
+
+🚨 بيت سبوت الساحل — رعاية بيطرية طارئة
+
+أهلاً {first}، إذا كان أليفك بحاجة لرعاية عاجلة، نحن هنا من أجلك.
+
+📞 أرقام الطوارئ:
+• 01201568888
+• 01000059085
+
+📍 بجوار بوابة أمواج 1، سيدي عبد الرحمن، الساحل الشمالي
+🗺️ https://maps.app.goo.gl/AaHup6NEFodZEs7S7
+
+🏥 علاج طارئ فوري
+💉 إسعافات أولية
+🩺 تقييم بيطري متخصص
+
+اتصل بنا فوراً — صحة أليفك هي الأولوية. 🐾</field>
+        </record>
+
+        <!-- 7. Follow-up / Check-in -->
+        <record id="tmpl_petspot_followup" model="evo.wa.template">
+            <field name="name">PetSpot — Follow-up Check-in 💛</field>
+            <field name="sequence">16</field>
+            <field name="language">both</field>
+            <field name="category">followup</field>
+            <field name="note">Post-visit follow-up to check on pet's health</field>
+            <field name="body">💛 Hi {first}! Just checking in from PetSpot El Sahel.
+
+How is your pet doing after their visit? We hope they're feeling great! 🐾
+
+If you have any questions or need anything, we're always here.
+
+📞 01201568888
+💬 wa.me/201000059085
+🌐 https://petspot.odoo.com
+
+See you next time! 🐶🐱
+
+---
+
+💛 أهلاً {first}! نحن من بيت سبوت الساحل نطمن عليكم.
+
+كيف حال أليفك بعد الزيارة؟ نتمنى أن يكون بخير تماماً! 🐾
+
+إذا كان لديكم أي سؤال أو احتجتم أي شيء، نحن دائماً هنا.
+
+📞 01201568888
+💬 wa.me/201000059085
+🌐 https://petspot.odoo.com
+
+نراكم في المرة القادمة! 🐶🐱</field>
+        </record>
+
+        <!-- 8. Weekly Offer (EN) -->
+        <record id="tmpl_petspot_weekly_offer_en" model="evo.wa.template">
+            <field name="name">PetSpot Weekly Offer (EN)</field>
+            <field name="sequence">17</field>
+            <field name="language">en</field>
+            <field name="category">general</field>
+            <field name="note">Weekly English promo — rotate every Saturday</field>
+            <field name="body">🐾 This Week at PetSpot El Sahel!
+
+Hi {first}! Don't miss our weekly highlight from PetSpot on the North Coast.
+
+🌟 Featured this week: Ask us about our current seasonal offers!
+✅ Veterinary check-up
+✅ Grooming sessions
+✅ Boarding availability
+
+📞 01201568888
+💬 WhatsApp: wa.me/201000059085
+📍 Beside Amwaj 1 gate, Sidi Abdel Rahman, North Coast
+🌐 https://petspot.odoo.com
+🕘 Open daily · Summer season
+
+Your pet deserves the best every week! 🐶🐱</field>
+        </record>
+
+        <!-- 9. Weekly Offer (AR) -->
+        <record id="tmpl_petspot_weekly_offer_ar" model="evo.wa.template">
+            <field name="name">PetSpot Weekly Offer (AR)</field>
+            <field name="sequence">18</field>
+            <field name="language">ar</field>
+            <field name="category">general</field>
+            <field name="note">Weekly Arabic promo — rotate every Saturday</field>
+            <field name="body">🐾 أسبوعياً من بيت سبوت الساحل!
+
+أهلاً {first}! لا تفوتوا أبرز عروضنا الأسبوعية هذا الصيف.
+
+🌟 هذا الأسبوع: اسألونا عن عروضنا الموسمية الحالية!
+✅ كشف بيطري
+✅ جلسات جروومينج
+✅ أماكن بوردينج متاحة
+
+📞 01201568888
+💬 واتساب: wa.me/201000059085
+📍 بجوار بوابة أمواج 1، سيدي عبد الرحمن، الساحل الشمالي
+🌐 https://petspot.odoo.com
+🕘 مفتوح يومياً · موسم الصيف
+
+أليفك يستحق الأفضل كل أسبوع! 🐶🐱</field>
+        </record>
+
+        <!-- 10. Reminder (AR) -->
+        <record id="tmpl_petspot_reminder_ar" model="evo.wa.template">
+            <field name="name">PetSpot Reminder (AR)</field>
+            <field name="sequence">19</field>
+            <field name="language">ar</field>
+            <field name="category">followup</field>
+            <field name="note">Arabic reminder — for contacts who haven't booked yet</field>
+            <field name="body">💛 تذكير من بيت سبوت الساحل
+
+أهلاً {first}! 🐾
+
+أليفك يستحق رعاية متكاملة هذا الصيف. فريقنا البيطري المتخصص في انتظاركم.
+
+📅 لم تحجزوا بعد؟ نحن هنا!
+
+📞 اتصل: 01201568888
+💬 واتساب: wa.me/201000059085
+📍 بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن
+🌐 https://petspot.odoo.com
+🗺️ https://maps.app.goo.gl/AaHup6NEFodZEs7S7
+🕘 مفتوح يومياً · موسم الصيف
+
+احجز موعدك الآن — أماكن محدودة! 🐶🐱</field>
+        </record>
+
+    </data>
+</odoo>

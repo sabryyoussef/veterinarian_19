@@ -1,0 +1,36 @@
+{
+  "campaign": "PetSpot El Sahel — Facebook Summer 2026",
+  "defaults": {
+    "interval_minutes": 60,
+    "timezone": "Africa/Cairo",
+    "image": "assets/images/petspot-opening-hero.png",
+    "page_key": "FACEBOOK_PAGE_1"
+  },
+  "posts": [
+    {
+      "topic": "Grand opening",
+      "page_key": "FACEBOOK_PAGE_1",
+      "message": "🎉 PetSpot El Sahel is open on the North Coast!\n\nTrusted veterinary care, grooming, boarding & more — all summer long.\n\n🐾 PetSpot El Sahel | بيت سبوت الساحل\n📍 Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman\n📞 01201568888 | 💬 WhatsApp: 01000059085 | wa.me/201000059085\n🌐 https://petspot.odoo.com\n📘 https://www.facebook.com/1378190768902001\n💼 https://www.linkedin.com/company/129944345\n\n---\n\n🎉 بيت سبوت الساحل فتح أبوابه في الساحل!\n\nرعاية بيطرية، جروومينج، بوردينج والمزيد — طوال موسم الصيف.\n\n📍 بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن\n📞 01201568888 | 💬 واتساب: 01000059085"
+    },
+    {
+      "topic": "Location",
+      "page_key": "FACEBOOK_PAGE_1",
+      "message": "📍 Find PetSpot El Sahel on the North Coast\n\nBeside Amwaj 1 gate · Main Road · Sidi Abdel Rahman\n\n🗺️ Directions: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\n📞 01201568888 | 💬 WhatsApp: 01000059085 | wa.me/201000059085\n🌐 https://petspot.odoo.com\n\nYour pet's care spot is closer than you think.\n\n---\n\n📍 موقعنا على الساحل\n\nبجوار بوابة أمواج 1 · الطريق الرئيسي · سيدي عبد الرحمن\n\n🗺️ افتح الموقع على خرائط جوجل\n📞 01201568888 | 💬 واتساب: 01000059085"
+    },
+    {
+      "topic": "Services overview",
+      "page_key": "FACEBOOK_PAGE_1",
+      "message": "Everything your pet needs — in one place at PetSpot El Sahel:\n\n✅ Veterinary consultation\n✅ Vaccinations\n✅ Professional grooming\n✅ Safe boarding\n✅ Home visits\n✅ Pet supplies\n\n📞 01201568888 | 💬 Book: wa.me/201000059085\n🌐 https://petspot.odoo.com\n\n---\n\nكل ما يحتاجه أليفك في مكان واحد:\n\n✅ كشف بيطري\n✅ تطعيمات\n✅ جروومينج\n✅ بوردينج\n✅ زيارات منزلية\n✅ مستلزمات\n\n📞 01201568888 | 💬 احجز: wa.me/201000059085"
+    },
+    {
+      "topic": "Grooming",
+      "page_key": "FACEBOOK_PAGE_1",
+      "message": "✨ Summer grooming at PetSpot El Sahel\n\nFresh, clean & comfortable — professional grooming for dogs and cats.\n\n📞 01201568888 | 💬 WhatsApp: 01000059085 | wa.me/201000059085\n🌐 https://petspot.odoo.com\n🗺️ https://maps.app.goo.gl/AaHup6NEFodZEs7S7\n\n---\n\n✨ جروومينج صيفي احترافي\n\nمظهر أنيق وراحة لأليفك.\n\n📞 01201568888 | 💬 واتساب: 01000059085"
+    },
+    {
+      "topic": "Book now CTA",
+      "page_key": "FACEBOOK_PAGE_1",
+      "message": "🐾 Your pet deserves trusted care this summer.\n\nPetSpot El Sahel — veterinary clinic, grooming & boarding on Egypt's North Coast.\n\n👉 Book on WhatsApp: wa.me/201000059085\n📞 Call: 01201568888\n🌐 https://petspot.odoo.com\n📍 Amwaj 1 · Sidi Abdel Rahman\n\nWe can't wait to meet your furry friend!\n\n---\n\n🐾 أليفك يستحق رعاية موثوقة هذا الصيف.\n\nبيت سبوت الساحل — عيادة، جروومينج وبوردينج.\n\n👉 احجز على واتساب: wa.me/201000059085\n📞 اتصل: 01201568888\n\nنتطلع لاستقبال أليفكم! 🐶🐱"
+    }
+  ]
+}

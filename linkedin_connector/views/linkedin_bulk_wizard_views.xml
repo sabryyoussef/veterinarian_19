@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Loaded after linkedin_account_views.xml so menu_linkedin_connector_root exists. -->
+    <record id="view_linkedin_post_bulk_schedule_form" model="ir.ui.view">
+        <field name="name">linkedin.post.bulk.schedule.form</field>
+        <field name="model">linkedin.post.bulk.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Bulk schedule posts">
+                <group>
+                    <field name="account_id"/>
+                    <field name="start_date"/>
+                    <field name="recurrence_mode"/>
+                    <field name="schedule_count" invisible="recurrence_mode == 'twice_daily'"/>
+                </group>
+                <group string="Morning &amp; evening (two posts per calendar day)" invisible="recurrence_mode != 'twice_daily'">
+                    <label for="morning_hour" string="Morning"/>
+                    <div class="o_row">
+                        <field name="morning_hour" class="oe_inline"/> h
+                        <field name="morning_minute" class="oe_inline"/> min
+                    </div>
+                    <label for="evening_hour" string="Evening"/>
+                    <div class="o_row">
+                        <field name="evening_hour" class="oe_inline"/> h
+                        <field name="evening_minute" class="oe_inline"/> min
+                    </div>
+                </group>
+                <group string="Time of day (one post per step)" invisible="recurrence_mode == 'twice_daily'">
+                    <label for="morning_hour" string="Local time"/>
+                    <div class="o_row">
+                        <field name="morning_hour" class="oe_inline"/> h
+                        <field name="morning_minute" class="oe_inline"/> min
+                    </div>
+                </group>
+                <group>
+                    <field name="title_prefix"/>
+                </group>
+                <field name="post_text" widget="text" placeholder="Post 1&#10;&#10;First post body…&#10;&#10;Post 2&#10;&#10;Second post body…"/>
+                <footer>
+                    <button name="action_schedule" type="object" string="Create scheduled posts" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_linkedin_post_bulk_schedule" model="ir.actions.act_window">
+        <field name="name">Bulk schedule posts</field>
+        <field name="res_model">linkedin.post.bulk.schedule</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <menuitem id="menu_linkedin_post_bulk_schedule"
+              name="Bulk schedule posts"
+              parent="menu_linkedin_connector_root"
+              action="action_linkedin_post_bulk_schedule"
+              sequence="5"/>
+</odoo>

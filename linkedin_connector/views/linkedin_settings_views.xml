@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_linkedin_config_settings_form" model="ir.ui.view">
+        <field name="name">linkedin.config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="arch" type="xml">
+            <form string="LinkedIn Connector Settings" class="oe_form_configuration">
+                <header>
+                    <button string="Save" type="object" name="execute"
+                            class="btn-primary" data-hotkey="s"/>
+                    <button string="Discard" type="object" name="cancel"
+                            class="btn-secondary" special="cancel"/>
+                </header>
+                <sheet>
+                    <h2>LinkedIn Connector</h2>
+                    <group string="Job Search (JSearch API via RapidAPI)">
+                        <field name="linkedin_rapidapi_key"
+                               placeholder="Paste your X-RapidAPI-Key here"
+                               password="True"/>
+                        <div colspan="2" class="text-muted small">
+                            Free tier: 200 requests/month. Sign up at
+                            rapidapi.com → search "JSearch" → subscribe (free plan) →
+                            copy the X-RapidAPI-Key value shown in the API console.
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_linkedin_settings"
+              name="Settings"
+              parent="menu_linkedin_config"
+              action="base_setup.action_general_configuration"
+              sequence="20"/>
+
+</odoo>

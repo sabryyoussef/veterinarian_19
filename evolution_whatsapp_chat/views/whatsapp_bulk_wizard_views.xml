@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Bulk wizard form view -->
+    <record id="view_whatsapp_bulk_wizard_form" model="ir.ui.view">
+        <field name="name">whatsapp.bulk.wizard.form</field>
+        <field name="model">whatsapp.bulk.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send WhatsApp to Multiple Contacts">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>&#128241; Bulk WhatsApp Send</h2>
+                    </div>
+
+                    <!-- Summary bar -->
+                    <div class="alert alert-info" role="status" invisible="done">
+                        <b>
+                            <field name="recipient_count" readonly="1"/> recipients total —
+                            <field name="valid_count" readonly="1"/> with phone,
+                            <field name="skip_count" readonly="1"/> will be skipped
+                        </b>
+                        <br/>
+                        <span class="text-muted" style="font-size:12px">
+                            &#9432; <b>Send Now</b> delivers immediately via Evolution API on your server (165.22.54.172:8085).
+                            <b>Queue</b> waits for the cron job (every 15 min) — choose Queue only for very large batches.
+                        </span>
+                    </div>
+
+                    <!-- Result bar (shown after send) -->
+                    <div class="alert alert-success" role="status" invisible="not done">
+                        <b>
+                            Completed:
+                            <field name="sent_count" readonly="1"/> sent,
+                            <field name="queued_count" readonly="1"/> queued,
+                            <field name="error_count" readonly="1"/> errors
+                        </b>
+                    </div>
+
+                    <group>
+                        <group string="Message">
+                            <field name="template_id"
+                                   options="{'no_create': True}"
+                                   placeholder="Select template (optional)..."
+                                   invisible="done"/>
+                            <field name="personalise" invisible="done"/>
+                            <field name="message" nolabel="1"
+                                   placeholder="Type your message... use {name}, {first}, {company}"
+                                   widget="text"
+                                   invisible="done"/>
+                        </group>
+                        <group string="Delivery">
+                            <field name="send_mode" widget="radio" invisible="done"/>
+                            <field name="scheduled_at"
+                                   invisible="send_mode != 'scheduled' or done"/>
+                            <field name="delay_between"
+                                   invisible="send_mode != 'now' or done"/>
+                        </group>
+                    </group>
+
+                    <!-- Recipients table -->
+                    <field name="line_ids" nolabel="1">
+                        <list string="Recipients" editable="bottom"
+                              decoration-success="status == 'sent'"
+                              decoration-info="status == 'queued'"
+                              decoration-warning="status == 'skip'"
+                              decoration-danger="status == 'error'">
+                            <field name="display_name" string="Name" readonly="1"/>
+                            <field name="partner_id" readonly="1" optional="show"/>
+                            <field name="lead_id" readonly="1" optional="show"/>
+                            <field name="phone"/>
+                            <field name="status" readonly="1" widget="badge"/>
+                            <field name="error_msg" readonly="1" optional="show"/>
+                            <field name="message" readonly="1" optional="hide"/>
+                        </list>
+                    </field>
+
+                    <group string="Attachments" invisible="done">
+                        <field name="attachment_ids" nolabel="1" widget="many2many_binary"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_send_bulk" string="Send / Queue All" type="object"
+                            class="btn-primary" invisible="done" data-hotkey="s"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Server action for res.partner list view -->
+    <record id="action_partner_send_whatsapp_bulk" model="ir.actions.server">
+        <field name="name">Send WhatsApp</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Send WhatsApp',
+    'res_model': 'whatsapp.bulk.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {
+        'active_model': 'res.partner',
+        'active_ids': env.context.get('active_ids', []),
+    },
+}
+        </field>
+    </record>
+
+    <!-- Server action for crm.lead list view -->
+    <record id="action_lead_send_whatsapp_bulk" model="ir.actions.server">
+        <field name="name">Send WhatsApp</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Send WhatsApp',
+    'res_model': 'whatsapp.bulk.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {
+        'active_model': 'crm.lead',
+        'active_ids': env.context.get('active_ids', []),
+    },
+}
+        </field>
+    </record>
+</odoo>

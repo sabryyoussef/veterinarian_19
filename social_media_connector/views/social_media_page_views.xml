@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_social_media_page_list" model="ir.ui.view">
+        <field name="name">social.media.page.list</field>
+        <field name="model">social.media.page</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="remote_account_id"/>
+                <field name="facebook_page_id" optional="show"/>
+                <field name="has_token"/>
+                <field name="is_disconnected" decoration-danger="is_disconnected"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_social_media_page_form" model="ir.ui.view">
+        <field name="name">social.media.page.form</field>
+        <field name="model">social.media.page</field>
+        <field name="arch" type="xml">
+            <form string="Facebook Page">
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="remote_account_id" readonly="1"/>
+                        <field name="facebook_page_id" readonly="1"/>
+                        <field name="has_token" readonly="1"/>
+                        <field name="is_disconnected" readonly="1"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_media_page" model="ir.actions.act_window">
+        <field name="name">Facebook Pages</field>
+        <field name="res_model">social.media.page</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

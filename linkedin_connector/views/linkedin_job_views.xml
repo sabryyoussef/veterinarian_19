@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- JOB LIST -->
+    <record id="view_linkedin_job_list" model="ir.ui.view">
+        <field name="name">linkedin.job.list</field>
+        <field name="model">linkedin.job</field>
+        <field name="arch" type="xml">
+            <list decoration-info="saved">
+                <field name="title"/>
+                <field name="company"/>
+                <field name="location"/>
+                <field name="remote" widget="boolean_toggle" optional="show"/>
+                <field name="employment_type" optional="show"/>
+                <field name="source" optional="hide"/>
+                <field name="listed_at"/>
+                <field name="saved" widget="boolean_toggle"/>
+                <field name="search_keywords" optional="hide"/>
+                <button name="action_open_apply" type="object" string="Apply"
+                        icon="fa-external-link" title="Apply"/>
+                <button name="action_toggle_saved" type="object" string="Save/Unsave"
+                        icon="fa-bookmark"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- JOB FORM -->
+    <record id="view_linkedin_job_form" model="ir.ui.view">
+        <field name="name">linkedin.job.form</field>
+        <field name="model">linkedin.job</field>
+        <field name="arch" type="xml">
+            <form string="LinkedIn Job">
+                <header>
+                    <button name="action_open_apply" type="object" string="Apply on LinkedIn"
+                            class="btn-primary" invisible="not apply_url"/>
+                    <button name="action_toggle_saved" type="object" string="Save / Unsave"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="company"/>
+                            <field name="location"/>
+                            <field name="listed_at"/>
+                        </group>
+                        <group>
+                            <field name="account_id"/>
+                            <field name="search_keywords"/>
+                            <field name="saved"/>
+                            <field name="apply_url" widget="url"/>
+                        </group>
+                    </group>
+                    <field name="description" widget="html"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- JOB SEARCH -->
+    <record id="view_linkedin_job_search" model="ir.ui.view">
+        <field name="name">linkedin.job.search.view</field>
+        <field name="model">linkedin.job</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="title"/>
+                <field name="company"/>
+                <field name="location"/>
+                <filter name="saved_only" string="Saved" domain="[('saved','=',True)]"/>
+                <separator/>
+                <filter name="group_company" string="Company" context="{'group_by': 'company'}"/>
+                <filter name="group_account" string="Account" context="{'group_by': 'account_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- JOB SEARCH WIZARD -->
+    <record id="view_linkedin_job_search_wizard" model="ir.ui.view">
+        <field name="name">linkedin.job.search.wizard.form</field>
+        <field name="model">linkedin.job.search</field>
+        <field name="arch" type="xml">
+            <form string="Search Jobs">
+                <group string="Search Criteria">
+                    <field name="keywords"/>
+                    <field name="location"/>
+                    <field name="remote"/>
+                    <field name="account_id"/>
+                </group>
+                <group string="Options">
+                    <field name="source"/>
+                    <field name="num_pages"
+                           invisible="source not in ('linkedin_guest','jsearch','auto')"
+                           help="Each page ≈ 25 results (LinkedIn public) or 10 results (JSearch)."/>
+                </group>
+                <div class="alert alert-success" role="alert"
+                     invisible="source not in ('linkedin_guest','auto')">
+                    <b>LinkedIn Public</b> — free, no API key needed.
+                    Fetches real LinkedIn job listings directly. Each page ≈ 25 jobs.
+                </div>
+                <div class="alert alert-success" role="alert"
+                     invisible="source != 'remoteok'">
+                    <b>RemoteOK</b> — free, no API key needed. Returns <b>remote jobs only</b>.
+                </div>
+                <div class="alert alert-info" role="alert"
+                     invisible="source != 'jsearch'">
+                    <b>JSearch (RapidAPI)</b> — aggregates LinkedIn, Indeed, Glassdoor jobs.
+                    Free plan: 200 req/month. Subscribe at rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch,
+                    then set your key in <b>LinkedIn → Configuration → Settings</b>.
+                </div>
+                <div class="alert alert-warning" role="alert"
+                     invisible="source != 'browser'">
+                    Opens <b>LinkedIn.com/jobs</b> in your browser — results are NOT saved in Odoo.
+                </div>
+                <footer>
+                    <button name="action_search" type="object" string="Search" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTIONS -->
+    <record id="action_linkedin_job" model="ir.actions.act_window">
+        <field name="name">Jobs</field>
+        <field name="res_model">linkedin.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_linkedin_job_search_wizard" model="ir.actions.act_window">
+        <field name="name">Search Jobs</field>
+        <field name="res_model">linkedin.job.search</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- SERVER ACTION: Open LinkedIn Jobs search on linkedin.com -->
+    <record id="action_server_open_linkedin_jobs" model="ir.actions.server">
+        <field name="name">Open LinkedIn Jobs (website)</field>
+        <field name="model_id" ref="model_linkedin_job"/>
+        <field name="binding_model_id" ref="model_linkedin_job"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {"type": "ir.actions.act_url", "url": "https://www.linkedin.com/jobs/", "target": "new"}
+        </field>
+    </record>
+
+</odoo>

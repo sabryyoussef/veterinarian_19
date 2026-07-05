@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- LIST -->
+    <record id="view_linkedin_post_list" model="ir.ui.view">
+        <field name="name">linkedin.post.list</field>
+        <field name="model">linkedin.post</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'draft'"
+                  decoration-success="state == 'posted'"
+                  decoration-danger="state == 'failed'"
+                  decoration-info="state in ('scheduled','posting')">
+                <field name="account_id"/>
+                <field name="message_preview"/>
+                <field name="visibility"/>
+                <field name="post_method"/>
+                <field name="scheduled_date" optional="show"/>
+                <field name="published_date" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'posted'"
+                       decoration-danger="state == 'failed'"
+                       decoration-info="state in ('scheduled','posting')"
+                       decoration-muted="state == 'draft'"/>
+                <button name="action_post_now" type="object" string="Post Now"
+                        invisible="state not in ('draft','failed','scheduled')" class="btn-primary btn-sm"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="view_linkedin_post_form" model="ir.ui.view">
+        <field name="name">linkedin.post.form</field>
+        <field name="model">linkedin.post</field>
+        <field name="arch" type="xml">
+            <form string="LinkedIn Post">
+                <header>
+                    <button name="action_post_now" type="object" string="Post Now"
+                            class="btn-primary"
+                            invisible="state not in ('draft','failed','scheduled')"/>
+                    <button name="action_schedule" type="object" string="Schedule"
+                            class="btn-secondary"
+                            invisible="state not in ('draft','failed')"/>
+                    <button name="action_set_draft" type="object" string="Reset to Draft"
+                            invisible="state not in ('scheduled','failed')"/>
+                    <button name="action_open_on_linkedin" type="object" string="View on LinkedIn"
+                            invisible="not linkedin_post_urn"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,scheduled,posted"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Post">
+                            <field name="account_id"/>
+                            <field name="visibility"/>
+                            <field name="post_method"/>
+                            <!-- Always show date: set Method to “Schedule” to edit, then use header Schedule -->
+                            <field name="scheduled_date"
+                                   readonly="post_method == 'now' or state in ('posted', 'posting')"/>
+                        </group>
+                        <group string="Result">
+                            <field name="published_date" readonly="1"/>
+                            <field name="linkedin_post_urn" readonly="1"/>
+                            <field name="linkedin_post_url" widget="url" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="message" widget="text" placeholder="Write your post…"/>
+                    <field name="image_ids" widget="many2many_binary" string="Images"/>
+                    <field name="failure_reason" readonly="1"
+                           invisible="state != 'failed'"
+                           string="Error"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- CALENDAR -->
+    <record id="view_linkedin_post_calendar" model="ir.ui.view">
+        <field name="name">linkedin.post.calendar</field>
+        <field name="model">linkedin.post</field>
+        <field name="arch" type="xml">
+            <calendar string="LinkedIn Posts" date_start="scheduled_date"
+                      color="account_id" mode="month" quick_create="0">
+                <field name="message_preview"/>
+                <field name="state"/>
+                <field name="account_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- SEARCH -->
+    <record id="view_linkedin_post_search" model="ir.ui.view">
+        <field name="name">linkedin.post.search</field>
+        <field name="model">linkedin.post</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="message_preview" string="Message"/>
+                <field name="account_id"/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="scheduled" string="Scheduled" domain="[('state','=','scheduled')]"/>
+                <filter name="posted" string="Posted" domain="[('state','=','posted')]"/>
+                <filter name="failed" string="Failed" domain="[('state','=','failed')]"/>
+                <separator/>
+                <filter name="group_account" string="Account" context="{'group_by': 'account_id'}"/>
+                <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_linkedin_post" model="ir.actions.act_window">
+        <field name="name">Posts</field>
+        <field name="res_model">linkedin.post</field>
+        <field name="view_mode">list,form,calendar</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── WA Message Log: List View ───────────────────────────────────────── -->
+
+    <record id="view_wa_message_log_list" model="ir.ui.view">
+        <field name="name">wa.message.log.list</field>
+        <field name="model">wa.message.log</field>
+        <field name="arch" type="xml">
+            <list string="WhatsApp Messages" decoration-success="delivery_status == 'read'"
+                  decoration-info="delivery_status == 'delivered'"
+                  decoration-muted="delivery_status == 'pending'"
+                  decoration-danger="delivery_status == 'failed'">
+                <field name="sent_at" string="Date" widget="datetime"/>
+                <field name="direction" widget="badge"
+                       decoration-success="direction == 'in'"
+                       decoration-info="direction == 'out'"/>
+                <field name="partner_id" optional="show"/>
+                <field name="lead_id" optional="show"/>
+                <field name="phone"/>
+                <field name="message_text" string="Message" optional="show"/>
+                <field name="has_media" widget="boolean_toggle" optional="show"/>
+                <field name="delivery_status" widget="badge"
+                       decoration-success="delivery_status in ('read','delivered')"
+                       decoration-warning="delivery_status == 'sent'"
+                       decoration-muted="delivery_status == 'pending'"
+                       decoration-danger="delivery_status == 'failed'"/>
+                <field name="replied" widget="boolean_toggle"/>
+                <field name="reply_at" optional="hide"/>
+                <field name="delivered_at" optional="hide"/>
+                <field name="read_at" optional="hide"/>
+                <field name="wa_message_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── WA Message Log: Form View ───────────────────────────────────────── -->
+
+    <record id="view_wa_message_log_form" model="ir.ui.view">
+        <field name="name">wa.message.log.form</field>
+        <field name="model">wa.message.log</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Message" create="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Contact">
+                            <field name="partner_id"/>
+                            <field name="lead_id"/>
+                            <field name="phone"/>
+                            <field name="channel_id"/>
+                        </group>
+                        <group string="Status">
+                            <field name="direction" widget="badge"/>
+                            <field name="delivery_status" widget="badge"/>
+                            <field name="has_media"/>
+                            <field name="media_type" invisible="not has_media"/>
+                            <field name="replied" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="message_text" nolabel="1" colspan="2"
+                               widget="text" readonly="1"/>
+                    </group>
+                    <group string="Timeline">
+                        <group>
+                            <field name="sent_at"/>
+                            <field name="delivered_at"/>
+                            <field name="read_at"/>
+                        </group>
+                        <group>
+                            <field name="reply_at"/>
+                            <field name="reply_text" widget="text" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Technical">
+                        <field name="wa_message_id"/>
+                        <field name="queue_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── WA Message Log: Search View ────────────────────────────────────── -->
+
+    <record id="view_wa_message_log_search" model="ir.ui.view">
+        <field name="name">wa.message.log.search</field>
+        <field name="model">wa.message.log</field>
+        <field name="arch" type="xml">
+            <search string="WhatsApp Messages">
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="lead_id"/>
+
+                <filter string="Outbound" name="outbound" domain="[('direction','=','out')]"/>
+                <filter string="Inbound (Replies)" name="inbound" domain="[('direction','=','in')]"/>
+                <separator/>
+                <filter string="Read" name="read"
+                        domain="[('delivery_status','=','read')]"/>
+                <filter string="Delivered" name="delivered"
+                        domain="[('delivery_status','=','delivered')]"/>
+                <filter string="Sent" name="sent"
+                        domain="[('delivery_status','=','sent')]"/>
+                <filter string="Failed" name="failed"
+                        domain="[('delivery_status','=','failed')]"/>
+                <separator/>
+                <filter string="Got Reply" name="replied" domain="[('replied','=',True)]"/>
+                <filter string="No Reply Yet" name="no_reply"
+                        domain="[('direction','=','out'),('replied','=',False)]"/>
+                <filter string="Has Attachment" name="has_media" domain="[('has_media','=',True)]"/>
+                <separator/>
+                <filter string="Today" name="today"
+                        domain="[('sent_at','&gt;=', (context_today()).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Week" name="this_week"
+                        domain="[('sent_at','&gt;=',(context_today()-relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="By Contact" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                <filter string="By Lead" name="group_lead" context="{'group_by': 'lead_id'}"/>
+                <filter string="By Direction" name="group_direction" context="{'group_by': 'direction'}"/>
+                <filter string="By Status" name="group_status" context="{'group_by': 'delivery_status'}"/>
+                <filter string="By Date" name="group_date" context="{'group_by': 'sent_at:day'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── WA Message Log: Pivot View ──────────────────────────────────────── -->
+
+    <record id="view_wa_message_log_pivot" model="ir.ui.view">
+        <field name="name">wa.message.log.pivot</field>
+        <field name="model">wa.message.log</field>
+        <field name="arch" type="xml">
+            <pivot string="WhatsApp Analytics" sample="1">
+                <field name="sent_at" type="row" interval="day"/>
+                <field name="delivery_status" type="col"/>
+                <field name="phone" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ── WA Message Log: Graph View ──────────────────────────────────────── -->
+
+    <record id="view_wa_message_log_graph" model="ir.ui.view">
+        <field name="name">wa.message.log.graph</field>
+        <field name="model">wa.message.log</field>
+        <field name="arch" type="xml">
+            <graph string="WhatsApp Message Stats" type="bar" sample="1">
+                <field name="sent_at" type="row" interval="day"/>
+                <field name="delivery_status" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ── Action: All WA logs ─────────────────────────────────────────────── -->
+
+    <record id="action_wa_message_log" model="ir.actions.act_window">
+        <field name="name">WhatsApp Message Log</field>
+        <field name="res_model">wa.message.log</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No messages logged yet</p>
+            <p>WhatsApp messages will appear here once you send or receive them.</p>
+        </field>
+    </record>
+
+    <!-- ── Action: Outbound only ───────────────────────────────────────────── -->
+
+    <record id="action_wa_log_outbound" model="ir.actions.act_window">
+        <field name="name">Sent Messages</field>
+        <field name="res_model">wa.message.log</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="domain">[('direction','=','out')]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- ── Action: Inbound only ────────────────────────────────────────────── -->
+
+    <record id="action_wa_log_inbound" model="ir.actions.act_window">
+        <field name="name">Received Messages</field>
+        <field name="res_model">wa.message.log</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="domain">[('direction','=','in')]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- ── Action: Replied messages ───────────────────────────────────────── -->
+
+    <record id="action_wa_log_replied" model="ir.actions.act_window">
+        <field name="name">Got Replies</field>
+        <field name="res_model">wa.message.log</field>
+        <field name="view_mode">list,graph,pivot,form</field>
+        <field name="domain">[('direction','=','out'),('replied','=',True)]</field>
+        <field name="context">{}</field>
+    </record>
+
+</odoo>

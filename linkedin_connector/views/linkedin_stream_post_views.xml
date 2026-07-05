@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- KANBAN -->
+    <record id="view_linkedin_stream_post_kanban" model="ir.ui.view">
+        <field name="name">linkedin.stream.post.kanban</field>
+        <field name="model">linkedin.stream.post</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="account_id" class="o_kanban_mobile">
+                <field name="account_id"/>
+                <field name="author_name"/>
+                <field name="message_preview"/>
+                <field name="published_date"/>
+                <field name="likes_count"/>
+                <field name="comments_count"/>
+                <field name="reposts_count"/>
+                <field name="post_link"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top mb8">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title">
+                                    <field name="author_name"/>
+                                </strong>
+                                <small class="o_kanban_record_subtitle text-muted">
+                                    <field name="published_date"/>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="o_kanban_record_body">
+                            <field name="message_preview"/>
+                        </div>
+                        <div class="o_kanban_record_bottom mt8">
+                            <div class="oe_kanban_bottom_left text-muted small">
+                                <span>&#128077; <field name="likes_count"/></span>
+                                <span class="ms-2">&#128172; <field name="comments_count"/></span>
+                                <span class="ms-2">&#128257; <field name="reposts_count"/></span>
+                            </div>
+                            <div class="oe_kanban_bottom_right">
+                                <button name="action_open_on_linkedin" type="object"
+                                        class="btn btn-sm btn-link" title="Open on LinkedIn">
+                                    &#128279;
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- LIST -->
+    <record id="view_linkedin_stream_post_list" model="ir.ui.view">
+        <field name="name">linkedin.stream.post.list</field>
+        <field name="model">linkedin.stream.post</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="account_id"/>
+                <field name="author_name"/>
+                <field name="message_preview"/>
+                <field name="published_date"/>
+                <field name="likes_count"/>
+                <field name="comments_count"/>
+                <field name="reposts_count"/>
+                <field name="last_fetched" optional="hide"/>
+                <button name="action_open_on_linkedin" type="object"
+                        string="Open" icon="fa-external-link"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- SEARCH -->
+    <record id="view_linkedin_stream_post_search" model="ir.ui.view">
+        <field name="name">linkedin.stream.post.search</field>
+        <field name="model">linkedin.stream.post</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="message_preview" string="Content"/>
+                <field name="author_name" string="Author"/>
+                <field name="account_id"/>
+                <separator/>
+                <filter name="group_account" string="Account" context="{'group_by': 'account_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_linkedin_stream_post" model="ir.actions.act_window">
+        <field name="name">Feed</field>
+        <field name="res_model">linkedin.stream.post</field>
+        <field name="view_mode">kanban,list</field>
+    </record>
+
+    <!-- SERVER ACTION: Refresh Feed (appears in Action menu of the list/kanban) -->
+    <record id="action_server_refresh_feed" model="ir.actions.server">
+        <field name="name">Refresh Feed</field>
+        <field name="model_id" ref="model_linkedin_stream_post"/>
+        <field name="binding_model_id" ref="model_linkedin_stream_post"/>
+        <field name="binding_view_types">list,kanban</field>
+        <field name="state">code</field>
+        <field name="code">
+count = env["linkedin.stream.post"].action_refresh_all()
+action = {
+    "type": "ir.actions.client",
+    "tag": "display_notification",
+    "params": {
+        "title": "LinkedIn Feed",
+        "message": "Feed refreshed. %d new post(s) synced." % (count or 0),
+        "type": "success" if count else "info",
+        "sticky": False,
+        "next": {"type": "ir.actions.act_window_close"},
+    },
+}
+        </field>
+    </record>
+
+</odoo>

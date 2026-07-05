@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Campaign Line Views
+    ════════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Tree View -->
+    <record id="view_wa_campaign_line_tree" model="ir.ui.view">
+        <field name="name">wa.campaign.line.tree</field>
+        <field name="model">wa.campaign.line</field>
+        <field name="arch" type="xml">
+            <list string="Campaign Recipients"
+                  decoration-success="status in ['sent', 'delivered', 'read']"
+                  decoration-danger="status == 'failed'"
+                  decoration-muted="status == 'skipped'"
+                  decoration-warning="status == 'pending'">
+                <field name="campaign_id"/>
+                <field name="recipient_name"/>
+                <field name="phone"/>
+                <field name="status" widget="badge"
+                       decoration-success="status in ['sent', 'delivered', 'read']"
+                       decoration-warning="status == 'pending'"
+                       decoration-danger="status == 'failed'"
+                       decoration-muted="status == 'skipped'"/>
+                <field name="sent_date"/>
+                <field name="delivered_date" optional="hide"/>
+                <field name="read_date" optional="hide"/>
+                <field name="error_msg"/>
+                <button name="action_retry" string="Retry"
+                        type="object" icon="fa-refresh"
+                        invisible="status != 'failed'"/>
+                <button name="action_open_contact" string="Open"
+                        type="object" icon="fa-external-link"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_wa_campaign_line_form" model="ir.ui.view">
+        <field name="name">wa.campaign.line.form</field>
+        <field name="model">wa.campaign.line</field>
+        <field name="arch" type="xml">
+            <form string="Campaign Recipient">
+                <header>
+                    <button name="action_retry" string="Retry"
+                            type="object" class="btn-primary"
+                            invisible="status != 'failed'"/>
+                    <button name="action_mark_sent" string="Mark as Sent"
+                            type="object" class="btn-secondary"
+                            invisible="status != 'pending'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Campaign">
+                            <field name="campaign_id"/>
+                            <field name="recipient_name"/>
+                        </group>
+                        <group string="Contact Details">
+                            <field name="partner_id"/>
+                            <field name="lead_id"/>
+                            <field name="phone"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="message" nolabel="1" widget="text"/>
+                    </group>
+                    <group>
+                        <group string="Status Details">
+                            <field name="wa_message_id"/>
+                            <field name="queue_id"/>
+                            <field name="error_msg" invisible="not error_msg"/>
+                        </group>
+                        <group string="Timeline">
+                            <field name="sent_date"/>
+                            <field name="delivered_date"/>
+                            <field name="read_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_wa_campaign_line_pivot" model="ir.ui.view">
+        <field name="name">wa.campaign.line.pivot</field>
+        <field name="model">wa.campaign.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Campaign Line Analysis">
+                <field name="campaign_id" type="row"/>
+                <field name="status" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="view_wa_campaign_line_graph" model="ir.ui.view">
+        <field name="name">wa.campaign.line.graph</field>
+        <field name="model">wa.campaign.line</field>
+        <field name="arch" type="xml">
+            <graph string="Status Distribution" type="pie">
+                <field name="status"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_wa_campaign_line_search" model="ir.ui.view">
+        <field name="name">wa.campaign.line.search</field>
+        <field name="model">wa.campaign.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="campaign_id"/>
+                <field name="recipient_name"/>
+                <field name="phone"/>
+                <filter name="pending" string="Pending" domain="[('status', '=', 'pending')]"/>
+                <filter name="sent" string="Sent" domain="[('status', 'in', ['sent', 'delivered', 'read'])]"/>
+                <filter name="delivered" string="Delivered" domain="[('status', 'in', ['delivered', 'read'])]"/>
+                <filter name="read" string="Read" domain="[('status', '=', 'read')]"/>
+                <filter name="failed" string="Failed" domain="[('status', '=', 'failed')]"/>
+                <filter name="skipped" string="Skipped" domain="[('status', '=', 'skipped')]"/>
+                <separator/>
+                <filter name="group_campaign" string="Campaign" context="{'group_by': 'campaign_id'}"/>
+                <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                <filter name="group_sent_date" string="Sent Date" context="{'group_by': 'sent_date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_wa_campaign_line" model="ir.actions.act_window">
+        <field name="name">Campaign Recipients</field>
+        <field name="res_model">wa.campaign.line</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_wa_campaign_line_search"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_integration_bridge_settings_form" model="ir.actions.act_window">
+        <field name="name">Bridge Settings</field>
+        <field name="res_model">integration.bridge.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_integration_bridge_settings_form" model="ir.ui.view">
+        <field name="name">integration.bridge.settings.form</field>
+        <field name="model">integration.bridge.settings</field>
+        <field name="arch" type="xml">
+            <form string="Bridge Settings">
+                <div class="alert alert-info" role="alert">
+                    <strong>Master Token</strong> authenticates all API calls to <code>/bridge/inbound</code>. The Test Portal and external platforms (Chatwoot, n8n, Dify, etc.) must send it in the <code>X-Bridge-Token</code> header.
+                </div>
+                <group>
+                    <group string="Authentication">
+                        <field name="master_token" password="True" placeholder="Click Generate to create a token"/>
+                    </group>
+                    <group string="Security">
+                        <field name="ip_whitelist" placeholder="192.168.1.0/24,10.0.0.1 (empty = allow all)"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_token" string="Generate New Token" type="object" class="btn-secondary"/>
+                    <button name="action_save" string="Save" type="object" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

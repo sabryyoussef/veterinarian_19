@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_social_media_config_settings_form" model="ir.ui.view">
+        <field name="name">social.media.config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="arch" type="xml">
+            <form string="Social Media Connector Settings" class="oe_form_configuration">
+                <header>
+                    <button string="Save" type="object" name="execute"
+                            class="btn-primary" data-hotkey="s"/>
+                    <button string="Discard" type="object" name="cancel"
+                            class="btn-secondary" special="cancel"/>
+                    <button name="action_test_remote_connection" type="object"
+                            string="Test Connection" class="btn-secondary"/>
+                    <button name="action_fetch_facebook_pages" type="object"
+                            string="Fetch Facebook Pages" class="btn-secondary"/>
+                    <button name="action_import_all_posts" type="object"
+                            string="Fetch All Posts" class="btn-secondary"/>
+                    <button name="action_prepare_campaign_reposts" type="object"
+                            string="Prepare Campaign Reposts" class="btn-secondary"/>
+                    <button name="action_scrape_facebook_gallery" type="object"
+                            string="Scrape Facebook Gallery" class="btn-secondary"/>
+                    <button name="action_open_remote_social" type="object"
+                            string="Open Remote Social Marketing" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <h2>Social Media Connector</h2>
+                    <group string="Remote Odoo Online">
+                        <field name="remote_url" placeholder="https://deebvet.odoo.com"/>
+                        <field name="remote_db" placeholder="deebvet"/>
+                        <field name="remote_username" placeholder="user@example.com"/>
+                        <field name="remote_api_key" password="True"/>
+                        <field name="campaign_prefix"/>
+                    </group>
+                    <group string="Auto-push">
+                        <field name="auto_push_enabled"/>
+                        <field name="auto_push_lead_minutes"
+                               invisible="not auto_push_enabled"/>
+                    </group>
+                    <group string="Default Page">
+                        <field name="facebook_page_id"
+                               options="{'no_create': True}"
+                               domain="[('active', '=', True)]"/>
+                        <div colspan="2" class="text-muted">
+                            New posts default to this page. Main page:
+                            بيت الدواء البيطري -pet spot (remote account id 4).
+                        </div>
+                    </group>
+                    <group string="Campaign Contact Footer">
+                        <field name="campaign_whatsapp"/>
+                        <field name="campaign_call_center"/>
+                        <field name="campaign_website"/>
+                        <field name="campaign_facebook_url"/>
+                        <field name="campaign_linkedin_url"/>
+                        <field name="campaign_location_en"/>
+                        <field name="campaign_location_ar"/>
+                        <field name="campaign_maps_url"/>
+                    </group>
+                    <group string="Campaign Schedule">
+                        <field name="campaign_schedule_timezone"/>
+                        <field name="campaign_schedule_start_hour"/>
+                        <field name="campaign_schedule_end_hour"/>
+                        <field name="campaign_schedule_start_date" placeholder="2026-06-20"/>
+                        <field name="campaign_schedule_interval"/>
+                        <div colspan="2" class="text-muted">
+                            Posts are staggered daily from the start hour until the end hour
+                            the next day (e.g. 1 PM → 3 AM) in the configured timezone.
+                        </div>
+                    </group>
+                    <div class="text-muted">
+                        Configure remote Odoo Online credentials, test the connection,
+                        then fetch Facebook pages before composing posts locally.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_media_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="view_id" ref="view_social_media_config_settings_form"/>
+    </record>
+
+</odoo>

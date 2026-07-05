@@ -30,11 +30,23 @@ class PetspotPortalToken(models.Model):
         [
             ('patient', 'Patient / Owner'),
             ('vet', 'Veterinarian'),
-            ('staff', 'Staff'),
+            ('staff', 'Staff (legacy)'),
+            ('staff_register', 'Staff — Register visit'),
+            ('staff_payment', 'Staff — Collect payment'),
         ],
         required=True,
         default='patient',
         index=True,
+    )
+    portal_action = fields.Selection(
+        [
+            ('book', 'Booking'),
+            ('register', 'Staff register'),
+            ('exam', 'Exam'),
+            ('payment', 'Payment'),
+        ],
+        string='Portal action',
+        help='Drives short URL routing for staff/client flows.',
     )
     state = fields.Selection(
         [
@@ -92,6 +104,10 @@ class PetspotPortalToken(models.Model):
         ICP = self.env['ir.config_parameter'].sudo()
         if role == 'vet':
             return int(ICP.get_param('petspot_clinic_portal.vet_token_ttl_hours', '12'))
+        if role == 'staff_payment':
+            return int(ICP.get_param('petspot_clinic_portal.staff_payment_token_ttl_hours', '4'))
+        if role in ('staff', 'staff_register'):
+            return int(ICP.get_param('petspot_clinic_portal.staff_register_token_ttl_hours', '24'))
         return int(ICP.get_param('petspot_clinic_portal.patient_token_ttl_hours', '48'))
 
     @api.model
@@ -105,12 +121,25 @@ class PetspotPortalToken(models.Model):
     def _public_base_url(self):
         return self._petspot_public_base_url()
 
+    def _live_portal_path(self, role=None):
+        self.ensure_one()
+        code = self.short_code or self.token
+        role = role or self.role
+        if role == 'vet':
+            return f'/p/e/{code}'
+        if role in ('staff', 'staff_register'):
+            return f'/p/s/r/{code}'
+        if role == 'staff_payment':
+            return f'/p/s/p/{code}'
+        return f'/p/b/{code}'
+
+    def _live_portal_url(self, role=None):
+        self.ensure_one()
+        return f'{self._public_base_url()}{self._live_portal_path(role=role)}'
+
     def _compute_access_url(self):
-        base = self._public_base_url()
         for rec in self:
-            code = rec.short_code or rec.token
-            path = f'/p/e/{code}' if rec.role == 'vet' else f'/p/b/{code}'
-            rec.access_url = f'{base}{path}'
+            rec.access_url = rec._live_portal_url()
 
     def validate_token(self, allow_used=False):
         self.ensure_one()
@@ -205,11 +234,81 @@ class PetspotPortalToken(models.Model):
     def create_patient_token(self, vals=None):
         vals = dict(vals or {})
         vals['role'] = 'patient'
+        vals.setdefault('portal_action', 'book')
         vals.setdefault('state', 'open')
         return self.create(vals)
 
     @api.model
     def create_vet_token(self, vals=None):
+        vals = dict(vals or {})
+        vals['role'] = 'vet'
+        vals.setdefault('portal_action', 'exam')
+        vals.setdefault('state', 'open')
+        if not vals.get('appointment_id') and not vals.get('pet_id'):
+            raise UserError(_('Vet token requires an appointment or pet.'))
+        return self.create(vals)
+
+    @api.model
+    def create_staff_register_token(self, vals=None):
+        vals = dict(vals or {})
+        vals['role'] = 'staff_register'
+        vals.setdefault('portal_action', 'register')
+        vals.setdefault('state', 'open')
+        return self.create(vals)
+
+    @api.model
+    def create_staff_payment_token(self, vals=None):
+        vals = dict(vals or {})
+        vals['role'] = 'staff_payment'
+        vals.setdefault('portal_action', 'payment')
+        vals.setdefault('state', 'open')
+        if not vals.get('medical_visit_id') and not vals.get('appointment_id'):
+            raise UserError(_('Payment token requires a visit or appointment.'))
+        return self.create(vals)
+
+    @api.model
+    def _payment_summary_for_visit(self, visit):
+        """Read-only payment snapshot for WhatsApp lookup (no accounting writes)."""
+        if not visit:
+            return {}
+        appt = visit.appointment_id
+        invoice = appt.invoice_id if appt else self.env['account.move']
+        amount_total = visit.cost or 0.0
+        if invoice:
+            amount_total = invoice.amount_total
+        return {
+            'visit_payment_status': visit.payment_status or 'pending',
+            'visit_cost': visit.cost or 0.0,
+            'appointment_payment_status': appt.payment_status if appt else '',
+            'invoice_id': invoice.id if invoice else False,
+            'invoice_name': invoice.name if invoice else '',
+            'invoice_state': invoice.state if invoice else '',
+            'amount_total': amount_total,
+            'amount_paid': 0.0,
+            'amount_residual': amount_total,
+        }
+
+    @api.model
+    def _payment_summary_for_appointment(self, appt):
+        if not appt:
+            return {}
+        invoice = appt.invoice_id
+        amount_total = appt.invoice_amount if appt.invoice_id else 0.0
+        visit = appt.medical_visit_id
+        if visit and visit.cost and not amount_total:
+            amount_total = visit.cost
+        return {
+            'visit_payment_status': visit.payment_status if visit else '',
+            'visit_cost': visit.cost if visit else 0.0,
+            'appointment_payment_status': appt.payment_status or 'pending',
+            'invoice_id': invoice.id if invoice else False,
+            'invoice_name': invoice.name if invoice else '',
+            'invoice_state': invoice.state if invoice else '',
+            'amount_total': amount_total,
+            'amount_paid': 0.0,
+            'amount_residual': amount_total,
+        }
+
         vals = dict(vals or {})
         vals['role'] = 'vet'
         vals.setdefault('state', 'open')
@@ -270,22 +369,21 @@ class PetspotPortalToken(models.Model):
                 limit=1,
             )
             if open_exam:
-                exam_url = open_exam.access_url
+                exam_url = open_exam._live_portal_url()
                 exam_pending = True
-            elif appt.exam_access_url if hasattr(appt, 'exam_access_url') else False:
-                exam_url = appt.exam_access_url
-                exam_pending = True
-
-        # Also check patient tokens that minted exam links
-        if appt and not exam_url:
-            book_tok = self.search(
-                [('appointment_id', '=', appt.id), ('exam_access_url', '!=', False)],
-                order='id desc',
-                limit=1,
-            )
-            if book_tok and book_tok.exam_token_id and book_tok.exam_token_id.state == 'open':
-                exam_url = book_tok.exam_access_url
-                exam_pending = True
+            else:
+                book_tok = self.search(
+                    [
+                        ('appointment_id', '=', appt.id),
+                        ('role', '=', 'patient'),
+                        ('exam_token_id', '!=', False),
+                    ],
+                    order='id desc',
+                    limit=1,
+                )
+                if book_tok and book_tok.exam_token_id.state == 'open':
+                    exam_url = book_tok.exam_token_id._live_portal_url()
+                    exam_pending = True
 
         case_url = ''
         missing = ''
@@ -304,7 +402,27 @@ class PetspotPortalToken(models.Model):
             if visit.portal_incomplete:
                 missing = visit.portal_missing_fields or ''
 
-        return {
+        payment = {}
+        if incomplete:
+            payment = self._payment_summary_for_visit(incomplete)
+        elif visit_id:
+            payment = self._payment_summary_for_visit(Visit.browse(visit_id))
+        elif appt:
+            payment = self._payment_summary_for_appointment(appt)
+
+        payment_defaults = {
+            'visit_payment_status': '',
+            'visit_cost': 0.0,
+            'appointment_payment_status': '',
+            'invoice_id': False,
+            'invoice_name': '',
+            'invoice_state': '',
+            'amount_total': 0.0,
+            'amount_paid': 0.0,
+            'amount_residual': 0.0,
+        }
+
+        result = {
             'ok': True,
             'has_open_appointment': bool(appt),
             'appointment_id': appt.id if appt else False,
@@ -325,6 +443,8 @@ class PetspotPortalToken(models.Model):
             'portal_missing_fields': missing,
             'odoo_case_url': case_url,
         }
+        result.update({**payment_defaults, **payment})
+        return result
 
     @api.model
     def _empty_status(self):
@@ -344,6 +464,15 @@ class PetspotPortalToken(models.Model):
             'portal_incomplete': False,
             'portal_missing_fields': '',
             'odoo_case_url': '',
+            'visit_payment_status': '',
+            'visit_cost': 0.0,
+            'appointment_payment_status': '',
+            'invoice_id': False,
+            'invoice_name': '',
+            'invoice_state': '',
+            'amount_total': 0.0,
+            'amount_paid': 0.0,
+            'amount_residual': 0.0,
         }
 
     @api.model
@@ -351,7 +480,10 @@ class PetspotPortalToken(models.Model):
         if not isinstance(payload, dict):
             raise ValidationError(_('Invalid payload.'))
         role = (payload.get('role') or 'patient').strip().lower()
-        if role not in ('patient', 'vet', 'staff'):
+        if role == 'staff':
+            role = 'staff_register'
+        allowed = ('patient', 'vet', 'staff_register', 'staff_payment')
+        if role not in allowed:
             raise ValidationError(_('Invalid role.'))
 
         vals = {
@@ -369,6 +501,8 @@ class PetspotPortalToken(models.Model):
             vals['pet_id'] = int(payload['pet_id'])
         if payload.get('appointment_id'):
             vals['appointment_id'] = int(payload['appointment_id'])
+        if payload.get('visit_id') or payload.get('medical_visit_id'):
+            vals['medical_visit_id'] = int(payload.get('visit_id') or payload.get('medical_visit_id'))
 
         if role == 'vet' and not vals.get('appointment_id'):
             appt = self._find_appointment_for_conversation(vals.get('chatwoot_conversation_id'))
@@ -381,9 +515,27 @@ class PetspotPortalToken(models.Model):
                 vals['pet_id'] = appt.pet_id.id
                 vals['partner_id'] = appt.owner_id.id
 
+        if role == 'staff_payment' and not vals.get('medical_visit_id'):
+            if vals.get('appointment_id'):
+                appt = self.env['pet.appointment'].sudo().browse(vals['appointment_id'])
+                if appt.medical_visit_id:
+                    vals['medical_visit_id'] = appt.medical_visit_id.id
+            elif vals.get('prefill_phone'):
+                status = self.lookup_open_appointment({'phone': vals['prefill_phone']})
+                if status.get('visit_id'):
+                    vals['medical_visit_id'] = status['visit_id']
+                if status.get('appointment_id'):
+                    vals['appointment_id'] = status['appointment_id']
+
         if role == 'vet':
+            vals['portal_action'] = 'exam'
             token = self.create_vet_token(vals)
+        elif role == 'staff_register':
+            token = self.create_staff_register_token(vals)
+        elif role == 'staff_payment':
+            token = self.create_staff_payment_token(vals)
         else:
+            vals['portal_action'] = 'book'
             token = self.create_patient_token(vals)
 
         return {
@@ -431,7 +583,7 @@ class PetspotPortalToken(models.Model):
             'prefill_phone': self.prefill_phone or '',
             'prefill_pet_name': self.pet_id.name if self.pet_id else '',
         })
-        exam_url = exam_token.access_url
+        exam_url = exam_token._live_portal_url()
         appt = self.appointment_id
         pet_name = appt.pet_id.name if appt.pet_id else ''
         summary = self.result_summary or ''

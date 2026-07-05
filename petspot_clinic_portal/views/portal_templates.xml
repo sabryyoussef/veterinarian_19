@@ -46,8 +46,10 @@
     <template id="book_form" name="PetSpot Book Appointment">
         <t t-call="petspot_clinic_portal.portal_layout">
             <div class="card">
-                <h1 class="brand">PetSpot — حجز موعد</h1>
-                <p class="muted">املأ البيانات لحجز موعد في العيادة</p>
+                <h1 class="brand" t-if="staff_mode">PetSpot — تسجيل زيارة (فريق)</h1>
+                <h1 class="brand" t-else="">PetSpot — حجز موعد</h1>
+                <p class="muted" t-if="staff_mode">سجّل العميل والحيوان وموعد اليوم</p>
+                <p class="muted" t-else="">املأ البيانات لحجز موعد في العيادة</p>
                 <t t-if="error"><div class="err" t-esc="error"/></t>
                 <form method="post" t-att-action="form_action or ''">
                     <label>اسم المالك</label>
@@ -152,6 +154,39 @@
                     <input type="file" name="photos" accept="image/*" multiple="multiple"/>
                     <button type="submit">حفظ الكشف</button>
                 </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="payment_placeholder" name="PetSpot Payment Placeholder">
+        <t t-call="petspot_clinic_portal.portal_layout">
+            <div class="card">
+                <h1 class="brand">PetSpot — حالة الدفع</h1>
+                <p class="muted">عرض الحالة فقط — تسجيل الدفع الفعلي سيُفعّل في المرحلة القادمة.</p>
+                <t t-if="visit">
+                    <div class="pet-chip">
+                        <strong>الزيارة:</strong> <t t-esc="visit.reason or visit.display_name"/>
+                        <br/>
+                        <strong>الحيوان:</strong> <t t-esc="visit.pet_id.name or '—'"/>
+                    </div>
+                </t>
+                <t t-if="appointment">
+                    <div class="pet-chip">
+                        <strong>الموعد:</strong> <t t-esc="appointment.name"/>
+                    </div>
+                </t>
+                <div class="ok" style="margin-top:12px">
+                    <p><strong>حالة الدفع (زيارة):</strong> <t t-esc="payment.get('visit_payment_status') or '—'"/></p>
+                    <p><strong>حالة الدفع (موعد):</strong> <t t-esc="payment.get('appointment_payment_status') or '—'"/></p>
+                    <p><strong>التكلفة المسجلة:</strong> <t t-esc="payment.get('visit_cost') or 0"/> جنيه</p>
+                    <p><strong>الإجمالي:</strong> <t t-esc="payment.get('amount_total') or 0"/> جنيه</p>
+                    <p><strong>المدفوع:</strong> <t t-esc="payment.get('amount_paid') or 0"/> جنيه</p>
+                    <p><strong>المتبقي:</strong> <t t-esc="payment.get('amount_residual') or 0"/> جنيه</p>
+                    <t t-if="payment.get('invoice_name')">
+                        <p><strong>الفاتورة:</strong> <t t-esc="payment.get('invoice_name')"/> (<t t-esc="payment.get('invoice_state') or '—'"/>)</p>
+                    </t>
+                </div>
+                <p class="muted" style="margin-top:14px">بعد إكمال الكشف، استخدم «تحصيل دفع» من واتساب لتسجيل الدفع.</p>
             </div>
         </t>
     </template>

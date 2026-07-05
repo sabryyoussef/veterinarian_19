@@ -2,6 +2,10 @@
 <odoo>
     <data noupdate="1">
         <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.public_base_url</value>
+            <value>https://drpaws.ai</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
             <value>petspot_clinic_portal.patient_token_ttl_hours</value>
             <value>48</value>
         </function>
@@ -38,8 +42,12 @@
             <value>10:00,12:00,14:00,16:00,18:00</value>
         </function>
         <function model="ir.config_parameter" name="set_param">
-            <value>petspot_clinic_portal.auto_sale_draft</value>
-            <value>False</value>
+            <value>petspot_clinic_portal.staff_register_token_ttl_hours</value>
+            <value>24</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>petspot_clinic_portal.staff_payment_token_ttl_hours</value>
+            <value>4</value>
         </function>
         <record id="seq_petspot_portal_token" model="ir.sequence">
             <field name="name">PetSpot Portal Token</field>

@@ -67,10 +67,36 @@ class PetspotClinicPortalController(BridgeControllerBase):
     )
     def portal_short_book(self, code, **post):
         """Serve booking form on short URL (no redirect — WhatsApp WebView friendly)."""
-        rec = self._token_from_short_code(code, roles=('patient', 'staff'))
+        rec = self._token_from_short_code(code, roles=('patient', 'staff', 'staff_register'))
         if not rec:
             return self._portal_error(_('رابط غير صالح'))
         return self.portal_book(rec.token, **post)
+
+    @http.route(
+        ['/p/s/r/<string:code>', '/p/staff/register/<string:code>'],
+        type='http',
+        auth='public',
+        methods=['GET', 'POST'],
+        csrf=False,
+    )
+    def portal_short_staff_register(self, code, **post):
+        rec = self._token_from_short_code(code, roles=('staff', 'staff_register'))
+        if not rec:
+            return self._portal_error(_('رابط غير صالح'))
+        return self.portal_book(rec.token, staff_mode=True, **post)
+
+    @http.route(
+        ['/p/s/p/<string:code>', '/p/staff/payment/<string:code>'],
+        type='http',
+        auth='public',
+        methods=['GET', 'POST'],
+        csrf=False,
+    )
+    def portal_short_staff_payment(self, code, **post):
+        rec = self._token_from_short_code(code, roles=('staff_payment',))
+        if not rec:
+            return self._portal_error(_('رابط غير صالح'))
+        return self.portal_payment_placeholder(rec.token, **post)
 
     @http.route(
         ['/p/e/<string:code>', '/p/exam/<string:code>'],
@@ -93,6 +119,10 @@ class PetspotClinicPortalController(BridgeControllerBase):
             return self._portal_error(_('رابط غير صالح'))
         if rec.role == 'vet':
             return self.portal_exam(rec.token, **post)
+        if rec.role == 'staff_payment':
+            return self.portal_payment_placeholder(rec.token, **post)
+        if rec.role in ('staff', 'staff_register'):
+            return self.portal_book(rec.token, staff_mode=True, **post)
         return self.portal_book(rec.token, **post)
 
 
@@ -142,9 +172,12 @@ class PetspotClinicPortalController(BridgeControllerBase):
         csrf=False,
         website=False,
     )
-    def portal_book(self, token, **post):
+    def portal_book(self, token, staff_mode=False, **post):
         Token = request.env['petspot.portal.token'].sudo()
-        rec = Token.search([('token', '=', token), ('role', 'in', ('patient', 'staff'))], limit=1)
+        rec = Token.search([
+            ('token', '=', token),
+            ('role', 'in', ('patient', 'staff', 'staff_register')),
+        ], limit=1)
         if not rec:
             return self._portal_error(_('رابط غير صالح'))
         try:
@@ -152,6 +185,7 @@ class PetspotClinicPortalController(BridgeControllerBase):
         except ValidationError as exc:
             return self._portal_error(str(exc))
 
+        staff_mode = staff_mode or rec.role in ('staff', 'staff_register')
         form_action = request.httprequest.path
 
         Slot = request.env['petspot.clinic.slot'].sudo()
@@ -161,7 +195,10 @@ class PetspotClinicPortalController(BridgeControllerBase):
         if request.httprequest.method == 'POST':
             try:
                 self._submit_booking(rec, post)
-                return request.render('petspot_clinic_portal.done_page', {'token_rec': rec})
+                return request.render('petspot_clinic_portal.done_page', {
+                    'token_rec': rec,
+                    'staff_mode': staff_mode,
+                })
             except Exception as exc:
                 _logger.warning('portal book failed: %s', exc)
                 return request.render('petspot_clinic_portal.book_form', {
@@ -171,6 +208,7 @@ class PetspotClinicPortalController(BridgeControllerBase):
                     'slots': slots,
                     'form': post,
                     'form_action': form_action,
+                    'staff_mode': staff_mode,
                 })
 
         return request.render('petspot_clinic_portal.book_form', {
@@ -184,6 +222,29 @@ class PetspotClinicPortalController(BridgeControllerBase):
                 'pet_name': rec.prefill_pet_name or (rec.pet_id.name if rec.pet_id else ''),
             },
             'form_action': form_action,
+            'staff_mode': staff_mode,
+        })
+
+    def portal_payment_placeholder(self, token, **kwargs):
+        """Phase 2: read-only payment status; full payment form in Phase 5."""
+        Token = request.env['petspot.portal.token'].sudo()
+        rec = Token.search([('token', '=', token), ('role', '=', 'staff_payment')], limit=1)
+        if not rec:
+            return self._portal_error(_('رابط غير صالح'))
+        try:
+            rec.validate_token(allow_used=True)
+        except ValidationError as exc:
+            return self._portal_error(str(exc))
+
+        visit = rec.medical_visit_id
+        appt = rec.appointment_id or (visit.appointment_id if visit else False)
+        payment = Token._payment_summary_for_visit(visit) if visit else Token._payment_summary_for_appointment(appt)
+
+        return request.render('petspot_clinic_portal.payment_placeholder', {
+            'token_rec': rec,
+            'visit': visit,
+            'appointment': appt,
+            'payment': payment,
         })
 
     def _submit_booking(self, token_rec, post):

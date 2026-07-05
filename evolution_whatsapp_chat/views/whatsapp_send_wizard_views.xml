@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_send_wizard_form" model="ir.ui.view">
+        <field name="name">whatsapp.send.wizard.form</field>
+        <field name="model">whatsapp.send.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send WhatsApp Message">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>📱 Send WhatsApp</h2>
+                    </div>
+                    <group>
+                        <group string="Recipient">
+                            <field name="partner_id" readonly="1" invisible="not partner_id"/>
+                            <field name="lead_id"    readonly="1" invisible="not lead_id"/>
+                            <field name="phone" placeholder="+201000059085 or 201000059085"/>
+                        </group>
+                        <group string="Options">
+                            <field name="template_id"
+                                   options="{'no_create': True}"
+                                   placeholder="Select template (optional)..."/>
+                            <field name="send_mode" widget="radio"/>
+                            <field name="scheduled_at"
+                                   invisible="send_mode != 'scheduled'"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="message" nolabel="1"
+                               placeholder="Type your message here..."
+                               widget="text"/>
+                    </group>
+                    <group string="Attachments">
+                        <field name="attachment_ids" nolabel="1" widget="many2many_binary"/>
+                    </group>
+                    <div class="alert alert-success" role="status" invisible="not message">
+                        <b>Preview:</b>
+                        <div style="white-space: pre-wrap; margin-top: 6px;">
+                            <field name="preview" nolabel="1" readonly="1"/>
+                        </div>
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_send" string="Send" type="object"
+                            class="btn-primary" data-hotkey="s"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_whatsapp_send_wizard" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">whatsapp.send.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

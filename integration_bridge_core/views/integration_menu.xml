@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_integration_bridge_root"
+              name="Integration Bridge"
+              sequence="100"
+              web_icon="integration_bridge_core,static/description/icon.png"/>
+
+    <menuitem id="menu_integration_bridge_config"
+              name="Configuration"
+              parent="menu_integration_bridge_root"
+              sequence="100"/>
+
+    <menuitem id="menu_integration_bridge_settings"
+              name="Settings"
+              parent="menu_integration_bridge_config"
+              action="action_integration_bridge_settings_form"
+              sequence="5"/>
+
+    <menuitem id="menu_integration_bridge_token"
+              name="Bridge Tokens"
+              parent="menu_integration_bridge_config"
+              action="action_integration_bridge_token"
+              sequence="10"/>
+
+    <menuitem id="menu_integration_bridge_monitoring"
+              name="Monitoring"
+              parent="menu_integration_bridge_root"
+              sequence="50"/>
+
+    <menuitem id="menu_integration_bridge_log"
+              name="Integration Logs"
+              parent="menu_integration_bridge_monitoring"
+              action="action_integration_bridge_log"
+              sequence="10"/>
+
+    <menuitem id="menu_integration_outbound_queue"
+              name="Outbound Queue"
+              parent="menu_integration_bridge_monitoring"
+              action="action_integration_outbound_queue"
+              sequence="20"/>
+</odoo>

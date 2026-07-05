@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- set_param() does an upsert: safe on both fresh install and upgrade. -->
+    <data noupdate="1">
+        <!-- Master Token -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.master_token</value>
+            <value>ib_cw_fzm_7xK9mN2pQ4rT6vY8zA1bD3eF5g</value>
+        </function>
+
+        <!-- Optional IP Whitelist (comma-separated IPs or CIDRs, empty = allow all) -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.ip_whitelist</value>
+            <value></value>
+        </function>
+
+        <!-- n8n Outbound Webhook URL for status updates -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.n8n_outbound_webhook_url</value>
+            <value>https://n8n.freezonermirror.online/webhook/odoo-status-update</value>
+        </function>
+
+        <!-- Dify AI Platform Configuration -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>dify.base_url</value>
+            <value>https://dify.freezonermirror.online/v1</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>dify.chat_api_key</value>
+            <value></value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>dify.workflow_api_key</value>
+            <value></value>
+        </function>
+
+        <!-- Platform Web URLs -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.chatwoot_web_url</value>
+            <value>https://chatwoot.freezonermirror.online</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.typebot_web_url</value>
+            <value>https://typebot.freezonermirror.online</value>
+        </function>
+
+        <!-- Evolution API -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.evolution_url</value>
+            <value>http://127.0.0.1:8099</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.evolution_key</value>
+            <value>429683C4C977415CAAFCCE10F7D57E11</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.evolution_instance</value>
+            <value>sabry</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.evolution_web_url</value>
+            <value>http://127.0.0.1:8099/manager</value>
+        </function>
+
+        <!-- Other platform web URLs -->
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.n8n_web_url</value>
+            <value>https://n8n.freezonermirror.online</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>dify.web_url</value>
+            <value>https://dify.freezonermirror.online</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.dify_web_url</value>
+            <value>https://dify.freezonermirror.online</value>
+        </function>
+        <function model="ir.config_parameter" name="set_param">
+            <value>integration_bridge.flowise_web_url</value>
+            <value>https://flowise.freezonermirror.online</value>
+        </function>
+    </data>
+</odoo>

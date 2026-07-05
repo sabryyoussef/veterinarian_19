@@ -421,13 +421,4 @@ for record in self:
         <field name="readonly" eval="True"/>
     </record>
 
-    <record id="field_x_pets_breed_growth" model="ir.model.fields">
-        <field name="name">x_petget_breed_growth_ids</field>
-        <field name="field_description">Breed Growth Milestones</field>
-        <field name="model_id" ref="veterinary_clinic.x_pets_model"/>
-        <field name="ttype">one2many</field>
-        <field name="related">x_petget_breed_id.growth_ids</field>
-        <field name="readonly" eval="True"/>
-    </record>
-
 </odoo>

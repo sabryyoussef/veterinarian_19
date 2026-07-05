@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_linkedin_account_tree" model="ir.ui.view">
+        <field name="name">linkedin.account.list</field>
+        <field name="model">linkedin.account</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="connected"/>
+                <field name="linkedin_member_urn"/>
+                <field name="token_expires_at"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_linkedin_account_form" model="ir.ui.view">
+        <field name="name">linkedin.account.form</field>
+        <field name="model">linkedin.account</field>
+        <field name="arch" type="xml">
+            <form string="LinkedIn Account">
+                <header>
+                    <button name="action_connect" type="object" string="Connect" class="btn-primary"
+                            invisible="connected"/>
+                    <button name="action_fetch_posts" type="object" string="Fetch My Posts"
+                            class="btn-primary" invisible="not connected"/>
+                    <button name="action_test_post" type="object" string="Test Post" class="btn-secondary"
+                            invisible="not connected"/>
+                    <button name="action_disconnect" type="object" string="Disconnect"
+                            invisible="not connected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_linkedin_post)d" type="action" class="oe_stat_button"
+                                icon="fa-pencil">
+                            <field name="post_count" string="Posts" widget="statinfo"/>
+                        </button>
+                        <button name="%(action_linkedin_stream_post)d" type="action" class="oe_stat_button"
+                                icon="fa-rss">
+                            <field name="stream_post_count" string="Feed" widget="statinfo"/>
+                        </button>
+                        <button name="%(action_linkedin_resume)d" type="action" class="oe_stat_button"
+                                icon="fa-file-pdf-o">
+                            <field name="resume_count" string="Resumes" widget="statinfo"/>
+                        </button>
+                        <button name="%(action_linkedin_conversation)d" type="action" class="oe_stat_button"
+                                icon="fa-envelope">
+                            <field name="conversation_count" string="Messages" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="OAuth (Public URL)">
+                        <field name="oauth_public_base_url" placeholder="https://your-odoo.example.com"/>
+                        <field name="redirect_uri" readonly="1"
+                               placeholder="Must match LinkedIn app redirect URLs exactly (includes ?db=...)"/>
+                    </group>
+                    <group string="LinkedIn App">
+                        <field name="oauth_scopes" placeholder="openid profile w_member_social"/>
+                        <field name="client_id" password="True"/>
+                        <field name="client_secret" password="True"/>
+                    </group>
+                    <group string="Company page (Odoo posts here — not personal feed)">
+                        <field name="linkedin_organization_id" placeholder="129944345"/>
+                        <field name="linkedin_organization_urn" readonly="1"/>
+                        <field name="fallback_personal_post"/>
+                    </group>
+                    <group string="Connection">
+                        <field name="connected" readonly="1"/>
+                        <field name="linkedin_member_urn" readonly="1" string="Member URN (OAuth only)"/>
+                        <field name="token_expires_at" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_linkedin_account" model="ir.actions.act_window">
+        <field name="name">LinkedIn Accounts</field>
+        <field name="res_model">linkedin.account</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── MENUS ─────────────────────────────────────────── -->
+    <menuitem id="menu_linkedin_connector_root"
+              name="LinkedIn"
+              sequence="110"
+              web_icon="linkedin_connector,static/description/icon.png"/>
+
+    <menuitem id="menu_linkedin_posts"
+              name="Posts"
+              parent="menu_linkedin_connector_root"
+              action="action_linkedin_post"
+              sequence="10"/>
+
+    <menuitem id="menu_linkedin_feed"
+              name="Feed"
+              parent="menu_linkedin_connector_root"
+              action="action_linkedin_stream_post"
+              sequence="20"/>
+
+    <menuitem id="menu_linkedin_messages"
+              name="Messages"
+              parent="menu_linkedin_connector_root"
+              action="action_linkedin_conversation"
+              sequence="30"/>
+
+    <menuitem id="menu_linkedin_jobs"
+              name="Jobs"
+              parent="menu_linkedin_connector_root"
+              sequence="40"/>
+
+    <menuitem id="menu_linkedin_job_list"
+              name="All Jobs"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job"
+              sequence="10"/>
+
+    <menuitem id="menu_linkedin_job_search"
+              name="Search Jobs"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_search_wizard"
+              sequence="20"/>
+
+    <menuitem id="menu_linkedin_resumes"
+              name="Resumes"
+              parent="menu_linkedin_connector_root"
+              action="action_linkedin_resume"
+              sequence="50"/>
+
+    <menuitem id="menu_linkedin_config"
+              name="Configuration"
+              parent="menu_linkedin_connector_root"
+              sequence="90"/>
+
+    <menuitem id="menu_linkedin_accounts"
+              name="Accounts"
+              parent="menu_linkedin_config"
+              action="action_linkedin_account"
+              sequence="10"/>
+
+</odoo>

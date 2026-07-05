@@ -8,24 +8,133 @@ import os
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 ROOT = Path(__file__).resolve().parent
+LOGO_DIR = ROOT / "assets" / "logo"
+LOGO_SVG = LOGO_DIR / "logo.svg"
+LOGO_PNG = LOGO_DIR / "petspot-logo.png"
 sys.path.insert(0, str(ROOT))
 
+
+def load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip())
+
+
+from gallery_build import prepare_gallery  # noqa: E402
 from odoo_rpc import OdooRPC  # noqa: E402
-from page_templates import build_contact_arch, build_homepage_arch  # noqa: E402
+from page_templates import build_contact_arch, build_footer_inherit_arch, build_homepage_arch  # noqa: E402
 from site_config import load_config  # noqa: E402
 
 
+def sync_logo_png() -> Path | None:
+    """Export logo.svg → petspot-logo.png for Odoo (PNG renders reliably in company logo)."""
+    if not LOGO_SVG.is_file():
+        return LOGO_PNG if LOGO_PNG.is_file() else None
+    if LOGO_PNG.is_file() and LOGO_PNG.stat().st_mtime >= LOGO_SVG.stat().st_mtime:
+        return LOGO_PNG
+    import subprocess
+
+    LOGO_DIR.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [
+            "rsvg-convert",
+            "-w",
+            "800",
+            str(LOGO_SVG),
+            "-o",
+            str(LOGO_PNG),
+        ],
+        check=True,
+        capture_output=True,
+    )
+    return LOGO_PNG
+
+
 def load_logo_b64() -> str | None:
-    """Load logo for res.company — prefers assets/logo/petspot-logo.png."""
-    # TODO: Replace petspot-logo.png with final brand asset from logo brief
-    for rel in ("assets/logo/petspot-logo.png", "assets/logo.png"):
-        path = ROOT / rel
-        if path.exists():
-            return base64.b64encode(path.read_bytes()).decode()
+    """Load unified clinic logo for res.company (PNG export of logo.svg)."""
+    path = sync_logo_png()
+    if path and path.is_file():
+        return base64.b64encode(path.read_bytes()).decode()
     return None
+
+
+def _attachment_has_data(client: OdooRPC, att_id: int) -> bool:
+    row = client.search_read(
+        "ir.attachment",
+        [("id", "=", att_id)],
+        ["file_size", "checksum"],
+        limit=1,
+    )
+    return bool(row and row[0].get("file_size") and row[0].get("checksum"))
+
+
+def _store_attachment_bytes(
+    client: OdooRPC,
+    *,
+    name: str,
+    mimetype: str,
+    raw_b64: str,
+    att_id: int | None,
+) -> int:
+    """Store image bytes; Odoo Online needs `raw`, local Odoo needs `datas`."""
+    base_vals = {"mimetype": mimetype, "type": "binary"}
+    attempts: list[tuple[str, dict]] = [
+        ("datas", {**base_vals, "datas": raw_b64}),
+        ("raw", {**base_vals, "raw": raw_b64}),
+    ]
+    last_error: Exception | None = None
+    for _label, payload in attempts:
+        try:
+            if att_id:
+                client.write("ir.attachment", [att_id], payload)
+                candidate = att_id
+            else:
+                candidate = client.create(
+                    "ir.attachment",
+                    {"name": name, "public": True, **payload},
+                )
+            if _attachment_has_data(client, candidate):
+                return candidate
+        except RuntimeError as exc:
+            last_error = exc
+    if att_id and last_error:
+        raise last_error
+    raise RuntimeError(f"Attachment upload failed for {name}")
+
+
+def ensure_public_image(client: OdooRPC, name: str, path: Path) -> str:
+    """Upload or refresh a public attachment; return Odoo image URL."""
+    if not path.exists():
+        raise FileNotFoundError(path)
+    mimetype = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+        ".svg": "image/svg+xml",
+    }.get(path.suffix.lower(), "application/octet-stream")
+    raw_b64 = base64.b64encode(path.read_bytes()).decode()
+    existing = client.search_read(
+        "ir.attachment",
+        [("name", "=", name), ("public", "=", True)],
+        ["id"],
+        limit=1,
+    )
+    att_id = existing[0]["id"] if existing else None
+    att_id = _store_attachment_bytes(
+        client,
+        name=name,
+        mimetype=mimetype,
+        raw_b64=raw_b64,
+        att_id=att_id,
+    )
+    return f"/web/image/ir.attachment/{att_id}/datas"
 
 
 def install_module(client: OdooRPC, name: str) -> None:
@@ -60,6 +169,37 @@ def install_arabic(client: OdooRPC) -> None:
     client.execute("base.language.install", "lang_install", [wiz_id])
 
 
+def deploy_footer(client: OdooRPC, c: dict, website_id: int) -> None:
+    layouts = client.search_read("ir.ui.view", [("key", "=", "website.layout")], ["id"], limit=1)
+    if not layouts:
+        print("  Footer: website.layout view not found")
+        return
+    layout_id = layouts[0]["id"]
+    arch = build_footer_inherit_arch(c)
+    existing = client.search_read(
+        "ir.ui.view",
+        [("name", "=", "PetSpot Footer"), ("website_id", "=", website_id)],
+        ["id"],
+        limit=1,
+    )
+    vals = {
+        "name": "PetSpot Footer",
+        "type": "qweb",
+        "mode": "extension",
+        "inherit_id": layout_id,
+        "arch_db": arch,
+        "priority": 99,
+        "website_id": website_id,
+        "active": True,
+    }
+    if existing:
+        client.write("ir.ui.view", [existing[0]["id"]], vals)
+        print(f"Updated footer view {existing[0]['id']}")
+    else:
+        footer_id = client.create("ir.ui.view", vals)
+        print(f"Created footer view {footer_id}")
+
+
 def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False) -> None:
     print(f"\n--- Deploying to {label} ---")
     client.authenticate()
@@ -71,9 +211,11 @@ def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False)
         "phone": c["phone"],
         "email": c["email"],
         "website": c["website_url"],
-        "street": c["area_en"],
-        "city": "North Coast",
+        "street": c["address_en"],
+        "city": "Sidi Abdel Rahman",
         "country_id": 65,
+        "social_facebook": c["facebook"],
+        "social_instagram": c["instagram"],
     }
     if logo_b64:
         company_vals["logo"] = logo_b64
@@ -85,8 +227,49 @@ def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False)
         print("ERROR: no website record", file=sys.stderr)
         return
     website_id = websites[0]["id"]
-    client.write("website", [website_id], {"name": c["company_name"]})
-    print(f"Updated website id={website_id}")
+    website_vals = {"name": c["company_name"]}
+    if logo_b64:
+        website_vals["logo"] = logo_b64
+    client.write("website", [website_id], website_vals)
+    print(f"Updated website id={website_id}" + (" (navbar logo set)" if logo_b64 else ""))
+
+    hero_path = ROOT / "assets" / "clinic-hero.png"
+    if hero_path.exists():
+        c["hero_image_url"] = ensure_public_image(client, "petspot-clinic-hero", hero_path)
+        print(f"Uploaded clinic hero image → {c['hero_image_url']}")
+    c["logo_url"] = "/web/image/res.company/1/logo"
+
+    c["gallery_urls"] = {}
+    c["gallery_items"] = []
+    gallery_dir = ROOT / "assets" / "gallery"
+    selection = prepare_gallery(
+        gallery_dir,
+        extra_count=c.get("gallery_extra_count", 12),
+    )
+    if selection:
+        print(
+            f"Gallery selection: {selection['slot_count']} featured + "
+            f"{selection['extra_count']} extra from Facebook"
+        )
+
+    for slot in c["gallery_slots"]:
+        image_path = gallery_dir / slot["file"]
+        if image_path.is_file():
+            att_name = f"petspot-gallery-{slot['id']}"
+            url = ensure_public_image(client, att_name, image_path)
+            c["gallery_urls"][slot["id"]] = url
+            c["gallery_items"].append({"url": url, "alt": slot["alt"]})
+            print(f"Uploaded gallery {slot['file']} → {url}")
+
+    if selection:
+        for extra in selection["extras"]:
+            image_path = gallery_dir / extra["file"]
+            if not image_path.is_file():
+                continue
+            att_name = f"petspot-gallery-fb-{extra['id']}"
+            url = ensure_public_image(client, att_name, image_path)
+            c["gallery_items"].append({"url": url, "alt": extra["alt"]})
+            print(f"Uploaded gallery {extra['file']} → {url}")
 
     if install_theme:
         print("Modules & languages:")
@@ -158,11 +341,13 @@ def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False)
         )
         print(f"Updated contact page view {cv_id}")
 
+    deploy_footer(client, c, website_id)
+
     print(f"Deploy complete ({label})")
 
 
 def main() -> int:
-    load_dotenv(ROOT / ".env")
+    load_env_file(ROOT / ".env")
     parser = argparse.ArgumentParser(description="Deploy PetSpot website to Odoo")
     parser.add_argument(
         "--target",

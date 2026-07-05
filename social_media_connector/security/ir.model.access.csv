@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_social_media_page_user,social.media.page user,model_social_media_page,base.group_user,1,0,0,0
+access_social_media_page_manager,social.media.page manager,model_social_media_page,base.group_system,1,1,1,1
+access_social_media_post_user,social.media.post user,model_social_media_post,base.group_user,1,1,1,0
+access_social_media_post_manager,social.media.post manager,model_social_media_post,base.group_system,1,1,1,1

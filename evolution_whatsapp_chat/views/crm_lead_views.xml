@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Smart button + WhatsApp Chat tab on crm.lead form -->
+    <record id="view_crm_lead_whatsapp_form" model="ir.ui.view">
+        <field name="name">crm.lead.whatsapp.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Smart button -->
+            <div name="button_box" position="inside">
+                <button name="action_open_wa_channel_lead"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-whatsapp"
+                        invisible="not id or not partner_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="wa_message_count_lead"/>
+                        </span>
+                        <span class="o_stat_text">WhatsApp</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- WhatsApp Chat tab -->
+            <notebook position="inside">
+                <page string="WhatsApp Chat" name="wa_chat_tab_lead"
+                      invisible="not id">
+                    <div class="d-flex justify-content-between align-items-center mb-2 p-2"
+                         style="background:#f8f9fa;border-radius:6px">
+                        <b style="color:#25D366">&#128241; WhatsApp</b>
+                        <div>
+                            <button name="action_send_whatsapp_lead" type="object"
+                                    string="Send Message" class="btn btn-sm btn-success"/>
+                            <button name="action_open_wa_channel_lead" type="object"
+                                    string="Open Chat" class="btn btn-sm btn-outline-secondary ms-1"
+                                    invisible="not partner_id"/>
+                        </div>
+                    </div>
+                    <div invisible="not partner_id">
+                        <p class="text-muted text-center mt-3">
+                            Click <b>Open Chat</b> to view the full WhatsApp conversation in Odoo Discuss,
+                            or <b>Send Message</b> to send a quick message.
+                        </p>
+                        <p class="text-center">
+                            <field name="wa_message_count_lead" readonly="1"/>
+                            message(s) exchanged
+                        </p>
+                    </div>
+                    <div invisible="partner_id">
+                        <p class="text-muted text-center mt-3">
+                            Link a contact to this lead first to enable WhatsApp.
+                        </p>
+                    </div>
+                </page>
+            </notebook>
+
+        </field>
+    </record>
+</odoo>

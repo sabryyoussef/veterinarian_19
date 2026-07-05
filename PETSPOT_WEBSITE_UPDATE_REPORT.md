@@ -58,8 +58,8 @@ The PetSpot El Sahel landing page was updated using marketing assets from `petsp
 - **Email:** vetelsahel@gmail.com
 - **Facebook:** https://www.facebook.com/animalcarecenterpetspots/
 - **Instagram:** https://www.instagram.com/pet_spot_clinic/
-- **Google Maps:** https://share.google/uSM5VJCFUzO2WFCpG
-- **Location (display):** North Coast / El Sahel — Sidi Abdel Rahman (generic until address confirmed)
+- **Google Maps:** https://maps.app.goo.gl/AaHup6NEFodZEs7S7
+- **Location:** Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman, North Coast
 - **SEO title:** PetSpot El Sahel \| Veterinary Clinic, Grooming & Boarding
 - **SEO description:** PetSpot El Sahel provides veterinary consultations, vaccinations, grooming, boarding, and home visits for pets in the North Coast.
 
@@ -71,10 +71,10 @@ The PetSpot El Sahel landing page was updated using marketing assets from `petsp
 |-------|----------|----------------|
 | **Phone** | `01000059085` (Facebook/campaign) vs `01201568888` / `+201201568888` (CSV/legacy) vs `01012205066` (Maadi) | `+201201568888` primary |
 | **Email** | `animalcarecenterpetspots@gmail.com` vs `vetelsahel@gmail.com` | `vetelsahel@gmail.com` (matches live Odoo company) |
-| **Address** | Sky Court Km 136 vs Agora/Marassi Km 128 vs Amwaj/Wahat Khattab | Generic North Coast / El Sahel area only |
+| **Address** | Sky Court Km 136 vs Agora/Marassi Km 128 vs Amwaj | **Confirmed:** Beside Amwaj 1 gate, Main Road ([Google Maps](https://maps.app.goo.gl/AaHup6NEFodZEs7S7)) |
 | **Logo** | Logo brief exists, no asset file | Placeholder paw icon at `assets/logo/petspot-logo.png` |
 | **Gallery** | 4 slots defined, 0 photos on disk | Placeholder cards with HTML TODO comments |
-| **Map embed** | Exact coordinates unconfirmed | Link to Google Maps share URL only |
+| **Map embed** | Exact coordinates unconfirmed | Link to confirmed Google Maps pin |
 | **Open Graph image** | No suitable clinic photo | Not set — add when gallery photos exist |
 
 ---

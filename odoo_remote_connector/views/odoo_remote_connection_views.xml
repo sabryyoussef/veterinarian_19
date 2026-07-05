@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_odoo_remote_connection_list" model="ir.ui.view">
+        <field name="name">odoo.remote.connection.list</field>
+        <field name="model">odoo.remote.connection</field>
+        <field name="arch" type="xml">
+            <list string="Remote Odoo Connections">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="url"/>
+                <field name="database"/>
+                <field name="username"/>
+                <field name="is_default" widget="boolean_toggle"/>
+                <field name="last_test_state" widget="badge"
+                       decoration-success="last_test_state == 'ok'"
+                       decoration-danger="last_test_state == 'failed'"/>
+                <field name="last_test_date" optional="show"/>
+                <field name="remote_company_name" optional="show"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_odoo_remote_connection_form" model="ir.ui.view">
+        <field name="name">odoo.remote.connection.form</field>
+        <field name="model">odoo.remote.connection</field>
+        <field name="arch" type="xml">
+            <form string="Remote Odoo Connection">
+                <header>
+                    <button name="action_test_connection" type="object"
+                            string="Test Connection" class="btn-primary"/>
+                    <button name="action_open_web_ui" type="object"
+                            string="Open Web UI" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Default" bg_color="text-bg-success"
+                            invisible="not is_default"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. PetSpot Production"/></h1>
+                    </div>
+                    <group>
+                        <group string="Connection">
+                            <field name="url" placeholder="https://drpaws.ai"/>
+                            <field name="web_url" placeholder="https://drpaws.ai/odoo"/>
+                            <field name="database"/>
+                            <field name="username"/>
+                            <field name="auth_type" widget="radio"/>
+                            <field name="api_key" password="True"
+                                   invisible="auth_type != 'api_key'"
+                                   required="auth_type == 'api_key'"/>
+                            <field name="password" password="True"
+                                   invisible="auth_type != 'password'"
+                                   required="auth_type == 'password'"/>
+                        </group>
+                        <group string="Options">
+                            <field name="is_default"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                            <field name="remote_uid" readonly="1"/>
+                            <field name="remote_user_name" readonly="1"/>
+                            <field name="remote_company_name" readonly="1"/>
+                            <field name="last_test_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Last Test Result" invisible="not last_test_message">
+                        <field name="last_test_message" nolabel="1" readonly="1"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1" placeholder="Environment notes, owner, purpose..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_odoo_remote_connection_search" model="ir.ui.view">
+        <field name="name">odoo.remote.connection.search</field>
+        <field name="model">odoo.remote.connection</field>
+        <field name="arch" type="xml">
+            <search string="Remote Odoo Connections">
+                <field name="name"/>
+                <field name="url"/>
+                <field name="database"/>
+                <field name="username"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_default" string="Default" domain="[('is_default', '=', True)]"/>
+                <filter name="filter_ok" string="Last Test OK" domain="[('last_test_state', '=', 'ok')]"/>
+                <filter name="filter_failed" string="Last Test Failed" domain="[('last_test_state', '=', 'failed')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_odoo_remote_connection" model="ir.actions.act_window">
+        <field name="name">Remote Odoo Connections</field>
+        <field name="res_model">odoo.remote.connection</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a connection to another Odoo instance
+            </p>
+            <p>
+                Store URL, database, username, and API key or password.
+                Use <strong>Test Connection</strong> to verify JSON-RPC access.
+            </p>
+        </field>
+    </record>
+
+</odoo>

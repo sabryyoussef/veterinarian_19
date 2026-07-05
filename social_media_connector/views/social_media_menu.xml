@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_social_media_connector_root"
+              name="Social Media Connector"
+              sequence="45"/>
+
+    <menuitem id="menu_social_media_posts"
+              name="Posts"
+              parent="menu_social_media_connector_root"
+              action="action_social_media_post"
+              sequence="10"/>
+
+    <menuitem id="menu_social_media_pages"
+              name="Facebook Pages"
+              parent="menu_social_media_connector_root"
+              action="action_social_media_page"
+              sequence="20"/>
+
+    <menuitem id="menu_social_media_config"
+              name="Configuration"
+              parent="menu_social_media_connector_root"
+              sequence="90"/>
+
+    <menuitem id="menu_social_media_settings"
+              name="Settings"
+              parent="menu_social_media_config"
+              action="action_social_media_config_settings"
+              sequence="10"
+              groups="base.group_system"/>
+
+</odoo>

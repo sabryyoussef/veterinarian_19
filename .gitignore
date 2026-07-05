@@ -2,9 +2,13 @@
 .env.*
 !.env.example
 
+# Odoo runtime
+.filestore/
+
 # Python
 __pycache__/
 *.py[cod]
+website/.venv/
 
 # Playwright
 tests/playwright/node_modules/

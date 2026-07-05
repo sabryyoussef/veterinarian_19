@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Smart button + WhatsApp Chat tab on res.partner form -->
+    <record id="view_partner_whatsapp_form" model="ir.ui.view">
+        <field name="name">res.partner.whatsapp.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Smart button -->
+            <div name="button_box" position="inside">
+                <button name="action_open_wa_channel"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-whatsapp"
+                        invisible="not id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="wa_message_count"/>
+                        </span>
+                        <span class="o_stat_text">WhatsApp</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- WhatsApp Chat tab -->
+            <notebook position="inside">
+                <page string="WhatsApp Chat" name="wa_chat_tab" invisible="not id">
+                    <div class="d-flex justify-content-between align-items-center mb-2 p-2"
+                         style="background:#f8f9fa;border-radius:6px">
+                        <div>
+                            <b style="color:#25D366">&#128241; WhatsApp Channel</b>
+                            <span class="text-muted ms-2">
+                                <field name="wa_channel_id" readonly="1" nolabel="1"
+                                       options="{'no_open': True}"/>
+                            </span>
+                        </div>
+                        <div>
+                            <button name="action_send_whatsapp" type="object"
+                                    string="Send Message" class="btn btn-sm btn-success"
+                                    invisible="not id"/>
+                            <button name="action_open_wa_channel" type="object"
+                                    string="Open Chat" class="btn btn-sm btn-outline-secondary ms-1"
+                                    invisible="not id"/>
+                        </div>
+                    </div>
+                    <field name="wa_channel_id" invisible="1"/>
+                    <div invisible="not wa_channel_id">
+                        <p class="text-muted text-center mt-4">
+                            Click <b>Open Chat</b> to view the full conversation in Odoo Discuss,
+                            or use <b>Send Message</b> for a quick reply.
+                        </p>
+                    </div>
+                    <div invisible="wa_channel_id">
+                        <p class="text-muted text-center mt-4">
+                            No WhatsApp conversation yet. Click <b>Send Message</b> to start one.
+                        </p>
+                    </div>
+                </page>
+            </notebook>
+
+        </field>
+    </record>
+</odoo>

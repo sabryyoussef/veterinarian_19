@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Bridge Tokens for each platform (freezonermirror instances) -->
+        <!-- Use one of these in X-Bridge-Token header, or set Master Token in Settings to match. -->
+        
+        <record id="token_chatwoot_default" model="integration.bridge.token">
+            <field name="name">Chatwoot Default</field>
+            <field name="platform">chatwoot</field>
+            <field name="token">ib_cw_fzm_7xK9mN2pQ4rT6vY8zA1bD3eF5g</field>
+            <field name="active" eval="True"/>
+            <field name="description">Chatwoot → chatwoot.freezonermirror.online. Use in X-Bridge-Token for /bridge/inbound.</field>
+        </record>
+
+        <record id="token_typebot_default" model="integration.bridge.token">
+            <field name="name">Typebot Default</field>
+            <field name="platform">typebot</field>
+            <field name="token">ib_tb_fzm_2yL8nO3qR5sU7wZ9aB2cE4fG6h</field>
+            <field name="active" eval="True"/>
+            <field name="description">Typebot → typebot.freezonermirror.online. Use in X-Bridge-Token for /bridge/inbound.</field>
+        </record>
+
+        <record id="token_n8n_default" model="integration.bridge.token">
+            <field name="name">n8n Default</field>
+            <field name="platform">n8n</field>
+            <field name="token">ib_n8n_fzm_3zM9oP4rS6tV8xA0bC3dF5gH7i</field>
+            <field name="active" eval="True"/>
+            <field name="description">n8n → n8n.freezonermirror.online. Use in X-Bridge-Token for /bridge/inbound.</field>
+        </record>
+
+        <record id="token_evolution_default" model="integration.bridge.token">
+            <field name="name">Evolution API Default</field>
+            <field name="platform">evolution</field>
+            <field name="token">ib_ev_fzm_4aN0pQ5sT7uW9yB1cD4eG6hI8j</field>
+            <field name="active" eval="True"/>
+            <field name="description">Evolution API (Odoo bridge auth). Point Evolution webhooks to Odoo /bridge/evolution/webhook. For API calls from Odoo, set integration_bridge.evolution_* system parameters (local: http://127.0.0.1:8099).</field>
+        </record>
+
+        <record id="token_dify_default" model="integration.bridge.token">
+            <field name="name">Dify AI Default</field>
+            <field name="platform">dify</field>
+            <field name="token">ib_dy_fzm_5bO1qR6tU8vX0zC2dE5fH7iJ9k</field>
+            <field name="active" eval="True"/>
+            <field name="description">Dify AI → dify.freezonermirror.online. Use in X-Bridge-Token. Also set dify.chat_api_key and dify.workflow_api_key in System Parameters.</field>
+        </record>
+
+    </data>
+</odoo>

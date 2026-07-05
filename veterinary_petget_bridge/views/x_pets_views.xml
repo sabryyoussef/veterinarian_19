@@ -120,17 +120,7 @@
                         <field name="x_petget_breed_care_notes" readonly="1" nolabel="1"/>
                     </group>
                     <separator string="Growth &amp; Development"/>
-                    <p class="text-muted">Typical weight by age for this breed (estimates — varies by line and individual).</p>
-                    <field name="x_petget_breed_growth_ids" readonly="1">
-                        <list>
-                            <field name="name"/>
-                            <field name="age_from_weeks"/>
-                            <field name="age_to_weeks"/>
-                            <field name="weight_min_kg"/>
-                            <field name="weight_max_kg"/>
-                            <field name="note"/>
-                        </list>
-                    </field>
+                    <p class="text-muted">Open the AKC breed profile (above) for typical weight-by-age milestones.</p>
                 </page>
                 <page string="Dog Care Guide" name="petget_dog_care" invisible="not x_is_dog">
                     <group>

@@ -5,8 +5,8 @@
     "legal_name": "Pet Spot Veterinary Clinic",
     "tagline_en": "Trusted Pet Care in El Sahel",
     "tagline_ar": "رعاية بيطرية موثوقة لحيوانك الأليف في الساحل",
-    "subheadline_en": "Veterinary care, grooming, boarding, vaccinations, and home visits for your pets during the North Coast season.",
-    "subheadline_ar": "كشف بيطري، تطعيمات، جروومينج، بوردينج، وزيارات منزلية طوال موسم الساحل.",
+    "subheadline_en": "Veterinary care, grooming, boarding & vaccinations — Amwaj 1, North Coast.",
+    "subheadline_ar": "كشف بيطري، تطعيمات، جروومينج وبوردينج — أمواج 1، الساحل الشمالي.",
     "positioning_en": "Your pet's trusted summer care destination on Egypt's North Coast — clinic, grooming, boarding, and pet care in one place.",
     "positioning_ar": "وجهتكم الموثوقة لرعاية أليفكم في الساحل — عيادة، جروومينج، بوردينج، وخدمات رعاية في مكان واحد."
   },
@@ -19,12 +19,14 @@
     "email_alternate": "animalcarecenterpetspots@gmail.com",
     "facebook": "https://www.facebook.com/animalcarecenterpetspots/",
     "instagram": "https://www.instagram.com/pet_spot_clinic/",
-    "google_maps": "https://share.google/uSM5VJCFUzO2WFCpG"
+    "google_maps": "https://maps.app.goo.gl/AaHup6NEFodZEs7S7"
   },
   "location": {
-    "area_en": "North Coast / El Sahel — Sidi Abdel Rahman",
-    "area_ar": "الساحل الشمالي / الساحل — سيدي عبد الرحمن",
-    "address_note": "TODO: Confirm exact pin — sources mention Sky Court Mall Km 136, Agora/Marassi Km 128, and Amwaj/Wahat Khattab",
+    "area_en": "Amwaj 1, North Coast — Sidi Abdel Rahman",
+    "area_ar": "أمواج 1، الساحل الشمالي — سيدي عبد الرحمن",
+    "address_en": "Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman, North Coast",
+    "address_ar": "بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن، الساحل الشمالي",
+    "address_note": "Confirmed — Google Maps pin beside Amwaj 1 gate on the main road",
     "hours_en": "Summer season · Open daily",
     "hours_ar": "موسم الصيف · مفتوح يومياً"
   },
@@ -39,9 +41,11 @@
       "title_ar": "كشف بيطري",
       "desc_en": "Expert exams for cats, dogs, and exotic pets.",
       "desc_ar": "كشف متخصص للقطط والكلاب والحيوانات الأليفة.",
-      "price_egp": 1000,
       "cta_en": "Book on WhatsApp",
-      "cta_ar": "احجز على واتساب"
+      "cta_ar": "احجز على واتساب",
+      "icon": "fa-stethoscope",
+      "color": "#1a5f7a",
+      "gallery_slot": "veterinary"
     },
     {
       "id": "vaccination",
@@ -49,9 +53,11 @@
       "title_ar": "تطعيمات",
       "desc_en": "Keep your pet protected before and during vacation.",
       "desc_ar": "حماية أليفك قبل وأثناء الإجازة.",
-      "price_egp": 1000,
       "cta_en": "Book on WhatsApp",
-      "cta_ar": "احجز على واتساب"
+      "cta_ar": "احجز على واتساب",
+      "icon": "fa-medkit",
+      "color": "#2d8f6f",
+      "gallery_slot": "clinic_front"
     },
     {
       "id": "grooming",
@@ -59,9 +65,11 @@
       "title_ar": "جروومينج",
       "desc_en": "Professional grooming for a fresh summer look.",
       "desc_ar": "جرومينج احترافي لمظهر صيفي أنيق.",
-      "price_egp": 1500,
       "cta_en": "Book on WhatsApp",
-      "cta_ar": "احجز على واتساب"
+      "cta_ar": "احجز على واتساب",
+      "icon": "fa-scissors",
+      "color": "#c45c3e",
+      "gallery_slot": "grooming"
     },
     {
       "id": "boarding",
@@ -69,10 +77,11 @@
       "title_ar": "بوردينج",
       "desc_en": "Safe supervised stay while you enjoy the coast.",
       "desc_ar": "إقامة آمنة تحت الإشراف أثناء استمتاعكم بالساحل.",
-      "price_note_en": "From 250 EGP/hour · 500 EGP/day",
-      "price_note_ar": "من 250 جنيه/ساعة · 500 جنيه/يوم",
       "cta_en": "Book on WhatsApp",
-      "cta_ar": "احجز على واتساب"
+      "cta_ar": "احجز على واتساب",
+      "icon": "fa-home",
+      "color": "#3d5a80",
+      "gallery_slot": "boarding"
     },
     {
       "id": "home_visit",
@@ -80,10 +89,10 @@
       "title_ar": "زيارة منزلية",
       "desc_en": "Mobile vet care for North Coast compounds.",
       "desc_ar": "رعاية بيطرية متنقلة لكمبوندات الساحل.",
-      "price_note_en": "From 1000 EGP + transport",
-      "price_note_ar": "من 1000 جنيه + انتقالات",
       "cta_en": "Book on WhatsApp",
-      "cta_ar": "احجز على واتساب"
+      "cta_ar": "احجز على واتساب",
+      "icon": "fa-ambulance",
+      "color": "#5c4d7d"
     },
     {
       "id": "pet_supplies",
@@ -92,7 +101,9 @@
       "desc_en": "Pet shop essentials when available on site.",
       "desc_ar": "مستلزمات الحيوانات الأليفة في المكان.",
       "cta_en": "Call us",
-      "cta_ar": "اتصل بنا"
+      "cta_ar": "اتصل بنا",
+      "icon": "fa-shopping-basket",
+      "color": "#b8860b"
     }
   ],
   "gallery_slots": [
@@ -101,8 +112,10 @@
     {"id": "boarding", "alt": "PetSpot boarding area", "file": "boarding-area.jpg"},
     {"id": "veterinary", "alt": "PetSpot veterinary care", "file": "veterinary-care.jpg"}
   ],
+  "gallery_extra_count": 12,
   "logo": {
     "path": "assets/logo/petspot-logo.png",
-    "note": "TODO: Replace with final brand logo from 03_logo_brief — current file is placeholder"
+    "source": "assets/logo/logo.svg",
+    "note": "Edit logo.svg then run deploy.py — PNG is auto-generated for Odoo"
   }
 }

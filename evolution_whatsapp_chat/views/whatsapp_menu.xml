@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Actions needed by sub-menus (defined before menus) -->
+    <record id="action_whatsapp_channels" model="ir.actions.act_window">
+        <field name="name">WhatsApp Channels</field>
+        <field name="res_model">discuss.channel</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('wa_phone','!=',False),('wa_phone','!=','')]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No WhatsApp channels yet</p>
+            <p>WhatsApp channels are created automatically when you send or receive a message.</p>
+        </field>
+    </record>
+
+    <!-- Root app menu — shows as a tile on the home screen with icon.png -->
+    <menuitem id="menu_whatsapp_root"
+              name="WhatsApp"
+              sequence="91"
+              web_icon="evolution_whatsapp_chat,static/description/icon.png"/>
+
+    <!-- Top-level sections -->
+    <menuitem id="menu_whatsapp_messaging"
+              name="Messaging"
+              parent="menu_whatsapp_root"
+              sequence="10"/>
+
+    <menuitem id="menu_whatsapp_campaigns_section"
+              name="Campaigns"
+              parent="menu_whatsapp_root"
+              sequence="20"/>
+
+    <menuitem id="menu_whatsapp_reporting"
+              name="Reporting"
+              parent="menu_whatsapp_root"
+              sequence="30"/>
+
+    <!-- Messaging -->
+    <menuitem id="menu_whatsapp_templates"
+              name="Message Templates"
+              parent="menu_whatsapp_messaging"
+              action="action_whatsapp_template"
+              sequence="10"/>
+
+    <menuitem id="menu_whatsapp_channels"
+              name="WhatsApp Channels"
+              parent="menu_whatsapp_messaging"
+              action="action_whatsapp_channels"
+              sequence="20"/>
+
+    <!-- Campaigns -->
+    <menuitem id="menu_whatsapp_campaigns"
+              name="Campaigns"
+              parent="menu_whatsapp_campaigns_section"
+              action="action_wa_campaign"
+              sequence="10"/>
+
+    <!-- Reporting -->
+    <menuitem id="menu_wa_log_all"
+              name="All Messages"
+              parent="menu_whatsapp_reporting"
+              action="action_wa_message_log"
+              sequence="10"/>
+
+    <menuitem id="menu_wa_log_sent"
+              name="Sent"
+              parent="menu_whatsapp_reporting"
+              action="action_wa_log_outbound"
+              sequence="20"/>
+
+    <menuitem id="menu_wa_log_received"
+              name="Received"
+              parent="menu_whatsapp_reporting"
+              action="action_wa_log_inbound"
+              sequence="30"/>
+
+    <menuitem id="menu_wa_log_replied"
+              name="Got Replies"
+              parent="menu_whatsapp_reporting"
+              action="action_wa_log_replied"
+              sequence="40"/>
+</odoo>

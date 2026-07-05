@@ -28,7 +28,10 @@ class OdooRPC:
         req = urllib.request.Request(
             f"{self.url}/jsonrpc",
             data=json.dumps(payload).encode(),
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": "OdooRPC/1.0",
+            },
         )
         try:
             with urllib.request.urlopen(req, context=self._ctx, timeout=self.timeout) as resp:

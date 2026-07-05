@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- LIST -->
+    <record id="view_linkedin_resume_list" model="ir.ui.view">
+        <field name="name">linkedin.resume.list</field>
+        <field name="model">linkedin.resume</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'uploaded'"
+                  decoration-danger="state == 'failed'">
+                <field name="name"/>
+                <field name="account_id"/>
+                <field name="attachment_name"/>
+                <field name="upload_date"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'uploaded'"
+                       decoration-danger="state == 'failed'"
+                       decoration-muted="state == 'draft'"/>
+                <button name="action_upload" type="object" string="Upload"
+                        class="btn-sm btn-primary"
+                        invisible="state == 'uploaded'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="view_linkedin_resume_form" model="ir.ui.view">
+        <field name="name">linkedin.resume.form</field>
+        <field name="model">linkedin.resume</field>
+        <field name="arch" type="xml">
+            <form string="LinkedIn Resume">
+                <header>
+                    <button name="action_upload" type="object" string="Upload to LinkedIn"
+                            class="btn-primary" invisible="state == 'uploaded'"/>
+                    <button name="action_post_as_document" type="object"
+                            string="Share as Post" class="btn-secondary"
+                            invisible="state != 'uploaded'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,uploaded"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="account_id"/>
+                        </group>
+                        <group>
+                            <field name="attachment_id" widget="many2one"/>
+                            <field name="upload_date" readonly="1"/>
+                            <field name="linkedin_document_urn" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="failure_reason" readonly="1"
+                           invisible="state != 'failed'" string="Error"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_linkedin_resume" model="ir.actions.act_window">
+        <field name="name">Resumes</field>
+        <field name="res_model">linkedin.resume</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

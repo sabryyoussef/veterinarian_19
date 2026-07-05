@@ -1,0 +1,93 @@
+{
+  "page_name": "بيت الدواء البيطري -pet spot",
+  "slot_count": 4,
+  "extra_count": 12,
+  "slots": [
+    {
+      "id": "clinic_front",
+      "file": "clinic-front.jpg",
+      "alt": "PetSpot El Sahel clinic front",
+      "source_id": "1277241224188303"
+    },
+    {
+      "id": "grooming",
+      "file": "grooming-area.jpg",
+      "alt": "PetSpot grooming area",
+      "source_id": "1296800302232395"
+    },
+    {
+      "id": "boarding",
+      "file": "boarding-area.jpg",
+      "alt": "PetSpot boarding area",
+      "source_id": "1562202705692152"
+    },
+    {
+      "id": "veterinary",
+      "file": "veterinary-care.jpg",
+      "alt": "PetSpot veterinary care",
+      "source_id": "1277026040876488"
+    }
+  ],
+  "extras": [
+    {
+      "id": "1278412907404468",
+      "file": "gallery-1278412907404468.jpg",
+      "alt": "PetSpot clinic photo"
+    },
+    {
+      "id": "1378190768902001_1282875233624902",
+      "file": "gallery-1378190768902001_1282875233624902.jpg",
+      "alt": "Pet Spot Clinic - Emergency"
+    },
+    {
+      "id": "1297497978829294",
+      "file": "gallery-1297497978829294.jpg",
+      "alt": "Pet Spot Veterinary Clinic North Coast"
+    },
+    {
+      "id": "1287346343177791",
+      "file": "gallery-1287346343177791.jpg",
+      "alt": "Care for Your Dog... Because They Deserve the Best!"
+    },
+    {
+      "id": "1288112879767804",
+      "file": "gallery-1288112879767804.jpg",
+      "alt": "Pet Spot North Coast Veterinary Clinic"
+    },
+    {
+      "id": "1276971160881976",
+      "file": "gallery-1276971160881976.jpg",
+      "alt": "بيت الدواء البيطري"
+    },
+    {
+      "id": "1276947587551000",
+      "file": "gallery-1276947587551000.jpg",
+      "alt": "عيادتك البيطرية الموثوقة لكل أصدقائك الفرويين!"
+    },
+    {
+      "id": "1282727873639638",
+      "file": "gallery-1282727873639638.jpg",
+      "alt": "Welcome to PetSpot Veterinary Clinic!"
+    },
+    {
+      "id": "1277246587521100",
+      "file": "gallery-1277246587521100.jpg",
+      "alt": "PetSpot clinic photo"
+    },
+    {
+      "id": "1277246397521119",
+      "file": "gallery-1277246397521119.jpg",
+      "alt": "PetSpot clinic photo"
+    },
+    {
+      "id": "910680220844407",
+      "file": "gallery-910680220844407.jpg",
+      "alt": "PetSpot clinic photo"
+    },
+    {
+      "id": "1285094490069643",
+      "file": "gallery-1285094490069643.jpg",
+      "alt": "PetSpot clinic photo"
+    }
+  ]
+}

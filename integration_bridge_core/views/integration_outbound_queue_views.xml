@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Integration Outbound Queue List View -->
+    <record id="view_integration_outbound_queue_tree" model="ir.ui.view">
+        <field name="name">integration.outbound.queue.tree</field>
+        <field name="model">integration.outbound.queue</field>
+        <field name="arch" type="xml">
+            <list string="Outbound Message Queue">
+                <field name="create_date" widget="datetime"/>
+                <field name="name"/>
+                <field name="platform" widget="badge"/>
+                <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'failed'" decoration-warning="status == 'pending'"/>
+                <field name="priority" optional="show"/>
+                <field name="retry_count" optional="show"/>
+                <field name="next_retry_at" widget="datetime" optional="hide"/>
+                <field name="sent_at" widget="datetime" optional="hide"/>
+                <field name="related_model" optional="hide"/>
+                <field name="related_res_id" optional="hide"/>
+                <button name="action_send_now" string="Send Now" type="object" 
+                        invisible="status != 'pending'" icon="fa-paper-plane" title="Send this message now"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Integration Outbound Queue Form View -->
+    <record id="view_integration_outbound_queue_form" model="ir.ui.view">
+        <field name="name">integration.outbound.queue.form</field>
+        <field name="model">integration.outbound.queue</field>
+        <field name="arch" type="xml">
+            <form string="Outbound Message">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="pending,sent,failed"/>
+                    <button name="action_send_now" string="Send Now" type="object" 
+                            invisible="status != 'pending'" class="btn-primary"/>
+                    <button name="action_view_log" string="View Integration Log" type="object" 
+                            invisible="log_id == False" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Message title..."/></h1>
+                    </div>
+                    <group>
+                        <group string="Destination">
+                            <field name="platform" widget="radio"/>
+                            <field name="endpoint_url" placeholder="https://..."/>
+                            <field name="http_method"/>
+                            <field name="priority"/>
+                        </group>
+                        <group string="Status">
+                            <field name="retry_count" readonly="1"/>
+                            <field name="max_retries"/>
+                            <field name="next_retry_at" widget="datetime" readonly="1"/>
+                            <field name="sent_at" widget="datetime" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Related Record">
+                        <group>
+                            <field name="related_model"/>
+                            <field name="related_res_id"/>
+                            <field name="log_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payload">
+                            <field name="payload" widget="ace" options="{'mode': 'json'}" placeholder="Message payload (JSON)..."/>
+                        </page>
+                        <page string="Headers">
+                            <field name="headers" widget="ace" options="{'mode': 'json'}" placeholder='{"Authorization": "Bearer xxx", ...}'/>
+                        </page>
+                        <page string="Response" invisible="status == 'pending'">
+                            <group>
+                                <field name="http_status_code" readonly="1"/>
+                            </group>
+                            <field name="response_data" widget="ace" options="{'mode': 'json'}" readonly="1" placeholder="Response data..."/>
+                        </page>
+                        <page string="Error" invisible="status != 'failed'">
+                            <field name="error_message" readonly="1" placeholder="Error message..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Integration Outbound Queue Search View -->
+    <record id="view_integration_outbound_queue_search" model="ir.ui.view">
+        <field name="name">integration.outbound.queue.search</field>
+        <field name="model">integration.outbound.queue</field>
+        <field name="arch" type="xml">
+            <search string="Outbound Queue">
+                <field name="name"/>
+                <field name="platform"/>
+                <field name="endpoint_url"/>
+                <separator/>
+                <filter string="Pending" name="filter_pending" domain="[('status', '=', 'pending')]"/>
+                <filter string="Sent" name="filter_sent" domain="[('status', '=', 'sent')]"/>
+                <filter string="Failed" name="filter_failed" domain="[('status', '=', 'failed')]"/>
+                <separator/>
+                <filter string="High Priority" name="filter_high_priority" domain="[('priority', '&gt;=', 7)]"/>
+                <filter string="Needs Retry" name="filter_needs_retry"
+                        domain="[('status', '=', 'failed'), ('retry_count', '&lt;', 3)]"/>
+                <filter string="Platform" name="group_by_platform" context="{'group_by': 'platform'}"/>
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                    <filter string="Priority" name="group_by_priority" context="{'group_by': 'priority'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Integration Outbound Queue Action -->
+    <record id="action_integration_outbound_queue" model="ir.actions.act_window">
+        <field name="name">Outbound Message Queue</field>
+        <field name="res_model">integration.outbound.queue</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No queued messages
+            </p>
+            <p>
+                Outbound messages are automatically queued when Odoo needs to send
+                notifications to external platforms like Chatwoot or Typebot.
+            </p>
+        </field>
+    </record>
+</odoo>

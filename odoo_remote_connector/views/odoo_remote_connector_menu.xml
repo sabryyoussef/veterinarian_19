@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_odoo_remote_connector_root"
+              name="Odoo Connections"
+              sequence="95"/>
+
+    <menuitem id="menu_odoo_remote_connection"
+              name="Remote Connections"
+              parent="menu_odoo_remote_connector_root"
+              action="action_odoo_remote_connection"
+              sequence="10"/>
+
+    <menuitem id="menu_odoo_remote_connection_settings"
+              name="Remote Connections"
+              parent="base.menu_administration"
+              action="action_odoo_remote_connection"
+              sequence="120"
+              groups="base.group_system"/>
+
+</odoo>

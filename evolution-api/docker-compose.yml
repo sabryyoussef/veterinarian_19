@@ -1,0 +1,60 @@
+# PetSpot — Evolution API (WhatsApp gateway for evolution_whatsapp_chat)
+# Docs: https://doc.evolution-api.com/v2/en/install/docker
+# Odoo modules expect API at http://127.0.0.1:8099 (see integration_bridge.evolution_url)
+
+name: petspot-evolution
+
+services:
+  evolution-api:
+    container_name: petspot_evolution_api
+    image: evoapicloud/evolution-api:latest
+    restart: unless-stopped
+    depends_on:
+      - evolution-redis
+      - evolution-postgres
+    ports:
+      - "127.0.0.1:8099:8080"
+    volumes:
+      - evolution_instances:/evolution/instances
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - petspot-evolution
+
+  evolution-redis:
+    container_name: petspot_evolution_redis
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - evolution_redis:/data
+    networks:
+      petspot-evolution:
+        aliases:
+          - redis
+
+  evolution-postgres:
+    container_name: petspot_evolution_postgres
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - evolution_postgres:/var/lib/postgresql/data
+    networks:
+      petspot-evolution:
+        aliases:
+          - evolution-postgres
+
+volumes:
+  evolution_instances:
+  evolution_redis:
+  evolution_postgres:
+
+networks:
+  petspot-evolution:
+    name: petspot-evolution

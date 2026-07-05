@@ -1,14 +1,6 @@
 from odoo import models, fields, api, _ # type
 from odoo.exceptions import ValidationError
 
-# Check if calendar module is installed
-try:
-    # This will work if calendar module is installed
-    from odoo.addons.calendar.models.calendar_event import CalendarEvent
-    CALENDAR_INSTALLED = True
-except ImportError:
-    CALENDAR_INSTALLED = False
-
 class PetAppointment(models.Model):
     _name = 'pet.appointment'
     _description = 'Pet Appointment'
@@ -55,8 +47,9 @@ class PetAppointment(models.Model):
     follow_up_date = fields.Date(help="Recommended follow-up date")
     follow_up_notes = fields.Text(help="Follow-up instructions")
     
-    # Calendar Integration Fields (only if calendar module is installed)
+    # Calendar Integration Fields
     sync_to_calendar = fields.Boolean(default=True, help="Sync this appointment to calendar")
+    calendar_event_id = fields.Many2one('calendar.event', string='Calendar Event', ondelete='set null', help="Linked calendar event")
     enable_calendar_integration = fields.Boolean(compute='_compute_enable_calendar_integration', help="Whether calendar integration is enabled")
     has_calendar_event = fields.Boolean(compute='_compute_has_calendar_event', help="Whether a calendar event is linked")
     
@@ -240,14 +233,11 @@ class PetAppointment(models.Model):
         for rec in self:
             rec.enable_calendar_integration = rec._is_calendar_module_installed()
 
+    @api.depends('calendar_event_id')
     def _compute_has_calendar_event(self):
-        """Compute whether a calendar event exists (safe even if module missing)"""
+        """Compute whether a calendar event exists."""
         for rec in self:
-            # Truthy if there is an id set; Unknown records are fine to test for truthiness
-            if CALENDAR_INSTALLED:
-                rec.has_calendar_event = bool(rec.calendar_event_id)
-            else:
-                rec.has_calendar_event = False
+            rec.has_calendar_event = bool(rec.calendar_event_id)
 
     @api.constrains('start_datetime', 'end_datetime')
     def _check_range(self):
@@ -320,6 +310,12 @@ class PetAppointment(models.Model):
         for rec in self:
             rec.state = 'rescheduled'
 
+    def _get_primary_type_label(self):
+        """Human-readable appointment type for notifications."""
+        self.ensure_one()
+        labels = dict(self._fields['primary_type']._description_selection(self.env))
+        return labels.get(self.primary_type) or self.title or 'pet care'
+
     def action_send_notification(self):
         """Create and send notification for this appointment"""
         for rec in self:
@@ -330,36 +326,36 @@ class PetAppointment(models.Model):
             if rec.state == 'draft':
                 notification_type = 'appointment_reminder'
                 priority = 'medium'
-                message = f"Appointment scheduled: {rec.pet_id.name} has a {rec.type} appointment on {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}."
+                message = f"Appointment scheduled: {rec.pet_id.name} has a {rec._get_primary_type_label()} appointment on {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}."
             elif rec.state == 'confirmed':
                 if time_diff <= 24:  # Within 24 hours
                     notification_type = 'appointment_reminder'
                     priority = 'high'
-                    message = f"REMINDER: {rec.pet_id.name}'s {rec.type} appointment is tomorrow at {rec.start_datetime.strftime('%I:%M %p')}. Please arrive 10 minutes early."
+                    message = f"REMINDER: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment is tomorrow at {rec.start_datetime.strftime('%I:%M %p')}. Please arrive 10 minutes early."
                 else:
                     notification_type = 'appointment_reminder'
                     priority = 'medium'
-                    message = f"Confirmed: {rec.pet_id.name}'s {rec.type} appointment is scheduled for {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}."
+                    message = f"Confirmed: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment is scheduled for {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}."
             elif rec.state == 'in_progress':
                 notification_type = 'general'
                 priority = 'medium'
-                message = f"In Progress: {rec.pet_id.name}'s {rec.type} appointment is currently in progress with {rec.resource_id.name if rec.resource_id else 'staff'}."
+                message = f"In Progress: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment is currently in progress with {rec.resource_id.name if rec.resource_id else 'staff'}."
             elif rec.state == 'done':
                 notification_type = 'general'
                 priority = 'low'
-                message = f"Completed: {rec.pet_id.name}'s {rec.type} appointment was completed on {rec.start_datetime.strftime('%B %d, %Y')}. Follow-up: {rec.follow_up_date.strftime('%B %d, %Y') if rec.follow_up_date else 'Not required'}."
+                message = f"Completed: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment was completed on {rec.start_datetime.strftime('%B %d, %Y')}. Follow-up: {rec.follow_up_date.strftime('%B %d, %Y') if rec.follow_up_date else 'Not required'}."
             elif rec.state == 'cancelled':
                 notification_type = 'general'
                 priority = 'low'
-                message = f"Cancelled: {rec.pet_id.name}'s {rec.type} appointment scheduled for {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')} has been cancelled."
+                message = f"Cancelled: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment scheduled for {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')} has been cancelled."
             elif rec.state == 'rescheduled':
                 notification_type = 'general'
                 priority = 'medium'
-                message = f"Rescheduled: {rec.pet_id.name}'s {rec.type} appointment has been rescheduled. New time: {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}."
+                message = f"Rescheduled: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment has been rescheduled. New time: {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}."
             else:
                 notification_type = 'general'
                 priority = 'low'
-                message = f"Update: {rec.pet_id.name}'s {rec.type} appointment status is {rec.state}."
+                message = f"Update: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment status is {rec.state}."
             
             # Create notification
             notification = self.env['pet.notification'].sudo().create({
@@ -408,7 +404,7 @@ class PetAppointment(models.Model):
                     'name': f'Appointment Reminder - {rec.pet_id.name}',
                     'pet_id': rec.pet_id.id,
                     'notification_type': 'appointment_reminder',
-                    'message': f"Reminder: {rec.pet_id.name}'s {rec.type} appointment is scheduled for {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}. Please arrive 10 minutes early.",
+                    'message': f"Reminder: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment is scheduled for {rec.start_datetime.strftime('%B %d, %Y at %I:%M %p')}. Please arrive 10 minutes early.",
                     'priority': 'high' if (rec.start_datetime - fields.Datetime.now()).total_seconds() <= 86400 else 'medium',  # 24 hours
                     'status': 'draft',
                     'related_appointment_id': rec.id,
@@ -1099,37 +1095,24 @@ class PetAppointment(models.Model):
             }
         
         # Create or update calendar event
-        if CALENDAR_INSTALLED:
-            if not self.calendar_event_id:
-                event_vals = {
-                    'name': f"Pet Appointment: {self.title}",
-                    'start': self.start_datetime,
-                    'stop': self.end_datetime,
-                    'description': f"Pet: {self.pet_id.sudo().name}\nOwner: {self.owner_id.sudo().name}\nNotes: {self.notes or ''}",
-                    'partner_ids': [(6, 0, [self.owner_id.id])],
-                    'user_id': self.resource_id.user_ids[0].id if self.resource_id and self.resource_id.user_ids else self.env.user.id,
-                }
-                event = self.env['calendar.event'].sudo().create(event_vals)
-                self.calendar_event_id = event.id
-            else:
-                self.calendar_event_id.sudo().write({
-                    'name': f"Pet Appointment: {self.title}",
-                    'start': self.start_datetime,
-                    'stop': self.end_datetime,
-                    'description': f"Pet: {self.pet_id.sudo().name}\nOwner: {self.owner_id.sudo().name}\nNotes: {self.notes or ''}",
-                })
-        else:
-            # Calendar module not installed, cannot sync
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': 'Error',
-                    'message': 'Calendar module is not installed. Cannot sync to calendar.',
-                    'type': 'error',
-                    'sticky': True,
-                }
+        if not self.calendar_event_id:
+            event_vals = {
+                'name': f"Pet Appointment: {self.title}",
+                'start': self.start_datetime,
+                'stop': self.end_datetime,
+                'description': f"Pet: {self.pet_id.sudo().name}\nOwner: {self.owner_id.sudo().name}\nNotes: {self.notes or ''}",
+                'partner_ids': [(6, 0, [self.owner_id.id])],
+                'user_id': self.resource_id.user_ids[0].id if self.resource_id and self.resource_id.user_ids else self.env.user.id,
             }
+            event = self.env['calendar.event'].sudo().create(event_vals)
+            self.calendar_event_id = event.id
+        else:
+            self.calendar_event_id.sudo().write({
+                'name': f"Pet Appointment: {self.title}",
+                'start': self.start_datetime,
+                'stop': self.end_datetime,
+                'description': f"Pet: {self.pet_id.sudo().name}\nOwner: {self.owner_id.sudo().name}\nNotes: {self.notes or ''}",
+            })
         
         return {
             'type': 'ir.actions.client',
@@ -1144,7 +1127,7 @@ class PetAppointment(models.Model):
 
     def action_view_calendar_event(self):
         """Open the linked calendar event"""
-        if not CALENDAR_INSTALLED or not self.calendar_event_id:
+        if not self.calendar_event_id:
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
@@ -1204,8 +1187,3 @@ class PetAppointment(models.Model):
             'context': {'default_appointment_id': self.id},
             'target': 'current',
         }
-
-
-# Conditionally add calendar_event_id field if calendar module is installed
-if CALENDAR_INSTALLED:
-    PetAppointment.calendar_event_id = fields.Many2one('calendar.event', string='Calendar Event', help="Linked calendar event")

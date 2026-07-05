@@ -23,7 +23,18 @@ class PetspotNotifyMixin(models.AbstractModel):
         ).strip()
 
     def _petspot_public_base_url(self):
-        return self._petspot_icp().get_param('web.base.url', 'http://127.0.0.1:8027').rstrip('/')
+        ICP = self._petspot_icp()
+        explicit = (ICP.get_param('petspot_clinic_portal.public_base_url') or '').strip().rstrip('/')
+        if explicit:
+            return explicit
+        return ICP.get_param('web.base.url', 'https://drpaws.ai').rstrip('/')
+
+    def _petspot_evolution_number(self, group_jid=None):
+        """Evolution group sends need the full @g.us JID."""
+        jid = (group_jid or self._petspot_group_jid() or '').strip()
+        if jid.endswith('@g.us'):
+            return jid
+        return jid.split('@', 1)[0] if jid else ''
 
     def _petspot_record_form_url(self, record):
         if not record:
@@ -38,10 +49,10 @@ class PetspotNotifyMixin(models.AbstractModel):
         evo_key = ICP.get_param('integration_bridge.evolution_key', '')
         instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
         group_jid = self._petspot_group_jid()
-        if not evo_key or not group_jid:
+        number = self._petspot_evolution_number(group_jid)
+        if not evo_key or not number:
             _logger.warning('petspot notify: Evolution not configured')
             return False
-        number = group_jid.split('@')[0]
         try:
             resp = requests.post(
                 f"{evo_url}/message/sendText/{quote(instance, safe='')}",
@@ -63,9 +74,9 @@ class PetspotNotifyMixin(models.AbstractModel):
         evo_key = ICP.get_param('integration_bridge.evolution_key', '')
         instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
         group_jid = self._petspot_group_jid()
-        if not evo_key or not group_jid or not url:
+        number = self._petspot_evolution_number(group_jid)
+        if not evo_key or not number or not url:
             return False
-        number = group_jid.split('@')[0]
         payload = {
             'number': number,
             'title': title,

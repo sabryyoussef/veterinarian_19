@@ -11,7 +11,7 @@
                 </button>
             </div>
 
-            <!-- Sidebar -->
+            <!-- Sidebar stays mounted for all hub screens -->
             <aside t-attf-class="o_petspot_clinic_hub_sidebar border-end bg-view {{ state.mobileNavOpen ? 'o_open' : '' }}">
                 <div class="o_petspot_clinic_hub_brand px-3 py-3 border-bottom">
                     <div class="fw-bold text-truncate">Clinic Hub</div>
@@ -29,67 +29,83 @@
                 </nav>
             </aside>
 
-            <!-- Main dashboard -->
-            <main class="o_petspot_clinic_hub_main flex-grow-1 overflow-auto p-3 p-md-4">
+            <!-- Main content: dashboard OR embedded act_window view -->
+            <main class="o_petspot_clinic_hub_main flex-grow-1 overflow-hidden d-flex flex-column min-w-0">
                 <t t-if="state.loading">
-                    <div class="text-muted">Loading dashboard…</div>
+                    <div class="text-muted p-3 p-md-4">Loading dashboard…</div>
+                </t>
+                <t t-elif="state.contentLoading">
+                    <div class="text-muted p-3 p-md-4">Opening…</div>
+                </t>
+                <t t-elif="state.contentMode === 'view' and state.viewProps">
+                    <div class="o_petspot_clinic_hub_view_header border-bottom px-3 py-2 d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-light" t-on-click="() => this._showDashboard()">
+                            <i class="fa fa-home me-1"/> Dashboard
+                        </button>
+                        <span class="fw-semibold text-truncate" t-esc="state.embeddedTitle"/>
+                    </div>
+                    <div class="o_petspot_clinic_hub_view flex-grow-1 overflow-auto min-h-0">
+                        <View t-props="state.viewProps" t-key="state.viewKey"/>
+                    </div>
                 </t>
                 <t t-else="">
-                    <div class="mb-4">
-                        <h1 class="h3 mb-1">Dashboard</h1>
-                        <p class="text-muted mb-0">Quick access to daily clinic work. Use the sidebar or cards below.</p>
-                    </div>
+                    <div class="o_petspot_clinic_hub_dashboard overflow-auto p-3 p-md-4 flex-grow-1">
+                        <div class="mb-4">
+                            <h1 class="h3 mb-1">Dashboard</h1>
+                            <p class="text-muted mb-0">Quick access to daily clinic work. Sidebar stays open while you switch apps.</p>
+                        </div>
 
-                    <div class="row g-3 mb-4">
-                        <div class="col-12 col-md-4">
-                            <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
-                                    t-on-click="() => this.openAction('pet_management.action_pet_appointment')">
-                                <div class="card-body">
-                                    <div class="text-muted small">Appointments today</div>
-                                    <div class="display-6" t-esc="state.kpis.appointmentsToday ?? '—'"/>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
-                                    t-on-click="() => this.openAction('pet_management.action_pet_medical_visit')">
-                                <div class="card-body">
-                                    <div class="text-muted small">Incomplete cases</div>
-                                    <div class="display-6" t-esc="state.kpis.incompleteVisits ?? '—'"/>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
-                                    t-on-click="() => this.openAction('petspot_wa_intake.action_petspot_wa_intake')">
-                                <div class="card-body">
-                                    <div class="text-muted small">WA Intake drafts</div>
-                                    <div class="display-6" t-esc="state.kpis.waIntakeDrafts ?? '—'"/>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="mb-2 fw-semibold">Shortcuts</div>
-                    <div class="row g-2">
-                        <t t-foreach="state.items.filter((i) => i.kind !== 'dashboard')" t-as="item" t-key="'card_' + item.id">
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <button type="button"
-                                        class="btn btn-outline-secondary w-100 text-start py-3"
-                                        t-on-click="() => this.onNavClick(item)">
-                                    <i t-attf-class="fa {{ item.icon }} me-2"/>
-                                    <t t-esc="item.label"/>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12 col-md-4">
+                                <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
+                                        t-on-click="() => this.openAction('pet_management.action_pet_appointment', 'appointments')">
+                                    <div class="card-body">
+                                        <div class="text-muted small">Appointments today</div>
+                                        <div class="display-6" t-esc="state.kpis.appointmentsToday ?? '—'"/>
+                                    </div>
                                 </button>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
+                                        t-on-click="() => this.openAction('pet_management.action_pet_medical_visit', 'medical_visits')">
+                                    <div class="card-body">
+                                        <div class="text-muted small">Incomplete cases</div>
+                                        <div class="display-6" t-esc="state.kpis.incompleteVisits ?? '—'"/>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
+                                        t-on-click="() => this.openAction('petspot_wa_intake.action_petspot_wa_intake', 'wa_intake')">
+                                    <div class="card-body">
+                                        <div class="text-muted small">WA Intake drafts</div>
+                                        <div class="display-6" t-esc="state.kpis.waIntakeDrafts ?? '—'"/>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-2 fw-semibold">Shortcuts</div>
+                        <div class="row g-2">
+                            <t t-foreach="state.items.filter((i) => i.kind !== 'dashboard')" t-as="item" t-key="'card_' + item.id">
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <button type="button"
+                                            class="btn btn-outline-secondary w-100 text-start py-3"
+                                            t-on-click="() => this.onNavClick(item)">
+                                        <i t-attf-class="fa {{ item.icon }} me-2"/>
+                                        <t t-esc="item.label"/>
+                                    </button>
+                                </div>
+                            </t>
+                        </div>
+
+                        <t t-if="state.missingXmlIds.length">
+                            <div class="alert alert-warning mt-4 mb-0">
+                                <strong>Hidden links (missing actions):</strong>
+                                <span t-esc="state.missingXmlIds.join(', ')"/>
                             </div>
                         </t>
                     </div>
-
-                    <t t-if="state.missingXmlIds.length">
-                        <div class="alert alert-warning mt-4 mb-0">
-                            <strong>Hidden links (missing actions):</strong>
-                            <span t-esc="state.missingXmlIds.join(', ')"/>
-                        </div>
-                    </t>
                 </t>
             </main>
         </div>

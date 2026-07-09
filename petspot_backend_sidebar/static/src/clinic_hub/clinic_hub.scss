@@ -51,6 +51,23 @@
 
 .o_petspot_clinic_hub_main {
     min-width: 0;
+    background: var(--o-view-background-color, #f8f9fa);
+}
+
+.o_petspot_clinic_hub_view {
+    // Embedded list/form/kanban fills the right pane; sidebar stays visible.
+    position: relative;
+
+    .o_action,
+    .o_view_controller,
+    .o_content {
+        min-height: 100%;
+    }
+}
+
+.o_petspot_clinic_hub_view_header {
+    flex: 0 0 auto;
+    background: var(--o-view-background-color, #fff);
 }
 
 .o_petspot_kpi {

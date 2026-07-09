@@ -1,11 +1,13 @@
 /** @odoo-module **/
 
-import { Component, onWillStart, useState } from "@odoo/owl";
+import { Component, onWillStart, useState, useSubEnv } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { user } from "@web/core/user";
+import { makeContext } from "@web/core/context";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { _t } from "@web/core/l10n/translation";
+import { View, getDefaultConfig } from "@web/views/view";
 
 /**
  * Nav items for Clinic Hub.
@@ -131,6 +133,7 @@ const NAV_ITEMS = [
 
 export class PetspotClinicHub extends Component {
     static template = "petspot_backend_sidebar.ClinicHub";
+    static components = { View };
     static props = { ...standardActionServiceProps };
     static displayName = "Clinic Hub";
 
@@ -138,7 +141,6 @@ export class PetspotClinicHub extends Component {
         this.actionService = useService("action");
         this.orm = useService("orm");
         this.notification = useService("notification");
-        // Depends on web_enterprise (home_menu service).
         this.homeMenu = useService("home_menu");
 
         this.state = useState({
@@ -146,12 +148,27 @@ export class PetspotClinicHub extends Component {
             items: [],
             missingXmlIds: [],
             loading: true,
+            contentLoading: false,
             kpis: {
                 appointmentsToday: null,
                 incompleteVisits: null,
                 waIntakeDrafts: null,
             },
             mobileNavOpen: false,
+            // "dashboard" | "view"
+            contentMode: "dashboard",
+            viewKey: 0,
+            viewProps: null,
+            embeddedAction: null,
+            embeddedTitle: "",
+        });
+
+        // Standalone View needs a config (breadcrumbs / historyBack).
+        useSubEnv({
+            config: {
+                ...getDefaultConfig(),
+                historyBack: () => this._historyBack(),
+            },
         });
 
         onWillStart(async () => {
@@ -242,15 +259,130 @@ export class PetspotClinicHub extends Component {
         ]);
     }
 
+    _firstMultiView(action) {
+        const views = (action.views || []).filter((v) => v[1] !== "search");
+        return views[0] || [false, "list"];
+    }
+
+    _searchViewId(action) {
+        const search = (action.views || []).find((v) => v[1] === "search");
+        return search ? search[0] : false;
+    }
+
+    _buildViewProps(action, { type, resId = false, resIds } = {}) {
+        const views = action.views || [];
+        const multi = this._firstMultiView(action);
+        const viewType = type || multi[1];
+        const viewIdEntry = views.find((v) => v[1] === viewType);
+        const viewId = viewIdEntry ? viewIdEntry[0] : false;
+        const context = makeContext([action.context || {}]);
+        let groupBy = context.group_by || [];
+        if (typeof groupBy === "string") {
+            groupBy = [groupBy];
+        }
+
+        const openFormView = (id, { activeIds, readonly } = {}) => {
+            this._setEmbeddedView(action, {
+                type: "form",
+                resId: id || false,
+                resIds: activeIds,
+                readonly,
+            });
+        };
+
+        const props = {
+            resModel: action.res_model,
+            type: viewType,
+            viewId,
+            views,
+            domain: action.domain || [],
+            context,
+            groupBy,
+            searchViewId: this._searchViewId(action),
+            loadIrFilters: views.some((v) => v[1] === "search"),
+            loadActionMenus: true,
+            noBreadcrumbs: true,
+            display: { mode: "primary" },
+            selectRecord: openFormView,
+            createRecord: () => openFormView(false),
+        };
+
+        if (viewType === "form") {
+            props.resId = resId || action.res_id || false;
+            if (resIds) {
+                props.resIds = resIds;
+            }
+        }
+
+        if (action.help) {
+            props.noContentHelp = action.help;
+        }
+        return props;
+    }
+
+    _setEmbeddedView(action, options = {}) {
+        this.state.contentMode = "view";
+        this.state.embeddedAction = action;
+        this.state.embeddedTitle = action.display_name || action.name || "";
+        this.state.viewProps = this._buildViewProps(action, options);
+        this.state.viewKey += 1;
+        this.state.contentLoading = false;
+    }
+
+    _historyBack() {
+        const action = this.state.embeddedAction;
+        if (!action) {
+            this._showDashboard();
+            return;
+        }
+        // From form → multi-record view of same action; otherwise dashboard.
+        if (this.state.viewProps?.type === "form") {
+            this._setEmbeddedView(action, {});
+            return;
+        }
+        this._showDashboard();
+    }
+
+    async _showDashboard() {
+        this.state.activeId = "dashboard";
+        this.state.contentMode = "dashboard";
+        this.state.viewProps = null;
+        this.state.embeddedAction = null;
+        this.state.embeddedTitle = "";
+        await this._loadKpis();
+    }
+
+    async _openEmbeddedAction(xmlId, activeId) {
+        this.state.contentLoading = true;
+        this.state.activeId = activeId;
+        try {
+            const action = await this.actionService.loadAction(xmlId);
+            if (action.type !== "ir.actions.act_window") {
+                // Client/report/url actions still need the global action manager.
+                this.notification.add(
+                    _t("This screen opens outside Clinic Hub (sidebar will close)."),
+                    { type: "info" }
+                );
+                await this.actionService.doAction(xmlId, { clearBreadcrumbs: true });
+                return;
+            }
+            this._setEmbeddedView(action, {});
+        } catch (err) {
+            console.error("[Clinic Hub] embed failed", xmlId, err);
+            this.notification.add(_t("Could not open that screen."), { type: "danger" });
+            this.state.contentLoading = false;
+        }
+    }
+
     async onNavClick(item) {
-        this.state.activeId = item.id;
         this.state.mobileNavOpen = false;
 
         if (item.kind === "dashboard") {
-            await this._loadKpis();
+            await this._showDashboard();
             return;
         }
         if (item.kind === "home_menu") {
+            this.state.activeId = item.id;
             if (this.homeMenu) {
                 await this.homeMenu.toggle(true);
             } else {
@@ -261,14 +393,7 @@ export class PetspotClinicHub extends Component {
             return;
         }
         if (item.actionXmlId) {
-            try {
-                await this.actionService.doAction(item.actionXmlId, {
-                    clearBreadcrumbs: true,
-                });
-            } catch (err) {
-                console.error("[Clinic Hub] doAction failed", item.actionXmlId, err);
-                this.notification.add(_t("Could not open that screen."), { type: "danger" });
-            }
+            await this._openEmbeddedAction(item.actionXmlId, item.id);
         }
     }
 
@@ -276,13 +401,8 @@ export class PetspotClinicHub extends Component {
         this.state.mobileNavOpen = !this.state.mobileNavOpen;
     }
 
-    async openAction(xmlId) {
-        try {
-            await this.actionService.doAction(xmlId, { clearBreadcrumbs: true });
-        } catch (err) {
-            console.error("[Clinic Hub] card action failed", xmlId, err);
-            this.notification.add(_t("Could not open that screen."), { type: "danger" });
-        }
+    async openAction(xmlId, activeId) {
+        await this._openEmbeddedAction(xmlId, activeId || this.state.activeId);
     }
 }
 

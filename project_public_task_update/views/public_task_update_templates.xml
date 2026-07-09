@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="public_task_update_layout" name="Public Task Update Layout">
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <title><t t-esc="page_title or 'Task update'"/></title>
+                <style>
+                    * { box-sizing: border-box; }
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                        margin: 0; padding: 1rem;
+                        background: #f4f6f8; color: #1f2937;
+                        line-height: 1.5;
+                    }
+                    .card {
+                        max-width: 520px; margin: 1rem auto;
+                        background: #fff; border-radius: 12px;
+                        padding: 1.25rem 1.5rem;
+                        box-shadow: 0 2px 12px rgba(0,0,0,.08);
+                    }
+                    h1 { font-size: 1.25rem; margin: 0 0 .5rem; }
+                    .subtitle { color: #6b7280; font-size: .9rem; margin-bottom: 1rem; }
+                    label { display: block; font-weight: 600; margin: .75rem 0 .25rem; font-size: .9rem; }
+                    .label-ar { font-weight: 400; color: #6b7280; font-size: .85rem; }
+                    input, textarea, select {
+                        width: 100%; padding: .6rem .75rem;
+                        border: 1px solid #d1d5db; border-radius: 8px;
+                        font-size: 1rem;
+                    }
+                    textarea { min-height: 120px; resize: vertical; }
+                    .btn {
+                        display: block; width: 100%; margin-top: 1.25rem;
+                        padding: .75rem; border: none; border-radius: 8px;
+                        background: #2563eb; color: #fff; font-size: 1rem;
+                        font-weight: 600; cursor: pointer;
+                    }
+                    .btn:hover { background: #1d4ed8; }
+                    .alert {
+                        padding: .75rem 1rem; border-radius: 8px;
+                        margin-bottom: 1rem; font-size: .9rem;
+                    }
+                    .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+                    .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+                    .required::after { content: " *"; color: #dc2626; }
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <t t-out="0"/>
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <template id="public_task_update_form" name="Public Task Update Form">
+        <t t-call="project_public_task_update.public_task_update_layout">
+            <t t-set="page_title" t-value="task_title"/>
+            <h1 t-esc="task_title"/>
+            <p class="subtitle">
+                Complete missing details / استكمال البيانات المطلوبة
+            </p>
+            <t t-if="error_message">
+                <div class="alert alert-error" t-esc="error_message"/>
+            </t>
+            <form method="post" t-attf-action="/task/update/{{ token }}">
+                <label class="required">
+                    Your name / الاسم
+                    <span class="label-ar"/>
+                </label>
+                <input type="text" name="submitter_name" required="required" maxlength="200"
+                       t-att-value="(form or {}).get('submitter_name', '')"/>
+
+                <label>
+                    Email or phone / البريد أو الهاتف
+                </label>
+                <input type="text" name="submitter_contact" maxlength="200"
+                       t-att-value="(form or {}).get('submitter_contact', '')"/>
+
+                <label class="required">
+                    Details / clarification / التفاصيل
+                </label>
+                <textarea name="clarification" required="required" maxlength="5000"><t t-esc="(form or {}).get('clarification', '')"/></textarea>
+
+                <label>
+                    Priority suggestion / اقتراح الأولوية
+                </label>
+                <select name="priority_suggestion">
+                    <option value="">—</option>
+                    <option value="low" t-att-selected="(form or {}).get('priority_suggestion') == 'low'">Low / منخفض</option>
+                    <option value="normal" t-att-selected="(form or {}).get('priority_suggestion') == 'normal'">Normal / عادي</option>
+                    <option value="high" t-att-selected="(form or {}).get('priority_suggestion') == 'high'">High / عالي</option>
+                </select>
+
+                <label>
+                    Due date suggestion / اقتراح تاريخ الاستحقاق
+                </label>
+                <input type="date" name="due_date_suggestion"
+                       t-att-value="(form or {}).get('due_date_suggestion', '')"/>
+
+                <button type="submit" class="btn">Submit / إرسال</button>
+            </form>
+        </t>
+    </template>
+
+    <template id="public_task_update_success" name="Public Task Update Success">
+        <t t-call="project_public_task_update.public_task_update_layout">
+            <t t-set="page_title" t-value="'Submitted'"/>
+            <div class="alert alert-success">
+                <strong>Thank you / شكراً</strong><br/>
+                Your information was received.
+                <br/>تم استلام بياناتك بنجاح.
+            </div>
+            <p class="subtitle" t-if="task_title">
+                Task: <t t-esc="task_title"/>
+            </p>
+        </t>
+    </template>
+
+    <template id="public_task_update_error" name="Public Task Update Error">
+        <t t-call="project_public_task_update.public_task_update_layout">
+            <t t-set="page_title" t-value="'Link unavailable'"/>
+            <div class="alert alert-error">
+                <t t-esc="error_message"/>
+            </div>
+            <p class="subtitle">
+                Invalid link / رابط غير صالح
+            </p>
+        </t>
+    </template>
+</odoo>

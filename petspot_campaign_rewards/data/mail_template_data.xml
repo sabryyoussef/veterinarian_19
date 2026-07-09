@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="mail_template_campaign_reward" model="mail.template">
+        <field name="name">PetSpot Campaign Reward</field>
+        <field name="model_id" ref="survey.model_survey_user_input"/>
+        <field name="subject">Your PetSpot El Sahel discount code 🎁</field>
+        <field name="email_from">{{ (object.survey_id.create_uid.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.email or object.partner_id.email }}</field>
+        <field name="body_html" type="html">
+<div>
+    <p>Congratulations from <strong>PetSpot El Sahel | بيت سبوت الساحل</strong>!</p>
+    <p>You passed the quiz. Here is your discount code:</p>
+    <p style="font-size:24px;font-weight:bold;letter-spacing:2px;">
+        <t t-out="ctx.get('discount_code') or object.loyalty_card_id.code or ''"/>
+    </p>
+    <p>
+        Discount: <t t-out="ctx.get('discount_percent', 10)"/>% off clinic services<br/>
+        Valid until: <t t-out="ctx.get('expiry_date', '')"/>
+    </p>
+    <p>
+        Redeem at reception (Amwaj 1 or Marsa Matruh) or mention the code when booking on WhatsApp.<br/>
+        📞 01201568888
+    </p>
+    <p>
+        <a t-att-href="ctx.get('reward_url', '#')">View your reward page</a>
+    </p>
+</div>
+        </field>
+    </record>
+
+</odoo>

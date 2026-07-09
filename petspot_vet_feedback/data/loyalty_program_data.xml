@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="vet_feedback_loyalty_program" model="loyalty.program">
+            <field name="name">Second Visit - Feedback Reward</field>
+            <field name="program_type">coupons</field>
+            <field name="applies_on">current</field>
+            <field name="trigger">with_code</field>
+            <field name="portal_visible">True</field>
+            <field name="portal_point_name">Feedback Reward</field>
+        </record>
+
+        <record id="vet_feedback_loyalty_rule" model="loyalty.rule">
+            <field name="program_id" ref="vet_feedback_loyalty_program"/>
+        </record>
+
+        <record id="vet_feedback_loyalty_reward" model="loyalty.reward">
+            <field name="program_id" ref="vet_feedback_loyalty_program"/>
+            <field name="reward_type">discount</field>
+            <field name="discount">10</field>
+            <field name="discount_mode">percent</field>
+            <field name="discount_applicability">order</field>
+            <field name="required_points">1</field>
+            <field name="description">10% off your next visit</field>
+        </record>
+
+    </data>
+</odoo>

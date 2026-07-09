@@ -9,8 +9,10 @@
     "depends": ["base", "web", "mail", "base_setup"],
     "data": [
         "security/ir.model.access.csv",
+        "data/post_template_data.xml",
         "data/ir_cron_data.xml",
         "views/social_media_page_views.xml",
+        "views/social_media_post_template_views.xml",
         "views/social_media_post_views.xml",
         "views/res_config_settings_views.xml",
         "views/social_media_menu.xml",

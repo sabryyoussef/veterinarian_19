@@ -56,6 +56,13 @@
                 <h1 class="brand" t-else="">PetSpot — حجز موعد</h1>
                 <p class="muted" t-if="staff_mode">سجّل العميل والحيوان وموعد اليوم</p>
                 <p class="muted" t-else="">املأ البيانات لحجز موعد في العيادة</p>
+                <t t-if="discount_code and not staff_mode">
+                    <div class="ok" style="margin-bottom: 14px;">
+                        <strong>🎁 Campaign discount | خصم الحملة</strong><br/>
+                        Code: <strong t-esc="discount_code"/>
+                        <t t-if="discount_percent"> — <t t-esc="discount_percent"/>% off</t>
+                    </div>
+                </t>
                 <t t-if="error"><div class="err" t-esc="error"/></t>
                 <form method="post" t-att-action="form_action or ''">
                     <label>اسم المالك</label>
@@ -126,9 +133,10 @@
                     <label>سبب الزيارة</label>
                     <input type="text" name="reason" required="required" t-att-value="form.get('reason') or 'كشف روتيني'"/>
                     <label>نوع الزيارة</label>
-                    <select name="visit_type">
-                        <option value="checkup">كشف روتيني</option>
-                        <option value="emergency">طوارئ</option>
+                    <select name="visit_type" id="visit_type">
+                        <option value="checkup">كشف عادي</option>
+                        <option value="emergency">كشف طوارئ</option>
+                        <option value="home_visit">كشف منزلي</option>
                         <option value="vaccination">تطعيم</option>
                         <option value="dental">أسنان</option>
                         <option value="surgery">جراحة</option>
@@ -213,6 +221,26 @@
                         <button type="button" class="btn-lite" onclick="petspotAddLine('vaccines_block','vaccine_product_id','vaccine_qty')">+ تطعيم</button>
                     </div>
 
+                    <div class="line-block" id="diagnostics_block">
+                        <h2>فحوصات تشخيصية</h2>
+                        <div class="row3 line-row diagnostic-row">
+                            <select name="diagnostic_product_id">
+                                <option value="">— فحص —</option>
+                                <t t-foreach="(catalog or {}).get('diagnostic_products') or []" t-as="p">
+                                    <option t-att-value="p.id" t-att-data-price="p.list_price" t-esc="p.display_name"/>
+                                </t>
+                            </select>
+                            <input type="number" step="0.01" min="0" name="diagnostic_qty" value="1"/>
+                            <span class="muted line-subtotal">0</span>
+                        </div>
+                        <div class="row3 diagnostic-row">
+                            <input type="text" name="diagnostic_summary" placeholder="ملخص النتيجة"/>
+                            <input type="file" name="diagnostic_file" accept="image/*,application/pdf"/>
+                            <span class="muted">ملف اختياري</span>
+                        </div>
+                        <button type="button" class="btn-lite" onclick="petspotAddDiagnosticLine()">+ فحص</button>
+                    </div>
+
                     <label>خصم (جنيه)</label>
                     <input type="number" step="0.01" min="0" name="discount_amount" id="discount_amount"
                            t-att-value="form.get('discount_amount') or 0"/>
@@ -224,6 +252,17 @@
                     </div>
 
                     <script>
+                        var petspotExamPrices = <t t-out="(catalog or {}).get('exam_price_map_json') or '{}'"/>;
+                        function petspotApplyVisitTypePrice() {
+                            var visitType = document.getElementById('visit_type')?.value || 'checkup';
+                            var feeInput = document.getElementById('consultation_fee');
+                            if (!feeInput) return;
+                            var configured = petspotExamPrices[visitType];
+                            if (configured !== undefined &amp;&amp; configured !== null) {
+                                feeInput.value = configured;
+                            }
+                            petspotRecalcTotals();
+                        }
                         function petspotLineSubtotal(row) {
                             var sel = row.querySelector('select');
                             var qty = parseFloat(row.querySelector('input[type=number]')?.value || '0');
@@ -272,7 +311,38 @@
                             });
                             petspotRecalcTotals();
                         }
+                        function petspotAddDiagnosticLine() {
+                            var block = document.getElementById('diagnostics_block');
+                            var rows = block.querySelectorAll('.diagnostic-row');
+                            if (rows.length &lt; 2) return;
+                            var productRow = rows[0].cloneNode(true);
+                            var detailRow = rows[1].cloneNode(true);
+                            productRow.querySelectorAll('select,input').forEach(function(el) {
+                                if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                                if (el.type === 'number') el.value = '1';
+                                if (el.type === 'text') el.value = '';
+                                if (el.type === 'file') el.value = '';
+                            });
+                            detailRow.querySelectorAll('input').forEach(function(el) {
+                                if (el.type === 'text') el.value = '';
+                                if (el.type === 'file') el.value = '';
+                            });
+                            var label = productRow.querySelector('.line-subtotal');
+                            if (label) label.textContent = '0';
+                            block.insertBefore(productRow, block.querySelector('.btn-lite'));
+                            block.insertBefore(detailRow, block.querySelector('.btn-lite'));
+                            productRow.querySelectorAll('select,input').forEach(function(el) {
+                                el.addEventListener('change', petspotRecalcTotals);
+                                el.addEventListener('input', petspotRecalcTotals);
+                            });
+                            petspotRecalcTotals();
+                        }
                         document.addEventListener('DOMContentLoaded', function() {
+                            var visitType = document.getElementById('visit_type');
+                            if (visitType) {
+                                visitType.addEventListener('change', petspotApplyVisitTypePrice);
+                                petspotApplyVisitTypePrice();
+                            }
                             document.querySelectorAll('.line-row select, .line-row input, #consultation_fee, #consultation_product_id, #discount_amount')
                                 .forEach(function(el) {
                                     el.addEventListener('change', petspotRecalcTotals);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_petspot_campaign_root"
+              name="Campaign Rewards"
+              parent="social_media_connector.menu_social_media_connector_root"
+              sequence="15"/>
+
+    <menuitem id="menu_petspot_campaign"
+              name="Campaigns"
+              parent="menu_petspot_campaign_root"
+              action="action_petspot_campaign"
+              sequence="10"/>
+
+</odoo>

@@ -4,6 +4,7 @@
     <record id="view_social_media_config_settings_form" model="ir.ui.view">
         <field name="name">social.media.config.settings.form</field>
         <field name="model">res.config.settings</field>
+        <field name="priority">100</field>
         <field name="arch" type="xml">
             <form string="Social Media Connector Settings" class="oe_form_configuration">
                 <header>
@@ -39,23 +40,28 @@
                                invisible="not auto_push_enabled"/>
                     </group>
                     <group string="Default Page">
+                        <field name="facebook_account_email"/>
+                        <field name="single_remote_account_id"/>
                         <field name="facebook_page_id"
                                options="{'no_create': True}"
                                domain="[('active', '=', True)]"/>
                         <div colspan="2" class="text-muted">
-                            New posts default to this page. Main page:
-                            بيت الدواء البيطري -pet spot (remote account id 4).
+                            Only Animal Care Center Pet Spot on deebvet:
+                            https://www.facebook.com/animalcarecenterpetspots
+                            (remote account id 9). Facebook login: vetdrughouse@gmail.com
                         </div>
                     </group>
                     <group string="Campaign Contact Footer">
                         <field name="campaign_whatsapp"/>
                         <field name="campaign_call_center"/>
+                        <field name="campaign_phone_marassi"/>
                         <field name="campaign_website"/>
                         <field name="campaign_facebook_url"/>
                         <field name="campaign_linkedin_url"/>
                         <field name="campaign_location_en"/>
                         <field name="campaign_location_ar"/>
                         <field name="campaign_maps_url"/>
+                        <field name="campaign_hashtags" colspan="2"/>
                     </group>
                     <group string="Campaign Schedule">
                         <field name="campaign_schedule_timezone"/>

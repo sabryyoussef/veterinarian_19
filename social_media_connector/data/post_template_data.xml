@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="post_template_general_petspot_sahel" model="social.media.post.template">
+        <field name="name">General — PetSpot El Sahel</field>
+        <field name="code">general_petspot_sahel</field>
+        <field name="sequence">1</field>
+        <field name="body">🐾 PetSpot El Sahel | بيت سبوت الساحل
+Trusted veterinary care on Egypt's North Coast — clinic, grooming, boarding &amp; more.
+
+📍 Branch 1 — Amwaj 1 (North Coast)
+{location_en}
+📞 {phone_amwaj}
+🗺️ Google Maps: {maps_url}
+
+📍 Branch 2 — Marsa Matruh
+📞 {phone_marassi}
+
+💬 WhatsApp: {whatsapp}
+🌐 {website_display}
+📘 Facebook: بيت الدواء البيطري -pet spot
+
+{hashtags}
+
+---
+
+🐾 بيت سبوت الساحل — رعاية بيطرية موثوقة في الساحل
+كشف بيطري، تطعيمات، جروومينج، بوردينج والمزيد.
+
+📍 الفرع 1 — أمواج 1 (الساحل الشمالي)
+{location_ar}
+📞 {phone_amwaj}
+
+📍 الفرع 2 — مرسى مطروح
+📞 {phone_marassi}
+
+💬 واتساب: {whatsapp}
+🌐 {website_display}
+📘 فيسبوك: بيت الدواء البيطري -pet spot
+
+{hashtags}</field>
+    </record>
+
+</odoo>

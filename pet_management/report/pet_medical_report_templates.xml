@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_pet_medical_visit_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Medical Visit Summary</h2>
+                        <p><strong>Pet:</strong> <span t-field="doc.pet_id"/></p>
+                        <p><strong>Date:</strong> <span t-field="doc.date"/></p>
+                        <p><strong>Visit Type:</strong> <span t-field="doc.visit_type"/></p>
+                        <p><strong>Reason:</strong> <span t-field="doc.reason"/></p>
+                        <p><strong>Veterinarian:</strong> <span t-field="doc.vet_id"/></p>
+                        <h3>SOAP Notes</h3>
+                        <p><strong>Subjective:</strong></p>
+                        <div t-field="doc.subjective"/>
+                        <p><strong>Objective:</strong></p>
+                        <div t-field="doc.objective"/>
+                        <p><strong>Assessment:</strong></p>
+                        <div t-field="doc.assessment"/>
+                        <p><strong>Plan:</strong></p>
+                        <div t-field="doc.plan"/>
+                        <h3>Services &amp; Products</h3>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Qty</th>
+                                    <th>Unit Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td><span t-field="line.line_type"/></td>
+                                    <td><span t-field="line.name"/></td>
+                                    <td><span t-field="line.quantity"/></td>
+                                    <td><span t-field="line.price_unit"/></td>
+                                    <td><span t-field="line.price_subtotal"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Total:</strong> <span t-field="doc.amount_total"/></p>
+                        <h3>Diagnostic Reports</h3>
+                        <t t-foreach="doc.diagnostic_report_ids" t-as="report">
+                            <div class="mb-3">
+                                <h4><span t-field="report.name"/></h4>
+                                <p><strong>Type:</strong> <span t-field="report.diagnostic_type"/></p>
+                                <p><strong>Summary:</strong> <span t-field="report.result_summary"/></p>
+                                <div t-field="report.findings"/>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_pet_medical_diagnostic_report_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Diagnostic Report</h2>
+                        <p><strong>Pet:</strong> <span t-field="doc.pet_id"/></p>
+                        <p><strong>Date:</strong> <span t-field="doc.date"/></p>
+                        <p><strong>Test:</strong> <span t-field="doc.name"/></p>
+                        <p><strong>Type:</strong> <span t-field="doc.diagnostic_type"/></p>
+                        <p><strong>Veterinarian:</strong> <span t-field="doc.vet_id"/></p>
+                        <p><strong>Abnormal:</strong> <span t-esc="'Yes' if doc.is_abnormal else 'No'"/></p>
+                        <h3>Summary</h3>
+                        <div t-field="doc.result_summary"/>
+                        <h3>Findings</h3>
+                        <div t-field="doc.findings"/>
+                        <h3>Interpretation</h3>
+                        <div t-field="doc.interpretation"/>
+                        <h3>Values</h3>
+                        <pre t-field="doc.result_values"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

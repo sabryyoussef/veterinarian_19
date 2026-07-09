@@ -4,6 +4,60 @@ from __future__ import annotations
 from typing import Any
 
 
+def _branches_contact_html(c: dict[str, Any]) -> str:
+    """Render both clinic branch phones for contact/location sections."""
+    branches = c.get("branches") or []
+    if not branches:
+        phone = c["phone"]
+        phone_tel = c["phone_tel"]
+        alt = c.get("phone_alternate", "")
+        html = f'<p><strong>Phone:</strong> <a href="tel:{phone_tel}">{phone}</a></p>'
+        if alt:
+            alt_tel = alt.replace(" ", "")
+            html += f'<p><strong>Branch 2:</strong> <a href="tel:{alt_tel}">{alt}</a></p>'
+        return html
+
+    rows = []
+    for br in branches:
+        tel = br["phone"].replace(" ", "")
+        display = br.get("phone_display") or br["phone"]
+        wa = br.get("whatsapp")
+        wa_link = f'https://wa.me/{wa}' if wa else c["whatsapp_url"]
+        fb = br.get("facebook")
+        fb_line = ""
+        if fb:
+            fb_line = (
+                f' · <a href="{fb}" target="_blank" rel="noopener">Facebook</a>'
+            )
+        rows.append(
+            f"""<div class="mb-3">
+  <p class="mb-1"><strong>{br["name_en"]}</strong></p>
+  <p dir="rtl" class="small text-muted mb-1">{br["name_ar"]}</p>
+  <p class="mb-1"><i class="fa fa-phone fa-fw me-1"/><a href="tel:{tel}"><span class="o_force_ltr">{display}</span></a>
+  · <a href="{wa_link}" target="_blank" rel="noopener">WhatsApp</a>{fb_line}</p>
+  <p class="small mb-0">{br.get("address_en", "")}</p>
+  <p dir="rtl" class="small text-muted mb-0">{br.get("address_ar", "")}</p>
+</div>"""
+        )
+    return "\n".join(rows)
+
+
+def _branches_footer_phones(c: dict[str, Any]) -> str:
+    branches = c.get("branches") or []
+    if not branches:
+        return ""
+    lines = []
+    for br in branches:
+        tel = br["phone"].replace(" ", "")
+        display = br.get("phone_display") or br["phone"]
+        lines.append(
+            f'<li><i class="fa fa-phone fa-fw me-2"/>'
+            f'<span class="small">{br["name_en"]}: </span>'
+            f'<a href="tel:{tel}"><span class="o_force_ltr">{display}</span></a></li>'
+        )
+    return "\n".join(lines)
+
+
 def _service_card_style(svc: dict[str, Any], gallery_urls: dict[str, str]) -> str:
     color = svc.get("color", "#1a5f7a")
     slot_id = svc.get("gallery_slot")
@@ -95,12 +149,13 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
     ig = c["instagram"]
     marassi = c.get("phone_marassi", "")
     marassi_block = ""
-    if marassi:
+    if marassi and not c.get("branches"):
         marassi_tel = marassi.replace(" ", "")
         marassi_block = (
             f'<p><strong>Marassi line:</strong> '
             f'<a href="tel:{marassi_tel}">{marassi}</a></p>'
         )
+    branches_block = _branches_contact_html(c)
 
     logo_url = c.get("logo_url", "/web/image/res.company/1/logo")
     hero_url = c.get("hero_image_url", "")
@@ -260,7 +315,8 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
               <p dir="rtl"><strong>المنطقة:</strong> {c["area_ar"]}</p>
               <p><strong>Hours:</strong> {c["hours_en"]}</p>
               <p dir="rtl"><strong>المواعيد:</strong> {c["hours_ar"]}</p>
-              <p><strong>Phone:</strong> <a href="tel:{phone_tel}">{phone}</a></p>
+              <h4 class="h5 mt-3">Our branches / فروعنا</h4>
+              {branches_block}
               {marassi_block}
               <div class="d-flex flex-wrap gap-2 mt-3">
                 <a class="btn btn-primary" href="{maps}" target="_blank" rel="noopener">Get Directions / افتح الموقع</a>
@@ -287,7 +343,8 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
           <h2>Follow &amp; book with PetSpot</h2>
           <p dir="rtl" class="lead">تابعونا واحجزوا بسهولة</p>
           <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-            <a class="btn btn-primary btn-lg" href="{fb}" target="_blank" rel="noopener"><i class="fa fa-facebook me-2"/> Facebook</a>
+            <a class="btn btn-primary btn-lg" href="{fb}" target="_blank" rel="noopener"><i class="fa fa-facebook me-2"/> Facebook — Marsa Matruh</a>
+            <a class="btn btn-outline-primary btn-lg" href="{c.get("facebook_sister", fb)}" target="_blank" rel="noopener"><i class="fa fa-facebook me-2"/> Main Page</a>
             <a class="btn btn-danger btn-lg" href="{ig}" target="_blank" rel="noopener"><i class="fa fa-instagram me-2"/> Instagram</a>
             <a class="btn btn-success btn-lg" href="{wa}" target="_blank" rel="noopener"><i class="fa fa-whatsapp me-2"/> WhatsApp</a>
           </div>
@@ -328,16 +385,19 @@ def build_contact_arch(c: dict[str, Any]) -> str:
         </div>
       </section>
       <section class="s_text_block pb24" data-snippet="s_text_block">
-        <div class="container text-center">
-          <p><strong>Phone:</strong> <a href="tel:{phone_tel}">{phone}</a></p>
-          <p><strong>WhatsApp:</strong> <a href="{wa}" target="_blank" rel="noopener">{c["whatsapp"]}</a></p>
-          <p><strong>Email:</strong> <a href="mailto:{c["email"]}">{c["email"]}</a></p>
-          <p>{c["address_en"]}</p>
-          <p dir="rtl">{c["address_ar"]}</p>
-          <p class="mt-3">
-            <a class="btn btn-primary me-2" href="{maps}" target="_blank" rel="noopener">Google Maps</a>
-            <a class="btn btn-outline-primary" href="{fb}" target="_blank" rel="noopener">Facebook</a>
-          </p>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <h3 class="h5 text-center">Branches / الفروع</h3>
+              {_branches_contact_html(c)}
+              <p class="text-center mt-3"><strong>Email:</strong> <a href="mailto:{c["email"]}">{c["email"]}</a></p>
+              <p class="text-center mt-3">
+                <a class="btn btn-primary me-2" href="{maps}" target="_blank" rel="noopener">Google Maps</a>
+                <a class="btn btn-outline-primary me-2" href="{fb}" target="_blank" rel="noopener"><i class="fa fa-facebook me-1"/> Facebook — Marsa Matruh</a>
+                <a class="btn btn-outline-secondary" href="{c.get("facebook_sister", fb)}" target="_blank" rel="noopener"><i class="fa fa-facebook me-1"/> Main Page</a>
+              </p>
+            </div>
+          </div>
         </div>
       </section>
       <section class="s_website_form pt24 pb64" data-snippet="s_website_form">
@@ -379,11 +439,22 @@ def build_footer_inherit_arch(c: dict[str, Any]) -> str:
     phone_tel = c["phone_tel"]
     alt = c.get("phone_alternate", "")
     alt_line = ""
-    if alt:
+    branch_lines = _branches_footer_phones(c)
+    if branch_lines:
+        alt_line = branch_lines
+    elif alt:
         alt_tel = alt.replace(" ", "")
         alt_line = (
             f'<li><i class="fa fa-phone fa-fw me-2"/>'
             f'<a href="tel:{alt_tel}"><span class="o_force_ltr">{alt}</span></a></li>'
+        )
+    fb_sister = c.get("facebook_sister", "")
+    sister_social = ""
+    if fb_sister and fb_sister != c["facebook"]:
+        sister_social = (
+            f'<a href="{fb_sister}" class="s_social_media_facebook ms-2" target="_blank" rel="noopener" '
+            f'aria-label="Facebook main page" title="Main Facebook page">'
+            f'<i class="fa fa-facebook-square rounded-circle shadow-sm o_editable_media"/></a>'
         )
     return f"""<data>
   <xpath expr="//div[@id='footer']" position="replace">
@@ -418,13 +489,16 @@ def build_footer_inherit_arch(c: dict[str, Any]) -> str:
                 <li><i class="fa fa-phone fa-fw me-2"/><a href="tel:{phone_tel}"><span class="o_force_ltr">{phone}</span></a></li>
                 {alt_line}
                 <li><i class="fa fa-whatsapp fa-fw me-2"/><a href="{c["whatsapp_url"]}" target="_blank" rel="noopener">WhatsApp</a></li>
+                <li><i class="fa fa-facebook fa-fw me-2"/><a href="{c["facebook"]}" target="_blank" rel="noopener">Facebook — Marsa Matruh</a></li>
+                {f'<li><i class="fa fa-facebook fa-fw me-2"/><a href="{fb_sister}" target="_blank" rel="noopener">Facebook — Main page</a></li>' if fb_sister and fb_sister != c["facebook"] else ''}
                 <li><i class="fa fa-map-marker fa-fw me-2"/><a href="{c["maps_url"]}" target="_blank" rel="noopener">Google Maps</a></li>
               </ul>
               <div class="s_social_media text-start o_not_editable" data-snippet="s_social_media" data-name="Social Media" contenteditable="false">
                 <h5 class="s_social_media_title d-none">Follow us</h5>
-                <a href="{c["facebook"]}" class="s_social_media_facebook" target="_blank" rel="noopener" aria-label="Facebook">
+                <a href="{c["facebook"]}" class="s_social_media_facebook" target="_blank" rel="noopener" aria-label="Facebook Marsa Matruh">
                   <i class="fa fa-facebook rounded-circle shadow-sm o_editable_media"/>
                 </a>
+                {sister_social}
                 <a href="{c["instagram"]}" class="s_social_media_instagram" target="_blank" rel="noopener" aria-label="Instagram">
                   <i class="fa fa-instagram rounded-circle shadow-sm o_editable_media"/>
                 </a>

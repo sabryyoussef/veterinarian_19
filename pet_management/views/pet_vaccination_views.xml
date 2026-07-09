@@ -256,6 +256,7 @@
             <field name="date_administered"/>
               <field name="next_due_date" readonly="1"/>
             <field name="dose_ml"/>
+            <field name="vet_employee_id"/>
             <field name="vet_id"/>
             </group>
             <group name="status_info">

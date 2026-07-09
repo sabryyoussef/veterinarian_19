@@ -47,6 +47,12 @@ class SocialMediaPost(models.Model):
     _order = "scheduled_date desc, id desc"
 
     title = fields.Char(required=True, string="Internal Title")
+    template_id = fields.Many2one(
+        "social.media.post.template",
+        string="Post Template",
+        ondelete="set null",
+        help="Pick a template and use “Apply Template” to fill the message.",
+    )
     page_id = fields.Many2one(
         "social.media.page",
         string="Facebook Page",
@@ -95,7 +101,7 @@ class SocialMediaPost(models.Model):
             remote_id = int(
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("social_media_connector.default_remote_account_id", "4")
+                .get_param("social_media_connector.default_remote_account_id", "9")
                 or 0
             )
             if remote_id:
@@ -169,6 +175,43 @@ class SocialMediaPost(models.Model):
 
     def action_reset_draft(self):
         self.write({"state": "draft", "failure_reason": False})
+
+    def action_apply_template(self):
+        for rec in self:
+            if not rec.template_id:
+                raise UserError(_("Select a post template first."))
+            rec.message = rec.template_id.render_body()
+
+    @api.model
+    def action_create_from_general_template(self):
+        template = self.env["social.media.post.template"].get_by_code(
+            "general_petspot_sahel"
+        )
+        page = self._resolve_page_for_remote_account(
+            int(
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("social_media_connector.default_remote_account_id", "9")
+                or 0
+            )
+        )
+        post = self.create(
+            {
+                "title": template.name,
+                "template_id": template.id,
+                "message": template.render_body(),
+                "page_id": page.id if page else False,
+                "post_method": "scheduled",
+            }
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("New Post from Template"),
+            "res_model": "social.media.post",
+            "view_mode": "form",
+            "res_id": post.id,
+            "target": "current",
+        }
 
     def action_push_to_remote(self):
         return self._push_to_remote(force_now=False)
@@ -693,7 +736,7 @@ class SocialMediaPost(models.Model):
             int(
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("social_media_connector.default_remote_account_id", "4")
+                .get_param("social_media_connector.default_remote_account_id", "9")
                 or 4
             )
         )
@@ -782,24 +825,34 @@ class SocialMediaPost(models.Model):
     @api.model
     def _get_campaign_contact_config(self):
         ICP = self.env["ir.config_parameter"].sudo()
-        whatsapp = ICP.get_param("social_media_connector.campaign_whatsapp", "01000059085")
+        whatsapp = ICP.get_param("social_media_connector.campaign_whatsapp", "01201568888")
         wa_digits = re.sub(r"\D", "", whatsapp or "")
         if wa_digits.startswith("0"):
             wa_digits = "20" + wa_digits[1:]
         elif not wa_digits.startswith("20"):
             wa_digits = "20" + wa_digits
+        website = ICP.get_param(
+            "social_media_connector.campaign_website", "https://drpaws.ai"
+        )
         return {
             "whatsapp": whatsapp,
             "whatsapp_link": f"https://wa.me/{wa_digits}" if wa_digits else "",
             "call_center": ICP.get_param(
                 "social_media_connector.campaign_call_center", "01201568888"
             ),
-            "website": ICP.get_param(
-                "social_media_connector.campaign_website", "https://petspot.odoo.com"
+            "phone_amwaj": ICP.get_param(
+                "social_media_connector.campaign_call_center", "01201568888"
+            ),
+            "phone_marassi": ICP.get_param(
+                "social_media_connector.campaign_phone_marassi", "01280833332"
+            ),
+            "website": website,
+            "website_display": (website or "").replace("https://", "").replace(
+                "http://", ""
             ),
             "facebook_url": ICP.get_param(
                 "social_media_connector.campaign_facebook_url",
-                "https://www.facebook.com/1378190768902001",
+                "https://www.facebook.com/animalcarecenterpetspots",
             ),
             "linkedin_url": ICP.get_param(
                 "social_media_connector.campaign_linkedin_url",
@@ -816,6 +869,12 @@ class SocialMediaPost(models.Model):
             "maps_url": ICP.get_param(
                 "social_media_connector.campaign_maps_url",
                 "https://maps.app.goo.gl/AaHup6NEFodZEs7S7",
+            ),
+            "hashtags": ICP.get_param(
+                "social_media_connector.campaign_hashtags",
+                "#PetSpot_El_Sahel #بيت_سبوت_الساحل #عيادة_بيطرية_الساحل "
+                "#الساحل_الشمالي #أمواج #SidiAbdelRahman #NorthCoast "
+                "#MarsaMatruh #VetClinic #PetCare #Grooming #Boarding",
             ),
             "interval": int(
                 ICP.get_param("social_media_connector.campaign_schedule_interval", "60") or 60
@@ -963,22 +1022,28 @@ class SocialMediaPost(models.Model):
         """Plain-text footer without https:// links so Odoo link-tracker won't
         replace petspot/facebook/maps URLs with deebvet.com/r/... short links."""
         cfg = self._get_campaign_contact_config()
-        website = (cfg.get("website") or "").replace("https://", "").replace("http://", "")
+        website = cfg.get("website_display") or ""
+        hashtags = (cfg.get("hashtags") or "").strip()
+        hashtag_block = f"\n{hashtags}" if hashtags else ""
         return (
             f"\n\n---\n"
-            f"📞 Call: {cfg['call_center']}\n"
+            f"📞 Amwaj 1: {cfg['phone_amwaj']}\n"
+            f"📞 Marsa Matruh: {cfg['phone_marassi']}\n"
             f"💬 WhatsApp: {cfg['whatsapp']}\n"
             f"🌐 {website}\n"
             f"📘 Facebook: بيت الدواء البيطري -pet spot\n"
             f"📍 {cfg['location_en']}\n"
-            f"🗺️ Google Maps: PetSpot Amwaj 1 gate\n\n"
+            f"🗺️ Google Maps: PetSpot Amwaj 1 gate"
+            f"{hashtag_block}\n\n"
             f"---\n"
-            f"📞 اتصل: {cfg['call_center']}\n"
+            f"📞 أمواج 1: {cfg['phone_amwaj']}\n"
+            f"📞 مرسى مطروح: {cfg['phone_marassi']}\n"
             f"💬 واتساب: {cfg['whatsapp']}\n"
             f"🌐 {website}\n"
             f"📘 فيسبوك: بيت الدواء البيطري -pet spot\n"
             f"📍 {cfg['location_ar']}\n"
             f"🗺️ خرائط جوجل: بجوار بوابة أمواج 1"
+            f"{hashtag_block}"
         )
 
     @api.model
@@ -1009,7 +1074,7 @@ class SocialMediaPost(models.Model):
             int(
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("social_media_connector.default_remote_account_id", "4")
+                .get_param("social_media_connector.default_remote_account_id", "9")
                 or 4
             )
         )
@@ -1063,7 +1128,7 @@ class SocialMediaPost(models.Model):
         remote_account_id = int(
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("social_media_connector.default_remote_account_id", "4")
+            .get_param("social_media_connector.default_remote_account_id", "9")
             or 4
         )
         page = self._resolve_page_for_remote_account(remote_account_id)

@@ -3,6 +3,7 @@
 
     <menuitem id="menu_social_media_connector_root"
               name="Social Media Connector"
+              web_icon="social_media_connector,static/description/icon.png"
               sequence="45"/>
 
     <menuitem id="menu_social_media_posts"
@@ -21,6 +22,13 @@
               name="Configuration"
               parent="menu_social_media_connector_root"
               sequence="90"/>
+
+    <menuitem id="menu_social_media_post_templates"
+              name="Post Templates"
+              parent="menu_social_media_config"
+              action="action_social_media_post_template"
+              sequence="20"
+              groups="base.group_system"/>
 
     <menuitem id="menu_social_media_settings"
               name="Settings"

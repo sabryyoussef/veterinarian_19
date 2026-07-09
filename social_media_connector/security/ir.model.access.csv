@@ -3,3 +3,5 @@ access_social_media_page_user,social.media.page user,model_social_media_page,bas
 access_social_media_page_manager,social.media.page manager,model_social_media_page,base.group_system,1,1,1,1
 access_social_media_post_user,social.media.post user,model_social_media_post,base.group_user,1,1,1,0
 access_social_media_post_manager,social.media.post manager,model_social_media_post,base.group_system,1,1,1,1
+access_social_media_post_template_user,social.media.post.template user,model_social_media_post_template,base.group_user,1,0,0,0
+access_social_media_post_template_manager,social.media.post.template manager,model_social_media_post_template,base.group_system,1,1,1,1

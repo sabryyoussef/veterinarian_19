@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from datetime import datetime, timedelta
 
 class PetMedicalVisit(models.Model):
@@ -7,14 +7,27 @@ class PetMedicalVisit(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date desc'
 
+    VISIT_TYPE_SELECTION = [
+        ('checkup', 'Regular Exam'),
+        ('emergency', 'Emergency Exam'),
+        ('home_visit', 'Home Visit'),
+        ('vaccination', 'Vaccination'),
+        ('surgery', 'Surgery'),
+        ('dental', 'Dental'),
+        ('grooming', 'Grooming'),
+        ('other', 'Other'),
+    ]
+
     pet_id = fields.Many2one('pet.pet', required=True, ondelete='cascade', tracking=True, help="The pet for this medical visit")
     appointment_id = fields.Many2one('pet.appointment', string='Appointment', help="Related appointment")
     date = fields.Datetime(required=True, default=fields.Datetime.now, tracking=True, help="Date and time of the medical visit")
     reason = fields.Char(required=True, tracking=True, help="Primary reason for the visit")
-    visit_type = fields.Selection([
-        ('checkup', 'Routine Checkup'), ('emergency', 'Emergency'), ('vaccination', 'Vaccination'),
-        ('surgery', 'Surgery'), ('dental', 'Dental'), ('grooming', 'Grooming'), ('other', 'Other')
-    ], string='Visit Type', default='checkup', help="Type of medical visit")
+    visit_type = fields.Selection(
+        selection=VISIT_TYPE_SELECTION,
+        string='Visit Type',
+        default='checkup',
+        help="Type of medical visit",
+    )
     status = fields.Selection([
         ('scheduled', 'Scheduled'), ('in_progress', 'In Progress'), ('completed', 'Completed'),
         ('cancelled', 'Cancelled'), ('rescheduled', 'Rescheduled')
@@ -35,12 +48,38 @@ class PetMedicalVisit(models.Model):
     follow_up_notes = fields.Text(help="Follow-up instructions")
     
     # Veterinary Information
+    vet_employee_id = fields.Many2one(
+        'hr.employee', string='Veterinarian (Employee)', tracking=True, index=True,
+        default=lambda self: self.env.user.employee_id.id if self.env.user.employee_id else False,
+        help="Veterinarian (employee) who performed the visit — used for performance evaluation",
+    )
     vet_id = fields.Many2one(
         'res.partner',
         domain=lambda self: [('id', '=', self.env.user.partner_id.id)] if self.env.user.has_group('pet_management.group_pet_staff_health') else [],
         help="Veterinarian who performed the visit"
     )
     vet_notes = fields.Text(help="Additional notes from the veterinarian")
+
+    # Case documentation quality (vet evaluation)
+    case_completeness_pct = fields.Float(
+        string='Case Completeness %',
+        compute='_compute_case_completeness', store=True,
+        help="How complete the case documentation is (SOAP, diagnosis, plan, vet, billing, diagnostics).",
+    )
+    is_case_complete = fields.Boolean(
+        string='Case Complete',
+        compute='_compute_case_completeness', store=True,
+        help="True when all required documentation items are filled.",
+    )
+    missing_case_items = fields.Text(
+        string='Missing Documentation',
+        compute='_compute_case_completeness', store=True,
+        help="List of documentation items the veterinarian still needs to fill in.",
+    )
+    missing_case_count = fields.Integer(
+        string='Missing Items',
+        compute='_compute_case_completeness', store=True,
+    )
     
     # Financial
     currency_id = fields.Many2one(
@@ -53,6 +92,19 @@ class PetMedicalVisit(models.Model):
         'pet.medical.visit.line',
         'visit_id',
         string='Visit Lines',
+    )
+    diagnostic_report_ids = fields.One2many(
+        'pet.medical.diagnostic.report',
+        'visit_id',
+        string='Diagnostic Reports',
+    )
+    diagnostic_report_count = fields.Integer(
+        compute='_compute_diagnostic_report_stats',
+        string='Diagnostics Count',
+    )
+    abnormal_diagnostic_count = fields.Integer(
+        compute='_compute_diagnostic_report_stats',
+        string='Abnormal Diagnostics',
     )
     discount_amount = fields.Float(
         string='Discount Amount',
@@ -79,6 +131,59 @@ class PetMedicalVisit(models.Model):
     state_color = fields.Integer(compute='_compute_state_color', string='State Color', store=True, help="Color index for status display")
     
     company_id = fields.Many2one('res.company', required=True, default=lambda s: s.env.company, help="Company this visit belongs to")
+
+    @api.depends('diagnostic_report_ids', 'diagnostic_report_ids.is_abnormal', 'diagnostic_report_ids.status')
+    def _compute_diagnostic_report_stats(self):
+        for visit in self:
+            active_reports = visit.diagnostic_report_ids.filtered(lambda r: r.status != 'cancelled')
+            visit.diagnostic_report_count = len(active_reports)
+            visit.abnormal_diagnostic_count = len(active_reports.filtered('is_abnormal'))
+
+    @api.depends(
+        'subjective', 'objective', 'assessment', 'plan', 'diagnosis',
+        'vet_employee_id', 'vet_id',
+        'line_ids', 'line_ids.price_subtotal', 'line_ids.line_type',
+        'diagnostic_report_ids', 'diagnostic_report_ids.status',
+    )
+    def _compute_case_completeness(self):
+        """Score documentation quality and list what is still missing.
+
+        Each item is worth an equal share. ``missing_case_items`` gives the
+        veterinarian a clear checklist of what still needs to be filled in.
+        """
+        for visit in self:
+            checks = [
+                (_('Subjective (S)'), bool(visit.subjective)),
+                (_('Objective (O)'), bool(visit.objective)),
+                (_('Assessment (A)'), bool(visit.assessment)),
+                (_('Plan (P)'), bool(visit.plan)),
+                (_('Diagnosis'), bool(visit.diagnosis)),
+                (_('Responsible veterinarian'), bool(visit.vet_employee_id or visit.vet_id)),
+                (_('Billable service/product line'), any(line.price_subtotal > 0 for line in visit.line_ids)),
+            ]
+            # Diagnostic reports required only when diagnostic lines exist
+            diag_lines = visit.line_ids.filtered(lambda l: l.line_type == 'diagnostic')
+            if diag_lines:
+                active_reports = visit.diagnostic_report_ids.filtered(lambda r: r.status != 'cancelled')
+                checks.append((_('Diagnostic report attached'), bool(active_reports)))
+
+            total = len(checks)
+            missing = [label for label, done in checks if not done]
+            done = total - len(missing)
+            visit.case_completeness_pct = round((done / total) * 100.0, 1) if total else 0.0
+            visit.is_case_complete = not missing
+            visit.missing_case_count = len(missing)
+            visit.missing_case_items = "\n".join("• %s" % label for label in missing)
+
+    @api.onchange('vet_employee_id')
+    def _onchange_vet_employee_id(self):
+        """Keep the legacy partner vet_id in sync with the chosen employee."""
+        if self.vet_employee_id:
+            partner = self.vet_employee_id.work_contact_id
+            if not partner and self.vet_employee_id.user_id:
+                partner = self.vet_employee_id.user_id.partner_id
+            if partner:
+                self.vet_id = partner.id
 
     @api.depends('line_ids.price_subtotal', 'discount_amount')
     def _compute_visit_amounts(self):
@@ -150,6 +255,89 @@ class PetMedicalVisit(models.Model):
     def action_reschedule(self):
         """Mark visit as rescheduled"""
         self.status = 'rescheduled'
+
+    @api.model
+    def _get_consultation_product(self):
+        product = self.env.ref(
+            'pet_management.product_consultation_exam',
+            raise_if_not_found=False,
+        )
+        if product:
+            return product
+        return self.env['product.product'].search([
+            '|',
+            ('default_code', '=', 'EXAM'),
+            ('name', 'ilike', 'consultation'),
+            ('type', '=', 'service'),
+        ], limit=1)
+
+    def _get_consultation_line(self):
+        self.ensure_one()
+        return self.line_ids.filtered(lambda line: line.line_type == 'consultation')[:1]
+
+    def _sync_consultation_line(self, price=None):
+        self.ensure_one()
+        if price is None:
+            price = self.env['pet.exam.price.config'].get_price_for_visit_type(
+                self.visit_type,
+                company=self.company_id,
+            )
+        product = self._get_consultation_product()
+        line = self._get_consultation_line()
+        line_vals = {
+            'line_type': 'consultation',
+            'quantity': 1.0,
+            'price_unit': price,
+        }
+        if product:
+            line_vals.update({
+                'product_id': product.id,
+                'name': product.display_name,
+            })
+        elif not line:
+            line_vals['name'] = dict(self.VISIT_TYPE_SELECTION).get(
+                self.visit_type,
+                _('Consultation'),
+            )
+        if line:
+            line.write(line_vals)
+        else:
+            line_vals['visit_id'] = self.id
+            self.env['pet.medical.visit.line'].create(line_vals)
+
+    @api.onchange('visit_type')
+    def _onchange_visit_type(self):
+        if self.visit_type:
+            self._sync_consultation_line()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        visits = super().create(vals_list)
+        for visit, vals in zip(visits, vals_list):
+            if vals.get('visit_type') and not vals.get('line_ids'):
+                visit._sync_consultation_line()
+        return visits
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'visit_type' in vals:
+            for visit in self:
+                visit._sync_consultation_line()
+        return res
+
+    def action_view_diagnostic_reports(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Diagnostic Reports'),
+            'res_model': 'pet.medical.diagnostic.report',
+            'view_mode': 'list,form',
+            'domain': [('visit_id', '=', self.id)],
+            'context': {
+                'default_visit_id': self.id,
+                'default_vet_id': self.vet_id.id,
+            },
+        }
 
     def name_get(self):
         """Custom name_get to show pet name and reason in Many2one selection"""
@@ -264,11 +452,3 @@ class PetMedicalVisit(models.Model):
                     'view_mode': 'form',
                     'target': 'current',
                 }
-
-    def name_get(self):
-        """Custom name_get to show pet name and reason in Many2one selection"""
-        result = []
-        for rec in self:
-            name = f"{rec.pet_id.name if rec.pet_id else 'Unknown Pet'} - {rec.reason or 'No Reason'}"
-            result.append((rec.id, name))
-        return result

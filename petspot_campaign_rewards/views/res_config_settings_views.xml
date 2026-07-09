@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_petspot_campaign_config_settings" model="ir.ui.view">
+        <field name="name">petspot.campaign.config.settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="social_media_connector.view_social_media_config_settings_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='campaign_schedule_interval']" position="after">
+                <field name="petspot_campaign_send_whatsapp"/>
+                <div colspan="2" class="text-muted">
+                    Send unique discount codes via Evolution WhatsApp after quiz pass.
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

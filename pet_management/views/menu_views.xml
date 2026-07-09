@@ -1,5 +1,6 @@
 <odoo>
-    <menuitem id="menu_pet_root" name="Pets" sequence="10"/>
+    <menuitem id="menu_pet_root" name="Pets" sequence="10"
+              web_icon="pet_management,static/description/icon.png"/>
     <menuitem id="menu_pet_core" name="Core" parent="menu_pet_root" sequence="1" groups="pet_management.group_pet_core_user_own,pet_management.group_pet_staff_core"/>
     <menuitem id="menu_pet_appointments" name="Appointments" parent="menu_pet_root" sequence="2" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_staff_appointments"/>
     <menuitem id="menu_pet_health" name="Health" parent="menu_pet_root" sequence="3" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_staff_health"/>

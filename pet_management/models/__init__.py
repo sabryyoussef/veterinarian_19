@@ -6,10 +6,14 @@ from . import pet_vaccine
 from . import pet_vaccination
 from . import pet_medical_visit
 from . import pet_medical_visit_line
+from . import pet_exam_price_config
+from . import pet_medical_diagnostic_report
 from . import pet_kennel
 from . import pet_boarding
 from . import pet_appointment
 from . import pet_appointment_inventory
+from . import pet_appointment_service_line
+from . import hr_employee
 from . import pet_grooming
 from . import pet_training
 from . import pet_diet

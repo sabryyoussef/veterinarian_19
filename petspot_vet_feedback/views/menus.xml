@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Feedback survey responses tied to a medical visit -->
+    <record id="action_vet_feedback_responses" model="ir.actions.act_window">
+        <field name="name">Feedback Responses</field>
+        <field name="res_model">survey.user_input</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('visit_id', '!=', False)]</field>
+        <field name="context">{'search_default_visit_id': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiley_face">No feedback responses yet.</p>
+            <p>Owner reviews collected after completed medical visits appear here.</p>
+        </field>
+    </record>
+
+    <!-- Reward coupons generated from feedback -->
+    <record id="action_vet_feedback_coupons" model="ir.actions.act_window">
+        <field name="name">Reward Coupons</field>
+        <field name="res_model">loyalty.card</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain" eval="[('program_id', '=', ref('vet_feedback_loyalty_program'))]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiley_face">No reward coupons yet.</p>
+            <p>Second-visit discount codes granted after owners submit feedback appear here.</p>
+        </field>
+    </record>
+
+    <!-- Open the review survey definition -->
+    <record id="action_vet_feedback_survey" model="ir.actions.act_window">
+        <field name="name">Review Survey</field>
+        <field name="res_model">survey.survey</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="vet_feedback_survey"/>
+    </record>
+
+    <!-- Top-level app menu -->
+    <menuitem id="menu_vet_feedback_root"
+              name="Vet Feedback"
+              web_icon="petspot_vet_feedback,static/description/icon.png"
+              sequence="55"/>
+
+    <menuitem id="menu_vet_feedback_responses"
+              name="Feedback Responses"
+              parent="menu_vet_feedback_root"
+              action="action_vet_feedback_responses"
+              sequence="10"/>
+
+    <menuitem id="menu_vet_feedback_coupons"
+              name="Reward Coupons"
+              parent="menu_vet_feedback_root"
+              action="action_vet_feedback_coupons"
+              sequence="20"/>
+
+    <menuitem id="menu_vet_feedback_performance"
+              name="Vet Performance"
+              parent="menu_vet_feedback_root"
+              action="pet_management.action_pet_vet_performance_report"
+              sequence="30"/>
+
+    <menuitem id="menu_vet_feedback_survey"
+              name="Review Survey"
+              parent="menu_vet_feedback_root"
+              action="action_vet_feedback_survey"
+              sequence="40"/>
+
+</odoo>

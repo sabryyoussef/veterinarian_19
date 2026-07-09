@@ -15,6 +15,11 @@ class PetVaccination(models.Model):
                                   help="Date when the vaccination was given")
     dose_ml = fields.Float(string="Dose (ml)", 
                           help="Amount of vaccine administered in milliliters")
+    vet_employee_id = fields.Many2one(
+        'hr.employee', string="Veterinarian (Employee)", index=True,
+        default=lambda self: self.env.user.employee_id.id if self.env.user.employee_id else False,
+        help="Veterinarian (employee) who administered the vaccination — used for performance evaluation",
+    )
     vet_id = fields.Many2one(
         'res.partner', string="Veterinarian",
         domain=lambda self: [('id', '=', self.env.user.partner_id.id)] if self.env.user.has_group('pet_management.group_pet_staff_health') else [],
@@ -321,10 +326,13 @@ class PetVaccination(models.Model):
         vaccinations = super().create(vals_list)
         
         # Auto-schedule booster vaccinations if enabled
-        if auto_schedule_boosters:
+        if auto_schedule_boosters and not self.env.context.get('skip_booster_create'):
             for vaccination in vaccinations:
-                if vaccination.vaccine_id and vaccination.vaccine_id.booster_interval_days:
-                    # Create a booster vaccination record
+                if (
+                    vaccination.vaccination_type != 'booster'
+                    and vaccination.vaccine_id
+                    and vaccination.vaccine_id.booster_interval_days
+                ):
                     booster_vals = {
                         'pet_id': vaccination.pet_id.id,
                         'vaccine_id': vaccination.vaccine_id.id,
@@ -338,6 +346,6 @@ class PetVaccination(models.Model):
                         'cost': vaccination.cost,
                         'payment_status': 'pending',
                     }
-                    self.create(booster_vals)
+                    self.with_context(skip_booster_create=True).create(booster_vals)
         
         return vaccinations

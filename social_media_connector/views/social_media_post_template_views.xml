@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_social_media_post_template_list" model="ir.ui.view">
+        <field name="name">social.media.post.template.list</field>
+        <field name="model">social.media.post.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_social_media_post_template_form" model="ir.ui.view">
+        <field name="name">social.media.post.template.form</field>
+        <field name="model">social.media.post.template</field>
+        <field name="arch" type="xml">
+            <form string="Post Template">
+                <header>
+                    <button name="action_preview_rendered" type="object"
+                            string="Preview Rendered" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="sequence"/>
+                        <field name="active"/>
+                    </group>
+                    <label for="body"/>
+                    <field name="body" widget="text" nolabel="1"
+                           placeholder="Use {location_en}, {phone_amwaj}, {phone_marassi}, {whatsapp}, {hashtags}, …"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_media_post_template" model="ir.actions.act_window">
+        <field name="name">Post Templates</field>
+        <field name="res_model">social.media.post.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pet_medical_diagnostic_report_tree" model="ir.ui.view">
+        <field name="name">pet.medical.diagnostic.report.list</field>
+        <field name="model">pet.medical.diagnostic.report</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date"/>
+                <field name="name"/>
+                <field name="pet_id"/>
+                <field name="diagnostic_type"/>
+                <field name="product_id"/>
+                <field name="vet_id"/>
+                <field name="is_abnormal"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_pet_medical_diagnostic_report_form" model="ir.ui.view">
+        <field name="name">pet.medical.diagnostic.report.form</field>
+        <field name="model">pet.medical.diagnostic.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="visit_id"/>
+                            <field name="visit_line_id" readonly="1"/>
+                            <field name="pet_id" readonly="1"/>
+                            <field name="product_id"/>
+                            <field name="diagnostic_type"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="vet_employee_id"/>
+                            <field name="vet_id"/>
+                            <field name="is_abnormal"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Results">
+                            <group>
+                                <field name="result_summary"/>
+                                <field name="findings"/>
+                                <field name="interpretation"/>
+                                <field name="result_values" placeholder="WBC=12.5&#10;RBC=6.1"/>
+                            </group>
+                        </page>
+                        <page string="Attachments">
+                            <group>
+                                <field name="report_attachment" filename="report_attachment_filename"/>
+                                <field name="report_attachment_filename" invisible="1"/>
+                                <field name="image_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pet_medical_diagnostic_report_search" model="ir.ui.view">
+        <field name="name">pet.medical.diagnostic.report.search</field>
+        <field name="model">pet.medical.diagnostic.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="pet_id"/>
+                <field name="visit_id"/>
+                <field name="diagnostic_type"/>
+                <filter name="abnormal" string="Abnormal" domain="[('is_abnormal', '=', True)]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('status', '=', 'confirmed')]"/>
+                <group>
+                    <filter name="group_type" string="Type" context="{'group_by': 'diagnostic_type'}"/>
+                    <filter name="group_pet" string="Pet" context="{'group_by': 'pet_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pet_medical_diagnostic_report" model="ir.actions.act_window">
+        <field name="name">Diagnostic Reports</field>
+        <field name="res_model">pet.medical.diagnostic.report</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_pet_medical_diagnostic_report"
+              name="Diagnostic Reports"
+              parent="menu_pet_health"
+              action="action_pet_medical_diagnostic_report"
+              sequence="2"
+              groups="pet_management.group_pet_health_user_own,pet_management.group_pet_staff_health"/>
+</odoo>

@@ -36,6 +36,9 @@
         <field name="arch" type="xml">
             <form string="Facebook Post">
                 <header>
+                    <button name="action_apply_template" type="object" string="Apply Template"
+                            class="btn-secondary"
+                            invisible="not template_id or state == 'pushed'"/>
                     <button name="action_mark_ready" type="object" string="Mark Ready"
                             class="btn-secondary"
                             invisible="state not in ('draft', 'failed')"/>
@@ -57,6 +60,7 @@
                     <group>
                         <group string="Post">
                             <field name="title"/>
+                            <field name="template_id" options="{'no_create_edit': True}"/>
                             <field name="page_id"/>
                             <field name="post_method"/>
                             <field name="scheduled_date"
@@ -132,6 +136,15 @@
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">action = records.action_push_selected()</field>
+    </record>
+
+    <record id="action_social_media_post_create_general" model="ir.actions.server">
+        <field name="name">New General Post</field>
+        <field name="model_id" ref="model_social_media_post"/>
+        <field name="binding_model_id" ref="model_social_media_post"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = model.action_create_from_general_template()</field>
     </record>
 
 </odoo>

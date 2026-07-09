@@ -3,6 +3,7 @@
 
     <menuitem id="menu_odoo_remote_connector_root"
               name="Odoo Connections"
+              web_icon="odoo_remote_connector,static/description/icon.png"
               sequence="95"/>
 
     <menuitem id="menu_odoo_remote_connection"

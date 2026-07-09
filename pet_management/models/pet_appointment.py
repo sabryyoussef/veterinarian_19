@@ -1,3 +1,4 @@
+from datetime import timedelta
 from odoo import models, fields, api, _ # type
 from odoo.exceptions import ValidationError
 
@@ -18,17 +19,28 @@ class PetAppointment(models.Model):
     
     # Primary appointment type for categorization
     primary_type = fields.Selection([
-        ('checkup', 'Routine Checkup'), ('emergency', 'Emergency'), ('surgery', 'Surgery'), 
+        ('checkup', 'Regular Exam'), ('emergency', 'Emergency Exam'),
+        ('home_visit', 'Home Visit'),
+        ('surgery', 'Surgery'),
         ('dental', 'Dental'), ('comprehensive', 'Comprehensive Care'), ('other', 'Other')
     ], required=True, tracking=True, help="Primary type of appointment")
     name = fields.Char(string='Reference', readonly=True, copy=False, default=lambda s: _('New'), help="Appointment reference")
-    title = fields.Char(required=True, tracking=True, help="Appointment title")
-    start_datetime = fields.Datetime(required=True, index=True, tracking=True, help="Appointment start time")
-    end_datetime = fields.Datetime(required=True, index=True, tracking=True, help="Appointment end time")
+    title = fields.Char(
+        required=True, tracking=True,
+        default=lambda self: self._format_appointment_title(_('New'), fields.Datetime.now()),
+        help="Appointment title (auto: serial | date time)")
+    start_datetime = fields.Datetime(required=True, index=True, tracking=True,
+        default=lambda self: fields.Datetime.now(), help="Appointment start time")
+    end_datetime = fields.Datetime(required=True, index=True, tracking=True,
+        default=lambda self: fields.Datetime.now() + timedelta(minutes=15), help="Appointment end time")
+    vet_employee_id = fields.Many2one(
+        'hr.employee', string='Veterinarian', tracking=True,
+        default=lambda self: self.env.user.employee_id.id if self.env.user.employee_id else False,
+        help="Veterinarian assigned to this appointment")
     resource_id = fields.Many2one(
         'res.partner',
         domain=lambda self: [('id', '=', self.env.user.partner_id.id)] if self.env.user.has_group('pet_management.group_pet_staff_appointments') else [],
-        help="Veterinarian or staff member"
+        help="Legacy staff field (deprecated — use Veterinarian employee instead)"
     )
     room_id = fields.Many2one('pet.kennel', string='Room', help="Room or kennel for the appointment")
     notes = fields.Text(help="Additional notes about the appointment")
@@ -41,9 +53,13 @@ class PetAppointment(models.Model):
     duration_minutes = fields.Float(compute='_compute_duration', store=True, help="Duration in minutes")
     duration_display = fields.Char(compute='_compute_duration', store=True, help="Duration in readable format")
     cost = fields.Float(compute='_compute_cost', store=True, help="Automatically calculated cost from connected facility")
+    amount_total = fields.Monetary(
+        compute='_compute_amount_total', store=True, currency_field='currency_id',
+        string='Amount', help="Real billable amount: invoice total when invoiced, otherwise the computed service cost")
     payment_status = fields.Selection([
         ('pending', 'Pending'), ('paid', 'Paid'), ('partial', 'Partial'), ('cancelled', 'Cancelled')
-    ], string='Payment Status', default='pending', help="Payment status for the appointment")
+    ], string='Payment Status', compute='_compute_payment_status', store=True,
+       help="Payment status derived from the linked invoice")
     follow_up_date = fields.Date(help="Recommended follow-up date")
     follow_up_notes = fields.Text(help="Follow-up instructions")
     
@@ -56,6 +72,14 @@ class PetAppointment(models.Model):
     # Inventory Integration Fields (only if stock module is installed)
     inventory_items_ids = fields.One2many('pet.appointment.inventory', 'appointment_id', string='Inventory Items', help="Items used during appointment")
     inventory_cost = fields.Float(compute='_compute_inventory_cost', store=True, help="Total cost of inventory items used")
+
+    # Additional ad-hoc service/charge lines (billed on top of facility services)
+    extra_service_line_ids = fields.One2many(
+        'pet.appointment.service.line', 'appointment_id', string='Additional Services',
+        help="Extra services or charges added manually; included in the total and the invoice")
+    extra_service_cost = fields.Monetary(
+        compute='_compute_extra_service_cost', store=True, currency_field='currency_id',
+        help="Total of the additional service lines")
     
     # Service Selection Fields (for specific service types)
     service_id = fields.Many2one('pet.grooming.service', string='Grooming Service', help="Selected grooming service")
@@ -81,7 +105,8 @@ class PetAppointment(models.Model):
     
     company_id = fields.Many2one('res.company', required=True, default=lambda s: s.env.company, help="Company this appointment belongs to")
     
-    # Invoice Related Fields
+    # Sales / Invoice Related Fields
+    sale_order_id = fields.Many2one('sale.order', string='Sale Order', readonly=True, copy=False, help="Sales order (quotation) generated for this appointment so it appears in the Sales app")
     invoice_id = fields.Many2one('account.move', string='Invoice', readonly=True, help="Generated invoice for this appointment")
     invoice_state = fields.Selection([
         ('no_invoice', 'No Invoice'),
@@ -182,9 +207,15 @@ class PetAppointment(models.Model):
         for rec in self:
             rec.state_color = color_map.get(rec.state, 1)
 
+    @api.depends('extra_service_line_ids.price_subtotal')
+    def _compute_extra_service_cost(self):
+        for rec in self:
+            rec.extra_service_cost = sum(rec.extra_service_line_ids.mapped('price_subtotal'))
+
     @api.depends('medical_visit_id.cost', 'vaccination_id.cost', 'grooming_session_id.total_cost', 
                  'training_session_id.session_cost', 'boarding_stay_id.total_cost', 'vaccine_id.cost', 'service_id.base_price', 'program_id.base_price',
-                 'medical_visit_id.status', 'vaccination_id.state', 'grooming_session_id.state', 'training_session_id.state', 'boarding_stay_id.state')
+                 'medical_visit_id.status', 'vaccination_id.state', 'grooming_session_id.state', 'training_session_id.state', 'boarding_stay_id.state',
+                 'extra_service_line_ids.price_subtotal')
     def _compute_cost(self):
         for rec in self:
             cost = 0.0
@@ -219,8 +250,39 @@ class PetAppointment(models.Model):
             # Boarding Stay - only count if checked out (completed)
             if rec.boarding_stay_id and rec.boarding_stay_id.state == 'checked_out':
                 cost += rec.boarding_stay_id.total_cost or 0.0
-                
+
+            # Additional manual service lines - always counted
+            cost += sum(rec.extra_service_line_ids.mapped('price_subtotal'))
+
             rec.cost = cost
+
+    @api.depends('invoice_id', 'invoice_id.amount_total', 'cost')
+    def _compute_amount_total(self):
+        """Real billable amount: prefer the actual invoice total, else the service cost."""
+        for rec in self:
+            if rec.invoice_id and rec.invoice_id.amount_total:
+                rec.amount_total = rec.invoice_id.amount_total
+            else:
+                rec.amount_total = rec.cost
+
+    @api.depends('invoice_id', 'invoice_id.payment_state', 'invoice_id.state', 'state')
+    def _compute_payment_status(self):
+        """Reflect the real invoice payment state instead of a manual flag."""
+        for rec in self:
+            if rec.state == 'cancelled':
+                rec.payment_status = 'cancelled'
+                continue
+            inv = rec.invoice_id
+            if inv and inv.state == 'posted':
+                ps = inv.payment_state
+                if ps in ('paid', 'in_payment', 'reversed'):
+                    rec.payment_status = 'paid'
+                elif ps == 'partial':
+                    rec.payment_status = 'partial'
+                else:
+                    rec.payment_status = 'pending'
+            else:
+                rec.payment_status = 'pending'
 
     @api.depends('inventory_items_ids', 'inventory_items_ids.total_cost')
     def _compute_inventory_cost(self):
@@ -245,20 +307,20 @@ class PetAppointment(models.Model):
             if rec.start_datetime and rec.end_datetime and rec.end_datetime <= rec.start_datetime:
                 raise ValidationError('End must be after Start.')
 
-    @api.constrains("resource_id", "room_id", "start_datetime", "end_datetime")
+    @api.constrains("vet_employee_id", "room_id", "start_datetime", "end_datetime")
     def _check_overlap(self):
         for rec in self:
-            # Check resource overlap
-            if rec.resource_id:
-                resource_overlap = self.search([
+            # Check veterinarian overlap
+            if rec.vet_employee_id:
+                vet_overlap = self.search([
                     ("id", "!=", rec.id),
-                    ("resource_id", "=", rec.resource_id.id),
+                    ("vet_employee_id", "=", rec.vet_employee_id.id),
                     ("start_datetime", "<=", rec.end_datetime),
                     ("end_datetime", ">=", rec.start_datetime),
                     ("state", "not in", ["cancelled"])
                 ], limit=1)
-                if resource_overlap:
-                    raise ValidationError(f"Resource {rec.resource_id.name} is already booked during this time period.")
+                if vet_overlap:
+                    raise ValidationError(_('Veterinarian %s is already booked during this time period.') % rec.vet_employee_id.name)
             
             # Check room overlap
             if rec.room_id:
@@ -310,6 +372,10 @@ class PetAppointment(models.Model):
         for rec in self:
             rec.state = 'rescheduled'
 
+    def set_to_draft(self):
+        for rec in self:
+            rec.state = 'draft'
+
     def _get_primary_type_label(self):
         """Human-readable appointment type for notifications."""
         self.ensure_one()
@@ -339,7 +405,7 @@ class PetAppointment(models.Model):
             elif rec.state == 'in_progress':
                 notification_type = 'general'
                 priority = 'medium'
-                message = f"In Progress: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment is currently in progress with {rec.resource_id.name if rec.resource_id else 'staff'}."
+                message = f"In Progress: {rec.pet_id.name}'s {rec._get_primary_type_label()} appointment is currently in progress with {rec.vet_employee_id.name if rec.vet_employee_id else 'staff'}."
             elif rec.state == 'done':
                 notification_type = 'general'
                 priority = 'low'
@@ -542,7 +608,7 @@ class PetAppointment(models.Model):
                 continue
                 
             # Create medical visit if medical services are selected
-            if rec.is_medical or rec.primary_type in ['checkup', 'emergency', 'surgery', 'dental']:
+            if rec.is_medical or rec.primary_type in ['checkup', 'emergency', 'home_visit', 'surgery', 'dental', 'comprehensive']:
                 rec._create_medical_visit()
             
             # Create vaccination if vaccination services are selected
@@ -598,15 +664,51 @@ class PetAppointment(models.Model):
             else:
                 raise ValidationError("Please select a kennel before creating boarding stay.")
 
+    @api.model
+    def _map_primary_type_to_visit_type(self, primary_type):
+        mapping = {
+            'comprehensive': 'checkup',
+        }
+        visit_types = dict(self.env['pet.medical.visit'].VISIT_TYPE_SELECTION)
+        if primary_type in visit_types:
+            return primary_type
+        return mapping.get(primary_type, 'other')
+
+    def _vet_partner_id(self, employee=None):
+        """Map hr.employee to res.partner for legacy vet_id fields on visits/vaccinations."""
+        employee = employee or self.vet_employee_id
+        if not employee:
+            return False
+        if employee.work_contact_id:
+            return employee.work_contact_id.id
+        if employee.user_id and employee.user_id.partner_id:
+            return employee.user_id.partner_id.id
+        return False
+
+    def _format_appointment_title(self, name, start_datetime=None):
+        """Build default title: APT26-0001 | 08/07/2026 14:30"""
+        start_dt = start_datetime or fields.Datetime.now()
+        local_dt = fields.Datetime.context_timestamp(self, start_dt)
+        stamp = local_dt.strftime('%d/%m/%Y %H:%M')
+        ref = name if name and name != _('New') else _('Appointment')
+        return f'{ref} | {stamp}'
+
+    @api.onchange('start_datetime')
+    def _onchange_start_datetime_title(self):
+        """Refresh draft title when start time changes on a new appointment."""
+        if not self._origin.id and self.start_datetime:
+            self.title = self._format_appointment_title(self.name or _('New'), self.start_datetime)
+
     def _create_medical_visit(self):
         """Create medical visit entry"""
         if not self.medical_visit_id:
             visit_vals = {
                 'pet_id': self.pet_id.id,
                 'date': self.start_datetime,
-                'visit_type': self.primary_type,
+                'visit_type': self._map_primary_type_to_visit_type(self.primary_type),
                 'reason': self.title,
-                'vet_id': self.resource_id.id if self.resource_id else False,
+                'vet_employee_id': self.vet_employee_id.id if self.vet_employee_id else False,
+                'vet_id': self._vet_partner_id(),
                 'plan': self.notes,
                 'appointment_id': self.id,
             }
@@ -620,7 +722,8 @@ class PetAppointment(models.Model):
                 'pet_id': self.pet_id.id,
                 'vaccine_id': self.vaccine_id.id,
                 'date_administered': self.start_datetime.date(),
-                'vet_id': self.resource_id.id if self.resource_id else False,
+                'vet_employee_id': self.vet_employee_id.id if self.vet_employee_id else False,
+                'vet_id': self._vet_partner_id(),
                 'notes': self.notes,
                 'appointment_id': self.id,
                 'state': 'scheduled',
@@ -633,10 +736,8 @@ class PetAppointment(models.Model):
         """Create grooming session entry"""
         if not self.grooming_session_id and self.service_id:
             # Find a valid groomer (employee) or leave it empty
-            groomer_id = False
-            if self.resource_id and self.resource_id._name == 'hr.employee':
-                groomer_id = self.resource_id.id
-            else:
+            groomer_id = self.vet_employee_id.id if self.vet_employee_id else False
+            if not groomer_id:
                 # Try to find any available groomer
                 groomer = self.env['hr.employee'].search([('active', '=', True)], limit=1)
                 if groomer:
@@ -658,10 +759,8 @@ class PetAppointment(models.Model):
         """Create training session entry"""
         if not self.training_session_id and self.program_id:
             # Find a valid trainer (employee) or leave it empty
-            trainer_id = False
-            if self.resource_id and self.resource_id._name == 'hr.employee':
-                trainer_id = self.resource_id.id
-            else:
+            trainer_id = self.vet_employee_id.id if self.vet_employee_id else False
+            if not trainer_id:
                 # Try to find any available trainer
                 trainer = self.env['hr.employee'].search([('active', '=', True)], limit=1)
                 if trainer:
@@ -704,6 +803,13 @@ class PetAppointment(models.Model):
         for vals in vals_list:
             if vals.get('name', _('New')) == _('New'):
                 vals['name'] = self.env['ir.sequence'].next_by_code('pet.appointment') or _('New')
+            if not vals.get('title'):
+                vals['title'] = self._format_appointment_title(
+                    vals.get('name', _('New')),
+                    vals.get('start_datetime'),
+                )
+            if not vals.get('vet_employee_id') and self.env.user.employee_id:
+                vals['vet_employee_id'] = self.env.user.employee_id.id
             
             # Apply default duration if not specified
             if 'start_datetime' in vals and 'end_datetime' not in vals:
@@ -747,7 +853,17 @@ class PetAppointment(models.Model):
                         vals[field] = False
         
         result = super().write(vals)
-        
+
+        # Propagate a changed veterinarian to already-created facility records
+        if 'vet_employee_id' in vals:
+            for rec in self:
+                vet = rec.vet_employee_id.id if rec.vet_employee_id else False
+                partner = rec._vet_partner_id()
+                if rec.medical_visit_id:
+                    rec.medical_visit_id.write({'vet_employee_id': vet, 'vet_id': partner})
+                if rec.vaccination_id:
+                    rec.vaccination_id.write({'vet_employee_id': vet, 'vet_id': partner})
+
         # Auto-create facility entry when confirmed
         if 'state' in vals and vals['state'] == 'confirmed':
             for rec in self:
@@ -803,63 +919,198 @@ class PetAppointment(models.Model):
             result.append((rec.id, name))
         return result
 
-    def action_create_invoice(self):
-        """Create invoice for this appointment"""
+    def _get_generic_service_product(self):
+        """Find or create a generic service product used for sale order lines
+        that have no dedicated product (grooming, training, boarding, discounts...).
+        invoice_policy='order' guarantees confirmed lines are immediately invoiceable."""
+        Product = self.env['product.product'].sudo()
+        product = Product.search([('default_code', '=', 'PET-SERVICE')], limit=1)
+        if not product:
+            product = Product.create({
+                'name': 'Pet Care Service',
+                'default_code': 'PET-SERVICE',
+                'type': 'service',
+                'invoice_policy': 'order',
+                'list_price': 0.0,
+                'taxes_id': [(6, 0, [])],
+            })
+        return product
+
+    def _prepare_sale_order_lines(self):
+        """Build sale.order.line values mirroring the billable services.
+        Every line carries a product (dedicated when available, else generic)."""
+        self.ensure_one()
+        generic = self._get_generic_service_product()
+        lines = []
+
+        def add(name, price, product=None, qty=1.0, discount=0.0):
+            lines.append({
+                'product_id': (product.id if product else generic.id),
+                'name': name,
+                'product_uom_qty': qty or 1.0,
+                'price_unit': price,
+                'discount': discount or 0.0,
+                'tax_ids': [(6, 0, [])],
+            })
+
+        # Medical visit - explode each visit line when completed
+        if self.medical_visit_id and self.medical_visit_id.status == 'completed':
+            visit = self.medical_visit_id
+            visit_lines = visit.line_ids.filtered(lambda line: line.price_subtotal > 0)
+            if visit_lines:
+                for line in visit_lines:
+                    add(line.name, line.price_unit,
+                        product=line.product_id or None,
+                        qty=line.quantity or 1.0,
+                        discount=line.discount or 0.0)
+                if visit.discount_amount:
+                    add(_('Visit discount'), -abs(visit.discount_amount))
+            elif visit.cost:
+                add(f"Medical Visit - {visit.reason or 'Consultation'}", visit.cost)
+
+        # Vaccination - only if administered
+        if self.vaccination_id and self.vaccination_id.cost and self.vaccination_id.state == 'administered':
+            add(f"Vaccination - {self.vaccination_id.vaccine_id.name if self.vaccination_id.vaccine_id else 'Vaccine'}",
+                self.vaccination_id.cost)
+
+        # Direct Vaccine (if selected separately)
+        if self.vaccine_id and self.vaccine_id.cost:
+            add(f"Vaccine - {self.vaccine_id.name}", self.vaccine_id.cost)
+
+        # Grooming Session - only if completed
+        if self.grooming_session_id and self.grooming_session_id.total_cost and self.grooming_session_id.state == 'completed':
+            add(f"Grooming - {self.grooming_session_id.service_id.name if self.grooming_session_id.service_id else 'Grooming Service'}",
+                self.grooming_session_id.total_cost)
+        elif self.service_id and self.service_id.base_price and self.grooming_session_id and self.grooming_session_id.state == 'completed':
+            add(f"Grooming Service - {self.service_id.name}", self.service_id.base_price)
+
+        # Training Session - only if completed
+        if self.training_session_id and self.training_session_id.session_cost and self.training_session_id.state == 'completed':
+            add(f"Training - {self.training_session_id.program_id.name if self.training_session_id.program_id else 'Training Program'}",
+                self.training_session_id.session_cost)
+        elif self.program_id and self.program_id.base_price and self.training_session_id and self.training_session_id.state == 'completed':
+            add(f"Training Program - {self.program_id.name}", self.program_id.base_price)
+
+        # Boarding Stay - only if checked out (completed)
+        if self.boarding_stay_id and self.boarding_stay_id.total_cost and self.boarding_stay_id.state == 'checked_out':
+            add(f"Boarding - {self.boarding_stay_id.kennel_id.name if self.boarding_stay_id.kennel_id else 'Boarding Stay'}",
+                self.boarding_stay_id.total_cost)
+
+        # Additional manual service lines
+        for line in self.extra_service_line_ids:
+            if line.price_subtotal:
+                add(line.name or (line.product_id.display_name if line.product_id else _('Service')),
+                    line.price_unit,
+                    product=line.product_id or None,
+                    qty=line.quantity or 1.0,
+                    discount=line.discount or 0.0)
+
+        # Fallback: use appointment cost if nothing else
+        if not lines and self.cost > 0:
+            add(f"Appointment - {self.title or 'Pet Care Services'}", self.cost)
+
+        return lines
+
+    def _resync_draft_sale_order(self):
+        """Rebuild the sale order lines from current services when the order is
+        still an editable quotation (not confirmed/invoiced). Safe no-op otherwise."""
         for rec in self:
-            if rec.invoice_id:
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': 'Invoice',
-                    'res_model': 'account.move',
-                    'view_mode': 'form',
-                    'res_id': rec.invoice_id.id,
-                    'target': 'current',
-                }
-            
-            # Create invoice
-            invoice_vals = {
-                'move_type': 'out_invoice',
-                'partner_id': rec.owner_id.id if rec.owner_id else False,
-                'invoice_date': fields.Date.today(),
-                'invoice_date_due': fields.Date.today(),
-                'ref': f"Appointment: {rec.name}",
-                'invoice_origin': rec.name,
-                'company_id': rec.company_id.id,
-                'currency_id': rec.currency_id.id,
-            }
-            
-            invoice = self.env['account.move'].sudo().create(invoice_vals)
-            
-            # Create invoice lines based on facilities and services
-            invoice_lines = rec._prepare_invoice_lines()
-            for line_vals in invoice_lines:
-                line_vals['move_id'] = invoice.id
-                self.env['account.move.line'].sudo().create(line_vals)
-            
-            # Update appointment with invoice reference
-            rec.invoice_id = invoice.id
-            
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Invoice Created',
-                'res_model': 'account.move',
-                'view_mode': 'form',
-                'res_id': invoice.id,
-                'target': 'current',
-            }
+            order = rec.sale_order_id
+            if not order or order.state not in ('draft', 'sent') or rec.invoice_id:
+                continue
+            line_vals = rec._prepare_sale_order_lines()
+            commands = [(5, 0, 0)] + [(0, 0, lv) for lv in line_vals]
+            order.sudo().write({'order_line': commands})
+            for so_line, lv in zip(order.order_line, line_vals):
+                so_line.write({'price_unit': lv['price_unit'], 'tax_ids': [(6, 0, [])]})
+
+    def _ensure_sale_order(self):
+        """Create (once) the sale order/quotation for this appointment."""
+        self.ensure_one()
+        if self.sale_order_id:
+            return self.sale_order_id
+        if not self.owner_id:
+            raise ValidationError(_('Cannot create a sale order without a customer/owner on the pet.'))
+        line_vals = self._prepare_sale_order_lines()
+        if not line_vals:
+            raise ValidationError(_('Nothing to bill on this appointment yet. Complete the service(s) first.'))
+        order = self.env['sale.order'].sudo().create({
+            'partner_id': self.owner_id.id,
+            'origin': self.name,
+            'client_order_ref': self.name,
+            'company_id': self.company_id.id,
+            'order_line': [(0, 0, lv) for lv in line_vals],
+        })
+        # Preserve the exact appointment pricing (avoid pricelist recompute surprises)
+        for so_line, lv in zip(order.order_line, line_vals):
+            so_line.write({'price_unit': lv['price_unit'], 'tax_ids': [(6, 0, [])]})
+        self.sale_order_id = order.id
+        return order
+
+    def action_create_invoice(self):
+        """Create a sale order (quotation), confirm it, and generate + post the invoice.
+        Kept under this name for button/back-compat; now routes billing through Sales."""
+        self.ensure_one()
+        order = self._ensure_sale_order()
+        if order.state in ('draft', 'sent'):
+            order.action_confirm()
+        if not self.invoice_id:
+            invoices = order._create_invoices()
+            if invoices:
+                invoices.action_post()
+                self.invoice_id = invoices[0].id
+        return self.action_view_sale_order()
+
+    def action_view_sale_order(self):
+        """Open the sale order for this appointment."""
+        self.ensure_one()
+        if not self.sale_order_id:
+            return self.action_create_invoice()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Sale Order'),
+            'res_model': 'sale.order',
+            'view_mode': 'form',
+            'res_id': self.sale_order_id.id,
+            'target': 'current',
+        }
 
     def _prepare_invoice_lines(self):
         """Prepare invoice lines based on appointment facilities and services"""
         lines = []
-        
-        # Medical Visit - only if completed
-        if self.medical_visit_id and self.medical_visit_id.cost and self.medical_visit_id.status == 'completed':
-            lines.append({
-                'name': f"Medical Visit - {self.medical_visit_id.reason or 'Consultation'}",
-                'quantity': 1,
-                'price_unit': self.medical_visit_id.cost,
-                'account_id': self._get_default_account_id(),
-            })
+        account_id = self._get_default_account_id()
+
+        # Medical visit lines - explode each visit line when completed
+        if self.medical_visit_id and self.medical_visit_id.status == 'completed':
+            visit = self.medical_visit_id
+            visit_lines = visit.line_ids.filtered(lambda line: line.price_subtotal > 0)
+            if visit_lines:
+                for line in visit_lines:
+                    line_vals = {
+                        'name': line.name,
+                        'quantity': line.quantity or 1.0,
+                        'price_unit': line.price_unit,
+                        'account_id': account_id,
+                    }
+                    if line.product_id:
+                        line_vals['product_id'] = line.product_id.id
+                    if line.discount:
+                        line_vals['discount'] = line.discount
+                    lines.append(line_vals)
+                if visit.discount_amount:
+                    lines.append({
+                        'name': _('Visit discount'),
+                        'quantity': 1,
+                        'price_unit': -abs(visit.discount_amount),
+                        'account_id': account_id,
+                    })
+            elif visit.cost:
+                lines.append({
+                    'name': f"Medical Visit - {visit.reason or 'Consultation'}",
+                    'quantity': 1,
+                    'price_unit': visit.cost,
+                    'account_id': account_id,
+                })
         
         # Vaccination - only if administered
         if self.vaccination_id and self.vaccination_id.cost and self.vaccination_id.state == 'administered':
@@ -933,16 +1184,21 @@ class PetAppointment(models.Model):
 
     def _get_default_account_id(self):
         """Get default account for invoice lines"""
-        # Try to get the default income account for services
+        # account.account is multi-company in Odoo 19 (company_ids m2m)
         account = self.env['account.account'].search([
             ('account_type', '=', 'income_other'),
-            ('company_id', '=', self.company_id.id)
+            ('company_ids', 'in', self.company_id.id)
         ], limit=1)
         
-        # Fallback to any account if no income account found
+        # Fallback to any income account, then any account for this company
         if not account:
             account = self.env['account.account'].search([
-                ('company_id', '=', self.company_id.id)
+                ('account_type', 'in', ('income', 'income_other')),
+                ('company_ids', 'in', self.company_id.id)
+            ], limit=1)
+        if not account:
+            account = self.env['account.account'].search([
+                ('company_ids', 'in', self.company_id.id)
             ], limit=1)
         
         return account.id if account else False
@@ -1000,32 +1256,28 @@ class PetAppointment(models.Model):
             }
     
     def action_assign_current_user_as_resource(self):
-        """Assign current user as resource to this appointment"""
+        """Assign current user's employee record as veterinarian on this appointment."""
         self.ensure_one()
-        user = self.env.user
-        
-        # Check if user has a partner
-        if not user.partner_id:
+        employee = self.env.user.employee_id
+        if not employee:
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'title': 'Error',
-                    'message': 'Current user does not have a partner record',
+                    'title': _('Error'),
+                    'message': _('Current user is not linked to an employee record.'),
                     'type': 'error',
                     'sticky': True,
                 }
             }
-        
-        # Assign current user's partner as resource
-        self.resource_id = user.partner_id.id
+        self.vet_employee_id = employee.id
         
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': 'Success',
-                'message': f'Assigned {user.partner_id.name} as resource to this appointment',
+                'message': _('Assigned %s as veterinarian to this appointment') % employee.name,
                 'type': 'success',
                 'sticky': True,
             }
@@ -1102,7 +1354,7 @@ class PetAppointment(models.Model):
                 'stop': self.end_datetime,
                 'description': f"Pet: {self.pet_id.sudo().name}\nOwner: {self.owner_id.sudo().name}\nNotes: {self.notes or ''}",
                 'partner_ids': [(6, 0, [self.owner_id.id])],
-                'user_id': self.resource_id.user_ids[0].id if self.resource_id and self.resource_id.user_ids else self.env.user.id,
+                'user_id': self.vet_employee_id.user_id.id if self.vet_employee_id and self.vet_employee_id.user_id else self.env.user.id,
             }
             event = self.env['calendar.event'].sudo().create(event_vals)
             self.calendar_event_id = event.id

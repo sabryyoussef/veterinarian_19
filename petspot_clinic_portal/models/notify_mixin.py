@@ -53,6 +53,28 @@ class PetspotNotifyMixin(models.AbstractModel):
         if not evo_key or not number:
             _logger.warning('petspot notify: Evolution not configured')
             return False
+        return self._petspot_send_evolution_text(evo_url, evo_key, instance, number, text)
+
+    def petspot_notify_whatsapp_number(self, phone, text):
+        """Send a direct WhatsApp message to an individual phone number."""
+        from .phone_utils import normalize_eg_phone
+
+        number = normalize_eg_phone(phone)
+        if not number or not text:
+            _logger.warning('petspot notify: missing phone or text for DM')
+            return False
+        ICP = self._petspot_icp()
+        evo_url = ICP.get_param('integration_bridge.evolution_url', 'http://127.0.0.1:8080').rstrip('/')
+        evo_key = ICP.get_param('integration_bridge.evolution_key', '')
+        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
+        if not evo_key:
+            _logger.warning('petspot notify: Evolution not configured')
+            return False
+        return self._petspot_send_evolution_text(evo_url, evo_key, instance, number, text)
+
+    def _petspot_send_evolution_text(self, evo_url, evo_key, instance, number, text):
+        import requests
+
         try:
             resp = requests.post(
                 f"{evo_url}/message/sendText/{quote(instance, safe='')}",
@@ -60,10 +82,10 @@ class PetspotNotifyMixin(models.AbstractModel):
                 json={'number': number, 'text': text},
                 timeout=20,
             )
-            _logger.info('petspot notify WA text status=%s', resp.status_code)
+            _logger.info('petspot notify WA text to %s status=%s', number, resp.status_code)
             return resp.ok
         except Exception:
-            _logger.exception('petspot notify WA text failed')
+            _logger.exception('petspot notify WA text failed for %s', number)
             return False
 
     def petspot_notify_whatsapp_button(self, title, description, display_text, url):

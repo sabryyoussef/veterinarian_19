@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_petspot_campaign_list" model="ir.ui.view">
+        <field name="name">petspot.campaign.list</field>
+        <field name="model">petspot.campaign</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-muted="state == 'draft'"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="participant_count"/>
+                <field name="passed_count"/>
+                <field name="codes_issued_count"/>
+                <field name="codes_redeemed_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_petspot_campaign_form" model="ir.ui.view">
+        <field name="name">petspot.campaign.form</field>
+        <field name="model">petspot.campaign</field>
+        <field name="arch" type="xml">
+            <form string="Campaign">
+                <header>
+                    <button name="action_activate" type="object" string="Activate"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_generate_facebook_posts" type="object"
+                            string="Generate Facebook Posts" class="btn-secondary"
+                            invisible="state == 'done'"/>
+                    <button name="action_open_surveys" type="object" string="Surveys" class="btn-secondary"/>
+                    <button name="action_open_loyalty_programs" type="object" string="Reward Programs" class="btn-secondary"/>
+                    <button name="action_done" type="object" string="Mark Done"
+                            invisible="state != 'active'"/>
+                    <button name="action_reset_draft" type="object" string="Reset Draft"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_open_surveys" class="oe_stat_button" icon="fa-question-circle">
+                            <field name="step_count" widget="statinfo" string="Steps"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="public_url" widget="url"/>
+                        </group>
+                        <group string="Rewards">
+                            <field name="pass_score_min"/>
+                            <field name="discount_validity_days"/>
+                            <field name="loyalty_program_10_id"/>
+                            <field name="loyalty_program_15_id"/>
+                            <field name="slide_channel_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Statistics">
+                        <field name="participant_count"/>
+                        <field name="passed_count"/>
+                        <field name="codes_issued_count"/>
+                        <field name="codes_redeemed_count"/>
+                    </group>
+                    <notebook>
+                        <page string="Steps" name="steps">
+                            <field name="step_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="title"/>
+                                    <field name="content_type"/>
+                                    <field name="issue_reward"/>
+                                    <field name="reward_discount_percent"/>
+                                    <field name="survey_id"/>
+                                    <field name="public_url" widget="url"/>
+                                    <field name="facebook_post_id" optional="hide"/>
+                                </list>
+                                <form string="Step">
+                                    <group>
+                                        <field name="title"/>
+                                        <field name="title_ar"/>
+                                        <field name="sequence"/>
+                                        <field name="content_type"/>
+                                        <field name="unlock_after_step_id"/>
+                                    </group>
+                                    <group string="Content">
+                                        <field name="knowledge_article_id"/>
+                                        <field name="slide_id"/>
+                                        <field name="survey_id"/>
+                                    </group>
+                                    <group string="Reward">
+                                        <field name="issue_reward"/>
+                                        <field name="reward_discount_percent"/>
+                                        <field name="reward_program_id"/>
+                                    </group>
+                                    <group string="Facebook">
+                                        <field name="facebook_message_template" widget="text"/>
+                                        <field name="facebook_post_id" readonly="1"/>
+                                        <field name="public_url" widget="url"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_petspot_campaign" model="ir.actions.act_window">
+        <field name="name">Campaigns</field>
+        <field name="res_model">petspot.campaign</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

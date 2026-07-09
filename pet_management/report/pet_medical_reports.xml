@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_pet_medical_visit" model="ir.actions.report">
+        <field name="name">Medical Visit Summary</field>
+        <field name="model">pet.medical.visit</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pet_management.report_pet_medical_visit_document</field>
+        <field name="report_file">pet_management.report_pet_medical_visit_document</field>
+        <field name="print_report_name">'Visit - %s' % (object.pet_id.name or object.reason)</field>
+        <field name="binding_model_id" ref="model_pet_medical_visit"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_pet_medical_diagnostic_report" model="ir.actions.report">
+        <field name="name">Diagnostic Report</field>
+        <field name="model">pet.medical.diagnostic.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pet_management.report_pet_medical_diagnostic_report_document</field>
+        <field name="report_file">pet_management.report_pet_medical_diagnostic_report_document</field>
+        <field name="print_report_name">'Diagnostic - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_pet_medical_diagnostic_report"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

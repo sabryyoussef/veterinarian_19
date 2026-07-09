@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="campaign_summer_2026" model="petspot.campaign">
+        <field name="name">PetSpot Summer Knowledge Quest 2026</field>
+        <field name="code">petspot_summer_2026</field>
+        <field name="state">active</field>
+        <field name="date_start" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(DateTime.today() + relativedelta(days=60)).strftime('%Y-%m-%d')"/>
+        <field name="pass_score_min">80</field>
+        <field name="discount_validity_days">30</field>
+        <field name="loyalty_program_10_id" ref="loyalty_program_petspot_quiz_10"/>
+        <field name="loyalty_program_15_id" ref="loyalty_program_petspot_quiz_15"/>
+    </record>
+
+</odoo>

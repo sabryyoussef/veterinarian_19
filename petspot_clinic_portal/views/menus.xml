@@ -2,6 +2,7 @@
 <odoo>
     <menuitem id="menu_petspot_clinic_portal_root"
               name="Clinic Portal"
+              web_icon="petspot_clinic_portal,static/description/icon.png"
               sequence="26"/>
 
     <menuitem id="menu_petspot_portal_tokens"

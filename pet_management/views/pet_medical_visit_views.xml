@@ -10,9 +10,13 @@
         <field name="visit_type" string="Visit Type" widget="badge" decoration-info="visit_type == 'checkup'" decoration-success="visit_type == 'vaccination'" decoration-warning="visit_type == 'emergency'" decoration-primary="visit_type == 'surgery'" decoration-muted="visit_type == 'dental'" decoration-danger="visit_type == 'grooming'" decoration-bf="visit_type == 'other'"/>
         <field name="reason" string="Reason"/>
         <field name="status" string="Status" widget="badge" decoration-info="status == 'scheduled'" decoration-success="status == 'in_progress'" decoration-warning="status == 'completed'" decoration-danger="status == 'cancelled'" decoration-primary="status == 'rescheduled'"/>
-        <field name="vet_id" string="Veterinarian"/>
+        <field name="vet_employee_id" string="Veterinarian" optional="show"/>
+        <field name="vet_id" string="Vet Contact" optional="hide"/>
         <field name="cost" string="Cost" widget="monetary"/>
         <field name="payment_status" string="Payment Status" widget="badge" decoration-success="payment_status == 'paid'" decoration-warning="payment_status == 'partial'" decoration-danger="payment_status == 'pending'" decoration-muted="payment_status == 'cancelled'"/>
+        <field name="case_completeness_pct" string="Completeness" widget="progressbar" optional="show"/>
+        <field name="missing_case_items" string="Missing Documentation" optional="show"/>
+        <field name="is_case_complete" column_invisible="1"/>
         <field name="days_since_visit" column_invisible="1"/>
         <field name="is_overdue" column_invisible="1"/>
         <field name="state_color" column_invisible="1"/>
@@ -180,6 +184,18 @@
           <div class="oe_button_box" name="button_box">
             <button name="action_view_pet" type="object" string="Pet" icon="fa-paw"
                     groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+            <button name="action_view_diagnostic_reports" type="object" class="oe_stat_button" icon="fa-flask">
+              <field name="diagnostic_report_count" widget="statinfo" string="Diagnostics"/>
+            </button>
+            <button name="action_view_diagnostic_reports" type="object" class="oe_stat_button" icon="fa-exclamation-triangle"
+                    invisible="abnormal_diagnostic_count == 0">
+              <field name="abnormal_diagnostic_count" widget="statinfo" string="Abnormal"/>
+            </button>
+          </div>
+          <div class="alert alert-warning" role="alert" invisible="is_case_complete or not missing_case_items">
+            <strong>Documentation incomplete (<field name="case_completeness_pct" nolabel="1" class="oe_inline"/>%).</strong>
+            The veterinarian still needs to fill in:
+            <field name="missing_case_items" nolabel="1" readonly="1"/>
           </div>
           <div class="oe_title">
             <h1>
@@ -192,13 +208,16 @@
               <field name="appointment_id" string="Appointment"/>
               <field name="date" string="Date"/>
               <field name="visit_type" string="Visit Type"/>
-              <field name="vet_id" string="Veterinarian"/>
+              <field name="vet_employee_id" string="Veterinarian"/>
+              <field name="vet_id" string="Vet Contact"/>
             </group>
             <group>
               <field name="status" string="Status"/>
               <field name="cost" string="Cost"/>
               <field name="payment_status" string="Payment Status"/>
               <field name="follow_up_date" string="Follow-up Date"/>
+              <field name="case_completeness_pct" widget="progressbar"/>
+              <field name="is_case_complete"/>
             </group>
           </group>
           <notebook>
@@ -239,6 +258,7 @@
                   <field name="price_unit"/>
                   <field name="discount"/>
                   <field name="price_subtotal"/>
+                  <field name="diagnostic_report_id" optional="hide"/>
                 </list>
               </field>
               <group>
@@ -247,6 +267,18 @@
                 <field name="amount_total" readonly="1"/>
                 <field name="cost" readonly="1"/>
               </group>
+            </page>
+            <page string="Diagnostics &amp; Reports" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
+              <field name="diagnostic_report_ids" context="{'default_visit_id': id, 'default_vet_id': vet_id}">
+                <list>
+                  <field name="date"/>
+                  <field name="name"/>
+                  <field name="diagnostic_type"/>
+                  <field name="product_id"/>
+                  <field name="is_abnormal"/>
+                  <field name="status"/>
+                </list>
+              </field>
             </page>
             <page string="Follow-up" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
               <group>
@@ -270,6 +302,7 @@
     <field name="arch" type="xml">
       <search>
         <field name="pet_id"/>
+        <field name="vet_employee_id"/>
         <field name="vet_id"/>
         <field name="reason"/>
         <field name="diagnosis"/>
@@ -278,13 +311,18 @@
         <filter name="filter_cancelled" string="Cancelled" domain="[('status', '=', 'cancelled')]"/>
         <filter name="filter_overdue" string="Overdue Follow-up" domain="[('is_overdue', '=', True)]"/>
         <filter name="filter_emergency" string="Emergency" domain="[('visit_type', '=', 'emergency')]"/>
+        <filter name="filter_home_visit" string="Home Visit" domain="[('visit_type', '=', 'home_visit')]"/>
         <filter name="filter_recent" string="Recent (30 days)" domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
         <separator/>
         <filter name="filter_pending_payment" string="Pending Payment" domain="[('payment_status', '=', 'pending')]"/>
         <filter name="filter_paid" string="Paid" domain="[('payment_status', '=', 'paid')]"/>
+        <separator/>
+        <filter name="filter_incomplete_case" string="Incomplete Documentation" domain="[('is_case_complete', '=', False)]"/>
+        <filter name="filter_complete_case" string="Complete Documentation" domain="[('is_case_complete', '=', True)]"/>
         <group>
           <filter name="group_by_pet" string="Pet" context="{'group_by':'pet_id'}"/>
-          <filter name="group_by_vet" string="Veterinarian" context="{'group_by':'vet_id'}"/>
+          <filter name="group_by_vet_employee" string="Veterinarian" context="{'group_by':'vet_employee_id'}"/>
+          <filter name="group_by_vet" string="Vet Contact" context="{'group_by':'vet_id'}"/>
           <filter name="group_by_status" string="Status" context="{'group_by':'status'}"/>
           <filter name="group_by_visit_type" string="Visit Type" context="{'group_by':'visit_type'}"/>
           <filter name="group_by_payment_status" string="Payment Status" context="{'group_by':'payment_status'}"/>

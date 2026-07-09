@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_petspot_campaign_user,petspot.campaign user,model_petspot_campaign,base.group_user,1,0,0,0
+access_petspot_campaign_manager,petspot.campaign manager,model_petspot_campaign,base.group_system,1,1,1,1
+access_petspot_campaign_step_user,petspot.campaign.step user,model_petspot_campaign_step,base.group_user,1,0,0,0
+access_petspot_campaign_step_manager,petspot.campaign.step manager,model_petspot_campaign_step,base.group_system,1,1,1,1

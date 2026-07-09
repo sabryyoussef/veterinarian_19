@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="vet_feedback_survey" model="survey.survey">
+            <field name="title">تقييم الطبيب البيطري / Vet Review</field>
+            <field name="access_token">a7f3c2e1-9b4d-4a8e-b6c1-d0e5f9a2b3c4</field>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="access_mode">public</field>
+            <field name="users_login_required" eval="False"/>
+            <field name="users_can_go_back" eval="True"/>
+            <field name="questions_layout">one_page</field>
+            <field name="is_attempts_limited" eval="False"/>
+            <field name="attempts_limit">1</field>
+            <field name="description" type="html">
+                <p>نرجو تقييم تجربتكم مع الطبيب البيطري في PetSpot. استبيان قصير (دقيقة واحدة).</p>
+                <p>Please rate your veterinarian visit at PetSpot. This short survey takes about one minute.</p>
+            </field>
+        </record>
+
+        <record id="vet_feedback_q_overall" model="survey.question">
+            <field name="survey_id" ref="vet_feedback_survey"/>
+            <field name="sequence">1</field>
+            <field name="title">Overall satisfaction / رضاك العام عن الزيارة</field>
+            <field name="question_type">scale</field>
+            <field name="scale_min">1</field>
+            <field name="scale_max">5</field>
+            <field name="scale_min_label">Poor / ضعيف</field>
+            <field name="scale_max_label">Excellent / ممتاز</field>
+            <field name="constr_mandatory" eval="True"/>
+        </record>
+
+        <record id="vet_feedback_q_vet" model="survey.question">
+            <field name="survey_id" ref="vet_feedback_survey"/>
+            <field name="sequence">2</field>
+            <field name="title">Vet professionalism / كفاءة الطبيب البيطري</field>
+            <field name="question_type">scale</field>
+            <field name="scale_min">1</field>
+            <field name="scale_max">5</field>
+            <field name="scale_min_label">Poor / ضعيف</field>
+            <field name="scale_max_label">Excellent / ممتاز</field>
+            <field name="constr_mandatory" eval="True"/>
+        </record>
+
+        <record id="vet_feedback_q_explained" model="survey.question">
+            <field name="survey_id" ref="vet_feedback_survey"/>
+            <field name="sequence">3</field>
+            <field name="title">Was the diagnosis and plan explained clearly? / هل تم شرح التشخيص وخطة العلاج بوضوح؟</field>
+            <field name="question_type">simple_choice</field>
+            <field name="constr_mandatory" eval="True"/>
+        </record>
+        <record id="vet_feedback_q_explained_yes" model="survey.question.answer">
+            <field name="question_id" ref="vet_feedback_q_explained"/>
+            <field name="sequence">1</field>
+            <field name="value">Yes / نعم</field>
+        </record>
+        <record id="vet_feedback_q_explained_no" model="survey.question.answer">
+            <field name="question_id" ref="vet_feedback_q_explained"/>
+            <field name="sequence">2</field>
+            <field name="value">No / لا</field>
+        </record>
+
+        <record id="vet_feedback_q_nps" model="survey.question">
+            <field name="survey_id" ref="vet_feedback_survey"/>
+            <field name="sequence">4</field>
+            <field name="title">Would you recommend us? (0-10) / هل تنصح بنا؟</field>
+            <field name="question_type">scale</field>
+            <field name="scale_min">0</field>
+            <field name="scale_max">10</field>
+            <field name="scale_min_label">Not at all / لا</field>
+            <field name="scale_max_label">Definitely / بالتأكيد</field>
+            <field name="constr_mandatory" eval="True"/>
+        </record>
+
+        <record id="vet_feedback_q_comments" model="survey.question">
+            <field name="survey_id" ref="vet_feedback_survey"/>
+            <field name="sequence">5</field>
+            <field name="title">Comments / ملاحظات إضافية</field>
+            <field name="question_type">text_box</field>
+            <field name="constr_mandatory" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

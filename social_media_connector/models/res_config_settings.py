@@ -45,22 +45,36 @@ class ResConfigSettings(models.TransientModel):
     campaign_whatsapp = fields.Char(
         string="Campaign WhatsApp",
         config_parameter="social_media_connector.campaign_whatsapp",
-        default="01000059085",
+        default="01201568888",
     )
     campaign_call_center = fields.Char(
-        string="Campaign Call Center",
+        string="Amwaj 1 Phone",
         config_parameter="social_media_connector.campaign_call_center",
         default="01201568888",
+    )
+    campaign_phone_marassi = fields.Char(
+        string="Marsa Matruh Phone",
+        config_parameter="social_media_connector.campaign_phone_marassi",
+        default="01280833332",
     )
     campaign_website = fields.Char(
         string="Campaign Website",
         config_parameter="social_media_connector.campaign_website",
-        default="https://petspot.odoo.com",
+        default="https://drpaws.ai",
+    )
+    campaign_hashtags = fields.Char(
+        string="Campaign Hashtags",
+        config_parameter="social_media_connector.campaign_hashtags",
+        default=(
+            "#PetSpot_El_Sahel #بيت_سبوت_الساحل #عيادة_بيطرية_الساحل "
+            "#الساحل_الشمالي #أمواج #SidiAbdelRahman #NorthCoast "
+            "#MarsaMatruh #VetClinic #PetCare #Grooming #Boarding"
+        ),
     )
     campaign_facebook_url = fields.Char(
         string="Facebook Page URL",
         config_parameter="social_media_connector.campaign_facebook_url",
-        default="https://www.facebook.com/1378190768902001",
+        default="https://www.facebook.com/animalcarecenterpetspots",
     )
     campaign_linkedin_url = fields.Char(
         string="LinkedIn Page URL",
@@ -113,7 +127,19 @@ class ResConfigSettings(models.TransientModel):
     facebook_page_id = fields.Many2one(
         "social.media.page",
         string="Default Facebook Page",
-        help="Pre-selected when creating new posts (main page with most followers).",
+        help="Only this page is synced and used for pushes to deebvet Odoo Online.",
+    )
+    single_remote_account_id = fields.Integer(
+        string="Remote Facebook Account ID",
+        config_parameter="social_media_connector.single_remote_account_id",
+        default=9,
+        help="social.account id on deebvet.odoo.com — only this page is kept when fetching.",
+    )
+    facebook_account_email = fields.Char(
+        string="Facebook Account Email",
+        config_parameter="social_media_connector.facebook_account_email",
+        default="vetdrughouse@gmail.com",
+        help="Meta/Facebook login that owns the page (reconnect on deebvet if needed).",
     )
 
     @api.model
@@ -122,7 +148,12 @@ class ResConfigSettings(models.TransientModel):
         remote_id = int(
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("social_media_connector.default_remote_account_id", "4")
+            .get_param(
+                "social_media_connector.single_remote_account_id",
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("social_media_connector.default_remote_account_id", "9"),
+            )
             or 0
         )
         if remote_id:
@@ -134,10 +165,16 @@ class ResConfigSettings(models.TransientModel):
 
     def set_values(self):
         super().set_values()
-        remote_id = self.facebook_page_id.remote_account_id if self.facebook_page_id else 0
-        self.env["ir.config_parameter"].sudo().set_param(
-            "social_media_connector.default_remote_account_id", str(remote_id)
+        remote_id = self.facebook_page_id.remote_account_id if self.facebook_page_id else (
+            self.single_remote_account_id or 0
         )
+        icp = self.env["ir.config_parameter"].sudo()
+        icp.set_param("social_media_connector.default_remote_account_id", str(remote_id))
+        if self.single_remote_account_id:
+            icp.set_param(
+                "social_media_connector.single_remote_account_id",
+                str(self.single_remote_account_id),
+            )
 
     def action_test_remote_connection(self):
         self.ensure_one()

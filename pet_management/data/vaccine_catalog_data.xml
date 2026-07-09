@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <!-- Core dog + cat vaccines (full records for fresh installs) -->
+    <record id="vaccine_rabies_dog" model="pet.vaccine">
+      <field name="name">Rabies</field>
+      <field name="code">RAB001</field>
+      <field name="species_id" ref="species_dog"/>
+      <field name="manufacturer">Zoetis</field>
+      <field name="dose_ml_default">1.0</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">2.0</field>
+      <field name="administration_route">subcutaneous</field>
+      <field name="booster_interval_days">365</field>
+      <field name="initial_age_weeks">12</field>
+      <field name="max_age_weeks">9999</field>
+      <field name="priority">critical</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">200.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">Pregnant animals, animals with fever or illness</field>
+      <field name="side_effects">Mild lethargy, local swelling, fever</field>
+      <field name="storage_requirements">Store at 2-8°C, protect from light</field>
+      <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="vaccine_dhpp_dog" model="pet.vaccine">
+      <field name="name">DHPPi</field>
+      <field name="code">DHP001</field>
+      <field name="species_id" ref="species_dog"/>
+      <field name="manufacturer">Merck</field>
+      <field name="dose_ml_default">1.0</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">2.0</field>
+      <field name="administration_route">subcutaneous</field>
+      <field name="booster_interval_days">365</field>
+      <field name="initial_age_weeks">6</field>
+      <field name="max_age_weeks">9999</field>
+      <field name="priority">high</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">300.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">Severely immunocompromised animals</field>
+      <field name="side_effects">Mild fever, decreased appetite</field>
+      <field name="storage_requirements">Store at 2-8°C, do not freeze</field>
+      <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="vaccine_fvrcp_cat" model="pet.vaccine">
+      <field name="name">FVRCP</field>
+      <field name="code">FVR001</field>
+      <field name="species_id" ref="species_cat"/>
+      <field name="manufacturer">Boehringer Ingelheim</field>
+      <field name="dose_ml_default">1.0</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">1.5</field>
+      <field name="administration_route">subcutaneous</field>
+      <field name="booster_interval_days">365</field>
+      <field name="initial_age_weeks">6</field>
+      <field name="max_age_weeks">9999</field>
+      <field name="priority">high</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">300.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">Pregnant queens, severely ill cats</field>
+      <field name="side_effects">Mild lethargy, temporary loss of appetite</field>
+      <field name="storage_requirements">Store at 2-8°C, protect from light</field>
+      <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- Dog vaccines -->
+    <record id="vaccine_puppy_dp_dog" model="pet.vaccine">
+      <field name="name">Puppy DP (Nobivac Puppy DP)</field>
+      <field name="code">VAC-PUP-DP</field>
+      <field name="species_id" ref="species_dog"/>
+      <field name="manufacturer">MSD Animal Health (Nobivac)</field>
+      <field name="dose_ml_default">1.0</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">1.0</field>
+      <field name="administration_route">subcutaneous</field>
+      <field name="booster_interval_days">21</field>
+      <field name="initial_age_weeks">6</field>
+      <field name="max_age_weeks">16</field>
+      <field name="requires_multiple_doses">True</field>
+      <field name="dose_interval_days">21</field>
+      <field name="priority">high</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">250.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">Severely ill puppies, fever, immunocompromised animals</field>
+      <field name="side_effects">Mild lethargy, local swelling at injection site</field>
+      <field name="storage_requirements">Store at 2-8°C, do not freeze, protect from light</field>
+      <field name="company_id" ref="base.main_company"/>
+      <field name="notes">First puppy vaccination — Distemper + Parvovirus. Given at 6-8 weeks, booster at 3-4 weeks.</field>
+    </record>
+
+    <record id="vaccine_dhppi_l_dog" model="pet.vaccine">
+      <field name="name">DHPPi + L (8-in-1)</field>
+      <field name="code">VAC-DHP8</field>
+      <field name="species_id" ref="species_dog"/>
+      <field name="manufacturer">MSD Animal Health (Nobivac)</field>
+      <field name="dose_ml_default">1.0</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">2.0</field>
+      <field name="administration_route">subcutaneous</field>
+      <field name="booster_interval_days">365</field>
+      <field name="initial_age_weeks">8</field>
+      <field name="max_age_weeks">9999</field>
+      <field name="requires_multiple_doses">True</field>
+      <field name="dose_interval_days">21</field>
+      <field name="priority">critical</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">400.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">Pregnant animals, severely immunocompromised, acute illness</field>
+      <field name="side_effects">Mild fever, decreased appetite, local swelling</field>
+      <field name="storage_requirements">Store at 2-8°C, do not freeze</field>
+      <field name="company_id" ref="base.main_company"/>
+      <field name="notes">Distemper, Hepatitis, Parvovirus, Parainfluenza + Leptospirosis. Annual booster.</field>
+    </record>
+
+    <record id="vaccine_kennel_cough_dog" model="pet.vaccine">
+      <field name="name">Kennel Cough / Bordetella (Nobivac KC)</field>
+      <field name="code">VAC-KC</field>
+      <field name="species_id" ref="species_dog"/>
+      <field name="manufacturer">MSD Animal Health (Nobivac)</field>
+      <field name="dose_ml_default">0.5</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">1.0</field>
+      <field name="administration_route">intranasal</field>
+      <field name="booster_interval_days">365</field>
+      <field name="initial_age_weeks">8</field>
+      <field name="max_age_weeks">9999</field>
+      <field name="priority">medium</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">300.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">Severe respiratory disease, fever, pregnant animals in last trimester</field>
+      <field name="side_effects">Mild sneezing, nasal discharge for 1-2 days post-vaccination</field>
+      <field name="storage_requirements">Store at 2-8°C, use within 1 hour after reconstitution</field>
+      <field name="company_id" ref="base.main_company"/>
+      <field name="notes">Recommended before boarding, grooming, or dog park visits. Intranasal administration.</field>
+    </record>
+
+    <!-- Cat vaccines -->
+    <record id="vaccine_rabies_cat" model="pet.vaccine">
+      <field name="name">Rabies</field>
+      <field name="code">VAC-RAB-CAT</field>
+      <field name="species_id" ref="species_cat"/>
+      <field name="manufacturer">Zoetis</field>
+      <field name="dose_ml_default">1.0</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">1.0</field>
+      <field name="administration_route">subcutaneous</field>
+      <field name="booster_interval_days">365</field>
+      <field name="initial_age_weeks">12</field>
+      <field name="max_age_weeks">9999</field>
+      <field name="priority">critical</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">200.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">Pregnant queens, severely ill cats, fever</field>
+      <field name="side_effects">Mild lethargy, local swelling, fever</field>
+      <field name="storage_requirements">Store at 2-8°C, protect from light</field>
+      <field name="company_id" ref="base.main_company"/>
+      <field name="notes">Legally required in Egypt. Annual booster for cats with outdoor access.</field>
+    </record>
+
+    <record id="vaccine_felv_cat" model="pet.vaccine">
+      <field name="name">Feline Leukemia (FeLV)</field>
+      <field name="code">VAC-FELV</field>
+      <field name="species_id" ref="species_cat"/>
+      <field name="manufacturer">Zoetis (Fel-O-Vax)</field>
+      <field name="dose_ml_default">1.0</field>
+      <field name="dose_ml_min">0.5</field>
+      <field name="dose_ml_max">1.0</field>
+      <field name="administration_route">subcutaneous</field>
+      <field name="booster_interval_days">365</field>
+      <field name="initial_age_weeks">8</field>
+      <field name="max_age_weeks">9999</field>
+      <field name="requires_multiple_doses">True</field>
+      <field name="dose_interval_days">21</field>
+      <field name="priority">high</field>
+      <field name="fda_approved">True</field>
+      <field name="cost">350.00</field>
+      <field name="currency_id" ref="base.EGP"/>
+      <field name="contraindications">FeLV-positive cats, pregnant queens, severely ill cats</field>
+      <field name="side_effects">Mild lethargy, local swelling, temporary loss of appetite</field>
+      <field name="storage_requirements">Store at 2-8°C, do not freeze</field>
+      <field name="company_id" ref="base.main_company"/>
+      <field name="notes">Recommended for cats with outdoor access. Test negative for FeLV before first dose.</field>
+    </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pet_vet_performance_pivot" model="ir.ui.view">
+        <field name="name">pet.vet.performance.report.pivot</field>
+        <field name="model">pet.vet.performance.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Veterinarian Performance" sample="1">
+                <field name="vet_employee_id" type="row"/>
+                <field name="appointment_date" interval="month" type="col"/>
+                <field name="nbr" type="measure"/>
+                <field name="revenue" type="measure"/>
+                <field name="case_completeness_pct" type="measure"/>
+                <field name="diagnostic_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_pet_vet_performance_graph" model="ir.ui.view">
+        <field name="name">pet.vet.performance.report.graph</field>
+        <field name="model">pet.vet.performance.report</field>
+        <field name="arch" type="xml">
+            <graph string="Veterinarian Performance" sample="1" type="bar">
+                <field name="vet_employee_id"/>
+                <field name="revenue" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_pet_vet_performance_list" model="ir.ui.view">
+        <field name="name">pet.vet.performance.report.list</field>
+        <field name="model">pet.vet.performance.report</field>
+        <field name="arch" type="xml">
+            <list string="Veterinarian Performance">
+                <field name="appointment_date"/>
+                <field name="vet_employee_id"/>
+                <field name="primary_type"/>
+                <field name="state"/>
+                <field name="payment_status"/>
+                <field name="revenue" sum="Revenue"/>
+                <field name="case_completeness_pct" widget="progressbar"/>
+                <field name="is_case_complete"/>
+                <field name="diagnostic_count" sum="Diagnostics"/>
+                <field name="abnormal_diagnostic_count" sum="Abnormal"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_pet_vet_performance_search" model="ir.ui.view">
+        <field name="name">pet.vet.performance.report.search</field>
+        <field name="model">pet.vet.performance.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="vet_employee_id"/>
+                <filter name="filter_complete" string="Complete Cases" domain="[('is_case_complete', '=', True)]"/>
+                <filter name="filter_incomplete" string="Incomplete Cases" domain="[('is_case_complete', '=', False)]"/>
+                <separator/>
+                <filter name="filter_this_year" string="This Year"
+                        domain="[('appointment_date', '&gt;=', (context_today().replace(month=1, day=1)).strftime('%Y-%m-%d'))]"/>
+                <group>
+                    <filter name="group_by_vet" string="Veterinarian" context="{'group_by':'vet_employee_id'}"/>
+                    <filter name="group_by_type" string="Appointment Type" context="{'group_by':'primary_type'}"/>
+                    <filter name="group_by_status" string="Status" context="{'group_by':'state'}"/>
+                    <filter name="group_by_month" string="Month" context="{'group_by':'appointment_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pet_vet_performance_report" model="ir.actions.act_window">
+        <field name="name">Veterinarian Performance</field>
+        <field name="res_model">pet.vet.performance.report</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_pet_vet_performance_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No performance data yet</p>
+            <p>Assign veterinarians (employees) to appointments and complete their medical visits to see performance analytics here.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_pet_vet_performance"
+              name="Vet Performance"
+              parent="menu_pet_operations"
+              action="action_pet_vet_performance_report"
+              sequence="20"/>
+</odoo>

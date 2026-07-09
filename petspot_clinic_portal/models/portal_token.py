@@ -69,6 +69,8 @@ class PetspotPortalToken(models.Model):
     prefill_owner_name = fields.Char()
     prefill_phone = fields.Char()
     prefill_pet_name = fields.Char()
+    prefill_discount_code = fields.Char(string='Prefill discount code')
+    prefill_discount_percent = fields.Integer(string='Prefill discount %')
     access_url = fields.Char(compute='_compute_access_url')
     result_summary = fields.Text()
     exam_token_id = fields.Many2one('petspot.portal.token', string='Auto Exam Token', readonly=True)
@@ -140,6 +142,17 @@ class PetspotPortalToken(models.Model):
     def _compute_access_url(self):
         for rec in self:
             rec.access_url = rec._live_portal_url()
+
+    def _resolve_portal_source(self):
+        """Map token context to pet.appointment portal_source."""
+        self.ensure_one()
+        if self.chatwoot_conversation_id:
+            return 'chatwoot'
+        return 'portal'
+
+    def _appointment_booking_extra_vals(self):
+        """Hook for modules (e.g. campaign rewards) to enrich appointment creation."""
+        return {}
 
     def validate_token(self, allow_used=False):
         self.ensure_one()
@@ -628,11 +641,32 @@ class PetspotPortalToken(models.Model):
             'result_summary': summary,
         })
 
-        msg = _(
-            'تم تأكيد الموعد %(appt)s للحيوان %(pet)s.\n\n'
+        discount_prefix = ''
+        if self.prefill_discount_code:
+            discount_prefix = _('🎁 كود خصم: %(code)s') % {'code': self.prefill_discount_code}
+            if self.prefill_discount_percent:
+                discount_prefix += ' (%s%%)' % self.prefill_discount_percent
+            discount_prefix += '\n\n'
+
+        owner_line = ''
+        if appt.owner_id:
+            owner_line = _('المالك: %(owner)s\n') % {'owner': appt.owner_id.name}
+            if appt.owner_id.phone:
+                owner_line += _('الهاتف: %(phone)s\n') % {'phone': appt.owner_id.phone}
+
+        msg = discount_prefix + _(
+            'تم تأكيد الموعد %(appt)s للحيوان %(pet)s.\n'
+            '%(owner)s\n'
+            'وقت الموعد: %(when)s\n\n'
             'للفريق الطبي: افتح نموذج الكشف:\n'
             '%(url)s'
-        ) % {'appt': appt.name, 'pet': pet_name, 'url': exam_url}
+        ) % {
+            'appt': appt.name,
+            'pet': pet_name,
+            'owner': owner_line,
+            'when': fields.Datetime.to_string(appt.start_datetime) if appt.start_datetime else '—',
+            'url': exam_url,
+        }
 
         self.petspot_notify_whatsapp_group(msg)
         self.petspot_notify_chatwoot(self.chatwoot_conversation_id, msg)

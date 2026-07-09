@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="loyalty_program_petspot_quiz_10" model="loyalty.program">
+        <field name="name">PetSpot Campaign — 10% Quiz Reward</field>
+        <field name="program_type">coupons</field>
+        <field name="applies_on">current</field>
+        <field name="trigger">with_code</field>
+        <field name="portal_point_name">Quiz reward</field>
+        <field name="portal_visible">False</field>
+        <field name="date_from" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(months=3)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="loyalty_program_petspot_quiz_10_rule" model="loyalty.rule">
+        <field name="program_id" ref="loyalty_program_petspot_quiz_10"/>
+    </record>
+
+    <record id="loyalty_program_petspot_quiz_10_reward" model="loyalty.reward">
+        <field name="program_id" ref="loyalty_program_petspot_quiz_10"/>
+        <field name="reward_type">discount</field>
+        <field name="discount">10</field>
+        <field name="discount_mode">percent</field>
+        <field name="discount_applicability">order</field>
+        <field name="required_points">1</field>
+    </record>
+
+    <record id="loyalty_program_petspot_quiz_15" model="loyalty.program">
+        <field name="name">PetSpot Campaign — 15% Bonus Reward</field>
+        <field name="program_type">coupons</field>
+        <field name="applies_on">current</field>
+        <field name="trigger">with_code</field>
+        <field name="portal_point_name">Bonus reward</field>
+        <field name="portal_visible">False</field>
+        <field name="date_from" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(months=3)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="loyalty_program_petspot_quiz_15_rule" model="loyalty.rule">
+        <field name="program_id" ref="loyalty_program_petspot_quiz_15"/>
+    </record>
+
+    <record id="loyalty_program_petspot_quiz_15_reward" model="loyalty.reward">
+        <field name="program_id" ref="loyalty_program_petspot_quiz_15"/>
+        <field name="reward_type">discount</field>
+        <field name="discount">15</field>
+        <field name="discount_mode">percent</field>
+        <field name="discount_applicability">order</field>
+        <field name="required_points">1</field>
+    </record>
+
+</odoo>

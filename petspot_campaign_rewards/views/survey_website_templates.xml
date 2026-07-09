@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="survey_page_fill_petspot" inherit_id="survey.survey_page_fill" name="PetSpot Survey Layout">
+        <xpath expr="//div[hasclass('o_survey_wrap')]" position="before">
+            <t t-if="survey.petspot_campaign_step_id">
+                <div class="petspot-survey-bar py-2">
+                    <div class="container o_container_small d-flex align-items-center justify-content-between gap-2">
+                        <a t-att-href="'/campaign/%s' % survey.petspot_campaign_step_id.campaign_id.code"
+                           class="btn btn-sm btn-outline-secondary">
+                            ← Campaign | الحملة
+                        </a>
+                        <span class="text-muted small text-center flex-grow-1 d-none d-sm-inline">
+                            Episode <t t-out="survey.petspot_campaign_step_id.sequence // 10"/>
+                            · PetSpot El Sahel
+                        </span>
+                        <span t-if="survey.petspot_campaign_step_id.issue_reward"
+                              class="badge text-bg-success">
+                            🎁 <t t-out="survey.petspot_campaign_step_id.reward_discount_percent"/>% off
+                        </span>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="survey_fill_form_start_petspot" inherit_id="survey.survey_fill_form_start" name="PetSpot Survey Start">
+        <xpath expr="//button[@value='start']" position="attributes">
+            <attribute name="class" remove="disabled"/>
+        </xpath>
+        <xpath expr="//button[@value='start']/t[@t-if='survey.certification']" position="before">
+            <t t-if="survey.petspot_campaign_step_id">Start Quiz | ابدأ الاختبار</t>
+        </xpath>
+        <xpath expr="//button[@value='start']/t[@t-if='survey.certification']" position="attributes">
+            <attribute name="t-if">survey.certification and not survey.petspot_campaign_step_id</attribute>
+        </xpath>
+        <xpath expr="//button[@value='start']/t[@t-else='']" position="attributes">
+            <attribute name="t-else">not survey.petspot_campaign_step_id and not survey.certification</attribute>
+        </xpath>
+    </template>
+
+</odoo>

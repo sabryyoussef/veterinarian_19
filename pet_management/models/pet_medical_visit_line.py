@@ -2,6 +2,16 @@
 from odoo import api, fields, models
 
 
+DIAGNOSTIC_PRODUCT_CODES = {
+    'DIAG-US',
+    'DIAG-XR',
+    'DIAG-LAB-CBC',
+    'DIAG-LAB-CHEM',
+    'DIAG-LAB-URINE',
+    'DIAG-LAB-FECAL',
+}
+
+
 class PetMedicalVisitLine(models.Model):
     _name = 'pet.medical.visit.line'
     _description = 'Pet Medical Visit Line'
@@ -20,6 +30,7 @@ class PetMedicalVisitLine(models.Model):
             ('service', 'Service'),
             ('medicine', 'Medicine'),
             ('vaccine', 'Vaccine'),
+            ('diagnostic', 'Diagnostic'),
         ],
         required=True,
         default='service',
@@ -33,6 +44,12 @@ class PetMedicalVisitLine(models.Model):
         compute='_compute_price_subtotal',
         store=True,
         digits='Product Price',
+    )
+    diagnostic_report_id = fields.Many2one(
+        'pet.medical.diagnostic.report',
+        string='Diagnostic Report',
+        readonly=True,
+        copy=False,
     )
     company_id = fields.Many2one(
         related='visit_id.company_id',
@@ -53,9 +70,43 @@ class PetMedicalVisitLine(models.Model):
                 subtotal *= (1.0 - (line.discount / 100.0))
             line.price_subtotal = subtotal
 
+    @api.model
+    def _is_diagnostic_product(self, product):
+        if not product:
+            return False
+        code = (product.default_code or '').upper()
+        if code in DIAGNOSTIC_PRODUCT_CODES or code.startswith('DIAG-'):
+            return True
+        name = (product.display_name or '').lower()
+        keywords = ('sonar', 'ultrasound', 'x-ray', 'xray', 'lab', 'cbc', 'urinalysis', 'fecal', 'سونار', 'أشعة')
+        return any(keyword in name for keyword in keywords)
+
     @api.onchange('product_id')
     def _onchange_product_id(self):
         for line in self:
             if line.product_id:
                 line.name = line.product_id.display_name
                 line.price_unit = line.product_id.list_price
+                if line.line_type != 'consultation' and self._is_diagnostic_product(line.product_id):
+                    line.line_type = 'diagnostic'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        lines._ensure_diagnostic_reports()
+        return lines
+
+    def write(self, vals):
+        res = super().write(vals)
+        if {'line_type', 'product_id'}.intersection(vals):
+            self._ensure_diagnostic_reports()
+        return res
+
+    def _ensure_diagnostic_reports(self):
+        Report = self.env['pet.medical.diagnostic.report']
+        for line in self:
+            if line.line_type != 'diagnostic':
+                continue
+            report = Report.create_from_visit_line(line)
+            if report and line.diagnostic_report_id != report:
+                line.diagnostic_report_id = report.id

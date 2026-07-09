@@ -31,7 +31,11 @@ class SocialMediaPage(models.Model):
     @api.model
     def sync_from_remote(self):
         """Fetch social.account records from remote Odoo and upsert local pages."""
+        ICP = self.env["ir.config_parameter"].sudo()
+        only_remote_id = int(ICP.get_param("social_media_connector.single_remote_account_id", "0") or 0)
         remote_pages = fetch_remote_facebook_pages(self.env)
+        if only_remote_id:
+            remote_pages = [p for p in remote_pages if p.get("id") == only_remote_id]
         seen_ids = set()
         for row in remote_pages:
             remote_id = row["id"]
@@ -49,7 +53,16 @@ class SocialMediaPage(models.Model):
                 existing.write(vals)
             else:
                 self.create(vals)
-        stale = self.search([("remote_account_id", "not in", list(seen_ids))]) if seen_ids else self.browse()
+        stale = self.browse()
+        if only_remote_id:
+            stale = self.search([("remote_account_id", "!=", only_remote_id)])
+        elif seen_ids:
+            stale = self.search([("remote_account_id", "not in", list(seen_ids))])
         if stale:
-            stale.write({"active": False})
+            keep = self.search([("remote_account_id", "=", only_remote_id)], limit=1) if only_remote_id else self.browse()
+            if keep and len(keep) == 1:
+                self.env["social.media.post"].sudo().search(
+                    [("page_id", "in", stale.ids)]
+                ).write({"page_id": keep.id})
+            stale.unlink()
         return len(remote_pages)

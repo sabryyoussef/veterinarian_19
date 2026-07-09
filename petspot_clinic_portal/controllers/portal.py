@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import logging
 import re
 from datetime import timedelta
@@ -209,6 +210,8 @@ class PetspotClinicPortalController(BridgeControllerBase):
                     'form': post,
                     'form_action': form_action,
                     'staff_mode': staff_mode,
+                    'discount_code': rec.prefill_discount_code or '',
+                    'discount_percent': rec.prefill_discount_percent or 0,
                 })
 
         return request.render('petspot_clinic_portal.book_form', {
@@ -223,6 +226,8 @@ class PetspotClinicPortalController(BridgeControllerBase):
             },
             'form_action': form_action,
             'staff_mode': staff_mode,
+            'discount_code': rec.prefill_discount_code or '',
+            'discount_percent': rec.prefill_discount_percent or 0,
         })
 
     def portal_payment_placeholder(self, token, **kwargs):
@@ -263,6 +268,12 @@ class PetspotClinicPortalController(BridgeControllerBase):
 
         if not owner_name or not phone or not pet_name:
             raise UserError(_('الاسم ورقم الهاتف واسم الحيوان مطلوبة.'))
+
+        if token_rec.prefill_discount_code:
+            disc = _('Campaign discount: %(code)s') % {'code': token_rec.prefill_discount_code}
+            if token_rec.prefill_discount_percent:
+                disc += ' (%s%%)' % token_rec.prefill_discount_percent
+            notes = (notes + '\n' + disc) if notes else disc
 
         Slot = request.env['petspot.clinic.slot'].sudo()
         slot = Slot.browse()
@@ -345,9 +356,10 @@ class PetspotClinicPortalController(BridgeControllerBase):
             # Portal appointments: calendar sync permanently gated (broken path in pet_management)
             'sync_to_calendar': False,
             'auto_create_facility': False,
-            'portal_source': 'chatwoot' if token_rec.chatwoot_conversation_id else 'portal',
+            'portal_source': token_rec._resolve_portal_source(),
             'chatwoot_conversation_id': token_rec.chatwoot_conversation_id or False,
         }
+        appt_vals.update(token_rec._appointment_booking_extra_vals())
         if slot:
             appt_vals['portal_slot_id'] = slot.id
         resource_id = Appointment._portal_default_resource()
@@ -415,9 +427,33 @@ class PetspotClinicPortalController(BridgeControllerBase):
             except Exception:
                 consultation = request.env['product.product'].sudo().browse()
         if not consultation:
+            consultation = request.env.ref(
+                'pet_management.product_consultation_exam',
+                raise_if_not_found=False,
+            )
+        if not consultation:
+            consultation = request.env['product.product'].sudo().search([
+                ('default_code', '=', 'EXAM'),
+            ], limit=1)
+        if not consultation:
             consultation = self._portal_products_for_category(
                 'petspot_clinic_portal.category_services', 'Services'
             )[:1]
+        diagnostic_codes = [
+            'DIAG-US', 'DIAG-XR', 'DIAG-LAB-CBC',
+            'DIAG-LAB-CHEM', 'DIAG-LAB-URINE', 'DIAG-LAB-FECAL',
+        ]
+        diagnostic_products = request.env['product.product'].sudo().search([
+            ('default_code', 'in', diagnostic_codes),
+            ('sale_ok', '=', True),
+            ('active', '=', True),
+        ], order='name')
+        if not diagnostic_products:
+            diagnostic_products = request.env['product.product'].sudo().search([
+                ('default_code', 'ilike', 'DIAG-%'),
+                ('sale_ok', '=', True),
+                ('active', '=', True),
+            ], order='name')
         return {
             'consultation_product': consultation,
             'service_products': self._portal_products_for_category(
@@ -428,6 +464,11 @@ class PetspotClinicPortalController(BridgeControllerBase):
             ),
             'vaccine_products': self._portal_products_for_category(
                 'petspot_clinic_portal.category_vaccines', 'Drugs'
+            ),
+            'diagnostic_products': diagnostic_products,
+            'exam_price_map': request.env['pet.exam.price.config'].sudo().get_price_map(),
+            'exam_price_map_json': json.dumps(
+                request.env['pet.exam.price.config'].sudo().get_price_map()
             ),
         }
 
@@ -464,37 +505,41 @@ class PetspotClinicPortalController(BridgeControllerBase):
 
     def _build_visit_line_vals(self, visit, post):
         line_vals = []
+        visit_type = post.get('visit_type') or visit.visit_type or 'checkup'
+        PriceConfig = request.env['pet.exam.price.config'].sudo()
+        configured_price = PriceConfig.get_price_for_visit_type(
+            visit_type,
+            company=visit.company_id,
+        )
         consultation_product_id = post.get('consultation_product_id')
         consultation_fee = post.get('consultation_fee')
+        consultation_product = request.env['product.product'].sudo().browse()
         if consultation_product_id:
-            product = request.env['product.product'].sudo().browse(int(consultation_product_id))
-            if product.exists():
-                price = product.list_price
-                if consultation_fee:
-                    try:
-                        price = float(consultation_fee)
-                    except Exception:
-                        pass
-                line_vals.append({
-                    'line_type': 'consultation',
-                    'product_id': product.id,
-                    'name': product.display_name,
-                    'quantity': 1.0,
-                    'price_unit': price,
-                })
-        elif consultation_fee:
+            consultation_product = request.env['product.product'].sudo().browse(int(consultation_product_id))
+        if not consultation_product:
+            consultation_product = visit._get_consultation_product()
+        price = configured_price
+        if consultation_fee:
             try:
-                fee = float(consultation_fee)
+                price = float(consultation_fee)
             except Exception:
-                fee = 0.0
-            if fee > 0:
-                line_vals.append({
-                    'line_type': 'consultation',
-                    'name': _('رسوم الكشف'),
-                    'quantity': 1.0,
-                    'price_unit': fee,
-                })
-        for line_type in ('service', 'medicine', 'vaccine'):
+                pass
+        if consultation_product and consultation_product.exists():
+            line_vals.append({
+                'line_type': 'consultation',
+                'product_id': consultation_product.id,
+                'name': consultation_product.display_name,
+                'quantity': 1.0,
+                'price_unit': price,
+            })
+        elif price > 0:
+            line_vals.append({
+                'line_type': 'consultation',
+                'name': _('رسوم الكشف'),
+                'quantity': 1.0,
+                'price_unit': price,
+            })
+        for line_type in ('service', 'medicine', 'vaccine', 'diagnostic'):
             line_vals.extend(self._parse_exam_line_posts(post, line_type))
         discount_amount = 0.0
         if post.get('discount_amount'):
@@ -503,6 +548,43 @@ class PetspotClinicPortalController(BridgeControllerBase):
             except Exception:
                 discount_amount = 0.0
         return line_vals, discount_amount
+
+    def _apply_portal_diagnostic_reports(self, visit, post):
+        """Attach quick diagnostic summaries/files from portal form."""
+        summaries = request.httprequest.form.getlist('diagnostic_summary')
+        product_ids = request.httprequest.form.getlist('diagnostic_product_id')
+        files = request.httprequest.files.getlist('diagnostic_file') if request.httprequest.files else []
+        Report = request.env['pet.medical.diagnostic.report'].sudo()
+        import base64
+        for idx, pid_raw in enumerate(product_ids):
+            if not pid_raw:
+                continue
+            try:
+                product_id = int(pid_raw)
+            except Exception:
+                continue
+            report = Report.search([
+                ('visit_id', '=', visit.id),
+                ('product_id', '=', product_id),
+            ], limit=1)
+            if not report:
+                line = visit.line_ids.filtered(
+                    lambda l: l.line_type == 'diagnostic' and l.product_id.id == product_id
+                )[:1]
+                if line:
+                    report = Report.create_from_visit_line(line)
+            if not report:
+                continue
+            vals = {}
+            if idx < len(summaries) and summaries[idx]:
+                vals['result_summary'] = summaries[idx]
+            if idx < len(files):
+                upload = files[idx]
+                if upload and upload.filename:
+                    vals['report_attachment'] = base64.b64encode(upload.read())
+                    vals['report_attachment_filename'] = upload.filename
+            if vals:
+                report.write(vals)
 
 
 
@@ -595,9 +677,10 @@ class PetspotClinicPortalController(BridgeControllerBase):
         line_vals, discount_amount = self._build_visit_line_vals(visit, post)
         if line_vals:
             visit.write({
-                'line_ids': [(0, 0, vals) for vals in line_vals],
+                'line_ids': [(5, 0, 0)] + [(0, 0, vals) for vals in line_vals],
                 'discount_amount': discount_amount,
             })
+        self._apply_portal_diagnostic_reports(visit, post)
 
         registration_token_id = False
         if appointment and appointment.portal_registration_token_id:

@@ -1,0 +1,93 @@
+// PetSpot campaign & survey public UX
+.petspot-campaign-hero {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 45%, #084298 100%);
+    color: #fff;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+}
+
+.petspot-episode-card {
+    border: 0;
+    border-radius: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1.25rem rgba(13, 110, 253, 0.15) !important;
+    }
+
+    .episode-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-weight: 700;
+    }
+}
+
+.petspot-step-intro {
+    .tip-box {
+        border-left: 4px solid #0d6efd;
+        background: #f8f9fa;
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+    }
+
+    .tip-box[dir="rtl"] {
+        border-left: 0;
+        border-right: 4px solid #0d6efd;
+    }
+}
+
+.petspot-survey-bar {
+    background: #fff;
+    border-bottom: 1px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.petspot-quiz-welcome {
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+
+    ul {
+        margin-bottom: 0;
+        padding-left: 1.25rem;
+    }
+}
+
+.petspot-survey-bar + .o_survey_wrap {
+    .o_survey_main_title {
+        font-size: 1.5rem;
+    }
+
+    .o_survey_form_content .js_question-wrapper {
+        padding: 0.75rem 0;
+    }
+
+    .o_survey_choice_btn {
+        min-height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.3;
+    }
+
+    @media (max-width: 576px) {
+        .btn-lg {
+            width: 100%;
+        }
+    }
+}
+
+.petspot-reward-code {
+    letter-spacing: 0.15em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}

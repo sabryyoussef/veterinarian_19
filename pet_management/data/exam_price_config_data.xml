@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <function model="pet.exam.price.config" name="_load_default_data"/>
+    </data>
+</odoo>

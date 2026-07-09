@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Campaign landing -->
+    <template id="campaign_landing_page" name="PetSpot Campaign Landing">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure petspot-campaign-page">
+                <section class="pt-4 pb-5">
+                    <div class="container">
+                        <div class="petspot-campaign-hero mb-4">
+                            <p class="mb-2 opacity-75">🐾 PetSpot El Sahel · بيت سبوت الساحل</p>
+                            <h1 class="display-6 fw-bold mb-2" t-out="campaign.name"/>
+                            <p class="lead mb-0">
+                                Learn pet-care tips, take short quizzes, and win clinic discount codes!
+                            </p>
+                            <p class="mb-0 mt-2" dir="rtl">
+                                نصائح رعاية الأليف، اختبارات قصيرة، وأكواد خصم للعيادة!
+                            </p>
+                        </div>
+
+                        <div class="row g-3">
+                            <t t-foreach="steps" t-as="step">
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm petspot-episode-card">
+                                        <div class="card-body d-flex flex-column">
+                                            <div class="d-flex align-items-start gap-3 mb-2">
+                                                <span class="episode-number bg-primary text-white">
+                                                    <t t-out="step.sequence // 10"/>
+                                                </span>
+                                                <div class="flex-grow-1">
+                                                    <h5 class="card-title mb-1" t-out="step.title"/>
+                                                    <p class="card-text text-muted mb-0 small" t-if="step.title_ar" t-out="step.title_ar"/>
+                                                </div>
+                                            </div>
+                                            <p t-if="step.issue_reward" class="text-success fw-semibold small mb-2">
+                                                🎁 Reward: <t t-out="step.reward_discount_percent"/>% discount
+                                                · خصم <t t-out="step.reward_discount_percent"/>%
+                                            </p>
+                                            <p t-else="" class="text-muted small mb-2">
+                                                Short quiz · ~2 min · اختبار سريع
+                                            </p>
+                                            <p class="text-muted small mb-0 mt-auto" t-if="step.intro_summary" t-out="step.intro_summary"/>
+                                        </div>
+                                        <div class="card-footer bg-white border-0 pt-0 pb-3 px-3">
+                                            <a t-att-href="step.public_url" class="btn btn-primary w-100 py-2">
+                                                Start Episode <t t-out="step.sequence // 10"/>
+                                                · ابدأ
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <div class="mt-4 p-4 bg-light rounded-3">
+                            <h4 class="fw-bold">How it works | كيف يعمل</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ol class="mb-md-0">
+                                        <li>Read the tip for each episode.</li>
+                                        <li>Answer a few simple questions (tap your choice).</li>
+                                        <li>Pass Episode 6 for <strong>10% off</strong>.</li>
+                                        <li>Complete Episode 7 for <strong>15% off</strong>.</li>
+                                        <li>Show your code at reception or on WhatsApp.</li>
+                                    </ol>
+                                </div>
+                                <div class="col-md-6" dir="rtl">
+                                    <ol class="mb-0">
+                                        <li>اقرأ النصيحة في كل حلقة.</li>
+                                        <li>أجب على أسئلة بسيطة (اضغط اختيارك).</li>
+                                        <li>اجتز الحلقة 6 لخصم <strong>10%</strong>.</li>
+                                        <li>أكمل الحلقة 7 لخصم <strong>15%</strong>.</li>
+                                        <li>اعرض الكود في الاستقبال أو واتساب.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <hr class="my-3"/>
+                            <p class="mb-0 fw-semibold">
+                                📞 Amwaj 1: 01201568888 | 📞 Marsa Matruh: 01280833332
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- Episode intro before quiz -->
+    <template id="campaign_step_page" name="PetSpot Campaign Step Intro">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure petspot-step-intro">
+                <section class="pt-4 pb-5">
+                    <div class="container" style="max-width: 720px;">
+                        <a t-att-href="'/campaign/%s' % campaign.code" class="btn btn-link ps-0 mb-3">
+                            ← All episodes | كل الحلقات
+                        </a>
+
+                        <span class="badge text-bg-primary mb-2">
+                            Episode <t t-out="step.sequence // 10"/>
+                        </span>
+                        <h1 class="fw-bold" t-out="step.title"/>
+                        <p class="lead text-muted" t-if="step.title_ar" t-out="step.title_ar"/>
+
+                        <p t-if="step.issue_reward" class="alert alert-success">
+                            🎁 Complete this step to receive a
+                            <strong><t t-out="step.reward_discount_percent"/>%</strong> discount code
+                            for PetSpot clinic services.
+                            <span dir="rtl" class="d-block mt-1">
+                                أكمل هذه الحلقة للحصول على كود خصم
+                                <strong><t t-out="step.reward_discount_percent"/>%</strong>.
+                            </span>
+                        </p>
+
+                        <div class="tip-box mb-4" t-if="step.intro_body">
+                            <h5 class="fw-bold mb-3">💡 Pet-care tip | نصيحة</h5>
+                            <div t-out="step.intro_body"/>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a t-if="step.survey_id" t-att-href="step.survey_start_url"
+                               class="btn btn-primary btn-lg py-3">
+                                Take the quiz (<t t-out="step.quiz_question_count"/> questions)
+                                · ابدأ الاختبار
+                            </a>
+                            <p class="text-muted text-center small mb-0">
+                                No login needed · one question per screen · يمكنك الرجوع للسؤال السابق
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- Reward thank-you -->
+    <template id="campaign_reward_page" name="PetSpot Campaign Reward">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="pt-5 pb-5">
+                    <div class="container text-center" style="max-width: 640px;">
+                        <t t-if="passed and card">
+                            <div class="display-1 mb-2">🎉</div>
+                            <h1 class="h2 text-success fw-bold">Congratulations! | مبروك!</h1>
+                            <p class="lead">Your PetSpot discount code:</p>
+                            <p class="lead" dir="rtl">كود الخصم الخاص بك:</p>
+                            <div class="petspot-reward-code display-6 fw-bold my-4 p-4 border border-success rounded-3 bg-light"
+                                 t-out="card.code"/>
+                            <p t-if="step" class="fs-5">
+                                <strong><t t-out="step.reward_discount_percent"/>%</strong> off clinic services
+                            </p>
+                            <p t-if="card.expiration_date" class="text-muted">
+                                Valid until <t t-out="card.expiration_date"/>
+                            </p>
+                            <div class="alert alert-light text-start mt-4">
+                                <strong>How to redeem | طريقة الاستخدام</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Show this code at PetSpot reception (Amwaj 1 or Marsa Matruh).</li>
+                                    <li>Or send it on WhatsApp: <strong>01201568888</strong></li>
+                                    <li dir="rtl">اعرض الكود في الاستقبال أو أرسله على واتساب.</li>
+                                </ul>
+                            </div>
+                            <t t-if="book_url">
+                                <a t-att-href="book_url" class="btn btn-success btn-lg mt-3">
+                                    Book your appointment | احجز موعدك
+                                </a>
+                                <p class="text-muted small mt-2">
+                                    Your discount code will be applied when you book.
+                                    <span dir="rtl"> — سيتم تطبيق كود الخصم عند الحجز.</span>
+                                </p>
+                            </t>
+                            <a t-att-href="'/campaign/%s' % (campaign.code if campaign else 'petspot_summer_2026')"
+                               class="btn btn-outline-primary mt-3">
+                                Back to campaign | العودة للحملة
+                            </a>
+                        </t>
+                        <t t-else="">
+                            <h1 class="fw-bold">Almost there! | كدت توصل!</h1>
+                            <p class="lead">
+                                You need <strong>80%+</strong> to unlock your discount code.
+                                Review the tips and try again.
+                            </p>
+                            <p dir="rtl" class="text-muted">
+                                تحتاج 80%+ للحصول على كود الخصم. راجع النصائح وحاول مرة أخرى.
+                            </p>
+                            <a t-att-href="'/campaign/%s' % (campaign.code if campaign else 'petspot_summer_2026')"
+                               class="btn btn-primary mt-3">
+                                Try again | حاول مرة أخرى
+                            </a>
+                        </t>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+</odoo>

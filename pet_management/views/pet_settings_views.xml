@@ -111,9 +111,9 @@
     </record>
 
     <menuitem id="menu_pet_management_settings"
-              name="Pet Management"
-              parent="base.menu_administration"
-              sequence="10"
+              name="Settings"
+              parent="pet_management.menu_pet_configuration"
+              sequence="99"
               action="action_pet_management_settings"
               groups="pet_management.group_pet_configuration_user_all,pet_management.group_pet_configuration_admin"/>
 

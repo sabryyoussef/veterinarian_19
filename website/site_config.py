@@ -39,20 +39,29 @@ def load_config() -> dict[str, Any]:
     address_en = os.getenv("CLINIC_ADDRESS_EN", data["location"].get("address_en", area_en))
     address_ar = os.getenv("CLINIC_ADDRESS_AR", data["location"].get("address_ar", area_ar))
 
+    branches = data.get("branches", [])
+    phone_alternate = os.getenv(
+        "CLINIC_PHONE_ALTERNATE", data["contact"].get("phone_alternate", "")
+    )
+    # Marsa branch override for legacy marassi slot
+    phone_marassi = os.getenv("CLINIC_PHONE_MARASSI", phone_alternate)
+
     return {
         "brand": data["brand"],
         "seo": data["seo"],
         "services": data["services"],
         "gallery_slots": data["gallery_slots"],
         "gallery_extra_count": int(data.get("gallery_extra_count", 12)),
+        "branches": branches,
         "phone": phone,
         "phone_tel": phone.replace(" ", ""),
-        "phone_marassi": os.getenv("CLINIC_PHONE_MARASSI", ""),
-        "phone_alternate": data["contact"].get("phone_alternate", ""),
+        "phone_marassi": phone_marassi,
+        "phone_alternate": phone_alternate,
         "whatsapp": whatsapp,
         "whatsapp_url": f"https://wa.me/{whatsapp}",
         "email": email,
         "facebook": facebook,
+        "facebook_sister": data["contact"].get("facebook_sister", ""),
         "instagram": instagram,
         "maps_url": maps_url,
         "area_en": area_en,

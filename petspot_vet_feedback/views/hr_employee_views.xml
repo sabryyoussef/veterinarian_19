@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_vet_feedback" model="ir.ui.view">
+        <field name="name">hr.employee.form.vet.feedback</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="pet_management.view_employee_form_pet_vet_hr_settings"/>
+        <field name="arch" type="xml">
+            <field name="abnormal_diagnostic_count" position="after">
+                <field name="feedback_count"/>
+                <field name="avg_feedback_rating"/>
+            </field>
+        </field>
+    </record>
+</odoo>

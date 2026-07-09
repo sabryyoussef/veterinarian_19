@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pet_medical_visit_form_feedback" model="ir.ui.view">
+        <field name="name">pet.medical.visit.form.feedback</field>
+        <field name="model">pet.medical.visit</field>
+        <field name="inherit_id" ref="pet_management.view_pet_medical_visit_form"/>
+        <field name="arch" type="xml">
+            <field name="is_case_complete" position="after">
+                <field name="feedback_request_sent" readonly="1"/>
+                <field name="feedback_rating" readonly="1"/>
+                <field name="feedback_user_input_id" readonly="1"/>
+                <field name="feedback_coupon_id" readonly="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

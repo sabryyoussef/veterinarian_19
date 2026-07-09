@@ -12,15 +12,40 @@
   },
   "contact": {
     "phone_primary": "+201201568888",
-    "phone_alternate": "+201000059085",
-    "phone_note": "TODO: Confirm official campaign number — sources list 01000059085 and 01201568888",
+    "phone_alternate": "+201280833332",
     "whatsapp": "201201568888",
-    "email": "vetelsahel@gmail.com",
+    "email": "vetdrughouse@gmail.com",
     "email_alternate": "animalcarecenterpetspots@gmail.com",
-    "facebook": "https://www.facebook.com/animalcarecenterpetspots/",
+    "facebook": "https://www.facebook.com/profile.php?id=61591968621292",
+    "facebook_sister": "https://www.facebook.com/animalcarecenterpetspots/",
     "instagram": "https://www.instagram.com/pet_spot_clinic/",
     "google_maps": "https://maps.app.goo.gl/AaHup6NEFodZEs7S7"
   },
+  "branches": [
+    {
+      "id": "amwaj",
+      "name_en": "Branch 1 — Amwaj 1 (North Coast)",
+      "name_ar": "الفرع 1 — أمواج 1 (الساحل الشمالي)",
+      "phone": "+201201568888",
+      "phone_display": "012 01568888",
+      "whatsapp": "201201568888",
+      "address_en": "Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman, North Coast",
+      "address_ar": "بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن، الساحل الشمالي",
+      "google_maps": "https://maps.app.goo.gl/AaHup6NEFodZEs7S7"
+    },
+    {
+      "id": "marsa_matruh",
+      "name_en": "Branch 2 — Marsa Matruh",
+      "name_ar": "الفرع 2 — مرسى مطروح",
+      "phone": "+201280833332",
+      "phone_display": "012 80833332",
+      "whatsapp": "201280833332",
+      "address_en": "Marsa Matruh, Egypt",
+      "address_ar": "مرسى مطروح، مصر",
+      "google_maps": "https://maps.app.goo.gl/aC7CBQkFyzz6fVt68",
+      "facebook": "https://www.facebook.com/profile.php?id=61591968621292"
+    }
+  ],
   "location": {
     "area_en": "Amwaj 1, North Coast — Sidi Abdel Rahman",
     "area_ar": "أمواج 1، الساحل الشمالي — سيدي عبد الرحمن",

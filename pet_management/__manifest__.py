@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.1.0',
+    'version': '19.0.1.2.2',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management
@@ -26,16 +26,20 @@ Key Features:
     'author': 'WebbyCrown Solutions',
     'website': 'https://www.webbycrown.com',
     'license': 'LGPL-3',
-    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account', 'calendar'],
+    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account', 'sale_management', 'calendar'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'security/record_rules.xml',
         'data/ir_sequence_data.xml',
         'data/pet_seed_data.xml',
+        'data/vaccine_catalog_data.xml',
         'data/mail_data.xml',
         'data/cron_data.xml',
         'data/email_templates.xml',
+        'data/exam_price_config_data.xml',
+        'report/pet_medical_report_templates.xml',
+        'report/pet_medical_reports.xml',
         'views/menu_views.xml',
         'views/pet_species_views.xml',
         'views/pet_breed_views.xml',
@@ -43,6 +47,8 @@ Key Features:
         'views/pet_vaccine_views.xml',
         'views/pet_vaccination_views.xml',
         'views/pet_medical_visit_views.xml',
+        'views/pet_exam_price_config_views.xml',
+        'views/pet_medical_diagnostic_report_views.xml',
         'views/pet_boarding_views.xml',
         'views/pet_kennel_views.xml',
         'views/pet_appointment_views.xml',
@@ -53,7 +59,9 @@ Key Features:
         'views/pet_notification_views.xml',
         'views/pet_settings_views.xml',
         'views/pet_help_views.xml',
-        'data/notification_seed_data_simple.xml',
+        'views/hr_employee_views.xml',
+        'views/pet_vet_performance_report_views.xml',
+        # Demo notifications archived — see data/notification_seed_data_simple.xml
     ],
     'images': [
         'static/description/main_screenshot.png',

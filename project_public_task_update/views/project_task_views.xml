@@ -10,6 +10,7 @@
                       groups="project.group_project_user">
                     <group>
                         <group>
+                            <field name="public_update_purpose"/>
                             <field name="public_update_token_active" widget="boolean_toggle"/>
                             <field name="public_update_token_expiry"/>
                             <field name="public_update_submission_count" readonly="1"/>
@@ -22,25 +23,39 @@
                     </group>
                     <group string="Public form instruction (optional)">
                         <field name="public_update_public_instruction" nolabel="1"
-                               placeholder="Short client-safe note shown on the public form…"/>
+                               placeholder="Short note shown on the public/team link…"/>
                     </group>
-                    <div class="d-flex gap-2 mb-2">
+                    <group string="Team planning content" invisible="public_update_purpose != 'team_planning'">
+                        <field name="implementation_plan" nolabel="1"
+                               placeholder="Implementation plan shown to colleagues on the team link…"/>
+                        <field name="missing_data_questions" nolabel="1"
+                               placeholder="Missing-data questions (one per line recommended)…"/>
+                    </group>
+                    <div class="d-flex gap-2 mb-2 flex-wrap">
                         <button name="action_generate_public_update_token" type="object"
                                 string="Generate / Regenerate Link" class="btn-primary"/>
                         <button name="action_disable_public_update_token" type="object"
                                 string="Disable Link" class="btn-secondary"
                                 invisible="not public_update_token_active"/>
                         <button name="action_show_whatsapp_template_ar" type="object"
-                                string="WhatsApp AR" class="btn-secondary"
+                                string="WhatsApp AR (client)" class="btn-secondary"
                                 invisible="not public_update_token_active"/>
                         <button name="action_show_whatsapp_template_en" type="object"
-                                string="WhatsApp EN" class="btn-secondary"
+                                string="WhatsApp EN (client)" class="btn-secondary"
                                 invisible="not public_update_token_active"/>
+                        <button name="action_show_team_whatsapp_template_ar" type="object"
+                                string="WhatsApp AR (team)" class="btn-secondary"
+                                invisible="not public_update_token_active or public_update_purpose != 'team_planning'"/>
+                        <button name="action_show_team_whatsapp_template_en" type="object"
+                                string="WhatsApp EN (team)" class="btn-secondary"
+                                invisible="not public_update_token_active or public_update_purpose != 'team_planning'"/>
                     </div>
                     <p class="text-muted">
-                        Share the public Odoo link via WhatsApp or Chatwoot.
-                        Clients do not need OpenProject access.
-                        See <code>docs/message_templates.md</code> in the addon for copy-paste templates.
+                        Share the Odoo link via WhatsApp or Chatwoot.
+                        Colleagues and clients do not need OpenProject access.
+                        <strong>Client update</strong> collects missing data;
+                        <strong>Team planning</strong> shows the plan and accepts subtask suggestions (chatter only).
+                        See <code>docs/message_templates.md</code> for copy-paste templates.
                     </p>
                 </page>
             </xpath>

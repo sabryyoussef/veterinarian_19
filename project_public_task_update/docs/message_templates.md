@@ -5,9 +5,11 @@ from the task form (Public Update Link tab) after generating a token.
 
 **URL pattern:** `https://test.drpaws.ai/task/update/<token>` (test) or your production Odoo domain.
 
+**Link purpose:** Choose **Client update** or **Team planning** on the task form. The URL shape is the same; content differs.
+
 ---
 
-## Full Arabic
+## Client update — Full Arabic
 
 ```
 برجاء استكمال بيانات الطلب من الرابط التالي:
@@ -19,7 +21,7 @@ from the task form (Public Update Link tab) after generating a token.
 
 ---
 
-## Full English
+## Client update — Full English
 
 ```
 Please complete the missing task details using this link:
@@ -31,7 +33,7 @@ This link is only for this request.
 
 ---
 
-## Short WhatsApp — Arabic
+## Client update — Short WhatsApp Arabic
 
 ```
 من فضلك كمّل بيانات الطلب من هنا:
@@ -40,7 +42,7 @@ This link is only for this request.
 
 ---
 
-## Short WhatsApp — English
+## Client update — Short WhatsApp English
 
 ```
 Please complete the task details here:
@@ -49,9 +51,34 @@ Please complete the task details here:
 
 ---
 
+## Team planning — Full Arabic
+
+```
+من فضلك راجع خطة تنفيذ التاسك وأضف أي بيانات ناقصة أو مهام فرعية مقترحة من الرابط:
+{odoo_public_link}
+
+لا تحتاج إلى حساب OpenProject.
+الرابط مخصص لهذا التاسك فقط.
+```
+
+---
+
+## Team planning — Full English
+
+```
+Please review the task implementation plan and add any missing details or suggested subtasks here:
+{odoo_public_link}
+
+No OpenProject login is required.
+This link is only for this task.
+```
+
+---
+
 ## Notes
 
 - Always send the **Odoo** link, never an OpenProject URL.
 - Regenerate the link if it was disabled or expired.
-- Internal users can use **WhatsApp AR** / **WhatsApp EN** buttons on the task form
+- Internal users can use **WhatsApp AR/EN (client)** or **WhatsApp AR/EN (team)** buttons on the task form
   to preview the message with the link already filled in.
+- **Team planning** links show implementation plan and missing-data questions; suggested subtasks are saved in chatter only (no auto task creation).

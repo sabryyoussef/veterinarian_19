@@ -38,6 +38,19 @@ class PublicTaskUpdateController(http.Controller):
             return None
         return task
 
+    def _form_context(self, task, token: str, **extra):
+        """Build safe template context — no internal OP/sync data."""
+        ctx = {
+            "token": token,
+            "task_title": task._public_task_title(),
+            "task_instruction": task._public_task_instruction(),
+            "is_team_planning": task._is_team_planning_mode(),
+            "implementation_plan": task._public_implementation_plan(),
+            "missing_data_questions": task._public_missing_data_questions(),
+        }
+        ctx.update(extra)
+        return ctx
+
     @http.route(
         "/task/update/<string:token>",
         type="http",
@@ -52,11 +65,7 @@ class PublicTaskUpdateController(http.Controller):
             return self._render_error(status=404)
         return request.render(
             "project_public_task_update.public_task_update_form",
-            {
-                "token": token,
-                "task_title": task._public_task_title(),
-                "task_instruction": task._public_task_instruction(),
-            },
+            self._form_context(task, token),
         )
 
     @http.route(
@@ -79,22 +88,25 @@ class PublicTaskUpdateController(http.Controller):
                 priority_suggestion=post.get("priority_suggestion", ""),
                 due_date_suggestion=post.get("due_date_suggestion", ""),
                 notes=post.get("notes", ""),
+                suggested_subtasks=post.get("suggested_subtasks", ""),
             )
         except UserError as exc:
             return request.render(
                 "project_public_task_update.public_task_update_form",
-                {
-                    "token": token,
-                    "task_title": task._public_task_title(),
-                    "task_instruction": task._public_task_instruction(),
-                    "error_message": str(exc),
-                    "form": post,
-                },
+                self._form_context(
+                    task,
+                    token,
+                    error_message=str(exc),
+                    form=post,
+                ),
             )
         except Exception:
             _logger.exception("public_task_update submit failed token_prefix=%s", token[:8])
             return self._render_error(status=500)
         return request.render(
             "project_public_task_update.public_task_update_success",
-            {"task_title": task._public_task_title()},
+            {
+                "task_title": task._public_task_title(),
+                "is_team_planning": task._is_team_planning_mode(),
+            },
         )

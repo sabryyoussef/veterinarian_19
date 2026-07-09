@@ -23,6 +23,11 @@ PRIORITY_LABELS = {
     "urgent": "Urgent / عاجل",
 }
 
+PUBLIC_UPDATE_PURPOSE = [
+    ("client_update", "Client update / تحديث العميل"),
+    ("team_planning", "Team planning / تخطيط الفريق"),
+]
+
 
 class ProjectTask(models.Model):
     _inherit = "project.task"
@@ -62,9 +67,29 @@ class ProjectTask(models.Model):
         compute="_compute_public_update_url",
         groups="project.group_project_user",
     )
+    public_update_purpose = fields.Selection(
+        selection=PUBLIC_UPDATE_PURPOSE,
+        string="Link Purpose",
+        default="client_update",
+        required=True,
+        copy=False,
+        groups="project.group_project_user",
+        help="Client update: missing-data form for external clients. "
+             "Team planning: internal colleagues review plan and suggest subtasks.",
+    )
     public_update_public_instruction = fields.Text(
         string="Public Form Instruction",
-        help="Optional short note shown on the public update form (safe for clients).",
+        help="Optional short note shown on the public update form (safe for clients/colleagues).",
+        groups="project.group_project_user",
+    )
+    implementation_plan = fields.Text(
+        string="Implementation Plan",
+        help="Plan shown on team planning links only. Keep content client/colleague-safe.",
+        groups="project.group_project_user",
+    )
+    missing_data_questions = fields.Text(
+        string="Missing Data Questions",
+        help="Questions shown on team planning links. One question per line is recommended.",
         groups="project.group_project_user",
     )
 
@@ -141,6 +166,18 @@ class ProjectTask(models.Model):
             ),
             "ar_short": f"من فضلك كمّل بيانات الطلب من هنا:\n{link}",
             "en_short": f"Please complete the task details here:\n{link}",
+            "ar_team_planning": (
+                "من فضلك راجع خطة تنفيذ التاسك وأضف أي بيانات ناقصة أو مهام فرعية مقترحة من الرابط:\n"
+                f"{link}\n\n"
+                "لا تحتاج إلى حساب OpenProject.\n"
+                "الرابط مخصص لهذا التاسك فقط."
+            ),
+            "en_team_planning": (
+                "Please review the task implementation plan and add any missing details "
+                f"or suggested subtasks here:\n{link}\n\n"
+                "No OpenProject login is required.\n"
+                "This link is only for this task."
+            ),
         }
 
     def action_show_whatsapp_template_ar(self):
@@ -152,6 +189,16 @@ class ProjectTask(models.Model):
         self.ensure_one()
         msg = self.get_whatsapp_message_templates()["en_full"]
         return self._notification_copy_message(_("English WhatsApp message"), msg)
+
+    def action_show_team_whatsapp_template_ar(self):
+        self.ensure_one()
+        msg = self.get_whatsapp_message_templates()["ar_team_planning"]
+        return self._notification_copy_message(_("Arabic team planning message"), msg)
+
+    def action_show_team_whatsapp_template_en(self):
+        self.ensure_one()
+        msg = self.get_whatsapp_message_templates()["en_team_planning"]
+        return self._notification_copy_message(_("English team planning message"), msg)
 
     def _notification_copy_message(self, title: str, message: str):
         return {
@@ -190,22 +237,44 @@ class ProjectTask(models.Model):
         delta = fields.Datetime.now() - last
         return delta.total_seconds() < TOKEN_MIN_SUBMIT_INTERVAL_SECONDS
 
+    def _is_team_planning_mode(self) -> bool:
+        self.ensure_one()
+        return self.public_update_purpose == "team_planning"
+
     def _public_task_title(self) -> str:
         """Safe title for public pages — no internal OP identifiers."""
         self.ensure_one()
         name = (self.name or "").strip()
         return name or _("Task")
 
+    @staticmethod
+    def _public_safe_text(value: str) -> str:
+        """Return stripped plain text safe for public QWeb display (t-esc)."""
+        return (value or "").strip()
+
     def _public_task_instruction(self) -> str:
         """Optional client-safe instruction for the public form."""
         self.ensure_one()
-        custom = (self.public_update_public_instruction or "").strip()
+        custom = self._public_safe_text(self.public_update_public_instruction)
         if custom:
             return custom
+        if self._is_team_planning_mode():
+            return _(
+                "Please review the plan below and add missing details or suggested subtasks. "
+                "/ يرجى مراجعة الخطة أدناه وإضافة البيانات الناقصة أو المهام الفرعية المقترحة."
+            )
         return _(
             "Please complete the missing information below. "
             "/ يرجى إكمال البيانات الناقصة أدناه."
         )
+
+    def _public_implementation_plan(self) -> str:
+        self.ensure_one()
+        return self._public_safe_text(self.implementation_plan)
+
+    def _public_missing_data_questions(self) -> str:
+        self.ensure_one()
+        return self._public_safe_text(self.missing_data_questions)
 
     @staticmethod
     def _format_priority_label(value: str) -> str:
@@ -213,6 +282,90 @@ class ProjectTask(models.Model):
         if not value:
             return ""
         return PRIORITY_LABELS.get(value, value)
+
+    @staticmethod
+    def _parse_subtask_lines(text: str) -> list[str]:
+        lines = []
+        for line in (text or "").splitlines():
+            stripped = line.strip()
+            if stripped:
+                lines.append(stripped)
+        return lines
+
+    @staticmethod
+    def _html_block(label: str, value: str, multiline: bool = False) -> str:
+        if not value:
+            return ""
+        escaped = html.escape(value)
+        if multiline:
+            escaped = escaped.replace("\n", "<br/>")
+        return f"<p><strong>{html.escape(label)}</strong><br/>{escaped}</p>"
+
+    def _build_client_update_chatter(
+        self,
+        *,
+        submitter_name: str,
+        submitter_contact: str,
+        clarification: str,
+        priority_suggestion: str,
+        due_date_suggestion: str,
+        notes: str,
+    ) -> Markup:
+        parts = [
+            "<p><strong>Public task update submitted</strong></p>",
+            "<p><strong>Submitter:</strong></p>",
+            "<ul>",
+            f"<li><strong>Name:</strong> {html.escape(submitter_name)}</li>",
+        ]
+        if submitter_contact:
+            parts.append(f"<li><strong>Contact:</strong> {html.escape(submitter_contact)}</li>")
+        parts.append("</ul>")
+        parts.append("<p><strong>Submitted details:</strong></p>")
+        parts.append(self._html_block("Clarification:", clarification, multiline=True))
+        if priority_suggestion:
+            parts.append(self._html_block("Priority suggestion:", priority_suggestion))
+        if due_date_suggestion:
+            parts.append(self._html_block("Due date suggestion:", due_date_suggestion))
+        if notes:
+            parts.append(self._html_block("Notes:", notes, multiline=True))
+        parts.append(
+            "<p><strong>Source:</strong><br/>"
+            "Submitted through Odoo public task update link.</p>"
+        )
+        return Markup("".join(parts))
+
+    def _build_team_planning_chatter(
+        self,
+        *,
+        submitter_name: str,
+        submitter_contact: str,
+        clarification: str,
+        notes: str,
+        suggested_subtasks: str,
+    ) -> Markup:
+        parts = [
+            "<p><strong>Team planning update submitted</strong></p>",
+            "<p><strong>Submitter:</strong></p>",
+            "<ul>",
+            f"<li><strong>Name:</strong> {html.escape(submitter_name)}</li>",
+        ]
+        if submitter_contact:
+            parts.append(f"<li><strong>Contact:</strong> {html.escape(submitter_contact)}</li>")
+        parts.append("</ul>")
+        parts.append(self._html_block("Clarification / missing data:", clarification, multiline=True))
+        if notes:
+            parts.append(self._html_block("Notes:", notes, multiline=True))
+        subtask_lines = self._parse_subtask_lines(suggested_subtasks)
+        if subtask_lines:
+            parts.append("<p><strong>Suggested subtasks:</strong></p><ul>")
+            for line in subtask_lines:
+                parts.append(f"<li>{html.escape(line)}</li>")
+            parts.append("</ul>")
+        parts.append(
+            "<p><strong>Source:</strong><br/>"
+            "Submitted through Odoo team planning link.</p>"
+        )
+        return Markup("".join(parts))
 
     def _record_public_update_submission(
         self,
@@ -223,6 +376,7 @@ class ProjectTask(models.Model):
         priority_suggestion: str = "",
         due_date_suggestion: str = "",
         notes: str = "",
+        suggested_subtasks: str = "",
     ) -> None:
         """Save submission as internal chatter note; do not mutate task fields."""
         self.ensure_one()
@@ -235,43 +389,31 @@ class ProjectTask(models.Model):
         priority_suggestion = self._format_priority_label(priority_suggestion)
         due_date_suggestion = (due_date_suggestion or "").strip()
         notes = (notes or "").strip()
+        suggested_subtasks = (suggested_subtasks or "").strip()
 
         if not submitter_name:
             raise UserError(_("Please enter your name."))
         if not clarification:
             raise UserError(_("Please enter details or clarification."))
 
-        def _block(label: str, value: str, multiline: bool = False) -> str:
-            if not value:
-                return ""
-            escaped = html.escape(value)
-            if multiline:
-                escaped = escaped.replace("\n", "<br/>")
-            return f"<p><strong>{html.escape(label)}</strong><br/>{escaped}</p>"
+        if self._is_team_planning_mode():
+            body = self._build_team_planning_chatter(
+                submitter_name=submitter_name,
+                submitter_contact=submitter_contact,
+                clarification=clarification,
+                notes=notes,
+                suggested_subtasks=suggested_subtasks,
+            )
+        else:
+            body = self._build_client_update_chatter(
+                submitter_name=submitter_name,
+                submitter_contact=submitter_contact,
+                clarification=clarification,
+                priority_suggestion=priority_suggestion,
+                due_date_suggestion=due_date_suggestion,
+                notes=notes,
+            )
 
-        parts = [
-            "<p><strong>Public task update submitted</strong></p>",
-            "<p><strong>Submitter:</strong></p>",
-            "<ul>",
-            f"<li><strong>Name:</strong> {html.escape(submitter_name)}</li>",
-        ]
-        if submitter_contact:
-            parts.append(f"<li><strong>Contact:</strong> {html.escape(submitter_contact)}</li>")
-        parts.append("</ul>")
-        parts.append("<p><strong>Submitted details:</strong></p>")
-        parts.append(_block("Clarification:", clarification, multiline=True))
-        if priority_suggestion:
-            parts.append(_block("Priority suggestion:", priority_suggestion))
-        if due_date_suggestion:
-            parts.append(_block("Due date suggestion:", due_date_suggestion))
-        if notes:
-            parts.append(_block("Notes:", notes, multiline=True))
-        parts.append(
-            "<p><strong>Source:</strong><br/>"
-            "Submitted through Odoo public task update link.</p>"
-        )
-
-        body = Markup("".join(parts))
         self.sudo().message_post(
             body=body,
             message_type="comment",
@@ -282,7 +424,8 @@ class ProjectTask(models.Model):
             "public_update_last_submission_at": fields.Datetime.now(),
         })
         _logger.info(
-            "public_task_update submission task_id=%s count=%s",
+            "public_task_update submission task_id=%s purpose=%s count=%s",
             self.id,
+            self.public_update_purpose,
             self.public_update_submission_count,
         )

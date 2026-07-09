@@ -16,6 +16,8 @@
                         --border: #e5e7eb;
                         --primary: #2563eb;
                         --primary-hover: #1d4ed8;
+                        --plan-bg: #eff6ff;
+                        --plan-border: #bfdbfe;
                         --error-bg: #fef2f2;
                         --error-text: #991b1b;
                         --error-border: #fecaca;
@@ -67,6 +69,27 @@
                         margin-bottom: 1rem;
                         white-space: pre-wrap;
                     }
+                    .plan-section {
+                        background: var(--plan-bg);
+                        border: 1px solid var(--plan-border);
+                        border-radius: 8px;
+                        padding: .75rem .9rem;
+                        margin-bottom: .75rem;
+                    }
+                    .plan-section h2 {
+                        font-size: .8rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: .03em;
+                        color: #1e40af;
+                        margin: 0 0 .4rem;
+                    }
+                    .plan-section .plan-body {
+                        font-size: .9rem;
+                        color: #1e3a5f;
+                        white-space: pre-wrap;
+                        margin: 0;
+                    }
                     .field { margin-bottom: 1rem; }
                     .field-label {
                         display: block;
@@ -81,6 +104,12 @@
                         font-size: .8rem;
                         color: var(--muted);
                         margin-top: .1rem;
+                    }
+                    .field-hint {
+                        font-size: .78rem;
+                        color: var(--muted);
+                        margin-top: .25rem;
+                        white-space: pre-wrap;
                     }
                     .required .field-label-en::after { content: " *"; color: #dc2626; }
                     input[type="text"],
@@ -167,9 +196,26 @@
     <template id="public_task_update_form" name="Public Task Update Form">
         <t t-call="project_public_task_update.public_task_update_layout">
             <t t-set="page_title" t-value="task_title"/>
-            <div class="brand">Task update / تحديث الطلب</div>
+            <t t-if="is_team_planning">
+                <div class="brand">Team planning / تخطيط الفريق</div>
+            </t>
+            <t t-else="">
+                <div class="brand">Task update / تحديث الطلب</div>
+            </t>
             <h1 t-esc="task_title"/>
             <div class="instruction" t-if="task_instruction" t-esc="task_instruction"/>
+
+            <t t-if="is_team_planning">
+                <div class="plan-section" t-if="implementation_plan">
+                    <h2>Implementation plan / خطة التنفيذ</h2>
+                    <p class="plan-body" t-esc="implementation_plan"/>
+                </div>
+                <div class="plan-section" t-if="missing_data_questions">
+                    <h2>Missing data questions / أسئلة البيانات الناقصة</h2>
+                    <p class="plan-body" t-esc="missing_data_questions"/>
+                </div>
+            </t>
+
             <t t-if="error_message">
                 <div class="alert alert-error" t-esc="error_message"/>
             </t>
@@ -189,32 +235,53 @@
                            t-att-value="(form or {}).get('submitter_contact', '')"/>
                 </div>
                 <div class="field required">
-                    <label class="field-label field-label-en">Clarification / details</label>
-                    <span class="field-label-ar">التفاصيل / التوضيح</span>
+                    <t t-if="is_team_planning">
+                        <label class="field-label field-label-en">Clarification / missing data</label>
+                        <span class="field-label-ar">التوضيح / البيانات الناقصة</span>
+                    </t>
+                    <t t-else="">
+                        <label class="field-label field-label-en">Clarification / details</label>
+                        <span class="field-label-ar">التفاصيل / التوضيح</span>
+                    </t>
                     <textarea name="clarification" required="required" maxlength="5000"><t t-esc="(form or {}).get('clarification', '')"/></textarea>
                 </div>
-                <div class="field">
-                    <label class="field-label field-label-en">Priority suggestion</label>
-                    <span class="field-label-ar">اقتراح الأولوية</span>
-                    <select name="priority_suggestion">
-                        <option value="">— / —</option>
-                        <option value="low" t-att-selected="(form or {}).get('priority_suggestion') == 'low'">Low / منخفض</option>
-                        <option value="normal" t-att-selected="(form or {}).get('priority_suggestion') == 'normal'">Normal / عادي</option>
-                        <option value="high" t-att-selected="(form or {}).get('priority_suggestion') == 'high'">High / عالي</option>
-                        <option value="urgent" t-att-selected="(form or {}).get('priority_suggestion') == 'urgent'">Urgent / عاجل</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label class="field-label field-label-en">Due date suggestion</label>
-                    <span class="field-label-ar">اقتراح تاريخ الاستحقاق</span>
-                    <input type="date" name="due_date_suggestion"
-                           t-att-value="(form or {}).get('due_date_suggestion', '')"/>
-                </div>
+
+                <t t-if="not is_team_planning">
+                    <div class="field">
+                        <label class="field-label field-label-en">Priority suggestion</label>
+                        <span class="field-label-ar">اقتراح الأولوية</span>
+                        <select name="priority_suggestion">
+                            <option value="">— / —</option>
+                            <option value="low" t-att-selected="(form or {}).get('priority_suggestion') == 'low'">Low / منخفض</option>
+                            <option value="normal" t-att-selected="(form or {}).get('priority_suggestion') == 'normal'">Normal / عادي</option>
+                            <option value="high" t-att-selected="(form or {}).get('priority_suggestion') == 'high'">High / عالي</option>
+                            <option value="urgent" t-att-selected="(form or {}).get('priority_suggestion') == 'urgent'">Urgent / عاجل</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label field-label-en">Due date suggestion</label>
+                        <span class="field-label-ar">اقتراح تاريخ الاستحقاق</span>
+                        <input type="date" name="due_date_suggestion"
+                               t-att-value="(form or {}).get('due_date_suggestion', '')"/>
+                    </div>
+                </t>
+
                 <div class="field">
                     <label class="field-label field-label-en">Notes</label>
                     <span class="field-label-ar">ملاحظات إضافية</span>
                     <textarea name="notes" maxlength="3000" placeholder="Optional / اختياري"><t t-esc="(form or {}).get('notes', '')"/></textarea>
                 </div>
+
+                <t t-if="is_team_planning">
+                    <div class="field">
+                        <label class="field-label field-label-en">Suggested subtasks</label>
+                        <span class="field-label-ar">مهام فرعية مقترحة</span>
+                        <textarea name="suggested_subtasks" maxlength="5000" placeholder="Optional / اختياري"><t t-esc="(form or {}).get('suggested_subtasks', '')"/></textarea>
+                        <p class="field-hint">Write each suggested subtask on a separate line.
+اكتب كل مهمة فرعية في سطر منفصل.</p>
+                    </div>
+                </t>
+
                 <button type="submit" class="btn">Submit / إرسال</button>
             </form>
         </t>

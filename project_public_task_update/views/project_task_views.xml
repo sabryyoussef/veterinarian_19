@@ -20,16 +20,27 @@
                             <field name="public_update_token" readonly="1" password="True"/>
                         </group>
                     </group>
-                    <div class="oe_button_box" name="public_update_buttons">
+                    <group string="Public form instruction (optional)">
+                        <field name="public_update_public_instruction" nolabel="1"
+                               placeholder="Short client-safe note shown on the public form…"/>
+                    </group>
+                    <div class="d-flex gap-2 mb-2">
                         <button name="action_generate_public_update_token" type="object"
                                 string="Generate / Regenerate Link" class="btn-primary"/>
                         <button name="action_disable_public_update_token" type="object"
                                 string="Disable Link" class="btn-secondary"
                                 invisible="not public_update_token_active"/>
+                        <button name="action_show_whatsapp_template_ar" type="object"
+                                string="WhatsApp AR" class="btn-secondary"
+                                invisible="not public_update_token_active"/>
+                        <button name="action_show_whatsapp_template_en" type="object"
+                                string="WhatsApp EN" class="btn-secondary"
+                                invisible="not public_update_token_active"/>
                     </div>
                     <p class="text-muted">
                         Share the public Odoo link via WhatsApp or Chatwoot.
                         Clients do not need OpenProject access.
+                        See <code>docs/message_templates.md</code> in the addon for copy-paste templates.
                     </p>
                 </page>
             </xpath>

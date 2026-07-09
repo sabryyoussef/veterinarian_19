@@ -16,6 +16,13 @@ _logger = logging.getLogger(__name__)
 TOKEN_MIN_SUBMIT_INTERVAL_SECONDS = 60
 DEFAULT_TOKEN_VALIDITY_DAYS = 30
 
+PRIORITY_LABELS = {
+    "low": "Low / منخفض",
+    "normal": "Normal / عادي",
+    "high": "High / عالي",
+    "urgent": "Urgent / عاجل",
+}
+
 
 class ProjectTask(models.Model):
     _inherit = "project.task"
@@ -53,6 +60,11 @@ class ProjectTask(models.Model):
     public_update_url = fields.Char(
         string="Public Update URL",
         compute="_compute_public_update_url",
+        groups="project.group_project_user",
+    )
+    public_update_public_instruction = fields.Text(
+        string="Public Form Instruction",
+        help="Optional short note shown on the public update form (safe for clients).",
         groups="project.group_project_user",
     )
 
@@ -110,6 +122,49 @@ class ProjectTask(models.Model):
             },
         }
 
+    def get_whatsapp_message_templates(self) -> dict[str, str]:
+        """Return AR/EN message templates with the public link substituted."""
+        self.ensure_one()
+        link = self.get_public_update_url() or "{odoo_public_link}"
+        return {
+            "ar_full": (
+                "برجاء استكمال بيانات الطلب من الرابط التالي:\n"
+                f"{link}\n\n"
+                "لا تحتاج إلى حساب OpenProject.\n"
+                "الرابط مخصص لهذا الطلب فقط."
+            ),
+            "en_full": (
+                "Please complete the missing task details using this link:\n"
+                f"{link}\n\n"
+                "No OpenProject login is required.\n"
+                "This link is only for this request."
+            ),
+            "ar_short": f"من فضلك كمّل بيانات الطلب من هنا:\n{link}",
+            "en_short": f"Please complete the task details here:\n{link}",
+        }
+
+    def action_show_whatsapp_template_ar(self):
+        self.ensure_one()
+        msg = self.get_whatsapp_message_templates()["ar_full"]
+        return self._notification_copy_message(_("Arabic WhatsApp message"), msg)
+
+    def action_show_whatsapp_template_en(self):
+        self.ensure_one()
+        msg = self.get_whatsapp_message_templates()["en_full"]
+        return self._notification_copy_message(_("English WhatsApp message"), msg)
+
+    def _notification_copy_message(self, title: str, message: str):
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": title,
+                "message": message,
+                "type": "info",
+                "sticky": True,
+            },
+        }
+
     @api.model
     def _get_task_by_public_update_token(self, token: str):
         """Resolve a task from a public token. Returns empty recordset if invalid."""
@@ -141,6 +196,24 @@ class ProjectTask(models.Model):
         name = (self.name or "").strip()
         return name or _("Task")
 
+    def _public_task_instruction(self) -> str:
+        """Optional client-safe instruction for the public form."""
+        self.ensure_one()
+        custom = (self.public_update_public_instruction or "").strip()
+        if custom:
+            return custom
+        return _(
+            "Please complete the missing information below. "
+            "/ يرجى إكمال البيانات الناقصة أدناه."
+        )
+
+    @staticmethod
+    def _format_priority_label(value: str) -> str:
+        value = (value or "").strip().lower()
+        if not value:
+            return ""
+        return PRIORITY_LABELS.get(value, value)
+
     def _record_public_update_submission(
         self,
         *,
@@ -149,6 +222,7 @@ class ProjectTask(models.Model):
         clarification: str,
         priority_suggestion: str = "",
         due_date_suggestion: str = "",
+        notes: str = "",
     ) -> None:
         """Save submission as internal chatter note; do not mutate task fields."""
         self.ensure_one()
@@ -158,42 +232,46 @@ class ProjectTask(models.Model):
         submitter_name = (submitter_name or "").strip()
         submitter_contact = (submitter_contact or "").strip()
         clarification = (clarification or "").strip()
-        priority_suggestion = (priority_suggestion or "").strip()
+        priority_suggestion = self._format_priority_label(priority_suggestion)
         due_date_suggestion = (due_date_suggestion or "").strip()
+        notes = (notes or "").strip()
 
         if not submitter_name:
             raise UserError(_("Please enter your name."))
         if not clarification:
             raise UserError(_("Please enter details or clarification."))
 
-        lines = [
-            "<p><strong>%s</strong></p>" % _("Public update submission"),
+        def _block(label: str, value: str, multiline: bool = False) -> str:
+            if not value:
+                return ""
+            escaped = html.escape(value)
+            if multiline:
+                escaped = escaped.replace("\n", "<br/>")
+            return f"<p><strong>{html.escape(label)}</strong><br/>{escaped}</p>"
+
+        parts = [
+            "<p><strong>Public task update submitted</strong></p>",
+            "<p><strong>Submitter:</strong></p>",
             "<ul>",
-            "<li><strong>%s</strong> %s</li>"
-            % (_("Name:"), html.escape(submitter_name)),
+            f"<li><strong>Name:</strong> {html.escape(submitter_name)}</li>",
         ]
         if submitter_contact:
-            lines.append(
-                "<li><strong>%s</strong> %s</li>"
-                % (_("Contact:"), html.escape(submitter_contact))
-            )
-        lines.append(
-            "<li><strong>%s</strong><br/>%s</li>"
-            % (_("Details:"), html.escape(clarification).replace("\n", "<br/>"))
-        )
+            parts.append(f"<li><strong>Contact:</strong> {html.escape(submitter_contact)}</li>")
+        parts.append("</ul>")
+        parts.append("<p><strong>Submitted details:</strong></p>")
+        parts.append(_block("Clarification:", clarification, multiline=True))
         if priority_suggestion:
-            lines.append(
-                "<li><strong>%s</strong> %s</li>"
-                % (_("Priority suggestion:"), html.escape(priority_suggestion))
-            )
+            parts.append(_block("Priority suggestion:", priority_suggestion))
         if due_date_suggestion:
-            lines.append(
-                "<li><strong>%s</strong> %s</li>"
-                % (_("Due date suggestion:"), html.escape(due_date_suggestion))
-            )
-        lines.append("</ul>")
+            parts.append(_block("Due date suggestion:", due_date_suggestion))
+        if notes:
+            parts.append(_block("Notes:", notes, multiline=True))
+        parts.append(
+            "<p><strong>Source:</strong><br/>"
+            "Submitted through Odoo public task update link.</p>"
+        )
 
-        body = Markup("\n".join(lines))
+        body = Markup("".join(parts))
         self.sudo().message_post(
             body=body,
             message_type="comment",

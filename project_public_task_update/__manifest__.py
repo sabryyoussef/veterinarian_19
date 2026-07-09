@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Project Public Task Update",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.0",
     "category": "Project",
     "summary": "Tokenized public Odoo form for external task updates (no login)",
     "description": """

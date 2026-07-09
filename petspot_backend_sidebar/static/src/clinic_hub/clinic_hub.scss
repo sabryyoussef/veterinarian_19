@@ -1,0 +1,64 @@
+.o_petspot_clinic_hub {
+    min-height: 100%;
+    background: var(--o-view-background-color, #f8f9fa);
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+    }
+}
+
+.o_petspot_clinic_hub_sidebar {
+    width: 260px;
+    flex: 0 0 260px;
+    display: none;
+    flex-direction: column;
+    background: var(--o-view-background-color, #fff);
+
+    &.o_open {
+        display: flex;
+        position: absolute;
+        z-index: 20;
+        top: 48px;
+        left: 0;
+        bottom: 0;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    @media (min-width: 768px) {
+        display: flex !important;
+        position: relative !important;
+        top: auto;
+        box-shadow: none;
+    }
+}
+
+.o_petspot_clinic_hub_nav_item {
+    color: var(--o-color-text, #212529) !important;
+    border-radius: 0;
+    border-left: 3px solid transparent;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    &.o_active {
+        background: rgba(42, 157, 143, 0.12);
+        border-left-color: #2a9d8f;
+        font-weight: 600;
+    }
+}
+
+.o_petspot_clinic_hub_main {
+    min-width: 0;
+}
+
+.o_petspot_kpi {
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0.35rem 0.75rem rgba(0, 0, 0, 0.08) !important;
+    }
+}

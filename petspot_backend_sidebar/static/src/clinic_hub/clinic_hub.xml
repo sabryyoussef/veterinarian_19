@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="petspot_backend_sidebar.ClinicHub">
+        <div class="o_petspot_clinic_hub d-flex h-100 w-100 overflow-hidden">
+            <!-- Mobile top bar -->
+            <div class="o_petspot_clinic_hub_mobile_bar d-md-none w-100 border-bottom bg-view px-3 py-2 d-flex align-items-center justify-content-between">
+                <strong>Clinic Hub</strong>
+                <button type="button" class="btn btn-sm btn-secondary" t-on-click="toggleMobileNav">
+                    <i class="fa fa-bars"/> Menu
+                </button>
+            </div>
+
+            <!-- Sidebar -->
+            <aside t-attf-class="o_petspot_clinic_hub_sidebar border-end bg-view {{ state.mobileNavOpen ? 'o_open' : '' }}">
+                <div class="o_petspot_clinic_hub_brand px-3 py-3 border-bottom">
+                    <div class="fw-bold text-truncate">Clinic Hub</div>
+                    <div class="text-muted small">PetSpot workflows</div>
+                </div>
+                <nav class="o_petspot_clinic_hub_nav flex-grow-1 overflow-auto py-2">
+                    <t t-foreach="state.items" t-as="item" t-key="item.id">
+                        <button type="button"
+                                t-attf-class="o_petspot_clinic_hub_nav_item btn btn-link text-start text-decoration-none w-100 px-3 py-2 {{ state.activeId === item.id ? 'o_active' : '' }}"
+                                t-on-click="() => this.onNavClick(item)">
+                            <i t-attf-class="fa {{ item.icon }} me-2 fa-fw"/>
+                            <span t-esc="item.label"/>
+                        </button>
+                    </t>
+                </nav>
+            </aside>
+
+            <!-- Main dashboard -->
+            <main class="o_petspot_clinic_hub_main flex-grow-1 overflow-auto p-3 p-md-4">
+                <t t-if="state.loading">
+                    <div class="text-muted">Loading dashboard…</div>
+                </t>
+                <t t-else="">
+                    <div class="mb-4">
+                        <h1 class="h3 mb-1">Dashboard</h1>
+                        <p class="text-muted mb-0">Quick access to daily clinic work. Use the sidebar or cards below.</p>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
+                                    t-on-click="() => this.openAction('pet_management.action_pet_appointment')">
+                                <div class="card-body">
+                                    <div class="text-muted small">Appointments today</div>
+                                    <div class="display-6" t-esc="state.kpis.appointmentsToday ?? '—'"/>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
+                                    t-on-click="() => this.openAction('pet_management.action_pet_medical_visit')">
+                                <div class="card-body">
+                                    <div class="text-muted small">Incomplete cases</div>
+                                    <div class="display-6" t-esc="state.kpis.incompleteVisits ?? '—'"/>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="button" class="o_petspot_kpi card w-100 text-start border-0 shadow-sm"
+                                    t-on-click="() => this.openAction('petspot_wa_intake.action_petspot_wa_intake')">
+                                <div class="card-body">
+                                    <div class="text-muted small">WA Intake drafts</div>
+                                    <div class="display-6" t-esc="state.kpis.waIntakeDrafts ?? '—'"/>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-2 fw-semibold">Shortcuts</div>
+                    <div class="row g-2">
+                        <t t-foreach="state.items.filter((i) => i.kind !== 'dashboard')" t-as="item" t-key="'card_' + item.id">
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <button type="button"
+                                        class="btn btn-outline-secondary w-100 text-start py-3"
+                                        t-on-click="() => this.onNavClick(item)">
+                                    <i t-attf-class="fa {{ item.icon }} me-2"/>
+                                    <t t-esc="item.label"/>
+                                </button>
+                            </div>
+                        </t>
+                    </div>
+
+                    <t t-if="state.missingXmlIds.length">
+                        <div class="alert alert-warning mt-4 mb-0">
+                            <strong>Hidden links (missing actions):</strong>
+                            <span t-esc="state.missingXmlIds.join(', ')"/>
+                        </div>
+                    </t>
+                </t>
+            </main>
+        </div>
+    </t>
+
+</templates>

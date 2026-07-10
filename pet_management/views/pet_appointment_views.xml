@@ -130,18 +130,31 @@
                   class="btn-secondary" icon="fa-home"/>
           
           <!-- Sales / Invoice Buttons -->
-          <button name="action_create_invoice" type="object" string="Create Sale Order" 
-                  invisible="sale_order_id or invoice_id or state not in ['confirmed', 'in_progress', 'done']" class="btn-primary" icon="fa-shopping-cart"/>
-          <button name="action_view_sale_order" type="object" string="View Sale Order" 
-                  invisible="not sale_order_id or invoice_id" class="btn-info" icon="fa-shopping-cart"/>
-          <button name="action_confirm_and_create_invoice" type="object" string="Confirm &amp; Create Invoice" 
-                  invisible="not sale_order_id or invoice_id or state not in ['confirmed', 'in_progress', 'done']" class="btn-success" icon="fa-file-text-o"/>
-          <button name="action_view_invoice" type="object" string="View Invoice" 
-                  invisible="not invoice_id" class="btn-info" icon="fa-file-text-o"/>
-          <button name="action_refresh_invoice" type="object" string="Refresh Invoice" 
+          <field name="has_active_invoice" invisible="1"/>
+          <field name="invoice_count" invisible="1"/>
+          <button name="action_create_invoice" type="object" string="Create Sale Order"
+                  invisible="sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done']"
+                  class="btn-primary" icon="fa-shopping-cart"/>
+          <button name="action_view_sale_order" type="object" string="Open Sale Order"
+                  invisible="not sale_order_id" class="btn-info" icon="fa-shopping-cart"/>
+          <button name="action_confirm_and_create_invoice" type="object" string="Confirm &amp; Create Invoice"
+                  invisible="not sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done']"
+                  class="btn-success" icon="fa-file-text-o"/>
+          <button name="action_view_invoice" type="object" string="Open Invoice"
+                  invisible="not has_active_invoice" class="btn-info" icon="fa-file-text-o"/>
+          <button name="action_register_appointment_payment" type="object" string="Register Payment"
+                  invisible="payment_status not in ['pending', 'partial', 'draft'] or not has_active_invoice"
+                  class="btn-primary" icon="fa-money"/>
+          <button name="action_open_additional_invoice_wizard" type="object" string="Create Additional Invoice"
+                  invisible="not has_active_invoice"
+                  groups="pet_management.group_pet_clinic_accountant,pet_management.group_pet_clinic_billing_manager,base.group_system"
+                  class="btn-secondary" icon="fa-plus"/>
+          <button name="action_refresh_invoice" type="object" string="Refresh Invoice"
                   invisible="not invoice_id or invoice_state != 'draft'" class="btn-warning" icon="fa-refresh"/>
-          <button name="action_cancel_invoice" type="object" string="Cancel Invoice" 
-                  invisible="invoice_state not in ['draft', 'posted']" class="btn-danger" icon="fa-times"/>
+          <button name="action_cancel_invoice" type="object" string="Cancel Invoice"
+                  invisible="invoice_state not in ['draft', 'posted']"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"
+                  class="btn-danger" icon="fa-times"/>
           
           <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,done"/>
           
@@ -150,7 +163,18 @@
           <field name="enable_calendar_integration" invisible="1"/>
           <field name="has_calendar_event" invisible="1"/>
           <field name="sale_order_id" invisible="1"/>
+          <div class="alert alert-warning" role="alert" invisible="not billing_warning">
+            <field name="billing_warning" readonly="1" nolabel="1"/>
+          </div>
           <div class="oe_button_box" name="button_box">
+            <button name="action_view_sale_order" type="object" class="oe_stat_button" icon="fa-shopping-cart"
+                    invisible="not sale_order_id">
+              <div class="o_stat_info"><span class="o_stat_text">Sale Order</span></div>
+            </button>
+            <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                    invisible="invoice_count == 0">
+              <field name="invoice_count" widget="statinfo" string="Invoices"/>
+            </button>
             <button name="action_view_pet" type="object" string="Pet" icon="fa-paw"
                     groups="pet_management.group_pet_core_user_own,pet_management.group_pet_core_user_all,pet_management.group_pet_core_admin"/>
             <button name="action_view_medical_visit" type="object" string="Medical Visit" icon="fa-stethoscope" 
@@ -263,7 +287,16 @@
                   <field name="cost" string="Total Cost" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 </group>
                 <group>
-                  <field name="payment_status"/>
+                  <field name="payment_status" widget="badge"
+                           decoration-success="payment_status == 'paid'"
+                           decoration-warning="payment_status in ('partial', 'draft', 'overpaid')"
+                           decoration-danger="payment_status in ('pending', 'inconsistent')"
+                           decoration-muted="payment_status in ('cancelled', 'not_invoiced')"/>
+                  <field name="total_invoiced" widget="monetary"/>
+                  <field name="total_paid" widget="monetary"/>
+                  <field name="total_residual" widget="monetary"/>
+                  <field name="total_customer_credit" widget="monetary"
+                           invisible="not total_customer_credit"/>
                 </group>
               </group>
               
@@ -535,6 +568,8 @@
                   <field name="invoice_id" readonly="1"/>
                   <field name="invoice_state" readonly="1"/>
                   <field name="invoice_amount" readonly="1"/>
+                  <field name="invoice_count" readonly="1"/>
+                  <field name="billing_revision" readonly="1" groups="base.group_no_one"/>
                 </group>
                 <group>
                   <field name="is_overdue" readonly="1"/>

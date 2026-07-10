@@ -316,6 +316,38 @@
             <field name="name">Diet</field>
             <field name="comment">Staff access to diet management functions</field>
         </record>
+
+        <!-- Clinic Billing Roles -->
+        <record id="pet_clinic_billing_category" model="ir.module.category">
+            <field name="name">[ Pet ] Clinic Billing</field>
+            <field name="sequence">95</field>
+        </record>
+
+        <record model="res.groups.privilege" id="pet_clinic_billing_privilege">
+            <field name="name">Clinic Billing</field>
+            <field name="sequence">95</field>
+            <field name="category_id" ref="pet_clinic_billing_category"/>
+        </record>
+
+        <record id="group_pet_clinic_reception" model="res.groups">
+            <field name="name">Clinic Reception</field>
+            <field name="privilege_id" ref="pet_clinic_billing_privilege"/>
+            <field name="comment">Create sale orders, primary invoices, and payments up to residual</field>
+        </record>
+
+        <record id="group_pet_clinic_accountant" model="res.groups">
+            <field name="name">Clinic Accountant</field>
+            <field name="privilege_id" ref="pet_clinic_billing_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_clinic_reception'))]"/>
+            <field name="comment">Credit notes, refunds, additional invoices, unpaid draft corrections</field>
+        </record>
+
+        <record id="group_pet_clinic_billing_manager" model="res.groups">
+            <field name="name">Clinic Billing Manager</field>
+            <field name="privilege_id" ref="pet_clinic_billing_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_pet_clinic_accountant'))]"/>
+            <field name="comment">Approve exceptional billing revisions and audited corrections</field>
+        </record>
     </data>
 </odoo>
 

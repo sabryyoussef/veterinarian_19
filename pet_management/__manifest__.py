@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.2.3',
+    'version': '19.0.1.3.0',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management
@@ -18,7 +18,7 @@ Key Features:
 * Grooming and training sessions
 * Diet plans and weight monitoring
 * Appointment scheduling with calendar integration
-* Invoicing integration
+* Idempotent appointment invoicing and payment integrity
 * Email notifications
     """,
     'category': 'Services/Clinic',
@@ -61,7 +61,7 @@ Key Features:
         'views/pet_help_views.xml',
         'views/hr_employee_views.xml',
         'views/pet_vet_performance_report_views.xml',
-        # Demo notifications archived — see data/notification_seed_data_simple.xml
+        'wizards/appointment_additional_invoice_views.xml',
     ],
     'images': [
         'static/description/main_screenshot.png',

@@ -26,6 +26,10 @@ class PetAppointmentServiceLine(models.Model):
     currency_id = fields.Many2one(
         related='appointment_id.currency_id', store=True, readonly=True,
         help="Currency")
+    invoice_synced = fields.Boolean(
+        string='From Invoice', default=False, copy=False,
+        help='Created/updated from invoice or sale order lines; replaced on re-sync',
+    )
 
     @api.depends('quantity', 'price_unit', 'discount')
     def _compute_price_subtotal(self):
@@ -49,6 +53,8 @@ class PetAppointmentServiceLine(models.Model):
                 raise ValidationError(_('Quantity must be greater than zero.'))
 
     def _resync_appointments(self):
+        if self.env.context.get('skip_appointment_so_resync'):
+            return
         appointments = self.mapped('appointment_id')
         if appointments:
             appointments._resync_draft_sale_order()
@@ -65,6 +71,8 @@ class PetAppointmentServiceLine(models.Model):
         return res
 
     def unlink(self):
+        if self.env.context.get('skip_appointment_so_resync'):
+            return super().unlink()
         appointments = self.mapped('appointment_id')
         res = super().unlink()
         appointments._resync_draft_sale_order()

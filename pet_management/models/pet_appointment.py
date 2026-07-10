@@ -1,6 +1,6 @@
 from datetime import timedelta
 from odoo import models, fields, api, _ # type
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 class PetAppointment(models.Model):
     _name = 'pet.appointment'
@@ -953,8 +953,9 @@ class PetAppointment(models.Model):
                 'tax_ids': [(6, 0, [])],
             })
 
-        # Medical visit - explode each visit line when completed
-        if self.medical_visit_id and self.medical_visit_id.status == 'completed':
+        # Medical visit: bill priced product/service lines even before completion.
+        # Prefer completed behavior (discount + cost fallback) when completed.
+        if self.medical_visit_id:
             visit = self.medical_visit_id
             visit_lines = visit.line_ids.filtered(lambda line: line.price_subtotal > 0)
             if visit_lines:
@@ -963,9 +964,9 @@ class PetAppointment(models.Model):
                         product=line.product_id or None,
                         qty=line.quantity or 1.0,
                         discount=line.discount or 0.0)
-                if visit.discount_amount:
+                if visit.status == 'completed' and visit.discount_amount:
                     add(_('Visit discount'), -abs(visit.discount_amount))
-            elif visit.cost:
+            elif visit.status == 'completed' and visit.cost:
                 add(f"Medical Visit - {visit.reason or 'Consultation'}", visit.cost)
 
         # Vaccination - only if administered
@@ -996,8 +997,10 @@ class PetAppointment(models.Model):
             add(f"Boarding - {self.boarding_stay_id.kennel_id.name if self.boarding_stay_id.kennel_id else 'Boarding Stay'}",
                 self.boarding_stay_id.total_cost)
 
-        # Additional manual service lines
+        # Additional manual service lines (skip invoice-synced to avoid double-billing)
         for line in self.extra_service_line_ids:
+            if line.invoice_synced:
+                continue
             if line.price_subtotal:
                 add(line.name or (line.product_id.display_name if line.product_id else _('Service')),
                     line.price_unit,
@@ -1013,11 +1016,20 @@ class PetAppointment(models.Model):
 
     def _resync_draft_sale_order(self):
         """Rebuild the sale order lines from current services when the order is
-        still an editable quotation (not confirmed/invoiced). Safe no-op otherwise."""
+        still an editable quotation (not confirmed/invoiced)."""
+        if self.env.context.get('skip_appointment_so_resync'):
+            return
         for rec in self:
             order = rec.sale_order_id
-            if not order or order.state not in ('draft', 'sent') or rec.invoice_id:
+            if not order or rec.invoice_id:
                 continue
+            if order.state not in ('draft', 'sent'):
+                raise UserError(_(
+                    'Cannot rebuild sale order %(order)s because it is already confirmed. '
+                    'Edit the quotation before confirming, or set line quantities to 0 on a '
+                    'confirmed order instead of deleting lines.',
+                    order=order.name,
+                ))
             line_vals = rec._prepare_sale_order_lines()
             commands = [(5, 0, 0)] + [(0, 0, lv) for lv in line_vals]
             order.sudo().write({'order_line': commands})
@@ -1033,7 +1045,16 @@ class PetAppointment(models.Model):
             raise ValidationError(_('Cannot create a sale order without a customer/owner on the pet.'))
         line_vals = self._prepare_sale_order_lines()
         if not line_vals:
-            raise ValidationError(_('Nothing to bill on this appointment yet. Complete the service(s) first.'))
+            # Invoice-first: editable placeholder so billing can proceed before services complete
+            generic = self._get_generic_service_product()
+            line_vals = [{
+                'product_id': generic.id,
+                'name': self.title or self.name or _('Pet Care Service'),
+                'product_uom_qty': 1.0,
+                'price_unit': self.cost or 0.0,
+                'discount': 0.0,
+                'tax_ids': [(6, 0, [])],
+            }]
         order = self.env['sale.order'].sudo().create({
             'partner_id': self.owner_id.id,
             'origin': self.name,
@@ -1047,19 +1068,97 @@ class PetAppointment(models.Model):
         self.sale_order_id = order.id
         return order
 
+    def _sync_services_from_invoice(self):
+        """Recreate invoice-synced extra_service_line_ids from invoice (or SO) lines.
+
+        Only previous invoice-synced extras are replaced; manually entered extras stay.
+        """
+        ServiceLine = self.env['pet.appointment.service.line'].with_context(
+            skip_appointment_so_resync=True,
+        )
+        for rec in self:
+            source_lines = self.env['account.move.line']
+            if rec.invoice_id:
+                # Odoo 19 account.move.line uses display_type='product' for billable lines
+                # (section/note/tax/payment_term/cogs are other values).
+                source_lines = rec.invoice_id.invoice_line_ids.filtered(
+                    lambda l: l.display_type == 'product' and l.product_id
+                )
+            if not source_lines and rec.sale_order_id:
+                # sale.order.line: product lines have display_type False/empty
+                source_lines = rec.sale_order_id.order_line.filtered(
+                    lambda l: not l.display_type and l.product_id
+                )
+            if not source_lines:
+                continue
+
+            rec.extra_service_line_ids.filtered('invoice_synced').with_context(
+                skip_appointment_so_resync=True,
+            ).unlink()
+
+            vals_list = []
+            for line in source_lines:
+                if 'product_uom_qty' in line._fields and 'quantity' not in line._fields:
+                    qty = line.product_uom_qty
+                else:
+                    qty = line.quantity
+                vals_list.append({
+                    'appointment_id': rec.id,
+                    'product_id': line.product_id.id,
+                    'name': line.name or line.product_id.display_name,
+                    'quantity': qty or 1.0,
+                    'price_unit': line.price_unit or 0.0,
+                    'discount': getattr(line, 'discount', 0.0) or 0.0,
+                    'invoice_synced': True,
+                })
+            if vals_list:
+                ServiceLine.create(vals_list)
+
     def action_create_invoice(self):
-        """Create a sale order (quotation), confirm it, and generate + post the invoice.
-        Kept under this name for button/back-compat; now routes billing through Sales."""
+        """Create or open a draft/sent sale order for billing review (no confirm/invoice)."""
         self.ensure_one()
+        if self.invoice_id:
+            return self.action_view_invoice()
+        order = self._ensure_sale_order()
+        if order.state in ('draft', 'sent'):
+            self._resync_draft_sale_order()
+        elif order.state == 'sale':
+            raise UserError(_(
+                'Sale order %(order)s is already confirmed. Use Confirm & Create Invoice '
+                'to generate the invoice, or open the sale order to review it.',
+                order=order.name,
+            ))
+        elif order.state == 'cancel':
+            raise UserError(_(
+                'Sale order %(order)s is cancelled. Create a new quotation from Sales.',
+                order=order.name,
+            ))
+        return self.action_view_sale_order()
+
+    def action_confirm_and_create_invoice(self):
+        """Confirm the sale order, create the invoice, post it, and sync appointment lines."""
+        self.ensure_one()
+        if self.invoice_id:
+            return self.action_view_invoice()
         order = self._ensure_sale_order()
         if order.state in ('draft', 'sent'):
             order.action_confirm()
-        if not self.invoice_id:
-            invoices = order._create_invoices()
-            if invoices:
-                invoices.action_post()
-                self.invoice_id = invoices[0].id
-        return self.action_view_sale_order()
+        elif order.state == 'cancel':
+            raise UserError(_(
+                'Sale order %(order)s is cancelled and cannot be invoiced.',
+                order=order.name,
+            ))
+        invoices = order._create_invoices()
+        if not invoices:
+            raise UserError(_(
+                'No invoice was created from sale order %(order)s. '
+                'Check that the order has billable lines.',
+                order=order.name,
+            ))
+        invoices.action_post()
+        self.invoice_id = invoices[0].id
+        self._sync_services_from_invoice()
+        return self.action_view_invoice()
 
     def action_view_sale_order(self):
         """Open the sale order for this appointment."""
@@ -1216,6 +1315,8 @@ class PetAppointment(models.Model):
                     'target': 'current',
                 }
             else:
+                if rec.sale_order_id:
+                    return rec.action_view_sale_order()
                 return rec.action_create_invoice()
 
     def action_cancel_invoice(self):
@@ -1228,6 +1329,8 @@ class PetAppointment(models.Model):
         """Refresh/update the invoice with current appointment data"""
         for rec in self:
             if not rec.invoice_id:
+                if rec.sale_order_id:
+                    return rec.action_view_sale_order()
                 return rec.action_create_invoice()
             
             # Only refresh if invoice is in draft state

@@ -130,10 +130,12 @@
                   class="btn-secondary" icon="fa-home"/>
           
           <!-- Sales / Invoice Buttons -->
-          <button name="action_create_invoice" type="object" string="Create Sale Order + Invoice" 
-                  invisible="sale_order_id or state not in ['confirmed', 'in_progress', 'done']" class="btn-primary" icon="fa-shopping-cart"/>
+          <button name="action_create_invoice" type="object" string="Create Sale Order" 
+                  invisible="sale_order_id or invoice_id or state not in ['confirmed', 'in_progress', 'done']" class="btn-primary" icon="fa-shopping-cart"/>
           <button name="action_view_sale_order" type="object" string="View Sale Order" 
-                  invisible="not sale_order_id" class="btn-info" icon="fa-shopping-cart"/>
+                  invisible="not sale_order_id or invoice_id" class="btn-info" icon="fa-shopping-cart"/>
+          <button name="action_confirm_and_create_invoice" type="object" string="Confirm &amp; Create Invoice" 
+                  invisible="not sale_order_id or invoice_id or state not in ['confirmed', 'in_progress', 'done']" class="btn-success" icon="fa-file-text-o"/>
           <button name="action_view_invoice" type="object" string="View Invoice" 
                   invisible="not invoice_id" class="btn-info" icon="fa-file-text-o"/>
           <button name="action_refresh_invoice" type="object" string="Refresh Invoice" 
@@ -511,6 +513,7 @@
                     <field name="price_unit"/>
                     <field name="discount"/>
                     <field name="price_subtotal" readonly="1"/>
+                    <field name="invoice_synced" readonly="1" optional="show"/>
                     <field name="currency_id" column_invisible="1"/>
                   </list>
                 </field>

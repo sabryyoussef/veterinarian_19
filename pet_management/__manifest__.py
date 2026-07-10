@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.3.0',
+    'version': '19.0.1.4.0',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management

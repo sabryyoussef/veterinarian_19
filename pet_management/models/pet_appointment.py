@@ -68,8 +68,27 @@ class PetAppointment(models.Model):
     ], string='Payment Status', compute='_compute_payment_status', store=True,
        help="Payment status aggregated from appointment-linked accounting documents")
     billing_revision = fields.Integer(default=0, copy=False)
+    is_complimentary = fields.Boolean(
+        string='Complimentary', default=False, tracking=True, copy=False,
+        help='Zero-value / complimentary visit. Skips paid-invoice expectations.')
+    complimentary_reason = fields.Text(
+        string='Complimentary Reason', copy=False,
+        help='Required when the appointment is marked complimentary.')
+    # Layered billing totals (service → SO → draft → posted → paid → residual → variance)
+    service_total = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id',
+        string='Service Total',
+        help='Computed service/cost total from facilities and extra lines.')
+    sale_order_total = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id',
+        string='Sale Order Total')
+    draft_invoice_total = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id',
+        string='Draft Invoice Total')
     total_invoiced = fields.Monetary(
-        compute='_compute_billing_totals', store=True, currency_field='currency_id')
+        compute='_compute_billing_totals', store=True, currency_field='currency_id',
+        string='Posted Invoice Total',
+        help='Net posted customer invoices/credit notes linked to this appointment.')
     total_paid = fields.Monetary(
         compute='_compute_billing_totals', store=True, currency_field='currency_id')
     total_residual = fields.Monetary(
@@ -77,8 +96,15 @@ class PetAppointment(models.Model):
     total_customer_credit = fields.Monetary(
         compute='_compute_billing_totals', store=True, currency_field='currency_id',
         help='Unreconciled payment credits explicitly linked to this appointment')
+    billing_variance = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id',
+        string='Billing Variance',
+        help='Posted invoiced total minus service total (positive = invoiced above services).')
+    has_billing_mismatch = fields.Boolean(
+        compute='_compute_billing_warning', store=True, index=True,
+        help='True when billing integrity warnings are present.')
     billing_warning = fields.Text(
-        compute='_compute_billing_warning',
+        compute='_compute_billing_warning', store=True,
         help='Human-readable billing integrity warnings for the form banner')
     follow_up_date = fields.Date(help="Recommended follow-up date")
     follow_up_notes = fields.Text(help="Follow-up instructions")
@@ -299,11 +325,13 @@ class PetAppointment(models.Model):
             rec.cost = cost
 
     @api.depends('invoice_id', 'invoice_id.amount_total', 'cost',
-                 'total_invoiced')
+                 'total_invoiced', 'is_complimentary')
     def _compute_amount_total(self):
         """Real billable amount: prefer posted invoiced total, else cost."""
         for rec in self:
-            if rec.total_invoiced:
+            if rec.is_complimentary:
+                rec.amount_total = 0.0
+            elif rec.total_invoiced:
                 rec.amount_total = rec.total_invoiced
             elif rec.invoice_id and rec.invoice_id.amount_total:
                 rec.amount_total = rec.invoice_id.amount_total
@@ -316,21 +344,27 @@ class PetAppointment(models.Model):
         'invoice_ids.move_type', 'invoice_id', 'invoice_id.state',
         'invoice_id.amount_total', 'invoice_id.amount_residual',
         'invoice_id.payment_state', 'state', 'sale_order_id',
+        'sale_order_id.amount_total', 'cost', 'is_complimentary',
     )
     def _compute_billing_totals(self):
         for rec in self:
-            invoices = rec._get_linked_invoices().filtered(
-                lambda m: m.state == 'posted' and m.move_type in ('out_invoice', 'out_refund')
+            all_inv = rec._get_linked_invoices().filtered(
+                lambda m: m.move_type in ('out_invoice', 'out_refund') and m.state != 'cancel'
             )
+            posted = all_inv.filtered(lambda m: m.state == 'posted')
+            drafts = all_inv.filtered(lambda m: m.state == 'draft')
             invoiced = 0.0
             residual = 0.0
             paid = 0.0
-            for inv in invoices:
+            draft_total = 0.0
+            for inv in posted:
                 sign = -1.0 if inv.move_type == 'out_refund' else 1.0
                 invoiced += sign * (inv.amount_total or 0.0)
                 residual += sign * (inv.amount_residual or 0.0)
                 paid += sign * ((inv.amount_total or 0.0) - (inv.amount_residual or 0.0))
-            # Appointment-linked unreconciled payment credits (payment moves with appointment_id)
+            for inv in drafts:
+                sign = -1.0 if inv.move_type == 'out_refund' else 1.0
+                draft_total += sign * (inv.amount_total or 0.0)
             credit = 0.0
             PaymentMove = rec.env['account.move'].sudo()
             pay_moves = PaymentMove.search([
@@ -341,24 +375,34 @@ class PetAppointment(models.Model):
             for aml in pay_moves.line_ids.filtered(
                 lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled
             ):
-                # Credit on receivable = customer credit
                 credit += max(aml.credit - aml.debit, 0.0)
+            so_total = rec.sale_order_id.amount_total if rec.sale_order_id else 0.0
+            service = rec.cost or 0.0
+            rec.service_total = service
+            rec.sale_order_total = so_total
+            rec.draft_invoice_total = draft_total
             rec.total_invoiced = invoiced
             rec.total_paid = paid
             rec.total_residual = residual
             rec.total_customer_credit = credit
+            rec.billing_variance = invoiced - service
 
     @api.depends(
         'state', 'invoice_ids', 'invoice_ids.state', 'invoice_ids.payment_state',
         'invoice_id', 'invoice_id.state', 'invoice_id.payment_state',
         'total_invoiced', 'total_paid', 'total_residual', 'total_customer_credit',
-        'has_active_invoice',
+        'has_active_invoice', 'is_complimentary',
     )
     def _compute_payment_status(self):
         """Aggregate payment status from all appointment-linked accounting docs."""
         for rec in self:
             if rec.state == 'cancelled':
                 rec.payment_status = 'cancelled'
+                continue
+            if rec.is_complimentary and not rec._get_linked_invoices().filtered(
+                lambda m: m.move_type == 'out_invoice' and m.state != 'cancel'
+            ):
+                rec.payment_status = 'paid'
                 continue
             invoices = rec._get_linked_invoices().filtered(
                 lambda m: m.move_type == 'out_invoice' and m.state != 'cancel'
@@ -377,7 +421,6 @@ class PetAppointment(models.Model):
                 rec.payment_status = 'draft'
                 continue
             if rec.total_customer_credit and rec.total_residual <= rounding and rec.total_paid:
-                # Fully paid invoices plus leftover unreconciled credit
                 if rec.total_customer_credit > rounding:
                     rec.payment_status = 'overpaid'
                 else:
@@ -399,6 +442,8 @@ class PetAppointment(models.Model):
         'invoice_ids', 'invoice_ids.state', 'invoice_ids.is_additional_invoice',
         'sale_order_id', 'sale_order_id.amount_total', 'total_invoiced',
         'total_customer_credit', 'payment_status', 'invoice_id', 'state',
+        'cost', 'billing_variance', 'draft_invoice_total', 'is_complimentary',
+        'service_total',
     )
     def _compute_billing_warning(self):
         for rec in self:
@@ -413,7 +458,7 @@ class PetAppointment(models.Model):
                 warnings.append(_('Posted payment credits exist while invoice(s) are still draft.'))
             if rec.payment_status == 'overpaid':
                 warnings.append(_('Payments/credits exceed posted invoice totals.'))
-            if rec.sale_order_id and rec.total_invoiced:
+            if rec.sale_order_id and rec.total_invoiced and not rec.is_complimentary:
                 so_total = rec.sale_order_id.amount_total or 0.0
                 if abs(so_total - rec.total_invoiced) > 0.05:
                     warnings.append(_(
@@ -422,9 +467,32 @@ class PetAppointment(models.Model):
                     ))
             if rec.invoice_id and rec.invoice_id not in invoices and invoices:
                 warnings.append(_('Primary invoice pointer does not match linked invoices.'))
-            if rec.state == 'done' and not invoices:
+            if rec.state == 'done' and not invoices and not rec.is_complimentary:
                 warnings.append(_('Appointment is done but has no invoice.'))
+            if not rec.is_complimentary and abs(rec.billing_variance or 0.0) > 0.05 and rec.total_invoiced:
+                warnings.append(_(
+                    'Service total (%(svc)s) differs from posted invoiced total (%(inv)s).',
+                    svc=rec.service_total or rec.cost or 0.0,
+                    inv=rec.total_invoiced,
+                ))
+            if rec.draft_invoice_total and rec.total_invoiced:
+                warnings.append(_(
+                    'Draft invoice total (%(draft)s) coexists with posted invoices (%(posted)s).',
+                    draft=rec.draft_invoice_total, posted=rec.total_invoiced,
+                ))
+            if rec.is_complimentary and not (rec.complimentary_reason or '').strip():
+                warnings.append(_('Complimentary appointment requires a reason.'))
             rec.billing_warning = '\n'.join(warnings) if warnings else False
+            rec.has_billing_mismatch = bool(rec.billing_warning)
+
+    @api.constrains('is_complimentary', 'complimentary_reason')
+    def _check_complimentary_reason(self):
+        for rec in self:
+            if rec.is_complimentary and not (rec.complimentary_reason or '').strip():
+                raise ValidationError(_(
+                    'Complimentary appointments require a reason '
+                    '(e.g. staff pet, goodwill, warranty redo).'
+                ))
 
     @api.depends('inventory_items_ids', 'inventory_items_ids.total_cost')
     def _compute_inventory_cost(self):
@@ -1308,14 +1376,14 @@ class PetAppointment(models.Model):
             skip_appointment_so_resync=True,
         )
         for rec in self:
-            if not rec.invoice_id and not rec.sale_order_id:
+            posted = rec._get_linked_invoices().filtered(
+                lambda m: m.move_type == 'out_invoice' and m.state == 'posted'
+            )
+            if not posted and not rec.sale_order_id:
                 continue
-            source_lines = self.env['account.move.line']
-            if rec.invoice_id:
-                source_lines = rec.invoice_id.invoice_line_ids.filtered(
-                    lambda l: l.display_type == 'product' and l.product_id
-                )
-            # Skip products already represented by medical visit lines
+            source_lines = posted.mapped('invoice_line_ids').filtered(
+                lambda l: l.display_type == 'product' and (l.product_id or (l.name and l.price_subtotal))
+            )
             visit_product_ids = set()
             if rec.medical_visit_id:
                 visit_product_ids = set(rec.medical_visit_id.line_ids.mapped('product_id').ids)
@@ -1330,10 +1398,15 @@ class PetAppointment(models.Model):
                 for svc in rec.extra_service_line_ids
                 if svc.sale_line_id
             }
+            existing_keys = {
+                (svc.product_id.id or 0, (svc.name or '').strip(), round(svc.price_unit or 0.0, 2), round(svc.quantity or 0.0, 2))
+                for svc in rec.extra_service_line_ids
+            }
 
             for aml in source_lines:
-                if aml.product_id.id in visit_product_ids and not aml.appointment_service_line_id:
-                    continue
+                if aml.product_id and aml.product_id.id in visit_product_ids and not aml.appointment_service_line_id:
+                    if aml.sale_line_ids:
+                        continue
                 if aml.appointment_service_line_id:
                     continue
                 sale_lines = aml.sale_line_ids
@@ -1343,12 +1416,20 @@ class PetAppointment(models.Model):
                     continue
                 if aml.id in existing_by_inv_line:
                     continue
-                # Only create invoice-synced extras for lines not already known
+                key = (
+                    aml.product_id.id if aml.product_id else 0,
+                    (aml.name or '').strip(),
+                    round(aml.price_unit or 0.0, 2),
+                    round(aml.quantity or 0.0, 2),
+                )
+                if key in existing_keys:
+                    continue
                 qty = aml.quantity or 1.0
+                product = aml.product_id or rec._get_generic_service_product()
                 svc = ServiceLine.create({
                     'appointment_id': rec.id,
-                    'product_id': aml.product_id.id,
-                    'name': aml.name or aml.product_id.display_name,
+                    'product_id': product.id,
+                    'name': aml.name or product.display_name,
                     'quantity': qty,
                     'price_unit': aml.price_unit or 0.0,
                     'discount': aml.discount or 0.0,
@@ -1356,6 +1437,66 @@ class PetAppointment(models.Model):
                     'sale_line_id': sale_lines[:1].id if sale_lines else False,
                 })
                 aml.appointment_service_line_id = svc.id
+                existing_keys.add(key)
+
+    def action_open_billing_repair_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Repair Billing Metadata'),
+            'res_model': 'pet.appointment.billing.repair.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_appointment_id': self.id},
+        }
+
+    def _align_sale_order_metadata_from_invoices(self):
+        """Add missing SO lines for posted invoice lines; never change invoice amounts."""
+        self.ensure_one()
+        order = self.sale_order_id
+        if not order:
+            raise UserError(_('No sale order to align.'))
+        posted = self._get_linked_invoices().filtered(
+            lambda m: m.move_type == 'out_invoice' and m.state == 'posted'
+        )
+        if not posted:
+            raise UserError(_('No posted invoice to align from.'))
+        if order.state in ('draft', 'sent'):
+            self._sync_services_from_invoice()
+            self.with_context(skip_appointment_so_resync=False)._resync_draft_sale_order()
+            return True
+
+        generic = self._get_generic_service_product()
+        linked_aml_ids = set()
+        for sol in order.order_line:
+            linked_aml_ids.update(sol.invoice_lines.ids)
+
+        created = self.env['sale.order.line']
+        for aml in posted.mapped('invoice_line_ids').filtered(
+            lambda l: l.display_type == 'product' and (l.price_subtotal or l.product_id)
+        ):
+            if aml.id in linked_aml_ids or aml.sale_line_ids:
+                continue
+            product = aml.product_id or generic
+            sol = self.env['sale.order.line'].sudo().create({
+                'order_id': order.id,
+                'product_id': product.id,
+                'name': aml.name or product.display_name,
+                'product_uom_qty': aml.quantity or 1.0,
+                'price_unit': aml.price_unit or 0.0,
+                'discount': aml.discount or 0.0,
+                'tax_ids': [(6, 0, [])],
+            })
+            aml.sudo().write({'sale_line_ids': [(4, sol.id)]})
+            created |= sol
+            linked_aml_ids.add(aml.id)
+        if created:
+            self.message_post(body=_(
+                'Metadata repair: added %(n)s sale order line(s) linked to existing posted invoice lines. '
+                'Posted invoice amounts were not modified.',
+                n=len(created),
+            ))
+        return True
 
     def action_create_or_open_sale_order(self):
         """Idempotent: lock, return existing SO or create one draft SO, open it."""
@@ -1471,69 +1612,140 @@ class PetAppointment(models.Model):
             raise UserError(_('No posted appointment invoice with residual to pay.'))
         return invoices.action_register_payment()
 
-    def _scan_billing_integrity_issues(self):
-        """Read-only anomaly scan; creates pet.billing.integrity.issue rows."""
-        Issue = self.env['pet.billing.integrity.issue'].sudo()
-        Issue.search([('state', '=', 'open')]).unlink()
-        appointments = self.search([('sale_order_id', '!=', False)]) | self.search([('invoice_id', '!=', False)])
-        created = 0
-        for appt in appointments:
+    def _collect_billing_integrity_findings(self):
+        """Return list of issue dicts for appointments in self (no DB writes)."""
+        findings = []
+        for appt in self:
             invoices = appt._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
-            primaries = invoices.filtered(lambda m: m.move_type == 'out_invoice' and not m.is_additional_invoice)
+            primaries = invoices.filtered(
+                lambda m: m.move_type == 'out_invoice' and not m.is_additional_invoice
+            )
             if len(primaries) > 1:
-                Issue.create({
-                    'name': _('%s: multiple primary invoices') % appt.name,
+                findings.append({
                     'appointment_id': appt.id,
                     'issue_type': 'multi_primary_invoice',
                     'severity': 'critical',
+                    'name': _('%s: multiple primary invoices') % appt.name,
                     'details': ', '.join(primaries.mapped('name')),
+                    'classification': 'confirmed_duplicate_invoice',
                 })
-                created += 1
             if invoices.filtered(lambda m: m.state == 'draft') and appt.total_customer_credit:
-                Issue.create({
-                    'name': _('%s: draft invoice with payment credit') % appt.name,
+                findings.append({
                     'appointment_id': appt.id,
                     'issue_type': 'draft_with_payment',
                     'severity': 'high',
+                    'name': _('%s: draft invoice with payment credit') % appt.name,
                     'details': 'credit=%s' % appt.total_customer_credit,
                 })
-                created += 1
             if appt.payment_status == 'overpaid':
-                Issue.create({
-                    'name': _('%s: overpaid') % appt.name,
+                findings.append({
                     'appointment_id': appt.id,
                     'issue_type': 'overpayment',
                     'severity': 'high',
+                    'name': _('%s: overpaid') % appt.name,
                     'details': 'paid=%s invoiced=%s credit=%s' % (
                         appt.total_paid, appt.total_invoiced, appt.total_customer_credit),
                 })
-                created += 1
-            if appt.state == 'done' and appt.payment_status in ('pending', 'not_invoiced') and appt.total_paid:
-                Issue.create({
-                    'name': _('%s: status mismatch') % appt.name,
+            if appt.state == 'done' and appt.payment_status in ('pending', 'not_invoiced') \
+                    and appt.total_paid and not appt.is_complimentary:
+                findings.append({
                     'appointment_id': appt.id,
                     'issue_type': 'status_mismatch',
                     'severity': 'medium',
-                    'details': 'payment_status=%s total_paid=%s' % (appt.payment_status, appt.total_paid),
+                    'name': _('%s: status mismatch') % appt.name,
+                    'details': 'payment_status=%s total_paid=%s' % (
+                        appt.payment_status, appt.total_paid),
                 })
-                created += 1
             if appt.sale_order_id and appt.total_invoiced and abs(
-                    (appt.sale_order_id.amount_total or 0.0) - appt.total_invoiced) > 0.05:
-                Issue.create({
-                    'name': _('%s: SO/invoice mismatch') % appt.name,
+                    (appt.sale_order_id.amount_total or 0.0) - appt.total_invoiced) > 0.05 \
+                    and not appt.is_complimentary:
+                so_total = appt.sale_order_id.amount_total or 0.0
+                findings.append({
                     'appointment_id': appt.id,
                     'issue_type': 'so_invoice_mismatch',
                     'severity': 'medium',
-                    'details': 'so=%s inv=%s' % (appt.sale_order_id.amount_total, appt.total_invoiced),
+                    'name': _('%s: SO/invoice mismatch') % appt.name,
+                    'details': 'so=%s inv=%s classification=incomplete_so_sync' % (
+                        so_total, appt.total_invoiced),
+                    'classification': 'incomplete_so_sync',
                 })
-                created += 1
+            if appt.invoice_id and appt.invoice_id not in invoices and invoices:
+                findings.append({
+                    'appointment_id': appt.id,
+                    'issue_type': 'pointer_mismatch',
+                    'severity': 'medium',
+                    'name': _('%s: invoice pointer mismatch') % appt.name,
+                    'details': 'pointer=%s linked=%s' % (
+                        appt.invoice_id.name, ', '.join(invoices.mapped('name'))),
+                })
+            if appt.state == 'done' and not invoices and not appt.is_complimentary \
+                    and (appt.service_total or appt.cost):
+                findings.append({
+                    'appointment_id': appt.id,
+                    'issue_type': 'confirmed_uninvoiced',
+                    'severity': 'medium',
+                    'name': _('%s: done without invoice') % appt.name,
+                    'details': 'service_total=%s' % (appt.service_total or appt.cost),
+                })
+        return findings
+
+    def _scan_billing_integrity_issues(self):
+        """Idempotent anomaly scan: upsert by (appointment, issue_type), auto-resolve stale opens."""
+        Issue = self.env['pet.billing.integrity.issue'].sudo()
+        appointments = self if self.ids else (
+            self.search([('sale_order_id', '!=', False)])
+            | self.search([('invoice_id', '!=', False)])
+            | self.search([('state', '=', 'done')])
+        )
+        findings = appointments._collect_billing_integrity_findings()
+        found_keys = set()
+        created_or_updated = 0
+        now = fields.Datetime.now()
+        for finding in findings:
+            key = (finding['appointment_id'], finding['issue_type'])
+            found_keys.add(key)
+            vals = {
+                'name': finding['name'],
+                'appointment_id': finding['appointment_id'],
+                'issue_type': finding['issue_type'],
+                'severity': finding['severity'],
+                'details': finding.get('details'),
+                'classification': finding.get('classification') or False,
+                'detected_at': now,
+            }
+            existing = Issue.search([
+                ('appointment_id', '=', finding['appointment_id']),
+                ('issue_type', '=', finding['issue_type']),
+            ], order='id desc', limit=1)
+            if existing:
+                write_vals = {
+                    k: vals[k] for k in ('name', 'severity', 'details', 'classification', 'detected_at')
+                }
+                if existing.state == 'resolved':
+                    write_vals['state'] = 'open'
+                existing.write(write_vals)
+            else:
+                vals['state'] = 'open'
+                Issue.create(vals)
+            created_or_updated += 1
+
+        open_issues = Issue.search([('state', '=', 'open')])
+        resolved = 0
+        for issue in open_issues:
+            if (issue.appointment_id.id, issue.issue_type) not in found_keys:
+                issue.write({'state': 'resolved'})
+                resolved += 1
+
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': _('Billing Integrity Scan'),
-                'message': _('Found %(n)s open issue(s).', n=created),
-                'type': 'warning' if created else 'success',
+                'message': _(
+                    'Upserted %(n)s finding(s); auto-resolved %(r)s stale open issue(s).',
+                    n=created_or_updated, r=resolved,
+                ),
+                'type': 'warning' if created_or_updated else 'success',
                 'sticky': False,
             },
         }

@@ -6,6 +6,7 @@ class PetBillingIntegrityIssue(models.Model):
     _name = 'pet.billing.integrity.issue'
     _description = 'Appointment Billing Integrity Issue'
     _order = 'severity desc, id desc'
+    _rec_name = 'name'
 
     name = fields.Char(required=True)
     appointment_id = fields.Many2one('pet.appointment', index=True, ondelete='cascade')
@@ -21,6 +22,13 @@ class PetBillingIntegrityIssue(models.Model):
         ('duplicate_service_source', 'Duplicate Service Source'),
         ('confirmed_uninvoiced', 'Confirmed SO Not Invoiceable'),
     ], required=True, index=True)
+    classification = fields.Selection([
+        ('confirmed_duplicate_invoice', 'Confirmed Duplicate Invoice'),
+        ('incomplete_so_sync', 'Incomplete Sale Order / Service Sync'),
+        ('replaced_so_content', 'Incomplete or Replaced Sale Order Content'),
+        ('other', 'Other'),
+    ], string='Business Classification', index=True,
+       help='Commercial classification used in integrity reports.')
     severity = fields.Selection([
         ('low', 'Low'),
         ('medium', 'Medium'),
@@ -32,7 +40,7 @@ class PetBillingIntegrityIssue(models.Model):
         ('open', 'Open'),
         ('reviewed', 'Reviewed'),
         ('resolved', 'Resolved'),
-    ], default='open', required=True)
+    ], default='open', required=True, index=True)
     detected_at = fields.Datetime(default=fields.Datetime.now, required=True)
 
     def action_mark_reviewed(self):

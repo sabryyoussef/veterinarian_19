@@ -20,6 +20,32 @@
     </field>
   </record>
 
+  <record id="view_pet_appointment_billing_repair_wizard" model="ir.ui.view">
+    <field name="name">pet.appointment.billing.repair.wizard.form</field>
+    <field name="model">pet.appointment.billing.repair.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Repair Billing Metadata">
+        <div class="alert alert-info" role="alert">
+          Metadata only: syncs appointment services and/or sale order lines to match posted invoices.
+          Never creates invoices, never changes posted invoice amounts, never reconciles payments.
+        </div>
+        <group>
+          <field name="appointment_id" readonly="1"/>
+          <field name="currency_id" invisible="1"/>
+          <field name="preview_service_total" readonly="1"/>
+          <field name="preview_sale_order_total" readonly="1"/>
+          <field name="preview_posted_invoice_total" readonly="1"/>
+          <field name="repair_mode"/>
+          <field name="note" placeholder="Optional note for chatter"/>
+        </group>
+        <footer>
+          <button name="action_apply_metadata_repair" type="object" string="Apply Metadata Repair" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
   <record id="view_pet_billing_integrity_issue_list" model="ir.ui.view">
     <field name="name">pet.billing.integrity.issue.list</field>
     <field name="model">pet.billing.integrity.issue</field>
@@ -27,6 +53,7 @@
       <list>
         <field name="detected_at"/>
         <field name="severity" widget="badge"/>
+        <field name="classification" optional="show"/>
         <field name="issue_type"/>
         <field name="appointment_id"/>
         <field name="name"/>
@@ -51,6 +78,7 @@
             <field name="name"/>
             <field name="appointment_id"/>
             <field name="issue_type"/>
+            <field name="classification"/>
             <field name="severity"/>
             <field name="detected_at"/>
           </group>

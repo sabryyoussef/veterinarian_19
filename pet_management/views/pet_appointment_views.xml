@@ -17,9 +17,25 @@
         <field name="vet_employee_id"/>
         <field name="room_id" optional="hide"/>
         <field name="cost" optional="hide" sum="Service Cost"/>
+        <field name="service_total" optional="hide" widget="monetary" sum="Service Total"
+                 options="{'currency_field': 'currency_id'}"/>
+        <field name="sale_order_total" optional="hide" widget="monetary" sum="SO Total"
+                 options="{'currency_field': 'currency_id'}"/>
+        <field name="draft_invoice_total" optional="hide" widget="monetary" sum="Draft Inv"
+                 options="{'currency_field': 'currency_id'}"/>
         <field name="amount_total" string="Total" widget="monetary" sum="Total"
                  options="{'currency_field': 'currency_id'}"/>
+        <field name="total_invoiced" string="Posted Inv" optional="hide" widget="monetary" sum="Posted"
+                 options="{'currency_field': 'currency_id'}"/>
+        <field name="total_paid" optional="hide" widget="monetary" sum="Paid"
+                 options="{'currency_field': 'currency_id'}"/>
+        <field name="total_residual" optional="hide" widget="monetary" sum="Residual"
+                 options="{'currency_field': 'currency_id'}"/>
+        <field name="billing_variance" optional="hide" widget="monetary" sum="Variance"
+                 options="{'currency_field': 'currency_id'}"/>
         <field name="currency_id" column_invisible="1"/>
+        <field name="is_complimentary" optional="hide"/>
+        <field name="has_billing_mismatch" optional="hide"/>
         <field name="payment_status" widget="badge"
                  decoration-success="payment_status == 'paid'"
                  decoration-warning="payment_status in ('partial', 'draft', 'overpaid')"
@@ -74,6 +90,19 @@
         <filter name="dental" string="Dental" domain="[('primary_type','=','dental')]"/>
         <filter name="comprehensive" string="Comprehensive" domain="[('primary_type','=','comprehensive')]"/>
         <filter name="medical" string="Medical" domain="[('is_medical','=','True')]"/>
+
+        <!-- Billing mismatch filters -->
+        <separator/>
+        <filter name="billing_mismatch" string="Billing Mismatch"
+                domain="[('has_billing_mismatch','=',True)]"/>
+        <filter name="billing_overpaid" string="Overpaid"
+                domain="[('payment_status','=','overpaid')]"/>
+        <filter name="billing_inconsistent" string="Inconsistent Billing"
+                domain="[('payment_status','=','inconsistent')]"/>
+        <filter name="billing_variance" string="Service/Invoice Variance"
+                domain="[('billing_variance','!=',0)]"/>
+        <filter name="complimentary" string="Complimentary"
+                domain="[('is_complimentary','=',True)]"/>
         
         <!-- Display Options -->
         <separator/>
@@ -160,6 +189,10 @@
                   invisible="not has_active_invoice"
                   groups="pet_management.group_pet_clinic_accountant,pet_management.group_pet_clinic_billing_manager,base.group_system"
                   class="btn-secondary" icon="fa-plus"/>
+          <button name="action_open_billing_repair_wizard" type="object" string="Repair Billing Metadata"
+                  invisible="not has_active_invoice"
+                  groups="pet_management.group_pet_clinic_accountant,pet_management.group_pet_clinic_billing_manager,base.group_system"
+                  class="btn-warning" icon="fa-wrench"/>
           <button name="action_refresh_invoice" type="object" string="Refresh Invoice"
                   invisible="not invoice_id or invoice_state != 'draft'" class="btn-warning" icon="fa-refresh"/>
           <button name="action_cancel_invoice" type="object" string="Cancel Invoice"
@@ -293,9 +326,18 @@
             
             <!-- Cost Details Tab -->
             <page string="Cost Details" name="cost_details">
-              <group string="Summary">
+              <group string="Complimentary / Zero-Value Policy">
                 <group>
-                  <field name="cost" string="Total Cost" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                  <field name="is_complimentary"/>
+                  <field name="complimentary_reason" invisible="not is_complimentary" required="is_complimentary"/>
+                </group>
+              </group>
+              <group string="Layered Billing Totals">
+                <group>
+                  <field name="service_total" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                  <field name="sale_order_total" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                  <field name="draft_invoice_total" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                  <field name="cost" string="Legacy Cost" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 </group>
                 <group>
                   <field name="payment_status" widget="badge"
@@ -303,9 +345,11 @@
                            decoration-warning="payment_status in ('partial', 'draft', 'overpaid')"
                            decoration-danger="payment_status in ('pending', 'inconsistent')"
                            decoration-muted="payment_status in ('cancelled', 'not_invoiced')"/>
-                  <field name="total_invoiced" widget="monetary"/>
+                  <field name="total_invoiced" string="Posted Invoice Total" widget="monetary"/>
                   <field name="total_paid" widget="monetary"/>
                   <field name="total_residual" widget="monetary"/>
+                  <field name="billing_variance" widget="monetary"/>
+                  <field name="has_billing_mismatch" readonly="1"/>
                   <field name="total_customer_credit" widget="monetary"
                            invisible="not total_customer_credit"/>
                 </group>

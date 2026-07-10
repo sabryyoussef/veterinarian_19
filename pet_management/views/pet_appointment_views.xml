@@ -3,19 +3,30 @@
     <field name="name">pet.appointment.list</field>
     <field name="model">pet.appointment</field>
     <field name="arch" type="xml">
-      <list decoration-success="state == 'done'" decoration-info="state == 'in_progress'" decoration-warning="state == 'confirmed'" decoration-danger="state == 'cancelled'">
+      <list decoration-success="state == 'done'" decoration-info="state == 'in_progress'" decoration-warning="state == 'confirmed'" decoration-danger="state == 'cancelled'"
+            default_order="start_datetime desc">
         <field name="name"/>
         <field name="pet_id"/>
+        <field name="owner_id" optional="show"/>
         <field name="primary_type" widget="badge"/>
-        <field name="title"/>
+        <field name="title" optional="hide"/>
         <field name="start_datetime" widget="datetime"/>
-        <field name="end_datetime" widget="datetime"/>
+        <field name="end_datetime" widget="datetime" optional="hide"/>
         <field name="duration_display"/>
         <field name="state" widget="badge"/>
         <field name="vet_employee_id"/>
-        <field name="room_id"/>
-        <field name="cost"/>
-        <field name="payment_status"/>
+        <field name="room_id" optional="hide"/>
+        <field name="cost" optional="hide" sum="Service Cost"/>
+        <field name="amount_total" string="Total" widget="monetary" sum="Total"
+                 options="{'currency_field': 'currency_id'}"/>
+        <field name="currency_id" column_invisible="1"/>
+        <field name="payment_status" widget="badge"
+                 decoration-success="payment_status == 'paid'"
+                 decoration-warning="payment_status in ('partial', 'draft', 'overpaid')"
+                 decoration-danger="payment_status in ('pending', 'inconsistent')"
+                 decoration-muted="payment_status in ('cancelled', 'not_invoiced')"/>
+        <field name="invoice_state" optional="hide" widget="badge"/>
+        <field name="sale_order_id" optional="hide"/>
       </list>
     </field>
   </record>

@@ -13,6 +13,10 @@ from . import pet_boarding
 from . import pet_appointment
 from . import pet_appointment_inventory
 from . import pet_appointment_service_line
+from . import sale_order
+from . import account_move
+from . import account_payment_register
+from . import pet_billing_integrity_issue
 from . import hr_employee
 from . import pet_grooming
 from . import pet_training

@@ -30,6 +30,27 @@ class PetAppointmentServiceLine(models.Model):
         string='From Invoice', default=False, copy=False,
         help='Created/updated from invoice or sale order lines; replaced on re-sync',
     )
+    sale_line_id = fields.Many2one(
+        'sale.order.line',
+        string='Sale Order Line',
+        copy=False,
+        index=True,
+        ondelete='set null',
+        help='Stable link to the generated sale order line.',
+    )
+    invoice_line_ids = fields.One2many(
+        'account.move.line',
+        'appointment_service_line_id',
+        string='Invoice Lines',
+    )
+    medical_visit_line_id = fields.Many2one(
+        'pet.medical.visit.line',
+        string='Medical Visit Line',
+        copy=False,
+        index=True,
+        ondelete='set null',
+        help='When this extra mirrors a medical visit line, keep the source identity.',
+    )
 
     @api.depends('quantity', 'price_unit', 'discount')
     def _compute_price_subtotal(self):

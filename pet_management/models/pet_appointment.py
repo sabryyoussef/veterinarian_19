@@ -57,9 +57,29 @@ class PetAppointment(models.Model):
         compute='_compute_amount_total', store=True, currency_field='currency_id',
         string='Amount', help="Real billable amount: invoice total when invoiced, otherwise the computed service cost")
     payment_status = fields.Selection([
-        ('pending', 'Pending'), ('paid', 'Paid'), ('partial', 'Partial'), ('cancelled', 'Cancelled')
+        ('not_invoiced', 'Not Invoiced'),
+        ('draft', 'Draft Invoice'),
+        ('pending', 'Not Paid'),
+        ('partial', 'Partial'),
+        ('paid', 'Paid'),
+        ('overpaid', 'Overpaid'),
+        ('cancelled', 'Cancelled'),
+        ('inconsistent', 'Inconsistent'),
     ], string='Payment Status', compute='_compute_payment_status', store=True,
-       help="Payment status derived from the linked invoice")
+       help="Payment status aggregated from appointment-linked accounting documents")
+    billing_revision = fields.Integer(default=0, copy=False)
+    total_invoiced = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id')
+    total_paid = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id')
+    total_residual = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id')
+    total_customer_credit = fields.Monetary(
+        compute='_compute_billing_totals', store=True, currency_field='currency_id',
+        help='Unreconciled payment credits explicitly linked to this appointment')
+    billing_warning = fields.Text(
+        compute='_compute_billing_warning',
+        help='Human-readable billing integrity warnings for the form banner')
     follow_up_date = fields.Date(help="Recommended follow-up date")
     follow_up_notes = fields.Text(help="Follow-up instructions")
     
@@ -107,15 +127,26 @@ class PetAppointment(models.Model):
     
     # Sales / Invoice Related Fields
     sale_order_id = fields.Many2one('sale.order', string='Sale Order', readonly=True, copy=False, help="Sales order (quotation) generated for this appointment so it appears in the Sales app")
-    invoice_id = fields.Many2one('account.move', string='Invoice', readonly=True, help="Generated invoice for this appointment")
+    invoice_ids = fields.One2many(
+        'account.move', 'appointment_id', string='Invoices',
+        domain=[('move_type', 'in', ('out_invoice', 'out_refund'))],
+        copy=False,
+        help='All customer invoices/credit notes explicitly linked to this appointment.',
+    )
+    invoice_count = fields.Integer(compute='_compute_invoice_count')
+    invoice_id = fields.Many2one(
+        'account.move', string='Primary Invoice', readonly=True, copy=False,
+        help='Display/primary invoice (posted preferred, then draft). Does not hide additional invoices.',
+    )
     invoice_state = fields.Selection([
         ('no_invoice', 'No Invoice'),
         ('draft', 'Draft'),
         ('posted', 'Posted'),
         ('cancelled', 'Cancelled')
-    ], string='Invoice Status', compute='_compute_invoice_state', store=True, help="Status of the generated invoice")
-    invoice_amount = fields.Monetary(related='invoice_id.amount_total', string='Invoice Amount', readonly=True, help="Total amount of the invoice")
+    ], string='Invoice Status', compute='_compute_invoice_state', store=True, help="Status of the primary invoice")
+    invoice_amount = fields.Monetary(related='invoice_id.amount_total', string='Invoice Amount', readonly=True, help="Total amount of the primary invoice")
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True, help="Currency")
+    has_active_invoice = fields.Boolean(compute='_compute_has_active_invoice')
     
     # Service Status Fields (to track completion status)
     medical_visit_status = fields.Selection(related='medical_visit_id.status', string='Medical Status', readonly=True, help="Status of medical visit")
@@ -134,20 +165,31 @@ class PetAppointment(models.Model):
     training_program_cost = fields.Monetary(related='program_id.base_price', string='Training Program Cost', readonly=True, help="Cost of training program")
     boarding_stay_cost = fields.Float(related='boarding_stay_id.total_cost', string='Boarding Stay Cost', readonly=True, help="Cost of boarding stay")
 
-    @api.depends('invoice_id', 'invoice_id.state')
+    @api.depends('invoice_id', 'invoice_id.state', 'invoice_ids', 'invoice_ids.state')
     def _compute_invoice_state(self):
-        """Compute invoice state based on the actual invoice state"""
+        """Compute invoice state from the primary invoice."""
         for rec in self:
             if rec.invoice_id:
-                # Map Odoo invoice states to our custom states
                 state_mapping = {
                     'draft': 'draft',
                     'posted': 'posted',
-                    'cancel': 'cancelled'
+                    'cancel': 'cancelled',
                 }
                 rec.invoice_state = state_mapping.get(rec.invoice_id.state, 'draft')
             else:
                 rec.invoice_state = 'no_invoice'
+
+    @api.depends('invoice_ids')
+    def _compute_invoice_count(self):
+        for rec in self:
+            rec.invoice_count = len(rec._get_linked_invoices())
+
+    @api.depends('invoice_ids', 'invoice_ids.state', 'invoice_id')
+    def _compute_has_active_invoice(self):
+        for rec in self:
+            rec.has_active_invoice = bool(
+                rec._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
+            )
 
     @api.depends('start_datetime', 'end_datetime')
     def _compute_duration(self):
@@ -256,33 +298,133 @@ class PetAppointment(models.Model):
 
             rec.cost = cost
 
-    @api.depends('invoice_id', 'invoice_id.amount_total', 'cost')
+    @api.depends('invoice_id', 'invoice_id.amount_total', 'cost',
+                 'total_invoiced')
     def _compute_amount_total(self):
-        """Real billable amount: prefer the actual invoice total, else the service cost."""
+        """Real billable amount: prefer posted invoiced total, else cost."""
         for rec in self:
-            if rec.invoice_id and rec.invoice_id.amount_total:
+            if rec.total_invoiced:
+                rec.amount_total = rec.total_invoiced
+            elif rec.invoice_id and rec.invoice_id.amount_total:
                 rec.amount_total = rec.invoice_id.amount_total
             else:
                 rec.amount_total = rec.cost
 
-    @api.depends('invoice_id', 'invoice_id.payment_state', 'invoice_id.state', 'state')
+    @api.depends(
+        'invoice_ids', 'invoice_ids.state', 'invoice_ids.amount_total',
+        'invoice_ids.amount_residual', 'invoice_ids.payment_state',
+        'invoice_ids.move_type', 'invoice_id', 'invoice_id.state',
+        'invoice_id.amount_total', 'invoice_id.amount_residual',
+        'invoice_id.payment_state', 'state', 'sale_order_id',
+    )
+    def _compute_billing_totals(self):
+        for rec in self:
+            invoices = rec._get_linked_invoices().filtered(
+                lambda m: m.state == 'posted' and m.move_type in ('out_invoice', 'out_refund')
+            )
+            invoiced = 0.0
+            residual = 0.0
+            paid = 0.0
+            for inv in invoices:
+                sign = -1.0 if inv.move_type == 'out_refund' else 1.0
+                invoiced += sign * (inv.amount_total or 0.0)
+                residual += sign * (inv.amount_residual or 0.0)
+                paid += sign * ((inv.amount_total or 0.0) - (inv.amount_residual or 0.0))
+            # Appointment-linked unreconciled payment credits (payment moves with appointment_id)
+            credit = 0.0
+            PaymentMove = rec.env['account.move'].sudo()
+            pay_moves = PaymentMove.search([
+                ('appointment_id', '=', rec.id),
+                ('move_type', '=', 'entry'),
+                ('state', '=', 'posted'),
+            ])
+            for aml in pay_moves.line_ids.filtered(
+                lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled
+            ):
+                # Credit on receivable = customer credit
+                credit += max(aml.credit - aml.debit, 0.0)
+            rec.total_invoiced = invoiced
+            rec.total_paid = paid
+            rec.total_residual = residual
+            rec.total_customer_credit = credit
+
+    @api.depends(
+        'state', 'invoice_ids', 'invoice_ids.state', 'invoice_ids.payment_state',
+        'invoice_id', 'invoice_id.state', 'invoice_id.payment_state',
+        'total_invoiced', 'total_paid', 'total_residual', 'total_customer_credit',
+        'has_active_invoice',
+    )
     def _compute_payment_status(self):
-        """Reflect the real invoice payment state instead of a manual flag."""
+        """Aggregate payment status from all appointment-linked accounting docs."""
         for rec in self:
             if rec.state == 'cancelled':
                 rec.payment_status = 'cancelled'
                 continue
-            inv = rec.invoice_id
-            if inv and inv.state == 'posted':
-                ps = inv.payment_state
-                if ps in ('paid', 'in_payment', 'reversed'):
-                    rec.payment_status = 'paid'
-                elif ps == 'partial':
-                    rec.payment_status = 'partial'
+            invoices = rec._get_linked_invoices().filtered(
+                lambda m: m.move_type == 'out_invoice' and m.state != 'cancel'
+            )
+            if not invoices:
+                rec.payment_status = 'not_invoiced'
+                continue
+            posted = invoices.filtered(lambda m: m.state == 'posted')
+            drafts = invoices.filtered(lambda m: m.state == 'draft')
+            currency = rec.currency_id
+            rounding = currency.rounding if currency else 0.01
+            if drafts and rec.total_customer_credit and not posted:
+                rec.payment_status = 'inconsistent'
+                continue
+            if not posted:
+                rec.payment_status = 'draft'
+                continue
+            if rec.total_customer_credit and rec.total_residual <= rounding and rec.total_paid:
+                # Fully paid invoices plus leftover unreconciled credit
+                if rec.total_customer_credit > rounding:
+                    rec.payment_status = 'overpaid'
                 else:
-                    rec.payment_status = 'pending'
+                    rec.payment_status = 'paid'
+                continue
+            if rec.total_residual <= rounding and rec.total_invoiced > 0:
+                if rec.total_customer_credit > rounding:
+                    rec.payment_status = 'overpaid'
+                else:
+                    rec.payment_status = 'paid'
+            elif rec.total_paid > rounding and rec.total_residual > rounding:
+                rec.payment_status = 'partial'
+            elif rec.total_paid > rec.total_invoiced + rounding:
+                rec.payment_status = 'overpaid'
             else:
                 rec.payment_status = 'pending'
+
+    @api.depends(
+        'invoice_ids', 'invoice_ids.state', 'invoice_ids.is_additional_invoice',
+        'sale_order_id', 'sale_order_id.amount_total', 'total_invoiced',
+        'total_customer_credit', 'payment_status', 'invoice_id', 'state',
+    )
+    def _compute_billing_warning(self):
+        for rec in self:
+            warnings = []
+            invoices = rec._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
+            primaries = invoices.filtered(
+                lambda m: m.move_type == 'out_invoice' and not m.is_additional_invoice
+            )
+            if len(primaries) > 1:
+                warnings.append(_('Multiple primary invoices exist for this appointment.'))
+            if invoices.filtered(lambda m: m.state == 'draft') and rec.total_customer_credit:
+                warnings.append(_('Posted payment credits exist while invoice(s) are still draft.'))
+            if rec.payment_status == 'overpaid':
+                warnings.append(_('Payments/credits exceed posted invoice totals.'))
+            if rec.sale_order_id and rec.total_invoiced:
+                so_total = rec.sale_order_id.amount_total or 0.0
+                if abs(so_total - rec.total_invoiced) > 0.05:
+                    warnings.append(_(
+                        'Sale order total (%(so)s) differs from posted invoiced total (%(inv)s).',
+                        so=so_total, inv=rec.total_invoiced,
+                    ))
+            if rec.invoice_id and rec.invoice_id not in invoices and invoices:
+                warnings.append(_('Primary invoice pointer does not match linked invoices.'))
+            if rec.state == 'done' and not invoices:
+                warnings.append(_('Appointment is done but has no invoice.'))
+            rec.billing_warning = '\n'.join(warnings) if warnings else False
 
     @api.depends('inventory_items_ids', 'inventory_items_ids.total_cost')
     def _compute_inventory_cost(self):
@@ -936,25 +1078,81 @@ class PetAppointment(models.Model):
             })
         return product
 
+    def _lock_appointment_row(self):
+        """Acquire a PostgreSQL row lock before billing create/check operations."""
+        self.ensure_one()
+        self.env.cr.execute(
+            'SELECT id FROM pet_appointment WHERE id = %s FOR UPDATE',
+            [self.id],
+        )
+        self.invalidate_recordset()
+
+    def _get_linked_invoices(self):
+        """Return all customer invoices/credit notes for this appointment.
+
+        Primary: explicit appointment_id. Legacy fallback: sale_order invoices
+        and singular invoice_id. Origin text is last resort and only when it
+        exactly matches this appointment name.
+        """
+        self.ensure_one()
+        Move = self.env['account.move']
+        invoices = self.invoice_ids
+        if self.sale_order_id:
+            invoices |= self.sale_order_id.invoice_ids
+        if self.invoice_id:
+            invoices |= self.invoice_id
+        if not invoices and self.name:
+            # Last-resort legacy: exact origin match only
+            invoices |= Move.search([
+                ('move_type', 'in', ('out_invoice', 'out_refund')),
+                ('invoice_origin', 'in', [self.name, self.sale_order_id.name if self.sale_order_id else '']),
+                ('partner_id', '=', self.owner_id.id),
+            ]) if self.owner_id else Move.browse()
+        return invoices.filtered(lambda m: m.move_type in ('out_invoice', 'out_refund'))
+
+    def _recompute_primary_invoice(self):
+        """Set invoice_id to preferred primary: posted > draft > oldest."""
+        for rec in self:
+            invoices = rec._get_linked_invoices().filtered(
+                lambda m: m.move_type == 'out_invoice' and m.state != 'cancel'
+            )
+            posted = invoices.filtered(lambda m: m.state == 'posted').sorted('id')
+            drafts = invoices.filtered(lambda m: m.state == 'draft').sorted('id')
+            primary = posted[:1] or drafts[:1] or invoices.sorted('id')[:1]
+            if primary and rec.invoice_id != primary:
+                rec.invoice_id = primary.id
+            elif not primary and rec.invoice_id:
+                rec.invoice_id = False
+            # Backfill appointment_id on legacy invoices
+            for inv in invoices:
+                if not inv.appointment_id:
+                    inv.appointment_id = rec.id
+
     def _prepare_sale_order_lines(self):
         """Build sale.order.line values mirroring the billable services.
-        Every line carries a product (dedicated when available, else generic)."""
+        Every line carries a product (dedicated when available, else generic).
+        Extra lines include appointment_service_line_id in a transient key
+        consumed by _ensure_sale_order / _resync_draft_sale_order.
+        """
         self.ensure_one()
         generic = self._get_generic_service_product()
         lines = []
 
-        def add(name, price, product=None, qty=1.0, discount=0.0):
-            lines.append({
+        def add(name, price, product=None, qty=1.0, discount=0.0, service_line=None, visit_line=None):
+            vals = {
                 'product_id': (product.id if product else generic.id),
                 'name': name,
                 'product_uom_qty': qty or 1.0,
                 'price_unit': price,
                 'discount': discount or 0.0,
                 'tax_ids': [(6, 0, [])],
-            })
+            }
+            if service_line:
+                vals['_appointment_service_line_id'] = service_line.id
+            if visit_line:
+                vals['_medical_visit_line_id'] = visit_line.id
+            lines.append(vals)
 
-        # Medical visit: bill priced product/service lines even before completion.
-        # Prefer completed behavior (discount + cost fallback) when completed.
         if self.medical_visit_id:
             visit = self.medical_visit_id
             visit_lines = visit.line_ids.filtered(lambda line: line.price_subtotal > 0)
@@ -963,56 +1161,65 @@ class PetAppointment(models.Model):
                     add(line.name, line.price_unit,
                         product=line.product_id or None,
                         qty=line.quantity or 1.0,
-                        discount=line.discount or 0.0)
+                        discount=line.discount or 0.0,
+                        visit_line=line)
                 if visit.status == 'completed' and visit.discount_amount:
                     add(_('Visit discount'), -abs(visit.discount_amount))
             elif visit.status == 'completed' and visit.cost:
                 add(f"Medical Visit - {visit.reason or 'Consultation'}", visit.cost)
 
-        # Vaccination - only if administered
         if self.vaccination_id and self.vaccination_id.cost and self.vaccination_id.state == 'administered':
             add(f"Vaccination - {self.vaccination_id.vaccine_id.name if self.vaccination_id.vaccine_id else 'Vaccine'}",
                 self.vaccination_id.cost)
 
-        # Direct Vaccine (if selected separately)
         if self.vaccine_id and self.vaccine_id.cost:
             add(f"Vaccine - {self.vaccine_id.name}", self.vaccine_id.cost)
 
-        # Grooming Session - only if completed
         if self.grooming_session_id and self.grooming_session_id.total_cost and self.grooming_session_id.state == 'completed':
             add(f"Grooming - {self.grooming_session_id.service_id.name if self.grooming_session_id.service_id else 'Grooming Service'}",
                 self.grooming_session_id.total_cost)
         elif self.service_id and self.service_id.base_price and self.grooming_session_id and self.grooming_session_id.state == 'completed':
             add(f"Grooming Service - {self.service_id.name}", self.service_id.base_price)
 
-        # Training Session - only if completed
         if self.training_session_id and self.training_session_id.session_cost and self.training_session_id.state == 'completed':
             add(f"Training - {self.training_session_id.program_id.name if self.training_session_id.program_id else 'Training Program'}",
                 self.training_session_id.session_cost)
         elif self.program_id and self.program_id.base_price and self.training_session_id and self.training_session_id.state == 'completed':
             add(f"Training Program - {self.program_id.name}", self.program_id.base_price)
 
-        # Boarding Stay - only if checked out (completed)
         if self.boarding_stay_id and self.boarding_stay_id.total_cost and self.boarding_stay_id.state == 'checked_out':
             add(f"Boarding - {self.boarding_stay_id.kennel_id.name if self.boarding_stay_id.kennel_id else 'Boarding Stay'}",
                 self.boarding_stay_id.total_cost)
 
-        # Additional manual service lines (skip invoice-synced to avoid double-billing)
         for line in self.extra_service_line_ids:
             if line.invoice_synced:
+                continue
+            if line.medical_visit_line_id:
+                # Already billed via medical visit explosion
                 continue
             if line.price_subtotal:
                 add(line.name or (line.product_id.display_name if line.product_id else _('Service')),
                     line.price_unit,
                     product=line.product_id or None,
                     qty=line.quantity or 1.0,
-                    discount=line.discount or 0.0)
+                    discount=line.discount or 0.0,
+                    service_line=line)
 
-        # Fallback: use appointment cost if nothing else
         if not lines and self.cost > 0:
             add(f"Appointment - {self.title or 'Pet Care Services'}", self.cost)
 
         return lines
+
+    def _link_sale_lines_to_sources(self, order, line_vals):
+        """Persist sale_line_id on appointment service lines after SO write."""
+        self.ensure_one()
+        for so_line, lv in zip(order.order_line.filtered(lambda l: not l.display_type), line_vals):
+            svc_id = lv.pop('_appointment_service_line_id', None) if isinstance(lv, dict) else None
+            # line_vals may already have been stripped; read from so_line name match fallback skipped
+            if svc_id:
+                svc = self.env['pet.appointment.service.line'].browse(svc_id)
+                if svc.exists():
+                    svc.with_context(skip_appointment_so_resync=True).sale_line_id = so_line.id
 
     def _resync_draft_sale_order(self):
         """Rebuild the sale order lines from current services when the order is
@@ -1021,33 +1228,48 @@ class PetAppointment(models.Model):
             return
         for rec in self:
             order = rec.sale_order_id
-            if not order or rec.invoice_id:
+            if not order or rec.has_active_invoice:
                 continue
             if order.state not in ('draft', 'sent'):
                 raise UserError(_(
                     'Cannot rebuild sale order %(order)s because it is already confirmed. '
                     'Edit the quotation before confirming, or set line quantities to 0 on a '
-                    'confirmed order instead of deleting lines.',
+                    'confirmed order instead of deleting lines.\n'
+                    'لا يمكن تعديل أمر البيع المؤكد؛ اضبط الكمية إلى 0 بدلاً من الحذف.',
                     order=order.name,
                 ))
-            line_vals = rec._prepare_sale_order_lines()
-            commands = [(5, 0, 0)] + [(0, 0, lv) for lv in line_vals]
+            raw_vals = rec._prepare_sale_order_lines()
+            clean_vals = []
+            source_map = []
+            for lv in raw_vals:
+                lv = dict(lv)
+                svc_id = lv.pop('_appointment_service_line_id', None)
+                lv.pop('_medical_visit_line_id', None)
+                clean_vals.append(lv)
+                source_map.append(svc_id)
+            commands = [(5, 0, 0)] + [(0, 0, lv) for lv in clean_vals]
             order.sudo().write({'order_line': commands})
-            for so_line, lv in zip(order.order_line, line_vals):
+            for so_line, lv, svc_id in zip(order.order_line, clean_vals, source_map):
                 so_line.write({'price_unit': lv['price_unit'], 'tax_ids': [(6, 0, [])]})
+                if svc_id:
+                    self.env['pet.appointment.service.line'].browse(svc_id).with_context(
+                        skip_appointment_so_resync=True
+                    ).write({'sale_line_id': so_line.id})
 
     def _ensure_sale_order(self):
-        """Create (once) the sale order/quotation for this appointment."""
+        """Create (once) the sale order/quotation for this appointment (locked)."""
         self.ensure_one()
+        self._lock_appointment_row()
         if self.sale_order_id:
+            if not self.sale_order_id.appointment_id:
+                self.sale_order_id.appointment_id = self.id
             return self.sale_order_id
         if not self.owner_id:
             raise ValidationError(_('Cannot create a sale order without a customer/owner on the pet.'))
-        line_vals = self._prepare_sale_order_lines()
-        if not line_vals:
-            # Invoice-first: editable placeholder so billing can proceed before services complete
+        raw_vals = self._prepare_sale_order_lines()
+        if not raw_vals:
             generic = self._get_generic_service_product()
-            line_vals = [{
+            raw_vals = [{
                 'product_id': generic.id,
                 'name': self.title or self.name or _('Pet Care Service'),
                 'product_uom_qty': 1.0,
@@ -1055,90 +1277,112 @@ class PetAppointment(models.Model):
                 'discount': 0.0,
                 'tax_ids': [(6, 0, [])],
             }]
+        clean_vals = []
+        source_map = []
+        for lv in raw_vals:
+            lv = dict(lv)
+            svc_id = lv.pop('_appointment_service_line_id', None)
+            lv.pop('_medical_visit_line_id', None)
+            clean_vals.append(lv)
+            source_map.append(svc_id)
         order = self.env['sale.order'].sudo().create({
             'partner_id': self.owner_id.id,
             'origin': self.name,
             'client_order_ref': self.name,
             'company_id': self.company_id.id,
-            'order_line': [(0, 0, lv) for lv in line_vals],
+            'appointment_id': self.id,
+            'order_line': [(0, 0, lv) for lv in clean_vals],
         })
-        # Preserve the exact appointment pricing (avoid pricelist recompute surprises)
-        for so_line, lv in zip(order.order_line, line_vals):
+        for so_line, lv, svc_id in zip(order.order_line, clean_vals, source_map):
             so_line.write({'price_unit': lv['price_unit'], 'tax_ids': [(6, 0, [])]})
+            if svc_id:
+                self.env['pet.appointment.service.line'].browse(svc_id).with_context(
+                    skip_appointment_so_resync=True
+                ).write({'sale_line_id': so_line.id})
         self.sale_order_id = order.id
         return order
 
     def _sync_services_from_invoice(self):
-        """Recreate invoice-synced extra_service_line_ids from invoice (or SO) lines.
-
-        Only previous invoice-synced extras are replaced; manually entered extras stay.
-        """
+        """Sync invoice-sourced extras by stable identity; never duplicate visit lines."""
         ServiceLine = self.env['pet.appointment.service.line'].with_context(
             skip_appointment_so_resync=True,
         )
         for rec in self:
+            if not rec.invoice_id and not rec.sale_order_id:
+                continue
             source_lines = self.env['account.move.line']
             if rec.invoice_id:
-                # Odoo 19 account.move.line uses display_type='product' for billable lines
-                # (section/note/tax/payment_term/cogs are other values).
                 source_lines = rec.invoice_id.invoice_line_ids.filtered(
                     lambda l: l.display_type == 'product' and l.product_id
                 )
-            if not source_lines and rec.sale_order_id:
-                # sale.order.line: product lines have display_type False/empty
-                source_lines = rec.sale_order_id.order_line.filtered(
-                    lambda l: not l.display_type and l.product_id
-                )
-            if not source_lines:
-                continue
+            # Skip products already represented by medical visit lines
+            visit_product_ids = set()
+            if rec.medical_visit_id:
+                visit_product_ids = set(rec.medical_visit_id.line_ids.mapped('product_id').ids)
 
-            rec.extra_service_line_ids.filtered('invoice_synced').with_context(
-                skip_appointment_so_resync=True,
-            ).unlink()
+            existing_by_inv_line = {
+                line.id: svc
+                for svc in rec.extra_service_line_ids
+                for line in svc.invoice_line_ids
+            }
+            existing_by_sale = {
+                svc.sale_line_id.id: svc
+                for svc in rec.extra_service_line_ids
+                if svc.sale_line_id
+            }
 
-            vals_list = []
-            for line in source_lines:
-                if 'product_uom_qty' in line._fields and 'quantity' not in line._fields:
-                    qty = line.product_uom_qty
-                else:
-                    qty = line.quantity
-                vals_list.append({
+            for aml in source_lines:
+                if aml.product_id.id in visit_product_ids and not aml.appointment_service_line_id:
+                    continue
+                if aml.appointment_service_line_id:
+                    continue
+                sale_lines = aml.sale_line_ids
+                if sale_lines and sale_lines[0].id in existing_by_sale:
+                    svc = existing_by_sale[sale_lines[0].id]
+                    aml.appointment_service_line_id = svc.id
+                    continue
+                if aml.id in existing_by_inv_line:
+                    continue
+                # Only create invoice-synced extras for lines not already known
+                qty = aml.quantity or 1.0
+                svc = ServiceLine.create({
                     'appointment_id': rec.id,
-                    'product_id': line.product_id.id,
-                    'name': line.name or line.product_id.display_name,
-                    'quantity': qty or 1.0,
-                    'price_unit': line.price_unit or 0.0,
-                    'discount': getattr(line, 'discount', 0.0) or 0.0,
+                    'product_id': aml.product_id.id,
+                    'name': aml.name or aml.product_id.display_name,
+                    'quantity': qty,
+                    'price_unit': aml.price_unit or 0.0,
+                    'discount': aml.discount or 0.0,
                     'invoice_synced': True,
+                    'sale_line_id': sale_lines[:1].id if sale_lines else False,
                 })
-            if vals_list:
-                ServiceLine.create(vals_list)
+                aml.appointment_service_line_id = svc.id
 
-    def action_create_invoice(self):
-        """Create or open a draft/sent sale order for billing review (no confirm/invoice)."""
+    def action_create_or_open_sale_order(self):
+        """Idempotent: lock, return existing SO or create one draft SO, open it."""
         self.ensure_one()
-        if self.invoice_id:
+        self._lock_appointment_row()
+        active = self._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
+        if active and not self.sale_order_id:
+            self._recompute_primary_invoice()
             return self.action_view_invoice()
         order = self._ensure_sale_order()
-        if order.state in ('draft', 'sent'):
+        if order.state in ('draft', 'sent') and not active:
             self._resync_draft_sale_order()
-        elif order.state == 'sale':
-            raise UserError(_(
-                'Sale order %(order)s is already confirmed. Use Confirm & Create Invoice '
-                'to generate the invoice, or open the sale order to review it.',
-                order=order.name,
-            ))
-        elif order.state == 'cancel':
-            raise UserError(_(
-                'Sale order %(order)s is cancelled. Create a new quotation from Sales.',
-                order=order.name,
-            ))
         return self.action_view_sale_order()
 
+    def action_create_invoice(self):
+        """Backward-compatible wrapper: create/open Sale Order only (no invoice)."""
+        return self.action_create_or_open_sale_order()
+
     def action_confirm_and_create_invoice(self):
-        """Confirm the sale order, create the invoice, post it, and sync appointment lines."""
+        """Confirm SO and create exactly one primary invoice (idempotent + locked)."""
         self.ensure_one()
-        if self.invoice_id:
+        self._lock_appointment_row()
+        existing = self._get_linked_invoices().filtered(
+            lambda m: m.move_type == 'out_invoice' and m.state != 'cancel'
+        )
+        if existing:
+            self._recompute_primary_invoice()
             return self.action_view_invoice()
         order = self._ensure_sale_order()
         if order.state in ('draft', 'sent'):
@@ -1148,6 +1392,14 @@ class PetAppointment(models.Model):
                 'Sale order %(order)s is cancelled and cannot be invoiced.',
                 order=order.name,
             ))
+        # Re-check after confirm (another worker may have invoiced)
+        self.invalidate_recordset()
+        existing = self._get_linked_invoices().filtered(
+            lambda m: m.move_type == 'out_invoice' and m.state != 'cancel'
+        )
+        if existing:
+            self._recompute_primary_invoice()
+            return self.action_view_invoice()
         invoices = order._create_invoices()
         if not invoices:
             raise UserError(_(
@@ -1155,16 +1407,30 @@ class PetAppointment(models.Model):
                 'Check that the order has billable lines.',
                 order=order.name,
             ))
+        invoices.write({'appointment_id': self.id, 'is_additional_invoice': False})
         invoices.action_post()
+        # Link payment moves created later via register wizard inherit appointment_id on invoice
         self.invoice_id = invoices[0].id
         self._sync_services_from_invoice()
+        self._recompute_primary_invoice()
         return self.action_view_invoice()
+
+    def action_open_additional_invoice_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Create Additional Invoice'),
+            'res_model': 'pet.appointment.additional.invoice.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_appointment_id': self.id},
+        }
 
     def action_view_sale_order(self):
         """Open the sale order for this appointment."""
         self.ensure_one()
         if not self.sale_order_id:
-            return self.action_create_invoice()
+            return self.action_create_or_open_sale_order()
         return {
             'type': 'ir.actions.act_window',
             'name': _('Sale Order'),
@@ -1174,12 +1440,112 @@ class PetAppointment(models.Model):
             'target': 'current',
         }
 
+    def action_view_invoices(self):
+        self.ensure_one()
+        invoices = self._get_linked_invoices()
+        if len(invoices) == 1:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('Invoice'),
+                'res_model': 'account.move',
+                'view_mode': 'form',
+                'res_id': invoices.id,
+                'target': 'current',
+            }
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invoices'),
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', invoices.ids)],
+            'target': 'current',
+        }
+
+    def action_register_appointment_payment(self):
+        """Open payment register on posted appointment invoices with residual."""
+        self.ensure_one()
+        invoices = self._get_linked_invoices().filtered(
+            lambda m: m.state == 'posted' and m.move_type == 'out_invoice' and m.amount_residual > 0
+        )
+        if not invoices:
+            raise UserError(_('No posted appointment invoice with residual to pay.'))
+        return invoices.action_register_payment()
+
+    def _scan_billing_integrity_issues(self):
+        """Read-only anomaly scan; creates pet.billing.integrity.issue rows."""
+        Issue = self.env['pet.billing.integrity.issue'].sudo()
+        Issue.search([('state', '=', 'open')]).unlink()
+        appointments = self.search([('sale_order_id', '!=', False)]) | self.search([('invoice_id', '!=', False)])
+        created = 0
+        for appt in appointments:
+            invoices = appt._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
+            primaries = invoices.filtered(lambda m: m.move_type == 'out_invoice' and not m.is_additional_invoice)
+            if len(primaries) > 1:
+                Issue.create({
+                    'name': _('%s: multiple primary invoices') % appt.name,
+                    'appointment_id': appt.id,
+                    'issue_type': 'multi_primary_invoice',
+                    'severity': 'critical',
+                    'details': ', '.join(primaries.mapped('name')),
+                })
+                created += 1
+            if invoices.filtered(lambda m: m.state == 'draft') and appt.total_customer_credit:
+                Issue.create({
+                    'name': _('%s: draft invoice with payment credit') % appt.name,
+                    'appointment_id': appt.id,
+                    'issue_type': 'draft_with_payment',
+                    'severity': 'high',
+                    'details': 'credit=%s' % appt.total_customer_credit,
+                })
+                created += 1
+            if appt.payment_status == 'overpaid':
+                Issue.create({
+                    'name': _('%s: overpaid') % appt.name,
+                    'appointment_id': appt.id,
+                    'issue_type': 'overpayment',
+                    'severity': 'high',
+                    'details': 'paid=%s invoiced=%s credit=%s' % (
+                        appt.total_paid, appt.total_invoiced, appt.total_customer_credit),
+                })
+                created += 1
+            if appt.state == 'done' and appt.payment_status in ('pending', 'not_invoiced') and appt.total_paid:
+                Issue.create({
+                    'name': _('%s: status mismatch') % appt.name,
+                    'appointment_id': appt.id,
+                    'issue_type': 'status_mismatch',
+                    'severity': 'medium',
+                    'details': 'payment_status=%s total_paid=%s' % (appt.payment_status, appt.total_paid),
+                })
+                created += 1
+            if appt.sale_order_id and appt.total_invoiced and abs(
+                    (appt.sale_order_id.amount_total or 0.0) - appt.total_invoiced) > 0.05:
+                Issue.create({
+                    'name': _('%s: SO/invoice mismatch') % appt.name,
+                    'appointment_id': appt.id,
+                    'issue_type': 'so_invoice_mismatch',
+                    'severity': 'medium',
+                    'details': 'so=%s inv=%s' % (appt.sale_order_id.amount_total, appt.total_invoiced),
+                })
+                created += 1
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Billing Integrity Scan'),
+                'message': _('Found %(n)s open issue(s).', n=created),
+                'type': 'warning' if created else 'success',
+                'sticky': False,
+            },
+        }
+
+    def _cron_scan_billing_integrity(self):
+        self._scan_billing_integrity_issues()
+
     def _prepare_invoice_lines(self):
-        """Prepare invoice lines based on appointment facilities and services"""
+        """Prepare invoice lines based on appointment facilities and services (legacy refresh)."""
         lines = []
         account_id = self._get_default_account_id()
 
-        # Medical visit lines - explode each visit line when completed
         if self.medical_visit_id and self.medical_visit_id.status == 'completed':
             visit = self.medical_visit_id
             visit_lines = visit.line_ids.filtered(lambda line: line.price_subtotal > 0)
@@ -1210,8 +1576,7 @@ class PetAppointment(models.Model):
                     'price_unit': visit.cost,
                     'account_id': account_id,
                 })
-        
-        # Vaccination - only if administered
+
         if self.vaccination_id and self.vaccination_id.cost and self.vaccination_id.state == 'administered':
             lines.append({
                 'name': f"Vaccination - {self.vaccination_id.vaccine_id.name if self.vaccination_id.vaccine_id else 'Vaccine'}",
@@ -1219,8 +1584,7 @@ class PetAppointment(models.Model):
                 'price_unit': self.vaccination_id.cost,
                 'account_id': self._get_default_account_id(),
             })
-        
-        # Direct Vaccine (if selected separately)
+
         if self.vaccine_id and self.vaccine_id.cost:
             lines.append({
                 'name': f"Vaccine - {self.vaccine_id.name}",
@@ -1228,8 +1592,7 @@ class PetAppointment(models.Model):
                 'price_unit': self.vaccine_id.cost,
                 'account_id': self._get_default_account_id(),
             })
-        
-        # Grooming Session - only if completed
+
         if self.grooming_session_id and self.grooming_session_id.total_cost and self.grooming_session_id.state == 'completed':
             lines.append({
                 'name': f"Grooming - {self.grooming_session_id.service_id.name if self.grooming_session_id.service_id else 'Grooming Service'}",
@@ -1244,8 +1607,7 @@ class PetAppointment(models.Model):
                 'price_unit': self.service_id.base_price,
                 'account_id': self._get_default_account_id(),
             })
-        
-        # Training Session - only if completed
+
         if self.training_session_id and self.training_session_id.session_cost and self.training_session_id.state == 'completed':
             lines.append({
                 'name': f"Training - {self.training_session_id.program_id.name if self.training_session_id.program_id else 'Training Program'}",
@@ -1260,8 +1622,7 @@ class PetAppointment(models.Model):
                 'price_unit': self.program_id.base_price,
                 'account_id': self._get_default_account_id(),
             })
-        
-        # Boarding Stay - only if checked out (completed)
+
         if self.boarding_stay_id and self.boarding_stay_id.total_cost and self.boarding_stay_id.state == 'checked_out':
             lines.append({
                 'name': f"Boarding - {self.boarding_stay_id.kennel_id.name if self.boarding_stay_id.kennel_id else 'Boarding Stay'}",
@@ -1269,8 +1630,7 @@ class PetAppointment(models.Model):
                 'price_unit': self.boarding_stay_id.total_cost,
                 'account_id': self._get_default_account_id(),
             })
-        
-        # If no specific service lines were created, use appointment cost as fallback
+
         if not lines and self.cost > 0:
             lines.append({
                 'name': f"Appointment - {self.title or 'Pet Care Services'}",
@@ -1278,7 +1638,7 @@ class PetAppointment(models.Model):
                 'price_unit': self.cost,
                 'account_id': self._get_default_account_id(),
             })
-        
+
         return lines
 
     def _get_default_account_id(self):
@@ -1288,8 +1648,7 @@ class PetAppointment(models.Model):
             ('account_type', '=', 'income_other'),
             ('company_ids', 'in', self.company_id.id)
         ], limit=1)
-        
-        # Fallback to any income account, then any account for this company
+
         if not account:
             account = self.env['account.account'].search([
                 ('account_type', 'in', ('income', 'income_other')),
@@ -1299,41 +1658,44 @@ class PetAppointment(models.Model):
             account = self.env['account.account'].search([
                 ('company_ids', 'in', self.company_id.id)
             ], limit=1)
-        
+
         return account.id if account else False
 
     def action_view_invoice(self):
-        """View the generated invoice"""
-        for rec in self:
-            if rec.invoice_id:
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': 'Invoice',
-                    'res_model': 'account.move',
-                    'view_mode': 'form',
-                    'res_id': rec.invoice_id.id,
-                    'target': 'current',
-                }
-            else:
-                if rec.sale_order_id:
-                    return rec.action_view_sale_order()
-                return rec.action_create_invoice()
+        """View the primary or all invoices."""
+        self.ensure_one()
+        self._recompute_primary_invoice()
+        invoices = self._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
+        if len(invoices) > 1:
+            return self.action_view_invoices()
+        if self.invoice_id:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Invoice',
+                'res_model': 'account.move',
+                'view_mode': 'form',
+                'res_id': self.invoice_id.id,
+                'target': 'current',
+            }
+        if self.sale_order_id:
+            return self.action_view_sale_order()
+        return self.action_create_or_open_sale_order()
 
     def action_cancel_invoice(self):
-        """Cancel the generated invoice"""
+        """Cancel the primary invoice (draft/posted unpaid preferred)."""
         for rec in self:
             if rec.invoice_id and rec.invoice_state in ['draft', 'posted']:
                 rec.invoice_id.button_cancel()
+                rec._recompute_primary_invoice()
 
     def action_refresh_invoice(self):
-        """Refresh/update the invoice with current appointment data"""
+        """Refresh/update the draft primary invoice with current appointment data."""
         for rec in self:
             if not rec.invoice_id:
                 if rec.sale_order_id:
                     return rec.action_view_sale_order()
-                return rec.action_create_invoice()
-            
-            # Only refresh if invoice is in draft state
+                return rec.action_create_or_open_sale_order()
+
             if rec.invoice_state not in ['draft']:
                 return {
                     'type': 'ir.actions.client',
@@ -1345,10 +1707,9 @@ class PetAppointment(models.Model):
                         'sticky': False,
                     }
                 }
-            
-            # Refresh invoice using the synchronous method
+
             rec._refresh_invoice_sync()
-            
+
             return {
                 'type': 'ir.actions.act_window',
                 'name': 'Invoice Refreshed',

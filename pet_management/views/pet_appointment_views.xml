@@ -267,6 +267,9 @@
                       options="{'no_create': True}"/>
               <field name="pet_species_id" readonly="1"/>
               <field name="pet_breed_id" readonly="1"/>
+              <field name="pet_gender" readonly="1" invisible="not pet_id"/>
+              <field name="pet_dob" readonly="1" invisible="not pet_id"/>
+              <field name="pet_age_display" readonly="1" invisible="not pet_id"/>
               <button name="action_open_pet_quick_wizard" type="object"
                       string="Pet / Health Details" class="btn-secondary"
                       icon="fa-paw"
@@ -291,6 +294,9 @@
 
           <group string="Health Quick Info" invisible="not pet_id">
             <group>
+              <field name="pet_gender" readonly="1"/>
+              <field name="pet_age_display" readonly="1"/>
+              <field name="pet_dob" readonly="1"/>
               <field name="allergies_display" readonly="1"/>
               <field name="chronic_conditions_display" readonly="1"/>
             </group>

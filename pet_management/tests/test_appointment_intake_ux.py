@@ -434,3 +434,42 @@ class TestAppointmentIntakeUX(TransactionCase):
             ('partner_id', '=', False),
         ])
         self.assertFalse(bad)
+
+    def test_29_wizard_saves_gender_dob_and_age(self):
+        appt = self.Appointment.create(self._appt_vals(
+            intake_owner_id=self.owner_none.id,
+            title='Wizard gender dob',
+            start_datetime='2026-07-14 10:00:00',
+            end_datetime='2026-07-14 10:30:00',
+        ))
+        wiz = self.Wizard.create({
+            'appointment_id': appt.id,
+            'owner_id': self.owner_none.id,
+            'pet_id': False,
+            'name': 'Age Gender Pet',
+            'species_id': self.species.id,
+            'gender': 'female',
+            'dob': '2024-01-15',
+            'allergies': '',
+            'chronic_conditions': '',
+            'dietary_restrictions': '',
+            'behavior_notes': '',
+        })
+        self.assertTrue(wiz.age_display)
+        self.assertNotEqual(wiz.age_display, 'N/A')
+        wiz.action_save()
+        pet = appt.pet_id
+        self.assertEqual(pet.gender, 'female')
+        self.assertEqual(str(pet.dob), '2024-01-15')
+        self.assertTrue(pet.age_display)
+        self.assertEqual(appt.pet_gender, 'female')
+        self.assertEqual(appt.pet_age_display, pet.age_display)
+
+    def test_30_wizard_age_years_sets_dob(self):
+        wiz = self.Wizard.new({
+            'age_years_input': 2.0,
+        })
+        wiz._onchange_age_years_input()
+        self.assertTrue(wiz.dob)
+        wiz._compute_age_display()
+        self.assertRegex(wiz.age_display or '', r'\d+ y')

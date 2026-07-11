@@ -6,13 +6,17 @@
     <field name="arch" type="xml">
       <form string="Pet / Health Details">
         <group>
-          <group>
+          <group string="Pet">
             <field name="appointment_id" invisible="1"/>
             <field name="pet_id" invisible="1"/>
             <field name="owner_id" readonly="1"/>
             <field name="name"/>
             <field name="species_id"/>
             <field name="breed_id"/>
+            <field name="gender" widget="radio" options="{'horizontal': true}"/>
+            <field name="dob"/>
+            <field name="age_years_input"/>
+            <field name="age_display" readonly="1"/>
           </group>
           <group string="Health">
             <field name="allergies" placeholder="Leave blank to store No when empty"/>

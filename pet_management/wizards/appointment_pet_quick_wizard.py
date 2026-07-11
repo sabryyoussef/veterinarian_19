@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+from datetime import date
+
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
@@ -16,10 +20,68 @@ class PetAppointmentPetQuickWizard(models.TransientModel):
         'pet.breed', string='Breed',
         domain="[('species_id', '=', species_id)]",
     )
+    gender = fields.Selection(
+        [('male', 'Male'), ('female', 'Female'), ('unknown', 'Unknown')],
+        string='Gender',
+        default='unknown',
+    )
+    dob = fields.Date(string='Date of Birth')
+    age_years_input = fields.Float(
+        string='Age (Years)',
+        digits=(16, 1),
+        help="Optional approximate age. Sets Date of Birth when you enter a value.",
+    )
+    age_display = fields.Char(
+        string='Age',
+        compute='_compute_age_display',
+        help="Age computed from Date of Birth",
+    )
     allergies = fields.Text(string='Allergies')
     chronic_conditions = fields.Text(string='Chronic Conditions')
     dietary_restrictions = fields.Text(string='Dietary Restrictions')
     behavior_notes = fields.Text(string='Behavior Notes')
+
+    @api.depends('dob')
+    def _compute_age_display(self):
+        today = date.today()
+        for rec in self:
+            if rec.dob:
+                days = (today - rec.dob).days
+                years = days / 365.25
+                y = int(years)
+                m = int(round((years - y) * 12))
+                if m == 12:
+                    y += 1
+                    m = 0
+                rec.age_display = _('%s y %s m') % (y, m)
+            else:
+                rec.age_display = _('N/A')
+
+    @api.onchange('age_years_input')
+    def _onchange_age_years_input(self):
+        """Allow reception to enter age; derive an approximate DOB."""
+        if self.age_years_input and self.age_years_input > 0:
+            years = int(self.age_years_input)
+            months = int(round((self.age_years_input - years) * 12))
+            if months >= 12:
+                years += 1
+                months = 0
+            self.dob = date.today() - relativedelta(years=years, months=months)
+
+    @api.onchange('dob')
+    def _onchange_dob(self):
+        if self.dob:
+            days = (date.today() - self.dob).days
+            self.age_years_input = round(days / 365.25, 1)
+        elif not self.age_years_input:
+            self.age_years_input = 0.0
+
+    @api.constrains('dob')
+    def _check_dob_not_future(self):
+        today = date.today()
+        for rec in self:
+            if rec.dob and rec.dob > today:
+                raise ValidationError(_("Date of Birth cannot be in the future."))
 
     @api.model
     def _require_saved_appointment(self, appointment):
@@ -57,11 +119,17 @@ class PetAppointmentPetQuickWizard(models.TransientModel):
         res['owner_id'] = owner.id
         pet = appointment.pet_id
         if pet:
+            age_input = 0.0
+            if pet.dob:
+                age_input = round((date.today() - pet.dob).days / 365.25, 1)
             res.update({
                 'pet_id': pet.id,
                 'name': pet.name,
                 'species_id': pet.species_id.id,
                 'breed_id': pet.breed_id.id if pet.breed_id else False,
+                'gender': pet.gender or 'unknown',
+                'dob': pet.dob or False,
+                'age_years_input': age_input,
                 'allergies': pet.allergies or '',
                 'chronic_conditions': pet.chronic_conditions or '',
                 'dietary_restrictions': pet.dietary_restrictions or '',
@@ -110,6 +178,8 @@ class PetAppointmentPetQuickWizard(models.TransientModel):
             'species_id': self.species_id.id,
             'breed_id': self.breed_id.id if self.breed_id else False,
             'owner_id': self.owner_id.id,
+            'gender': self.gender or 'unknown',
+            'dob': self.dob or False,
             **health_vals,
         }
 

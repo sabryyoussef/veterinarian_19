@@ -32,6 +32,11 @@ class PetAppointment(models.Model):
         help="Single contact number for kanban/reception display")
     pet_species_id = fields.Many2one(related='pet_id.species_id', string='Species', store=True, readonly=True)
     pet_breed_id = fields.Many2one(related='pet_id.breed_id', string='Breed', store=True, readonly=True)
+    pet_gender = fields.Selection(
+        related='pet_id.gender', string='Gender', readonly=True,
+    )
+    pet_dob = fields.Date(related='pet_id.dob', string='Date of Birth', readonly=True)
+    pet_age_display = fields.Char(related='pet_id.age_display', string='Age', readonly=True)
     allergies_display = fields.Text(string='Allergies', compute='_compute_health_display')
     chronic_conditions_display = fields.Text(string='Chronic Conditions', compute='_compute_health_display')
     dietary_restrictions_display = fields.Text(string='Dietary Restrictions', compute='_compute_health_display')

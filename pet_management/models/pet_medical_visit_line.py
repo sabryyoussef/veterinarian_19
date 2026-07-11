@@ -95,6 +95,8 @@ class PetMedicalVisitLine(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('visit_id'):
+                # Editable one2many on a new (unsaved) visit has no real id yet,
+                # so default_visit_id cannot be applied — parent must be saved first.
                 raise ValidationError(
                     _("Save the Medical Visit before adding service lines.")
                 )

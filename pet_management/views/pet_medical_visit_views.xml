@@ -248,7 +248,10 @@
               </group>
             </page>
             <page string="Services &amp; Products" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
-              <field name="line_ids" context="{'default_visit_id': id}">
+              <div class="alert alert-info" role="status" invisible="id">
+                Save the Medical Visit first, then add service lines.
+              </div>
+              <field name="line_ids" context="{'default_visit_id': id}" invisible="not id">
                 <list editable="bottom">
                   <field name="sequence" widget="handle"/>
                   <field name="line_type"/>
@@ -261,7 +264,7 @@
                   <field name="diagnostic_report_id" optional="hide"/>
                 </list>
               </field>
-              <group>
+              <group invisible="not id">
                 <field name="amount_subtotal" readonly="1"/>
                 <field name="discount_amount"/>
                 <field name="amount_total" readonly="1"/>
@@ -269,7 +272,10 @@
               </group>
             </page>
             <page string="Diagnostics &amp; Reports" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
-              <field name="diagnostic_report_ids" context="{'default_visit_id': id, 'default_vet_id': vet_id}">
+              <div class="alert alert-info" role="status" invisible="id">
+                Save the Medical Visit first, then add diagnostic reports.
+              </div>
+              <field name="diagnostic_report_ids" context="{'default_visit_id': id, 'default_vet_id': vet_id}" invisible="not id">
                 <list>
                   <field name="date"/>
                   <field name="name"/>

@@ -131,62 +131,62 @@
       <form>
         <header>
           <button name="set_to_confirmed" type="object" string="Confirm" 
-                  invisible="state != 'draft'" class="btn-primary" icon="fa-check"/>
+                  invisible="state != 'draft' or not pet_id" class="btn-primary" icon="fa-check"/>
           <button name="set_to_in_progress" type="object" string="Start" 
-                  invisible="state != 'confirmed'" class="btn-info" icon="fa-play"/>
+                  invisible="state != 'confirmed' or not pet_id" class="btn-info" icon="fa-play"/>
           <button name="set_to_done" type="object" string="Complete" 
-                  invisible="state != 'in_progress'" class="btn-success" icon="fa-check-circle"/>
+                  invisible="state != 'in_progress' or not pet_id" class="btn-success" icon="fa-check-circle"/>
           <button name="set_to_reschedule" type="object" string="Reschedule" 
-                  invisible="state != 'confirmed'" class="btn-warning" icon="fa-calendar-plus-o"/>
+                  invisible="state != 'confirmed' or not pet_id" class="btn-warning" icon="fa-calendar-plus-o"/>
           <button name="set_to_cancel" type="object" string="Cancel" 
                   invisible="state not in ['confirmed', 'in_progress']" class="btn-secondary" icon="fa-times"/>
           <button name="set_to_draft" type="object" string="Reset to Draft" 
                   invisible="state not in ['cancelled', 'rescheduled']" class="btn-secondary" icon="fa-undo"/>
           <button name="action_send_notification" type="object" string="Send Notification" 
-                  invisible="state == 'draft'" class="btn-info" icon="fa-bell"/>
+                  invisible="state == 'draft' or not pet_id" class="btn-info" icon="fa-bell"/>
           <button name="action_create_reminder_notification" type="object" string="Create Reminder" 
-                  invisible="state not in ['confirmed', 'in_progress']" class="btn-warning" icon="fa-clock-o"/>
+                  invisible="state not in ['confirmed', 'in_progress'] or not pet_id" class="btn-warning" icon="fa-clock-o"/>
           <button name="action_sync_to_calendar" type="object" string="Sync to Calendar" 
-                  invisible="state == 'draft' or not enable_calendar_integration or not sync_to_calendar or has_calendar_event" class="btn-primary" icon="fa-calendar"/>
+                  invisible="state == 'draft' or not enable_calendar_integration or not sync_to_calendar or has_calendar_event or not pet_id" class="btn-primary" icon="fa-calendar"/>
           <button name="action_create_facility_entry" type="object" string="Create Facility Entry" 
-                  invisible="state not in ['confirmed', 'in_progress'] or (medical_visit_id or vaccination_id or grooming_session_id or training_session_id or boarding_stay_id)" 
+                  invisible="state not in ['confirmed', 'in_progress'] or (medical_visit_id or vaccination_id or grooming_session_id or training_session_id or boarding_stay_id) or not pet_id" 
                   class="btn-primary" icon="fa-plus"/>
           
           <!-- Manual Facility Creation Buttons -->
           <button name="action_create_medical_visit" type="object" string="Create Medical Visit" 
-                  invisible="state not in ['confirmed', 'in_progress'] or medical_visit_id or not is_medical" 
+                  invisible="state not in ['confirmed', 'in_progress'] or medical_visit_id or not is_medical or not pet_id" 
                   class="btn-info" icon="fa-stethoscope"/>
           <button name="action_create_vaccination" type="object" string="Create Vaccination" 
-                  invisible="state not in ['confirmed', 'in_progress'] or vaccination_id or not is_vaccination or not vaccine_id" 
+                  invisible="state not in ['confirmed', 'in_progress'] or vaccination_id or not is_vaccination or not vaccine_id or not pet_id" 
                   class="btn-success" icon="fa-medkit"/>
           <button name="action_create_grooming_session" type="object" string="Create Grooming Session" 
-                  invisible="state not in ['confirmed', 'in_progress'] or grooming_session_id or not is_grooming or not service_id" 
+                  invisible="state not in ['confirmed', 'in_progress'] or grooming_session_id or not is_grooming or not service_id or not pet_id" 
                   class="btn-warning" icon="fa-scissors"/>
           <button name="action_create_training_session" type="object" string="Create Training Session" 
-                  invisible="state not in ['confirmed', 'in_progress'] or training_session_id or not is_training or not program_id" 
+                  invisible="state not in ['confirmed', 'in_progress'] or training_session_id or not is_training or not program_id or not pet_id" 
                   class="btn-primary" icon="fa-graduation-cap"/>
           <button name="action_create_boarding_stay" type="object" string="Create Boarding Stay" 
-                  invisible="state not in ['confirmed', 'in_progress'] or boarding_stay_id or not is_boarding or not kennel_id" 
+                  invisible="state not in ['confirmed', 'in_progress'] or boarding_stay_id or not is_boarding or not kennel_id or not pet_id" 
                   class="btn-secondary" icon="fa-home"/>
           
           <!-- Sales / Invoice Buttons -->
           <field name="has_active_invoice" invisible="1"/>
           <field name="invoice_count" invisible="1"/>
           <button name="action_create_invoice" type="object" string="Create Sale Order"
-                  invisible="sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done']"
+                  invisible="sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done'] or not pet_id"
                   class="btn-primary" icon="fa-shopping-cart"/>
           <button name="action_view_sale_order" type="object" string="Open Sale Order"
                   invisible="not sale_order_id" class="btn-info" icon="fa-shopping-cart"/>
           <button name="action_confirm_and_create_invoice" type="object" string="Confirm &amp; Create Invoice"
-                  invisible="not sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done']"
+                  invisible="not sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done'] or not pet_id"
                   class="btn-success" icon="fa-file-text-o"/>
           <button name="action_view_invoice" type="object" string="Open Invoice"
                   invisible="not has_active_invoice" class="btn-info" icon="fa-file-text-o"/>
           <button name="action_register_appointment_payment" type="object" string="Register Payment"
-                  invisible="payment_status not in ['pending', 'partial', 'draft'] or not has_active_invoice"
+                  invisible="payment_status not in ['pending', 'partial', 'draft'] or not has_active_invoice or not pet_id"
                   class="btn-primary" icon="fa-money"/>
           <button name="action_open_additional_invoice_wizard" type="object" string="Create Additional Invoice"
-                  invisible="not has_active_invoice"
+                  invisible="not has_active_invoice or not pet_id"
                   groups="pet_management.group_pet_clinic_accountant,pet_management.group_pet_clinic_billing_manager,base.group_system"
                   class="btn-secondary" icon="fa-plus"/>
           <button name="action_open_billing_repair_wizard" type="object" string="Repair Billing Metadata"
@@ -798,7 +798,7 @@
 
               <!-- Action Buttons -->
               <div class="pet-kanban-actions">
-                <button t-if="record.state.raw_value == 'draft'" 
+                <button t-if="record.state.raw_value == 'draft' and record.pet_id.raw_value"
                         class="btn btn-sm btn-primary action-btn" 
                         name="set_to_confirmed" 
                         type="object" 
@@ -806,7 +806,7 @@
                         groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
                   <i class="fa fa-check" title="Confirm"/>
                 </button>
-                <button t-if="record.state.raw_value == 'confirmed'" 
+                <button t-if="record.state.raw_value == 'confirmed' and record.pet_id.raw_value"
                         class="btn btn-sm btn-info action-btn" 
                         name="set_to_in_progress" 
                         type="object" 
@@ -814,7 +814,7 @@
                         groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_appointments_user_all,pet_management.group_pet_appointments_admin">
                   <i class="fa fa-play" title="Start"/>
                 </button>
-                <button t-if="record.state.raw_value == 'in_progress'" 
+                <button t-if="record.state.raw_value == 'in_progress' and record.pet_id.raw_value"
                         class="btn btn-sm btn-success action-btn" 
                         name="set_to_done" 
                         type="object" 

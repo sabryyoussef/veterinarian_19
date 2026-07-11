@@ -6,6 +6,7 @@
     "test": "playwright test",
     "test:screenshots": "playwright test veterinary_scenarios.spec.ts",
     "test:petspot": "playwright test petspot_clinic_workflow.spec.ts --reporter=list",
+    "test:intake": "playwright test appointment_intake.spec.ts --project=chromium --reporter=line,html",
     "copy:screenshots": "node -e \"const fs=require('fs');const p=require('path');const s=p.join('screenshots');const d=p.join('..','..','docs','screenshots');fs.mkdirSync(d,{recursive:true});for(const f of fs.readdirSync(s)) if(f.endsWith('.png')) fs.copyFileSync(p.join(s,f),p.join(d,f));\"",
     "copy:petspot": "node -e \"const fs=require('fs');const p=require('path');const s=p.join('screenshots','petspot_clinic');const d=p.join('..','..','docs','screenshots','petspot_clinic');fs.mkdirSync(d,{recursive:true});if(fs.existsSync(s)) for(const f of fs.readdirSync(s)) fs.copyFileSync(p.join(s,f),p.join(d,f));\"",
     "install:browsers": "playwright install chromium"

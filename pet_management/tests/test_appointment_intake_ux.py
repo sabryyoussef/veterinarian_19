@@ -289,3 +289,106 @@ class TestAppointmentIntakeUX(TransactionCase):
         self.assertEqual(self.env['pet.pet'].search_count([]), before)
         self.assertEqual(appt.pet_id, self.pet_only)
         self.assertEqual(self.pet_only.name, 'Still Solo')
+
+    def _no_pet_draft(self, title='No-pet draft'):
+        return self.Appointment.create(self._appt_vals(
+            intake_owner_id=self.owner_none.id,
+            title=title,
+            start_datetime='2026-07-12 10:00:00',
+            end_datetime='2026-07-12 10:30:00',
+            is_medical=True,
+            primary_type='emergency',
+        ))
+
+    def _assert_pet_required(self, method, *args, **kwargs):
+        with self.assertRaises(UserError) as err:
+            method(*args, **kwargs)
+        self.assertIn(
+            'Select or create a pet before confirming or billing this appointment.',
+            str(err.exception),
+        )
+
+    def test_16_draft_without_pet_can_be_created(self):
+        appt = self._no_pet_draft('Create without pet')
+        self.assertTrue(appt.id)
+        self.assertEqual(appt.state, 'draft')
+        self.assertFalse(appt.pet_id)
+        self.assertEqual(appt.intake_owner_id, self.owner_none)
+
+    def test_17_saved_no_pet_opens_wizard(self):
+        appt = self._no_pet_draft('Wizard after save')
+        action = appt.action_open_pet_quick_wizard()
+        self.assertEqual(action['res_model'], 'pet.appointment.pet.quick.wizard')
+
+    def test_18_no_pet_cannot_confirm(self):
+        appt = self._no_pet_draft('Block confirm')
+        self._assert_pet_required(appt.set_to_confirmed)
+        self.assertEqual(appt.state, 'draft')
+        self.assertFalse(appt.medical_visit_id)
+        self.assertFalse(appt.sale_order_id)
+
+    def test_19_no_pet_cannot_start(self):
+        appt = self._no_pet_draft('Block start')
+        self._assert_pet_required(appt.set_to_in_progress)
+        self.assertEqual(appt.state, 'draft')
+
+    def test_20_no_pet_cannot_complete(self):
+        appt = self._no_pet_draft('Block complete')
+        self._assert_pet_required(appt.set_to_done)
+        self.assertEqual(appt.state, 'draft')
+
+    def test_21_no_pet_cannot_create_medical_visit(self):
+        appt = self._no_pet_draft('Block medical visit')
+        self._assert_pet_required(appt.action_create_medical_visit)
+        self.assertFalse(appt.medical_visit_id)
+
+    def test_22_no_pet_cannot_create_sale_order(self):
+        appt = self._no_pet_draft('Block sale order')
+        self._assert_pet_required(appt.action_create_or_open_sale_order)
+        self.assertFalse(appt.sale_order_id)
+
+    def test_23_no_pet_cannot_create_invoice(self):
+        appt = self._no_pet_draft('Block invoice')
+        self._assert_pet_required(appt.action_confirm_and_create_invoice)
+        self.assertFalse(appt.invoice_id)
+        self.assertFalse(appt.sale_order_id)
+
+    def test_24_no_pet_direct_state_write_blocked(self):
+        appt = self._no_pet_draft('Block write state')
+        self._assert_pet_required(appt.write, {'state': 'confirmed'})
+        self.assertEqual(appt.state, 'draft')
+
+    def test_25_with_pet_confirm_creates_medical_visit(self):
+        appt = self.Appointment.create(self._appt_vals(
+            pet_id=self.pet_only.id,
+            title='Confirm with pet',
+            start_datetime='2026-07-12 11:00:00',
+            end_datetime='2026-07-12 11:30:00',
+            is_medical=True,
+            primary_type='emergency',
+            auto_create_facility=True,
+        ))
+        appt.set_to_confirmed()
+        self.assertEqual(appt.state, 'confirmed')
+        self.assertTrue(appt.medical_visit_id)
+        self.assertEqual(appt.medical_visit_id.pet_id, self.pet_only)
+
+    def test_26_wizard_then_confirm_workflow(self):
+        appt = self._no_pet_draft('Wizard then confirm')
+        self._assert_pet_required(appt.set_to_confirmed)
+        wiz = self.Wizard.create({
+            'appointment_id': appt.id,
+            'owner_id': self.owner_none.id,
+            'pet_id': False,
+            'name': 'Guard Flow Pet',
+            'species_id': self.species.id,
+            'allergies': '',
+            'chronic_conditions': '',
+            'dietary_restrictions': '',
+            'behavior_notes': '',
+        })
+        wiz.action_save()
+        self.assertTrue(appt.pet_id)
+        appt.set_to_confirmed()
+        self.assertEqual(appt.state, 'confirmed')
+        self.assertTrue(appt.medical_visit_id)

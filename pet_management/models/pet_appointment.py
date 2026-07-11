@@ -588,6 +588,15 @@ class PetAppointment(models.Model):
         if self.pet_id and self.pet_id.owner_id:
             self.intake_owner_id = self.pet_id.owner_id
 
+
+    def _check_pet_required_for_operation(self):
+        """Block operational/billing workflows until a pet is linked."""
+        for rec in self:
+            if not rec.pet_id:
+                raise UserError(_(
+                    "Select or create a pet before confirming or billing this appointment."
+                ))
+
     def action_open_pet_quick_wizard(self):
         """Open Pet / Health Details. Appointment must already be saved."""
         self.ensure_one()
@@ -696,14 +705,17 @@ class PetAppointment(models.Model):
         return []
 
     def set_to_confirmed(self):
+        self._check_pet_required_for_operation()
         for rec in self:
             rec.state = 'confirmed'
 
     def set_to_in_progress(self):
+        self._check_pet_required_for_operation()
         for rec in self:
             rec.state = 'in_progress'
 
     def set_to_done(self):
+        self._check_pet_required_for_operation()
         for rec in self:
             rec.state = 'done'
 
@@ -727,6 +739,7 @@ class PetAppointment(models.Model):
 
     def action_send_notification(self):
         """Create and send notification for this appointment"""
+        self._check_pet_required_for_operation()
         for rec in self:
             # Determine notification type and priority based on appointment state and timing
             now = fields.Datetime.now()
@@ -797,6 +810,7 @@ class PetAppointment(models.Model):
 
     def action_create_reminder_notification(self):
         """Create a reminder notification for this appointment"""
+        self._check_pet_required_for_operation()
         for rec in self:
             if rec.state not in ['draft', 'confirmed']:
                 continue
@@ -946,6 +960,7 @@ class PetAppointment(models.Model):
 
     def action_create_facility_entry(self):
         """Create facility entries based on selected service types"""
+        self._check_pet_required_for_operation()
         for rec in self:
             if not rec.auto_create_facility:
                 continue
@@ -972,11 +987,13 @@ class PetAppointment(models.Model):
 
     def action_create_medical_visit(self):
         """Manually create medical visit entry"""
+        self._check_pet_required_for_operation()
         for rec in self:
             rec._create_medical_visit()
 
     def action_create_vaccination(self):
         """Manually create vaccination entry"""
+        self._check_pet_required_for_operation()
         for rec in self:
             if rec.vaccine_id:
                 rec._create_vaccination()
@@ -985,6 +1002,7 @@ class PetAppointment(models.Model):
 
     def action_create_grooming_session(self):
         """Manually create grooming session entry"""
+        self._check_pet_required_for_operation()
         for rec in self:
             if rec.service_id:
                 rec._create_grooming_session()
@@ -993,6 +1011,7 @@ class PetAppointment(models.Model):
 
     def action_create_training_session(self):
         """Manually create training session entry"""
+        self._check_pet_required_for_operation()
         for rec in self:
             if rec.program_id:
                 rec._create_training_session()
@@ -1001,6 +1020,7 @@ class PetAppointment(models.Model):
 
     def action_create_boarding_stay(self):
         """Manually create boarding stay entry"""
+        self._check_pet_required_for_operation()
         for rec in self:
             if rec.kennel_id:
                 rec._create_boarding_stay()
@@ -1183,6 +1203,14 @@ class PetAppointment(models.Model):
     def write(self, vals):
         """Override write to auto-create facility entry when confirmed and refresh invoice when needed"""
         self._sync_intake_owner_from_pet_vals(vals)
+        if vals.get('state') in ('confirmed', 'in_progress', 'done'):
+            # Guard even if state is written directly (not only via set_to_* helpers).
+            if 'pet_id' in vals and not vals.get('pet_id'):
+                raise UserError(_(
+                    "Select or create a pet before confirming or billing this appointment."
+                ))
+            if not vals.get('pet_id'):
+                self.filtered(lambda r: not r.pet_id)._check_pet_required_for_operation()
         # Clear service fields when service types are unchecked
         service_type_mappings = {
             'is_medical': ['medical_visit_id'],
@@ -1639,6 +1667,7 @@ class PetAppointment(models.Model):
     def action_create_or_open_sale_order(self):
         """Idempotent: lock, return existing SO or create one draft SO, open it."""
         self.ensure_one()
+        self._check_pet_required_for_operation()
         self._lock_appointment_row()
         active = self._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
         if active and not self.sale_order_id:
@@ -1656,6 +1685,7 @@ class PetAppointment(models.Model):
     def action_confirm_and_create_invoice(self):
         """Confirm SO and create exactly one primary invoice (idempotent + locked)."""
         self.ensure_one()
+        self._check_pet_required_for_operation()
         self._lock_appointment_row()
         existing = self._get_linked_invoices().filtered(
             lambda m: m.move_type == 'out_invoice' and m.state != 'cancel'
@@ -1696,6 +1726,7 @@ class PetAppointment(models.Model):
 
     def action_open_additional_invoice_wizard(self):
         self.ensure_one()
+        self._check_pet_required_for_operation()
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create Additional Invoice'),
@@ -1743,6 +1774,7 @@ class PetAppointment(models.Model):
     def action_register_appointment_payment(self):
         """Open payment register on posted appointment invoices with residual."""
         self.ensure_one()
+        self._check_pet_required_for_operation()
         invoices = self._get_linked_invoices().filtered(
             lambda m: m.state == 'posted' and m.move_type == 'out_invoice' and m.amount_residual > 0
         )

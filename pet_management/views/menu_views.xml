@@ -1,8 +1,9 @@
 <odoo>
+    <!-- Root action is set on menu_pet_root from appointment views so the app lands on Appointments kanban. -->
     <menuitem id="menu_pet_root" name="Pets" sequence="10"
               web_icon="pet_management,static/description/icon.png"/>
-    <menuitem id="menu_pet_core" name="Core" parent="menu_pet_root" sequence="1" groups="pet_management.group_pet_core_user_own,pet_management.group_pet_staff_core"/>
-    <menuitem id="menu_pet_appointments" name="Appointments" parent="menu_pet_root" sequence="2" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_staff_appointments"/>
+    <!-- Appointments (working menu with action) is sequence 1 — defined in pet_appointment_views.xml -->
+    <menuitem id="menu_pet_core" name="Core" parent="menu_pet_root" sequence="2" groups="pet_management.group_pet_core_user_own,pet_management.group_pet_staff_core"/>
     <menuitem id="menu_pet_health" name="Health" parent="menu_pet_root" sequence="3" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_staff_health"/>
     <menuitem id="menu_pet_boarding" name="Boarding" parent="menu_pet_root" sequence="4" groups="pet_management.group_pet_boarding_user_own,pet_management.group_pet_staff_boarding"/>
     <menuitem id="menu_pet_grooming" name="Grooming" parent="menu_pet_root" sequence="5" groups="pet_management.group_pet_grooming_user_own,pet_management.group_pet_staff_grooming"/>

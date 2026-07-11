@@ -481,7 +481,7 @@ class Pet(models.Model):
             "type": "ir.actions.act_window",
             "name": "Appointments",
             "res_model": "pet.appointment",
-            "view_mode": "list,form",
+            "view_mode": "kanban,list,form",
             "domain": [("pet_id", "=", self.id)],
             "context": {"default_pet_id": self.id},
         }

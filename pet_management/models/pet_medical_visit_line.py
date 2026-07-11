@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 DIAGNOSTIC_PRODUCT_CODES = {
@@ -92,6 +93,11 @@ class PetMedicalVisitLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('visit_id'):
+                raise ValidationError(
+                    _("Save the Medical Visit before adding service lines.")
+                )
         lines = super().create(vals_list)
         lines._ensure_diagnostic_reports()
         return lines

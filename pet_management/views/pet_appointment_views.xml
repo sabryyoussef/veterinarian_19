@@ -256,21 +256,47 @@
               <field name="title" placeholder="Appointment Title"/>
             </h1>
           </div>
-          
+
           <group>
-            <group>
-              <field name="pet_id"/>
-              <field name="primary_type"/>
-              <field name="title"/>
-              <field name="state"/>
+            <group string="Owner &amp; Pet">
+              <field name="intake_owner_id" options="{'no_create_edit': False}"/>
+              <field name="owner_phone" string="Phone / Mobile"/>
+              <field name="owner_email"/>
+              <field name="pet_id"
+                      context="{'default_owner_id': intake_owner_id}"
+                      options="{'no_create': True}"/>
+              <field name="pet_species_id" readonly="1"/>
+              <field name="pet_breed_id" readonly="1"/>
+              <button name="action_open_pet_quick_wizard" type="object"
+                      string="Pet / Health Details" class="btn-secondary"
+                      icon="fa-paw"
+                      invisible="not id or not intake_owner_id"/>
             </group>
-            <group>
+            <group string="Appointment">
+              <field name="primary_type"/>
+              <field name="is_medical" widget="boolean_toggle"/>
+              <field name="is_vaccination" widget="boolean_toggle"/>
+              <field name="is_grooming" widget="boolean_toggle"/>
+              <field name="is_training" widget="boolean_toggle"/>
+              <field name="is_boarding" widget="boolean_toggle"/>
               <field name="start_datetime"/>
               <field name="end_datetime"/>
               <field name="duration_display" readonly="1"/>
               <field name="vet_employee_id"/>
               <field name="room_id"/>
+              <field name="state"/>
               <field name="sync_to_calendar" invisible="not enable_calendar_integration"/>
+            </group>
+          </group>
+
+          <group string="Health Quick Info" invisible="not pet_id">
+            <group>
+              <field name="allergies_display" readonly="1"/>
+              <field name="chronic_conditions_display" readonly="1"/>
+            </group>
+            <group>
+              <field name="dietary_restrictions_display" readonly="1"/>
+              <field name="behavior_notes_display" readonly="1"/>
             </group>
           </group>
           
@@ -654,6 +680,11 @@
     <field name="arch" type="xml">
       <kanban class="pet-kanban">
         <field name="pet_id"/>
+        <field name="intake_owner_id"/>
+        <field name="owner_id"/>
+        <field name="owner_phone"/>
+        <field name="owner_contact_display"/>
+        <field name="pet_breed_id"/>
         <field name="primary_type"/>
         <field name="title"/>
         <field name="start_datetime"/>
@@ -684,7 +715,7 @@
                          class="pet-image"/>
                   </div>
                   <div class="pet-details">
-                    <h3 class="pet-name" t-esc="record.pet_id and record.pet_id.value or 'Unknown Pet'"/>
+                    <h3 class="pet-name" t-esc="record.title and record.title.value or (record.pet_id and record.pet_id.value) or 'Appointment'"/>
                     <div class="pet-code">
                       <i class="fa fa-calendar" title="Appointment Type"/>
                       <span t-esc="record.primary_type and record.primary_type.value or 'General'"/>
@@ -704,24 +735,29 @@
               <div class="pet-kanban-content">
                 <div class="pet-details-section">
                   <div class="detail-row">
+                    <i class="fa fa-user" title="Owner"/>
+                    <span class="detail-label">Owner:</span>
+                    <span class="detail-value" t-esc="(record.intake_owner_id and record.intake_owner_id.value) or (record.owner_id and record.owner_id.value) or '—'"/>
+                  </div>
+                  <div t-if="record.owner_contact_display and record.owner_contact_display.value" class="detail-row">
+                    <i class="fa fa-phone" title="Phone / Mobile"/>
+                    <span class="detail-label">Phone / Mobile:</span>
+                    <span class="detail-value" t-esc="record.owner_contact_display.value"/>
+                  </div>
+                  <div class="detail-row">
+                    <i class="fa fa-paw" title="Pet"/>
+                    <span class="detail-label">Pet:</span>
+                    <span class="detail-value" t-esc="record.pet_id and record.pet_id.value or '—'"/>
+                  </div>
+                  <div t-if="record.pet_breed_id and record.pet_breed_id.value" class="detail-row">
+                    <i class="fa fa-tag" title="Breed"/>
+                    <span class="detail-label">Breed:</span>
+                    <span class="detail-value" t-esc="record.pet_breed_id.value"/>
+                  </div>
+                  <div class="detail-row">
                     <i class="fa fa-calendar" title="Start Time"/>
                     <span class="detail-label">Start:</span>
                     <span class="detail-value" t-esc="record.start_datetime and record.start_datetime.value"/>
-                  </div>
-                  <div class="detail-row">
-                    <i class="fa fa-calendar-check-o" title="End Time"/>
-                    <span class="detail-label">End:</span>
-                    <span class="detail-value" t-esc="record.end_datetime and record.end_datetime.value"/>
-                  </div>
-                  <div t-if="record.title and record.title.value" class="detail-row">
-                    <i class="fa fa-header" title="Title"/>
-                    <span class="detail-label">Title:</span>
-                    <span class="detail-value" t-esc="record.title.value"/>
-                  </div>
-                  <div t-if="record.room_id and record.room_id.value" class="detail-row">
-                    <i class="fa fa-home" title="Room"/>
-                    <span class="detail-label">Room:</span>
-                    <span class="detail-value" t-esc="record.room_id.value"/>
                   </div>
                   <div t-if="record.vet_employee_id and record.vet_employee_id.value" class="detail-row">
                     <i class="fa fa-user-md" title="Veterinarian"/>
@@ -736,7 +772,7 @@
                     <span class="pet-stat-label">Duration:</span>
                     <span class="pet-stat-value" t-esc="record.duration_display and record.duration_display.value or '0m'"/>
                   </div>
-                  <div t-if="record.amount_total and record.amount_total.raw_value" class="pet-stat-item">
+                  <div class="pet-stat-item">
                     <i class="fa fa-dollar" title="Amount"/>
                     <span class="pet-stat-label">Amount:</span>
                     <span class="pet-stat-value"><field name="amount_total" widget="monetary"/></span>
@@ -824,5 +860,13 @@
     <field name="view_mode">kanban,list,form</field>
   </record>
 
-  <menuitem id="menu_pet_appointment" parent="menu_pet_root" action="action_pet_appointment" name="Appointments" sequence="2" groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_appointments"/>
+  <!-- Canonical Appointments menu (empty folder menu_pet_appointments removed). -->
+  <menuitem id="menu_pet_appointment" parent="menu_pet_root" action="action_pet_appointment"
+            name="Appointments" sequence="1"
+            groups="pet_management.group_pet_appointments_user_own,pet_management.group_pet_operations_user_all,pet_management.group_pet_staff_appointments"/>
+
+  <!-- App icon lands on Appointments kanban. -->
+  <record id="menu_pet_root" model="ir.ui.menu">
+    <field name="action" ref="action_pet_appointment"/>
+  </record>
 </odoo>

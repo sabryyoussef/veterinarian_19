@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_pet_appointment_pet_quick_wizard_form" model="ir.ui.view">
+    <field name="name">pet.appointment.pet.quick.wizard.form</field>
+    <field name="model">pet.appointment.pet.quick.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Pet / Health Details">
+        <group>
+          <group>
+            <field name="appointment_id" invisible="1"/>
+            <field name="pet_id" invisible="1"/>
+            <field name="owner_id" readonly="1"/>
+            <field name="name"/>
+            <field name="species_id"/>
+            <field name="breed_id"/>
+          </group>
+          <group string="Health">
+            <field name="allergies" placeholder="Leave blank to store No when empty"/>
+            <field name="chronic_conditions" placeholder="Leave blank to store No when empty"/>
+            <field name="dietary_restrictions" placeholder="Leave blank to store No when empty"/>
+            <field name="behavior_notes" placeholder="Leave blank to store No when empty"/>
+          </group>
+        </group>
+        <footer>
+          <button name="action_save" type="object" string="Save" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_pet_appointment_pet_quick_wizard" model="ir.actions.act_window">
+    <field name="name">Pet / Health Details</field>
+    <field name="res_model">pet.appointment.pet.quick.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+    <field name="view_id" ref="view_pet_appointment_pet_quick_wizard_form"/>
+  </record>
+</odoo>

@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.4.0',
+    'version': '19.0.1.6.2',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management
@@ -51,6 +51,7 @@ Key Features:
         'views/pet_medical_diagnostic_report_views.xml',
         'views/pet_boarding_views.xml',
         'views/pet_kennel_views.xml',
+        'wizards/appointment_pet_quick_wizard_views.xml',
         'views/pet_appointment_views.xml',
         'views/pet_grooming_views.xml',
         'views/pet_training_views.xml',

@@ -248,7 +248,7 @@
               </group>
             </page>
             <page string="Services &amp; Products" groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin">
-              <field name="line_ids">
+              <field name="line_ids" context="{'default_visit_id': id}">
                 <list editable="bottom">
                   <field name="sequence" widget="handle"/>
                   <field name="line_type"/>

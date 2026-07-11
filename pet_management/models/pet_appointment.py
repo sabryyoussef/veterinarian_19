@@ -8,8 +8,34 @@ class PetAppointment(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'start_datetime desc'
 
-    pet_id = fields.Many2one('pet.pet', required=True, ondelete='cascade', tracking=True, help="The pet for this appointment")
+    CLINICAL_PRIMARY_TYPES = (
+        'emergency', 'checkup', 'surgery', 'dental', 'home_visit', 'comprehensive',
+    )
+
+    pet_id = fields.Many2one(
+        'pet.pet', required=False, ondelete='cascade', tracking=True,
+        domain="[('owner_id', '=', intake_owner_id)]",
+        help="The pet for this appointment. Required before clinical work; "
+             "may be empty briefly after save so reception can create it via Pet / Health Details.")
+    # Editable owner for reception intake. Related owner_id stays the pet-derived truth once pet_id is set.
+    intake_owner_id = fields.Many2one(
+        'res.partner', string='Owner', tracking=True, index=True,
+        help="Owner selected during appointment intake. Must match the selected pet's owner.")
     owner_id = fields.Many2one(related='pet_id.owner_id', store=True, readonly=True, help="Pet owner")
+    # Odoo 19 base res.partner has phone only (no separate mobile). One stored contact field.
+    owner_phone = fields.Char(
+        related='intake_owner_id.phone', string='Phone / Mobile', store=True, readonly=True,
+        help="Owner contact number from partner phone")
+    owner_email = fields.Char(related='intake_owner_id.email', string='Email', store=True, readonly=True)
+    owner_contact_display = fields.Char(
+        string='Phone / Mobile', compute='_compute_owner_contact_display', store=True,
+        help="Single contact number for kanban/reception display")
+    pet_species_id = fields.Many2one(related='pet_id.species_id', string='Species', store=True, readonly=True)
+    pet_breed_id = fields.Many2one(related='pet_id.breed_id', string='Breed', store=True, readonly=True)
+    allergies_display = fields.Text(string='Allergies', compute='_compute_health_display')
+    chronic_conditions_display = fields.Text(string='Chronic Conditions', compute='_compute_health_display')
+    dietary_restrictions_display = fields.Text(string='Dietary Restrictions', compute='_compute_health_display')
+    behavior_notes_display = fields.Text(string='Behavior Notes', compute='_compute_health_display')
     # Appointment Categories (can select multiple)
     is_medical = fields.Boolean(string='Medical', default=False, help="Include medical services")
     is_vaccination = fields.Boolean(string='Include Vaccination', default=False, help="Include vaccination services")
@@ -23,7 +49,7 @@ class PetAppointment(models.Model):
         ('home_visit', 'Home Visit'),
         ('surgery', 'Surgery'),
         ('dental', 'Dental'), ('comprehensive', 'Comprehensive Care'), ('other', 'Other')
-    ], required=True, tracking=True, help="Primary type of appointment")
+    ], required=True, default='emergency', tracking=True, help="Primary type of appointment")
     name = fields.Char(string='Reference', readonly=True, copy=False, default=lambda s: _('New'), help="Appointment reference")
     title = fields.Char(
         required=True, tracking=True,
@@ -484,6 +510,113 @@ class PetAppointment(models.Model):
                 warnings.append(_('Complimentary appointment requires a reason.'))
             rec.billing_warning = '\n'.join(warnings) if warnings else False
             rec.has_billing_mismatch = bool(rec.billing_warning)
+
+    @api.constrains('pet_id', 'intake_owner_id')
+    def _check_intake_owner_pet_consistency(self):
+        for rec in self:
+            if rec.pet_id and rec.intake_owner_id and rec.pet_id.owner_id != rec.intake_owner_id:
+                raise ValidationError(
+                    _("The selected pet does not belong to the selected owner.")
+                )
+
+    @api.model
+    def _clinical_primary_types(self):
+        return set(self.CLINICAL_PRIMARY_TYPES)
+
+    @api.depends('intake_owner_id', 'intake_owner_id.phone', 'owner_phone')
+    def _compute_owner_contact_display(self):
+        for rec in self:
+            phone = (rec.owner_phone or '').strip()
+            if not phone and rec.intake_owner_id:
+                phone = (rec.intake_owner_id.phone or '').strip()
+            rec.owner_contact_display = phone or False
+
+    @api.depends(
+        'pet_id', 'pet_id.allergies', 'pet_id.chronic_conditions',
+        'pet_id.dietary_restrictions', 'pet_id.behavior_notes',
+    )
+    def _compute_health_display(self):
+        for rec in self:
+            pet = rec.pet_id
+            rec.allergies_display = ((pet.allergies or '').strip() or _('No')) if pet else _('No')
+            rec.chronic_conditions_display = (
+                ((pet.chronic_conditions or '').strip() or _('No')) if pet else _('No')
+            )
+            rec.dietary_restrictions_display = (
+                ((pet.dietary_restrictions or '').strip() or _('No')) if pet else _('No')
+            )
+            rec.behavior_notes_display = (
+                ((pet.behavior_notes or '').strip() or _('No')) if pet else _('No')
+            )
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        if 'primary_type' in fields_list and not res.get('primary_type'):
+            res['primary_type'] = 'emergency'
+        primary = res.get('primary_type') or 'emergency'
+        if primary in self._clinical_primary_types():
+            res['is_medical'] = True
+        pet_id = res.get('pet_id') or self.env.context.get('default_pet_id')
+        if pet_id and not res.get('intake_owner_id'):
+            pet = self.env['pet.pet'].browse(pet_id)
+            if pet.exists() and pet.owner_id:
+                res['intake_owner_id'] = pet.owner_id.id
+        return res
+
+    @api.onchange('primary_type')
+    def _onchange_primary_type_medical(self):
+        if self.primary_type in self._clinical_primary_types():
+            self.is_medical = True
+
+    @api.onchange('intake_owner_id')
+    def _onchange_intake_owner_id(self):
+        if not self.intake_owner_id:
+            self.pet_id = False
+            return
+        if self.pet_id and self.pet_id.owner_id != self.intake_owner_id:
+            self.pet_id = False
+        pets = self.env['pet.pet'].search([('owner_id', '=', self.intake_owner_id.id)])
+        if len(pets) == 1:
+            self.pet_id = pets
+        elif len(pets) == 0:
+            self.pet_id = False
+        # Multiple pets: do not auto-select after clearing a mismatched pet.
+
+    @api.onchange('pet_id')
+    def _onchange_pet_id_intake_owner(self):
+        if self.pet_id and self.pet_id.owner_id:
+            self.intake_owner_id = self.pet_id.owner_id
+
+    def action_open_pet_quick_wizard(self):
+        """Open Pet / Health Details. Appointment must already be saved."""
+        self.ensure_one()
+        if not self.env['pet.appointment'].browse(self.id).exists():
+            raise UserError(_(
+                "Save the appointment before creating or editing pet health details."
+            ))
+        owner = self.intake_owner_id or self.owner_id
+        if not owner:
+            raise UserError(_("Select an owner before creating a pet."))
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Pet / Health Details'),
+            'res_model': 'pet.appointment.pet.quick.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_appointment_id': self.id,
+                'default_owner_id': owner.id,
+            },
+        }
+
+    def _sync_intake_owner_from_pet_vals(self, vals):
+        """Ensure intake_owner_id stays consistent with pet_id on create/write."""
+        if vals.get('pet_id') and not vals.get('intake_owner_id'):
+            pet = self.env['pet.pet'].browse(vals['pet_id'])
+            if pet.owner_id:
+                vals['intake_owner_id'] = pet.owner_id.id
+        return vals
 
     @api.constrains('is_complimentary', 'complimentary_reason')
     def _check_complimentary_reason(self):
@@ -1011,6 +1144,7 @@ class PetAppointment(models.Model):
         default_duration = float(icp.get_param('pet_management.appointment_duration_default', 1.0))
         
         for vals in vals_list:
+            self._sync_intake_owner_from_pet_vals(vals)
             if vals.get('name', _('New')) == _('New'):
                 vals['name'] = self.env['ir.sequence'].next_by_code('pet.appointment') or _('New')
             if not vals.get('title'):
@@ -1020,6 +1154,9 @@ class PetAppointment(models.Model):
                 )
             if not vals.get('vet_employee_id') and self.env.user.employee_id:
                 vals['vet_employee_id'] = self.env.user.employee_id.id
+            primary = vals.get('primary_type', 'emergency')
+            if primary in self._clinical_primary_types() and 'is_medical' not in vals:
+                vals['is_medical'] = True
             
             # Apply default duration if not specified
             if 'start_datetime' in vals and 'end_datetime' not in vals:
@@ -1045,6 +1182,7 @@ class PetAppointment(models.Model):
 
     def write(self, vals):
         """Override write to auto-create facility entry when confirmed and refresh invoice when needed"""
+        self._sync_intake_owner_from_pet_vals(vals)
         # Clear service fields when service types are unchecked
         service_type_mappings = {
             'is_medical': ['medical_visit_id'],
@@ -1061,7 +1199,7 @@ class PetAppointment(models.Model):
                 for field in related_fields:
                     if field not in vals:  # Only clear if not explicitly set
                         vals[field] = False
-        
+
         result = super().write(vals)
 
         # Propagate a changed veterinarian to already-created facility records

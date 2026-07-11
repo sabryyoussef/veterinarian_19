@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="seq_pet_clinic_expense" model="ir.sequence">
+    <field name="name">Clinic Expense</field>
+    <field name="code">pet.clinic.expense</field>
+    <field name="prefix">CEXP%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+  <record id="seq_pet_clinic_wallet_transfer" model="ir.sequence">
+    <field name="name">Clinic Wallet Transfer</field>
+    <field name="code">pet.clinic.wallet.transfer</field>
+    <field name="prefix">CWTR%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+  <record id="seq_pet_clinic_partner_reimbursement" model="ir.sequence">
+    <field name="name">Clinic Partner Reimbursement</field>
+    <field name="code">pet.clinic.partner.reimbursement</field>
+    <field name="prefix">CREI%(y)s-</field>
+    <field name="padding">4</field>
+    <field name="company_id" eval="False"/>
+  </record>
+</odoo>

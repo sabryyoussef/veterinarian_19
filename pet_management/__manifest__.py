@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.6.9',
+    'version': '19.0.1.7.0',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management
@@ -19,6 +19,7 @@ Key Features:
 * Diet plans and weight monitoring
 * Appointment scheduling with calendar integration
 * Idempotent appointment invoicing and payment integrity
+* Clinic expenses, funding sources, and cash balances
 * Email notifications
     """,
     'category': 'Services/Clinic',
@@ -26,12 +27,13 @@ Key Features:
     'author': 'WebbyCrown Solutions',
     'website': 'https://www.webbycrown.com',
     'license': 'LGPL-3',
-    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account', 'sale_management', 'calendar'],
+    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account', 'analytic', 'sale_management', 'calendar'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'security/record_rules.xml',
         'data/ir_sequence_data.xml',
+        'data/pet_clinic_finance_sequence.xml',
         'data/pet_seed_data.xml',
         'data/vaccine_catalog_data.xml',
         'data/mail_data.xml',
@@ -62,7 +64,9 @@ Key Features:
         'views/pet_help_views.xml',
         'views/hr_employee_views.xml',
         'views/pet_vet_performance_report_views.xml',
+        'views/pet_clinic_finance_views.xml',
         'wizards/appointment_additional_invoice_views.xml',
+        'data/pet_clinic_finance_setup.xml',
     ],
     'images': [
         'static/description/main_screenshot.png',
@@ -77,12 +81,15 @@ Key Features:
     'application': True,
     'installable': True,
     'auto_install': False,
+    'post_init_hook': 'post_init_hook',
     'assets': {
         'web.assets_backend': [
             'pet_management/static/src/css/pet_notification_kanban.css',
             'pet_management/static/src/css/medical_vaccination_kanban.css',
             'pet_management/static/src/css/image_widget_styling.css',
             'pet_management/static/src/js/weight_badge_styling.js',
+            'pet_management/static/src/clinic_finance_dashboard/clinic_finance_dashboard.js',
+            'pet_management/static/src/clinic_finance_dashboard/clinic_finance_dashboard.xml',
         ],
     },
 }

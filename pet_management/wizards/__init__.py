@@ -2,3 +2,5 @@
 from . import appointment_additional_invoice_wizard
 from . import appointment_billing_repair_wizard
 from . import appointment_pet_quick_wizard
+from . import pet_clinic_quick_expense_wizard
+from . import pet_clinic_partner_reimbursement_wizard

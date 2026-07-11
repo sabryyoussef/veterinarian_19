@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pet_management.ClinicFinanceDashboard">
+        <div class="o_pet_clinic_finance_dashboard p-3">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2">
+                <h2 class="m-0">Clinic Finance / المالية</h2>
+                <div class="d-flex gap-2">
+                    <select class="form-select" t-on-change="onPeriodChange">
+                        <option value="today" t-att-selected="state.period === 'today'">Today</option>
+                        <option value="week" t-att-selected="state.period === 'week'">This Week</option>
+                        <option value="month" t-att-selected="state.period === 'month'">This Month</option>
+                    </select>
+                    <button class="btn btn-primary" t-on-click="openQuickExpense">Quick Expense / مصروف سريع</button>
+                    <button class="btn btn-secondary" t-on-click="openExpenses">Expenses</button>
+                </div>
+            </div>
+            <div t-if="state.loading" class="text-muted">Loading…</div>
+            <div t-if="state.error" class="alert alert-danger" t-esc="state.error"/>
+            <t t-if="state.data and !state.loading">
+                <t t-set="sections" t-value="state.data.sections"/>
+                <h4 class="mt-3"><t t-esc="sections.liquidity.title"/> / <t t-esc="sections.liquidity.title_ar"/></h4>
+                <div class="row g-3">
+                    <t t-foreach="sections.liquidity.cards" t-as="card" t-key="card.id">
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="text-muted"><t t-esc="card.label"/> / <t t-esc="card.label_ar"/></div>
+                                    <div class="fs-3 fw-semibold"><t t-esc="formatAmount(card.amount)"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <h4 class="mt-4"><t t-esc="sections.partner_liability.title"/> / <t t-esc="sections.partner_liability.title_ar"/></h4>
+                <div class="row g-3">
+                    <t t-foreach="sections.partner_liability.cards" t-as="card" t-key="card.id">
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="text-muted">
+                                        <t t-if="card.technical_code === 'sabry'">Due to Sabry / مستحق لصبري</t>
+                                        <t t-elif="card.technical_code === 'ahmed'">Due to Ahmed / مستحق لأحمد</t>
+                                        <t t-else=""><t t-esc="card.label"/></t>
+                                    </div>
+                                    <div class="fs-3 fw-semibold"><t t-esc="formatAmount(card.amount)"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <h4 class="mt-4"><t t-esc="sections.performance.title"/> / <t t-esc="sections.performance.title_ar"/></h4>
+                <div class="row g-3">
+                    <t t-foreach="sections.performance.cards" t-as="card" t-key="card.key">
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="text-muted"><t t-esc="card.label"/> / <t t-esc="card.label_ar"/></div>
+                                    <div class="fs-3 fw-semibold"><t t-esc="formatAmount(card.amount)"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

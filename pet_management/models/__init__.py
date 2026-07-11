@@ -24,3 +24,10 @@ from . import pet_diet
 from . import pet_notification
 from . import pet_settings
 from . import pet_help
+from . import pet_clinic_finance_setup
+from . import pet_funding_source
+from . import pet_expense_category
+from . import pet_clinic_expense
+from . import pet_clinic_wallet_transfer
+from . import pet_clinic_partner_reimbursement
+from . import pet_clinic_finance

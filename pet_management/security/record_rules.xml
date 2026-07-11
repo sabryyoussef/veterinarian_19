@@ -622,5 +622,40 @@
             <field name="perm_unlink" eval="False"/>
         </record>
         
+
+        <!-- ======================================== -->
+        <!-- CLINIC FINANCE — company record rules -->
+        <!-- ======================================== -->
+        <record id="rule_pet_funding_source_company" model="ir.rule">
+            <field name="name">Clinic Finance: Funding Source multi-company</field>
+            <field name="model_id" ref="model_pet_funding_source"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_clinic_reception')), (4, ref('group_pet_clinic_accountant')), (4, ref('group_pet_clinic_billing_manager')), (4, ref('base.group_system'))]"/>
+        </record>
+        <record id="rule_pet_expense_category_company" model="ir.rule">
+            <field name="name">Clinic Finance: Expense Category multi-company</field>
+            <field name="model_id" ref="model_pet_expense_category"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_clinic_reception')), (4, ref('group_pet_clinic_accountant')), (4, ref('group_pet_clinic_billing_manager')), (4, ref('base.group_system'))]"/>
+        </record>
+        <record id="rule_pet_clinic_expense_company" model="ir.rule">
+            <field name="name">Clinic Finance: Expense multi-company</field>
+            <field name="model_id" ref="model_pet_clinic_expense"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_clinic_reception')), (4, ref('group_pet_clinic_accountant')), (4, ref('group_pet_clinic_billing_manager')), (4, ref('base.group_system'))]"/>
+        </record>
+        <record id="rule_pet_clinic_wallet_transfer_company" model="ir.rule">
+            <field name="name">Clinic Finance: Wallet Transfer multi-company</field>
+            <field name="model_id" ref="model_pet_clinic_wallet_transfer"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_clinic_accountant')), (4, ref('group_pet_clinic_billing_manager')), (4, ref('base.group_system'))]"/>
+        </record>
+        <record id="rule_pet_clinic_partner_reimbursement_company" model="ir.rule">
+            <field name="name">Clinic Finance: Partner Reimbursement multi-company</field>
+            <field name="model_id" ref="model_pet_clinic_partner_reimbursement"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="groups" eval="[(4, ref('group_pet_clinic_accountant')), (4, ref('group_pet_clinic_billing_manager')), (4, ref('base.group_system'))]"/>
+        </record>
+
     </data>
 </odoo>

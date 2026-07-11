@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Funding Sources -->
+  <record id="view_pet_funding_source_list" model="ir.ui.view">
+    <field name="name">pet.funding.source.list</field>
+    <field name="model">pet.funding.source</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="sequence" widget="handle"/>
+        <field name="name"/>
+        <field name="name_ar"/>
+        <field name="source_type"/>
+        <field name="journal_id"/>
+        <field name="liquidity_account_id"/>
+        <field name="partner_id"/>
+        <field name="payable_account_id"/>
+        <field name="company_id" groups="base.group_multi_company"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_pet_funding_source_form" model="ir.ui.view">
+    <field name="name">pet.funding.source.form</field>
+    <field name="model">pet.funding.source</field>
+    <field name="arch" type="xml">
+      <form string="Funding Source">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="name_ar"/>
+              <field name="technical_code"/>
+              <field name="source_type"/>
+              <field name="sequence"/>
+              <field name="active"/>
+            </group>
+            <group>
+              <field name="company_id" groups="base.group_multi_company"/>
+              <field name="currency_id"/>
+              <field name="journal_id" invisible="source_type == 'partner'" required="source_type in ['cash', 'bank']"/>
+              <field name="liquidity_account_id" invisible="source_type == 'partner'"/>
+              <field name="partner_id" invisible="source_type != 'partner'" required="source_type == 'partner'"/>
+              <field name="payable_account_id" invisible="source_type != 'partner'" required="source_type == 'partner'"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_pet_funding_source" model="ir.actions.act_window">
+    <field name="name">Funding Sources</field>
+    <field name="res_model">pet.funding.source</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <!-- Categories -->
+  <record id="view_pet_expense_category_list" model="ir.ui.view">
+    <field name="name">pet.expense.category.list</field>
+    <field name="model">pet.expense.category</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="sequence" widget="handle"/>
+        <field name="name"/>
+        <field name="account_id"/>
+        <field name="analytic_account_id" optional="hide"/>
+        <field name="active"/>
+        <field name="configuration_warning" optional="show"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_pet_expense_category_form" model="ir.ui.view">
+    <field name="name">pet.expense.category.form</field>
+    <field name="model">pet.expense.category</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <div class="alert alert-warning" role="alert" invisible="not configuration_warning">
+            <field name="configuration_warning" nolabel="1"/>
+          </div>
+          <group>
+            <field name="name"/>
+            <field name="technical_code"/>
+            <field name="account_id"/>
+            <field name="analytic_account_id"/>
+            <field name="company_id" groups="base.group_multi_company"/>
+            <field name="sequence"/>
+            <field name="active"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_pet_expense_category" model="ir.actions.act_window">
+    <field name="name">Expense Categories</field>
+    <field name="res_model">pet.expense.category</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <!-- Expenses -->
+  <record id="view_pet_clinic_expense_list" model="ir.ui.view">
+    <field name="name">pet.clinic.expense.list</field>
+    <field name="model">pet.clinic.expense</field>
+    <field name="arch" type="xml">
+      <list decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'">
+        <field name="date"/>
+        <field name="name"/>
+        <field name="description"/>
+        <field name="category_id"/>
+        <field name="funding_source_id"/>
+        <field name="amount" sum="Total"/>
+        <field name="state"/>
+        <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+        <field name="move_id" optional="show"/>
+        <field name="create_uid" optional="hide"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_pet_clinic_expense_form" model="ir.ui.view">
+    <field name="name">pet.clinic.expense.form</field>
+    <field name="model">pet.clinic.expense</field>
+    <field name="arch" type="xml">
+      <form string="Clinic Expense">
+        <header>
+          <button name="action_post" type="object" string="Post Expense" class="oe_highlight"
+                  invisible="state != 'draft'"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+          <button name="action_cancel" type="object" string="Reverse / Cancel"
+                  invisible="state != 'posted'"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"
+                  confirm="Reverse the journal entry and cancel this expense?"/>
+          <button name="action_open_move" type="object" string="Open Journal Entry"
+                  invisible="not move_id"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,posted,cancelled"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_open_attachments" type="object" class="oe_stat_button" icon="fa-paperclip">
+              <field name="attachment_count" widget="statinfo" string="Receipts"/>
+            </button>
+          </div>
+          <div class="oe_title">
+            <h1><field name="name" readonly="1"/></h1>
+          </div>
+          <group>
+            <group>
+              <field name="date" readonly="state != 'draft'"/>
+              <field name="amount" readonly="state != 'draft'"/>
+              <field name="currency_id" invisible="1"/>
+              <field name="description" readonly="state != 'draft'"/>
+              <field name="category_id" readonly="state != 'draft'"/>
+              <field name="funding_source_id" widget="radio" readonly="state != 'draft'"/>
+            </group>
+            <group>
+              <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+              <field name="analytic_account_id" readonly="state != 'draft'"/>
+              <field name="move_id" readonly="1"/>
+              <field name="reversal_move_id" readonly="1" invisible="not reversal_move_id"/>
+              <field name="posted_uid" readonly="1" invisible="not posted_uid"/>
+              <field name="posted_date" readonly="1" invisible="not posted_date"/>
+            </group>
+          </group>
+          <group string="Notes">
+            <field name="notes" nolabel="1" readonly="state != 'draft'"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="view_pet_clinic_expense_search" model="ir.ui.view">
+    <field name="name">pet.clinic.expense.search</field>
+    <field name="model">pet.clinic.expense</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="description"/>
+        <field name="category_id"/>
+        <field name="funding_source_id"/>
+        <filter name="today" string="Today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+        <filter name="this_month" string="This Month" domain="[('date', '&gt;=', (context_today()).strftime('%Y-%m-01'))]"/>
+        <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+        <filter name="posted" string="Posted" domain="[('state', '=', 'posted')]"/>
+        <separator/>
+        <filter name="group_source" string="Funding Source" context="{'group_by': 'funding_source_id'}"/>
+        <filter name="group_category" string="Category" context="{'group_by': 'category_id'}"/>
+        <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+        <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+        <filter name="group_user" string="Created By" context="{'group_by': 'create_uid'}"/>
+      </search>
+    </field>
+  </record>
+  <record id="view_pet_clinic_expense_graph" model="ir.ui.view">
+    <field name="name">pet.clinic.expense.graph</field>
+    <field name="model">pet.clinic.expense</field>
+    <field name="arch" type="xml">
+      <graph type="bar">
+        <field name="funding_source_id"/>
+        <field name="amount" type="measure"/>
+      </graph>
+    </field>
+  </record>
+  <record id="view_pet_clinic_expense_pivot" model="ir.ui.view">
+    <field name="name">pet.clinic.expense.pivot</field>
+    <field name="model">pet.clinic.expense</field>
+    <field name="arch" type="xml">
+      <pivot>
+        <field name="category_id" type="row"/>
+        <field name="funding_source_id" type="col"/>
+        <field name="amount" type="measure"/>
+      </pivot>
+    </field>
+  </record>
+  <record id="action_pet_clinic_expense" model="ir.actions.act_window">
+    <field name="name">Clinic Expenses</field>
+    <field name="res_model">pet.clinic.expense</field>
+    <field name="view_mode">list,form,graph,pivot</field>
+    <field name="search_view_id" ref="view_pet_clinic_expense_search"/>
+  </record>
+
+  <!-- Quick Expense -->
+  <record id="view_pet_clinic_quick_expense_wizard_form" model="ir.ui.view">
+    <field name="name">pet.clinic.quick.expense.wizard.form</field>
+    <field name="model">pet.clinic.quick.expense.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Quick Expense / مصروف سريع">
+        <group>
+          <field name="date"/>
+          <field name="amount"/>
+          <field name="currency_id" invisible="1"/>
+          <field name="description" placeholder="e.g. Orange line"/>
+          <field name="category_id"/>
+          <field name="funding_source_id" widget="radio"/>
+          <field name="attachment_ids" widget="many2many_binary"/>
+          <field name="notes"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="analytic_account_id"/>
+        </group>
+        <footer>
+          <button name="action_save_draft" type="object" string="Save Draft" class="btn-secondary"/>
+          <button name="action_save_and_post" type="object" string="Save &amp; Post" class="btn-primary"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+  <record id="action_pet_clinic_quick_expense" model="ir.actions.act_window">
+    <field name="name">Quick Expense / مصروف سريع</field>
+    <field name="res_model">pet.clinic.quick.expense.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+  <!-- Wallet transfers -->
+  <record id="view_pet_clinic_wallet_transfer_list" model="ir.ui.view">
+    <field name="name">pet.clinic.wallet.transfer.list</field>
+    <field name="model">pet.clinic.wallet.transfer</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="date"/>
+        <field name="name"/>
+        <field name="from_source_id"/>
+        <field name="to_source_id"/>
+        <field name="amount"/>
+        <field name="state"/>
+        <field name="move_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_pet_clinic_wallet_transfer_form" model="ir.ui.view">
+    <field name="name">pet.clinic.wallet.transfer.form</field>
+    <field name="model">pet.clinic.wallet.transfer</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_post" type="object" string="Post Transfer" class="oe_highlight"
+                  invisible="state != 'draft'"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+          <button name="action_cancel" type="object" string="Reverse"
+                  invisible="state != 'posted'"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name" readonly="1"/>
+            <field name="date" readonly="state != 'draft'"/>
+            <field name="from_source_id" readonly="state != 'draft'"/>
+            <field name="to_source_id" readonly="state != 'draft'"/>
+            <field name="amount" readonly="state != 'draft'"/>
+            <field name="currency_id" invisible="1"/>
+            <field name="company_id" groups="base.group_multi_company"/>
+            <field name="move_id" readonly="1"/>
+            <field name="notes" readonly="state != 'draft'"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_pet_clinic_wallet_transfer" model="ir.actions.act_window">
+    <field name="name">Wallet Transfers</field>
+    <field name="res_model">pet.clinic.wallet.transfer</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <!-- Reimbursements -->
+  <record id="view_pet_clinic_partner_reimbursement_list" model="ir.ui.view">
+    <field name="name">pet.clinic.partner.reimbursement.list</field>
+    <field name="model">pet.clinic.partner.reimbursement</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="date"/>
+        <field name="name"/>
+        <field name="partner_source_id"/>
+        <field name="pay_from_source_id"/>
+        <field name="amount"/>
+        <field name="state"/>
+        <field name="move_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_pet_clinic_partner_reimbursement_form" model="ir.ui.view">
+    <field name="name">pet.clinic.partner.reimbursement.form</field>
+    <field name="model">pet.clinic.partner.reimbursement</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_post" type="object" string="Post Reimbursement" class="oe_highlight"
+                  invisible="state != 'draft'"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+          <button name="action_cancel" type="object" string="Reverse"
+                  invisible="state != 'posted'"
+                  groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name" readonly="1"/>
+            <field name="date" readonly="state != 'draft'"/>
+            <field name="partner_source_id" readonly="state != 'draft'"/>
+            <field name="outstanding_due"/>
+            <field name="pay_from_source_id" readonly="state != 'draft'"/>
+            <field name="amount" readonly="state != 'draft'"/>
+            <field name="currency_id" invisible="1"/>
+            <field name="company_id" groups="base.group_multi_company"/>
+            <field name="move_id" readonly="1"/>
+            <field name="notes" readonly="state != 'draft'"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="action_pet_clinic_partner_reimbursement" model="ir.actions.act_window">
+    <field name="name">Partner Reimbursements</field>
+    <field name="res_model">pet.clinic.partner.reimbursement</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <record id="view_pet_clinic_partner_reimbursement_wizard_form" model="ir.ui.view">
+    <field name="name">pet.clinic.partner.reimbursement.wizard.form</field>
+    <field name="model">pet.clinic.partner.reimbursement.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Reimburse Partner">
+        <group>
+          <field name="date"/>
+          <field name="partner_source_id"/>
+          <field name="outstanding_due"/>
+          <field name="pay_from_source_id"/>
+          <field name="amount"/>
+          <field name="currency_id" invisible="1"/>
+          <field name="notes"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+        </group>
+        <footer>
+          <button name="action_create_and_post" type="object" string="Create &amp; Post" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+  <record id="action_pet_clinic_partner_reimbursement_wizard" model="ir.actions.act_window">
+    <field name="name">Quick Reimbursement</field>
+    <field name="res_model">pet.clinic.partner.reimbursement.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+  <!-- Dashboard client action (server method; OWL loads later in Phase 3 if needed) -->
+  <record id="action_pet_clinic_finance_dashboard" model="ir.actions.client">
+    <field name="name">Clinic Finance Dashboard</field>
+    <field name="tag">pet_clinic_finance_dashboard</field>
+  </record>
+
+  <!-- Menus -->
+  <menuitem id="menu_pet_clinic_finance" name="Clinic Finance" parent="menu_pet_root" sequence="15"
+            groups="pet_management.group_pet_clinic_reception,pet_management.group_pet_clinic_accountant,base.group_system"/>
+  <menuitem id="menu_pet_clinic_quick_expense" name="Quick Expense / مصروف سريع"
+            parent="menu_pet_clinic_finance" action="action_pet_clinic_quick_expense" sequence="1"
+            groups="pet_management.group_pet_clinic_reception,base.group_system"/>
+  <menuitem id="menu_pet_clinic_expense" name="Expenses"
+            parent="menu_pet_clinic_finance" action="action_pet_clinic_expense" sequence="2"
+            groups="pet_management.group_pet_clinic_reception,base.group_system"/>
+  <menuitem id="menu_pet_clinic_finance_dashboard" name="Finance Dashboard"
+            parent="menu_pet_clinic_finance" action="action_pet_clinic_finance_dashboard" sequence="3"
+            groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+  <menuitem id="menu_pet_clinic_wallet_transfer" name="Wallet Transfers"
+            parent="menu_pet_clinic_finance" action="action_pet_clinic_wallet_transfer" sequence="4"
+            groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+  <menuitem id="menu_pet_clinic_partner_reimbursement" name="Partner Reimbursements"
+            parent="menu_pet_clinic_finance" action="action_pet_clinic_partner_reimbursement" sequence="5"
+            groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+  <menuitem id="menu_pet_clinic_funding_source" name="Funding Sources"
+            parent="menu_pet_clinic_finance" action="action_pet_funding_source" sequence="20"
+            groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+  <menuitem id="menu_pet_expense_category" name="Expense Categories"
+            parent="menu_pet_clinic_finance" action="action_pet_expense_category" sequence="21"
+            groups="pet_management.group_pet_clinic_accountant,base.group_system"/>
+</odoo>

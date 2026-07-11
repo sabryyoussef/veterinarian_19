@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'PetSpot Backend Sidebar (Clinic Hub)',
-    'version': '19.0.1.1.0',
+    'version': '19.0.1.1.1',
     'category': 'Services',
     'summary': 'Clinic Hub dashboard with left sidebar for common PetSpot workflows',
     'description': """

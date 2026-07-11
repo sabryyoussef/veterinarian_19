@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Idempotent per-company setup (safe on every module update). -->
+  <function model="pet.clinic.finance.setup" name="setup_all_companies"/>
+</odoo>

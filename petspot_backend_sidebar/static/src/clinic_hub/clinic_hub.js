@@ -91,6 +91,27 @@ const NAV_ITEMS = [
         groups: ["stock.group_stock_user", "stock.group_stock_manager"],
     },
     {
+        id: "quick_expense",
+        label: "Quick Expense",
+        icon: "fa-bolt",
+        actionXmlId: "pet_management.action_pet_clinic_quick_expense",
+        groups: [
+            "pet_management.group_pet_clinic_reception",
+            "pet_management.group_pet_clinic_accountant",
+            "pet_management.group_pet_clinic_billing_manager",
+        ],
+    },
+    {
+        id: "clinic_finance",
+        label: "Clinic Finance",
+        icon: "fa-money",
+        actionXmlId: "pet_management.action_pet_clinic_finance_dashboard",
+        groups: [
+            "pet_management.group_pet_clinic_accountant",
+            "pet_management.group_pet_clinic_billing_manager",
+        ],
+    },
+    {
         id: "accounting",
         label: "Accounting",
         icon: "fa-book",

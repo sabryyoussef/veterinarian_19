@@ -392,3 +392,45 @@ class TestAppointmentIntakeUX(TransactionCase):
         appt.set_to_confirmed()
         self.assertEqual(appt.state, 'confirmed')
         self.assertTrue(appt.medical_visit_id)
+
+    def test_27_calendar_sync_no_pet_uses_intake_owner(self):
+        """Owner-first draft must not create calendar.attendee with empty partner_id."""
+        self.env['ir.config_parameter'].sudo().set_param(
+            'pet_management.enable_calendar_integration', 'True'
+        )
+        appt = self.Appointment.create(self._appt_vals(
+            intake_owner_id=self.owner_none.id,
+            title='Calendar sync no pet',
+            start_datetime='2026-07-13 10:00:00',
+            end_datetime='2026-07-13 10:30:00',
+            sync_to_calendar=True,
+        ))
+        self.assertFalse(appt.pet_id)
+        self.assertFalse(appt.owner_id)
+        self.assertTrue(appt.calendar_event_id)
+        partners = appt.calendar_event_id.partner_ids
+        self.assertIn(self.owner_none, partners)
+        # No attendee rows without partner_id
+        bad = self.env['calendar.attendee'].search([
+            ('event_id', '=', appt.calendar_event_id.id),
+            ('partner_id', '=', False),
+        ])
+        self.assertFalse(bad)
+
+    def test_28_calendar_sync_without_any_owner_skips_attendees(self):
+        self.env['ir.config_parameter'].sudo().set_param(
+            'pet_management.enable_calendar_integration', 'True'
+        )
+        appt = self.Appointment.create(self._appt_vals(
+            title='Calendar sync no owner',
+            start_datetime='2026-07-13 11:00:00',
+            end_datetime='2026-07-13 11:30:00',
+            sync_to_calendar=True,
+        ))
+        self.assertTrue(appt.calendar_event_id)
+        self.assertFalse(appt.calendar_event_id.partner_ids)
+        bad = self.env['calendar.attendee'].search([
+            ('event_id', '=', appt.calendar_event_id.id),
+            ('partner_id', '=', False),
+        ])
+        self.assertFalse(bad)

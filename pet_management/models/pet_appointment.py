@@ -2150,8 +2150,27 @@ class PetAppointment(models.Model):
         except:
             return False
 
+    def _calendar_attendee_partner_ids(self):
+        """Partners to invite on the calendar event (never include False)."""
+        self.ensure_one()
+        partner = self.intake_owner_id or self.owner_id
+        return [partner.id] if partner else []
+
+    def _calendar_event_description(self):
+        self.ensure_one()
+        owner = self.intake_owner_id or self.owner_id
+        pet_name = self.pet_id.sudo().name if self.pet_id else _('(no pet yet)')
+        owner_name = owner.sudo().name if owner else _('(no owner)')
+        return _(
+            "Pet: %(pet)s\nOwner: %(owner)s\nNotes: %(notes)s",
+            pet=pet_name,
+            owner=owner_name,
+            notes=self.notes or '',
+        )
+
     def action_sync_to_calendar(self):
         """Sync appointment to calendar if calendar module is installed and enabled"""
+        self.ensure_one()
         if not self._is_calendar_module_installed():
             return {
                 'type': 'ir.actions.client',
@@ -2192,25 +2211,34 @@ class PetAppointment(models.Model):
                 }
             }
         
-        # Create or update calendar event
+        # Create or update calendar event.
+        # Never pass partner_id=False — calendar.attendee requires Attendee (partner_id).
+        # Prefer intake_owner_id so owner-first drafts (no pet yet) still sync safely.
+        partner_ids = self._calendar_attendee_partner_ids()
+        event_vals = {
+            'name': f"Pet Appointment: {self.title}",
+            'start': self.start_datetime,
+            'stop': self.end_datetime,
+            'description': self._calendar_event_description(),
+            'user_id': self.vet_employee_id.user_id.id if self.vet_employee_id and self.vet_employee_id.user_id else self.env.user.id,
+        }
+        if partner_ids:
+            event_vals['partner_ids'] = [(6, 0, partner_ids)]
+
         if not self.calendar_event_id:
-            event_vals = {
-                'name': f"Pet Appointment: {self.title}",
-                'start': self.start_datetime,
-                'stop': self.end_datetime,
-                'description': f"Pet: {self.pet_id.sudo().name}\nOwner: {self.owner_id.sudo().name}\nNotes: {self.notes or ''}",
-                'partner_ids': [(6, 0, [self.owner_id.id])],
-                'user_id': self.vet_employee_id.user_id.id if self.vet_employee_id and self.vet_employee_id.user_id else self.env.user.id,
-            }
             event = self.env['calendar.event'].sudo().create(event_vals)
             self.calendar_event_id = event.id
         else:
-            self.calendar_event_id.sudo().write({
-                'name': f"Pet Appointment: {self.title}",
-                'start': self.start_datetime,
-                'stop': self.end_datetime,
-                'description': f"Pet: {self.pet_id.sudo().name}\nOwner: {self.owner_id.sudo().name}\nNotes: {self.notes or ''}",
-            })
+            # Do not wipe attendees with [False] when owner is missing.
+            write_vals = {
+                'name': event_vals['name'],
+                'start': event_vals['start'],
+                'stop': event_vals['stop'],
+                'description': event_vals['description'],
+            }
+            if partner_ids:
+                write_vals['partner_ids'] = [(6, 0, partner_ids)]
+            self.calendar_event_id.sudo().write(write_vals)
         
         return {
             'type': 'ir.actions.client',

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_calendar_event_form_pet_appointment" model="ir.ui.view">
+    <field name="name">calendar.event.form.pet.appointment</field>
+    <field name="model">calendar.event</field>
+    <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+    <field name="arch" type="xml">
+      <header position="inside">
+        <button name="action_open_pet_appointment" type="object"
+                string="Open Pet Appointment"
+                class="btn-primary"
+                icon="fa-paw"
+                invisible="not pet_appointment_id"/>
+      </header>
+      <div name="button_box" position="inside">
+        <button name="action_open_pet_appointment" type="object"
+                class="oe_stat_button" icon="fa-paw"
+                invisible="not pet_appointment_id">
+          <div class="o_stat_info">
+            <span class="o_stat_text">Pet Appointment</span>
+          </div>
+        </button>
+      </div>
+      <field name="active" position="after">
+        <field name="pet_appointment_id" invisible="1"/>
+      </field>
+    </field>
+  </record>
+
+  <!-- List row click → pet appointment when linked -->
+  <record id="view_calendar_event_tree_pet_open" model="ir.ui.view">
+    <field name="name">calendar.event.list.pet.open</field>
+    <field name="model">calendar.event</field>
+    <field name="inherit_id" ref="calendar.view_calendar_event_tree"/>
+    <field name="arch" type="xml">
+      <xpath expr="//list" position="attributes">
+        <attribute name="action">action_open_meeting_or_pet</attribute>
+        <attribute name="type">object</attribute>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="view_calendar_event_tree_booking_pet_open" model="ir.ui.view">
+    <field name="name">calendar.event.list.booking.pet.open</field>
+    <field name="model">calendar.event</field>
+    <field name="inherit_id" ref="appointment.calendar_event_view_tree_booking"/>
+    <field name="arch" type="xml">
+      <xpath expr="//list" position="attributes">
+        <attribute name="action">action_open_meeting_or_pet</attribute>
+        <attribute name="type">object</attribute>
+      </xpath>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,325 @@
+/* Clinic Finance Dashboard — scoped styles only (no external @import). */
+
+.o_pet_clinic_finance_dashboard {
+    --cf-ink: #1c2b26;
+    --cf-muted: #5c6f67;
+    --cf-line: rgba(28, 43, 38, 0.12);
+    --cf-teal: #0d6b5c;
+    --cf-teal-deep: #084f44;
+    --cf-surface: #ffffff;
+    --cf-good: #1f7a4d;
+    --cf-warn: #9a5b12;
+    --cf-bad: #a33b3b;
+    --cf-radius: 12px;
+    --cf-font: "Georgia", "Times New Roman", serif;
+    --cf-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+    min-height: 100%;
+    padding: 1.25rem 1.5rem 2.5rem;
+    color: var(--cf-ink);
+    font-family: var(--cf-sans);
+    background: linear-gradient(165deg, #f7f6f1 0%, #eef3f0 55%, #f3f1ea 100%);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--cf-line);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 12rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_brand_kicker {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cf-teal);
+    font-family: var(--cf-sans);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_brand_title {
+    margin: 0;
+    font-family: var(--cf-font);
+    font-size: clamp(1.6rem, 2.3vw, 2.05rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--cf-ink);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_brand_sub {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--cf-muted);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_periods {
+    display: inline-flex;
+    align-items: stretch;
+    background: var(--cf-surface);
+    border: 1px solid var(--cf-line);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_period_btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--cf-muted);
+    font-family: var(--cf-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.55rem 0.9rem;
+    cursor: pointer;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_period_btn:hover {
+    color: var(--cf-ink);
+    background: rgba(13, 107, 92, 0.06);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_period_btn.is-active {
+    color: #fff;
+    background: var(--cf-teal);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_btn {
+    appearance: none;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-family: var(--cf-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.55rem 1rem;
+    cursor: pointer;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_btn_primary {
+    background: var(--cf-teal);
+    color: #fff;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_btn_primary:hover {
+    background: var(--cf-teal-deep);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_btn_ghost {
+    background: var(--cf-surface);
+    border-color: var(--cf-line);
+    color: var(--cf-ink);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_btn_ghost:hover {
+    border-color: rgba(13, 107, 92, 0.35);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_range {
+    margin: -0.35rem 0 1.15rem;
+    font-size: 0.82rem;
+    color: var(--cf-muted);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_loading,
+.o_pet_clinic_finance_dashboard .o_cf_empty {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--cf-muted);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_error {
+    margin: 0 0 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    background: #f8e8e8;
+    color: var(--cf-bad);
+    border: 1px solid rgba(163, 59, 59, 0.2);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_section {
+    margin-bottom: 1.6rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_section_head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.7rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_section_title {
+    margin: 0;
+    font-family: var(--cf-font);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--cf-ink);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_section_ar {
+    font-size: 0.85rem;
+    color: var(--cf-muted);
+    font-weight: 500;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_grid {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_grid_wide {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile {
+    position: relative;
+    padding: 1rem 1.1rem 1.05rem;
+    background: var(--cf-surface);
+    border: 1px solid var(--cf-line);
+    border-radius: var(--cf-radius);
+    overflow: hidden;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: var(--cf-teal);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_partner::before {
+    background: var(--cf-warn);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_perf::before {
+    background: #3d6b8a;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--cf-muted);
+    margin-bottom: 0.35rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_label_ar {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(92, 111, 103, 0.9);
+    margin-top: 0.15rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_amount {
+    font-family: var(--cf-font);
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--cf-ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_currency {
+    margin-left: 0.28rem;
+    font-family: var(--cf-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--cf-muted);
+    vertical-align: 0.2em;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_amount_good {
+    color: var(--cf-good);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_amount_bad {
+    color: var(--cf-bad);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_amount_warn {
+    color: var(--cf-warn);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_hero_row {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+    margin-bottom: 0.85rem;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_hero {
+    padding: 1.2rem 1.25rem;
+    background: linear-gradient(135deg, rgba(13, 107, 92, 0.1), #fff 60%);
+    border-color: rgba(13, 107, 92, 0.22);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_hero::before {
+    width: 4px;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_hero .o_cf_tile_amount {
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_secondary_grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_soft {
+    background: #fbfbf9;
+}
+
+.o_pet_clinic_finance_dashboard .o_cf_tile_soft .o_cf_tile_amount {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 900px) {
+    .o_pet_clinic_finance_dashboard {
+        padding: 1rem 1rem 2rem;
+    }
+
+    .o_pet_clinic_finance_dashboard .o_cf_hero_row {
+        grid-template-columns: 1fr;
+    }
+
+    .o_pet_clinic_finance_dashboard .o_cf_toolbar,
+    .o_pet_clinic_finance_dashboard .o_cf_periods,
+    .o_pet_clinic_finance_dashboard .o_cf_actions {
+        width: 100%;
+    }
+
+    .o_pet_clinic_finance_dashboard .o_cf_period_btn,
+    .o_pet_clinic_finance_dashboard .o_cf_btn {
+        flex: 1;
+        text-align: center;
+    }
+}

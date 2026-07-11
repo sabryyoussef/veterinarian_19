@@ -130,6 +130,18 @@ class TestAppointmentBillingPhase16(TransactionCase):
         warning = self.appointment.billing_warning or ''
         self.assertNotIn('Sale order total', warning)
 
+    def test_15_cannot_delete_appointment_with_invoice(self):
+        self.appointment.action_create_invoice()
+        self.appointment.action_confirm_and_create_invoice()
+        with self.assertRaises(UserError):
+            self.appointment.unlink()
+
+    def test_16_cannot_cancel_appointment_with_invoice(self):
+        self.appointment.action_create_invoice()
+        self.appointment.action_confirm_and_create_invoice()
+        with self.assertRaises(UserError):
+            self.appointment.write({'state': 'cancelled'})
+
 
 @tagged('post_install', '-at_install', 'pet_billing', 'pet_billing_concurrency')
 class TestAppointmentBillingConcurrency(TransactionCase):

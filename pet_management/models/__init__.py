@@ -31,3 +31,5 @@ from . import pet_clinic_expense
 from . import pet_clinic_wallet_transfer
 from . import pet_clinic_partner_reimbursement
 from . import pet_clinic_finance
+from . import appointment_type
+from . import calendar_event

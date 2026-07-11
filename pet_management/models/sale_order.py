@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
         string='Appointment',
         index=True,
         copy=False,
-        ondelete='set null',
+        ondelete='restrict',
         help='Clinic appointment that generated this sale order.',
     )
 
@@ -19,6 +19,10 @@ class SaleOrder(models.Model):
         vals = super()._prepare_invoice()
         if self.appointment_id:
             vals['appointment_id'] = self.appointment_id.id
+        # Clinic bills only in company currency (EGP); never inherit a USD pricelist slip-through.
+        company_currency = self.company_id.currency_id
+        if company_currency:
+            vals['currency_id'] = company_currency.id
         return vals
 
     def _appointment_active_invoices(self):

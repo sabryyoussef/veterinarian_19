@@ -17,6 +17,7 @@ class PetBillingIntegrityIssue(models.Model):
         ('status_mismatch', 'Payment Status Mismatch'),
         ('so_invoice_mismatch', 'Sale Order / Invoice Total Mismatch'),
         ('orphan_invoice_line', 'Orphan Invoice Line'),
+        ('orphan_invoice', 'Orphan Invoice Without Appointment'),
         ('pointer_mismatch', 'Invoice Pointer Mismatch'),
         ('unreconciled_credit', 'Unreconciled Appointment Credit'),
         ('duplicate_service_source', 'Duplicate Service Source'),

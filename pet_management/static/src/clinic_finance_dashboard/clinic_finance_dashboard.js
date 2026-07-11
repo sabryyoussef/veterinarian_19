@@ -4,7 +4,14 @@ import { Component, onWillStart, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { _t } from "@web/core/l10n/translation";
+
+const HERO_KEYS = ["net_profit_loss", "revenue_period", "expenses_period"];
+const SECONDARY_KEYS = [
+    "revenue_today",
+    "expenses_today",
+    "quick_expenses_period",
+    "expenses_month",
+];
 
 export class PetClinicFinanceDashboard extends Component {
     static template = "pet_management.ClinicFinanceDashboard";
@@ -24,6 +31,20 @@ export class PetClinicFinanceDashboard extends Component {
         });
     }
 
+    get performanceCards() {
+        return this.state.data?.sections?.performance?.cards || [];
+    }
+
+    get heroCards() {
+        const byKey = Object.fromEntries(this.performanceCards.map((c) => [c.key, c]));
+        return HERO_KEYS.map((key) => byKey[key]).filter(Boolean);
+    }
+
+    get secondaryCards() {
+        const byKey = Object.fromEntries(this.performanceCards.map((c) => [c.key, c]));
+        return SECONDARY_KEYS.map((key) => byKey[key]).filter(Boolean);
+    }
+
     async load() {
         this.state.loading = true;
         this.state.error = null;
@@ -38,9 +59,19 @@ export class PetClinicFinanceDashboard extends Component {
         }
     }
 
-    async onPeriodChange(ev) {
-        this.state.period = ev.target.value;
+    async setPeriod(period) {
+        if (this.state.period === period) {
+            return;
+        }
+        this.state.period = period;
         await this.load();
+    }
+
+    async onPeriodClick(ev) {
+        const period = ev.currentTarget?.dataset?.period;
+        if (period) {
+            await this.setPeriod(period);
+        }
     }
 
     openExpenses() {
@@ -53,7 +84,33 @@ export class PetClinicFinanceDashboard extends Component {
 
     formatAmount(amount) {
         const value = Number(amount || 0);
-        return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return value.toLocaleString("en-EG", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    }
+
+    amountClass(amount, kind = "balance") {
+        const value = Number(amount || 0);
+        if (kind === "partner") {
+            return value > 0 ? "o_cf_amount_warn" : "";
+        }
+        if (kind === "net") {
+            if (value > 0) {
+                return "o_cf_amount_good";
+            }
+            if (value < 0) {
+                return "o_cf_amount_bad";
+            }
+            return "";
+        }
+        if (kind === "flow") {
+            return "";
+        }
+        if (value < 0) {
+            return "o_cf_amount_bad";
+        }
+        return "";
     }
 }
 

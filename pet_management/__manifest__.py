@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.7.1',
+    'version': '19.0.1.8.2',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management
@@ -17,7 +17,7 @@ Key Features:
 * Boarding and kennel management
 * Grooming and training sessions
 * Diet plans and weight monitoring
-* Appointment scheduling with calendar integration
+* Appointment scheduling with calendar / Appointment integration
 * Idempotent appointment invoicing and payment integrity
 * Clinic expenses, funding sources, and cash balances
 * Email notifications
@@ -27,7 +27,10 @@ Key Features:
     'author': 'WebbyCrown Solutions',
     'website': 'https://www.webbycrown.com',
     'license': 'LGPL-3',
-    'depends': ['base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account', 'analytic', 'sale_management', 'calendar'],
+    'depends': [
+        'base', 'base_setup', 'mail', 'contacts', 'hr', 'product', 'account',
+        'analytic', 'sale_management', 'calendar', 'appointment',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -55,6 +58,7 @@ Key Features:
         'views/pet_kennel_views.xml',
         'wizards/appointment_pet_quick_wizard_views.xml',
         'views/pet_appointment_views.xml',
+        'views/calendar_event_views.xml',
         'views/pet_grooming_views.xml',
         'views/pet_training_views.xml',
         'views/pet_diet_views.xml',
@@ -90,6 +94,8 @@ Key Features:
             'pet_management/static/src/css/petspot_test_ui.css',
             'pet_management/static/src/js/weight_badge_styling.js',
             'pet_management/static/src/js/petspot_test_ui.js',
+            'pet_management/static/src/js/calendar_open_pet_appointment.js',
+            'pet_management/static/src/clinic_finance_dashboard/clinic_finance_dashboard.css',
             'pet_management/static/src/clinic_finance_dashboard/clinic_finance_dashboard.js',
             'pet_management/static/src/clinic_finance_dashboard/clinic_finance_dashboard.xml',
         ],

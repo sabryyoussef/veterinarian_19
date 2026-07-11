@@ -26,7 +26,7 @@
     <field name="storage_requirements">Store at 2-8°C, protect from light</field>
     <field name="expiration_date">2025-12-31</field>
     <field name="company_id" ref="base.main_company"/>
-    <field name="currency_id" ref="base.USD"/>
+    <field name="currency_id" ref="base.EGP"/>
   </record>
 
   <record id="vaccine_dhpp_dog" model="pet.vaccine">
@@ -48,7 +48,7 @@
     <field name="storage_requirements">Store at 2-8°C, do not freeze</field>
     <field name="expiration_date">2025-11-30</field>
     <field name="company_id" ref="base.main_company"/>
-    <field name="currency_id" ref="base.USD"/>
+    <field name="currency_id" ref="base.EGP"/>
   </record>
 
   <record id="vaccine_fvrcp_cat" model="pet.vaccine">
@@ -70,7 +70,7 @@
     <field name="storage_requirements">Store at 2-8°C, protect from light</field>
     <field name="expiration_date">2025-10-31</field>
     <field name="company_id" ref="base.main_company"/>
-    <field name="currency_id" ref="base.USD"/>
+    <field name="currency_id" ref="base.EGP"/>
   </record>
 
   <!-- ======================================== -->

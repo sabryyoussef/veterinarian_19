@@ -1,6 +1,9 @@
 from datetime import timedelta
+import logging
 from odoo import models, fields, api, _ # type
 from odoo.exceptions import UserError, ValidationError
+
+_logger = logging.getLogger(__name__)
 
 class PetAppointment(models.Model):
     _name = 'pet.appointment'
@@ -722,7 +725,6 @@ class PetAppointment(models.Model):
         if self.pet_id and self.pet_id.owner_id:
             self.intake_owner_id = self.pet_id.owner_id
 
-
     def _check_pet_required_for_operation(self):
         """Block operational/billing workflows until a pet is linked."""
         for rec in self:
@@ -760,6 +762,23 @@ class PetAppointment(models.Model):
             if pet.owner_id:
                 vals['intake_owner_id'] = pet.owner_id.id
         return vals
+
+    def _backfill_intake_owner_from_pet(self):
+        """Fill Owner (intake) from the pet when missing — fixes legacy rows and missed onchanges.
+
+        The form shows intake_owner_id (not related owner_id), so empty intake looks like
+        missing owner data even when the pet has an owner.
+        """
+        recs = self.filtered(lambda r: r.pet_id and r.pet_id.owner_id and not r.intake_owner_id)
+        for rec in recs:
+            # Direct write of the field avoids re-entering full business write() side effects.
+            super(PetAppointment, rec).write({'intake_owner_id': rec.pet_id.owner_id.id})
+        return recs
+
+    @api.model
+    def _backfill_all_missing_intake_owners(self):
+        missing = self.search([('pet_id', '!=', False), ('intake_owner_id', '=', False)])
+        return missing._backfill_intake_owner_from_pet()
 
     @api.constrains('is_complimentary', 'complimentary_reason')
     def _check_complimentary_reason(self):
@@ -1356,16 +1375,14 @@ class PetAppointment(models.Model):
                 )
                 
         appointments = super().create(vals_list)
+        appointments._backfill_intake_owner_from_pet()
         for appointment in appointments:
             if appointment.auto_create_facility and appointment.state == 'confirmed':
                 appointment.action_create_facility_entry()
             
             # Auto-sync to calendar if enabled
-            if appointment.sync_to_calendar and appointment._is_calendar_module_installed():
-                icp = self.env['ir.config_parameter'].sudo()
-                enable_calendar = icp.get_param('pet_management.enable_calendar_integration') in (True, 'True', '1', 1)
-                if enable_calendar:
-                    appointment.action_sync_to_calendar()
+            if appointment.sync_to_calendar and appointment._is_calendar_sync_enabled():
+                appointment._sync_calendar_event()
                     
         return appointments
 
@@ -1404,7 +1421,24 @@ class PetAppointment(models.Model):
                     if field not in vals:  # Only clear if not explicitly set
                         vals[field] = False
 
+        # Keep appointment ↔ invoice history: do not cancel appointments with active invoices
+        if vals.get('state') == 'cancelled':
+            for rec in self:
+                active_inv = rec._get_linked_invoices().filtered(
+                    lambda m: m.state != 'cancel' and m.move_type in ('out_invoice', 'out_refund')
+                )
+                if active_inv:
+                    raise UserError(_(
+                        'Cannot cancel appointment %(appt)s while invoice(s) %(invs)s are still active. '
+                        'Cancel or credit-note the invoices first so Accounting and Appointments stay aligned.',
+                        appt=rec.display_name,
+                        invs=', '.join(active_inv.mapped('display_name')),
+                    ))
+        
         result = super().write(vals)
+        # Catch rows where pet was already set before intake_owner existed, or onchange was skipped.
+        if 'pet_id' in vals or 'intake_owner_id' not in vals:
+            self._backfill_intake_owner_from_pet()
 
         # Propagate a changed veterinarian to already-created facility records
         if 'vet_employee_id' in vals:
@@ -1434,8 +1468,41 @@ class PetAppointment(models.Model):
                     facility_record = getattr(rec, field)
                     if facility_record and hasattr(facility_record, 'appointment_id'):
                         facility_record.write({'appointment_id': rec.id})
+
+        # Keep linked calendar.event in sync (reschedule / cancel / owner / vet / …)
+        calendar_fields = {
+            'start_datetime', 'end_datetime', 'title', 'notes', 'state',
+            'pet_id', 'intake_owner_id', 'owner_id', 'vet_employee_id',
+            'room_id', 'primary_type', 'sync_to_calendar',
+        }
+        if not self.env.context.get('skip_calendar_event_sync') and calendar_fields & set(vals):
+            self._sync_calendar_events_after_write(vals)
         
         return result
+
+    def unlink(self):
+        """Never delete appointments that still have accounting documents."""
+        for rec in self:
+            invoices = rec._get_linked_invoices().filtered(lambda m: m.state != 'cancel')
+            if invoices:
+                raise UserError(_(
+                    'Cannot delete appointment %(appt)s because it has invoice(s) %(invs)s. '
+                    'Cancel or credit-note those invoices first (or keep the appointment). '
+                    'Deleting appointments while invoices remain causes Accounting vs Appointments mismatches.',
+                    appt=rec.display_name,
+                    invs=', '.join(invoices.mapped('display_name')),
+                ))
+            if rec.sale_order_id and rec.sale_order_id.state not in ('cancel', 'draft'):
+                so_invs = rec.sale_order_id.invoice_ids.filtered(
+                    lambda m: m.move_type in ('out_invoice', 'out_refund') and m.state != 'cancel'
+                )
+                if so_invs:
+                    raise UserError(_(
+                        'Cannot delete appointment %(appt)s: sale order %(so)s still has invoices.',
+                        appt=rec.display_name,
+                        so=rec.sale_order_id.display_name,
+                    ))
+        return super().unlink()
 
     def _refresh_invoice_sync(self):
         """Synchronous method to refresh invoice without UI interaction"""
@@ -1701,6 +1768,7 @@ class PetAppointment(models.Model):
             'client_order_ref': self.name,
             'company_id': self.company_id.id,
             'appointment_id': self.id,
+            'pricelist_id': self._clinic_sale_pricelist().id,
             'order_line': [(0, 0, lv) for lv in clean_vals],
         })
         for so_line, lv, svc_id in zip(order.order_line, clean_vals, source_map):
@@ -1711,6 +1779,33 @@ class PetAppointment(models.Model):
                 ).write({'sale_line_id': so_line.id})
         self.sale_order_id = order.id
         return order
+
+    def _clinic_sale_pricelist(self):
+        """Always bill appointments in the company currency (EGP)."""
+        self.ensure_one()
+        company = self.company_id
+        currency = company.currency_id
+        Pricelist = self.env['product.pricelist'].sudo()
+        pricelist = Pricelist.search([
+            ('currency_id', '=', currency.id),
+            '|', ('company_id', '=', False), ('company_id', '=', company.id),
+        ], order='sequence, id', limit=1)
+        if pricelist:
+            return pricelist
+        # Last resort: fix Default / create a company pricelist in company currency.
+        fallback = Pricelist.search([
+            '|', ('company_id', '=', False), ('company_id', '=', company.id),
+        ], order='sequence, id', limit=1)
+        if fallback:
+            if fallback.currency_id != currency:
+                fallback.currency_id = currency.id
+            return fallback
+        return Pricelist.create({
+            'name': _('Clinic %s') % (currency.name or 'EGP'),
+            'currency_id': currency.id,
+            'company_id': company.id,
+            'sequence': 1,
+        })
 
     def _sync_services_from_invoice(self):
         """Sync invoice-sourced extras by stable identity; never duplicate visit lines."""
@@ -2033,6 +2128,24 @@ class PetAppointment(models.Model):
                     'name': _('%s: done without invoice') % appt.name,
                     'details': 'service_total=%s' % (appt.service_total or appt.cost),
                 })
+        # Global orphan invoices: posted customer invoices with APT* origin but no appointment
+        Move = self.env['account.move'].sudo()
+        orphans = Move.search([
+            ('move_type', '=', 'out_invoice'),
+            ('state', '=', 'posted'),
+            ('appointment_id', '=', False),
+            ('invoice_origin', '=ilike', 'APT%'),
+        ])
+        for inv in orphans:
+            findings.append({
+                'appointment_id': False,
+                'issue_type': 'orphan_invoice',
+                'severity': 'critical',
+                'name': _('Orphan invoice %s (no appointment)') % inv.name,
+                'details': 'origin=%s amount=%s partner=%s' % (
+                    inv.invoice_origin, inv.amount_total, inv.partner_id.display_name),
+                'classification': 'other',
+            })
         return findings
 
     def _scan_billing_integrity_issues(self):
@@ -2048,21 +2161,28 @@ class PetAppointment(models.Model):
         created_or_updated = 0
         now = fields.Datetime.now()
         for finding in findings:
-            key = (finding['appointment_id'], finding['issue_type'])
+            appt_id = finding.get('appointment_id') or False
+            key = (appt_id, finding['issue_type'], finding.get('details') or finding.get('name'))
+            # For appointment-scoped issues keep unique by (appt, type)
+            if appt_id:
+                key = (appt_id, finding['issue_type'])
             found_keys.add(key)
             vals = {
                 'name': finding['name'],
-                'appointment_id': finding['appointment_id'],
+                'appointment_id': appt_id or False,
                 'issue_type': finding['issue_type'],
                 'severity': finding['severity'],
                 'details': finding.get('details'),
                 'classification': finding.get('classification') or False,
                 'detected_at': now,
             }
-            existing = Issue.search([
-                ('appointment_id', '=', finding['appointment_id']),
-                ('issue_type', '=', finding['issue_type']),
-            ], order='id desc', limit=1)
+            domain = [('issue_type', '=', finding['issue_type'])]
+            if appt_id:
+                domain.append(('appointment_id', '=', appt_id))
+            else:
+                domain.append(('appointment_id', '=', False))
+                domain.append(('name', '=', finding['name']))
+            existing = Issue.search(domain, order='id desc', limit=1)
             if existing:
                 write_vals = {
                     k: vals[k] for k in ('name', 'severity', 'details', 'classification', 'detected_at')
@@ -2078,9 +2198,21 @@ class PetAppointment(models.Model):
         open_issues = Issue.search([('state', '=', 'open')])
         resolved = 0
         for issue in open_issues:
-            if (issue.appointment_id.id, issue.issue_type) not in found_keys:
-                issue.write({'state': 'resolved'})
-                resolved += 1
+            issue_key = (issue.appointment_id.id if issue.appointment_id else False, issue.issue_type)
+            if issue.appointment_id:
+                if issue_key not in found_keys:
+                    issue.write({'state': 'resolved'})
+                    resolved += 1
+            else:
+                # orphan issues keyed by name in found_keys as (False, type) only if still present
+                still = any(
+                    not f.get('appointment_id') and f.get('issue_type') == issue.issue_type
+                    and f.get('name') == issue.name
+                    for f in findings
+                )
+                if not still:
+                    issue.write({'state': 'resolved'})
+                    resolved += 1
 
         return {
             'type': 'ir.actions.client',
@@ -2313,8 +2445,26 @@ class PetAppointment(models.Model):
                 ('name', '=', 'calendar'),
                 ('state', '=', 'installed')
             ]).exists() and 'calendar.event' in self.env
-        except:
+        except Exception:
             return False
+
+    def _is_appointment_module_installed(self):
+        try:
+            return (
+                'appointment.type' in self.env
+                and self.env['ir.module.module'].search([
+                    ('name', '=', 'appointment'),
+                    ('state', '=', 'installed'),
+                ]).exists()
+            )
+        except Exception:
+            return False
+
+    def _is_calendar_sync_enabled(self):
+        if not self._is_calendar_module_installed():
+            return False
+        icp = self.env['ir.config_parameter'].sudo()
+        return icp.get_param('pet_management.enable_calendar_integration') in (True, 'True', '1', 1)
 
     def _is_stock_module_installed(self):
         """Check if stock module is installed and active"""
@@ -2323,7 +2473,7 @@ class PetAppointment(models.Model):
                 ('name', '=', 'stock'),
                 ('state', '=', 'installed')
             ]).exists() and 'stock.move' in self.env
-        except:
+        except Exception:
             return False
 
     def _calendar_attendee_partner_ids(self):
@@ -2337,12 +2487,187 @@ class PetAppointment(models.Model):
         owner = self.intake_owner_id or self.owner_id
         pet_name = self.pet_id.sudo().name if self.pet_id else _('(no pet yet)')
         owner_name = owner.sudo().name if owner else _('(no owner)')
+        room_name = self.room_id.sudo().name if self.room_id else _('(none)')
         return _(
-            "Pet: %(pet)s\nOwner: %(owner)s\nNotes: %(notes)s",
+            "Pet: %(pet)s\nOwner: %(owner)s\nRoom: %(room)s\nType: %(ptype)s\nNotes: %(notes)s",
             pet=pet_name,
             owner=owner_name,
+            room=room_name,
+            ptype=self._get_primary_type_label(),
             notes=self.notes or '',
         )
+
+    def _appointment_type_for_primary(self):
+        """Enterprise appointment.type mapped to this clinic primary_type (if any)."""
+        self.ensure_one()
+        if not self._is_appointment_module_installed() or not self.primary_type:
+            return self.env['appointment.type'].browse()
+        return self.env['appointment.type'].sudo().search([
+            ('pet_primary_type', '=', self.primary_type),
+            ('active', '=', True),
+        ], limit=1)
+
+    def _prepare_calendar_event_vals(self):
+        self.ensure_one()
+        partner_ids = self._calendar_attendee_partner_ids()
+        event_vals = {
+            'name': _('Pet Appointment: %s') % (self.title or self.name),
+            'start': self.start_datetime,
+            'stop': self.end_datetime,
+            'description': self._calendar_event_description(),
+            'user_id': (
+                self.vet_employee_id.user_id.id
+                if self.vet_employee_id and self.vet_employee_id.user_id
+                else self.env.user.id
+            ),
+            'active': self.state != 'cancelled',
+        }
+        if partner_ids:
+            event_vals['partner_ids'] = [(6, 0, partner_ids)]
+        if self._is_appointment_module_installed():
+            atype = self._appointment_type_for_primary()
+            if atype:
+                event_vals['appointment_type_id'] = atype.id
+                event_vals['appointment_status'] = {
+                    'draft': 'request',
+                    'confirmed': 'booked',
+                    'in_progress': 'booked',
+                    'done': 'attended',
+                    'cancelled': 'cancelled',
+                    'rescheduled': 'booked',
+                }.get(self.state, 'booked')
+            event_vals['pet_appointment_id'] = self.id
+        return event_vals
+
+    def _sync_calendar_event(self):
+        """Create/update the linked calendar.event without UI notifications."""
+        self.ensure_one()
+        if self.env.context.get('skip_calendar_event_sync'):
+            return False
+        if not self._is_calendar_sync_enabled() or not self.sync_to_calendar:
+            return False
+        if self.state == 'cancelled':
+            return self._deactivate_calendar_event()
+
+        event_vals = self._prepare_calendar_event_vals()
+        Event = self.env['calendar.event'].sudo().with_context(
+            skip_pet_appointment_from_booking=True,
+            skip_calendar_event_sync=True,
+        )
+        if not self.calendar_event_id:
+            event = Event.create(event_vals)
+            # Avoid re-entering write calendar hook for the link alone
+            super(PetAppointment, self).write({'calendar_event_id': event.id})
+            return event
+
+        write_vals = {
+            'name': event_vals['name'],
+            'start': event_vals['start'],
+            'stop': event_vals['stop'],
+            'description': event_vals['description'],
+            'user_id': event_vals['user_id'],
+            'active': event_vals.get('active', True),
+        }
+        if 'partner_ids' in event_vals:
+            write_vals['partner_ids'] = event_vals['partner_ids']
+        if 'appointment_type_id' in event_vals:
+            write_vals['appointment_type_id'] = event_vals['appointment_type_id']
+        if 'appointment_status' in event_vals:
+            write_vals['appointment_status'] = event_vals['appointment_status']
+        if 'pet_appointment_id' in event_vals:
+            write_vals['pet_appointment_id'] = event_vals['pet_appointment_id']
+        self.calendar_event_id.with_context(
+            skip_pet_appointment_from_booking=True,
+            skip_calendar_event_sync=True,
+        ).sudo().write(write_vals)
+        return self.calendar_event_id
+
+    def _deactivate_calendar_event(self):
+        self.ensure_one()
+        event = self.calendar_event_id
+        if not event:
+            return False
+        write_vals = {'active': False}
+        if 'appointment_status' in event._fields:
+            write_vals['appointment_status'] = 'cancelled'
+        event.with_context(
+            skip_pet_appointment_from_booking=True,
+            skip_calendar_event_sync=True,
+        ).sudo().write(write_vals)
+        return event
+
+    def _sync_calendar_events_after_write(self, vals):
+        for rec in self:
+            if not rec._is_calendar_sync_enabled():
+                continue
+            if not rec.sync_to_calendar:
+                if rec.calendar_event_id and vals.get('sync_to_calendar') is False:
+                    rec._deactivate_calendar_event()
+                continue
+            if rec.state == 'cancelled' or vals.get('state') == 'cancelled':
+                rec._deactivate_calendar_event()
+                continue
+            # Re-activate / create when leaving cancelled or on normal field changes
+            rec._sync_calendar_event()
+
+    @api.model
+    def _backfill_missing_calendar_events(self):
+        """Create calendar events for appointments that should have them but don't."""
+        if not self._is_calendar_sync_enabled():
+            return self.browse()
+        missing = self.search([
+            ('sync_to_calendar', '=', True),
+            ('calendar_event_id', '=', False),
+            ('state', '!=', 'cancelled'),
+            ('start_datetime', '!=', False),
+            ('end_datetime', '!=', False),
+        ])
+        for appt in missing:
+            try:
+                appt._sync_calendar_event()
+            except Exception:
+                _logger.exception('Calendar backfill failed for appointment %s', appt.id)
+        return missing
+
+    @api.model
+    def _create_from_calendar_booking(self, event):
+        """Create a draft/confirmed pet.appointment from an Appointment-app calendar event."""
+        event.ensure_one()
+        atype = event.appointment_type_id
+        if not atype or not atype.pet_primary_type:
+            return self.browse()
+        primary = atype.pet_primary_type
+        # Grooming mapped to selection 'other' + is_grooming when not in primary selection
+        primary_sel = primary if primary in dict(self._fields['primary_type'].selection) else 'other'
+        owner = event._booking_customer_partner()
+        employee = self.env['hr.employee']
+        if event.user_id:
+            employee = self.env['hr.employee'].search([('user_id', '=', event.user_id.id)], limit=1)
+        title = event.name or atype.name or _('Booked appointment')
+        # Always draft: reception still needs pet/owner completion before confirm/billing.
+        vals = {
+            'title': title,
+            'start_datetime': event.start,
+            'end_datetime': event.stop,
+            'primary_type': primary_sel,
+            'intake_owner_id': owner.id if owner else False,
+            'vet_employee_id': employee.id if employee else False,
+            'calendar_event_id': event.id,
+            'sync_to_calendar': True,
+            'state': 'draft',
+            'notes': _('Created from Appointment booking: %s') % (atype.name,),
+            'company_id': self.env.company.id,
+        }
+        if event.appointment_status == 'cancelled':
+            vals['state'] = 'cancelled'
+        if primary == 'grooming':
+            vals['is_grooming'] = True
+        if primary_sel in self._clinical_primary_types():
+            vals['is_medical'] = True
+        return self.with_context(
+            skip_calendar_event_sync=True,
+            skip_pet_appointment_from_booking=True,
+        ).create(vals)
 
     def action_sync_to_calendar(self):
         """Sync appointment to calendar if calendar module is installed and enabled"""
@@ -2352,90 +2677,59 @@ class PetAppointment(models.Model):
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'title': 'Warning',
-                    'message': 'Calendar module is not installed. Please install the Calendar module to use this feature.',
+                    'title': _('Warning'),
+                    'message': _('Calendar module is not installed.'),
                     'type': 'warning',
                     'sticky': True,
                 }
             }
-        
+
         if not self.sync_to_calendar:
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'title': 'Info',
-                    'message': 'Calendar sync is disabled for this appointment.',
+                    'title': _('Info'),
+                    'message': _('Calendar sync is disabled for this appointment.'),
                     'type': 'info',
                     'sticky': False,
                 }
             }
-        
-        # Check if calendar integration is enabled in settings
-        icp = self.env['ir.config_parameter'].sudo()
-        enable_calendar = icp.get_param('pet_management.enable_calendar_integration') in (True, 'True', '1', 1)
-        
-        if not enable_calendar:
+
+        if not self._is_calendar_sync_enabled():
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'title': 'Info',
-                    'message': 'Calendar integration is disabled in Pet Management settings.',
+                    'title': _('Info'),
+                    'message': _('Calendar integration is disabled in Pet Management settings.'),
                     'type': 'info',
                     'sticky': False,
                 }
             }
-        
-        # Create or update calendar event.
-        # Never pass partner_id=False — calendar.attendee requires Attendee (partner_id).
-        # Prefer intake_owner_id so owner-first drafts (no pet yet) still sync safely.
-        partner_ids = self._calendar_attendee_partner_ids()
-        event_vals = {
-            'name': f"Pet Appointment: {self.title}",
-            'start': self.start_datetime,
-            'stop': self.end_datetime,
-            'description': self._calendar_event_description(),
-            'user_id': self.vet_employee_id.user_id.id if self.vet_employee_id and self.vet_employee_id.user_id else self.env.user.id,
-        }
-        if partner_ids:
-            event_vals['partner_ids'] = [(6, 0, partner_ids)]
 
-        if not self.calendar_event_id:
-            event = self.env['calendar.event'].sudo().create(event_vals)
-            self.calendar_event_id = event.id
-        else:
-            # Do not wipe attendees with [False] when owner is missing.
-            write_vals = {
-                'name': event_vals['name'],
-                'start': event_vals['start'],
-                'stop': event_vals['stop'],
-                'description': event_vals['description'],
-            }
-            if partner_ids:
-                write_vals['partner_ids'] = [(6, 0, partner_ids)]
-            self.calendar_event_id.sudo().write(write_vals)
-        
+        self._sync_calendar_event()
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
-                'title': 'Success',
-                'message': 'Appointment synced to calendar successfully.',
+                'title': _('Success'),
+                'message': _('Appointment synced to calendar successfully.'),
                 'type': 'success',
-                'sticky': True,
+                'sticky': False,
             }
         }
 
     def action_view_calendar_event(self):
         """Open the linked calendar event"""
+        self.ensure_one()
         if not self.calendar_event_id:
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'title': 'Warning',
-                    'message': 'No calendar event linked to this appointment or calendar module not installed.',
+                    'title': _('Warning'),
+                    'message': _('No calendar event linked to this appointment.'),
                     'type': 'warning',
                     'sticky': True,
                 }
@@ -2443,11 +2737,15 @@ class PetAppointment(models.Model):
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Calendar Event',
+            'name': _('Calendar Event'),
             'res_model': 'calendar.event',
             'res_id': self.calendar_event_id.id,
             'view_mode': 'form',
             'target': 'current',
+            'context': {
+                'active_test': False,
+                'calendar_event_keep_form': True,
+            },
         }
 
     def action_manage_inventory(self):

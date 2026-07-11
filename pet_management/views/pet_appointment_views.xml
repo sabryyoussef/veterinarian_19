@@ -147,7 +147,11 @@
           <button name="action_create_reminder_notification" type="object" string="Create Reminder" 
                   invisible="state not in ['confirmed', 'in_progress'] or not pet_id" class="btn-warning" icon="fa-clock-o"/>
           <button name="action_sync_to_calendar" type="object" string="Sync to Calendar" 
-                  invisible="state == 'draft' or not enable_calendar_integration or not sync_to_calendar or has_calendar_event or not pet_id" class="btn-primary" icon="fa-calendar"/>
+                  invisible="state == 'draft' or not enable_calendar_integration or not sync_to_calendar or has_calendar_event" class="btn-primary" icon="fa-calendar"/>
+          <button name="action_sync_to_calendar" type="object" string="Re-sync to Calendar" 
+                  invisible="not enable_calendar_integration or not sync_to_calendar or not has_calendar_event or state == 'cancelled'" class="btn-secondary" icon="fa-refresh"/>
+          <button name="action_view_calendar_event" type="object" string="Open Calendar Event" 
+                  invisible="not has_calendar_event" class="btn-info" icon="fa-external-link"/>
           <button name="action_create_facility_entry" type="object" string="Create Facility Entry" 
                   invisible="state not in ['confirmed', 'in_progress'] or (medical_visit_id or vaccination_id or grooming_session_id or training_session_id or boarding_stay_id) or not pet_id" 
                   class="btn-primary" icon="fa-plus"/>

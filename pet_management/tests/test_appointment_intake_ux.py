@@ -581,3 +581,91 @@ class TestAppointmentIntakeUX(TransactionCase):
         self.assertFalse(self.Appointment._appointment_slot_busy(
             start, end, vet_id=emp.id,
         ))
+
+    def test_37_calendar_resync_on_reschedule(self):
+        self.env['ir.config_parameter'].sudo().set_param(
+            'pet_management.enable_calendar_integration', 'True'
+        )
+        appt = self.Appointment.create(self._appt_vals(
+            pet_id=self.pet_only.id,
+            intake_owner_id=self.owner_one.id,
+            title='Reschedule sync',
+            start_datetime='2026-07-18 10:00:00',
+            end_datetime='2026-07-18 10:30:00',
+            sync_to_calendar=True,
+        ))
+        self.assertTrue(appt.calendar_event_id)
+        event = appt.calendar_event_id
+        appt.write({
+            'start_datetime': '2026-07-18 14:00:00',
+            'title': 'Reschedule sync moved',
+        })
+        self.assertEqual(event.start, fields.Datetime.to_datetime('2026-07-18 14:00:00'))
+        self.assertEqual(event.stop, fields.Datetime.to_datetime('2026-07-18 14:30:00'))
+        self.assertIn('Reschedule sync moved', event.name)
+
+    def test_38_calendar_deactivate_on_cancel(self):
+        self.env['ir.config_parameter'].sudo().set_param(
+            'pet_management.enable_calendar_integration', 'True'
+        )
+        appt = self.Appointment.create(self._appt_vals(
+            pet_id=self.pet_only.id,
+            title='Cancel sync',
+            start_datetime='2026-07-18 16:00:00',
+            end_datetime='2026-07-18 16:30:00',
+            sync_to_calendar=True,
+            state='confirmed',
+        ))
+        event = appt.calendar_event_id
+        self.assertTrue(event)
+        self.assertTrue(event.active)
+        appt.write({'state': 'cancelled'})
+        self.assertFalse(event.active)
+
+    def test_39_calendar_event_gets_appointment_type(self):
+        if 'appointment.type' not in self.env:
+            self.skipTest('appointment module not installed')
+        self.env['ir.config_parameter'].sudo().set_param(
+            'pet_management.enable_calendar_integration', 'True'
+        )
+        self.env['appointment.type'].ensure_clinic_pet_appointment_types()
+        appt = self.Appointment.create(self._appt_vals(
+            pet_id=self.pet_only.id,
+            title='Typed emergency',
+            primary_type='emergency',
+            start_datetime='2026-07-19 09:00:00',
+            end_datetime='2026-07-19 09:30:00',
+            sync_to_calendar=True,
+        ))
+        self.assertTrue(appt.calendar_event_id)
+        self.assertTrue(appt.calendar_event_id.appointment_type_id)
+        self.assertEqual(
+            appt.calendar_event_id.appointment_type_id.pet_primary_type,
+            'emergency',
+        )
+        self.assertEqual(appt.calendar_event_id.pet_appointment_id, appt)
+
+    def test_40_appointment_booking_creates_pet_appointment(self):
+        if 'appointment.type' not in self.env:
+            self.skipTest('appointment module not installed')
+        self.env['appointment.type'].ensure_clinic_pet_appointment_types()
+        atype = self.env['appointment.type'].search([
+            ('pet_primary_type', '=', 'checkup'),
+        ], limit=1)
+        self.assertTrue(atype)
+        customer = self.env['res.partner'].create({'name': 'Booking Customer'})
+        event = self.env['calendar.event'].create({
+            'name': 'Website Checkup Booking',
+            'start': '2026-07-20 10:00:00',
+            'stop': '2026-07-20 11:00:00',
+            'appointment_type_id': atype.id,
+            'appointment_status': 'booked',
+            'partner_ids': [(6, 0, [customer.id])],
+            'user_id': self.env.user.id,
+        })
+        self.assertTrue(event.pet_appointment_id)
+        appt = event.pet_appointment_id
+        self.assertEqual(appt.primary_type, 'checkup')
+        self.assertEqual(appt.intake_owner_id, customer)
+        self.assertEqual(appt.calendar_event_id, event)
+        self.assertEqual(str(appt.start_datetime), '2026-07-20 10:00:00')

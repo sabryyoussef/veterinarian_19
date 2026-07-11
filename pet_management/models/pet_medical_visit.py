@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 from datetime import datetime, timedelta
 
 class PetMedicalVisit(models.Model):
@@ -20,6 +21,21 @@ class PetMedicalVisit(models.Model):
 
     pet_id = fields.Many2one('pet.pet', required=True, ondelete='cascade', tracking=True, help="The pet for this medical visit")
     appointment_id = fields.Many2one('pet.appointment', string='Appointment', help="Related appointment")
+    appointment_sale_order_id = fields.Many2one(
+        related='appointment_id.sale_order_id',
+        string='Sale Order',
+        readonly=True,
+    )
+    appointment_has_active_invoice = fields.Boolean(
+        related='appointment_id.has_active_invoice',
+        string='Has Active Invoice',
+        readonly=True,
+    )
+    appointment_state = fields.Selection(
+        related='appointment_id.state',
+        string='Appointment State',
+        readonly=True,
+    )
     date = fields.Datetime(required=True, default=fields.Datetime.now, tracking=True, help="Date and time of the medical visit")
     reason = fields.Char(required=True, tracking=True, help="Primary reason for the visit")
     visit_type = fields.Selection(
@@ -413,6 +429,33 @@ class PetMedicalVisit(models.Model):
             'view_mode': 'form',
             'target': 'current',
         }
+
+    def _require_appointment_for_billing(self):
+        self.ensure_one()
+        if not self.appointment_id:
+            raise UserError(_(
+                'Link this medical visit to an appointment before creating a sale order.'
+            ))
+        if not self.pet_id:
+            raise UserError(_('A pet is required before creating a sale order.'))
+        return self.appointment_id
+
+    def action_create_sale_order(self):
+        """Create/open the appointment sale order from the medical visit screen."""
+        appointment = self._require_appointment_for_billing()
+        return appointment.action_create_or_open_sale_order()
+
+    def action_view_sale_order(self):
+        """Open the sale order linked to this visit's appointment."""
+        appointment = self._require_appointment_for_billing()
+        if not appointment.sale_order_id:
+            raise UserError(_('No sale order exists for this medical visit yet.'))
+        return appointment.action_view_sale_order()
+
+    def action_confirm_and_create_invoice(self):
+        """Confirm SO and create invoice via the linked appointment."""
+        appointment = self._require_appointment_for_billing()
+        return appointment.action_confirm_and_create_invoice()
 
     def action_create_followup_notification(self):
         """Create a follow-up notification for this medical visit"""

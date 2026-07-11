@@ -178,12 +178,29 @@
                   class="btn-success" icon="fa-bell"/>
           <button name="action_create_followup_notification" type="object" string="Create Follow-up" 
                   invisible="status != 'completed' or not follow_up_date" class="btn-warning" icon="fa-calendar-plus-o"/>
+          <field name="appointment_sale_order_id" invisible="1"/>
+          <field name="appointment_has_active_invoice" invisible="1"/>
+          <field name="appointment_state" invisible="1"/>
+          <button name="action_create_sale_order" type="object" string="Create Sale Order"
+                  invisible="not appointment_id or appointment_sale_order_id or appointment_has_active_invoice or appointment_state not in ['confirmed', 'in_progress', 'done'] or not pet_id or status == 'cancelled'"
+                  class="btn-primary" icon="fa-shopping-cart"/>
+          <button name="action_view_sale_order" type="object" string="Open Sale Order"
+                  invisible="not appointment_sale_order_id" class="btn-info" icon="fa-shopping-cart"/>
+          <button name="action_confirm_and_create_invoice" type="object" string="Confirm &amp; Create Invoice"
+                  invisible="not appointment_sale_order_id or appointment_has_active_invoice or appointment_state not in ['confirmed', 'in_progress', 'done'] or not pet_id or status == 'cancelled'"
+                  class="btn-success" icon="fa-file-text-o"/>
           <field name="status" widget="statusbar" statusbar_visible="scheduled,in_progress,completed"/>
         </header>
         <sheet>
           <div class="oe_button_box" name="button_box">
             <button name="action_view_pet" type="object" string="Pet" icon="fa-paw"
                     groups="pet_management.group_pet_health_user_own,pet_management.group_pet_health_user_all,pet_management.group_pet_health_admin"/>
+            <button name="action_view_sale_order" type="object" class="oe_stat_button" icon="fa-shopping-cart"
+                    invisible="not appointment_sale_order_id">
+              <div class="o_stat_info">
+                <span class="o_stat_text">Sale Order</span>
+              </div>
+            </button>
             <button name="action_view_diagnostic_reports" type="object" class="oe_stat_button" icon="fa-flask">
               <field name="diagnostic_report_count" widget="statinfo" string="Diagnostics"/>
             </button>

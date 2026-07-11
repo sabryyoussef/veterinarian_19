@@ -172,14 +172,9 @@
           <!-- Sales / Invoice Buttons -->
           <field name="has_active_invoice" invisible="1"/>
           <field name="invoice_count" invisible="1"/>
-          <button name="action_create_invoice" type="object" string="Create Sale Order"
-                  invisible="sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done'] or not pet_id"
-                  class="btn-primary" icon="fa-shopping-cart"/>
+          <!-- Create Sale Order / Confirm & Invoice live on Medical Visit -->
           <button name="action_view_sale_order" type="object" string="Open Sale Order"
                   invisible="not sale_order_id" class="btn-info" icon="fa-shopping-cart"/>
-          <button name="action_confirm_and_create_invoice" type="object" string="Confirm &amp; Create Invoice"
-                  invisible="not sale_order_id or has_active_invoice or state not in ['confirmed', 'in_progress', 'done'] or not pet_id"
-                  class="btn-success" icon="fa-file-text-o"/>
           <button name="action_view_invoice" type="object" string="Open Invoice"
                   invisible="not has_active_invoice" class="btn-info" icon="fa-file-text-o"/>
           <button name="action_register_appointment_payment" type="object" string="Register Payment"

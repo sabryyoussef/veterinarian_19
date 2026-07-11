@@ -473,3 +473,33 @@ class TestAppointmentIntakeUX(TransactionCase):
         self.assertTrue(wiz.dob)
         wiz._compute_age_display()
         self.assertRegex(wiz.age_display or '', r'\d+ y')
+
+    def test_31_medical_visit_create_sale_order_via_appointment(self):
+        """Sale order creation is driven from medical visit, linked to appointment."""
+        appt = self.Appointment.create(self._appt_vals(
+            pet_id=self.pet_only.id,
+            title='Visit billing SO',
+            start_datetime='2026-07-15 11:00:00',
+            end_datetime='2026-07-15 11:30:00',
+            is_medical=True,
+            primary_type='emergency',
+            auto_create_facility=True,
+        ))
+        appt.set_to_confirmed()
+        visit = appt.medical_visit_id
+        self.assertTrue(visit)
+        self.assertFalse(appt.sale_order_id)
+        action = visit.action_create_sale_order()
+        self.assertTrue(appt.sale_order_id)
+        self.assertEqual(action.get('res_id'), appt.sale_order_id.id)
+        self.assertEqual(visit.appointment_sale_order_id, appt.sale_order_id)
+
+    def test_32_medical_visit_create_sale_order_requires_appointment(self):
+        visit = self.env['pet.medical.visit'].create({
+            'pet_id': self.pet_only.id,
+            'reason': 'Orphan visit billing',
+            'status': 'scheduled',
+            'date': '2026-07-15 12:00:00',
+        })
+        with self.assertRaises(UserError):
+            visit.action_create_sale_order()

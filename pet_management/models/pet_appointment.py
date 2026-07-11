@@ -698,7 +698,7 @@ class PetAppointment(models.Model):
                 res['end_datetime'] = end_dt
         return res
 
-    @api.onchange('primary_type')    @api.onchange('primary_type')
+    @api.onchange('primary_type')
     def _onchange_primary_type_medical(self):
         if self.primary_type in self._clinical_primary_types():
             self.is_medical = True

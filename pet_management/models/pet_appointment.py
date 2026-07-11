@@ -23,10 +23,13 @@ class PetAppointment(models.Model):
         help="Owner selected during appointment intake. Must match the selected pet's owner.")
     owner_id = fields.Many2one(related='pet_id.owner_id', store=True, readonly=True, help="Pet owner")
     # Odoo 19 base res.partner has phone only (no separate mobile). One stored contact field.
+    # Writable so reception can fill phone/email on the appointment after creating a contact without them.
     owner_phone = fields.Char(
-        related='intake_owner_id.phone', string='Phone / Mobile', store=True, readonly=True,
-        help="Owner contact number from partner phone")
-    owner_email = fields.Char(related='intake_owner_id.email', string='Email', store=True, readonly=True)
+        related='intake_owner_id.phone', string='Phone / Mobile', store=True, readonly=False,
+        help="Owner contact number from partner phone (editable; writes back to the contact)")
+    owner_email = fields.Char(
+        related='intake_owner_id.email', string='Email', store=True, readonly=False,
+        help="Owner email (editable; writes back to the contact)")
     owner_contact_display = fields.Char(
         string='Phone / Mobile', compute='_compute_owner_contact_display', store=True,
         help="Single contact number for kanban/reception display")
@@ -61,9 +64,9 @@ class PetAppointment(models.Model):
         default=lambda self: self._format_appointment_title(_('New'), fields.Datetime.now()),
         help="Appointment title (auto: serial | date time)")
     start_datetime = fields.Datetime(required=True, index=True, tracking=True,
-        default=lambda self: fields.Datetime.now(), help="Appointment start time")
+        help="Appointment start time (defaults to the next available slot)")
     end_datetime = fields.Datetime(required=True, index=True, tracking=True,
-        default=lambda self: fields.Datetime.now() + timedelta(minutes=15), help="Appointment end time")
+        help="Appointment end time (follows start using the default duration)")
     vet_employee_id = fields.Many2one(
         'hr.employee', string='Veterinarian', tracking=True,
         default=lambda self: self.env.user.employee_id.id if self.env.user.employee_id else False,
@@ -555,6 +558,105 @@ class PetAppointment(models.Model):
             )
 
     @api.model
+    def _get_default_duration_timedelta(self):
+        """Default appointment length from settings (hours)."""
+        hours = float(
+            self.env['ir.config_parameter'].sudo().get_param(
+                'pet_management.appointment_duration_default', 1.0
+            ) or 1.0
+        )
+        if hours <= 0:
+            hours = 1.0
+        return timedelta(hours=hours)
+
+    @api.model
+    def _round_datetime_up(self, dt, minutes=15):
+        """Round datetime up to the next slot boundary (default 15 minutes)."""
+        if not dt:
+            return dt
+        remainder = (dt.minute % minutes) * 60 + dt.second
+        micro = dt.microsecond
+        if remainder == 0 and micro == 0:
+            return dt.replace(second=0, microsecond=0)
+        delta_seconds = (minutes * 60) - remainder
+        return (dt + timedelta(seconds=delta_seconds)).replace(second=0, microsecond=0)
+
+    @api.model
+    def _appointment_slot_busy(self, start_dt, end_dt, vet_id=False, room_id=False, exclude_id=False):
+        """True when vet and/or room already has an overlapping non-cancelled appointment."""
+        if not start_dt or not end_dt or end_dt <= start_dt:
+            return False
+        if not vet_id and not room_id:
+            return False
+        domain = [
+            ('state', 'not in', ['cancelled']),
+            ('start_datetime', '<', end_dt),
+            ('end_datetime', '>', start_dt),
+        ]
+        if exclude_id:
+            domain.append(('id', '!=', exclude_id))
+        if vet_id and room_id:
+            domain = domain + ['|', ('vet_employee_id', '=', vet_id), ('room_id', '=', room_id)]
+        elif vet_id:
+            domain.append(('vet_employee_id', '=', vet_id))
+        else:
+            domain.append(('room_id', '=', room_id))
+        return bool(self.search(domain, limit=1))
+
+    @api.model
+    def _find_next_available_slot(
+        self, start_from=None, vet_id=False, room_id=False, exclude_id=False, duration=None,
+    ):
+        """Return (start, end) for the next free slot, skipping vet/room conflicts."""
+        duration = duration or self._get_default_duration_timedelta()
+        if duration.total_seconds() <= 0:
+            duration = timedelta(hours=1.0)
+        cursor = self._round_datetime_up(start_from or fields.Datetime.now())
+        if not vet_id and not room_id:
+            return cursor, cursor + duration
+
+        horizon = cursor + timedelta(days=14)
+        domain = [
+            ('state', 'not in', ['cancelled']),
+            ('end_datetime', '>', cursor),
+            ('start_datetime', '<', horizon),
+        ]
+        if exclude_id:
+            domain.append(('id', '!=', exclude_id))
+        if vet_id and room_id:
+            domain = domain + ['|', ('vet_employee_id', '=', vet_id), ('room_id', '=', room_id)]
+        elif vet_id:
+            domain.append(('vet_employee_id', '=', vet_id))
+        else:
+            domain.append(('room_id', '=', room_id))
+
+        busy = self.search(domain, order='start_datetime asc, id asc')
+        for appt in busy:
+            if appt.end_datetime <= cursor:
+                continue
+            if appt.start_datetime >= cursor + duration:
+                return cursor, cursor + duration
+            cursor = self._round_datetime_up(appt.end_datetime)
+        return cursor, cursor + duration
+
+    def _duration_for_start_change(self):
+        """Prefer saved appointment duration; otherwise settings default."""
+        self.ensure_one()
+        origin = self._origin
+        if origin and origin.id and origin.start_datetime and origin.end_datetime:
+            origin_delta = origin.end_datetime - origin.start_datetime
+            if origin_delta.total_seconds() > 0:
+                return origin_delta
+        if (
+            self.id
+            and self.start_datetime
+            and self.end_datetime
+            and self.end_datetime > self.start_datetime
+        ):
+            return self.end_datetime - self.start_datetime
+        return self._get_default_duration_timedelta()
+
+    @api.model
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
         if 'primary_type' in fields_list and not res.get('primary_type'):
@@ -567,9 +669,36 @@ class PetAppointment(models.Model):
             pet = self.env['pet.pet'].browse(pet_id)
             if pet.exists() and pet.owner_id:
                 res['intake_owner_id'] = pet.owner_id.id
+
+        duration = self._get_default_duration_timedelta()
+        vet_id = res.get('vet_employee_id') or (
+            self.env.user.employee_id.id if self.env.user.employee_id else False
+        )
+        room_id = res.get('room_id') or False
+        ctx_start = self.env.context.get('default_start_datetime')
+        ctx_end = self.env.context.get('default_end_datetime')
+
+        if ctx_start:
+            start_dt = fields.Datetime.to_datetime(ctx_start)
+            if ctx_end:
+                end_dt = fields.Datetime.to_datetime(ctx_end)
+            else:
+                end_dt = start_dt + duration
+            if 'start_datetime' in fields_list:
+                res['start_datetime'] = start_dt
+            if 'end_datetime' in fields_list:
+                res['end_datetime'] = end_dt
+        elif 'start_datetime' in fields_list or 'end_datetime' in fields_list:
+            start_dt, end_dt = self._find_next_available_slot(
+                vet_id=vet_id, room_id=room_id, duration=duration,
+            )
+            if 'start_datetime' in fields_list:
+                res['start_datetime'] = start_dt
+            if 'end_datetime' in fields_list:
+                res['end_datetime'] = end_dt
         return res
 
-    @api.onchange('primary_type')
+    @api.onchange('primary_type')    @api.onchange('primary_type')
     def _onchange_primary_type_medical(self):
         if self.primary_type in self._clinical_primary_types():
             self.is_medical = True
@@ -1063,9 +1192,41 @@ class PetAppointment(models.Model):
 
     @api.onchange('start_datetime')
     def _onchange_start_datetime_title(self):
-        """Refresh draft title when start time changes on a new appointment."""
-        if not self._origin.id and self.start_datetime:
+        """Keep end in sync with start, and refresh draft title on new appointments."""
+        if not self.start_datetime:
+            return
+        self.end_datetime = self.start_datetime + self._duration_for_start_change()
+        if not self._origin.id:
             self.title = self._format_appointment_title(self.name or _('New'), self.start_datetime)
+
+    @api.onchange('vet_employee_id', 'room_id')
+    def _onchange_vet_or_room_find_slot(self):
+        """If the current window conflicts for vet/room, jump to the next free slot."""
+        if not self.start_datetime:
+            return
+        if self.state in ('done', 'cancelled'):
+            return
+        duration = self._duration_for_start_change()
+        end_dt = self.start_datetime + duration
+        vet_id = self.vet_employee_id.id if self.vet_employee_id else False
+        room_id = self.room_id.id if self.room_id else False
+        exclude_id = self._origin.id if self._origin.id else False
+        if not self._appointment_slot_busy(
+            self.start_datetime, end_dt, vet_id=vet_id, room_id=room_id, exclude_id=exclude_id,
+        ):
+            self.end_datetime = end_dt
+            return
+        start_dt, end_dt = self._find_next_available_slot(
+            start_from=self.start_datetime,
+            vet_id=vet_id,
+            room_id=room_id,
+            exclude_id=exclude_id,
+            duration=duration,
+        )
+        self.start_datetime = start_dt
+        self.end_datetime = end_dt
+        if not exclude_id:
+            self.title = self._format_appointment_title(self.name or _('New'), start_dt)
 
     def _create_medical_visit(self):
         """Create medical visit entry"""
@@ -1164,32 +1325,35 @@ class PetAppointment(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """Override create to generate sequence and auto-create facility entry"""
-        # Get default appointment duration from settings
-        icp = self.env['ir.config_parameter'].sudo()
-        default_duration = float(icp.get_param('pet_management.appointment_duration_default', 1.0))
-        
         for vals in vals_list:
             self._sync_intake_owner_from_pet_vals(vals)
             if vals.get('name', _('New')) == _('New'):
                 vals['name'] = self.env['ir.sequence'].next_by_code('pet.appointment') or _('New')
-            if not vals.get('title'):
-                vals['title'] = self._format_appointment_title(
-                    vals.get('name', _('New')),
-                    vals.get('start_datetime'),
-                )
             if not vals.get('vet_employee_id') and self.env.user.employee_id:
                 vals['vet_employee_id'] = self.env.user.employee_id.id
             primary = vals.get('primary_type', 'emergency')
             if primary in self._clinical_primary_types() and 'is_medical' not in vals:
                 vals['is_medical'] = True
-            
-            # Apply default duration if not specified
-            if 'start_datetime' in vals and 'end_datetime' not in vals:
-                from datetime import datetime, timedelta
+
+            # Apply default duration / next available slot when times are missing
+            if vals.get('start_datetime') and not vals.get('end_datetime'):
                 start_dt = vals['start_datetime']
                 if isinstance(start_dt, str):
-                    start_dt = datetime.fromisoformat(start_dt.replace('Z', '+00:00'))
-                vals['end_datetime'] = start_dt + timedelta(hours=default_duration)
+                    start_dt = fields.Datetime.to_datetime(start_dt)
+                vals['end_datetime'] = start_dt + self._get_default_duration_timedelta()
+            elif not vals.get('start_datetime') or not vals.get('end_datetime'):
+                start_dt, end_dt = self._find_next_available_slot(
+                    vet_id=vals.get('vet_employee_id') or False,
+                    room_id=vals.get('room_id') or False,
+                )
+                vals.setdefault('start_datetime', start_dt)
+                vals.setdefault('end_datetime', end_dt)
+
+            if not vals.get('title'):
+                vals['title'] = self._format_appointment_title(
+                    vals.get('name', _('New')),
+                    vals.get('start_datetime'),
+                )
                 
         appointments = super().create(vals_list)
         for appointment in appointments:
@@ -1208,6 +1372,13 @@ class PetAppointment(models.Model):
     def write(self, vals):
         """Override write to auto-create facility entry when confirmed and refresh invoice when needed"""
         self._sync_intake_owner_from_pet_vals(vals)
+        # Changing start without end keeps the same duration and moves the end.
+        if 'start_datetime' in vals and 'end_datetime' not in vals and len(self) == 1:
+            start_dt = fields.Datetime.to_datetime(vals['start_datetime'])
+            duration = self._get_default_duration_timedelta()
+            if self.start_datetime and self.end_datetime and self.end_datetime > self.start_datetime:
+                duration = self.end_datetime - self.start_datetime
+            vals['end_datetime'] = start_dt + duration
         if vals.get('state') in ('confirmed', 'in_progress', 'done'):
             # Guard even if state is written directly (not only via set_to_* helpers).
             if 'pet_id' in vals and not vals.get('pet_id'):

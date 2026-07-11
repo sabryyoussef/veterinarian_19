@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
+
+from odoo import fields
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError, ValidationError
@@ -503,3 +506,78 @@ class TestAppointmentIntakeUX(TransactionCase):
         })
         with self.assertRaises(UserError):
             visit.action_create_sale_order()
+
+    def test_33_appointment_can_set_missing_owner_phone_and_email(self):
+        """Reception can fill phone/email on the appointment after creating a contact without them."""
+        owner = self.env['res.partner'].create({
+            'name': 'No Contact Owner',
+        })
+        self.assertFalse(owner.phone)
+        self.assertFalse(owner.email)
+        appt = self.Appointment.create(self._appt_vals(
+            intake_owner_id=owner.id,
+            title='Fill contact details',
+            start_datetime='2026-07-16 10:00:00',
+            end_datetime='2026-07-16 10:30:00',
+        ))
+        self.assertFalse(appt.owner_phone)
+        self.assertFalse(appt.owner_email)
+        appt.write({
+            'owner_phone': '01099998888',
+            'owner_email': 'nocontact@example.com',
+        })
+        self.assertEqual(appt.owner_phone, '01099998888')
+        self.assertEqual(appt.owner_email, 'nocontact@example.com')
+        self.assertEqual(owner.phone, '01099998888')
+        self.assertEqual(owner.email, 'nocontact@example.com')
+        self.assertEqual(appt.owner_contact_display, '01099998888')
+
+    def test_34_default_get_fills_available_start_and_end(self):
+        self.env['ir.config_parameter'].sudo().set_param(
+            'pet_management.appointment_duration_default', '0.5'
+        )
+        defaults = self.Appointment.default_get(['start_datetime', 'end_datetime', 'vet_employee_id'])
+        self.assertTrue(defaults.get('start_datetime'))
+        self.assertTrue(defaults.get('end_datetime'))
+        start = fields.Datetime.to_datetime(defaults['start_datetime'])
+        end = fields.Datetime.to_datetime(defaults['end_datetime'])
+        self.assertEqual(end - start, timedelta(minutes=30))
+        self.assertEqual(start.second, 0)
+        self.assertEqual(start.minute % 15, 0)
+
+    def test_35_start_change_moves_end_preserving_duration(self):
+        appt = self.Appointment.create(self._appt_vals(
+            pet_id=self.pet_only.id,
+            title='Move start keeps duration',
+            start_datetime='2026-07-16 11:00:00',
+            end_datetime='2026-07-16 12:00:00',
+            vet_employee_id=False,
+        ))
+        appt.write({'start_datetime': '2026-07-16 14:00:00'})
+        self.assertEqual(str(appt.start_datetime), '2026-07-16 14:00:00')
+        self.assertEqual(str(appt.end_datetime), '2026-07-16 15:00:00')
+
+    def test_36_next_available_slot_skips_vet_overlap(self):
+        emp = self.env.user.employee_id
+        if not emp:
+            emp = self.env['hr.employee'].create({
+                'name': 'Slot Vet',
+                'user_id': self.env.user.id,
+            })
+        busy = self.Appointment.create(self._appt_vals(
+            pet_id=self.pet_only.id,
+            title='Busy slot',
+            start_datetime='2026-07-17 10:00:00',
+            end_datetime='2026-07-17 11:00:00',
+            vet_employee_id=emp.id,
+        ))
+        start, end = self.Appointment._find_next_available_slot(
+            start_from=fields.Datetime.to_datetime('2026-07-17 10:15:00'),
+            vet_id=emp.id,
+            duration=timedelta(hours=1),
+        )
+        self.assertGreaterEqual(start, busy.end_datetime)
+        self.assertEqual(end - start, timedelta(hours=1))
+        self.assertFalse(self.Appointment._appointment_slot_busy(
+            start, end, vet_id=emp.id,
+        ))

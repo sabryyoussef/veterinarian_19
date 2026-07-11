@@ -255,8 +255,12 @@
           <group>
             <group string="Owner &amp; Pet">
               <field name="intake_owner_id" options="{'no_create_edit': False}"/>
-              <field name="owner_phone" string="Phone / Mobile"/>
-              <field name="owner_email"/>
+              <field name="owner_phone" string="Phone / Mobile"
+                      readonly="not intake_owner_id"
+                      placeholder="Add phone / mobile"/>
+              <field name="owner_email"
+                      readonly="not intake_owner_id"
+                      placeholder="Add email"/>
               <field name="pet_id"
                       context="{'default_owner_id': intake_owner_id}"
                       options="{'no_create': True}"/>

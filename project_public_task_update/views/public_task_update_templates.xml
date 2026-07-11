@@ -176,6 +176,65 @@
                         color: var(--muted);
                         text-align: center;
                     }
+                    .subtasks-section {
+                        margin: 0 0 1rem;
+                        border: 1px solid var(--border);
+                        border-radius: 8px;
+                        overflow: hidden;
+                        background: #f8fafc;
+                    }
+                    .subtasks-section h2 {
+                        font-size: .8rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: .03em;
+                        color: #374151;
+                        margin: 0;
+                        padding: .65rem .9rem;
+                        border-bottom: 1px solid var(--border);
+                        background: #fff;
+                    }
+                    .subtask-list {
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .subtask-item {
+                        padding: .7rem .9rem;
+                        border-bottom: 1px solid var(--border);
+                        display: flex;
+                        flex-direction: column;
+                        gap: .25rem;
+                    }
+                    .subtask-item:last-child { border-bottom: none; }
+                    .subtask-name {
+                        font-size: .92rem;
+                        font-weight: 600;
+                        color: var(--text);
+                        word-break: break-word;
+                    }
+                    .subtask-meta {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: .35rem .6rem;
+                        font-size: .78rem;
+                        color: var(--muted);
+                    }
+                    .subtask-stage {
+                        display: inline-block;
+                    }
+                    .subtask-status {
+                        display: inline-block;
+                        font-weight: 600;
+                    }
+                    .subtask-status.is-open { color: #1d4ed8; }
+                    .subtask-status.is-closed { color: #047857; }
+                    .subtasks-empty {
+                        padding: .75rem .9rem;
+                        font-size: .85rem;
+                        color: var(--muted);
+                        margin: 0;
+                    }
                     @media (max-width: 380px) {
                         .card { padding: 1rem; }
                         h1 { font-size: 1.1rem; }
@@ -204,6 +263,36 @@
             </t>
             <h1 t-esc="task_title"/>
             <div class="instruction" t-if="task_instruction" t-esc="task_instruction"/>
+
+            <div class="subtasks-section">
+                <h2>Sub-tasks / المهام الفرعية</h2>
+                <t t-if="child_tasks">
+                    <ul class="subtask-list">
+                        <t t-foreach="child_tasks" t-as="child">
+                            <li class="subtask-item">
+                                <span class="subtask-name" t-esc="child.get('name')"/>
+                                <div class="subtask-meta">
+                                    <t t-if="child.get('stage_name')">
+                                        <span class="subtask-stage">
+                                            Stage / المرحلة:
+                                            <t t-esc="child.get('stage_name')"/>
+                                        </span>
+                                    </t>
+                                    <t t-if="child.get('is_closed')">
+                                        <span class="subtask-status is-closed">Done / مكتمل</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="subtask-status is-open">Open / مفتوح</span>
+                                    </t>
+                                </div>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+                <t t-else="">
+                    <p class="subtasks-empty">No sub-tasks yet. / لا توجد مهام فرعية بعد.</p>
+                </t>
+            </div>
 
             <t t-if="is_team_planning">
                 <div class="plan-section" t-if="implementation_plan">

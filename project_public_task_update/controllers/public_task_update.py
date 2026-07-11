@@ -17,19 +17,35 @@ PUBLIC_ERROR_MESSAGE_AR = (
     "هذا الرابط غير متاح. يرجى طلب رابط جديد من فريق المشروع."
 )
 
+PUBLIC_CACHE_HEADERS = {
+    "Cache-Control": "private, no-store",
+    "Pragma": "no-cache",
+    "X-Robots-Tag": "noindex, nofollow",
+}
+
 
 class PublicTaskUpdateController(http.Controller):
     """Public tokenized task update — no login, no OpenProject exposure."""
 
+    def _apply_public_headers(self, response):
+        """Mark public responses as non-cacheable and non-indexable."""
+        if response is None:
+            return response
+        headers = getattr(response, "headers", None)
+        if headers is not None:
+            for key, value in PUBLIC_CACHE_HEADERS.items():
+                headers[key] = value
+        return response
+
     def _render_error(self, status: int = 404):
-        return request.render(
+        return self._apply_public_headers(request.render(
             "project_public_task_update.public_task_update_error",
             {
                 "error_message_en": PUBLIC_ERROR_MESSAGE,
                 "error_message_ar": PUBLIC_ERROR_MESSAGE_AR,
             },
             status=status,
-        )
+        ))
 
     def _get_valid_task(self, token: str):
         Task = request.env["project.task"]
@@ -47,6 +63,7 @@ class PublicTaskUpdateController(http.Controller):
             "is_team_planning": task._is_team_planning_mode(),
             "implementation_plan": task._public_implementation_plan(),
             "missing_data_questions": task._public_missing_data_questions(),
+            "child_tasks": task._public_child_tasks_payload(),
         }
         ctx.update(extra)
         return ctx
@@ -63,10 +80,10 @@ class PublicTaskUpdateController(http.Controller):
         task = self._get_valid_task(token)
         if not task:
             return self._render_error(status=404)
-        return request.render(
+        return self._apply_public_headers(request.render(
             "project_public_task_update.public_task_update_form",
             self._form_context(task, token),
-        )
+        ))
 
     @http.route(
         "/task/update/<string:token>",
@@ -91,7 +108,7 @@ class PublicTaskUpdateController(http.Controller):
                 suggested_subtasks=post.get("suggested_subtasks", ""),
             )
         except UserError as exc:
-            return request.render(
+            return self._apply_public_headers(request.render(
                 "project_public_task_update.public_task_update_form",
                 self._form_context(
                     task,
@@ -99,14 +116,14 @@ class PublicTaskUpdateController(http.Controller):
                     error_message=str(exc),
                     form=post,
                 ),
-            )
+            ))
         except Exception:
             _logger.exception("public_task_update submit failed token_prefix=%s", token[:8])
             return self._render_error(status=500)
-        return request.render(
+        return self._apply_public_headers(request.render(
             "project_public_task_update.public_task_update_success",
             {
                 "task_title": task._public_task_title(),
                 "is_team_planning": task._is_team_planning_mode(),
             },
-        )
+        ))

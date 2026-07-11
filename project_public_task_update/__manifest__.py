@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Project Public Task Update",
-    "version": "19.0.1.2.0",
+    "version": "19.0.1.3.0",
     "category": "Project",
     "summary": "Tokenized public Odoo form for external task updates (no login)",
     "description": """
@@ -10,7 +10,9 @@ Public task update links
 Share a tokenized Odoo URL (/task/update/<token>) via WhatsApp or Chatwoot.
 External users submit missing information; data is saved as chatter on the task.
 
-OpenProject is never exposed publicly. Install on test DB first.
+The public page may show a read-only list of direct sub-tasks (name, stage,
+closed state only). OpenProject and other internal fields are never exposed.
+Install on test DB first.
     """,
     "author": "Sabry Youssef",
     "license": "LGPL-3",

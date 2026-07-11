@@ -276,6 +276,27 @@ class ProjectTask(models.Model):
         self.ensure_one()
         return self._public_safe_text(self.missing_data_questions)
 
+    def _public_child_tasks_payload(self) -> list[dict]:
+        """Return allowlisted direct-child info for the public page.
+
+        Only reads ``child_ids`` of the already token-resolved task.
+        Never includes IDs, OpenProject fields, assignees, descriptions, or URLs.
+        """
+        self.ensure_one()
+        children = self.child_ids.sorted(lambda t: (t.sequence, t.id))
+        payload = []
+        for child in children:
+            stage = child.stage_id
+            stage_name = ""
+            if stage:
+                stage_name = self._public_safe_text(stage.display_name or stage.name or "")
+            payload.append({
+                "name": self._public_safe_text(child.name) or _("Sub-task"),
+                "stage_name": stage_name,
+                "is_closed": bool(child.is_closed),
+            })
+        return payload
+
     @staticmethod
     def _format_priority_label(value: str) -> str:
         value = (value or "").strip().lower()

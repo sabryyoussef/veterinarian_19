@@ -79,6 +79,17 @@ This link is only for this task.
 
 - Always send the **Odoo** link, never an OpenProject URL.
 - Regenerate the link if it was disabled or expired.
+- Regenerating or disabling the **parent** token controls access to the entire public page
+  (including the read-only sub-task list).
 - Internal users can use **WhatsApp AR/EN (client)** or **WhatsApp AR/EN (team)** buttons on the task form
   to preview the message with the link already filled in.
 - **Team planning** links show implementation plan and missing-data questions; suggested subtasks are saved in chatter only (no auto task creation).
+
+## Public sub-task list
+
+- The public page shows a **read-only** list of **direct** children (`child_ids`) of the tokenized parent only.
+- Displayed fields: task title, stage name, and open/done state (`is_closed`).
+- Grandchildren, unrelated project tasks, assignees, descriptions, chatter, attachments,
+  OpenProject IDs/URLs, and backend links are **not** exposed.
+- Child titles are not clickable.
+- If the parent has no children, an empty-state message is shown.

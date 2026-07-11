@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Pet Management',
-    'version': '19.0.1.7.0',
+    'version': '19.0.1.7.1',
     'summary': 'Manage pets, health records, services, boarding, and diet plans',
     'description': """
 Pet Management
@@ -87,7 +87,9 @@ Key Features:
             'pet_management/static/src/css/pet_notification_kanban.css',
             'pet_management/static/src/css/medical_vaccination_kanban.css',
             'pet_management/static/src/css/image_widget_styling.css',
+            'pet_management/static/src/css/petspot_test_ui.css',
             'pet_management/static/src/js/weight_badge_styling.js',
+            'pet_management/static/src/js/petspot_test_ui.js',
             'pet_management/static/src/clinic_finance_dashboard/clinic_finance_dashboard.js',
             'pet_management/static/src/clinic_finance_dashboard/clinic_finance_dashboard.xml',
         ],

@@ -1,0 +1,144 @@
+/* PetSpot TEST environment — global backend skin.
+ * Active only when <html>/<body> have class o_petspot_test_ui (set by petspot_test_ui.js).
+ */
+
+html.o_petspot_test_ui,
+body.o_petspot_test_ui {
+    --o-petspot-test-accent: #0d9488; /* teal */
+    --o-petspot-test-accent-dark: #0f766e;
+    --o-petspot-test-accent-soft: #ccfbf1;
+    --o-petspot-test-warn: #ea580c;
+    --o-petspot-test-surface: #f0fdfa;
+}
+
+body.o_petspot_test_ui {
+    background:
+        linear-gradient(180deg, rgba(13, 148, 136, 0.08), rgba(13, 148, 136, 0.02) 180px),
+        var(--o-webclient-background-color, #f8f9fa) !important;
+}
+
+/* Sticky TEST ribbon across the whole backend */
+body.o_petspot_test_ui .o_petspot_test_ribbon {
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+    width: 100%;
+    padding: 6px 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: linear-gradient(90deg, #ea580c, #0d9488);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar / menus */
+body.o_petspot_test_ui .o_main_navbar {
+    background: var(--o-petspot-test-accent-dark) !important;
+    border-bottom: 3px solid var(--o-petspot-test-warn) !important;
+}
+
+body.o_petspot_test_ui .o_main_navbar .o_menu_brand,
+body.o_petspot_test_ui .o_main_navbar .o_nav_entry,
+body.o_petspot_test_ui .o_main_navbar a,
+body.o_petspot_test_ui .o_main_navbar button {
+    color: #fff !important;
+}
+
+body.o_petspot_test_ui .o_main_navbar .o_menu_sections .dropdown-toggle:hover,
+body.o_petspot_test_ui .o_main_navbar .o_nav_entry:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Primary actions */
+body.o_petspot_test_ui .btn-primary {
+    background-color: var(--o-petspot-test-accent) !important;
+    border-color: var(--o-petspot-test-accent-dark) !important;
+}
+
+body.o_petspot_test_ui .btn-primary:hover,
+body.o_petspot_test_ui .btn-primary:focus {
+    background-color: var(--o-petspot-test-accent-dark) !important;
+    border-color: var(--o-petspot-test-accent-dark) !important;
+}
+
+/* Forms */
+body.o_petspot_test_ui .o_form_view .o_form_sheet_bg,
+body.o_petspot_test_ui .o_form_view .o_form_sheet {
+    background: #fff !important;
+}
+
+body.o_petspot_test_ui .o_form_view .o_form_sheet {
+    border-top: 4px solid var(--o-petspot-test-accent) !important;
+    box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.12);
+}
+
+body.o_petspot_test_ui .o_form_view .o_horizontal_separator,
+body.o_petspot_test_ui .o_form_view .o_group .o_td_label,
+body.o_petspot_test_ui .o_form_view .o_inner_group .o_wrap_label {
+    color: var(--o-petspot-test-accent-dark);
+}
+
+body.o_petspot_test_ui .o_form_view header {
+    background: var(--o-petspot-test-accent-soft) !important;
+    border-bottom: 1px solid rgba(13, 148, 136, 0.25);
+}
+
+/* Lists / search */
+body.o_petspot_test_ui .o_list_view .o_list_table thead,
+body.o_petspot_test_ui .o_list_renderer .o_list_table thead {
+    background: var(--o-petspot-test-accent-soft) !important;
+}
+
+body.o_petspot_test_ui .o_list_view .o_list_table thead th,
+body.o_petspot_test_ui .o_list_renderer .o_list_table thead th {
+    color: var(--o-petspot-test-accent-dark) !important;
+    border-bottom: 2px solid var(--o-petspot-test-accent) !important;
+}
+
+body.o_petspot_test_ui .o_list_view .o_data_row:hover,
+body.o_petspot_test_ui .o_list_renderer .o_data_row:hover {
+    background: rgba(13, 148, 136, 0.06) !important;
+}
+
+body.o_petspot_test_ui .o_searchview,
+body.o_petspot_test_ui .o_control_panel {
+    background: linear-gradient(180deg, var(--o-petspot-test-accent-soft), transparent 120%) !important;
+}
+
+body.o_petspot_test_ui .o_control_panel .o_cp_top,
+body.o_petspot_test_ui .o_control_panel .o_breadcrumb,
+body.o_petspot_test_ui .o_control_panel .breadcrumb-item,
+body.o_petspot_test_ui .o_control_panel .o_last_breadcrumb_item {
+    color: var(--o-petspot-test-accent-dark);
+}
+
+/* Kanban / cards */
+body.o_petspot_test_ui .o_kanban_renderer .o_kanban_record {
+    border-top: 3px solid var(--o-petspot-test-accent);
+}
+
+/* Chatter / status */
+body.o_petspot_test_ui .o_form_view .o_statusbar_status .o_arrow_button.o_arrow_button_current {
+    background: var(--o-petspot-test-accent) !important;
+}
+
+/* Dialogs */
+body.o_petspot_test_ui .modal-header {
+    background: var(--o-petspot-test-accent-soft);
+    border-bottom: 2px solid var(--o-petspot-test-accent);
+}
+
+/* Settings / notebook tabs */
+body.o_petspot_test_ui .o_notebook .nav-link.active {
+    color: var(--o-petspot-test-accent-dark) !important;
+    border-color: var(--o-petspot-test-accent) !important;
+    border-bottom-color: transparent !important;
+}
+
+/* Home menu / app switcher accents when present */
+body.o_petspot_test_ui .o_home_menu,
+body.o_petspot_test_ui .o_app {
+    filter: saturate(1.05);
+}

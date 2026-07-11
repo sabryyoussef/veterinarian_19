@@ -95,3 +95,13 @@ Documented reception scenarios for the Appointment Intake UX.
 - `action_open_additional_invoice_wizard`, `action_register_appointment_payment`
 
 Helper: `pet.appointment._check_pet_required_for_operation()`
+
+## Playwright synchronization notes
+
+The multi-pet flake was **not** a random locator timeout. Root causes:
+
+1. **Save race (original):** UI Save completed asynchronously; the test searched for the appointment before `web_save` finished. Fix: `saveAppointmentForm()` waits for the `pet.appointment` `web_save`/`create` RPC and a persisted record id.
+2. **Autocomplete strict mode:** Odoo renders both `<li class="o-autocomplete--dropdown-item">` and a nested `<a class="dropdown-item">`. Matching both triggered Playwright strict-mode failures. Fix: target `li.o-autocomplete--dropdown-item` only.
+3. **Vet overlap:** `create()` re-injects the current user's employee as veterinarian; consecutive UI saves with default `start_datetime≈now` hit `_check_overlap`. Fix: `clearNearbyVetOverlaps()` shifts recent draft/confirmed appointments to unique RPC slots before UI save.
+
+Do not rely on arbitrary `waitForTimeout` for these boundaries.

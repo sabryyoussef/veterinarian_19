@@ -29,12 +29,17 @@ import {
   createIntakeFixtures,
   cleanupIntakeFixtures,
   writeJson,
+  setMany2oneByName,
+  saveAppointmentForm,
+  setUniqueAppointmentSlot,
+  clearNearbyVetOverlaps,
+  uniqueRpcSlot,
   type IntakeFixtures,
   type BrowserHealth,
 } from "./helpers/intake.js";
 
-// workers=1 in config; avoid serial-skip so later scenarios still run after a UI flake.
-test.describe.configure({ mode: "default" });
+// workers=1; serial keeps one browser context and avoids cross-test page races.
+test.describe.configure({ mode: "serial" });
 
 const dirs = ensureArtifactDirs();
 const results: Array<{ id: string; title: string; ok: boolean; detail?: string }> = [];
@@ -43,6 +48,24 @@ const PET_REQUIRED_MSG =
 
 function record(id: string, title: string, ok: boolean, detail?: string) {
   results.push({ id, title, ok, detail });
+  // Persist immediately: Playwright restarts the worker after a failure, which
+  // would otherwise drop in-memory results from earlier tests in this file.
+  writeJson(path.join(dirs.logs, "scenario_results.json"), results);
+  const md = [
+    "# Appointment Intake Playwright Results",
+    "",
+    `URL: ${ODOO_URL}`,
+    `DB: ${ODOO_DB}`,
+    "",
+    "| ID | Scenario | Status | Detail |",
+    "| --- | --- | --- | --- |",
+    ...results.map(
+      (r) =>
+        `| ${r.id} | ${r.title} | ${r.ok ? "PASS" : "FAIL"} | ${(r.detail || "").replace(/\|/g, "/")} |`,
+    ),
+    "",
+  ].join("\n");
+  fs.writeFileSync(path.join(dirs.root, "RESULTS.md"), md, "utf8");
 }
 
 async function openAppointmentsKanban(page: Page, api: APIRequestContext) {
@@ -62,24 +85,7 @@ async function openNewAppointment(page: Page) {
     .first();
   await createBtn.click();
   await page.waitForSelector(".o_form_view", { timeout: 45_000 });
-}
-
-async function setMany2oneByName(page: Page, fieldName: string, name: string) {
-  const field = page.locator(`.o_field_widget[name="${fieldName}"]`).first();
-  await field.click();
-  const input = field.locator("input").first();
-  await input.fill(name);
-  await page.waitForTimeout(600);
-  const option = page.locator(".o-autocomplete--dropdown-item, .ui-menu-item, .o_m2o_dropdown_option").filter({ hasText: name }).first();
-  await option.click({ timeout: 15_000 });
-  await page.waitForTimeout(400);
-}
-
-async function saveForm(page: Page) {
-  const save = page.locator("button.o_form_button_save, .o_form_button_save").first();
-  await save.click();
-  await page.waitForTimeout(1200);
-  await expect(page.locator(".o_form_view")).toBeVisible();
+  await page.locator(".o_loading, .o_blockUI").waitFor({ state: "hidden", timeout: 10_000 }).catch(() => undefined);
 }
 
 async function expectPhoneMobileOnce(page: Page) {
@@ -126,7 +132,23 @@ test.describe("Appointment Intake UX", () => {
   });
 
   test.afterAll(async () => {
-    writeJson(path.join(dirs.logs, "browser_health.json"), health);
+    writeJson(path.join(dirs.logs, "browser_health.json"), health || {});
+    // Merge any results persisted before a worker restart.
+    try {
+      const prior = JSON.parse(
+        fs.readFileSync(path.join(dirs.logs, "scenario_results.json"), "utf8"),
+      ) as typeof results;
+      for (const r of prior) {
+        if (!results.some((x) => x.id === r.id && x.ok === r.ok && x.detail === r.detail)) {
+          // Keep latest per id
+          const idx = results.findIndex((x) => x.id === r.id);
+          if (idx >= 0) results[idx] = r;
+          else results.push(r);
+        }
+      }
+    } catch {
+      /* no prior */
+    }
     writeJson(path.join(dirs.logs, "scenario_results.json"), results);
     if (fx && api) {
       const retained = await cleanupIntakeFixtures(api, fx);
@@ -158,14 +180,20 @@ test.describe("Appointment Intake UX", () => {
       await shot(page, dirs.shots, "01_appointments_kanban_landing");
 
       await openNewAppointment(page);
-      await setMany2oneByName(page, "intake_owner_id", `${fx.prefix} Owner One`);
-      await page.waitForTimeout(800);
-
-      const petField = page.locator('.o_field_widget[name="pet_id"] input, .o_field_widget[name="pet_id"] .o_input');
-      const petVal = await petField.first().inputValue().catch(async () => {
-        return (await page.locator('.o_field_widget[name="pet_id"]').innerText()).trim();
+      await setMany2oneByName(page, "intake_owner_id", `${fx.prefix} Owner One`, {
+        waitOnchange: true,
       });
-      expect(petVal).toMatch(/Solo/i);
+
+      // Reacquire pet field after owner onchange OWL rerender.
+      await expect
+        .poll(async () => {
+          const petField = page.locator('.o_field_widget[name="pet_id"] input').first();
+          if (await petField.count()) {
+            return (await petField.inputValue().catch(() => "")).trim();
+          }
+          return (await page.locator('.o_field_widget[name="pet_id"]').innerText()).trim();
+        }, { timeout: 20_000 })
+        .toMatch(/Solo/i);
 
       await expectPhoneMobileOnce(page);
       await shot(page, dirs.shots, "02_one_pet_owner_autoselect");
@@ -179,7 +207,6 @@ test.describe("Appointment Intake UX", () => {
       if (!primaryVal) {
         primaryVal = (await primary.first().innerText()).trim();
       }
-      // Fallback: selection widgets may expose value via aria / selected option text.
       if (!primaryVal) {
         primaryVal = (await page.locator(".o_form_view").first().innerText()).match(
           /Emergency(?:\s+Exam)?/i,
@@ -192,31 +219,27 @@ test.describe("Appointment Intake UX", () => {
         await expect(medical.first()).toBeChecked();
       }
 
-      await saveForm(page);
+      await clearNearbyVetOverlaps(api);
+      await setUniqueAppointmentSlot(page, 1);
+      const savedId = await saveAppointmentForm(page);
+      fx.created.appointments.push(savedId);
 
-      // Confirm defaults persisted server-side (stable vs widget rendering).
-      const recent = await callKw<
-        Array<{ id: number; amount_total: number; primary_type: string; is_medical: boolean }>
-      >(
-        api,
-        "pet.appointment",
-        "search_read",
-        [
-          [["intake_owner_id", "=", fx.ownerOneId], ["pet_id", "=", fx.petOneId]],
-          ["id", "amount_total", "state", "primary_type", "is_medical"],
-        ],
-        { limit: 1, order: "id desc" },
-      );
-      expect(recent.length).toBeGreaterThan(0);
-      fx.created.appointments.push(recent[0].id);
-      expect(recent[0].primary_type).toBe("emergency");
-      expect(recent[0].is_medical).toBeTruthy();
-      expect(Number(recent[0].amount_total || 0)).toBe(0);
+      const recent = (
+        await callKw<
+          Array<{ id: number; amount_total: number; primary_type: string; is_medical: boolean }>
+        >(api, "pet.appointment", "read", [
+          [savedId],
+          ["id", "amount_total", "state", "primary_type", "is_medical", "pet_id"],
+        ])
+      )[0];
+      expect(recent.primary_type).toBe("emergency");
+      expect(recent.is_medical).toBeTruthy();
+      expect(Number(recent.amount_total || 0)).toBe(0);
 
       await openAppointmentsKanban(page, api);
       await shot(page, dirs.shots, "12_kanban_amount_zero");
 
-      record("T1", "Landing + single-pet owner", true);
+      record("T1", "Landing + single-pet owner", true, `appt=${savedId}`);
     } catch (e) {
       record("T1", "Landing + single-pet owner", false, String(e));
       throw e;
@@ -227,50 +250,72 @@ test.describe("Appointment Intake UX", () => {
     try {
       await openAppointmentsKanban(page, api);
       await openNewAppointment(page);
-      await setMany2oneByName(page, "intake_owner_id", `${fx.prefix} Owner Multi`);
-      await page.waitForTimeout(800);
+      await setMany2oneByName(page, "intake_owner_id", `${fx.prefix} Owner Multi`, {
+        waitOnchange: true,
+      });
 
-      const petWidget = page.locator('.o_field_widget[name="pet_id"]');
-      const petText = (await petWidget.innerText()).trim();
-      expect(petText === "" || /search|select|empty/i.test(petText) || !(await petWidget.locator("input").inputValue().catch(() => "")).includes("Multi")).toBeTruthy();
-      const inputVal = await petWidget.locator("input").first().inputValue().catch(() => "");
-      expect(inputVal).toBe("");
+      // After multi-owner onchange, pet must stay empty (no auto-select).
+      const petWidget = () => page.locator('.o_field_widget[name="pet_id"]');
+      await expect
+        .poll(async () => {
+          const input = petWidget().locator("input").first();
+          if (await input.count()) {
+            return (await input.inputValue().catch(() => "")).trim();
+          }
+          return (await petWidget().innerText()).trim();
+        }, { timeout: 20_000 })
+        .toBe("");
 
       await shot(page, dirs.shots, "03_multi_pet_owner_empty_pet");
 
-      await setMany2oneByName(page, "pet_id", `${fx.prefix} MultiA`);
+      // Open selector only after onchange settled; verify domain pets.
+      await petWidget().click();
+      const petInput = petWidget().locator("input").first();
+      await petInput.fill(fx.prefix);
+      // Prefer the listitem row — nested <a.dropdown-item> also matches hasText and
+      // triggers Playwright strict-mode violations if both are selected.
+      const optionRow = (label: string) =>
+        page.locator("li.o-autocomplete--dropdown-item, li.ui-menu-item").filter({ hasText: label });
+      await expect(optionRow(`${fx.prefix} MultiA`).first()).toBeVisible({ timeout: 15_000 });
+      await expect(optionRow(`${fx.prefix} MultiB`).first()).toBeVisible({ timeout: 15_000 });
+      // Foreign-owner pet must not appear in this owner's domain.
+      await expect(optionRow(`${fx.prefix} Solo`)).toHaveCount(0);
+
+      await optionRow(`${fx.prefix} MultiA`).first().click();
+      await expect
+        .poll(async () => {
+          const input = petWidget().locator("input").first();
+          if (await input.count()) {
+            return (await input.inputValue().catch(() => "")).trim();
+          }
+          return (await petWidget().innerText()).trim();
+        }, { timeout: 20_000 })
+        .toMatch(/MultiA/);
+
       const titleField = page.locator('.o_field_widget[name="title"] input, input[name="title"]').first();
       if (await titleField.count()) {
         await titleField.fill(`${fx.prefix} Multi Select`);
       }
-      await saveForm(page);
-      await page.waitForTimeout(1500);
 
-      const rows = await callKw<Array<{ id: number; pet_id: [number, string]; intake_owner_id: [number, string] }>>(
-        api,
-        "pet.appointment",
-        "search_read",
-        [
-          [
-            "|",
-            ["title", "ilike", `${fx.prefix} Multi`],
-            "&",
-            ["intake_owner_id", "=", fx.ownerMultiId],
-            ["pet_id", "=", fx.petMultiAId],
-          ],
-          ["id", "pet_id", "intake_owner_id", "title"],
-        ],
-        { limit: 1, order: "id desc" },
-      );
-      expect(rows.length, "multi-pet appointment should be saved").toBeGreaterThan(0);
-      expect(rows[0]?.pet_id?.[0]).toBe(fx.petMultiAId);
-      fx.created.appointments.push(rows[0].id);
+      await clearNearbyVetOverlaps(api);
+      await setUniqueAppointmentSlot(page, 2);
+      // Deterministic: wait for save RPC + persisted id, then read that id.
+      const savedId = await saveAppointmentForm(page);
+      fx.created.appointments.push(savedId);
+
+      const row = (
+        await callKw<
+          Array<{ id: number; pet_id: [number, string]; intake_owner_id: [number, string] }>
+        >(api, "pet.appointment", "read", [[savedId], ["id", "pet_id", "intake_owner_id", "title"]])
+      )[0];
+      expect(row.pet_id?.[0]).toBe(fx.petMultiAId);
+      expect(row.intake_owner_id?.[0]).toBe(fx.ownerMultiId);
 
       // Owner/pet mismatch rejected via RPC
       let mismatchBlocked = false;
       try {
         await callKw(api, "pet.appointment", "write", [
-          [rows[0].id],
+          [savedId],
           { intake_owner_id: fx.ownerOneId },
         ]);
       } catch (err) {
@@ -279,7 +324,7 @@ test.describe("Appointment Intake UX", () => {
       }
       expect(mismatchBlocked).toBeTruthy();
 
-      record("T2", "Multi-pet owner", true);
+      record("T2", "Multi-pet owner", true, `appt=${savedId}`);
     } catch (e) {
       record("T2", "Multi-pet owner", false, String(e));
       throw e;
@@ -288,15 +333,17 @@ test.describe("Appointment Intake UX", () => {
 
   test("3 — no-pet workflow + health notes", async () => {
     try {
+      const slot = uniqueRpcSlot(fx.runId, 3);
       const apptId = await callKw<number>(api, "pet.appointment", "create", [
         {
           title: `${fx.prefix} NoPet Draft`,
           intake_owner_id: fx.ownerNoneId,
-          start_datetime: "2026-07-12 14:00:00",
-          end_datetime: "2026-07-12 14:30:00",
+          start_datetime: slot.start,
+          end_datetime: slot.end,
           primary_type: "emergency",
           is_medical: true,
           sync_to_calendar: false,
+          vet_employee_id: false,
         },
       ]);
       fx.created.appointments.push(apptId);
@@ -386,15 +433,17 @@ test.describe("Appointment Intake UX", () => {
 
   test("4 — no-pet operational guard", async () => {
     try {
+      const slot = uniqueRpcSlot(fx.runId, 4);
       const apptId = await callKw<number>(api, "pet.appointment", "create", [
         {
           title: `${fx.prefix} Guard Draft`,
           intake_owner_id: fx.ownerNoneId,
-          start_datetime: "2026-07-12 15:00:00",
-          end_datetime: "2026-07-12 15:30:00",
+          start_datetime: slot.start,
+          end_datetime: slot.end,
           primary_type: "emergency",
           is_medical: true,
           sync_to_calendar: false,
+          vet_employee_id: false,
         },
       ]);
       fx.created.appointments.push(apptId);
@@ -453,14 +502,16 @@ test.describe("Appointment Intake UX", () => {
   test("5 — existing pet edit no duplicate", async () => {
     try {
       const before = await callKw<number>(api, "pet.pet", "search_count", [[]]);
+      const slot = uniqueRpcSlot(fx.runId, 5);
       const apptId = await callKw<number>(api, "pet.appointment", "create", [
         {
           title: `${fx.prefix} Edit Pet`,
           pet_id: fx.petOneId,
           intake_owner_id: fx.ownerOneId,
-          start_datetime: "2026-07-12 16:00:00",
-          end_datetime: "2026-07-12 16:30:00",
+          start_datetime: slot.start,
+          end_datetime: slot.end,
           sync_to_calendar: false,
+          vet_employee_id: false,
         },
       ]);
       fx.created.appointments.push(apptId);
@@ -497,17 +548,19 @@ test.describe("Appointment Intake UX", () => {
 
   test("6 — medical visit service line regression", async () => {
     try {
+      const slot = uniqueRpcSlot(fx.runId, 6);
       const apptId = await callKw<number>(api, "pet.appointment", "create", [
         {
           title: `${fx.prefix} Confirm Visit`,
           pet_id: fx.petMultiBId,
           intake_owner_id: fx.ownerMultiId,
-          start_datetime: "2026-07-12 17:00:00",
-          end_datetime: "2026-07-12 17:30:00",
+          start_datetime: slot.start,
+          end_datetime: slot.end,
           primary_type: "emergency",
           is_medical: true,
           auto_create_facility: true,
           sync_to_calendar: false,
+          vet_employee_id: false,
         },
       ]);
       fx.created.appointments.push(apptId);

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_dashboard_form" model="ir.ui.view">
+        <field name="name">dev.dashboard.form</field>
+        <field name="model">dev.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Development Hub" create="0" edit="0" delete="0">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_sessions" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="recent_session_count" widget="statinfo" string="Recent Work"/>
+                        </button>
+                        <button name="action_active_sessions" type="object" class="oe_stat_button" icon="fa-play-circle">
+                            <field name="active_session_count" widget="statinfo" string="Active"/>
+                        </button>
+                        <button name="action_paused_sessions" type="object" class="oe_stat_button" icon="fa-pause-circle">
+                            <field name="paused_session_count" widget="statinfo" string="Paused"/>
+                        </button>
+                        <button name="action_projects" type="object" class="oe_stat_button" icon="fa-folder-open">
+                            <field name="project_count" widget="statinfo" string="Projects"/>
+                        </button>
+                        <button name="action_environments" type="object" class="oe_stat_button" icon="fa-flask">
+                            <field name="environment_count" widget="statinfo" string="Environments"/>
+                        </button>
+                        <button name="action_machines" type="object" class="oe_stat_button" icon="fa-server">
+                            <field name="machine_count" widget="statinfo" string="Machines"/>
+                        </button>
+                        <button name="action_clients" type="object" class="oe_stat_button" icon="fa-laptop">
+                            <field name="client_warning_count" widget="statinfo" string="Client Warnings"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>Remote Development / Cursor Dev Hub</h1>
+                        <p>Select Project → Environment → Task → Start / Pause / Resume / Complete.</p>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        MVP scope: PetSpot Test only. Dev Hub records references and sanitized snapshots. It does not access production, mutate Git, restart services, control Docker, deploy, or write to OpenProject/GitHub.
+                    </div>
+                    <group string="Quick Start">
+                        <div class="o_form_label">
+                            Open Recent Work to create or resume a development session. Use the explicit copy-command or downloaded workspace artifact to open Cursor Remote SSH.
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_dashboard" model="ir.actions.act_window">
+        <field name="name">Development Hub</field>
+        <field name="res_model">dev.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="dev_dashboard_main"/>
+        <field name="target">current</field>
+    </record>
+</odoo>

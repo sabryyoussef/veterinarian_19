@@ -211,12 +211,14 @@ def _require_approver(env):
 def _require_importer(env):
     if env.is_superuser():
         return
-    allowed = env.user.has_group(
+    is_manager = env.user.has_group("dev_session_hub.group_dev_hub_manager")
+    is_guarded_generation = env.user.has_group(
         "dev_session_hub.group_dev_hub_generation"
-    ) or env.user.has_group("dev_session_hub.group_dev_hub_manager")
+    ) and env.context.get("dev_generation_import")
+    allowed = is_manager or is_guarded_generation
     if not allowed:
         raise AccessError(
-            "Only the scoped Dev Hub generation identity or a manager may import drafts."
+            "Draft import requires the guarded generation callback or a manager."
         )
 
 
@@ -560,8 +562,7 @@ class DevWorkItem(models.Model):
                 raise UserError("Implementation requires an approved exact plan hash.")
             if not self.preferred_repository_id or not self.preferred_environment_id:
                 raise UserError("Implementation requires registered repository and environment.")
-            if self.preferred_environment_id.is_production:
-                raise UserError("Phase 1–4 implementation cannot target production.")
+            self.preferred_environment_id._assert_dev_hub_safe(self.dev_project_id)
         elif new_phase == "paused":
             if (
                 not self.current_checkpoint_id
@@ -962,8 +963,8 @@ class DevWorkItem(models.Model):
         if work.current_phase != "planning":
             raise UserError("Plan drafts may be imported only while Planning.")
         steps = payload.get("steps") or []
-        if not isinstance(steps, list) or not 1 <= len(steps) <= 100:
-            raise ValidationError("Plan steps must contain between 1 and 100 items.")
+        if not isinstance(steps, list) or not 1 <= len(steps) <= 30:
+            raise ValidationError("Plan steps must contain between 1 and 30 items.")
         values = {
             key: value
             for key, value in payload.items()
@@ -2608,6 +2609,10 @@ class DevWorkCommunication(models.Model):
         [
             ("not_queued", "Not Queued"),
             ("queued", "Queued"),
+            (
+                "delivery_pending_confirmation",
+                "Delivery Pending Confirmation",
+            ),
             ("handed_off", "Handed Off"),
             ("delivered", "Delivered"),
             ("failed", "Failed"),

@@ -418,6 +418,7 @@ class DevSession(models.Model):
         machine = self.machine_id
         repository = self.repository_id
         self._check_project_authorization(self.project_id.sudo())
+        environment._assert_dev_hub_safe(self.project_id)
         if (
             environment.is_production
             or environment.environment_type == "production"

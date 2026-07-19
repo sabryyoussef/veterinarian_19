@@ -237,7 +237,7 @@ class TestDevSessionHub(TransactionCase):
             session.action_start()
         self.assertEqual(session.state, "draft")
 
-    def test_nonproduction_environment_can_use_mixed_canonical_host(self):
+    def test_production_bearing_machine_cannot_launch(self):
         environment = self.env["dev.environment"].create(
             {
                 "name": "Production-bearing Machine Fixture",
@@ -275,9 +275,9 @@ class TestDevSessionHub(TransactionCase):
                 "working_directory": self.repository.working_directory,
             }
         )
-        with self._mock_snapshot():
+        with self.assertRaises(UserError), self._mock_snapshot():
             session.action_start()
-        self.assertEqual(session.state, "started")
+        self.assertEqual(session.state, "draft")
 
     def test_explicit_workspace_fallback_does_not_require_managed_helper(self):
         session = self._session()

@@ -88,8 +88,8 @@ class DevWorkItem(models.Model):
             missing.append("preferred repository")
         if not self.preferred_environment_id:
             missing.append("preferred environment")
-        elif self.preferred_environment_id.is_production:
-            raise UserError("Automatic generation is denied for production environments.")
+        else:
+            self.preferred_environment_id._assert_dev_hub_safe(self.dev_project_id)
         if self.preferred_repository_id and not (
             self.preferred_repository_id.head_cache
             or self.current_checkpoint_id.git_head
@@ -242,8 +242,13 @@ class DevExternalOutbox(models.Model):
         selection_add=[
             ("leased", "Leased"),
             ("processing", "Processing"),
+            ("uncertain_delivery", "Delivery Pending Confirmation"),
         ],
-        ondelete={"leased": "set default", "processing": "set default"},
+        ondelete={
+            "leased": "set default",
+            "processing": "set default",
+            "uncertain_delivery": "set default",
+        },
     )
     correlation_id = fields.Char(
         required=True, default=_uuid, readonly=True, copy=False, index=True
@@ -253,9 +258,12 @@ class DevExternalOutbox(models.Model):
     )
     lease_owner_id = fields.Many2one("res.users", readonly=True, index=True)
     lease_consumer_ref = fields.Char(readonly=True)
+    lease_token = fields.Char(readonly=True, copy=False, index=True)
+    lease_version = fields.Integer(default=0, required=True, readonly=True)
     leased_at = fields.Datetime(readonly=True)
     lease_expires_at = fields.Datetime(readonly=True, index=True)
     processing_at = fields.Datetime(readonly=True)
+    reconciliation_required = fields.Boolean(default=False, readonly=True, index=True)
     max_attempts = fields.Integer(default=5, required=True, readonly=True)
 
     def _recover_expired_leases(self):
@@ -263,16 +271,31 @@ class DevExternalOutbox(models.Model):
         leased = self.sudo().search(
             [("state", "=", "leased"), ("lease_expires_at", "<=", now)]
         )
-        if leased:
-            leased.with_context(dev_outbox_action=True).write(
+        for record in leased:
+            exhausted = record.attempt_count >= record.max_attempts
+            record.with_context(dev_outbox_action=True).write(
                 {
-                    "state": "retry",
+                    "state": (
+                        "dead_letter"
+                        if exhausted
+                        else (
+                            "uncertain_delivery"
+                            if record.reconciliation_required
+                            else "retry"
+                        )
+                    ),
                     "next_attempt_at": now,
                     "lease_owner_id": False,
                     "lease_consumer_ref": False,
+                    "lease_token": False,
                     "lease_expires_at": False,
+                    "completed_at": now if exhausted else False,
                     "last_error_code": "lease_expired",
-                    "last_error_summary": "Lease expired before dispatch started.",
+                    "last_error_summary": (
+                        "Reconciliation lease expired; manual review is required."
+                        if exhausted
+                        else "Lease expired before dispatch started."
+                    ),
                 }
             )
         processing = self.sudo().search(
@@ -281,14 +304,17 @@ class DevExternalOutbox(models.Model):
         if processing:
             processing.with_context(dev_outbox_action=True).write(
                 {
-                    "state": "dead_letter",
+                    "state": "uncertain_delivery",
+                    "next_attempt_at": now + timedelta(seconds=60),
                     "lease_owner_id": False,
                     "lease_consumer_ref": False,
+                    "lease_token": False,
                     "lease_expires_at": False,
+                    "reconciliation_required": True,
                     "last_error_code": "dispatch_outcome_unknown",
                     "last_error_summary": (
-                        "Processing lease expired after dispatch began; manual "
-                        "correlation is required to prevent duplicate delivery."
+                        "Processing lease expired after dispatch began; provider "
+                        "reconciliation is required and resend is prohibited."
                     ),
                 }
             )
@@ -304,7 +330,7 @@ class DevExternalOutbox(models.Model):
             """
                 SELECT id
                   FROM dev_external_outbox
-                 WHERE state IN ('pending', 'retry')
+                 WHERE state IN ('pending', 'retry', 'uncertain_delivery')
                    AND (
                         (channel = 'chatwoot' AND operation = 'public_message')
                         OR (channel = 'openproject' AND operation = 'milestone')
@@ -320,6 +346,11 @@ class DevExternalOutbox(models.Model):
         records = self.sudo().browse([row[0] for row in self.env.cr.fetchall()])
         result = []
         for record in records:
+            lease_token = _uuid()
+            reconcile_only = (
+                record.state == "uncertain_delivery"
+                or record.reconciliation_required
+            )
             record.with_context(dev_outbox_action=True).write(
                 {
                     "state": "leased",
@@ -327,6 +358,8 @@ class DevExternalOutbox(models.Model):
                     "last_attempt_at": now,
                     "lease_owner_id": self.env.user.id,
                     "lease_consumer_ref": consumer_ref,
+                    "lease_token": lease_token,
+                    "lease_version": record.lease_version + 1,
                     "leased_at": now,
                     "lease_expires_at": _lease_expiry(lease_seconds),
                     "last_error_code": False,
@@ -337,11 +370,14 @@ class DevExternalOutbox(models.Model):
                 {
                     "id": record.id,
                     "correlation_id": record.correlation_id,
+                    "lease_token": lease_token,
+                    "lease_version": record.lease_version,
                     "idempotency_key": record.idempotency_key,
                     "channel": record.channel,
                     "operation": record.operation,
                     "payload": json.loads(record.payload_json),
                     "attempt": record.attempt_count,
+                    "reconcile_only": reconcile_only,
                     "lease_expires_at": fields.Datetime.to_string(
                         record.lease_expires_at
                     ),
@@ -349,20 +385,24 @@ class DevExternalOutbox(models.Model):
             )
         return result
 
-    def _service_record(self, record_id, correlation_id):
+    def _service_record(self, record_id, correlation_id, lease_token):
         _require_outbox_service(self.env)
         record = self.sudo().browse(int(record_id)).exists()
         if not record or record.correlation_id != correlation_id:
             raise AccessError("Unknown outbox correlation.")
         if record.lease_owner_id.id != self.env.user.id:
             raise AccessError("The outbox lease belongs to another service identity.")
+        if not lease_token or record.lease_token != lease_token:
+            raise AccessError("The outbox lease token is stale or invalid.")
+        if not record.lease_expires_at or record.lease_expires_at <= fields.Datetime.now():
+            raise AccessError("The outbox lease has expired.")
         return record
 
     @api.model
-    def service_mark_processing(self, record_id, correlation_id):
-        record = self._service_record(record_id, correlation_id)
+    def service_mark_processing(self, record_id, correlation_id, lease_token):
+        record = self._service_record(record_id, correlation_id, lease_token)
         if record.state == "processing":
-            return True
+            raise AccessError("Dispatch permission was already consumed for this lease.")
         if record.state != "leased":
             raise UserError("Only a leased outbox intent can start processing.")
         record.with_context(dev_outbox_action=True).write(
@@ -371,15 +411,16 @@ class DevExternalOutbox(models.Model):
         return True
 
     @api.model
-    def service_ack_success(self, record_id, correlation_id, result=None):
+    def service_ack_success(
+        self, record_id, correlation_id, lease_token=None, result=None
+    ):
         _require_outbox_service(self.env)
         record = self.sudo().browse(int(record_id)).exists()
         if not record or record.correlation_id != correlation_id:
             raise AccessError("Unknown outbox correlation.")
         if record.state == "done":
             return {"state": "done", "external_reference": record.external_reference}
-        if record.lease_owner_id.id != self.env.user.id:
-            raise AccessError("The outbox lease belongs to another service identity.")
+        record = self._service_record(record_id, correlation_id, lease_token)
         if record.state != "processing":
             raise UserError("Success requires the explicit Processing state.")
         result = result or {}
@@ -394,6 +435,24 @@ class DevExternalOutbox(models.Model):
         external_reference = _clean_text(
             result.get("external_reference"), "External reference", 500
         )
+        chatwoot_message_id = result.get("chatwoot_message_id")
+        if record.channel == "chatwoot":
+            if (
+                isinstance(chatwoot_message_id, bool)
+                or not isinstance(chatwoot_message_id, int)
+                or chatwoot_message_id <= 0
+            ):
+                raise ValidationError(
+                    "A positive Chatwoot message ID is required for delivery success."
+                )
+            if external_reference != str(chatwoot_message_id):
+                raise ValidationError(
+                    "Chatwoot external reference must match the provider message ID."
+                )
+        elif not external_reference:
+            raise ValidationError(
+                "An external reference is required for OpenProject success."
+            )
         record.with_context(dev_outbox_action=True).write(
             {
                 "state": "done",
@@ -401,18 +460,14 @@ class DevExternalOutbox(models.Model):
                 "external_reference": external_reference,
                 "lease_owner_id": False,
                 "lease_consumer_ref": False,
+                "lease_token": False,
                 "lease_expires_at": False,
+                "reconciliation_required": False,
                 "last_error_code": False,
                 "last_error_summary": False,
             }
         )
         if record.communication_id:
-            chatwoot_message_id = result.get("chatwoot_message_id")
-            if chatwoot_message_id is not None and (
-                isinstance(chatwoot_message_id, bool)
-                or not isinstance(chatwoot_message_id, int)
-            ):
-                raise ValidationError("Chatwoot message ID must be an integer.")
             record.communication_id.sudo()._integration_update(
                 {
                     "chatwoot_message_id": chatwoot_message_id or False,
@@ -430,11 +485,12 @@ class DevExternalOutbox(models.Model):
         correlation_id,
         error_code,
         error_summary,
+        lease_token=None,
         transient=True,
         retry_after_seconds=60,
         delivery_uncertain=False,
     ):
-        record = self._service_record(record_id, correlation_id)
+        record = self._service_record(record_id, correlation_id, lease_token)
         if record.state not in ("leased", "processing"):
             raise UserError("Only an active lease can record failure.")
         code = _clean_text(error_code, "Error code", 100)
@@ -444,13 +500,31 @@ class DevExternalOutbox(models.Model):
             and not bool(delivery_uncertain)
             and record.attempt_count < record.max_attempts
         )
+        reconciliation_allowed = (
+            bool(delivery_uncertain) and record.attempt_count < record.max_attempts
+        )
         values = {
-            "state": "retry" if retry_allowed else "dead_letter",
+            "state": (
+                "retry"
+                if retry_allowed
+                else (
+                    "uncertain_delivery"
+                    if reconciliation_allowed
+                    else "dead_letter"
+                )
+            ),
             "next_attempt_at": fields.Datetime.now()
             + timedelta(seconds=max(30, min(int(retry_after_seconds or 60), 86400))),
             "lease_owner_id": False,
             "lease_consumer_ref": False,
+            "lease_token": False,
             "lease_expires_at": False,
+            "reconciliation_required": reconciliation_allowed,
+            "completed_at": (
+                fields.Datetime.now()
+                if not retry_allowed and not reconciliation_allowed
+                else False
+            ),
             "last_error_code": code,
             "last_error_summary": summary,
         }
@@ -460,7 +534,11 @@ class DevExternalOutbox(models.Model):
                 {
                     "delivery_status": "failed"
                     if retry_allowed
-                    else "dead_letter",
+                    else (
+                        "delivery_pending_confirmation"
+                        if reconciliation_allowed
+                        else "dead_letter"
+                    ),
                     "error_state": summary,
                 }
             )
@@ -509,6 +587,8 @@ class DevWorkGeneration(models.Model):
     )
     lease_owner_id = fields.Many2one("res.users", readonly=True)
     lease_consumer_ref = fields.Char(readonly=True)
+    lease_token = fields.Char(readonly=True, copy=False, index=True)
+    lease_version = fields.Integer(default=0, required=True, readonly=True)
     leased_at = fields.Datetime(readonly=True)
     lease_expires_at = fields.Datetime(readonly=True, index=True)
     processing_at = fields.Datetime(readonly=True)
@@ -574,16 +654,23 @@ class DevWorkGeneration(models.Model):
                 ("lease_expires_at", "<=", now),
             ]
         )
-        if expired:
-            expired.with_context(dev_generation_action=True).write(
+        for record in expired:
+            exhausted = record.attempt_count >= record.max_attempts
+            record.with_context(dev_generation_action=True).write(
                 {
-                    "state": "retry",
+                    "state": "dead_letter" if exhausted else "retry",
                     "next_attempt_at": now,
                     "lease_owner_id": False,
                     "lease_consumer_ref": False,
+                    "lease_token": False,
                     "lease_expires_at": False,
+                    "completed_at": now if exhausted else False,
                     "last_error_code": "lease_expired",
-                    "last_error_summary": "Generation lease expired before execution.",
+                    "last_error_summary": (
+                        "Generation lease expired on the final attempt."
+                        if exhausted
+                        else "Generation lease expired before execution."
+                    ),
                 }
             )
         stalled = self.sudo().search(
@@ -598,6 +685,7 @@ class DevWorkGeneration(models.Model):
                     "state": "dead_letter",
                     "lease_owner_id": False,
                     "lease_consumer_ref": False,
+                    "lease_token": False,
                     "lease_expires_at": False,
                     "last_error_code": "generation_outcome_unknown",
                     "last_error_summary": (
@@ -623,12 +711,15 @@ class DevWorkGeneration(models.Model):
         records = self.sudo().browse([row[0] for row in self.env.cr.fetchall()])
         result = []
         for record in records:
+            lease_token = _uuid()
             record.with_context(dev_generation_action=True).write(
                 {
                     "state": "leased",
                     "attempt_count": record.attempt_count + 1,
                     "lease_owner_id": self.env.user.id,
                     "lease_consumer_ref": consumer_ref,
+                    "lease_token": lease_token,
+                    "lease_version": record.lease_version + 1,
                     "leased_at": now,
                     "lease_expires_at": _lease_expiry(lease_seconds),
                     "last_error_code": False,
@@ -640,6 +731,8 @@ class DevWorkGeneration(models.Model):
                     "id": record.id,
                     "kind": record.kind,
                     "correlation_id": record.correlation_id,
+                    "lease_token": lease_token,
+                    "lease_version": record.lease_version,
                     "idempotency_key": record.idempotency_key,
                     "context": json.loads(record.context_json),
                     "attempt": record.attempt_count,
@@ -647,22 +740,31 @@ class DevWorkGeneration(models.Model):
             )
         return result
 
-    def _service_record(self, record_id, correlation_id):
+    def _service_record(self, record_id, correlation_id, lease_token):
         _require_generation_service(self.env)
         record = self.sudo().browse(int(record_id)).exists()
         if not record or record.correlation_id != correlation_id:
             raise AccessError("Unknown generation correlation.")
         if record.lease_owner_id.id != self.env.user.id:
             raise AccessError("The generation lease belongs to another identity.")
+        if not lease_token or record.lease_token != lease_token:
+            raise AccessError("The generation lease token is stale or invalid.")
+        if not record.lease_expires_at or record.lease_expires_at <= fields.Datetime.now():
+            raise AccessError("The generation lease has expired.")
         return record
 
     @api.model
     def service_mark_processing(
-        self, record_id, correlation_id, provider_reference=None, run_reference=None
+        self,
+        record_id,
+        correlation_id,
+        lease_token,
+        provider_reference=None,
+        run_reference=None,
     ):
-        record = self._service_record(record_id, correlation_id)
+        record = self._service_record(record_id, correlation_id, lease_token)
         if record.state == "processing":
-            return True
+            raise AccessError("Generation execution permission was already consumed.")
         if record.state != "leased":
             raise UserError("Only a leased generation can start processing.")
         provider_reference = _clean_text(
@@ -684,8 +786,8 @@ class DevWorkGeneration(models.Model):
         return True
 
     @api.model
-    def service_complete(self, record_id, correlation_id, result):
-        record = self._service_record(record_id, correlation_id)
+    def service_complete(self, record_id, correlation_id, lease_token, result):
+        record = self._service_record(record_id, correlation_id, lease_token)
         if record.state == "succeeded":
             return {
                 "state": "succeeded",
@@ -715,6 +817,7 @@ class DevWorkGeneration(models.Model):
                     "completed_at": fields.Datetime.now(),
                     "lease_owner_id": False,
                     "lease_consumer_ref": False,
+                    "lease_token": False,
                     "lease_expires_at": False,
                     "last_error_code": "stale_generation_context",
                     "last_error_summary": stale_reason,
@@ -727,15 +830,33 @@ class DevWorkGeneration(models.Model):
         if supplied_uuid and supplied_uuid != work.uuid:
             raise ValidationError("Generation result targets a different Work Item.")
         result = dict(result, work_item_uuid=work.uuid)
+        if record.kind == "analysis":
+            result.update(
+                {
+                    "provider_reference": record.provider_reference,
+                    "run_reference": record.run_reference,
+                    "model_reference": "managed-dify-workflow",
+                    "observed_head": (context.get("repository") or {}).get("head", ""),
+                }
+            )
         if record.kind == "plan":
             result["analysis_revision"] = work.current_accepted_analysis_id.revision
+            result["run_reference"] = record.run_reference
         try:
             with self.env.cr.savepoint():
                 if record.kind == "analysis":
-                    artifact_id = self.env["dev.work.item"].import_analysis_draft(result)
+                    artifact_id = (
+                        self.env["dev.work.item"]
+                        .with_context(dev_generation_import=True)
+                        .import_analysis_draft(result)
+                    )
                     artifact_model = "dev.work.analysis"
                 else:
-                    artifact_id = self.env["dev.work.item"].import_plan_draft(result)
+                    artifact_id = (
+                        self.env["dev.work.item"]
+                        .with_context(dev_generation_import=True)
+                        .import_plan_draft(result)
+                    )
                     artifact_model = "dev.work.plan"
                     self.env[artifact_model].sudo().browse(
                         artifact_id
@@ -748,6 +869,7 @@ class DevWorkGeneration(models.Model):
                     "completed_at": fields.Datetime.now(),
                     "lease_owner_id": False,
                     "lease_consumer_ref": False,
+                    "lease_token": False,
                     "lease_expires_at": False,
                     "last_error_code": "invalid_generation_output",
                     "last_error_summary": summary,
@@ -762,6 +884,7 @@ class DevWorkGeneration(models.Model):
                 "artifact_record_id": artifact_id,
                 "lease_owner_id": False,
                 "lease_consumer_ref": False,
+                "lease_token": False,
                 "lease_expires_at": False,
                 "last_error_code": False,
                 "last_error_summary": False,
@@ -780,10 +903,11 @@ class DevWorkGeneration(models.Model):
         correlation_id,
         error_code,
         error_summary,
+        lease_token=None,
         transient=True,
         retry_after_seconds=120,
     ):
-        record = self._service_record(record_id, correlation_id)
+        record = self._service_record(record_id, correlation_id, lease_token)
         if record.state not in ("leased", "processing"):
             raise UserError("Only an active generation lease can fail.")
         retry = bool(transient) and record.attempt_count < record.max_attempts
@@ -796,6 +920,7 @@ class DevWorkGeneration(models.Model):
                 ),
                 "lease_owner_id": False,
                 "lease_consumer_ref": False,
+                "lease_token": False,
                 "lease_expires_at": False,
                 "last_error_code": _clean_text(error_code, "Error code", 100),
                 "last_error_summary": _clean_text(

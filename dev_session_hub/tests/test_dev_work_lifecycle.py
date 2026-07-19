@@ -914,10 +914,13 @@ class TestDevWorkLifecycle(TransactionCase):
         lease = service.service_lease(limit=1, consumer_ref="test-consumer")
         self.assertEqual(lease[0]["id"], outbox.id)
         self.assertEqual(outbox.state, "leased")
-        service.service_mark_processing(outbox.id, outbox.correlation_id)
+        service.service_mark_processing(
+            outbox.id, outbox.correlation_id, lease[0]["lease_token"]
+        )
         result = service.service_ack_success(
             outbox.id,
             outbox.correlation_id,
+            lease[0]["lease_token"],
             {"external_reference": "test-activity-1"},
         )
         self.assertEqual(result["state"], "done")
@@ -945,12 +948,13 @@ class TestDevWorkLifecycle(TransactionCase):
         service = self.env["dev.external.outbox"].with_user(outbox_user)
         with self.assertRaises(AccessError):
             self.env["dev.external.outbox"].with_user(generation_user).service_lease()
-        service.service_lease(limit=1, consumer_ref="retry-test")
+        lease = service.service_lease(limit=1, consumer_ref="retry-test")[0]
         retry = service.service_ack_failure(
             outbox.id,
             outbox.correlation_id,
             "temporary_transport",
             "Temporary transport failure before a confirmed delivery.",
+            lease_token=lease["lease_token"],
             transient=True,
             retry_after_seconds=30,
         )
@@ -958,17 +962,64 @@ class TestDevWorkLifecycle(TransactionCase):
         outbox.with_context(dev_outbox_action=True).write(
             {"next_attempt_at": fields.Datetime.now()}
         )
-        service.service_lease(limit=1, consumer_ref="dead-letter-test")
-        service.service_mark_processing(outbox.id, outbox.correlation_id)
+        lease = service.service_lease(limit=1, consumer_ref="dead-letter-test")[0]
+        service.service_mark_processing(
+            outbox.id, outbox.correlation_id, lease["lease_token"]
+        )
         dead = service.service_ack_failure(
             outbox.id,
             outbox.correlation_id,
             "delivery_uncertain",
             "External outcome is uncertain; automatic retry is unsafe.",
+            lease_token=lease["lease_token"],
             transient=True,
             delivery_uncertain=True,
         )
-        self.assertEqual(dead["state"], "dead_letter")
+        self.assertEqual(dead["state"], "uncertain_delivery")
+
+    def test_outbox_stale_lease_is_fenced_and_uncertain_delivery_reconciles(self):
+        work = self._work()
+        outbox = work._prepare_op_milestone(
+            "material_blocker", "Safe reconciliation test.", "on_hold"
+        )
+        service = self.env["dev.external.outbox"].with_user(self._outbox_user())
+        first = service.service_lease(limit=1, consumer_ref="first-worker")[0]
+        service.service_mark_processing(
+            outbox.id, outbox.correlation_id, first["lease_token"]
+        )
+        service.service_ack_failure(
+            outbox.id,
+            outbox.correlation_id,
+            "delivery_uncertain",
+            "Provider acceptance requires reconciliation.",
+            lease_token=first["lease_token"],
+            transient=False,
+            delivery_uncertain=True,
+            retry_after_seconds=30,
+        )
+        self.assertEqual(outbox.state, "uncertain_delivery")
+        outbox.with_context(dev_outbox_action=True).write(
+            {"next_attempt_at": fields.Datetime.now()}
+        )
+        second = service.service_lease(limit=1, consumer_ref="reconciler")[0]
+        self.assertTrue(second["reconcile_only"])
+        self.assertNotEqual(first["lease_token"], second["lease_token"])
+        self.assertGreater(second["lease_version"], first["lease_version"])
+        with self.assertRaises(AccessError):
+            service.service_mark_processing(
+                outbox.id, outbox.correlation_id, first["lease_token"]
+            )
+        service.service_mark_processing(
+            outbox.id, outbox.correlation_id, second["lease_token"]
+        )
+        result = service.service_ack_success(
+            outbox.id,
+            outbox.correlation_id,
+            second["lease_token"],
+            {"external_reference": "reconciled-activity-1"},
+        )
+        self.assertEqual(result["state"], "done")
+        self.assertFalse(outbox.reconciliation_required)
 
     def test_outbox_rejects_unsupported_or_malformed_intents(self):
         work = self._work()
@@ -997,17 +1048,27 @@ class TestDevWorkLifecycle(TransactionCase):
         analysis_request = work.action_request_analysis_generation()
         integration = self._generation_user()
         service = self.env["dev.work.generation"].with_user(integration)
+        with self.assertRaises(AccessError):
+            self.env["dev.work.item"].with_user(integration).import_analysis_draft(
+                {
+                    "work_item_uuid": work.uuid,
+                    "problem_summary": "Bypass attempt.",
+                    "original_request_summary": "Must use service_complete.",
+                }
+            )
         lease = service.service_lease(limit=1, consumer_ref="generation-test")[0]
         self.assertEqual(lease["id"], analysis_request.id)
         service.service_mark_processing(
             analysis_request.id,
             analysis_request.correlation_id,
+            lease["lease_token"],
             "dify:analysis",
             "analysis-run-%s" % uuid.uuid4().hex,
         )
         outcome = service.service_complete(
             analysis_request.id,
             analysis_request.correlation_id,
+            lease["lease_token"],
             {
                 "problem_summary": "A bounded test problem.",
                 "original_request_summary": "A bounded test request.",
@@ -1028,12 +1089,14 @@ class TestDevWorkLifecycle(TransactionCase):
         service.service_mark_processing(
             plan_request.id,
             plan_request.correlation_id,
+            lease["lease_token"],
             "dify:plan",
             "plan-run-%s" % uuid.uuid4().hex,
         )
         outcome = service.service_complete(
             plan_request.id,
             plan_request.correlation_id,
+            lease["lease_token"],
             {
                 "goal": "Implement only the approved scope.",
                 "scope": "Test scope.",
@@ -1073,10 +1136,19 @@ class TestDevWorkLifecycle(TransactionCase):
         request = work.action_request_analysis_generation()
         integration = self._generation_user()
         service = self.env["dev.work.generation"].with_user(integration)
-        service.service_lease(limit=1, consumer_ref="stale-test")
+        lease = service.service_lease(limit=1, consumer_ref="stale-test")[0]
+        with self.assertRaises(AccessError):
+            service.service_mark_processing(
+                request.id,
+                request.correlation_id,
+                "stale-generation-token",
+                "dify:analysis",
+                "stale-worker-run",
+            )
         service.service_mark_processing(
             request.id,
             request.correlation_id,
+            lease["lease_token"],
             "dify:analysis",
             "stale-run-%s" % uuid.uuid4().hex,
         )
@@ -1084,6 +1156,7 @@ class TestDevWorkLifecycle(TransactionCase):
         outcome = service.service_complete(
             request.id,
             request.correlation_id,
+            lease["lease_token"],
             {
                 "problem_summary": "Stale output.",
                 "original_request_summary": "Stale request.",
@@ -1097,16 +1170,18 @@ class TestDevWorkLifecycle(TransactionCase):
         work = self._generation_ready_work()
         request = work.action_request_analysis_generation()
         service = self.env["dev.work.generation"].with_user(self._generation_user())
-        service.service_lease(limit=1, consumer_ref="invalid-output-test")
+        lease = service.service_lease(limit=1, consumer_ref="invalid-output-test")[0]
         service.service_mark_processing(
             request.id,
             request.correlation_id,
+            lease["lease_token"],
             "dify:analysis",
             "invalid-run-%s" % uuid.uuid4().hex,
         )
         outcome = service.service_complete(
             request.id,
             request.correlation_id,
+            lease["lease_token"],
             {"problem_summary": "Missing required original request summary."},
         )
         self.assertEqual(outcome["error_code"], "invalid_generation_output")

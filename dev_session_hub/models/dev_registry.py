@@ -4,7 +4,7 @@ import re
 import uuid
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 def _new_uuid(_recordset=None):
@@ -318,6 +318,44 @@ class DevEnvironment(models.Model):
     def _compute_is_production(self):
         for record in self:
             record.is_production = record.environment_type == "production"
+
+    def _assert_dev_hub_safe(self, project):
+        """Apply one fail-closed non-production policy across all automation paths."""
+        self.ensure_one()
+        machine = self.machine_id
+        if (
+            not self.active
+            or not machine
+            or not machine.active
+            or self.is_production
+            or self.environment_type == "production"
+            or self.data_sensitivity in ("production", "restricted", "confidential")
+            or machine.production
+            or machine.trust_zone != "trusted_dev"
+        ):
+            raise UserError(
+                "Dev Hub automation requires an active, trusted, non-production target."
+            )
+        policy = self.env["dev.policy"].search(
+            [
+                ("active", "=", True),
+                ("project_id", "=", project.id),
+                ("environment_id", "in", [self.id, False]),
+            ],
+            order="environment_id desc",
+            limit=1,
+        )
+        if (
+            not policy
+            or not policy.development_allowed
+            or policy.production_access_policy != "denied"
+            or policy.deploy_permission
+        ):
+            raise UserError(
+                "Dev Hub automation requires an active production-denied policy "
+                "without deployment permission."
+            )
+        return policy
 
     @api.constrains("port")
     def _check_port(self):

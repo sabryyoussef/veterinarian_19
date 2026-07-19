@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_push_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.push.approval.wizard.form</field>
+        <field name="model">dev.git.push.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve One Exact Git Push">
+                <div class="alert alert-warning" role="alert">
+                    Approval is bound to this exact commit, registered remote, remote state, and branch. This step does not push.
+                </div>
+                <group>
+                    <group>
+                        <field name="work_item_id"/>
+                        <field name="workspace_id"/>
+                        <field name="local_branch"/>
+                        <field name="local_head"/>
+                        <field name="commit_sha"/>
+                        <field name="commit_message"/>
+                    </group>
+                    <group>
+                        <field name="remote_id"/>
+                        <field name="remote_branch"/>
+                        <field name="remote_head"/>
+                        <field name="ahead_count"/>
+                        <field name="behind_count"/>
+                        <field name="last_remote_check_at"/>
+                    </group>
+                </group>
+                <field name="confirmation_text" readonly="1"/>
+                <field name="confirm_exact_push"/>
+                <footer>
+                    <button name="action_approve" type="object" string="Record Exact Push Approval" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_push_execution_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.push.execution.wizard.form</field>
+        <field name="model">dev.git.push.execution.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Final Confirmation — Push Exact Commit">
+                <div class="alert alert-danger" role="alert">
+                    This performs one normal non-force Push. It will not create a PR, merge, or deploy.
+                </div>
+                <group>
+                    <group>
+                        <field name="workspace_id"/>
+                        <field name="approval_id"/>
+                        <field name="local_branch"/>
+                        <field name="commit_sha"/>
+                    </group>
+                    <group>
+                        <field name="remote_id"/>
+                        <field name="remote_branch"/>
+                        <field name="approver_id"/>
+                        <field name="approved_at"/>
+                        <field name="binding_hash"/>
+                    </group>
+                </group>
+                <field name="confirmation_text" readonly="1"/>
+                <field name="confirm_push_now"/>
+                <footer>
+                    <button name="action_execute" type="object" string="Confirm and Push One Branch" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" confirm="Push exactly this commit and branch? No PR, merge, or deployment will occur."/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

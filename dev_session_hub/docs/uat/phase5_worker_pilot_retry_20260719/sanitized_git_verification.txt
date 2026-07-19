@@ -1,0 +1,12 @@
+main
+5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+devhub/DW-5-phase5-retry-add-fixture-readme-contract-test
+5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+?? tests/__init__.py
+?? tests/test_fixture_readme_retry.py
+0
+devworker:devworker 1001:1001 770
+preserved_dw3=yes
+blocked
+lease_state_file=removed

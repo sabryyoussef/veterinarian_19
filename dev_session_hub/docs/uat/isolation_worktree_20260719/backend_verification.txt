@@ -1,0 +1,42 @@
+SANITIZED ODOO BACKEND VERIFICATION — 2026-07-19
+
+Database: devhub_isolation_uat (disposable)
+Work Item ID: 3
+Work Item UUID: f4939868-ea63-44a9-b166-731e765b972e
+Workspace ID: 7
+Workspace final state: released
+Dirty summary: changed=1
+
+Analysis ID: 1
+Analysis state: accepted
+Plan revision 1 ID: 1
+Plan revision 1 state: superseded
+Plan revision 2 ID: 2
+Plan revision 2 state: approved
+Approval ID: 1
+Approved plan hash:
+  4a1c6a06b23a95135573b9bedc9679bcaebb5eaf428251d76e56cf1b1e31de01
+
+Policy ID: 4
+Policy hash:
+  25554346d432bc2c0c8287db2a3859d589bc17dfe4c5ebf1e2f238088e6348a9
+Execution contract hash:
+  3170741d4453ab791bf50cb455783a09336dcb0a66dbca4b41d18281ed913379
+Policy exact after restore: PASS
+Execution contract exact after restore: PASS
+
+Immutable event sequence:
+  proposal_created
+  workspace_ready
+  validated
+  validated
+  session_started
+  session_paused
+  resumed
+  session_resumed
+  session_completed
+  released
+
+Cleanup request result:
+  denied because dirty_summary = changed=1
+  workspace and branch preserved

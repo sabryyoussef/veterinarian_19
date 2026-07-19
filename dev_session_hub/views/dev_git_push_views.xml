@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_remote_form" model="ir.ui.view">
+        <field name="name">dev.git.remote.form</field>
+        <field name="model">dev.git.remote</field>
+        <field name="arch" type="xml">
+            <form string="Registered Git Push Remote">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="repository_id"/>
+                            <field name="protocol"/>
+                            <field name="remote_url"/>
+                            <field name="allowed_ssh_user" invisible="protocol != 'ssh'"/>
+                        </group>
+                        <group>
+                            <field name="approved"/>
+                            <field name="non_production"/>
+                            <field name="allowed_branch_prefix"/>
+                            <field name="credential_profile_reference"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <field name="protected_branch_patterns"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_push_approval_form" model="ir.ui.view">
+        <field name="name">dev.git.push.approval.form</field>
+        <field name="model">dev.git.push.approval</field>
+        <field name="arch" type="xml">
+            <form string="Immutable Git Push Approval" create="0" edit="0" delete="0">
+                <sheet>
+                    <div class="oe_title"><h1><field name="approval_state"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="repository_id"/>
+                            <field name="local_branch"/>
+                            <field name="local_head"/>
+                            <field name="commit_sha"/>
+                        </group>
+                        <group>
+                            <field name="remote_id"/>
+                            <field name="remote_name"/>
+                            <field name="remote_url_reference"/>
+                            <field name="remote_branch"/>
+                            <field name="remote_head_before"/>
+                            <field name="push_mode"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="policy_hash"/>
+                            <field name="execution_contract_hash"/>
+                            <field name="binding_hash"/>
+                        </group>
+                        <group>
+                            <field name="approver_id"/>
+                            <field name="approved_at"/>
+                            <field name="remote_heads_digest"/>
+                            <field name="remote_tags_digest"/>
+                        </group>
+                    </group>
+                    <field name="event_ids">
+                        <list create="0" edit="0" delete="0">
+                            <field name="occurred_at"/>
+                            <field name="event_type"/>
+                            <field name="actor_id"/>
+                            <field name="summary"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_push_record_form" model="ir.ui.view">
+        <field name="name">dev.git.push.record.form</field>
+        <field name="model">dev.git.push.record</field>
+        <field name="arch" type="xml">
+            <form string="Verified Git Push Record" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="approval_id"/>
+                            <field name="remote_id"/>
+                            <field name="local_branch"/>
+                            <field name="remote_branch"/>
+                        </group>
+                        <group>
+                            <field name="commit_sha"/>
+                            <field name="remote_head_before"/>
+                            <field name="remote_head_after"/>
+                            <field name="approver_id"/>
+                            <field name="pushed_at"/>
+                            <field name="audit_hash"/>
+                        </group>
+                    </group>
+                    <field name="result"/>
+                    <field name="verification_result"/>
+                    <separator string="Remote Reconciliation Evidence"/>
+                    <group>
+                        <group>
+                            <field name="reconciliation_state"/>
+                            <field name="approved_pre_refs_digest"/>
+                            <field name="expected_remote_head"/>
+                        </group>
+                        <group>
+                            <field name="observed_post_refs_digest"/>
+                            <field name="reconciled_at"/>
+                        </group>
+                    </group>
+                    <field name="reconciliation_result"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

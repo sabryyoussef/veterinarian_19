@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="group_dev_hub_manager" model="res.groups">
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="dev_machine_master" model="dev.machine">
+        <field name="name">master</field>
+        <field name="stable_uuid">9e884ab7-9b8f-4b69-a065-a45f4f8f4316</field>
+        <field name="hostname">master</field>
+        <field name="tailscale_name">master.tailcf9988.ts.net</field>
+        <field name="tailscale_ip_reference">100.76.217.35</field>
+        <field name="tailscale_destination_verified" eval="True"/>
+        <field name="tailscale_verified_at">2026-07-18 16:20:00</field>
+        <field name="pinned_host_key_fingerprint">SHA256:p/lGDKGwvUxeoO0c7NhcDwekltbxEh4Mb9qFqBG554o</field>
+        <field name="ssh_alias">master-ts</field>
+        <field name="os_name">Ubuntu 26.04 LTS</field>
+        <field name="architecture">x86_64</field>
+        <field name="role">Initial canonical development target</field>
+        <field name="trust_zone">trusted_dev</field>
+        <field name="production" eval="True"/>
+        <field name="last_reachability_status">reachable</field>
+        <field name="last_checked_at">2026-07-18 16:20:00</field>
+        <field name="allowed_path_prefixes">/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel</field>
+    </record>
+
+    <record id="dev_client_windows_desktop" model="dev.client">
+        <field name="name">Windows Desktop</field>
+        <field name="user_name">hp</field>
+        <field name="os_name">Windows</field>
+        <field name="architecture">x86_64</field>
+        <field name="cursor_version">3.5.38</field>
+        <field name="cursor_agent_version">unresolved — validate on client</field>
+        <field name="helper_version">not_installed</field>
+        <field name="baseline_revision">mvp-2026-07-report-only</field>
+        <field name="compliance_status">warning</field>
+        <field name="compliance_note">Version and master-ts Tailscale SSH alias verified remotely. Cursor CLI help does not advertise --folder-uri; manual GUI launch acceptance remains required.</field>
+    </record>
+
+    <record id="dev_client_ubuntu_precision" model="dev.client">
+        <field name="name">Ubuntu Dell Precision</field>
+        <field name="user_name">sabry3</field>
+        <field name="os_name">Ubuntu</field>
+        <field name="architecture">x86_64</field>
+        <field name="cursor_version">3.12.17</field>
+        <field name="cursor_agent_version">unresolved — validate on client</field>
+        <field name="helper_version">not_installed</field>
+        <field name="baseline_revision">mvp-2026-07-report-only</field>
+        <field name="compliance_status">warning</field>
+        <field name="compliance_note">Version and master-ts Tailscale SSH alias verified remotely. Cursor CLI help does not advertise --folder-uri; manual GUI launch acceptance remains required.</field>
+    </record>
+
+    <record id="dev_project_petspot" model="dev.project">
+        <field name="name">PetSpot</field>
+        <field name="code">PETSPOT</field>
+        <field name="owner_id" ref="base.user_admin"/>
+        <field name="member_ids" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="openproject_reference">project:28 — Petspot Elsahel 2026</field>
+        <field name="github_reference">https://github.com/sabryyoussef/veterinarian_19</field>
+        <field name="production_policy">Production launch is disabled. MVP sessions are limited to PetSpot Test.</field>
+        <field name="agent_instruction_summary">Work only against PetSpot Test. Do not access production, deploy, restart services, control Docker, or switch Git branches automatically.</field>
+    </record>
+
+    <record id="dev_repository_petspot" model="dev.repository">
+        <field name="name">PetSpot Odoo 19</field>
+        <field name="project_id" ref="dev_project_petspot"/>
+        <field name="git_remote">https://github.com/sabryyoussef/veterinarian_19.git</field>
+        <field name="canonical_remote_path">/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel</field>
+        <field name="working_directory">/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel</field>
+        <field name="default_branch">unresolved</field>
+        <field name="repository_role">primary</field>
+        <field name="current_branch_cache">feature/resume-portability-candidates</field>
+        <field name="head_cache">efe1ba2f31aae160e8d43f81f45d24ff144d9ed2</field>
+        <field name="last_git_snapshot_at">2026-07-18 16:20:00</field>
+        <field name="execution_classification">production_coupled</field>
+        <field name="agent_execution_allowed" eval="False"/>
+        <field name="worker_identity">devworker</field>
+        <field name="worker_git_common_dir">/srv/devhub/repos/petspot.git</field>
+        <field name="worker_worktree_root">/srv/devhub/worktrees</field>
+        <field name="production_runtime_coupled" eval="True"/>
+        <field name="test_runtime_coupled" eval="True"/>
+        <field name="execution_audit_summary">Production, Test, proxy, and backup paths reference the main worktree directly. The main worktree is heavily dirty and its .git metadata must never be shared with a worker. Agent execution remains denied pending a separate non-production machine and worker-owned bare repository.</field>
+        <field name="execution_audited_at">2026-07-19 08:00:00</field>
+    </record>
+
+    <record id="dev_environment_petspot_test" model="dev.environment">
+        <field name="name">PetSpot Test</field>
+        <field name="project_id" ref="dev_project_petspot"/>
+        <field name="environment_type">test</field>
+        <field name="machine_id" ref="dev_machine_master"/>
+        <field name="odoo_version">19.0 Enterprise</field>
+        <field name="database_identifier">pet_spot_elsahel_test</field>
+        <field name="url">https://test.drpaws.ai</field>
+        <field name="port">8028</field>
+        <field name="config_reference">/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf</field>
+        <field name="service_container_reference">pet_spot_elsahel_test.service</field>
+        <field name="data_sensitivity">internal_test</field>
+        <field name="production_guard_policy">Non-production only. Production launch, deployment, service control, Docker control, and automatic Git mutation are denied.</field>
+    </record>
+
+    <record id="dev_project_petspot" model="dev.project">
+        <field name="default_repository_id" ref="dev_repository_petspot"/>
+        <field name="default_environment_id" ref="dev_environment_petspot_test"/>
+    </record>
+
+    <record id="dev_task_petspot_wp337" model="dev.task.link">
+        <field name="source_system">openproject</field>
+        <field name="openproject_work_package_id">337</field>
+        <field name="project_id" ref="dev_project_petspot"/>
+        <field name="cached_task_title">[Personal] Account access issues for petspot</field>
+        <field name="cached_status">New</field>
+        <field name="cached_assignee">unresolved</field>
+        <field name="reference_url">https://master.tailcf9988.ts.net:10081/work_packages/337</field>
+        <field name="last_sync_at">2026-07-18 12:02:46</field>
+    </record>
+
+    <record id="dev_policy_petspot_test" model="dev.policy">
+        <field name="name">PetSpot Test MVP</field>
+        <field name="project_id" ref="dev_project_petspot"/>
+        <field name="environment_id" ref="dev_environment_petspot_test"/>
+        <field name="production_access_policy">denied</field>
+        <field name="allowed_operations">Read Git branch, HEAD, and aggregate dirty-state summary; generate sanitized manifest; present explicit Cursor Remote SSH command/workspace; run user-approved tests.</field>
+        <field name="required_confirmation" eval="True"/>
+        <field name="branch_rules">Never create, switch, reset, clean, commit, or push branches automatically.</field>
+        <field name="development_allowed" eval="True"/>
+        <field name="agent_write_permission" eval="True"/>
+        <field name="test_permission" eval="True"/>
+        <field name="deploy_permission" eval="False"/>
+        <field name="launch_allowed" eval="True"/>
+    </record>
+
+    <record id="dev_dashboard_main" model="dev.dashboard">
+        <field name="name">Development Hub</field>
+    </record>
+</odoo>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_dev_session_hub_root"
+              name="Dev Hub"
+              action="action_dev_dashboard"
+              sequence="86"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_dashboard"
+              name="Dashboard"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_dashboard"
+              sequence="5"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_recent"
+              name="Recent Work"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_work_item"
+              sequence="10"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_work_active"
+              name="Active Work"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_work_item_active"
+              sequence="15"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_work_paused"
+              name="Paused Work"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_work_item_paused"
+              sequence="16"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_work_blocked"
+              name="Blocked Work"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_work_item_blocked"
+              sequence="17"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_work_approval"
+              name="Awaiting Plan Approval"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_work_item_awaiting_plan_approval"
+              sequence="18"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_work_review"
+              name="Ready for Review"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_work_item_ready_review"
+              sequence="19"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_active"
+              name="Active Sessions"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_session_active"
+              sequence="25"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_paused"
+              name="Paused Sessions"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_session_paused"
+              sequence="26"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_execution_workspaces"
+              name="Execution Workspaces"
+              parent="menu_dev_session_hub_root"
+              action="action_dev_execution_workspace"
+              sequence="27"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_registry"
+              name="Registry"
+              parent="menu_dev_session_hub_root"
+              sequence="50"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_projects"
+              name="Projects"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_project"
+              sequence="10"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_environments"
+              name="Environments"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_environment"
+              sequence="20"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_repositories"
+              name="Repositories"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_repository"
+              sequence="30"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_discoveries"
+              name="Repository Discoveries"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_repository_discovery"
+              sequence="31"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_bind_records"
+              name="Bind Records"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_repository_bind_record"
+              sequence="32"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_bootstrap_records"
+              name="Bootstrap Records"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_repository_bootstrap_record"
+              sequence="33"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_github_apps"
+              name="GitHub App Installations"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_github_app_installation"
+              sequence="50"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_allowlists"
+              name="Repository Allowlists"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_github_repository_allowlist"
+              sequence="51"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_delivery"
+              name="Delivery"
+              parent="menu_dev_session_hub_root"
+              sequence="40"
+              groups="group_dev_hub_deploy_approver"/>
+
+    <menuitem id="menu_dev_session_hub_deploy_targets"
+              name="Deploy Targets"
+              parent="menu_dev_session_hub_delivery"
+              action="action_dev_deploy_target"
+              sequence="10"
+              groups="group_dev_hub_deploy_approver"/>
+
+    <menuitem id="menu_dev_session_hub_deploy_records"
+              name="Deploy Records"
+              parent="menu_dev_session_hub_delivery"
+              action="action_dev_deploy_record"
+              sequence="20"
+              groups="group_dev_hub_deploy_approver"/>
+
+    <menuitem id="menu_dev_session_hub_rollback_records"
+              name="Rollback Records"
+              parent="menu_dev_session_hub_delivery"
+              action="action_dev_deploy_rollback_record"
+              sequence="30"
+              groups="group_dev_hub_deploy_approver"/>
+
+    <menuitem id="menu_dev_session_hub_promotion_evidence"
+              name="Promotion Evidence"
+              parent="menu_dev_session_hub_delivery"
+              action="action_dev_deploy_promotion_evidence"
+              sequence="40"
+              groups="group_dev_hub_production_approver"/>
+
+    <menuitem id="menu_dev_session_hub_tasks"
+              name="Legacy Task Links"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_task_link"
+              sequence="40"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_machines"
+              name="Machines"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_machine"
+              sequence="50"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_clients"
+              name="Development Clients"
+              parent="menu_dev_session_hub_registry"
+              action="action_dev_client"
+              sequence="60"
+              groups="group_dev_hub_user"/>
+
+    <menuitem id="menu_dev_session_hub_configuration"
+              name="Configuration"
+              parent="menu_dev_session_hub_root"
+              sequence="90"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_audit"
+              name="Lifecycle Audit"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_work_lifecycle_event"
+              sequence="20"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_outbox"
+              name="External Outbox"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_external_outbox"
+              sequence="30"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_generation"
+              name="Analysis / Plan Generation"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_work_generation"
+              sequence="40"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_policies"
+              name="Policies"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_policy"
+              sequence="10"
+              groups="group_dev_hub_manager"/>
+</odoo>

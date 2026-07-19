@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_commit_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.commit.approval.wizard.form</field>
+        <field name="model">dev.git.commit.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve One Local Git Commit">
+                <div class="alert alert-warning" role="alert">
+                    Approval is bound to the exact reviewed state. This step does not create a commit.
+                </div>
+                <group>
+                    <group>
+                        <field name="work_item_id"/>
+                        <field name="workspace_id"/>
+                        <field name="branch"/>
+                        <field name="base_head"/>
+                        <field name="current_head"/>
+                        <field name="approver_id"/>
+                    </group>
+                    <group>
+                        <field name="dirty_digest"/>
+                        <field name="changed_files_digest"/>
+                        <field name="plan_id"/>
+                        <field name="plan_hash"/>
+                        <field name="policy_hash"/>
+                        <field name="execution_contract_hash"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Reviewed Changes">
+                        <field name="changed_files_summary" readonly="1"/>
+                        <field name="git_status_summary" readonly="1"/>
+                        <field name="diff_summary" readonly="1"/>
+                    </page>
+                    <page string="Tests">
+                        <field name="tests_summary" readonly="1"/>
+                    </page>
+                    <page string="Commit Message">
+                        <field name="commit_message" placeholder="[DW-…] Reviewed change"/>
+                    </page>
+                </notebook>
+                <field name="confirmation_note" readonly="1"/>
+                <footer>
+                    <button name="action_confirm_approval" type="object" string="Record Exact-State Commit Approval" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_commit_execution_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.commit.execution.wizard.form</field>
+        <field name="model">dev.git.commit.execution.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Final Confirmation — Create Local Commit">
+                <div class="alert alert-danger" role="alert">
+                    This creates exactly one local commit on the isolated branch. It performs no push, PR, merge, or deployment.
+                </div>
+                <group>
+                    <group>
+                        <field name="work_item_id"/>
+                        <field name="workspace_id"/>
+                        <field name="approval_id"/>
+                        <field name="approver_id"/>
+                        <field name="branch"/>
+                        <field name="current_head"/>
+                    </group>
+                    <group>
+                        <field name="dirty_digest"/>
+                        <field name="changed_files_digest"/>
+                        <field name="commit_message_hash"/>
+                        <field name="binding_hash"/>
+                    </group>
+                </group>
+                <field name="changed_files_summary" readonly="1"/>
+                <field name="commit_message" readonly="1"/>
+                <field name="confirmation_note" readonly="1"/>
+                <footer>
+                    <button name="action_execute_commit" type="object" string="Confirm and Create One Local Commit" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" confirm="Create exactly one local commit from this immutable approval? No push will occur."/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

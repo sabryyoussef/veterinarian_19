@@ -1,0 +1,9 @@
+Git porcelain parser and allowlist: 15/15 passed, 0 failures, 0 errors
+Phase 5 worker controls: 1/1 passed, 0 failures, 0 errors
+Human commit approval controls: 9/9 passed, 0 failures, 0 errors
+Full Dev Hub module suite: 77/77 passed, 0 failures, 0 errors
+Combined isolation/commit security suite: 21/21 passed, 0 failures, 0 errors
+UAT worker targeted tests: 2/2 passed
+UAT worker regression tests: 2/2 passed
+Final human approval and commit Playwright: 1/1 passed
+Screenshots: 7

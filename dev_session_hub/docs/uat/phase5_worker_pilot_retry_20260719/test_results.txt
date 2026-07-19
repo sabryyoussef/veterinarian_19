@@ -1,0 +1,11 @@
+Pre-attempt parser and allowlist matrix: 15/15 passed, 0 failures, 0 errors
+DW-4 regression: passed (included in parser matrix)
+Separate mixed allowed/disallowed negative control: passed
+Phase 5 worker lease/fencing control: 1/1 passed, 0 failures, 0 errors
+Full Dev Hub module suite: 68/68 passed, 0 failures, 0 errors
+Isolation/security suite: 12/12 passed, 0 failures, 0 errors
+Worker targeted retry tests: 2/2 passed
+Worker regression discovery tests: 2/2 passed
+Playwright lifecycle execution: worker completed; one post-completion hidden-tab selector failed
+Playwright final read-only validation: 1/1 passed
+Final screenshots: 13

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_deploy_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.deploy.approval.wizard.form</field>
+        <field name="model">dev.deploy.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve Staging Deploy">
+                <group>
+                    <field name="workspace_id"/>
+                    <field name="target_id"/>
+                    <field name="requester_id"/>
+                    <field name="confirm_exact_sha"/>
+                    <field name="confirm_environment"/>
+                    <field name="confirm_no_production"/>
+                </group>
+                <footer>
+                    <button name="action_approve" type="object" string="Approve Deploy" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_deploy_execution_wizard_form" model="ir.ui.view">
+        <field name="name">dev.deploy.execution.wizard.form</field>
+        <field name="model">dev.deploy.execution.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Execute Staging Deploy">
+                <group>
+                    <field name="workspace_id"/>
+                    <field name="approval_id"/>
+                    <field name="confirm_lease_backup"/>
+                    <field name="confirm_no_blind_retry"/>
+                </group>
+                <footer>
+                    <button name="action_deploy" type="object" string="Execute Deploy" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_deploy_rollback_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.deploy.rollback.approval.wizard.form</field>
+        <field name="model">dev.deploy.rollback.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve Rollback">
+                <group>
+                    <field name="workspace_id"/>
+                    <field name="deploy_record_id"/>
+                    <field name="rollback_kind"/>
+                    <field name="requester_id"/>
+                    <field name="confirm_destructive"/>
+                </group>
+                <footer>
+                    <button name="action_approve" type="object" string="Approve Rollback" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_deploy_rollback_execution_wizard_form" model="ir.ui.view">
+        <field name="name">dev.deploy.rollback.execution.wizard.form</field>
+        <field name="model">dev.deploy.rollback.execution.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Execute Rollback">
+                <group>
+                    <field name="workspace_id"/>
+                    <field name="approval_id"/>
+                    <field name="confirm_execute"/>
+                </group>
+                <footer>
+                    <button name="action_rollback" type="object" string="Execute Rollback" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_deploy_production_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.deploy.production.approval.wizard.form</field>
+        <field name="model">dev.deploy.production.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve Production Promotion">
+                <group>
+                    <field name="workspace_id"/>
+                    <field name="target_id"/>
+                    <field name="requester_id"/>
+                    <field name="confirm_soak"/>
+                    <field name="confirm_maintenance_window"/>
+                    <field name="confirm_exact_sha"/>
+                </group>
+                <footer>
+                    <button name="action_approve" type="object" string="Approve Production" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

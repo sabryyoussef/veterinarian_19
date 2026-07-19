@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_machine_list" model="ir.ui.view">
+        <field name="name">dev.machine.list</field>
+        <field name="model">dev.machine</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="hostname"/>
+                <field name="tailscale_name"/>
+                <field name="tailscale_destination_verified"/>
+                <field name="ssh_alias"/>
+                <field name="role"/>
+                <field name="trust_zone"/>
+                <field name="production"/>
+                <field name="last_reachability_status"/>
+                <field name="last_checked_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_machine_form" model="ir.ui.view">
+        <field name="name">dev.machine.form</field>
+        <field name="model">dev.machine</field>
+        <field name="arch" type="xml">
+            <form string="Development Machine">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="stable_uuid" readonly="1"/>
+                            <field name="hostname"/>
+                            <field name="ssh_alias"/>
+                            <field name="role"/>
+                        </group>
+                        <group>
+                            <field name="tailscale_name"/>
+                            <field name="tailscale_ip_reference"/>
+                            <field name="tailscale_destination_verified"/>
+                            <field name="tailscale_verified_at"/>
+                            <field name="pinned_host_key_fingerprint"/>
+                            <field name="os_name"/>
+                            <field name="architecture"/>
+                            <field name="trust_zone"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="production"/>
+                        <field name="active"/>
+                        <field name="last_reachability_status"/>
+                        <field name="last_checked_at"/>
+                    </group>
+                    <group string="Strict Launch Allowlist">
+                        <field name="allowed_path_prefixes" placeholder="/absolute/development/path"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_machine" model="ir.actions.act_window">
+        <field name="name">Machines</field>
+        <field name="res_model">dev.machine</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_client_list" model="ir.ui.view">
+        <field name="name">dev.client.list</field>
+        <field name="model">dev.client</field>
+        <field name="arch" type="xml">
+            <list decoration-warning="compliance_status in ('unresolved', 'warning')" decoration-danger="compliance_status == 'noncompliant'">
+                <field name="name"/>
+                <field name="user_name"/>
+                <field name="os_name"/>
+                <field name="architecture"/>
+                <field name="cursor_version"/>
+                <field name="helper_version"/>
+                <field name="baseline_revision"/>
+                <field name="compliance_status"/>
+                <field name="last_seen_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_client_form" model="ir.ui.view">
+        <field name="name">dev.client.form</field>
+        <field name="model">dev.client</field>
+        <field name="arch" type="xml">
+            <form string="Development Client">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="user_name"/>
+                            <field name="os_name"/>
+                            <field name="architecture"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="cursor_version"/>
+                            <field name="cursor_agent_version"/>
+                            <field name="helper_version"/>
+                            <field name="baseline_revision"/>
+                            <field name="compliance_status"/>
+                            <field name="last_seen_at"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="public_key_fingerprint_reference"/>
+                        <field name="compliance_note"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_client" model="ir.actions.act_window">
+        <field name="name">Development Clients</field>
+        <field name="res_model">dev.client</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_project_list" model="ir.ui.view">
+        <field name="name">dev.project.list</field>
+        <field name="model">dev.project</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="owner_id"/>
+                <field name="member_ids" widget="many2many_tags"/>
+                <field name="default_repository_id"/>
+                <field name="default_environment_id"/>
+                <field name="openproject_reference"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_project_form" model="ir.ui.view">
+        <field name="name">dev.project.form</field>
+        <field name="model">dev.project</field>
+        <field name="arch" type="xml">
+            <form string="Development Project">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="owner_id"/>
+                            <field name="member_ids" widget="many2many_tags"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="default_repository_id"/>
+                            <field name="default_environment_id"/>
+                            <field name="openproject_reference"/>
+                            <field name="github_reference"/>
+                            <field name="generation_policy"/>
+                            <field name="generation_provider" invisible="generation_policy != 'automatic'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Guardrails">
+                            <field name="production_policy"/>
+                            <field name="agent_instruction_summary"/>
+                        </page>
+                        <page string="Repositories">
+                            <field name="repository_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="working_directory"/>
+                                    <field name="current_branch_cache"/>
+                                    <field name="head_cache"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Environments">
+                            <field name="environment_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="environment_type"/>
+                                    <field name="machine_id"/>
+                                    <field name="database_identifier"/>
+                                    <field name="port"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_project" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="res_model">dev.project</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_repository_list" model="ir.ui.view">
+        <field name="name">dev.repository.list</field>
+        <field name="model">dev.repository</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="project_id"/>
+                <field name="name"/>
+                <field name="working_directory"/>
+                <field name="default_branch"/>
+                <field name="current_branch_cache"/>
+                <field name="head_cache"/>
+                <field name="dirty_state_summary"/>
+                <field name="last_git_snapshot_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_repository_form" model="ir.ui.view">
+        <field name="name">dev.repository.form</field>
+        <field name="model">dev.repository</field>
+        <field name="arch" type="xml">
+            <form string="Development Repository">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="project_id"/>
+                            <field name="repository_role"/>
+                            <field name="git_remote"/>
+                            <field name="default_branch"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="canonical_remote_path"/>
+                            <field name="working_directory"/>
+                            <field name="current_branch_cache" readonly="1"/>
+                            <field name="head_cache" readonly="1"/>
+                            <field name="last_git_snapshot_at" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="dirty_state_summary" readonly="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_repository" model="ir.actions.act_window">
+        <field name="name">Repositories</field>
+        <field name="res_model">dev.repository</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_environment_list" model="ir.ui.view">
+        <field name="name">dev.environment.list</field>
+        <field name="model">dev.environment</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="is_production">
+                <field name="project_id"/>
+                <field name="name"/>
+                <field name="environment_type"/>
+                <field name="machine_id"/>
+                <field name="odoo_version"/>
+                <field name="database_identifier"/>
+                <field name="port"/>
+                <field name="service_container_reference"/>
+                <field name="is_production"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_environment_form" model="ir.ui.view">
+        <field name="name">dev.environment.form</field>
+        <field name="model">dev.environment</field>
+        <field name="arch" type="xml">
+            <form string="Development Environment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="project_id"/>
+                            <field name="environment_type"/>
+                            <field name="machine_id"/>
+                            <field name="odoo_version"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="database_identifier"/>
+                            <field name="url"/>
+                            <field name="port"/>
+                            <field name="config_reference"/>
+                            <field name="service_container_reference"/>
+                            <field name="data_sensitivity"/>
+                            <field name="is_production" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Production Guard Policy">
+                        <field name="production_guard_policy"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_environment" model="ir.actions.act_window">
+        <field name="name">Environments</field>
+        <field name="res_model">dev.environment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_task_link_list" model="ir.ui.view">
+        <field name="name">dev.task.link.list</field>
+        <field name="model">dev.task.link</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="source_system"/>
+                <field name="openproject_work_package_id"/>
+                <field name="project_id"/>
+                <field name="cached_task_title"/>
+                <field name="cached_status"/>
+                <field name="cached_assignee"/>
+                <field name="last_sync_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_task_link_form" model="ir.ui.view">
+        <field name="name">dev.task.link.form</field>
+        <field name="model">dev.task.link</field>
+        <field name="arch" type="xml">
+            <form string="Read-only Task Link">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="source_system"/>
+                            <field name="openproject_work_package_id"/>
+                            <field name="project_id"/>
+                            <field name="reference_url" widget="url"/>
+                        </group>
+                        <group>
+                            <field name="cached_task_title"/>
+                            <field name="cached_status"/>
+                            <field name="cached_assignee"/>
+                            <field name="last_sync_at"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_task_link" model="ir.actions.act_window">
+        <field name="name">Task Links</field>
+        <field name="res_model">dev.task.link</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_policy_list" model="ir.ui.view">
+        <field name="name">dev.policy.list</field>
+        <field name="model">dev.policy</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="production_access_policy != 'denied' or deploy_permission">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="environment_id"/>
+                <field name="production_access_policy"/>
+                <field name="development_allowed"/>
+                <field name="test_permission"/>
+                <field name="deploy_permission"/>
+                <field name="launch_allowed"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_policy_form" model="ir.ui.view">
+        <field name="name">dev.policy.form</field>
+        <field name="model">dev.policy</field>
+        <field name="arch" type="xml">
+            <form string="Development Policy">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="project_id"/>
+                            <field name="environment_id"/>
+                            <field name="production_access_policy"/>
+                            <field name="required_confirmation"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="development_allowed"/>
+                            <field name="agent_write_permission"/>
+                            <field name="test_permission"/>
+                            <field name="deploy_permission"/>
+                            <field name="launch_allowed"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="allowed_operations"/>
+                        <field name="branch_rules"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_policy" model="ir.actions.act_window">
+        <field name="name">Policies</field>
+        <field name="res_model">dev.policy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

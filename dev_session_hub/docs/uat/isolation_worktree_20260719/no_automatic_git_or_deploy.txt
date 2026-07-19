@@ -1,0 +1,7 @@
+branch=devhub/DW-3-isolation-uat-verify-dedicated-branch-and-worktree
+head=5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+commits_after_base=0
+marker=?? UAT_ISOLATION_MARKER.txt
+manual_head=5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+deployment_records=0
+push_merge_pr=none

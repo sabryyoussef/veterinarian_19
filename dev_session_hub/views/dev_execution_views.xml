@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_execution_workspace_list" model="ir.ui.view">
+        <field name="name">dev.execution.workspace.list</field>
+        <field name="model">dev.execution.workspace</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0" default_order="create_date desc">
+                <field name="name"/>
+                <field name="work_item_id"/>
+                <field name="project_id"/>
+                <field name="state" widget="badge"/>
+                <field name="execution_branch"/>
+                <field name="worktree_path"/>
+                <field name="worker_identity"/>
+                <field name="current_head"/>
+                <field name="dirty_summary"/>
+                <field name="last_validated_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_execution_workspace_form" model="ir.ui.view">
+        <field name="name">dev.execution.workspace.form</field>
+        <field name="model">dev.execution.workspace</field>
+        <field name="arch" type="xml">
+            <form string="Isolated Execution Workspace" create="0" delete="0">
+                <header>
+                    <button name="action_confirm_prepare" type="object" string="Confirm and Create Workspace" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" confirm="Create this exact branch and physical worktree? No commit, push, merge, deployment, or agent execution will occur." invisible="state != 'pending_confirmation'"/>
+                    <button name="action_validate" type="object" string="Validate" invisible="state not in ('ready', 'active', 'paused', 'blocked', 'review_required', 'commit_approved', 'committed_reviewed', 'push_approved', 'pushed_reviewed', 'pr_approved', 'pr_created_reviewed', 'merge_approved')"/>
+                    <button name="action_pause" type="object" string="Pause" invisible="state != 'active'"/>
+                    <button name="action_resume" type="object" string="Resume Same Worktree" class="btn-primary" invisible="state not in ('paused', 'blocked')"/>
+                    <button name="action_mark_review_required" type="object" string="Require Human Review" invisible="state not in ('ready', 'active', 'paused')"/>
+                    <button name="action_review_changes" type="object" string="Review Changes" groups="dev_session_hub.group_dev_hub_manager" invisible="state not in ('review_required', 'commit_approved')"/>
+                    <button name="action_open_commit_approval" type="object" string="Approve Git Commit" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'review_required'"/>
+                    <button name="action_open_commit_execution" type="object" string="Create Approved Commit" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'commit_approved'"/>
+                    <button name="action_reject_commit_changes" type="object" string="Reject / Return to Implementation" groups="dev_session_hub.group_dev_hub_manager" invisible="state not in ('review_required', 'commit_approved')" confirm="Invalidate any commit approval and return this workspace to implementation?"/>
+                    <button name="action_review_push_target" type="object" string="Review Push Target" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'committed_reviewed'"/>
+                    <button name="action_open_push_approval" type="object" string="Approve Git Push" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'committed_reviewed'"/>
+                    <button name="action_open_push_execution" type="object" string="Push Approved Commit" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'push_approved'"/>
+                    <button name="action_review_failed_push" type="object" string="Review Failed Push State" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state not in ('push_failed_review', 'uncertain_remote_state')"/>
+                    <button name="action_review_pr_proposal" type="object" string="Review PR Proposal" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'pushed_reviewed'"/>
+                    <button name="action_open_pr_approval" type="object" string="Approve PR Creation" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'pushed_reviewed'"/>
+                    <button name="action_open_pr_execution" type="object" string="Create Approved PR" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'pr_approved'"/>
+                    <button name="action_reject_pr_proposal" type="object" string="Reject / Return for Changes" groups="dev_session_hub.group_dev_hub_manager" invisible="state not in ('pushed_reviewed', 'pr_approved')" confirm="Reject this PR proposal and invalidate any approval? No branch or worktree will be deleted."/>
+                    <button name="action_request_merge_review" type="object" string="Request Merge Review" groups="dev_session_hub.group_dev_hub_user" invisible="state != 'pr_created_reviewed' or merge_requested_at"/>
+                    <button name="action_review_merge_eligibility" type="object" string="Review Merge Eligibility" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'pr_created_reviewed'"/>
+                    <button name="action_open_merge_approval" type="object" string="Approve Exact Squash Merge" class="btn-primary" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'pr_created_reviewed'"/>
+                    <button name="action_open_merge_execution" type="object" string="Final Merge Confirmation" class="btn-danger" groups="dev_session_hub.group_dev_hub_manager" invisible="state != 'merge_approved'"/>
+                    <button name="action_reject_merge" type="object" string="Reject Merge" groups="dev_session_hub.group_dev_hub_manager" invisible="state not in ('pr_created_reviewed', 'merge_approved')" confirm="Reject this exact merge proposal and invalidate any approval?"/>
+                    <button name="action_release" type="object" string="Release" confirm="Release this workspace while retaining its worktree and branch?" invisible="state not in ('ready', 'paused', 'blocked', 'review_required')"/>
+                    <button name="action_request_cleanup" type="object" string="Request Cleanup" confirm="This only records a cleanup request. It does not remove the worktree or branch." invisible="state != 'released'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pending_confirmation,preparing,ready,active,paused,blocked,review_required,commit_approved,committed_reviewed,push_approved,push_failed_review,uncertain_remote_state,pushed_reviewed,pr_approved,pr_creation_failed_review,pr_uncertain_state,pr_created_reviewed,merge_approved,merge_failed_review,merge_uncertain_state,merged_reviewed,released,cleanup_pending,archived"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-danger" role="alert" invisible="state != 'blocked'">
+                        <strong>Execution denied:</strong> review the validation status. Dev Hub will not fall back to the main developer worktree.
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="state not in ('review_required', 'commit_approved')">
+                        Human review gate: approval is bound to the exact HEAD, dirty/content digests, Plan, policy, contract, and commit-message hash. Approval alone does not commit.
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="state not in ('committed_reviewed', 'push_approved')">
+                        Human Push gate: only the exact reviewed commit may be pushed to the registered non-production remote branch. No PR, merge, tags, force Push, or deployment is performed.
+                    </div>
+                    <div class="alert alert-danger" role="alert" invisible="state not in ('push_failed_review', 'uncertain_remote_state')">
+                        Push retry is blocked. A human must reconcile the exact remote state before a fresh approval can be created.
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="state not in ('pushed_reviewed', 'pr_approved')">
+                        Human PR gate: one exact open Pull Request may be created from the verified Dev Hub branch to one registered non-production integration branch. No merge, auto-merge, deployment, branch deletion, or worktree cleanup is performed.
+                    </div>
+                    <div class="alert alert-danger" role="alert" invisible="state not in ('pr_creation_failed_review', 'pr_uncertain_state')">
+                        PR retry is blocked. GitHub state must be reconciled and a fresh human approval is required.
+                    </div>
+                    <div class="alert alert-warning" role="alert" invisible="state not in ('pr_created_reviewed', 'merge_approved')">
+                        Human Merge gate: a dedicated approval binds PR identity, current head and staging base SHAs, successful required checks, and squash method. Approval alone does not merge. Deployment and auto-merge remain disabled.
+                    </div>
+                    <div class="alert alert-danger" role="alert" invisible="state not in ('merge_failed_review', 'merge_uncertain_state')">
+                        Merge retry is blocked. Remote state requires human review and a fresh approval.
+                    </div>
+                    <div class="alert alert-warning" role="alert" invisible="state != 'pending_confirmation'">
+                        Human confirmation creates only the exact branch and worktree shown below. It does not run an agent, edit code, commit, push, merge, deploy, restart services, or send external communication.
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="project_id"/>
+                            <field name="environment_id"/>
+                            <field name="machine_id"/>
+                            <field name="repository_id"/>
+                            <field name="worker_identity"/>
+                        </group>
+                        <group>
+                            <field name="plan_id"/>
+                            <field name="plan_revision"/>
+                            <field name="approved_plan_hash"/>
+                            <field name="approval_id"/>
+                            <field name="policy_id"/>
+                            <field name="policy_hash"/>
+                            <field name="execution_contract_hash"/>
+                            <field name="created_by_id"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Exact Git Target">
+                            <group>
+                                <group>
+                                    <field name="base_branch"/>
+                                    <field name="base_head"/>
+                                    <field name="execution_branch"/>
+                                    <field name="worktree_path"/>
+                                </group>
+                                <group>
+                                    <field name="current_head"/>
+                                    <field name="dirty_summary"/>
+                                    <field name="dirty_digest"/>
+                                    <field name="last_validated_at"/>
+                                </group>
+                            </group>
+                            <field name="changed_files_summary" readonly="1"/>
+                            <field name="git_status_summary" readonly="1"/>
+                        </page>
+                        <page string="Main Worktree Protection">
+                            <group>
+                                <group string="Before">
+                                    <field name="main_branch_before"/>
+                                    <field name="main_head_before"/>
+                                    <field name="main_dirty_summary_before"/>
+                                    <field name="main_dirty_digest_before"/>
+                                </group>
+                                <group string="After">
+                                    <field name="main_branch_after"/>
+                                    <field name="main_head_after"/>
+                                    <field name="main_dirty_summary_after"/>
+                                    <field name="main_dirty_digest_after"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Validation and Lease">
+                            <group>
+                                <group>
+                                    <field name="creation_status"/>
+                                    <field name="validation_status"/>
+                                    <field name="cleanup_status"/>
+                                    <field name="active_session_id"/>
+                                    <field name="last_checkpoint_id"/>
+                                </group>
+                                <group>
+                                    <field name="lease_owner"/>
+                                    <field name="lease_client_id"/>
+                                    <field name="lease_version"/>
+                                    <field name="lease_expires_at"/>
+                                    <field name="activated_at"/>
+                                    <field name="released_at"/>
+                                    <field name="worker_status"/>
+                                    <field name="worker_started_at"/>
+                                    <field name="worker_stopped_at"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Worker Review Handoff">
+                            <field name="worker_log_summary" readonly="1"/>
+                            <field name="worker_resume_brief" readonly="1"/>
+                            <field name="review_handoff" readonly="1"/>
+                        </page>
+                        <page string="Review Changes / Commit">
+                            <group>
+                                <group>
+                                    <field name="work_item_id"/>
+                                    <field name="execution_branch"/>
+                                    <field name="base_head"/>
+                                    <field name="current_head"/>
+                                    <field name="dirty_digest"/>
+                                    <field name="changed_files_digest"/>
+                                    <field name="last_checkpoint_id"/>
+                                </group>
+                                <group>
+                                    <field name="commit_approval_id"/>
+                                    <field name="commit_record_id"/>
+                                    <field name="committed_sha"/>
+                                    <field name="committed_parent_sha"/>
+                                    <field name="committed_at"/>
+                                </group>
+                            </group>
+                            <separator string="Reviewed Files and Status"/>
+                            <field name="changed_files_summary" readonly="1"/>
+                            <field name="git_status_summary" readonly="1"/>
+                            <field name="review_diff_summary" readonly="1"/>
+                            <separator string="Tests and Worker Handoff"/>
+                            <field name="review_tests_summary" readonly="1"/>
+                            <field name="review_handoff" readonly="1"/>
+                        </page>
+                        <page string="Review Git Push">
+                            <group>
+                                <group>
+                                    <field name="work_item_id"/>
+                                    <field name="execution_branch"/>
+                                    <field name="current_head"/>
+                                    <field name="committed_sha"/>
+                                    <field name="commit_record_id"/>
+                                </group>
+                                <group>
+                                    <field name="push_remote_id"/>
+                                    <field name="push_remote_branch"/>
+                                    <field name="push_remote_head"/>
+                                    <field name="push_ahead_count"/>
+                                    <field name="push_behind_count"/>
+                                    <field name="last_remote_check_at"/>
+                                </group>
+                            </group>
+                            <separator string="Immutable Approval and Verified Result"/>
+                            <group>
+                                <group>
+                                    <field name="push_approval_id"/>
+                                    <field name="push_record_id"/>
+                                </group>
+                                <group>
+                                    <field name="pushed_at"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Review Pull Request">
+                            <group>
+                                <group>
+                                    <field name="work_item_id"/>
+                                    <field name="repository_id" string="Source Repository"/>
+                                    <field name="pr_source_branch"/>
+                                    <field name="pr_source_sha"/>
+                                    <field name="pr_commit_list"/>
+                                </group>
+                                <group>
+                                    <field name="pr_target_id"/>
+                                    <field name="pr_target_branch"/>
+                                    <field name="pr_last_checked_at"/>
+                                    <field name="pr_approval_id"/>
+                                    <field name="pr_record_id"/>
+                                </group>
+                            </group>
+                            <separator string="Changed Files and Test Evidence"/>
+                            <field name="changed_files_summary" readonly="1"/>
+                            <field name="review_tests_summary" readonly="1"/>
+                            <field name="review_handoff" readonly="1"/>
+                            <separator string="Exact Proposed Metadata"/>
+                            <field name="pr_title_preview" readonly="1"/>
+                            <field name="pr_body_preview" readonly="1"/>
+                            <field name="pr_body_digest" readonly="1"/>
+                            <separator string="Verified Open Pull Request"/>
+                            <group>
+                                <field name="pr_number"/>
+                                <field name="pr_url_reference" widget="url"/>
+                                <field name="pr_created_at"/>
+                            </group>
+                        </page>
+                        <page string="Review Human Merge">
+                            <group>
+                                <group>
+                                    <field name="merge_request_work_item_id"/>
+                                    <field name="merge_target_id"/>
+                                    <field name="merge_requester_id"/>
+                                    <field name="merge_requested_at"/>
+                                    <field name="merge_pr_number"/>
+                                    <field name="merge_pr_url" widget="url"/>
+                                </group>
+                                <group>
+                                    <field name="merge_head_branch"/>
+                                    <field name="merge_head_sha"/>
+                                    <field name="merge_base_branch"/>
+                                    <field name="merge_base_sha"/>
+                                    <field name="merge_method"/>
+                                    <field name="merge_last_checked_at"/>
+                                </group>
+                            </group>
+                            <separator string="Required Checks and Immutable Digests"/>
+                            <field name="merge_checks_summary" readonly="1"/>
+                            <group>
+                                <field name="merge_checks_digest"/>
+                                <field name="merge_pr_metadata_digest"/>
+                            </group>
+                            <separator string="Dedicated Approval and Terminal Audit"/>
+                            <group>
+                                <field name="merge_approval_id"/>
+                                <field name="merge_record_id"/>
+                                <field name="merge_result_sha"/>
+                                <field name="merged_at"/>
+                            </group>
+                        </page>
+                        <page string="Immutable Events">
+                            <field name="event_ids" readonly="1">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="occurred_at"/>
+                                    <field name="event_type"/>
+                                    <field name="summary"/>
+                                    <field name="actor_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_execution_workspace" model="ir.actions.act_window">
+        <field name="name">Execution Workspaces</field>
+        <field name="res_model">dev.execution.workspace</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_work_item_execution_inherit" model="ir.ui.view">
+        <field name="name">dev.work.item.execution.workspace</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="dev_session_hub.view_dev_work_item_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/field[@name='lifecycle_phase']" position="before">
+                <button name="action_prepare_execution_workspace" type="object" string="Prepare Execution Workspace" class="btn-primary" invisible="lifecycle_phase != 'approved' or execution_workspace_id"/>
+            </xpath>
+            <xpath expr="//form/sheet/notebook[1]" position="inside">
+                <page string="Execution Workspace">
+                    <div class="alert alert-info" role="alert" invisible="execution_workspace_id">
+                        An approved plan has no execution workspace. Preparation is human initiated and creates no code changes.
+                    </div>
+                    <group>
+                        <field name="execution_workspace_id" readonly="1"/>
+                    </group>
+                    <field name="execution_workspace_ids" readonly="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="name"/>
+                            <field name="state" widget="badge"/>
+                            <field name="execution_branch"/>
+                            <field name="worktree_path"/>
+                            <field name="current_head"/>
+                            <field name="dirty_summary"/>
+                            <field name="last_validated_at"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_repository_execution_inherit" model="ir.ui.view">
+        <field name="name">dev.repository.execution.isolation</field>
+        <field name="model">dev.repository</field>
+        <field name="inherit_id" ref="dev_session_hub.view_dev_repository_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="inside">
+                <notebook>
+                    <page string="Execution Isolation">
+                        <group>
+                            <group>
+                                <field name="execution_classification"/>
+                                <field name="agent_execution_allowed"/>
+                                <field name="worker_identity"/>
+                                <field name="worker_git_common_dir"/>
+                                <field name="worker_worktree_root"/>
+                            </group>
+                            <group>
+                                <field name="production_runtime_coupled"/>
+                                <field name="test_runtime_coupled"/>
+                                <field name="execution_audited_at"/>
+                            </group>
+                        </group>
+                        <field name="execution_audit_summary"/>
+                        <div class="alert alert-warning" role="alert">
+                            The worker Git common directory must be a dedicated bare repository. Never grant the worker access to the main developer worktree or its .git directory.
+                        </div>
+                    </page>
+                    <page string="Approved Push Remotes">
+                        <div class="alert alert-warning" role="alert">
+                            Only registered non-production remotes and dedicated devhub/* branches may be pushed. Credentials must remain in protected Git configuration.
+                        </div>
+                        <field name="approved_push_root"/>
+                        <field name="approved_push_remote_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="protocol"/>
+                                <field name="remote_url"/>
+                                <field name="approved"/>
+                                <field name="non_production"/>
+                                <field name="allowed_branch_prefix"/>
+                                <field name="active"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Approved PR Targets">
+                        <div class="alert alert-warning" role="alert">
+                            Only registered GitHub repositories, dedicated devhub/* sources, and non-production integration targets are allowed. The credential field is a protected profile path reference, never a token.
+                        </div>
+                        <field name="pr_target_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="source_remote_id"/>
+                                <field name="github_repository"/>
+                                <field name="target_branch"/>
+                                <field name="approved"/>
+                                <field name="non_production"/>
+                                <field name="active"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Approved Merge Targets">
+                        <div class="alert alert-danger" role="alert">
+                            Merge credentials must use the separate repository-only sabry-uat-merge-agent. PR creation credentials and deploy keys are not valid substitutes.
+                        </div>
+                        <field name="merge_target_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="pr_target_id"/>
+                                <field name="github_repository"/>
+                                <field name="base_branch"/>
+                                <field name="merge_method"/>
+                                <field name="requester_user_id"/>
+                                <field name="required_check_name"/>
+                                <field name="approved"/>
+                                <field name="active"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_session_execution_inherit" model="ir.ui.view">
+        <field name="name">dev.session.execution.workspace</field>
+        <field name="model">dev.session</field>
+        <field name="inherit_id" ref="dev_session_hub.view_dev_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='work_item_id']" position="before">
+                <field name="session_type" readonly="state != 'draft'"/>
+                <field name="execution_workspace_id" domain="[('work_item_id', '=', work_item_id), ('state', 'in', ['ready', 'paused'])]" readonly="state != 'draft' or session_type != 'isolated_execution_workspace'"/>
+            </xpath>
+            <xpath expr="//field[@name='working_directory']" position="after">
+                <div class="alert alert-warning" role="alert" invisible="session_type != 'isolated_execution_workspace'">
+                    This path is derived from the approved execution workspace. No fallback to the main repository is allowed.
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

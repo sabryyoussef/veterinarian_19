@@ -1,0 +1,35 @@
+Read-only public GitHub API preflight
+Validated at: 2026-07-19
+
+Repository: sabryyoussef/veterinarian_19
+Pull Request: 2
+URL: https://github.com/sabryyoussef/veterinarian_19/pull/2
+State: open
+Draft: false
+Merged: false
+Merged at: null
+Auto-merge: null
+Mergeable: true
+Mergeable state: clean
+
+Head branch: devhub/DW-10-validate-human-approved-pr-creation
+Head SHA: 24c7eef5e169016a94794f8e30b6934e2aabd3b8
+Head repository: sabryyoussef/veterinarian_19
+
+Base branch: staging
+Base SHA: 66344b2e09e2049c39942114029253e919bc6709
+Base repository: sabryyoussef/veterinarian_19
+Branch protection enabled: false
+Applicable repository rules: none
+
+Check runs: 1
+Required check: GitGuardian Security Checks
+Check App ID: 46505
+Check status: completed
+Check conclusion: success
+Legacy commit statuses: none
+
+Requested merge method: squash
+Remote merge performed: NO
+Credentials used for this public read-only snapshot: none
+Credential values recorded: none

@@ -1,0 +1,5 @@
+context=separate parser fixture
+input=tests/allowed.py + deploy/disallowed.conf
+normalized_parser=identified both paths
+result=AccessError; rejected before retry workspace execution
+main_worktree_mutation=none

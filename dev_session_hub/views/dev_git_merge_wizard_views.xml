@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_merge_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.merge.approval.wizard.form</field>
+        <field name="model">dev.git.merge.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Dedicated Administrator Merge Approval">
+                <div class="alert alert-warning" role="alert">
+                    This is a dedicated Merge approval, separate from PR creation approval. Approval alone performs no remote action.
+                </div>
+                <group>
+                    <group>
+                        <field name="workspace_id"/>
+                        <field name="github_repository"/>
+                        <field name="pr_number"/>
+                        <field name="pr_url" widget="url"/>
+                        <field name="requester_id"/>
+                    </group>
+                    <group>
+                        <field name="head_branch"/>
+                        <field name="head_sha"/>
+                        <field name="base_branch"/>
+                        <field name="base_sha"/>
+                        <field name="merge_method"/>
+                    </group>
+                </group>
+                <field name="checks_summary"/>
+                <field name="confirm_exact_merge"/>
+                <field name="confirm_distinct_approval"/>
+                <field name="confirm_no_deployment"/>
+                <footer>
+                    <button name="action_approve" type="object" string="Approve Exact Squash Merge" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_merge_execution_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.merge.execution.wizard.form</field>
+        <field name="model">dev.git.merge.execution.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Final Irreversible Remote Merge Confirmation">
+                <div class="alert alert-danger" role="alert">
+                    This separate confirmation performs an irreversible GitHub merge. Cancel unless live UAT was freshly authorized.
+                </div>
+                <field name="confirmation_text"/>
+                <group>
+                    <group>
+                        <field name="github_repository"/>
+                        <field name="pr_number"/>
+                        <field name="pr_url" widget="url"/>
+                    </group>
+                    <group>
+                        <field name="head_branch"/>
+                        <field name="head_sha"/>
+                        <field name="base_branch"/>
+                        <field name="base_sha"/>
+                        <field name="merge_method"/>
+                    </group>
+                </group>
+                <field name="confirm_irreversible_remote_merge"/>
+                <field name="confirm_stop_after_merge"/>
+                <footer>
+                    <button name="action_merge" type="object" string="Perform One Squash Merge" class="btn-danger"/>
+                    <button string="Cancel — Do Not Merge" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

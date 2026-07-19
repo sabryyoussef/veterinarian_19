@@ -1,0 +1,7 @@
+Canonical lifecycle test:
+tests/playwright/phase5_human_commit.spec.ts
+SHA-256: 8044662777e40314f70a6e8373983887c1118f61a18f0e98ea7f91e92ac7234c
+
+Canonical retained-review continuation test:
+tests/playwright/phase5_human_commit_continue.spec.ts
+SHA-256: da2450f2c7b201ada38d312ba74f18babaa7891b42134052e110b3a89a24cfa4

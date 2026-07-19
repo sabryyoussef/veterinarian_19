@@ -1,0 +1,17 @@
+main_before_branch=main
+main_after_branch=main
+main_before_head=5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+main_after_head=5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+main_before_dirty_digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+main_after_dirty_digest=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+
+pilot_branch=devhub/DW-4-phase5-pilot-add-fixture-readme-contract-test
+pilot_head=5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+commits_ahead_of_base=0
+changed_file_1=tests/__init__.py
+changed_file_2=tests/test_fixture_readme.py
+automatic_commit=none
+push=none
+pr=none
+merge=none
+deployment=none

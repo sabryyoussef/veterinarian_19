@@ -1,0 +1,48 @@
+Phase 6 Human-Approved Merge — sanitized remote verification
+Date: 2026-07-19 (UTC)
+
+Credential (no secrets printed)
+- Protected PEM path: /srv/devhub/credentials/github/merge-app-4341059.pem
+- PEM mode/owner: 600 devworker:devworker
+- Broker: /srv/devhub/credentials/github/mint-devhub-merge-token (700)
+- Profile reference: /srv/devhub/credentials/github/merge-gh-profile (700)
+- Dev Hub stores only broker/profile references (no raw key)
+- Temporary installation token revoked after each validation (hosts.yml oauth_token cleared)
+
+Broker attestation (sanitized)
+- app_id: 4341059
+- installation_id: 147666583
+- repositories: ["sabryyoussef/veterinarian_19"]
+- permissions: checks:read, contents:write, metadata:read, pull_requests:read, statuses:read
+- credential_type: github_app_installation
+
+Installation repository restriction
+- total_count: 1
+- repos: ["sabryyoussef/veterinarian_19"]
+
+PR #2 after approval-only stop-gate (no merge executed)
+- number: 2
+- state: open
+- draft: false
+- merged: false
+- merged_at: null
+- mergeable_state: clean
+- auto_merge: null
+- head: 24c7eef5e169016a94794f8e30b6934e2aabd3b8
+- base: staging
+- base_sha: 66344b2e09e2049c39942114029253e919bc6709
+
+Dev Hub post-stop-gate (DB devhub_merge_uat_20260719)
+- workspace_id: 14
+- state: merge_approved
+- merge_approval_id: 1
+- merge_record_count: 0
+- merge_record_id: false
+- merge_result_sha: false
+- merged_at: false
+- requester: devhub-merge-requester
+- approver: admin
+- requester != approver: true
+- merge_method: squash
+- idempotency_key_present: true
+- deploy/delivery models: absent / not invoked

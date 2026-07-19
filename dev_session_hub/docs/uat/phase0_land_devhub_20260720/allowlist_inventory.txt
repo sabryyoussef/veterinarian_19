@@ -1,0 +1,14 @@
+DH-P0 allowlist inventory — 2026-07-19T22:02:02Z
+Worktree branch: feature/resume-portability-candidates
+HEAD: 22e8b5414613da1e286b280c4884abd0cb3061d2
+staging: 66344b2e09e2049c39942114029253e919bc6709
+
+=== Allowlisted paths (dev_session_hub) ===
+32
+tracked-modified / untracked counts above
+
+=== Unrelated dirty paths (sample, excluded) ===
+367
+
+=== Secret filename scan ===
+0

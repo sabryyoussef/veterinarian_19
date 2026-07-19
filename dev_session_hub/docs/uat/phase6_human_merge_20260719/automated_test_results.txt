@@ -1,0 +1,30 @@
+Human-Approved Merge automated readiness results
+Date: 2026-07-19
+
+Focused lifecycle:
+- Tests: 71
+- Failures: 0
+- Errors: 0
+- Includes Human-Approved Merge lifecycle/security scenarios
+
+Focused security:
+- Tests: 20
+- Failures: 0
+- Errors: 0
+
+Full /dev_session_hub:
+- Tests: 106
+- Failures: 0
+- Errors: 0
+
+Playwright approval-only stop-gate:
+- Spec: phase6_human_merge_stop_gate.spec.ts
+- Result: 1 passed (1.1m) on UAT host localhost:18050
+- DB: devhub_merge_uat_20260719
+- Workspace: 14
+- Screenshots: 10
+- Remote merge performed: no
+- Final confirmation: cancelled
+
+IDE diagnostics:
+- Edited Python/TypeScript files for this gate: no blocking diagnostics

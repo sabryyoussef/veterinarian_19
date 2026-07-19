@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_deploy_target_tree" model="ir.ui.view">
+        <field name="name">dev.deploy.target.tree</field>
+        <field name="model">dev.deploy.target</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="target_kind"/>
+                <field name="repository_id"/>
+                <field name="environment_id"/>
+                <field name="database_identifier"/>
+                <field name="approved"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_dev_deploy_target_form" model="ir.ui.view">
+        <field name="name">dev.deploy.target.form</field>
+        <field name="model">dev.deploy.target</field>
+        <field name="arch" type="xml">
+            <form string="Deploy Target">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="target_kind"/>
+                        <field name="repository_id"/>
+                        <field name="environment_id"/>
+                        <field name="database_identifier"/>
+                        <field name="required_protected_branch"/>
+                        <field name="soak_days_required"/>
+                        <field name="approved"/>
+                        <field name="non_production"/>
+                        <field name="active"/>
+                    </group>
+                    <group>
+                        <field name="module_allowlist"/>
+                        <field name="runner_profile_reference"/>
+                        <field name="backup_profile_reference"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_deploy_record_tree" model="ir.ui.view">
+        <field name="name">dev.deploy.record.tree</field>
+        <field name="model">dev.deploy.record</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0">
+                <field name="merge_sha"/>
+                <field name="result_state"/>
+                <field name="idempotency_key"/>
+                <field name="deployed_at"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_dev_deploy_rollback_record_tree" model="ir.ui.view">
+        <field name="name">dev.deploy.rollback.record.tree</field>
+        <field name="model">dev.deploy.rollback.record</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0">
+                <field name="result_state"/>
+                <field name="rolled_back_at"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_dev_deploy_promotion_evidence_tree" model="ir.ui.view">
+        <field name="name">dev.deploy.promotion.evidence.tree</field>
+        <field name="model">dev.deploy.promotion.evidence</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="staging_merge_sha"/>
+                <field name="soak_started_at"/>
+                <field name="soak_days_required"/>
+                <field name="soak_satisfied"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_dev_deploy_target" model="ir.actions.act_window">
+        <field name="name">Deploy Targets</field>
+        <field name="res_model">dev.deploy.target</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_dev_deploy_record" model="ir.actions.act_window">
+        <field name="name">Deploy Records</field>
+        <field name="res_model">dev.deploy.record</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_dev_deploy_rollback_record" model="ir.actions.act_window">
+        <field name="name">Rollback Records</field>
+        <field name="res_model">dev.deploy.rollback.record</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_dev_deploy_promotion_evidence" model="ir.actions.act_window">
+        <field name="name">Promotion Evidence</field>
+        <field name="res_model">dev.deploy.promotion.evidence</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

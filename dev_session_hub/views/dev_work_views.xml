@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_item_search" model="ir.ui.view">
+        <field name="name">dev.work.item.search</field>
+        <field name="model">dev.work.item</field>
+        <field name="arch" type="xml">
+            <search string="Development Work">
+                <field name="name"/>
+                <field name="uuid"/>
+                <field name="dev_project_id"/>
+                <field name="odoo_project_id"/>
+                <field name="odoo_task_id"/>
+                <field name="op_work_package_id"/>
+                <field name="responsible_user_id"/>
+                <field name="lifecycle_phase"/>
+                <filter name="active_work" string="Active" domain="[('active', '=', True), ('lifecycle_phase', 'not in', ['completed', 'reported', 'cancelled'])]"/>
+                <filter name="paused" string="Paused" domain="[('lifecycle_phase', '=', 'paused')]"/>
+                <filter name="blocked" string="Blocked" domain="[('lifecycle_phase', '=', 'blocked')]"/>
+                <filter name="awaiting_plan_approval" string="Awaiting Plan Approval" domain="[('lifecycle_phase', '=', 'awaiting_plan_approval')]"/>
+                <filter name="ready_for_review" string="Ready for Review" domain="[('lifecycle_phase', '=', 'ready_for_review')]"/>
+                <filter name="my_work" string="My Work" domain="[('responsible_user_id', '=', uid)]"/>
+                <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <group name="group_by">
+                    <filter name="group_phase" string="Lifecycle Phase" context="{'group_by': 'lifecycle_phase'}"/>
+                    <filter name="group_dev_project" string="Dev Project" context="{'group_by': 'dev_project_id'}"/>
+                    <filter name="group_odoo_project" string="Odoo Project" context="{'group_by': 'odoo_project_id'}"/>
+                    <filter name="group_responsible" string="Responsible" context="{'group_by': 'responsible_user_id'}"/>
+                    <filter name="group_deadline" string="Deadline" context="{'group_by': 'deadline_cache'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dev_work_item_list" model="ir.ui.view">
+        <field name="name">dev.work.item.list</field>
+        <field name="model">dev.work.item</field>
+        <field name="arch" type="xml">
+            <list default_order="write_date desc"
+                  decoration-info="lifecycle_phase == 'awaiting_plan_approval'"
+                  decoration-warning="lifecycle_phase == 'paused'"
+                  decoration-danger="lifecycle_phase == 'blocked'"
+                  decoration-success="lifecycle_phase in ('completed', 'reported')"
+                  decoration-muted="lifecycle_phase == 'cancelled'">
+                <field name="name"/>
+                <field name="dev_project_id"/>
+                <field name="odoo_task_id"/>
+                <field name="op_work_package_id"/>
+                <field name="responsible_user_id"/>
+                <field name="priority_cache" optional="show"/>
+                <field name="deadline_cache" optional="show"/>
+                <field name="plan_progress" optional="show"/>
+                <field name="lifecycle_phase" widget="badge"/>
+                <field name="write_date" string="Last Activity"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_item_form" model="ir.ui.view">
+        <field name="name">dev.work.item.form</field>
+        <field name="model">dev.work.item</field>
+        <field name="arch" type="xml">
+            <form string="Development Work Item">
+                <header>
+                    <button name="action_start_triage" type="object" string="Start Triage" class="btn-primary" invisible="lifecycle_phase != 'received'"/>
+                    <button name="action_register" type="object" string="Register" class="btn-primary" invisible="lifecycle_phase != 'triage'"/>
+                    <button name="action_request_analysis_generation" type="object" string="Generate Analysis Draft" class="btn-primary" invisible="lifecycle_phase != 'registered'"/>
+                    <button name="action_request_plan_generation" type="object" string="Generate Plan Draft" class="btn-primary" invisible="lifecycle_phase != 'analyzing' or not current_accepted_analysis_id"/>
+                    <button name="action_start_analysis" type="object" string="Start Analysis" class="btn-primary" invisible="lifecycle_phase != 'registered'"/>
+                    <button name="action_start_planning" type="object" string="Start Planning" class="btn-primary" invisible="lifecycle_phase != 'analyzing'"/>
+                    <button name="action_start_implementation" type="object" string="Start Development" class="btn-primary" invisible="lifecycle_phase != 'approved'"/>
+                    <button name="action_pause" type="object" string="Pause" invisible="lifecycle_phase not in ('implementing', 'testing')"/>
+                    <button name="action_resume" type="object" string="Resume" class="btn-primary" invisible="lifecycle_phase not in ('paused', 'blocked')"/>
+                    <button name="action_block" type="object" string="Block" invisible="lifecycle_phase not in ('registered', 'analyzing', 'planning', 'approved', 'implementing', 'paused', 'testing')"/>
+                    <button name="action_start_testing" type="object" string="Start Testing" class="btn-primary" invisible="lifecycle_phase != 'implementing'"/>
+                    <button name="action_ready_for_review" type="object" string="Ready for Review" class="btn-primary" invisible="lifecycle_phase != 'testing'"/>
+                    <button name="action_complete" type="object" string="Complete" class="btn-primary" invisible="lifecycle_phase != 'ready_for_review'"/>
+                    <button name="action_report" type="object" string="Mark Reported" invisible="lifecycle_phase != 'completed'"/>
+                    <button name="action_cancel" type="object" string="Cancel" confirm="Cancel this development work item?" invisible="lifecycle_phase in ('completed', 'reported', 'cancelled')"/>
+                    <field name="lifecycle_phase" widget="statusbar" statusbar_visible="received,triage,registered,analyzing,planning,awaiting_plan_approval,approved,implementing,paused,blocked,testing,ready_for_review,completed,reported,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_openproject" type="object" class="oe_stat_button" icon="fa-external-link" invisible="not op_work_package_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">OpenProject</span>
+                            </div>
+                        </button>
+                        <button name="action_open_odoo_task" type="object" class="oe_stat_button" icon="fa-tasks" invisible="not odoo_task_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Odoo Task</span>
+                            </div>
+                        </button>
+                        <button name="action_open_source_conversation" type="object" class="oe_stat_button" icon="fa-comments" invisible="not source_message_ids">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Source Conversation</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Development work title"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="uuid" readonly="1"/>
+                            <field name="active"/>
+                            <field name="company_id"/>
+                            <field name="responsible_user_id"/>
+                            <field name="priority_cache"/>
+                            <field name="deadline_cache"/>
+                        </group>
+                        <group>
+                            <field name="dev_project_id"/>
+                            <field name="odoo_project_id"/>
+                            <field name="odoo_task_id" domain="[('project_id', '=', odoo_project_id)]"/>
+                            <field name="preferred_repository_id" domain="[('project_id', '=', dev_project_id)]"/>
+                            <field name="preferred_environment_id" domain="[('project_id', '=', dev_project_id)]"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Source Request">
+                            <group>
+                                <group>
+                                    <field name="op_backend_id"/>
+                                    <field name="op_work_package_id"/>
+                                    <field name="op_reference"/>
+                                    <field name="op_url" widget="url"/>
+                                </group>
+                                <group>
+                                    <field name="current_accepted_analysis_id" readonly="1"/>
+                                    <field name="current_approved_plan_id" readonly="1"/>
+                                    <field name="current_checkpoint_id" readonly="1"/>
+                                    <field name="completion_report_id" readonly="1"/>
+                                </group>
+                            </group>
+                            <field name="source_message_ids">
+                                <list>
+                                    <field name="message_timestamp"/>
+                                    <field name="provider"/>
+                                    <field name="evolution_instance_ref" optional="hide"/>
+                                    <field name="group_jid" optional="show"/>
+                                    <field name="sender_jid" optional="show"/>
+                                    <field name="chatwoot_conversation_id" optional="show"/>
+                                    <field name="sanitized_text"/>
+                                    <field name="source_url" widget="url" optional="hide"/>
+                                </list>
+                                <form string="Source Message">
+                                    <group>
+                                        <group>
+                                            <field name="provider"/>
+                                            <field name="evolution_instance_ref"/>
+                                            <field name="evolution_message_id"/>
+                                            <field name="group_jid"/>
+                                            <field name="sender_jid"/>
+                                            <field name="message_timestamp"/>
+                                        </group>
+                                        <group>
+                                            <field name="chatwoot_account_id"/>
+                                            <field name="chatwoot_inbox_id"/>
+                                            <field name="chatwoot_conversation_id"/>
+                                            <field name="chatwoot_message_id"/>
+                                            <field name="source_url" widget="url"/>
+                                            <field name="dedupe_key" readonly="1"/>
+                                            <field name="content_hash" readonly="1"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="sanitized_text"/>
+                                        <field name="attachment_references"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Analysis">
+                            <field name="analysis_ids">
+                                <list decoration-success="status == 'accepted'" decoration-muted="status in ('rejected', 'superseded')">
+                                    <field name="revision"/>
+                                    <field name="parent_revision_id"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="problem_summary"/>
+                                    <field name="origin"/>
+                                    <field name="repository_id"/>
+                                    <field name="observed_head"/>
+                                    <field name="created_date"/>
+                                </list>
+                                <form string="Analysis Revision">
+                                    <header>
+                                        <button name="action_accept" type="object" string="Accept Analysis" class="btn-primary" invisible="status not in ('draft', 'generated', 'reviewed')"/>
+                                        <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('accepted', 'rejected', 'superseded')"/>
+                                        <field name="status" widget="statusbar" statusbar_visible="draft,generated,reviewed,accepted,rejected,superseded"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="revision"/>
+                                                <field name="parent_revision_id"/>
+                                                <field name="content_hash" readonly="1"/>
+                                                <field name="origin"/>
+                                                <field name="created_date" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="agent_name"/>
+                                                <field name="model_name"/>
+                                                <field name="provider_name"/>
+                                                <field name="run_reference"/>
+                                                <field name="repository_id"/>
+                                                <field name="observed_head"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Request">
+                                                <field name="problem_summary"/>
+                                                <field name="original_request_snapshot"/>
+                                                <field name="reproduction_context"/>
+                                                <field name="current_behavior"/>
+                                                <field name="expected_behavior"/>
+                                            </page>
+                                            <page string="Findings">
+                                                <field name="technical_findings"/>
+                                                <field name="affected_modules_files"/>
+                                                <field name="risks"/>
+                                                <field name="dependencies"/>
+                                                <field name="open_questions"/>
+                                                <field name="evidence_references"/>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Plan">
+                            <group>
+                                <field name="plan_progress" readonly="1"/>
+                            </group>
+                            <field name="plan_ids">
+                                <list decoration-success="status == 'approved'" decoration-info="status == 'awaiting_approval'" decoration-muted="status in ('rejected', 'superseded')">
+                                    <field name="revision"/>
+                                    <field name="parent_revision_id"/>
+                                    <field name="goal"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="progress" string="Progress"/>
+                                    <field name="content_hash" optional="hide"/>
+                                </list>
+                                <form string="Plan Revision">
+                                    <header>
+                                        <button name="action_submit_for_approval" type="object" string="Request Approval" class="btn-primary" invisible="status != 'draft'"/>
+                                        <button name="action_approve_exact" type="object" string="Approve Exact Hash" class="btn-primary" groups="dev_session_hub.group_dev_hub_approver" invisible="status != 'awaiting_approval'"/>
+                                        <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('approved', 'rejected', 'superseded')"/>
+                                        <field name="status" widget="statusbar" statusbar_visible="draft,awaiting_approval,approved,rejected,superseded"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="revision"/>
+                                                <field name="parent_revision_id"/>
+                                                <field name="content_hash" readonly="1"/>
+                                                <field name="progress" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="generated_by"/>
+                                                <field name="run_reference"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Plan">
+                                                <field name="goal"/>
+                                                <field name="scope"/>
+                                                <field name="out_of_scope"/>
+                                                <field name="proposed_changes"/>
+                                                <field name="affected_modules_files"/>
+                                                <field name="migration_impact"/>
+                                                <field name="security_impact"/>
+                                            </page>
+                                            <page string="Validation">
+                                                <field name="test_plan"/>
+                                                <field name="rollback_plan"/>
+                                                <field name="dependencies"/>
+                                                <field name="risks"/>
+                                                <field name="acceptance_criteria"/>
+                                            </page>
+                                            <page string="Steps">
+                                                <field name="step_ids">
+                                                    <list editable="bottom" decoration-success="status == 'done'" decoration-danger="status == 'blocked'" decoration-muted="status == 'skipped'">
+                                                        <field name="sequence" widget="handle"/>
+                                                        <field name="step_key"/>
+                                                        <field name="title"/>
+                                                        <field name="status" widget="badge"/>
+                                                        <field name="assignee_id"/>
+                                                        <field name="started_at" optional="hide"/>
+                                                        <field name="completed_at" optional="hide"/>
+                                                        <field name="blocker" optional="show"/>
+                                                    </list>
+                                                    <form string="Plan Step">
+                                                        <group>
+                                                            <group>
+                                                                <field name="plan_id"/>
+                                                                <field name="step_key"/>
+                                                                <field name="sequence"/>
+                                                                <field name="title"/>
+                                                                <field name="status"/>
+                                                                <field name="assignee_id"/>
+                                                                <field name="run_reference"/>
+                                                            </group>
+                                                            <group>
+                                                                <field name="started_at"/>
+                                                                <field name="completed_at"/>
+                                                                <field name="dependencies"/>
+                                                                <field name="blocker"/>
+                                                            </group>
+                                                        </group>
+                                                        <field name="description"/>
+                                                        <field name="acceptance_evidence"/>
+                                                        <field name="result_summary"/>
+                                                        <field name="evidence_references"/>
+                                                    </form>
+                                                </field>
+                                            </page>
+                                            <page string="Approvals">
+                                                <field name="approval_ids" readonly="1">
+                                                    <list create="0" edit="0" delete="0">
+                                                        <field name="decision"/>
+                                                        <field name="approver_id"/>
+                                                        <field name="decision_date"/>
+                                                        <field name="exact_plan_hash"/>
+                                                        <field name="policy_revision"/>
+                                                        <field name="comment"/>
+                                                    </list>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Current Checkpoint">
+                            <field name="current_checkpoint_id" readonly="1"/>
+                            <field name="checkpoint_ids" readonly="1">
+                                <list create="0" edit="0" delete="0" decoration-info="id == parent.current_checkpoint_id">
+                                    <field name="timestamp"/>
+                                    <field name="trigger"/>
+                                    <field name="actor_id"/>
+                                    <field name="lifecycle_phase"/>
+                                    <field name="last_completed_step_id"/>
+                                    <field name="current_plan_step_id"/>
+                                    <field name="next_recommended_step"/>
+                                    <field name="branch"/>
+                                    <field name="full_head"/>
+                                    <field name="snapshot_hash"/>
+                                </list>
+                                <form string="Immutable Checkpoint" create="0" edit="0" delete="0">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="session_id"/>
+                                                <field name="trigger"/>
+                                                <field name="timestamp"/>
+                                                <field name="actor_id"/>
+                                                <field name="lifecycle_phase"/>
+                                                <field name="approved_plan_id"/>
+                                                <field name="supersedes_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="repository_id"/>
+                                                <field name="environment_id"/>
+                                                <field name="machine_id"/>
+                                                <field name="client_id"/>
+                                                <field name="working_directory"/>
+                                                <field name="manifest_revision"/>
+                                                <field name="schema_version"/>
+                                                <field name="snapshot_hash"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Progress">
+                                                <field name="last_completed_step_id"/>
+                                                <field name="current_plan_step_id"/>
+                                                <field name="next_recommended_step"/>
+                                                <field name="remaining_step_references"/>
+                                                <field name="blockers"/>
+                                                <field name="decisions_made"/>
+                                                <field name="pending_decisions"/>
+                                                <field name="last_agent_note"/>
+                                            </page>
+                                            <page string="Git">
+                                                <field name="branch"/>
+                                                <field name="full_head"/>
+                                                <field name="dirty_summary"/>
+                                                <field name="ahead_count"/>
+                                                <field name="behind_count"/>
+                                                <field name="files_touched_summary"/>
+                                            </page>
+                                            <page string="Tests">
+                                                <field name="tests_run"/>
+                                                <field name="tests_passed"/>
+                                                <field name="tests_failed"/>
+                                                <field name="tests_skipped"/>
+                                                <field name="sanitized_test_commands"/>
+                                                <field name="duration_seconds"/>
+                                                <field name="evidence_references"/>
+                                            </page>
+                                            <page string="References">
+                                                <field name="op_work_package_reference"/>
+                                                <field name="odoo_task_reference"/>
+                                                <field name="cursor_thread_id"/>
+                                                <field name="run_reference"/>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Development">
+                            <group>
+                                <group>
+                                    <field name="preferred_repository_id"/>
+                                    <field name="preferred_environment_id"/>
+                                </group>
+                                <group>
+                                    <field name="plan_progress" readonly="1"/>
+                                </group>
+                            </group>
+                            <field name="session_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="client_id"/>
+                                    <field name="machine_id"/>
+                                    <field name="git_branch_snapshot"/>
+                                    <field name="started_at"/>
+                                    <field name="completed_at"/>
+                                </list>
+                            </field>
+                            <separator string="External Links"/>
+                            <field name="external_link_ids">
+                                <list editable="bottom">
+                                    <field name="link_type"/>
+                                    <field name="name"/>
+                                    <field name="url" widget="url"/>
+                                    <field name="external_reference"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Tests">
+                            <group>
+                                <field name="current_checkpoint_id" readonly="1"/>
+                            </group>
+                            <field name="checkpoint_ids" readonly="1">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="timestamp"/>
+                                    <field name="trigger"/>
+                                    <field name="tests_run"/>
+                                    <field name="tests_passed"/>
+                                    <field name="tests_failed"/>
+                                    <field name="tests_skipped"/>
+                                    <field name="duration_seconds"/>
+                                    <field name="evidence_references"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Completion">
+                            <field name="completion_report_ids">
+                                <list decoration-info="status == 'ready_review'" decoration-success="status == 'approved'" decoration-muted="status == 'superseded'">
+                                    <field name="revision"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="plan_id"/>
+                                    <field name="repository_id"/>
+                                    <field name="branch"/>
+                                    <field name="reviewer_id"/>
+                                    <field name="approval_date"/>
+                                    <field name="content_hash" optional="hide"/>
+                                </list>
+                                <form string="Completion Report">
+                                    <header>
+                                        <button name="action_ready_review" type="object" string="Submit for Review" class="btn-primary" invisible="status != 'draft'"/>
+                                        <button name="action_approve" type="object" string="Approve Report" class="btn-primary" groups="dev_session_hub.group_dev_hub_approver" invisible="status != 'ready_review'"/>
+                                        <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('approved', 'superseded')"/>
+                                        <field name="status" widget="statusbar" statusbar_visible="draft,ready_review,approved,superseded"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="revision"/>
+                                                <field name="parent_revision_id"/>
+                                                <field name="plan_id"/>
+                                                <field name="content_hash" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="repository_id"/>
+                                                <field name="branch"/>
+                                                <field name="generated_by"/>
+                                                <field name="run_reference"/>
+                                                <field name="reviewer_id"/>
+                                                <field name="approval_date"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Summary">
+                                                <field name="original_request"/>
+                                                <field name="source_message_ids" widget="many2many_tags"/>
+                                                <field name="implemented_summary"/>
+                                                <field name="completed_steps"/>
+                                                <field name="skipped_steps"/>
+                                                <field name="modules_files_changed"/>
+                                                <field name="commit_pr_references"/>
+                                            </page>
+                                            <page string="Validation">
+                                                <field name="tests_and_results"/>
+                                                <field name="uat_result"/>
+                                                <field name="evidence_references"/>
+                                                <field name="known_limitations"/>
+                                            </page>
+                                            <page string="Delivery">
+                                                <field name="rollback_deployment_notes"/>
+                                                <field name="test_deployment_status"/>
+                                                <field name="production_status"/>
+                                                <field name="follow_up_items"/>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Communication">
+                            <field name="communication_ids">
+                                <list decoration-info="review_status == 'in_review'" decoration-success="review_status in ('approved', 'queued')" decoration-danger="delivery_status in ('failed', 'dead_letter')">
+                                    <field name="communication_type"/>
+                                    <field name="language"/>
+                                    <field name="chatwoot_conversation_id"/>
+                                    <field name="group_jid"/>
+                                    <field name="review_status" widget="badge"/>
+                                    <field name="reviewed_by_id"/>
+                                    <field name="send_approved"/>
+                                    <field name="delivery_status" widget="badge"/>
+                                    <field name="error_state" optional="show"/>
+                                </list>
+                                <form string="Reviewed Communication">
+                                    <header>
+                                        <button name="action_submit_review" type="object" string="Submit for Review" class="btn-primary" invisible="review_status != 'draft'"/>
+                                        <button name="action_approve" type="object" string="Approve to Send" class="btn-primary" groups="dev_session_hub.group_dev_hub_approver" invisible="review_status != 'in_review'"/>
+                                        <button name="action_queue" type="object" string="Queue via Chatwoot" class="btn-primary" confirm="Queue this reviewed message through the approved Chatwoot outbox route?" invisible="review_status != 'approved' or not send_approved"/>
+                                        <field name="review_status" widget="statusbar" statusbar_visible="draft,in_review,approved,queued"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="communication_type"/>
+                                                <field name="source_message_id"/>
+                                                <field name="language"/>
+                                                <field name="chatwoot_conversation_id"/>
+                                                <field name="group_jid"/>
+                                            </group>
+                                            <group>
+                                                <field name="reviewed_by_id" readonly="1"/>
+                                                <field name="send_approved" readonly="1"/>
+                                                <field name="idempotency_key" readonly="1"/>
+                                                <field name="chatwoot_outbound_message_id" readonly="1"/>
+                                                <field name="evolution_provider_message_id" readonly="1"/>
+                                                <field name="delivery_status" readonly="1"/>
+                                                <field name="error_state" readonly="1"/>
+                                            </group>
+                                        </group>
+                                        <field name="draft_message"/>
+                                        <div class="alert alert-info" role="alert">
+                                            Messages are queued only through the approved Chatwoot outbox route. Dev Hub never sends directly through Evolution.
+                                        </div>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Generation">
+                            <field name="current_generation_id" readonly="1"/>
+                            <field name="generation_request_ids" readonly="1">
+                                <list create="0" edit="0" delete="0" decoration-info="state in ('leased', 'processing')" decoration-warning="state == 'retry'" decoration-danger="state == 'dead_letter'" decoration-success="state == 'succeeded'">
+                                    <field name="requested_at"/>
+                                    <field name="kind"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="attempt_count"/>
+                                    <field name="correlation_id"/>
+                                    <field name="provider_reference"/>
+                                    <field name="run_reference"/>
+                                    <field name="artifact_model"/>
+                                    <field name="artifact_record_id"/>
+                                    <field name="last_error_summary"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Audit">
+                            <separator string="Lifecycle Events"/>
+                            <field name="lifecycle_event_ids" readonly="1">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="timestamp"/>
+                                    <field name="from_phase"/>
+                                    <field name="to_phase"/>
+                                    <field name="actor_id"/>
+                                    <field name="reason"/>
+                                    <field name="correlation_id"/>
+                                </list>
+                            </field>
+                            <separator string="External Outbox"/>
+                            <field name="outbox_ids" readonly="1">
+                                <list create="0" edit="0" delete="0" decoration-warning="state == 'retry'" decoration-danger="state == 'dead_letter'" decoration-success="state == 'done'">
+                                    <field name="create_date"/>
+                                    <field name="destination"/>
+                                    <field name="operation"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="attempt_count"/>
+                                    <field name="next_attempt_at"/>
+                                    <field name="idempotency_key"/>
+                                    <field name="last_error"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_work_source_message_search" model="ir.ui.view">
+        <field name="name">dev.work.source.message.search</field>
+        <field name="model">dev.work.source.message</field>
+        <field name="arch" type="xml">
+            <search string="Source Messages">
+                <field name="provider"/>
+                <field name="evolution_message_id"/>
+                <field name="chatwoot_conversation_id"/>
+                <field name="group_jid"/>
+                <field name="sender_jid"/>
+                <field name="dedupe_key"/>
+                <field name="work_item_ids"/>
+                <group name="group_by">
+                    <filter name="group_provider" string="Provider" context="{'group_by': 'provider'}"/>
+                    <filter name="group_conversation" string="Chatwoot Conversation" context="{'group_by': 'chatwoot_conversation_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dev_work_source_message_list" model="ir.ui.view">
+        <field name="name">dev.work.source.message.list</field>
+        <field name="model">dev.work.source.message</field>
+        <field name="arch" type="xml">
+            <list default_order="message_timestamp desc">
+                <field name="message_timestamp"/>
+                <field name="provider"/>
+                <field name="evolution_instance_ref"/>
+                <field name="evolution_message_id"/>
+                <field name="group_jid"/>
+                <field name="sender_jid"/>
+                <field name="chatwoot_conversation_id"/>
+                <field name="sanitized_text"/>
+                <field name="work_item_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_analysis_list" model="ir.ui.view">
+        <field name="name">dev.work.analysis.list</field>
+        <field name="model">dev.work.analysis</field>
+        <field name="arch" type="xml">
+            <list default_order="work_item_id, revision desc" decoration-success="status == 'accepted'" decoration-muted="status in ('rejected', 'superseded')">
+                <field name="work_item_id"/>
+                <field name="revision"/>
+                <field name="parent_revision_id"/>
+                <field name="status" widget="badge"/>
+                <field name="problem_summary"/>
+                <field name="origin"/>
+                <field name="repository_id"/>
+                <field name="observed_head"/>
+                <field name="created_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_plan_list" model="ir.ui.view">
+        <field name="name">dev.work.plan.list</field>
+        <field name="model">dev.work.plan</field>
+        <field name="arch" type="xml">
+            <list default_order="work_item_id, revision desc" decoration-info="status == 'awaiting_approval'" decoration-success="status == 'approved'" decoration-muted="status in ('rejected', 'superseded')">
+                <field name="work_item_id"/>
+                <field name="revision"/>
+                <field name="parent_revision_id"/>
+                <field name="goal"/>
+                <field name="progress"/>
+                <field name="status" widget="badge"/>
+                <field name="content_hash"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_checkpoint_list" model="ir.ui.view">
+        <field name="name">dev.work.checkpoint.list</field>
+        <field name="model">dev.work.checkpoint</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" default_order="timestamp desc">
+                <field name="timestamp"/>
+                <field name="work_item_id"/>
+                <field name="session_id"/>
+                <field name="trigger"/>
+                <field name="actor_id"/>
+                <field name="lifecycle_phase"/>
+                <field name="current_plan_step_id"/>
+                <field name="branch"/>
+                <field name="full_head"/>
+                <field name="snapshot_hash"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_completion_report_list" model="ir.ui.view">
+        <field name="name">dev.completion.report.list</field>
+        <field name="model">dev.completion.report</field>
+        <field name="arch" type="xml">
+            <list default_order="work_item_id, revision desc" decoration-info="status == 'ready_review'" decoration-success="status == 'approved'" decoration-muted="status == 'superseded'">
+                <field name="work_item_id"/>
+                <field name="revision"/>
+                <field name="plan_id"/>
+                <field name="implemented_summary"/>
+                <field name="status" widget="badge"/>
+                <field name="reviewer_id"/>
+                <field name="approval_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_communication_list" model="ir.ui.view">
+        <field name="name">dev.work.communication.list</field>
+        <field name="model">dev.work.communication</field>
+        <field name="arch" type="xml">
+            <list default_order="write_date desc" decoration-info="review_status == 'in_review'" decoration-success="review_status in ('approved', 'queued')" decoration-danger="delivery_status in ('failed', 'dead_letter')">
+                <field name="work_item_id"/>
+                <field name="communication_type"/>
+                <field name="language"/>
+                <field name="chatwoot_conversation_id"/>
+                <field name="group_jid"/>
+                <field name="review_status" widget="badge"/>
+                <field name="reviewed_by_id"/>
+                <field name="send_approved"/>
+                <field name="delivery_status" widget="badge"/>
+                <field name="write_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_lifecycle_event_list" model="ir.ui.view">
+        <field name="name">dev.work.lifecycle.event.list</field>
+        <field name="model">dev.work.lifecycle.event</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" default_order="timestamp desc">
+                <field name="timestamp"/>
+                <field name="work_item_id"/>
+                <field name="from_phase"/>
+                <field name="to_phase"/>
+                <field name="actor_id"/>
+                <field name="reason"/>
+                <field name="correlation_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_external_outbox_search" model="ir.ui.view">
+        <field name="name">dev.external.outbox.search</field>
+        <field name="model">dev.external.outbox</field>
+        <field name="arch" type="xml">
+            <search string="External Outbox Audit">
+                <field name="work_item_id"/>
+                <field name="destination"/>
+                <field name="operation"/>
+                <field name="state"/>
+                <field name="idempotency_key"/>
+                <filter name="pending" string="Pending" domain="[('state', '=', 'pending')]"/>
+                <filter name="leased" string="Leased" domain="[('state', '=', 'leased')]"/>
+                <filter name="processing" string="Processing" domain="[('state', '=', 'processing')]"/>
+                <filter name="retry" string="Retry" domain="[('state', '=', 'retry')]"/>
+                <filter name="dead_letter" string="Dead Letter" domain="[('state', '=', 'dead_letter')]"/>
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                <group name="group_by">
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                    <filter name="group_destination" string="Destination" context="{'group_by': 'destination'}"/>
+                    <filter name="group_operation" string="Operation" context="{'group_by': 'operation'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dev_external_outbox_list" model="ir.ui.view">
+        <field name="name">dev.external.outbox.list</field>
+        <field name="model">dev.external.outbox</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" default_order="create_date desc" decoration-info="state in ('leased', 'processing')" decoration-warning="state == 'retry'" decoration-danger="state == 'dead_letter'" decoration-success="state == 'done'">
+                <field name="create_date"/>
+                <field name="work_item_id"/>
+                <field name="destination"/>
+                <field name="operation"/>
+                <field name="state" widget="badge"/>
+                <field name="attempt_count"/>
+                <field name="correlation_id"/>
+                <field name="lease_consumer_ref" optional="hide"/>
+                <field name="lease_expires_at" optional="hide"/>
+                <field name="next_attempt_at"/>
+                <field name="idempotency_key"/>
+                <field name="last_error"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_external_outbox_form" model="ir.ui.view">
+        <field name="name">dev.external.outbox.form</field>
+        <field name="model">dev.external.outbox</field>
+        <field name="arch" type="xml">
+            <form string="External Outbox Audit" create="0" edit="0" delete="0">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,leased,processing,retry,dead_letter,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="destination"/>
+                            <field name="operation"/>
+                            <field name="idempotency_key"/>
+                            <field name="correlation_id"/>
+                            <field name="communication_id"/>
+                        </group>
+                        <group>
+                            <field name="attempt_count"/>
+                            <field name="max_attempts"/>
+                            <field name="lease_owner_id"/>
+                            <field name="lease_consumer_ref"/>
+                            <field name="leased_at"/>
+                            <field name="lease_expires_at"/>
+                            <field name="processing_at"/>
+                            <field name="next_attempt_at"/>
+                            <field name="create_date"/>
+                            <field name="write_date"/>
+                        </group>
+                    </group>
+                    <field name="payload_json" widget="text"/>
+                    <field name="last_error"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_work_item" model="ir.actions.act_window">
+        <field name="name">Recent Work</field>
+        <field name="res_model">dev.work.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_item_search"/>
+        <field name="context">{'search_default_my_work': 1}</field>
+    </record>
+
+    <record id="action_dev_work_item_active" model="ir.actions.act_window">
+        <field name="name">Active Work</field>
+        <field name="res_model">dev.work.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_item_search"/>
+        <field name="domain">[('active', '=', True), ('lifecycle_phase', 'not in', ['completed', 'reported', 'cancelled'])]</field>
+    </record>
+
+    <record id="action_dev_work_item_paused" model="ir.actions.act_window">
+        <field name="name">Paused Work</field>
+        <field name="res_model">dev.work.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_item_search"/>
+        <field name="domain">[('lifecycle_phase', '=', 'paused')]</field>
+    </record>
+
+    <record id="action_dev_work_item_blocked" model="ir.actions.act_window">
+        <field name="name">Blocked Work</field>
+        <field name="res_model">dev.work.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_item_search"/>
+        <field name="domain">[('lifecycle_phase', '=', 'blocked')]</field>
+    </record>
+
+    <record id="action_dev_work_item_awaiting_plan_approval" model="ir.actions.act_window">
+        <field name="name">Awaiting Plan Approval</field>
+        <field name="res_model">dev.work.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_item_search"/>
+        <field name="domain">[('lifecycle_phase', '=', 'awaiting_plan_approval')]</field>
+    </record>
+
+    <record id="action_dev_work_item_ready_review" model="ir.actions.act_window">
+        <field name="name">Ready for Review</field>
+        <field name="res_model">dev.work.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_item_search"/>
+        <field name="domain">[('lifecycle_phase', '=', 'ready_for_review')]</field>
+    </record>
+
+    <record id="action_dev_work_source_message" model="ir.actions.act_window">
+        <field name="name">Source Messages</field>
+        <field name="res_model">dev.work.source.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_source_message_search"/>
+    </record>
+
+    <record id="action_dev_work_analysis" model="ir.actions.act_window">
+        <field name="name">Analysis Revisions</field>
+        <field name="res_model">dev.work.analysis</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_work_plan" model="ir.actions.act_window">
+        <field name="name">Plan Revisions</field>
+        <field name="res_model">dev.work.plan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_work_checkpoint" model="ir.actions.act_window">
+        <field name="name">Checkpoints</field>
+        <field name="res_model">dev.work.checkpoint</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_completion_report" model="ir.actions.act_window">
+        <field name="name">Completion Reports</field>
+        <field name="res_model">dev.completion.report</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_work_communication" model="ir.actions.act_window">
+        <field name="name">Communications</field>
+        <field name="res_model">dev.work.communication</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_work_lifecycle_event" model="ir.actions.act_window">
+        <field name="name">Lifecycle Audit</field>
+        <field name="res_model">dev.work.lifecycle.event</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="action_dev_external_outbox" model="ir.actions.act_window">
+        <field name="name">External Outbox Audit</field>
+        <field name="res_model">dev.external.outbox</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_external_outbox_search"/>
+    </record>
+</odoo>

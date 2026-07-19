@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_commit_approval_form" model="ir.ui.view">
+        <field name="name">dev.git.commit.approval.form</field>
+        <field name="model">dev.git.commit.approval</field>
+        <field name="arch" type="xml">
+            <form string="Immutable Git Commit Approval" create="0" edit="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="approval_state"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="branch"/>
+                            <field name="current_head"/>
+                            <field name="dirty_digest"/>
+                            <field name="changed_files_digest"/>
+                            <field name="checkpoint_id"/>
+                        </group>
+                        <group>
+                            <field name="plan_id"/>
+                            <field name="plan_hash"/>
+                            <field name="policy_hash"/>
+                            <field name="execution_contract_hash"/>
+                            <field name="approver_id"/>
+                            <field name="approved_at"/>
+                            <field name="commit_message_hash"/>
+                            <field name="binding_hash"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Reviewed Changes">
+                            <field name="changed_files_summary"/>
+                            <field name="git_status_summary"/>
+                            <field name="diff_summary"/>
+                        </page>
+                        <page string="Commit Message and Tests">
+                            <field name="commit_message"/>
+                            <field name="tests_summary"/>
+                        </page>
+                        <page string="Main Worktree Binding">
+                            <group>
+                                <field name="main_branch"/>
+                                <field name="main_head"/>
+                                <field name="main_dirty_digest"/>
+                            </group>
+                        </page>
+                        <page string="Immutable Events">
+                            <field name="event_ids">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="occurred_at"/>
+                                    <field name="event_type"/>
+                                    <field name="actor_id"/>
+                                    <field name="summary"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_commit_record_form" model="ir.ui.view">
+        <field name="name">dev.git.commit.record.form</field>
+        <field name="model">dev.git.commit.record</field>
+        <field name="arch" type="xml">
+            <form string="Reviewed Local Git Commit" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="approval_id"/>
+                            <field name="branch"/>
+                            <field name="parent_sha"/>
+                            <field name="commit_sha"/>
+                        </group>
+                        <group>
+                            <field name="approver_id"/>
+                            <field name="committed_at"/>
+                            <field name="author_name"/>
+                            <field name="author_email"/>
+                            <field name="commit_message_hash"/>
+                            <field name="audit_hash"/>
+                        </group>
+                    </group>
+                    <field name="committed_files_summary"/>
+                    <field name="test_evidence_references"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

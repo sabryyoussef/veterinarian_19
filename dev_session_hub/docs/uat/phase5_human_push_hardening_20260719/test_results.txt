@@ -1,0 +1,33 @@
+Human-Approved Git Push hardening results
+Date: 2026-07-19
+
+Full dev_session_hub suite:
+- 88/88 tests passed
+- 0 failures, 0 errors
+- 73 post-tests; 94 framework operations
+- Log: /tmp/dev_session_hub_push_hardening_final.log
+
+Security regression:
+- 20/20 tests passed
+- 0 failures, 0 errors
+- Log: /tmp/dev_session_hub_push_hardening_security.log
+
+Push hardening coverage:
+- Structured HTTPS and SSH/SCP URL allow/deny matrix passed.
+- Credential-bearing legacy remote blocked before Push approval persistence.
+- All force flag/refspec variants blocked before subprocess execution.
+- Canonical normal explicit branch refspec remained accepted.
+- Failed subprocess + exact remote commit => reconciled_success.
+- Failed subprocess + absent/mismatched commit => push_failed_review.
+- Unavailable reconciliation => uncertain_remote_state.
+- Retry without fresh human review denied.
+
+Worker contracts:
+- DW-8 targeted 2/2 and regression 2/2.
+- DW-9 targeted 2/2 and regression 2/2.
+
+Playwright:
+- 1/1 passed in 48.5 seconds.
+- Success Push, controlled transport failure, failed audit record, and human
+  reconciliation UI validated.
+- Seven screenshots captured.

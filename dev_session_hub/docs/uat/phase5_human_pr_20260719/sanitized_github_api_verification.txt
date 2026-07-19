@@ -1,0 +1,35 @@
+Sanitized GitHub preflight
+Date: 2026-07-19
+
+Repository: sabryyoussef/veterinarian_19
+Visibility: public
+Default branch: main
+Available branches observed: main, staging
+Authenticated account label: sabryyoussef
+
+Credential classification:
+- Type: GitHub App installation token
+- App: sabry-uat-agent (ID 4340040; installation 147639376)
+- Repository access: sabryyoussef/veterinarian_19 only
+- Permissions: contents:read, metadata:read, pull_requests:write
+- Token: short-lived and minted by protected broker
+- Classic broad repo/admin credential: still REJECTED
+
+Read-only validation:
+- Repository metadata: PASS
+- staging ref: 66344b2e09e2049c39942114029253e919bc6709
+- source ref: 24c7eef5e169016a94794f8e30b6934e2aabd3b8
+- open source-to-staging PR lookup before creation: 0
+
+Post-creation verification:
+- PR: #2
+- State: open
+- Merged: false
+- Auto-merge: null/disabled
+- Base: staging
+- Head SHA: 24c7eef5e169016a94794f8e30b6934e2aabd3b8
+- Matching open PRs after duplicate-safe replay: 1
+- Dev Hub PR audit records after replay: 1
+
+No token value, authorization header, credential-bearing URL, request body, or
+secret was captured in this evidence.

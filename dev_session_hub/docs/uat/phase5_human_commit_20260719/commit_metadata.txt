@@ -1,0 +1,17 @@
+work_item_id=6
+workspace_id=10
+approval_id=1
+approver=Administrator
+branch=devhub/DW-6-add-human-approved-commit-contract-test
+parent_sha=5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+commit_sha=764a9ff0e10b3ff096860d9dc6c0424597152a85
+dirty_digest=c599a77bd1eb570193dc529f0d8fba2661e5fe3c6b89e7d939cf6ec4cb61a321
+changed_files_digest=67729be729cf0eca64c71d1e438042727babd2adb22908358632a546c082e080
+commit_message_hash=1f84377cda69cc7fc8b7c05acd536cc08346ff31c9379fe68fce8d0c29312dfd
+binding_hash=bd6b1af97db6fba18aec76e4d40b6cc9278bc1e74490500f1a30bb92613e685d
+files=tests/__init__.py,tests/test_human_commit_contract.py
+push=none
+pr=none
+merge=none
+deployment=none
+production_access=none

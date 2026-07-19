@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Development Session Hub",
-    "version": "19.0.2.0.0",
+    "version": "19.0.3.0.0",
     "category": "Productivity",
     "summary": "Development work lifecycle, artifacts, checkpoints, and sessions",
     "description": """
@@ -24,6 +24,7 @@ or sends directly to WhatsApp.
         "views/dev_dashboard_views.xml",
         "views/dev_registry_views.xml",
         "views/dev_work_views.xml",
+        "views/dev_integration_views.xml",
         "views/dev_session_views.xml",
         "views/dev_launch_wizard_views.xml",
         "views/dev_resume_brief_wizard_views.xml",

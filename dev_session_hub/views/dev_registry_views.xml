@@ -156,6 +156,8 @@
                             <field name="default_environment_id"/>
                             <field name="openproject_reference"/>
                             <field name="github_reference"/>
+                            <field name="generation_policy"/>
+                            <field name="generation_provider" invisible="generation_policy != 'automatic'"/>
                         </group>
                     </group>
                     <notebook>

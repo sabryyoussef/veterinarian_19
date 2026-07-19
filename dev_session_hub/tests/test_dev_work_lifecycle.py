@@ -6,8 +6,9 @@ from unittest.mock import patch
 
 from psycopg2.errors import UniqueViolation
 
+from odoo import fields
 from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import TransactionCase, new_test_user, tagged
 
 
 @tagged("post_install", "-at_install")
@@ -84,6 +85,7 @@ class TestDevWorkLifecycle(TransactionCase):
             "dev.completion.report",
             "dev.work.communication",
             "dev.external.outbox",
+            "dev.work.generation",
         }
         missing = sorted(name for name in required_models if name not in cls.env)
         if missing:
@@ -119,6 +121,11 @@ class TestDevWorkLifecycle(TransactionCase):
             {
                 "provider": "manual",
                 "provider_message_id": source_key,
+                "chatwoot_account_id": 1,
+                "chatwoot_inbox_id": 2,
+                "chatwoot_conversation_id": 775,
+                "chatwoot_message_id": 776,
+                "group_jid": "120363000000000000@g.us",
                 "message_timestamp": "2026-07-18 16:20:00",
                 "text_snapshot": "Sanitized lifecycle test request %s" % source_key,
             }
@@ -295,7 +302,7 @@ class TestDevWorkLifecycle(TransactionCase):
         step.write({"status": "done"})
         self._transition(work, "implementing")
         self._transition(work, "testing")
-        self.env["dev.work.checkpoint"].create(
+        self.env["dev.work.checkpoint"].sudo().create(
             {
                 "work_item_id": work.id,
                 "trigger": "client_review",
@@ -610,7 +617,7 @@ class TestDevWorkLifecycle(TransactionCase):
         step.write({"status": "done"})
         self._transition(work, "implementing")
         self._transition(work, "testing")
-        self.env["dev.work.checkpoint"].create(
+        self.env["dev.work.checkpoint"].sudo().create(
             {
                 "work_item_id": work.id,
                 "trigger": "client_review",
@@ -847,3 +854,350 @@ class TestDevWorkLifecycle(TransactionCase):
                 [("session_id", "=", session.id)]
             )
         )
+
+    def _outbox_user(self):
+        return new_test_user(
+            self.env,
+            login="dev-hub-outbox-%s" % uuid.uuid4().hex,
+            groups="dev_session_hub.group_dev_hub_integration",
+        )
+
+    def _generation_user(self):
+        return new_test_user(
+            self.env,
+            login="dev-hub-generation-%s" % uuid.uuid4().hex,
+            groups="dev_session_hub.group_dev_hub_generation",
+        )
+
+    def _generation_ready_work(self):
+        work = self._work()
+        self._transition(work, "triage")
+        self._transition(work, "registered")
+        self.env["dev.work.checkpoint"].sudo().create(
+            {
+                "work_item_id": work.id,
+                "trigger": "milestone",
+                "lifecycle_phase": "registered",
+                "repository_id": self.repository.id,
+                "git_head": "b" * 40,
+                "next_recommended_step": "Generate analysis.",
+            }
+        )
+        work._refresh_context_revision()
+        return work
+
+    def test_outbox_service_leasing_callbacks_and_queue_idempotency(self):
+        work = self._work()
+        outbox = work._queue_outbox(
+            "openproject",
+            "milestone",
+            {
+                "schema": "dev-hub.op-milestone.v1",
+                "backend_id": self.backend.id,
+                "work_package_id": work.op_work_package_id,
+                "milestone": "material_blocker",
+                "summary": "Test-only blocker.",
+                "status_hint": "on_hold",
+            },
+            "test:%s" % uuid.uuid4().hex,
+        )
+        duplicate = work._queue_outbox(
+            outbox.channel,
+            outbox.operation,
+            json.loads(outbox.payload_json),
+            outbox.idempotency_key,
+        )
+        self.assertEqual(duplicate, outbox)
+
+        integration = self._outbox_user()
+        service = self.env["dev.external.outbox"].with_user(integration)
+        lease = service.service_lease(limit=1, consumer_ref="test-consumer")
+        self.assertEqual(lease[0]["id"], outbox.id)
+        self.assertEqual(outbox.state, "leased")
+        service.service_mark_processing(outbox.id, outbox.correlation_id)
+        result = service.service_ack_success(
+            outbox.id,
+            outbox.correlation_id,
+            {"external_reference": "test-activity-1"},
+        )
+        self.assertEqual(result["state"], "done")
+        self.assertEqual(outbox.state, "done")
+        self.assertEqual(
+            service.service_ack_success(outbox.id, outbox.correlation_id)["state"],
+            "done",
+        )
+
+        ordinary = new_test_user(
+            self.env,
+            login="dev-hub-ordinary-%s" % uuid.uuid4().hex,
+            groups="dev_session_hub.group_dev_hub_user",
+        )
+        with self.assertRaises(AccessError):
+            self.env["dev.external.outbox"].with_user(ordinary).service_lease()
+
+    def test_outbox_retry_dead_letter_and_service_scope(self):
+        work = self._work()
+        outbox = work._prepare_op_milestone(
+            "material_blocker", "Safe test-only retry.", "on_hold"
+        )
+        outbox_user = self._outbox_user()
+        generation_user = self._generation_user()
+        service = self.env["dev.external.outbox"].with_user(outbox_user)
+        with self.assertRaises(AccessError):
+            self.env["dev.external.outbox"].with_user(generation_user).service_lease()
+        service.service_lease(limit=1, consumer_ref="retry-test")
+        retry = service.service_ack_failure(
+            outbox.id,
+            outbox.correlation_id,
+            "temporary_transport",
+            "Temporary transport failure before a confirmed delivery.",
+            transient=True,
+            retry_after_seconds=30,
+        )
+        self.assertEqual(retry["state"], "retry")
+        outbox.with_context(dev_outbox_action=True).write(
+            {"next_attempt_at": fields.Datetime.now()}
+        )
+        service.service_lease(limit=1, consumer_ref="dead-letter-test")
+        service.service_mark_processing(outbox.id, outbox.correlation_id)
+        dead = service.service_ack_failure(
+            outbox.id,
+            outbox.correlation_id,
+            "delivery_uncertain",
+            "External outcome is uncertain; automatic retry is unsafe.",
+            transient=True,
+            delivery_uncertain=True,
+        )
+        self.assertEqual(dead["state"], "dead_letter")
+
+    def test_outbox_rejects_unsupported_or_malformed_intents(self):
+        work = self._work()
+        with self.assertRaises(ValidationError):
+            self.env["dev.external.outbox"].with_context(
+                dev_internal_outbox=True
+            ).create(
+                {
+                    "work_item_id": work.id,
+                    "channel": "chatwoot",
+                    "operation": "public_message",
+                    "payload_json": {
+                        "schema": "dev-hub.chatwoot-public-message.v0",
+                        "account_id": 1,
+                    },
+                    "idempotency_key": "invalid:%s" % uuid.uuid4().hex,
+                }
+            )
+        with self.assertRaises(ValidationError):
+            work._prepare_op_milestone(
+                "every_transition", "Unsupported noisy milestone.", "in_progress"
+            )
+
+    def test_generation_callbacks_create_drafts_without_plan_approval(self):
+        work = self._generation_ready_work()
+        analysis_request = work.action_request_analysis_generation()
+        integration = self._generation_user()
+        service = self.env["dev.work.generation"].with_user(integration)
+        lease = service.service_lease(limit=1, consumer_ref="generation-test")[0]
+        self.assertEqual(lease["id"], analysis_request.id)
+        service.service_mark_processing(
+            analysis_request.id,
+            analysis_request.correlation_id,
+            "dify:analysis",
+            "analysis-run-%s" % uuid.uuid4().hex,
+        )
+        outcome = service.service_complete(
+            analysis_request.id,
+            analysis_request.correlation_id,
+            {
+                "problem_summary": "A bounded test problem.",
+                "original_request_summary": "A bounded test request.",
+                "technical_findings": "No production evidence.",
+                "observed_head": "b" * 40,
+            },
+        )
+        analysis = self.env[outcome["artifact_model"]].browse(
+            outcome["artifact_record_id"]
+        )
+        self.assertEqual(analysis.status, "generated")
+        self.assertEqual(work.current_phase, "analyzing")
+
+        analysis.action_accept()
+        plan_request = work.action_request_plan_generation()
+        lease = service.service_lease(limit=1, consumer_ref="generation-test")[0]
+        self.assertEqual(lease["id"], plan_request.id)
+        service.service_mark_processing(
+            plan_request.id,
+            plan_request.correlation_id,
+            "dify:plan",
+            "plan-run-%s" % uuid.uuid4().hex,
+        )
+        outcome = service.service_complete(
+            plan_request.id,
+            plan_request.correlation_id,
+            {
+                "goal": "Implement only the approved scope.",
+                "scope": "Test scope.",
+                "out_of_scope": "Production deployment.",
+                "proposed_changes": "Change the test fixture.",
+                "affected_components": "dev_session_hub tests.",
+                "migration_impact": "None.",
+                "security_impact": "Guarded callback only.",
+                "test_plan": "Run TransactionCase.",
+                "rollback_plan": "Revert the reviewed change.",
+                "dependencies": "Odoo test framework.",
+                "risks": "Incorrect callback state.",
+                "acceptance_criteria": "The test passes.",
+                "steps": [
+                    {
+                        "step_key": "S1",
+                        "sequence": 10,
+                        "title": "Implement fixture",
+                        "description": "Apply the bounded change.",
+                        "dependency_keys": "",
+                        "acceptance_evidence": "TransactionCase output.",
+                    }
+                ],
+            },
+        )
+        plan = self.env[outcome["artifact_model"]].browse(outcome["artifact_record_id"])
+        self.assertEqual(plan.status, "awaiting_approval")
+        self.assertEqual(work.current_phase, "awaiting_plan_approval")
+        self.assertFalse(plan.approval_ids)
+        with self.assertRaises(AccessError):
+            self.env["dev.work.generation"].with_user(
+                self._outbox_user()
+            ).service_lease()
+
+    def test_generation_rejects_stale_context(self):
+        work = self._generation_ready_work()
+        request = work.action_request_analysis_generation()
+        integration = self._generation_user()
+        service = self.env["dev.work.generation"].with_user(integration)
+        service.service_lease(limit=1, consumer_ref="stale-test")
+        service.service_mark_processing(
+            request.id,
+            request.correlation_id,
+            "dify:analysis",
+            "stale-run-%s" % uuid.uuid4().hex,
+        )
+        work.action_analyze()
+        outcome = service.service_complete(
+            request.id,
+            request.correlation_id,
+            {
+                "problem_summary": "Stale output.",
+                "original_request_summary": "Stale request.",
+            },
+        )
+        self.assertEqual(outcome["error_code"], "stale_generation_context")
+        self.assertEqual(request.state, "dead_letter")
+        self.assertFalse(request.artifact_record_id)
+
+    def test_generation_rejects_invalid_schema_and_production(self):
+        work = self._generation_ready_work()
+        request = work.action_request_analysis_generation()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        service.service_lease(limit=1, consumer_ref="invalid-output-test")
+        service.service_mark_processing(
+            request.id,
+            request.correlation_id,
+            "dify:analysis",
+            "invalid-run-%s" % uuid.uuid4().hex,
+        )
+        outcome = service.service_complete(
+            request.id,
+            request.correlation_id,
+            {"problem_summary": "Missing required original request summary."},
+        )
+        self.assertEqual(outcome["error_code"], "invalid_generation_output")
+        self.assertEqual(request.state, "dead_letter")
+        self.assertFalse(request.artifact_record_id)
+
+        production = self.env["dev.environment"].create(
+            {
+                "name": "Generation blocked production fixture",
+                "project_id": self.dev_project.id,
+                "environment_type": "production",
+                "machine_id": self.machine.id,
+                "database_identifier": "redacted-production-generation",
+                "odoo_version": "19.0",
+                "port": 65531,
+                "config_reference": "/unresolved/production.conf",
+                "service_container_reference": "unresolved-production-service",
+                "url": "https://production.invalid",
+                "data_sensitivity": "production",
+                "production_guard_policy": "Generation disabled.",
+            }
+        )
+        blocked = work
+        blocked.write({"preferred_environment_id": production.id})
+        with self.assertRaises(UserError):
+            blocked.action_request_analysis_generation()
+
+    def test_communication_context_cannot_forge_review_or_queue(self):
+        work = self._work()
+        report = self._approved_report(work)
+        source = work.source_message_ids[:1]
+        communication = self.env["dev.work.communication"].create(
+            {
+                "work_item_id": work.id,
+                "completion_report_id": report.id,
+                "source_message_id": source.id,
+                "communication_type": "completion",
+                "body": "Reviewed exact destination test.",
+                "chatwoot_account_id": source.chatwoot_account_id,
+                "chatwoot_inbox_id": source.chatwoot_inbox_id,
+                "chatwoot_conversation_id": source.chatwoot_conversation_id,
+                "destination_type": "group_jid",
+                "destination_reference": source.group_jid,
+            }
+        )
+        communication.action_review()
+        with self.assertRaises(AccessError):
+            communication.with_context(dev_communication_action=True).write(
+                {"state": "queued"}
+            )
+        with self.assertRaises(AccessError):
+            communication.write({"body": "Changed after review"})
+        communication.action_approve()
+        first = communication.action_queue()
+        second = communication.action_queue()
+        self.assertEqual(first, second)
+        self.assertEqual(communication.review_hash, communication.approved_hash)
+
+    def test_approver_cannot_forge_immutable_approval_record(self):
+        work = self._work()
+        self._transition(work, "triage")
+        self._transition(work, "registered")
+        self._transition(work, "analyzing")
+        analysis = self._analysis(work)
+        analysis.action_accept()
+        self._transition(work, "planning")
+        plan = self._plan(work, with_step=True)
+        plan.action_submit_for_approval()
+        approver = new_test_user(
+            self.env,
+            login="dev-hub-approver-%s" % uuid.uuid4().hex,
+            groups=(
+                "dev_session_hub.group_dev_hub_user,"
+                "dev_session_hub.group_dev_hub_approver"
+            ),
+        )
+        self.dev_project.write({"member_ids": [(4, approver.id)]})
+        self.assertIn(approver, self.dev_project.member_ids)
+        with self.assertRaises(AccessError):
+            self.env["dev.work.approval"].with_user(approver).with_context(
+                dev_internal_approval=True
+            ).create(
+                {
+                    "work_item_id": work.id,
+                    "plan_id": plan.id,
+                    "plan_revision": plan.revision,
+                    "plan_hash": plan.content_hash,
+                    "decision": "approved",
+                    "approver_id": approver.id,
+                    "decided_at": "2026-07-18 20:00:00",
+                }
+            )
+        approval = plan.with_user(approver).action_approve_exact(plan.content_hash)
+        self.assertEqual(approval.approver_id, approver)

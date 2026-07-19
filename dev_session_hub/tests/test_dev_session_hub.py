@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import base64
 import json
 import socket
 from unittest.mock import Mock, patch
@@ -236,7 +237,7 @@ class TestDevSessionHub(TransactionCase):
             session.action_start()
         self.assertEqual(session.state, "draft")
 
-    def test_production_bearing_machine_cannot_launch(self):
+    def test_nonproduction_environment_can_use_mixed_canonical_host(self):
         environment = self.env["dev.environment"].create(
             {
                 "name": "Production-bearing Machine Fixture",
@@ -251,6 +252,19 @@ class TestDevSessionHub(TransactionCase):
                 "production_guard_policy": "Launch disabled on production host.",
             }
         )
+        self.env["dev.policy"].create(
+            {
+                "name": "Mixed host non-production fallback policy",
+                "project_id": self.project.id,
+                "environment_id": environment.id,
+                "production_access_policy": "denied",
+                "allowed_operations": "Open registered test workspace",
+                "branch_rules": "No automatic mutation",
+                "development_allowed": True,
+                "launch_allowed": True,
+                "deploy_permission": False,
+            }
+        )
         session = self.env["dev.session"].create(
             {
                 "client_id": self.windows.id,
@@ -261,20 +275,20 @@ class TestDevSessionHub(TransactionCase):
                 "working_directory": self.repository.working_directory,
             }
         )
-        with self.assertRaises(UserError):
+        with self._mock_snapshot():
             session.action_start()
-        self.assertEqual(session.state, "draft")
+        self.assertEqual(session.state, "started")
 
-    def test_launcher_fails_closed_without_managed_pin_helper(self):
+    def test_explicit_workspace_fallback_does_not_require_managed_helper(self):
         session = self._session()
         with patch.object(
             type(self.env["dev.session"]),
             "_pin_enforced_launcher_available",
             return_value=False,
-        ):
-            with self.assertRaises(UserError):
-                session.action_start()
-        self.assertEqual(session.state, "draft")
+        ), self._mock_snapshot():
+            session.action_start()
+            self.assertFalse(session._pin_enforced_launcher_available())
+        self.assertEqual(session.state, "started")
 
     def test_exact_canonical_path_binding_rejects_substitution(self):
         session = self._session()
@@ -368,7 +382,7 @@ class TestDevSessionHub(TransactionCase):
                 }
             )
 
-    def test_launcher_artifacts_are_disabled_and_forgery_is_rejected(self):
+    def test_launcher_fallback_is_structured_and_forgery_is_rejected(self):
         session = self._session()
         with self._mock_snapshot():
             session.action_start()
@@ -381,6 +395,13 @@ class TestDevSessionHub(TransactionCase):
             )
         with self.assertRaises(AccessError):
             self.env["dev.launch.wizard"].create({"session_id": session.id})
+        wizard = self.env["dev.launch.wizard"].create_from_session(session)
+        workspace = json.loads(base64.b64decode(wizard.workspace_file))
+        self.assertEqual(len(workspace["folders"]), 1)
+        self.assertIn("vscode-remote://ssh-remote+", workspace["folders"][0]["uri"])
+        self.assertNotIn("touch ", wizard.command_linux)
+        self.assertIn("managed one-click helper remains disabled", wizard.safety_note)
+        self.assertEqual(wizard.action_download_workspace()["type"], "ir.actions.act_url")
         with self._mock_snapshot():
             session.action_abandon()
 

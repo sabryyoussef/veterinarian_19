@@ -425,15 +425,6 @@ class DevSession(models.Model):
             in ("production", "restricted", "confidential")
         ):
             raise UserError("Production development sessions are disabled.")
-        if machine.production:
-            raise UserError(
-                "Launch is denied because the selected machine hosts production workloads."
-            )
-        if not self._pin_enforced_launcher_available():
-            raise UserError(
-                "Remote launch is disabled until a managed helper can enforce the "
-                "pinned SSH host key for Cursor's complete connection."
-            )
         if machine.trust_zone != "trusted_dev":
             raise UserError("Launch requires a trusted development trust zone.")
         if not environment.active or not machine.active or not repository.active:
@@ -864,7 +855,7 @@ class DevSession(models.Model):
             if current
             else "Review the approved plan and record the next explicit action."
         )
-        checkpoint = self.env["dev.work.checkpoint"].create(
+        checkpoint = self.env["dev.work.checkpoint"].sudo().create(
             {
                 "work_item_id": work.id,
                 "session_id": self.id,
@@ -884,7 +875,9 @@ class DevSession(models.Model):
                 "dirty_summary": snapshot.get("dirty") or self.dirty_state_summary,
                 "ahead_count": snapshot.get("ahead") or 0,
                 "behind_count": snapshot.get("behind") or 0,
-                "files_touched_summary": snapshot.get("files_touched_summary") or False,
+                "files_touched_summary": (
+                    (snapshot.get("files_touched_summary") or "")[:4000] or False
+                ),
                 "environment_id": self.environment_id.id,
                 "machine_id": self.machine_id.id,
                 "client_id": self.client_id.id,

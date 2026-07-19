@@ -137,6 +137,13 @@
               sequence="30"
               groups="group_dev_hub_manager"/>
 
+    <menuitem id="menu_dev_session_hub_generation"
+              name="Analysis / Plan Generation"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_work_generation"
+              sequence="40"
+              groups="group_dev_hub_manager"/>
+
     <menuitem id="menu_dev_session_hub_policies"
               name="Policies"
               parent="menu_dev_session_hub_configuration"

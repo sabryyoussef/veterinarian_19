@@ -36,9 +36,9 @@ access_dev_work_plan_manager,dev.work.plan manager,model_dev_work_plan,group_dev
 access_dev_work_plan_step_user,dev.work.plan.step user,model_dev_work_plan_step,group_dev_hub_user,1,1,1,0
 access_dev_work_plan_step_manager,dev.work.plan.step manager,model_dev_work_plan_step,group_dev_hub_manager,1,1,1,0
 access_dev_work_approval_user,dev.work.approval user,model_dev_work_approval,group_dev_hub_user,1,0,0,0
-access_dev_work_approval_approver,dev.work.approval approver,model_dev_work_approval,group_dev_hub_approver,1,0,1,0
-access_dev_work_checkpoint_user,dev.work.checkpoint user,model_dev_work_checkpoint,group_dev_hub_user,1,0,1,0
-access_dev_work_checkpoint_manager,dev.work.checkpoint manager,model_dev_work_checkpoint,group_dev_hub_manager,1,0,1,0
+access_dev_work_approval_approver,dev.work.approval approver,model_dev_work_approval,group_dev_hub_approver,1,0,0,0
+access_dev_work_checkpoint_user,dev.work.checkpoint user,model_dev_work_checkpoint,group_dev_hub_user,1,0,0,0
+access_dev_work_checkpoint_manager,dev.work.checkpoint manager,model_dev_work_checkpoint,group_dev_hub_manager,1,0,0,0
 access_dev_completion_report_user,dev.completion.report user,model_dev_completion_report,group_dev_hub_user,1,1,1,0
 access_dev_completion_report_manager,dev.completion.report manager,model_dev_completion_report,group_dev_hub_manager,1,1,1,0
 access_dev_work_communication_user,dev.work.communication user,model_dev_work_communication,group_dev_hub_user,1,1,1,0
@@ -46,4 +46,8 @@ access_dev_work_communication_manager,dev.work.communication manager,model_dev_w
 access_dev_work_lifecycle_event_user,dev.work.lifecycle.event user,model_dev_work_lifecycle_event,group_dev_hub_user,1,0,0,0
 access_dev_work_lifecycle_event_manager,dev.work.lifecycle.event manager,model_dev_work_lifecycle_event,group_dev_hub_manager,1,0,0,0
 access_dev_external_outbox_user,dev.external.outbox user,model_dev_external_outbox,group_dev_hub_user,1,0,0,0
-access_dev_external_outbox_manager,dev.external.outbox manager,model_dev_external_outbox,group_dev_hub_manager,1,1,0,0
+access_dev_external_outbox_manager,dev.external.outbox manager,model_dev_external_outbox,group_dev_hub_manager,1,0,0,0
+access_dev_external_outbox_integration,dev.external.outbox scoped integration,model_dev_external_outbox,group_dev_hub_integration,1,0,0,0
+access_dev_work_generation_user,dev.work.generation user,model_dev_work_generation,group_dev_hub_user,1,0,0,0
+access_dev_work_generation_manager,dev.work.generation manager,model_dev_work_generation,group_dev_hub_manager,1,0,0,0
+access_dev_work_generation_integration,dev.work.generation scoped integration,model_dev_work_generation,group_dev_hub_generation,1,0,0,0

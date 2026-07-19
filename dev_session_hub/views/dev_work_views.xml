@@ -63,6 +63,8 @@
                 <header>
                     <button name="action_start_triage" type="object" string="Start Triage" class="btn-primary" invisible="lifecycle_phase != 'received'"/>
                     <button name="action_register" type="object" string="Register" class="btn-primary" invisible="lifecycle_phase != 'triage'"/>
+                    <button name="action_request_analysis_generation" type="object" string="Generate Analysis Draft" class="btn-primary" invisible="lifecycle_phase != 'registered'"/>
+                    <button name="action_request_plan_generation" type="object" string="Generate Plan Draft" class="btn-primary" invisible="lifecycle_phase != 'analyzing' or not current_accepted_analysis_id"/>
                     <button name="action_start_analysis" type="object" string="Start Analysis" class="btn-primary" invisible="lifecycle_phase != 'registered'"/>
                     <button name="action_start_planning" type="object" string="Start Planning" class="btn-primary" invisible="lifecycle_phase != 'analyzing'"/>
                     <button name="action_start_implementation" type="object" string="Start Development" class="btn-primary" invisible="lifecycle_phase != 'approved'"/>
@@ -570,6 +572,23 @@
                                 </form>
                             </field>
                         </page>
+                        <page string="Generation">
+                            <field name="current_generation_id" readonly="1"/>
+                            <field name="generation_request_ids" readonly="1">
+                                <list create="0" edit="0" delete="0" decoration-info="state in ('leased', 'processing')" decoration-warning="state == 'retry'" decoration-danger="state == 'dead_letter'" decoration-success="state == 'succeeded'">
+                                    <field name="requested_at"/>
+                                    <field name="kind"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="attempt_count"/>
+                                    <field name="correlation_id"/>
+                                    <field name="provider_reference"/>
+                                    <field name="run_reference"/>
+                                    <field name="artifact_model"/>
+                                    <field name="artifact_record_id"/>
+                                    <field name="last_error_summary"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Audit">
                             <separator string="Lifecycle Events"/>
                             <field name="lifecycle_event_ids" readonly="1">
@@ -756,6 +775,8 @@
                 <field name="state"/>
                 <field name="idempotency_key"/>
                 <filter name="pending" string="Pending" domain="[('state', '=', 'pending')]"/>
+                <filter name="leased" string="Leased" domain="[('state', '=', 'leased')]"/>
+                <filter name="processing" string="Processing" domain="[('state', '=', 'processing')]"/>
                 <filter name="retry" string="Retry" domain="[('state', '=', 'retry')]"/>
                 <filter name="dead_letter" string="Dead Letter" domain="[('state', '=', 'dead_letter')]"/>
                 <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
@@ -772,13 +793,16 @@
         <field name="name">dev.external.outbox.list</field>
         <field name="model">dev.external.outbox</field>
         <field name="arch" type="xml">
-            <list create="0" edit="0" delete="0" default_order="create_date desc" decoration-warning="state == 'retry'" decoration-danger="state == 'dead_letter'" decoration-success="state == 'done'">
+            <list create="0" edit="0" delete="0" default_order="create_date desc" decoration-info="state in ('leased', 'processing')" decoration-warning="state == 'retry'" decoration-danger="state == 'dead_letter'" decoration-success="state == 'done'">
                 <field name="create_date"/>
                 <field name="work_item_id"/>
                 <field name="destination"/>
                 <field name="operation"/>
                 <field name="state" widget="badge"/>
                 <field name="attempt_count"/>
+                <field name="correlation_id"/>
+                <field name="lease_consumer_ref" optional="hide"/>
+                <field name="lease_expires_at" optional="hide"/>
                 <field name="next_attempt_at"/>
                 <field name="idempotency_key"/>
                 <field name="last_error"/>
@@ -792,7 +816,7 @@
         <field name="arch" type="xml">
             <form string="External Outbox Audit" create="0" edit="0" delete="0">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="pending,retry,dead_letter,done"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,leased,processing,retry,dead_letter,done"/>
                 </header>
                 <sheet>
                     <group>
@@ -801,9 +825,17 @@
                             <field name="destination"/>
                             <field name="operation"/>
                             <field name="idempotency_key"/>
+                            <field name="correlation_id"/>
+                            <field name="communication_id"/>
                         </group>
                         <group>
                             <field name="attempt_count"/>
+                            <field name="max_attempts"/>
+                            <field name="lease_owner_id"/>
+                            <field name="lease_consumer_ref"/>
+                            <field name="leased_at"/>
+                            <field name="lease_expires_at"/>
+                            <field name="processing_at"/>
                             <field name="next_attempt_at"/>
                             <field name="create_date"/>
                             <field name="write_date"/>

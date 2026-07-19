@@ -78,7 +78,7 @@ LIFECYCLE_SELECTION = [
 LIFECYCLE_TRANSITIONS = {
     "received": {"triage", "cancelled"},
     "triage": {"registered", "cancelled"},
-    "registered": {"analyzing", "cancelled"},
+    "registered": {"analyzing", "blocked", "cancelled"},
     "analyzing": {"planning", "triage", "blocked", "cancelled"},
     "planning": {"awaiting_plan_approval", "blocked", "cancelled"},
     "awaiting_plan_approval": {"approved", "planning", "blocked", "cancelled"},
@@ -116,7 +116,11 @@ def _canonical_hash(payload):
 
 
 def _clean_text(value, label, limit=MAX_TEXT):
-    value = (value or "").strip()
+    if value is None or value is False:
+        value = ""
+    if not isinstance(value, str):
+        raise ValidationError("%s must be text." % label)
+    value = value.strip()
     if len(value) > limit:
         raise ValidationError("%s exceeds the %s-character storage limit." % (label, limit))
     if SECRET_PATTERN.search(value):
@@ -202,6 +206,18 @@ def _require_approver(env):
         "dev_session_hub.group_dev_hub_approver"
     ):
         raise AccessError("A Dev Hub approver must authorize this action.")
+
+
+def _require_importer(env):
+    if env.is_superuser():
+        return
+    allowed = env.user.has_group(
+        "dev_session_hub.group_dev_hub_generation"
+    ) or env.user.has_group("dev_session_hub.group_dev_hub_manager")
+    if not allowed:
+        raise AccessError(
+            "Only the scoped Dev Hub generation identity or a manager may import drafts."
+        )
 
 
 class DevWorkItem(models.Model):
@@ -339,6 +355,15 @@ class DevWorkItem(models.Model):
                 100.0 * len(done) / len(actionable) if actionable else 0.0
             )
 
+    @api.depends(
+        "analysis_ids.status",
+        "analysis_ids.revision",
+        "plan_ids.status",
+        "plan_ids.revision",
+        "checkpoint_ids.captured_at",
+        "completion_report_ids.status",
+        "completion_report_ids.revision",
+    )
     def _compute_current_artifacts(self):
         Analysis = self.env["dev.work.analysis"]
         Plan = self.env["dev.work.plan"]
@@ -489,7 +514,8 @@ class DevWorkItem(models.Model):
                 "old_phase": old_phase or False,
                 "new_phase": new_phase,
                 "actor_type": actor_type,
-                "actor_id": self.env.user.id,
+                "actor_id": self.env.context.get("dev_integration_actor_id")
+                or self.env.user.id,
                 "occurred_at": fields.Datetime.now(),
                 "reason": reason,
                 "artifact_model": artifact._name if artifact else False,
@@ -814,6 +840,8 @@ class DevWorkItem(models.Model):
     @api.model
     def import_analysis_draft(self, payload):
         """Strict authenticated RPC callback; it never executes code or starts work."""
+        _require_importer(self.env)
+        actor_id = self.env.user.id
         if not isinstance(payload, dict):
             raise ValidationError("Analysis import must be a JSON object.")
         allowed = {
@@ -839,7 +867,15 @@ class DevWorkItem(models.Model):
             raise ValidationError(
                 "Unsupported analysis import fields: %s" % ", ".join(sorted(unknown))
             )
-        work = self.search([("uuid", "=", payload.get("work_item_uuid"))], limit=1)
+        required = ("problem_summary", "original_request_summary")
+        missing = [name for name in required if not payload.get(name)]
+        if missing:
+            raise ValidationError(
+                "Analysis import requires: %s." % ", ".join(missing)
+            )
+        work = self.sudo().with_context(
+            dev_integration_actor_id=actor_id
+        ).search([("uuid", "=", payload.get("work_item_uuid"))], limit=1)
         if not work:
             raise ValidationError("Unknown Work Item UUID.")
         if work.current_phase == "registered":
@@ -855,12 +891,15 @@ class DevWorkItem(models.Model):
             origin="generated",
             repository_id=work.preferred_repository_id.id,
             generated_at=fields.Datetime.now(),
+            author_id=actor_id,
         )
-        return self.env["dev.work.analysis"].create(values).id
+        return self.env["dev.work.analysis"].sudo().create(values).id
 
     @api.model
     def import_plan_draft(self, payload):
         """Strict authenticated RPC callback; exact human approval remains mandatory."""
+        _require_importer(self.env)
+        actor_id = self.env.user.id
         if not isinstance(payload, dict):
             raise ValidationError("Plan import must be a JSON object.")
         allowed = {
@@ -886,7 +925,26 @@ class DevWorkItem(models.Model):
             raise ValidationError(
                 "Unsupported plan import fields: %s" % ", ".join(sorted(unknown))
             )
-        work = self.search([("uuid", "=", payload.get("work_item_uuid"))], limit=1)
+        required = (
+            "goal",
+            "scope",
+            "out_of_scope",
+            "proposed_changes",
+            "affected_components",
+            "migration_impact",
+            "security_impact",
+            "test_plan",
+            "rollback_plan",
+            "dependencies",
+            "risks",
+            "acceptance_criteria",
+        )
+        missing = [name for name in required if not payload.get(name)]
+        if missing:
+            raise ValidationError("Plan import requires: %s." % ", ".join(missing))
+        work = self.sudo().with_context(
+            dev_integration_actor_id=actor_id
+        ).search([("uuid", "=", payload.get("work_item_uuid"))], limit=1)
         if not work:
             raise ValidationError("Unknown Work Item UUID.")
         analysis = work.analysis_ids.filtered(lambda item: item.status == "accepted")
@@ -904,8 +962,8 @@ class DevWorkItem(models.Model):
         if work.current_phase != "planning":
             raise UserError("Plan drafts may be imported only while Planning.")
         steps = payload.get("steps") or []
-        if not isinstance(steps, list) or len(steps) > 100:
-            raise ValidationError("Plan steps must be a bounded JSON list.")
+        if not isinstance(steps, list) or not 1 <= len(steps) <= 100:
+            raise ValidationError("Plan steps must contain between 1 and 100 items.")
         values = {
             key: value
             for key, value in payload.items()
@@ -917,8 +975,11 @@ class DevWorkItem(models.Model):
             status="draft",
             origin="generated",
             generated_at=fields.Datetime.now(),
+            author_id=actor_id,
         )
-        plan = self.env["dev.work.plan"].create(values)
+        plan = self.env["dev.work.plan"].sudo().with_context(
+            dev_integration_actor_id=actor_id
+        ).create(values)
         step_allowed = {
             "step_key",
             "sequence",
@@ -930,11 +991,22 @@ class DevWorkItem(models.Model):
         for item in steps:
             if not isinstance(item, dict) or set(item) - step_allowed:
                 raise ValidationError("Plan step import contains unsupported fields.")
-            self.env["dev.work.plan.step"].create({"plan_id": plan.id, **item})
+            self.env["dev.work.plan.step"].sudo().create({"plan_id": plan.id, **item})
         return plan.id
 
-    def _queue_outbox(self, channel, operation, payload, idempotency_key):
+    def _queue_outbox(
+        self, channel, operation, payload, idempotency_key, communication=None
+    ):
         self.ensure_one()
+        lock_key = int(
+            hashlib.sha256(idempotency_key.encode("utf-8")).hexdigest()[:16], 16
+        ) & 0x7FFFFFFFFFFFFFFF
+        self.env.cr.execute("SELECT pg_advisory_xact_lock(%s)", [lock_key])
+        existing = self.env["dev.external.outbox"].sudo().search(
+            [("idempotency_key", "=", idempotency_key)], limit=1
+        )
+        if existing:
+            return existing
         return self.env["dev.external.outbox"].with_context(
             dev_internal_outbox=True
         ).sudo().create(
@@ -944,10 +1016,11 @@ class DevWorkItem(models.Model):
                 "operation": operation,
                 "payload_json": payload,
                 "idempotency_key": idempotency_key,
+                "communication_id": communication.id if communication else False,
             }
         )
 
-    def prepare_op_milestone(self, milestone, summary, status_hint=None, link=None):
+    def _prepare_op_milestone(self, milestone, summary, status_hint=None, link=None):
         self.ensure_one()
         if not self.op_backend_id or not self.op_work_package_id:
             raise UserError("An OP identity is required to prepare a milestone.")
@@ -977,12 +1050,15 @@ class DevWorkItem(models.Model):
 
     def action_prepare_analysis_plan_milestone(self):
         self.ensure_one()
-        plan = self.approved_plan_id or self.plan_ids.sorted(
-            lambda p: (p.revision, p.id), reverse=True
-        )[:1]
-        if not plan:
-            raise UserError("No plan is available.")
-        return self.prepare_op_milestone(
+        analysis = self.current_accepted_analysis_id
+        plan = self.plan_ids.filtered(
+            lambda p: p.status in ("awaiting_approval", "approved")
+        ).sorted(lambda p: (p.revision, p.id), reverse=True)[:1]
+        if not analysis or not plan:
+            raise UserError(
+                "This milestone requires accepted analysis and a submitted plan."
+            )
+        return self._prepare_op_milestone(
             "analysis_plan_ready",
             "Development analysis and plan revision %s are ready." % plan.revision,
             "in_progress",
@@ -992,16 +1068,18 @@ class DevWorkItem(models.Model):
         self.ensure_one()
         if self.current_phase != "blocked" or not self.blocker:
             raise UserError("A material blocker must be recorded first.")
-        return self.prepare_op_milestone(
+        return self._prepare_op_milestone(
             "material_blocker", _bounded(self.blocker, 1800), "on_hold"
         )
 
     def action_prepare_completion_milestone(self):
         self.ensure_one()
         report = self.completion_report_ids.filtered(lambda r: r.status == "approved")[:1]
-        if not report:
-            raise UserError("An approved completion report is required.")
-        return self.prepare_op_milestone(
+        if self.current_phase != "completed" or not report:
+            raise UserError(
+                "Completed lifecycle work and an approved report are required."
+            )
+        return self._prepare_op_milestone(
             "completion", _bounded(report.implemented_summary, 1800), "closed"
         )
 
@@ -1648,7 +1726,7 @@ class DevWorkPlan(models.Model):
             raise UserError("Plan approval hash is stale or does not match exactly.")
         approval = self.env["dev.work.approval"].with_context(
             dev_internal_approval=True
-        ).create(
+        ).sudo().create(
             {
                 "work_item_id": self.work_item_id.id,
                 "plan_id": self.id,
@@ -1681,7 +1759,7 @@ class DevWorkPlan(models.Model):
             raise UserError("Only a submitted plan can be rejected.")
         approval = self.env["dev.work.approval"].with_context(
             dev_internal_approval=True
-        ).create(
+        ).sudo().create(
             {
                 "work_item_id": self.work_item_id.id,
                 "plan_id": self.id,
@@ -2510,8 +2588,10 @@ class DevWorkCommunication(models.Model):
         "res.users", related="reviewed_by", readonly=True
     )
     reviewed_at = fields.Datetime(readonly=True)
+    review_hash = fields.Char(readonly=True, copy=False, index=True)
     approved_by = fields.Many2one("res.users", ondelete="restrict", readonly=True)
     approved_at = fields.Datetime(readonly=True)
+    approved_hash = fields.Char(readonly=True, copy=False, index=True)
     send_approved = fields.Boolean(readonly=True)
     queued_at = fields.Datetime(readonly=True)
     idempotency_key = fields.Char(readonly=True, copy=False, index=True)
@@ -2589,8 +2669,10 @@ class DevWorkCommunication(models.Model):
             "state",
             "reviewed_by",
             "reviewed_at",
+            "review_hash",
             "approved_by",
             "approved_at",
+            "approved_hash",
             "queued_at",
             "idempotency_key",
             "chatwoot_message_id",
@@ -2600,9 +2682,9 @@ class DevWorkCommunication(models.Model):
             "error_state",
             "send_approved",
         }
-        if protected & set(vals) and not self.env.context.get("dev_communication_action"):
+        if protected & set(vals):
             raise AccessError("Communication audit fields change only through actions.")
-        if any(record.state in ("approved", "queued") for record in self) and {
+        if any(record.state != "draft" for record in self) and {
             "body",
             "destination_type",
             "destination_reference",
@@ -2611,10 +2693,32 @@ class DevWorkCommunication(models.Model):
             "chatwoot_conversation_id",
             "reply_to_chatwoot_message_id",
         } & set(vals):
-            raise AccessError("Approved communication content and destination are immutable.")
+            raise AccessError(
+                "Communication content and destination are immutable after review starts."
+            )
         _validate_text_values(self, vals, 4000)
         _clean_text(vals.get("body"), "Communication body", 4000)
         return super().write(vals)
+
+    def _message_destination_hash(self):
+        self.ensure_one()
+        return _canonical_hash(
+            {
+                "body": self.body or "",
+                "language": self.language_code or "",
+                "account_id": self.chatwoot_account_id or None,
+                "inbox_id": self.chatwoot_inbox_id or None,
+                "conversation_id": self.chatwoot_conversation_id or None,
+                "reply_to_message_id": self.reply_to_chatwoot_message_id or None,
+                "destination_type": self.destination_type,
+                "destination_reference": self.destination_reference or "",
+                "source_message_id": self.source_message_id.id or None,
+            }
+        )
+
+    def _integration_update(self, values):
+        """Private audited write path used only by guarded service callbacks."""
+        return super(DevWorkCommunication, self).write(values)
 
     def action_review(self):
         self.ensure_one()
@@ -2636,19 +2740,36 @@ class DevWorkCommunication(models.Model):
                 raise UserError(
                     "Select the original source message before reviewing completion."
                 )
-        if (
-            self.source_message_id.chatwoot_conversation_id
-            and self.chatwoot_conversation_id
-            != self.source_message_id.chatwoot_conversation_id
-        ):
-            raise UserError(
-                "The destination must match the original Chatwoot conversation."
+            source = self.source_message_id
+            expected = (
+                source.chatwoot_account_id,
+                source.chatwoot_inbox_id,
+                source.chatwoot_conversation_id,
             )
-        self.with_context(dev_communication_action=True).write(
+            actual = (
+                self.chatwoot_account_id,
+                self.chatwoot_inbox_id,
+                self.chatwoot_conversation_id,
+            )
+            if not all(expected) or actual != expected:
+                raise UserError(
+                    "The Chatwoot account, inbox, and conversation must exactly "
+                    "match the original source message."
+                )
+            if source.group_jid and (
+                self.destination_type != "group_jid"
+                or self.destination_reference != source.group_jid
+            ):
+                raise UserError(
+                    "The WhatsApp group destination must match the original source."
+                )
+        review_hash = self._message_destination_hash()
+        super(DevWorkCommunication, self).write(
             {
                 "state": "in_review",
                 "reviewed_by": self.env.user.id,
                 "reviewed_at": fields.Datetime.now(),
+                "review_hash": review_hash,
             }
         )
         return True
@@ -2661,20 +2782,39 @@ class DevWorkCommunication(models.Model):
         _require_approver(self.env)
         if self.state != "in_review":
             raise UserError("Only a reviewed communication can be approved.")
-        self.with_context(dev_communication_action=True).write(
+        current_hash = self._message_destination_hash()
+        if not self.review_hash or self.review_hash != current_hash:
+            raise UserError("Communication changed after review; start review again.")
+        super(DevWorkCommunication, self).write(
             {
                 "state": "approved",
                 "approved_by": self.env.user.id,
                 "approved_at": fields.Datetime.now(),
                 "send_approved": True,
+                "approved_hash": current_hash,
             }
         )
         return True
 
     def action_queue(self):
         self.ensure_one()
+        self.env.cr.execute(
+            "SELECT id FROM dev_work_communication WHERE id = %s FOR UPDATE", [self.id]
+        )
+        self.invalidate_recordset()
+        if self.state == "queued" and self.idempotency_key:
+            existing = self.env["dev.external.outbox"].sudo().search(
+                [("idempotency_key", "=", self.idempotency_key)], limit=1
+            )
+            if existing:
+                return existing
         if self.state != "approved":
             raise UserError("Only an approved communication can be queued.")
+        if (
+            not self.approved_hash
+            or self.approved_hash != self._message_destination_hash()
+        ):
+            raise UserError("Approved communication hash no longer matches.")
         if not (
             self.chatwoot_account_id
             and self.chatwoot_inbox_id
@@ -2694,6 +2834,7 @@ class DevWorkCommunication(models.Model):
             "destination_reference": self.destination_reference,
             "body": self.body,
             "communication_id": self.id,
+            "idempotency_key": self.approved_hash,
         }
         key = "chatwoot:%s:%s:%s" % (
             self.chatwoot_account_id,
@@ -2701,9 +2842,9 @@ class DevWorkCommunication(models.Model):
             _canonical_hash(payload)[:24],
         )
         outbox = self.work_item_id._queue_outbox(
-            "chatwoot", "public_message", payload, key
+            "chatwoot", "public_message", payload, key, communication=self
         )
-        self.with_context(dev_communication_action=True).write(
+        super(DevWorkCommunication, self).write(
             {
                 "state": "queued",
                 "queued_at": fields.Datetime.now(),
@@ -2718,12 +2859,12 @@ class DevWorkCommunication(models.Model):
     ):
         self.ensure_one()
         if not self.env.is_superuser() and not self.env.user.has_group(
-            "dev_session_hub.group_dev_hub_manager"
+            "dev_session_hub.group_dev_hub_integration"
         ):
             raise AccessError("Only the guarded integration callback may record delivery.")
         if self.state != "queued":
             raise UserError("Delivery references require a queued communication.")
-        self.with_context(dev_communication_action=True).write(
+        super(DevWorkCommunication, self).write(
             {
                 "chatwoot_message_id": chatwoot_message_id or False,
                 "evolution_message_id": _clean_text(
@@ -2796,6 +2937,80 @@ class DevExternalOutbox(models.Model):
         "unique(idempotency_key)", "Outbox idempotency key must be unique."
     )
 
+    @api.model
+    def _validate_intent_payload(self, channel, operation, payload):
+        if (channel, operation) == ("chatwoot", "public_message"):
+            allowed = {
+                "schema",
+                "account_id",
+                "inbox_id",
+                "conversation_id",
+                "reply_to_message_id",
+                "destination_type",
+                "destination_reference",
+                "body",
+                "communication_id",
+                "idempotency_key",
+            }
+            if set(payload) != allowed:
+                raise ValidationError("Chatwoot outbox payload fields do not match v1.")
+            if payload.get("schema") != "dev-hub.chatwoot-public-message.v1":
+                raise ValidationError("Unsupported Chatwoot outbox schema.")
+            for name in ("account_id", "inbox_id", "conversation_id", "communication_id"):
+                value = payload.get(name)
+                if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                    raise ValidationError("%s must be a positive integer." % name)
+            reply_id = payload.get("reply_to_message_id")
+            if reply_id is not None and (
+                isinstance(reply_id, bool)
+                or not isinstance(reply_id, int)
+                or reply_id <= 0
+            ):
+                raise ValidationError("reply_to_message_id must be a positive integer.")
+            if payload.get("destination_type") not in ("group_jid", "conversation"):
+                raise ValidationError("Unsupported Chatwoot destination type.")
+            _clean_text(payload.get("destination_reference"), "Destination", 300)
+            _clean_text(payload.get("body"), "Communication body", 4000)
+            _clean_text(payload.get("idempotency_key"), "Payload idempotency key", 300)
+            return
+        if (channel, operation) == ("openproject", "milestone"):
+            required = {
+                "schema",
+                "backend_id",
+                "work_package_id",
+                "milestone",
+                "summary",
+            }
+            optional = {"status_hint", "dev_hub_link"}
+            if not required.issubset(payload) or set(payload) - required - optional:
+                raise ValidationError("OpenProject milestone payload fields do not match v1.")
+            if payload.get("schema") != "dev-hub.op-milestone.v1":
+                raise ValidationError("Unsupported OpenProject outbox schema.")
+            for name in ("backend_id", "work_package_id"):
+                value = payload.get(name)
+                if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                    raise ValidationError("%s must be a positive integer." % name)
+            if payload.get("milestone") not in (
+                "analysis_plan_ready",
+                "material_blocker",
+                "completion",
+            ):
+                raise ValidationError("Unsupported OpenProject milestone.")
+            if payload.get("status_hint") not in (
+                None,
+                "new",
+                "in_progress",
+                "on_hold",
+                "in_review",
+                "closed",
+            ):
+                raise ValidationError("Unsupported OpenProject status hint.")
+            _clean_text(payload.get("summary"), "OpenProject milestone summary", 2000)
+            if payload.get("dev_hub_link"):
+                _clean_text(payload["dev_hub_link"], "Dev Hub link", 500)
+            return
+        raise ValidationError("Unsupported external outbox action.")
+
     @api.model_create_multi
     def create(self, vals_list):
         if not self.env.context.get("dev_internal_outbox"):
@@ -2803,9 +3018,15 @@ class DevExternalOutbox(models.Model):
         for vals in vals_list:
             if vals.get("state", "pending") != "pending":
                 raise ValidationError("Outbox records must be created Pending.")
-            payload = _validated_json(vals.get("payload_json"))
-            vals["payload_json"] = payload
-            vals["payload_hash"] = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+            payload = json.loads(_validated_json(vals.get("payload_json")))
+            self._validate_intent_payload(
+                vals.get("channel"), vals.get("operation"), payload
+            )
+            payload_json = _validated_json(payload)
+            vals["payload_json"] = payload_json
+            vals["payload_hash"] = hashlib.sha256(
+                payload_json.encode("utf-8")
+            ).hexdigest()
             _clean_text(vals.get("idempotency_key"), "Idempotency key", 300)
         return super().create(vals_list)
 

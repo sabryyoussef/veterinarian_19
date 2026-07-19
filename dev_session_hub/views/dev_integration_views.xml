@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_generation_search" model="ir.ui.view">
+        <field name="name">dev.work.generation.search</field>
+        <field name="model">dev.work.generation</field>
+        <field name="arch" type="xml">
+            <search string="Draft Generation">
+                <field name="work_item_id"/>
+                <field name="kind"/>
+                <field name="state"/>
+                <field name="correlation_id"/>
+                <field name="idempotency_key"/>
+                <filter name="pending" string="Pending" domain="[('state', '=', 'pending')]"/>
+                <filter name="active" string="Leased / Processing" domain="[('state', 'in', ('leased', 'processing'))]"/>
+                <filter name="retry" string="Retrying" domain="[('state', '=', 'retry')]"/>
+                <filter name="dead_letter" string="Dead Letter" domain="[('state', '=', 'dead_letter')]"/>
+                <filter name="succeeded" string="Succeeded" domain="[('state', '=', 'succeeded')]"/>
+                <group name="group_by">
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                    <filter name="group_kind" string="Kind" context="{'group_by': 'kind'}"/>
+                    <filter name="group_work" string="Work Item" context="{'group_by': 'work_item_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dev_work_generation_list" model="ir.ui.view">
+        <field name="name">dev.work.generation.list</field>
+        <field name="model">dev.work.generation</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" decoration-info="state in ('leased', 'processing')" decoration-warning="state == 'retry'" decoration-danger="state == 'dead_letter'" decoration-success="state == 'succeeded'">
+                <field name="requested_at"/>
+                <field name="work_item_id"/>
+                <field name="kind"/>
+                <field name="state" widget="badge"/>
+                <field name="attempt_count"/>
+                <field name="correlation_id"/>
+                <field name="provider_reference"/>
+                <field name="run_reference"/>
+                <field name="last_error_summary"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_generation_form" model="ir.ui.view">
+        <field name="name">dev.work.generation.form</field>
+        <field name="model">dev.work.generation</field>
+        <field name="arch" type="xml">
+            <form string="Draft Generation Audit" create="0" edit="0" delete="0">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,leased,processing,retry,dead_letter,succeeded"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="kind"/>
+                            <field name="correlation_id"/>
+                            <field name="idempotency_key"/>
+                            <field name="context_hash"/>
+                        </group>
+                        <group>
+                            <field name="attempt_count"/>
+                            <field name="max_attempts"/>
+                            <field name="lease_owner_id"/>
+                            <field name="lease_consumer_ref"/>
+                            <field name="lease_expires_at"/>
+                            <field name="provider_reference"/>
+                            <field name="run_reference"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="artifact_model"/>
+                        <field name="artifact_record_id"/>
+                        <field name="last_error_code"/>
+                        <field name="last_error_summary"/>
+                    </group>
+                    <field name="context_json" widget="text"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_work_generation" model="ir.actions.act_window">
+        <field name="name">Analysis / Plan Generation</field>
+        <field name="res_model">dev.work.generation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_work_generation_search"/>
+    </record>
+</odoo>

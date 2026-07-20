@@ -1446,6 +1446,32 @@ class TestDevWorkLifecycle(TransactionCase):
         self.assertEqual(result["state"], "done")
         self.assertFalse(outbox.reconciliation_required)
 
+    def test_service_lease_nonmatching_correlation(self):
+        work = self._work()
+        outbox = work._prepare_op_milestone(
+            "material_blocker", "Correlation filter test.", "on_hold"
+        )
+        other = work._prepare_op_milestone(
+            "material_blocker", "Unrelated outbox row.", "on_hold"
+        )
+        service = self.env["dev.external.outbox"].with_user(self._outbox_user())
+        empty = service.service_lease(
+            limit=5,
+            consumer_ref="nonmatch-test",
+            correlation_id="definitely-not-%s" % outbox.correlation_id,
+        )
+        self.assertEqual(empty, [])
+        self.assertEqual(outbox.state, "pending")
+        self.assertEqual(other.state, "pending")
+        matched = service.service_lease(
+            limit=1,
+            consumer_ref="nonmatch-test",
+            correlation_id=outbox.correlation_id,
+        )
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(matched[0]["id"], outbox.id)
+        self.assertEqual(other.state, "pending")
+
     def test_outbox_rejects_unsupported_or_malformed_intents(self):
         work = self._work()
         with self.assertRaises(ValidationError):

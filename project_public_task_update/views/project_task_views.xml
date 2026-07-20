@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_form_public_update" model="ir.ui.view">
+        <field name="name">project.task.form.public.update</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Public Update Link" name="public_update_link"
+                      groups="project.group_project_user">
+                    <group>
+                        <group>
+                            <field name="public_update_purpose"/>
+                            <field name="public_update_token_active" widget="boolean_toggle"/>
+                            <field name="public_update_token_expiry"/>
+                            <field name="public_update_submission_count" readonly="1"/>
+                            <field name="public_update_last_submission_at" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="public_update_url" widget="url" readonly="1"/>
+                            <field name="public_update_token" readonly="1" password="True"/>
+                        </group>
+                    </group>
+                    <group string="Public form instruction (optional)">
+                        <field name="public_update_public_instruction" nolabel="1"
+                               placeholder="Short note shown on the public/team link…"/>
+                    </group>
+                    <group string="Team planning content" invisible="public_update_purpose != 'team_planning'">
+                        <field name="implementation_plan" nolabel="1"
+                               placeholder="Implementation plan shown to colleagues on the team link…"/>
+                        <field name="missing_data_questions" nolabel="1"
+                               placeholder="Missing-data questions (one per line recommended)…"/>
+                    </group>
+                    <div class="d-flex gap-2 mb-2 flex-wrap">
+                        <button name="action_generate_public_update_token" type="object"
+                                string="Generate / Regenerate Link" class="btn-primary"/>
+                        <button name="action_disable_public_update_token" type="object"
+                                string="Disable Link" class="btn-secondary"
+                                invisible="not public_update_token_active"/>
+                        <button name="action_show_whatsapp_template_ar" type="object"
+                                string="WhatsApp AR (client)" class="btn-secondary"
+                                invisible="not public_update_token_active"/>
+                        <button name="action_show_whatsapp_template_en" type="object"
+                                string="WhatsApp EN (client)" class="btn-secondary"
+                                invisible="not public_update_token_active"/>
+                        <button name="action_show_team_whatsapp_template_ar" type="object"
+                                string="WhatsApp AR (team)" class="btn-secondary"
+                                invisible="not public_update_token_active or public_update_purpose != 'team_planning'"/>
+                        <button name="action_show_team_whatsapp_template_en" type="object"
+                                string="WhatsApp EN (team)" class="btn-secondary"
+                                invisible="not public_update_token_active or public_update_purpose != 'team_planning'"/>
+                    </div>
+                    <p class="text-muted">
+                        Share the Odoo link via WhatsApp or Chatwoot.
+                        Colleagues and clients do not need OpenProject access.
+                        <strong>Client update</strong> collects missing data;
+                        <strong>Team planning</strong> shows the plan and accepts subtask suggestions (chatter only).
+                        See <code>docs/message_templates.md</code> for copy-paste templates.
+                    </p>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

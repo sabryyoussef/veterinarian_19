@@ -133,8 +133,6 @@ class DevRepositoryDiscovery(models.Model):
 
         try:
             remotes_raw = _run_git(path, ["remote", "-v"])
-            branch = _run_git(path, ["rev-parse", "--abbrev-ref", "HEAD"]).strip()
-            refs = _run_git(path, ["branch", "-a"])
         except UserError as exc:
             self.write(
                 {
@@ -153,6 +151,26 @@ class DevRepositoryDiscovery(models.Model):
                 remotes[parts[0]] = parts[1]
         remote_count = len(remotes)
         selected = (self.selected_remote_name or "").strip()
+        # Resolve branch/refs after remotes so multi-remote ambiguity wins over
+        # empty-repo HEAD failures (unborn HEAD still has remotes).
+        branch = ""
+        refs = ""
+        try:
+            branch = _run_git(path, ["rev-parse", "--abbrev-ref", "HEAD"]).strip()
+            refs = _run_git(path, ["branch", "-a"])
+        except UserError:
+            if remote_count <= 1:
+                self.write(
+                    {
+                        "state": "failed_closed",
+                        "git_dir_found": True,
+                        "remote_count": remote_count,
+                        "remotes_json": json.dumps(remotes, sort_keys=True),
+                        "secret_scan_summary": "Unable to resolve HEAD/branches.",
+                        "scanned_at": fields.Datetime.now(),
+                    }
+                )
+                return True
         if remote_count == 0:
             restricted = self._scan_restricted(path)
             payload = {
@@ -306,8 +324,13 @@ class DevRepositoryBindApproval(models.Model):
             raise AccessError("Bind approvals may only be created through the guarded flow.")
         records = super().create(vals_list)
         for record in records:
-            record.write({"binding_hash": _canonical_hash(record._binding())})
-        return records
+            record.with_context(dev_repository_bind_approval_hash=True).write(
+                {"binding_hash": _canonical_hash(record._binding())}
+            )
+        return records.with_context(
+            dev_repository_bind_approval=False,
+            dev_repository_bind_approval_hash=False,
+        )
 
     def write(self, vals):
         if self.env.context.get("dev_repository_bind_approval_hash"):
@@ -460,7 +483,10 @@ class DevRepositoryBootstrapApproval(models.Model):
             record.with_context(dev_repository_bootstrap_hash=True).write(
                 {"binding_hash": _canonical_hash(record._binding())}
             )
-        return records
+        return records.with_context(
+            dev_repository_bootstrap_approval=False,
+            dev_repository_bootstrap_hash=False,
+        )
 
     def write(self, vals):
         if self.env.context.get("dev_repository_bootstrap_hash"):
@@ -613,6 +639,7 @@ class DevProjectBindService(models.Model):
             raise AccessError("Bind requester and approver must be distinct.")
         return (
             self.env["dev.repository.bind.approval"]
+            .sudo()
             .with_context(
                 dev_repository_bind_approval=True,
                 dev_repository_bind_approval_hash=True,
@@ -682,6 +709,7 @@ class DevProjectBindService(models.Model):
         repository.assert_origin_immutable(origin_url or None)
         record = (
             self.env["dev.repository.bind.record"]
+            .sudo()
             .with_context(dev_repository_bind_record=True)
             .create(
                 {
@@ -697,7 +725,7 @@ class DevProjectBindService(models.Model):
             )
         )
         repository.write({"bind_record_id": record.id})
-        self.env["dev.repository.bind.approval.event"].with_context(
+        self.env["dev.repository.bind.approval.event"].sudo().with_context(
             dev_repository_bind_event=True
         ).create(
             {
@@ -719,6 +747,7 @@ class DevProjectBindService(models.Model):
             raise AccessError("Bootstrap requester and approver must be distinct.")
         return (
             self.env["dev.repository.bootstrap.approval"]
+            .sudo()
             .with_context(
                 dev_repository_bootstrap_approval=True,
                 dev_repository_bootstrap_hash=True,
@@ -749,6 +778,7 @@ class DevProjectBindService(models.Model):
             raise AccessError("Bootstrap approval integrity check failed.")
         record = (
             self.env["dev.repository.bootstrap.record"]
+            .sudo()
             .with_context(dev_repository_bootstrap_record=True)
             .create(
                 {
@@ -759,7 +789,7 @@ class DevProjectBindService(models.Model):
                 }
             )
         )
-        self.env["dev.repository.bootstrap.approval.event"].with_context(
+        self.env["dev.repository.bootstrap.approval.event"].sudo().with_context(
             dev_repository_bootstrap_event=True
         ).create(
             {

@@ -14,6 +14,7 @@ def _new_uuid(_recordset=None):
 HOST_KEY_FINGERPRINT = re.compile(r"^SHA256:[A-Za-z0-9+/]{43}$")
 TAILSCALE_DNS_NAME = re.compile(r"^[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.ts\.net$")
 PROJECT_CODE = re.compile(r"^[A-Za-z0-9_-]{1,40}$")
+SSH_USERNAME = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
 
 
 class DevMachine(models.Model):
@@ -38,6 +39,14 @@ class DevMachine(models.Model):
         help="Expected SHA256 fingerprint of the verified destination SSH host key.",
     )
     ssh_alias = fields.Char(required=True, index=True)
+    verification_ssh_user = fields.Char(
+        string="Verification SSH User",
+        help=(
+            "POSIX username used by server-side Verify Tailscale Destination. "
+            "Active verification connects with -F /dev/null and does not parse "
+            "ssh_alias OpenSSH configuration."
+        ),
+    )
     os_name = fields.Char(string="Operating System")
     architecture = fields.Char()
     role = fields.Char(required=True)
@@ -78,6 +87,16 @@ class DevMachine(models.Model):
     _ssh_alias_unique = models.Constraint(
         "unique(ssh_alias)", "SSH alias must be unique."
     )
+
+    @api.constrains("verification_ssh_user")
+    def _check_verification_ssh_user(self):
+        for record in self:
+            if record.verification_ssh_user and not SSH_USERNAME.fullmatch(
+                record.verification_ssh_user
+            ):
+                raise ValidationError(
+                    "Verification SSH user must be a safe POSIX username."
+                )
 
     @api.constrains("allowed_path_prefixes")
     def _check_allowed_paths(self):

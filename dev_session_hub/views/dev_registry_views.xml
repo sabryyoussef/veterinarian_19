@@ -24,6 +24,15 @@
         <field name="model">dev.machine</field>
         <field name="arch" type="xml">
             <form string="Development Machine">
+                <header>
+                    <button name="action_verify_tailscale_destination"
+                            type="object"
+                            string="Verify Tailscale Destination"
+                            class="btn-primary"
+                            groups="dev_session_hub.group_dev_hub_manager"
+                            invisible="production or not active"
+                            confirm="Run active Tailscale and SSH host-key verification for this registered destination?"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -31,13 +40,14 @@
                             <field name="stable_uuid" readonly="1"/>
                             <field name="hostname"/>
                             <field name="ssh_alias"/>
+                            <field name="verification_ssh_user"/>
                             <field name="role"/>
                         </group>
                         <group>
                             <field name="tailscale_name"/>
                             <field name="tailscale_ip_reference"/>
-                            <field name="tailscale_destination_verified"/>
-                            <field name="tailscale_verified_at"/>
+                            <field name="tailscale_destination_verified" readonly="1"/>
+                            <field name="tailscale_verified_at" readonly="1"/>
                             <field name="pinned_host_key_fingerprint"/>
                             <field name="os_name"/>
                             <field name="architecture"/>
@@ -47,12 +57,28 @@
                     <group>
                         <field name="production"/>
                         <field name="active"/>
-                        <field name="last_reachability_status"/>
-                        <field name="last_checked_at"/>
+                        <field name="last_reachability_status" readonly="1"/>
+                        <field name="last_checked_at" readonly="1"/>
                     </group>
                     <group string="Strict Launch Allowlist">
                         <field name="allowed_path_prefixes" placeholder="/absolute/development/path"/>
                     </group>
+                    <notebook>
+                        <page string="Verification Audit" groups="dev_session_hub.group_dev_hub_manager">
+                            <field name="verification_event_ids" readonly="1">
+                                <list>
+                                    <field name="timestamp"/>
+                                    <field name="success"/>
+                                    <field name="reason_code"/>
+                                    <field name="destination_ref"/>
+                                    <field name="fingerprint_ref"/>
+                                    <field name="actor_id"/>
+                                    <field name="dry_run"/>
+                                    <field name="correlation_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

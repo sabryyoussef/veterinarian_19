@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="public_task_update_layout" name="Public Task Update Layout">
+        <html t-att-dir="page_dir or 'ltr'">
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+                <meta name="robots" content="noindex, nofollow"/>
+                <title><t t-esc="page_title or 'Task update'"/></title>
+                <style>
+                    :root {
+                        --bg: #f0f4f8;
+                        --card: #ffffff;
+                        --text: #111827;
+                        --muted: #6b7280;
+                        --border: #e5e7eb;
+                        --primary: #2563eb;
+                        --primary-hover: #1d4ed8;
+                        --plan-bg: #eff6ff;
+                        --plan-border: #bfdbfe;
+                        --error-bg: #fef2f2;
+                        --error-text: #991b1b;
+                        --error-border: #fecaca;
+                        --success-bg: #ecfdf5;
+                        --success-text: #065f46;
+                        --success-border: #a7f3d0;
+                        --radius: 12px;
+                    }
+                    * { box-sizing: border-box; }
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                        margin: 0;
+                        padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+                        background: var(--bg);
+                        color: var(--text);
+                        line-height: 1.55;
+                        -webkit-text-size-adjust: 100%;
+                    }
+                    .wrap { max-width: 480px; margin: 0 auto; }
+                    .card {
+                        background: var(--card);
+                        border-radius: var(--radius);
+                        padding: 1.25rem 1.25rem 1.5rem;
+                        box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+                        border: 1px solid var(--border);
+                    }
+                    .brand {
+                        font-size: .75rem;
+                        font-weight: 600;
+                        letter-spacing: .04em;
+                        text-transform: uppercase;
+                        color: var(--muted);
+                        margin-bottom: .75rem;
+                    }
+                    h1 {
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        margin: 0 0 .5rem;
+                        line-height: 1.35;
+                        word-break: break-word;
+                    }
+                    .instruction {
+                        background: #f8fafc;
+                        border: 1px solid var(--border);
+                        border-radius: 8px;
+                        padding: .75rem .9rem;
+                        font-size: .9rem;
+                        color: #374151;
+                        margin-bottom: 1rem;
+                        white-space: pre-wrap;
+                    }
+                    .plan-section {
+                        background: var(--plan-bg);
+                        border: 1px solid var(--plan-border);
+                        border-radius: 8px;
+                        padding: .75rem .9rem;
+                        margin-bottom: .75rem;
+                    }
+                    .plan-section h2 {
+                        font-size: .8rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: .03em;
+                        color: #1e40af;
+                        margin: 0 0 .4rem;
+                    }
+                    .plan-section .plan-body {
+                        font-size: .9rem;
+                        color: #1e3a5f;
+                        white-space: pre-wrap;
+                        margin: 0;
+                    }
+                    .field { margin-bottom: 1rem; }
+                    .field-label {
+                        display: block;
+                        font-weight: 600;
+                        font-size: .875rem;
+                        margin-bottom: .3rem;
+                        color: var(--text);
+                    }
+                    .field-label-ar {
+                        display: block;
+                        font-weight: 400;
+                        font-size: .8rem;
+                        color: var(--muted);
+                        margin-top: .1rem;
+                    }
+                    .field-hint {
+                        font-size: .78rem;
+                        color: var(--muted);
+                        margin-top: .25rem;
+                        white-space: pre-wrap;
+                    }
+                    .required .field-label-en::after { content: " *"; color: #dc2626; }
+                    input[type="text"],
+                    input[type="email"],
+                    input[type="tel"],
+                    input[type="date"],
+                    textarea,
+                    select {
+                        width: 100%;
+                        padding: .65rem .8rem;
+                        border: 1px solid var(--border);
+                        border-radius: 8px;
+                        font-size: 1rem;
+                        background: #fff;
+                        color: var(--text);
+                        -webkit-appearance: none;
+                        appearance: none;
+                    }
+                    textarea { min-height: 110px; resize: vertical; }
+                    input:focus, textarea:focus, select:focus {
+                        outline: none;
+                        border-color: var(--primary);
+                        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+                    }
+                    .btn {
+                        display: block;
+                        width: 100%;
+                        margin-top: .5rem;
+                        padding: .85rem 1rem;
+                        border: none;
+                        border-radius: 8px;
+                        background: var(--primary);
+                        color: #fff;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        touch-action: manipulation;
+                    }
+                    .btn:hover, .btn:focus { background: var(--primary-hover); }
+                    .alert {
+                        padding: .85rem 1rem;
+                        border-radius: 8px;
+                        margin-bottom: 1rem;
+                        font-size: .9rem;
+                    }
+                    .alert-error {
+                        background: var(--error-bg);
+                        color: var(--error-text);
+                        border: 1px solid var(--error-border);
+                    }
+                    .alert-success {
+                        background: var(--success-bg);
+                        color: var(--success-text);
+                        border: 1px solid var(--success-border);
+                    }
+                    .success-icon {
+                        font-size: 2rem;
+                        line-height: 1;
+                        margin-bottom: .5rem;
+                    }
+                    .footer-note {
+                        margin-top: 1rem;
+                        font-size: .78rem;
+                        color: var(--muted);
+                        text-align: center;
+                    }
+                    .subtasks-section {
+                        margin: 0 0 1rem;
+                        border: 1px solid var(--border);
+                        border-radius: 8px;
+                        overflow: hidden;
+                        background: #f8fafc;
+                    }
+                    .subtasks-section h2 {
+                        font-size: .8rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: .03em;
+                        color: #374151;
+                        margin: 0;
+                        padding: .65rem .9rem;
+                        border-bottom: 1px solid var(--border);
+                        background: #fff;
+                    }
+                    .subtask-list {
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .subtask-item {
+                        padding: .7rem .9rem;
+                        border-bottom: 1px solid var(--border);
+                        display: flex;
+                        flex-direction: column;
+                        gap: .25rem;
+                    }
+                    .subtask-item:last-child { border-bottom: none; }
+                    .subtask-name {
+                        font-size: .92rem;
+                        font-weight: 600;
+                        color: var(--text);
+                        word-break: break-word;
+                    }
+                    .subtask-meta {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: .35rem .6rem;
+                        font-size: .78rem;
+                        color: var(--muted);
+                    }
+                    .subtask-stage {
+                        display: inline-block;
+                    }
+                    .subtask-status {
+                        display: inline-block;
+                        font-weight: 600;
+                    }
+                    .subtask-status.is-open { color: #1d4ed8; }
+                    .subtask-status.is-closed { color: #047857; }
+                    .subtasks-empty {
+                        padding: .75rem .9rem;
+                        font-size: .85rem;
+                        color: var(--muted);
+                        margin: 0;
+                    }
+                    @media (max-width: 380px) {
+                        .card { padding: 1rem; }
+                        h1 { font-size: 1.1rem; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="wrap">
+                    <div class="card">
+                        <t t-out="0"/>
+                    </div>
+                    <p class="footer-note">Secure Odoo form · نموذج Odoo آمن</p>
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <template id="public_task_update_form" name="Public Task Update Form">
+        <t t-call="project_public_task_update.public_task_update_layout">
+            <t t-set="page_title" t-value="task_title"/>
+            <t t-if="is_team_planning">
+                <div class="brand">Team planning / تخطيط الفريق</div>
+            </t>
+            <t t-else="">
+                <div class="brand">Task update / تحديث الطلب</div>
+            </t>
+            <h1 t-esc="task_title"/>
+            <div class="instruction" t-if="task_instruction" t-esc="task_instruction"/>
+
+            <div class="subtasks-section">
+                <h2>Sub-tasks / المهام الفرعية</h2>
+                <t t-if="child_tasks">
+                    <ul class="subtask-list">
+                        <t t-foreach="child_tasks" t-as="child">
+                            <li class="subtask-item">
+                                <span class="subtask-name" t-esc="child.get('name')"/>
+                                <div class="subtask-meta">
+                                    <t t-if="child.get('stage_name')">
+                                        <span class="subtask-stage">
+                                            Stage / المرحلة:
+                                            <t t-esc="child.get('stage_name')"/>
+                                        </span>
+                                    </t>
+                                    <t t-if="child.get('is_closed')">
+                                        <span class="subtask-status is-closed">Done / مكتمل</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="subtask-status is-open">Open / مفتوح</span>
+                                    </t>
+                                </div>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+                <t t-else="">
+                    <p class="subtasks-empty">No sub-tasks yet. / لا توجد مهام فرعية بعد.</p>
+                </t>
+            </div>
+
+            <t t-if="is_team_planning">
+                <div class="plan-section" t-if="implementation_plan">
+                    <h2>Implementation plan / خطة التنفيذ</h2>
+                    <p class="plan-body" t-esc="implementation_plan"/>
+                </div>
+                <div class="plan-section" t-if="missing_data_questions">
+                    <h2>Missing data questions / أسئلة البيانات الناقصة</h2>
+                    <p class="plan-body" t-esc="missing_data_questions"/>
+                </div>
+            </t>
+
+            <t t-if="error_message">
+                <div class="alert alert-error" t-esc="error_message"/>
+            </t>
+            <form method="post" t-attf-action="/task/update/{{ token }}" autocomplete="on">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="field required">
+                    <label class="field-label field-label-en">Your name</label>
+                    <span class="field-label-ar">الاسم</span>
+                    <input type="text" name="submitter_name" required="required" maxlength="200"
+                           autocomplete="name"
+                           t-att-value="(form or {}).get('submitter_name', '')"/>
+                </div>
+                <div class="field">
+                    <label class="field-label field-label-en">Email or phone</label>
+                    <span class="field-label-ar">البريد الإلكتروني أو الهاتف</span>
+                    <input type="text" name="submitter_contact" maxlength="200"
+                           autocomplete="email"
+                           t-att-value="(form or {}).get('submitter_contact', '')"/>
+                </div>
+                <div class="field required">
+                    <t t-if="is_team_planning">
+                        <label class="field-label field-label-en">Clarification / missing data</label>
+                        <span class="field-label-ar">التوضيح / البيانات الناقصة</span>
+                    </t>
+                    <t t-else="">
+                        <label class="field-label field-label-en">Clarification / details</label>
+                        <span class="field-label-ar">التفاصيل / التوضيح</span>
+                    </t>
+                    <textarea name="clarification" required="required" maxlength="5000"><t t-esc="(form or {}).get('clarification', '')"/></textarea>
+                </div>
+
+                <t t-if="not is_team_planning">
+                    <div class="field">
+                        <label class="field-label field-label-en">Priority suggestion</label>
+                        <span class="field-label-ar">اقتراح الأولوية</span>
+                        <select name="priority_suggestion">
+                            <option value="">— / —</option>
+                            <option value="low" t-att-selected="(form or {}).get('priority_suggestion') == 'low'">Low / منخفض</option>
+                            <option value="normal" t-att-selected="(form or {}).get('priority_suggestion') == 'normal'">Normal / عادي</option>
+                            <option value="high" t-att-selected="(form or {}).get('priority_suggestion') == 'high'">High / عالي</option>
+                            <option value="urgent" t-att-selected="(form or {}).get('priority_suggestion') == 'urgent'">Urgent / عاجل</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label field-label-en">Due date suggestion</label>
+                        <span class="field-label-ar">اقتراح تاريخ الاستحقاق</span>
+                        <input type="date" name="due_date_suggestion"
+                               t-att-value="(form or {}).get('due_date_suggestion', '')"/>
+                    </div>
+                </t>
+
+                <div class="field">
+                    <label class="field-label field-label-en">Notes</label>
+                    <span class="field-label-ar">ملاحظات إضافية</span>
+                    <textarea name="notes" maxlength="3000" placeholder="Optional / اختياري"><t t-esc="(form or {}).get('notes', '')"/></textarea>
+                </div>
+
+                <t t-if="is_team_planning">
+                    <div class="field">
+                        <label class="field-label field-label-en">Suggested subtasks</label>
+                        <span class="field-label-ar">مهام فرعية مقترحة</span>
+                        <textarea name="suggested_subtasks" maxlength="5000" placeholder="Optional / اختياري"><t t-esc="(form or {}).get('suggested_subtasks', '')"/></textarea>
+                        <p class="field-hint">Write each suggested subtask on a separate line.
+اكتب كل مهمة فرعية في سطر منفصل.</p>
+                    </div>
+                </t>
+
+                <button type="submit" class="btn">Submit / إرسال</button>
+            </form>
+        </t>
+    </template>
+
+    <template id="public_task_update_success" name="Public Task Update Success">
+        <t t-call="project_public_task_update.public_task_update_layout">
+            <t t-set="page_title" t-value="'Submitted'"/>
+            <div class="success-icon" aria-hidden="true">✓</div>
+            <div class="alert alert-success">
+                <strong>Thank you — your information was submitted.</strong>
+                <br/><br/>
+                <strong>شكراً — تم إرسال بياناتك بنجاح.</strong>
+            </div>
+            <p class="instruction" t-if="task_title">
+                <span style="font-weight:600;">Task / الطلب:</span>
+                <t t-esc="task_title"/>
+            </p>
+            <p style="font-size:.9rem;color:#6b7280;margin:0;">
+                You may close this page.
+                <br/>يمكنك إغلاق هذه الصفحة.
+            </p>
+        </t>
+    </template>
+
+    <template id="public_task_update_error" name="Public Task Update Error">
+        <t t-call="project_public_task_update.public_task_update_layout">
+            <t t-set="page_title" t-value="'Link unavailable'"/>
+            <div class="alert alert-error">
+                <p style="margin:0 0 .5rem;" t-esc="error_message_en"/>
+                <p style="margin:0;" t-esc="error_message_ar"/>
+            </div>
+            <p style="font-size:.9rem;color:#6b7280;margin:0;">
+                If you need access, contact your project coordinator.
+                <br/>إذا كنت بحاجة للوصول، تواصل مع منسق المشروع.
+            </p>
+        </t>
+    </template>
+</odoo>

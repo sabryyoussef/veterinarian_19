@@ -1,0 +1,8 @@
+design=update_conf_and_db_paths_to_versioned_release
+release_path=/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
+prior_repo_path=/home/sabry3/devhub/veterinarian_19
+prior_repo_sha=ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+addons_path_new=community,enterprise,addons_overlay_deps(project_public_task_update only),/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
+overlay_openproject_sync=quarantined
+db_updates=dev_repository.working_directory+canonical_remote_path; machine77.allowed_path_prefixes
+rollback=restore /home/sabry3/devhub/backups/dell_test_repin_b6e8a5d_20260720T101657Z/pet_spot_elsahel_test.conf.pre_b6e8a5d; restore DB paths to /home/sabry3/devhub/veterinarian_19; restore overlay quarantine; restart Test

@@ -1,0 +1,29 @@
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ phase  |          item          |                                                                         detail                                                                         
+--------+------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ AFTER  | machines               | 1:master:prod=true:tz=trusted_dev;77:sabry3-Precision-5540:prod=false:tz=trusted_dev
+ BEFORE | machines               | 1:master:prod=true:tz=trusted_dev
+ AFTER  | policy                 | 1:prod_access=denied:deploy=false:launch=true
+ AFTER  | repository             | 1|wd=/home/sabry3/devhub/veterinarian_19|canon=/home/sabry3/devhub/veterinarian_19|branch=staging|head=ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+ BEFORE | repository             | 1|wd=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel|canon=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel|branch=unresolved
+ CHECK  | session_count          | 4
+ CHECK  | session_workdir_sample | /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+ AFTER  | test_env               | 1:PetSpot Test:machine=77:type=test:is_prod=false:sens=internal_test
+ BEFORE | test_env               | 1:PetSpot Test:machine=1:type=test:is_prod=false:sens=internal_test
+(9 rows)
+
+D6_OK

@@ -1,0 +1,29 @@
+=== PostgreSQL databases ===
+pet_spot_elsahel_test|UTF8|en_US.UTF-8
+pet_spot_elsahel|UTF8|en_US.UTF-8
+
+=== DB owners ===
+pet_spot_elsahel|odoo
+pet_spot_elsahel_test|odoo
+
+=== Test DB size ===
+181 MB
+=== Prod DB size (for exclusion awareness, not dump) ===
+195 MB
+
+=== Test extensions ===
+pg_trgm|1.6
+plpgsql|1.0
+
+=== Test module version ===
+dev_session_hub|installed|19.0.8.0.0
+
+=== Prod module version (exclusion check) ===
+
+=== Test large objects count ===
+0
+
+=== Test ir_attachment store_fname sample (paths only, no binary) ===
+1267
+1054
+0

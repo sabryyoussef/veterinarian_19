@@ -1,0 +1,16 @@
+devhub-petspot-test-pg18
+devhub_petspot_test_pg18_data
+c0dd8ac9aeec08326a2b319ae6deffccdf29abc86d719458782294dd0655d93d
+pg18_ready_iter=3
+server_version=18.4 (Debian 18.4-1.pgdg13+1)
+existing_test_db_count=0
+CREATE DATABASE
+pg_restore_rc=0
+module=dev_session_hub|installed|19.0.8.0.0
+extensions=pg_trgm,plpgsql
+204M	/home/sabry3/devhub/filestore/pet_spot_elsahel_test_data/filestore/pet_spot_elsahel_test
+ir_attachment_count=1267
+pet_spot_elsahel
+LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*          
+LISTEN 0      4096                     127.0.0.1:5433       0.0.0.0:*          
+D3_RESTORE_OK

@@ -1,0 +1,121 @@
+ pg_terminate_backend 
+----------------------
+(0 rows)
+
+DROP DATABASE
+CREATE DATABASE
+UPDATE 15
+DO
+DELETE 1
+DELETE 1
+      ?column?      
+--------------------
+ gh_installations=0
+(1 row)
+
+CMD_TARGETED=/mnt/downloads/home_extended/odoo_ssd/venv19/bin/python3 /mnt/downloads/home_extended/odoo_ssd/odoo19/odoo19/odoo-bin -c /home/sabry3/devhub/config/pet_spot_elsahel_test_ut.conf -d pet_spot_elsahel_test_ut --http-port=19028 --stop-after-init --test-enable --test-tags=/dev_session_hub:TestCompletionRoadmap --log-level=test --logfile=/home/sabry3/devhub/logs/test_roadmap_20260720T075942Z.log
+roadmap_rc=1
+TOTALS_TARGET=/home/sabry3/devhub/logs/test_roadmap_20260720T075942Z.log:0 failed, 1 error(s) of 11 tests
+277:2026-07-20 08:01:22,709 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_allowlist_rejects_all_repositories ... 
+278:2026-07-20 08:01:22,753 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_bind_approval_immutable ... 
+279:2026-07-20 08:01:22,867 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_bootstrap_denies_preapproval_upload ... 
+280:2026-07-20 08:01:23,017 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_cross_repo_token_mint_denied ... 
+281:2026-07-20 08:01:23,036 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_deploy_requires_merged_reviewed_and_distinct_users ... 
+282:2026-07-20 08:01:23,057 574520 ERROR pet_spot_elsahel_test_ut odoo.sql_db: bad query: b'INSERT INTO "dev_deploy_target" ("active", "approved", "backup_profile_reference", "create_date", "create_uid", "database_identifier", "environment_id", "module_allowlist", "name", "non_production", "repository_id", "required_protected_branch", "runner_profile_reference", "soak_days_required", "target_kind", "write_date", "write_uid") VALUES (true, true, \'/srv/devhub/runners/backup\', \'2026-07-20T08:01:19.777368\'::timestamp, 1, \'pet_spot_elsahel_test\', 1, \'dev_session_hub\', \'PetSpot Test Deploy\', true, 1, \'staging\', \'/srv/devhub/runners/staging\', 7, \'staging\', \'2026-07-20T08:01:19.777368\'::timestamp, 1) RETURNING "id"'
+283:ERROR: duplicate key value violates unique constraint "dev_deploy_target_target_unique"
+287:2026-07-20 08:01:23,061 574520 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: ERROR: TestCompletionRoadmap.test_deploy_requires_merged_reviewed_and_distinct_users
+288:Traceback (most recent call last):
+309:2026-07-20 08:01:23,065 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_discovery_ambiguous_remotes_fail_closed ... 
+310:2026-07-20 08:01:23,123 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_origin_lock_denies_retarget ... 
+311:2026-07-20 08:01:23,154 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_production_denied_without_soak ... 
+312:2026-07-20 08:01:23,181 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_runner_stub_refuses_live ... 
+313:2026-07-20 08:01:23,193 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_staging_target_rejects_production_env ... 
+314:2026-07-20 08:01:23,241 574520 INFO pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_completion_roadmap: Starting TestCompletionRoadmap.test_unauthorized_repo_fail_closed ... 
+318:2026-07-20 08:01:23,315 574520 ERROR pet_spot_elsahel_test_ut odoo.tests.result: 0 failed, 1 error(s) of 11 tests when loading database 'pet_spot_elsahel_test_ut' 
+STARTED=11 SKIPPED=0
+CMD_FULL=/mnt/downloads/home_extended/odoo_ssd/venv19/bin/python3 /mnt/downloads/home_extended/odoo_ssd/odoo19/odoo19/odoo-bin -c /home/sabry3/devhub/config/pet_spot_elsahel_test_ut.conf -d pet_spot_elsahel_test_ut --http-port=19029 --stop-after-init --test-enable --test-tags=/dev_session_hub --log-level=test --logfile=/home/sabry3/devhub/logs/test_full_20260720T075942Z.log
+full_rc=1
+TOTALS_FULL=/home/sabry3/devhub/logs/test_full_20260720T075942Z.log:1 failed, 92 error(s) of 117 tests
+2099:ERROR: duplicate key value violates unique constraint "dev_work_item_op_identity_unique"
+2102:2026-07-20 08:02:02,964 574696 ERROR pet_spot_elsahel_test_ut odoo.sql_db: bad query: b'INSERT INTO "dev_work_item" ("active", "company_id", "create_date", "create_uid", "current_phase", "deadline_cache", "dev_project_id", "name", "odoo_project_id", "odoo_task_id", "op_backend_id", "op_url", "op_work_package_id", "preferred_environment_id", "preferred_repository_id", "priority_cache", "responsible_user_id", "uuid", "write_date", "write_uid") VALUES (true, 1, \'2026-07-20T08:01:47.966143\'::timestamp, 1, \'received\', NULL, 1, \'Lifecycle test work\', 112, 2539, NULL, \'https://openproject.test.invalid/work_packages/False\', 0, 1, 1, \'0\', 1, \'5b81bf9a-6536-42d7-a08c-e29ebac9d974\', \'2026-07-20T08:01:47.966143\'::timestamp, 1) RETURNING "id"'
+2103:ERROR: duplicate key value violates unique constraint "dev_work_item_odoo_task_unique"
+2113:2026-07-20 08:02:04,690 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_outbox_retry_dead_letter_and_service_scope
+2114:Traceback (most recent call last):
+2129:2026-07-20 08:02:05,772 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: FAIL: TestDevWorkLifecycle.test_outbox_service_leasing_callbacks_and_queue_idempotency
+2130:Traceback (most recent call last):
+2139:2026-07-20 08:02:06,807 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_outbox_stale_lease_is_fenced_and_uncertain_delivery_reconciles
+2140:Traceback (most recent call last):
+2152:2026-07-20 08:02:06,976 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_phase5_worker_is_lease_fenced_and_stops_for_review
+2153:Traceback (most recent call last):
+2185:2026-07-20 08:02:07,522 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied (field_name='pr_title_preview')
+2186:Traceback (most recent call last):
+2223:2026-07-20 08:02:07,727 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied (field_name='pr_body_preview')
+2224:Traceback (most recent call last):
+2261:2026-07-20 08:02:07,916 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied (field_name='execution_branch')
+2262:Traceback (most recent call last):
+2299:2026-07-20 08:02:08,099 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied (field_name='committed_sha')
+2300:Traceback (most recent call last):
+2337:2026-07-20 08:02:08,298 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied (field_name='policy_hash')
+2338:Traceback (most recent call last):
+2375:2026-07-20 08:02:08,503 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied (field_name='execution_contract_hash')
+2376:Traceback (most recent call last):
+2413:2026-07-20 08:02:08,693 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied (field_name='approved_plan_hash')
+2414:Traceback (most recent call last):
+2451:2026-07-20 08:02:08,734 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_pr_approval_is_immutable_and_all_bound_drift_is_denied
+2452:Traceback (most recent call last):
+2460:2026-07-20 08:02:09,114 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_pr_denies_active_writer_and_uncertain_push_state
+2461:Traceback (most recent call last):
+2499:2026-07-20 08:02:09,488 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_pr_duplicate_is_fail_closed_before_creation
+2500:Traceback (most recent call last):
+2538:2026-07-20 08:02:09,871 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_failure_reconciliation_and_retry_gate (label='existing')
+2539:Traceback (most recent call last):
+2576:2026-07-20 08:02:10,056 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_failure_reconciliation_and_retry_gate (label='absent')
+2577:Traceback (most recent call last):
+2614:2026-07-20 08:02:10,242 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_pr_failure_reconciliation_and_retry_gate (label='unknown')
+2615:Traceback (most recent call last):
+2653:2026-07-20 08:02:10,613 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_pr_github_runner_is_api_scoped_and_uses_stdin
+2654:Traceback (most recent call last):
+2692:2026-07-20 08:02:10,962 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_pr_requires_human_approval_and_verified_push
+2693:Traceback (most recent call last):
+2731:2026-07-20 08:02:11,325 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_pr_target_policy_rejects_arbitrary_and_protected_targets
+2732:Traceback (most recent call last):
+2770:2026-07-20 08:02:11,515 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_production_linked_session_is_denied_without_external_calls
+2771:Traceback (most recent call last):
+2801:2026-07-20 08:02:11,867 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_approval_denies_bound_state_drift (label='head')
+2802:Traceback (most recent call last):
+2837:2026-07-20 08:02:12,050 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_approval_denies_bound_state_drift (label='commit')
+2838:Traceback (most recent call last):
+2873:2026-07-20 08:02:12,222 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_approval_denies_bound_state_drift (label='branch')
+2874:Traceback (most recent call last):
+2909:2026-07-20 08:02:12,404 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_approval_denies_bound_state_drift (label='policy')
+2910:Traceback (most recent call last):
+2945:2026-07-20 08:02:12,609 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_approval_denies_bound_state_drift (label='contract')
+2946:Traceback (most recent call last):
+2982:2026-07-20 08:02:12,990 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_approval_is_immutable_and_exactly_bound
+2983:Traceback (most recent call last):
+3019:2026-07-20 08:02:13,372 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_denies_dirty_workspace_active_lease_and_production
+3020:Traceback (most recent call last):
+3056:2026-07-20 08:02:13,712 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_failure_reconciliation_states_and_retry_gate (label='exact')
+3057:Traceback (most recent call last):
+3092:2026-07-20 08:02:13,899 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_failure_reconciliation_states_and_retry_gate (label='mismatch')
+3093:Traceback (most recent call last):
+3128:2026-07-20 08:02:14,086 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: Subtest TestDevWorkLifecycle.test_push_failure_reconciliation_states_and_retry_gate (label='unknown')
+3129:Traceback (most recent call last):
+3165:2026-07-20 08:02:14,435 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_git_runner_forbids_force_all_and_tags
+3166:Traceback (most recent call last):
+3202:2026-07-20 08:02:14,793 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_remote_advance_and_non_fast_forward_require_fresh_approval
+3203:Traceback (most recent call last):
+3239:2026-07-20 08:02:15,147 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_remote_and_target_policy_denies_protected_or_arbitrary_targets
+3240:Traceback (most recent call last):
+3277:2026-07-20 08:02:15,447 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_resume_brief_is_sanitized_bounded_and_reports_drift
+3278:Traceback (most recent call last):
+3307:2026-07-20 08:02:15,759 574696 ERROR pet_spot_elsahel_test_ut odoo.sql_db: bad query: b'INSERT INTO "dev_work_source_message" ("attachment_references", "chatwoot_account_id", "chatwoot_conversation_id", "chatwoot_inbox_id", "chatwoot_message_id", "create_date", "create_uid", "dedupe_key", "evolution_message_id", "extracted_item_index", "group_jid", "instance_reference", "message_timestamp", "provider", "provider_message_id", "sender_jid", "source_url", "text_hash", "text_snapshot", "write_date", "write_uid") VALUES (\'attachment://safe-reference\', 1, 3, 2, 4, \'2026-07-20T08:01:47.966143\'::timestamp, 1, \'6d49138cb32ab6b16ff8c08413fe71b97ea08309d43fbe2c1286d3f021076825\', \'message-001\', 0, \'120363000000000000@g.us\', \'test-instance\', \'2026-07-18T16:20:00\'::timestamp, \'evolution\', \'message-001\', \'201000000000@s.whatsapp.net\', \'https://chatwoot.test.invalid/conversations/3\', \'20fc6b394cb300a00f15531e27e9326ee18ca603d440ece35045c9c0f4467b5b\', \'Sanitized development request\', \'2026-07-20T08:01:47.966143\'::timestamp, 1) RETURNING "id"'
+3308:ERROR: duplicate key value violates unique constraint "dev_work_source_message_dedupe_unique"
+3313:2026-07-20 08:02:16,100 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_unexpected_file_after_approval_requires_fresh_review
+3314:Traceback (most recent call last):
+3348:2026-07-20 08:02:16,278 574696 ERROR pet_spot_elsahel_test_ut odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_workspace_preparation_never_commits_pushes_merges_or_deploys
+3349:Traceback (most recent call last):
+3380:2026-07-20 08:02:16,321 574696 ERROR pet_spot_elsahel_test_ut odoo.tests.result: 1 failed, 92 error(s) of 117 tests when loading database 'pet_spot_elsahel_test_ut' 
+DROP DATABASE
+http_after=200
+assert PASS

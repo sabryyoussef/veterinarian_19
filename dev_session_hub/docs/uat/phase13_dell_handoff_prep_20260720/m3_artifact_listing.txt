@@ -1,0 +1,16 @@
+total 73M
+-rw-rw-r-- 1 sabry sabry 4.3K Jul 20 08:33 RUNTIME_MANIFEST.json
+-rw-rw-r-- 1 sabry sabry 1.7K Jul 20 08:33 RUNTIME_MANIFEST.md
+-rw-rw-r-- 1 sabry sabry  757 Jul 20 08:33 SHA256SUMS.txt
+-rw-rw-r-- 1 sabry sabry  548 Jul 20 08:33 dell_test_odoo.conf.template
+-rw-rw-r-- 1 sabry sabry  146 Jul 20 08:32 dump_toc_lines.txt
+-rw-rw-r-- 1 sabry sabry   40 Jul 20 08:33 filestore_exclusion_proof.txt
+-rw-rw-r-- 1 sabry sabry    5 Jul 20 08:33 filestore_tar_entry_count.txt
+-rw-rw-r-- 1 sabry sabry 1.1K Jul 20 08:33 filestore_tar_listing_head.txt
+-rw-rw-r-- 1 sabry sabry   37 Jul 20 08:32 module_version_at_dump.txt
+-rw-rw-r-- 1 sabry sabry  17M Jul 20 08:32 pet_spot_elsahel_test.dump
+-rw-rw-r-- 1 sabry sabry  198 Jul 20 08:32 pet_spot_elsahel_test.dump.sha256
+-rw-rw-r-- 1 sabry sabry 2.0M Jul 20 08:32 pet_spot_elsahel_test.dump.toc.txt
+-rw-rw-r-- 1 sabry sabry 1.3K Jul 20 08:32 pet_spot_elsahel_test.dump.toc_head.txt
+-rw-rw-r-- 1 sabry sabry  54M Jul 20 08:32 pet_spot_elsahel_test_filestore.tar.gz
+-rw-rw-r-- 1 sabry sabry  210 Jul 20 08:32 pet_spot_elsahel_test_filestore.tar.gz.sha256

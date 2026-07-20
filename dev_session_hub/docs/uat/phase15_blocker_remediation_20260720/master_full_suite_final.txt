@@ -1,0 +1,14 @@
+master_roadmap_rc=0
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/phase15_blocker_remediation_20260720/master_roadmap_final_20260720T081548Z.log:0 failed, 0 error(s) of 11 tests
+master_full_rc=1
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/phase15_blocker_remediation_20260720/master_full_final_20260720T081548Z.log:0 failed, 89 error(s) of 117 tests
+2681:2026-07-20 08:16:23,539 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_pr_target_policy_rejects_arbitrary_and_protected_targets
+2720:2026-07-20 08:16:23,609 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_production_linked_session_is_denied_without_external_calls
+2932:2026-07-20 08:16:24,230 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_approval_is_immutable_and_exactly_bound
+2969:2026-07-20 08:16:24,374 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_denies_dirty_workspace_active_lease_and_production
+3115:2026-07-20 08:16:24,874 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_git_runner_forbids_force_all_and_tags
+3152:2026-07-20 08:16:25,060 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_remote_advance_and_non_fast_forward_require_fresh_approval
+3189:2026-07-20 08:16:25,243 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_push_remote_and_target_policy_denies_protected_or_arbitrary_targets
+3227:2026-07-20 08:16:25,355 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_resume_brief_is_sanitized_bounded_and_reports_drift
+3263:2026-07-20 08:16:25,645 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_unexpected_file_after_approval_requires_fresh_review
+3298:2026-07-20 08:16:25,742 1048123 ERROR pet_spot_elsahel_test odoo.addons.dev_session_hub.tests.test_dev_work_lifecycle: ERROR: TestDevWorkLifecycle.test_workspace_preparation_never_commits_pushes_merges_or_deploys

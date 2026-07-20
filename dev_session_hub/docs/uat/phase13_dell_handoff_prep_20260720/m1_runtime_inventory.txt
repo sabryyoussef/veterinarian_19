@@ -1,0 +1,77 @@
+=== M1 hostname / time ===
+master
+master
+2026-07-20T05:28:42Z
+sabry
+
+=== Test vs Prod services ===
+Description=Odoo 19 — PetSpot El Sahel TEST (port 8028)
+ActiveState=active
+FragmentPath=/home/sabry/.config/systemd/user/pet_spot_elsahel_test.service
+MainPID=175265
+Description=Odoo 19 — PetSpot El Sahel (port 8027)
+ActiveState=active
+FragmentPath=/home/sabry/.config/systemd/user/pet_spot_elsahel.service
+MainPID=3429925
+
+=== Ports ===
+LISTEN 0      128                        0.0.0.0:8028       0.0.0.0:*    users:(("python3",pid=175265,fd=3))                                                           
+
+=== Config files exist ===
+-rw-rw-r-- 1 sabry sabry 879 Jul 16 06:50 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf
+-rw-rw-r-- 1 sabry sabry 679 Jul 13 08:08 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf
+-rw-rw-r-- 1 sabry sabry 746 Jul 20 07:21 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_ff53a8d.conf
+
+=== Active Test drop-in / unit ===
+# /home/sabry/.config/systemd/user/pet_spot_elsahel_test.service
+[Unit]
+Description=Odoo 19 — PetSpot El Sahel TEST (port 8028)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin \
+    -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf \
+    -d pet_spot_elsahel_test
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=300
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=default.target
+
+# /home/sabry/.config/systemd/user/pet_spot_elsahel_test.service.d/activation-ff53a8d.conf
+[Service]
+# Test-only activation repin to squash merge ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+ExecStart=
+ExecStart=/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin \
+    -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_ff53a8d.conf \
+    -d pet_spot_elsahel_test
+
+=== Prod unit (head only, no secrets) ===
+# /home/sabry/.config/systemd/user/pet_spot_elsahel.service
+[Unit]
+Description=Odoo 19 — PetSpot El Sahel (port 8027)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin \
+    -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf \
+    -d pet_spot_elsahel
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=300
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=default.target

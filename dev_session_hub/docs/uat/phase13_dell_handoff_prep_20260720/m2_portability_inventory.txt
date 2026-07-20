@@ -1,0 +1,30 @@
+## machines (id|name|hostname|ssh_alias|trust_zone|production|allowed_path_prefixes|tailscale_name|tailscale_ip_reference|pinned_host_key_fingerprint)
+1|master|master|master-ts|trusted_dev|true|/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel|master.tailcf9988.ts.net|100.76.217.35|SHA256:p/lGDKGwvUxeoO0c7NhcDwekltbxEh4Mb9qFqBG554o
+
+## environments (id|name|type|db|port|url|config_ref|service_ref|sensitivity|guard|is_production|machine_id)
+1|PetSpot Test|test|pet_spot_elsahel_test|8028|https://test.drpaws.ai|/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf|pet_spot_elsahel_test.service|internal_test|Non-production only. Production launch, deployment, service control, Docker control, and automatic Git mutation are denied.|false|1
+246|GateD Fake Prod Env|production|pet_spot_elsahel_prod_fake_gated|8069||/etc/odoo/fake.conf|odoo-fake-prod|production|denied|true|1
+
+## repositories (id|name|workdir|canonical|git_remote|default_branch|github_repo|origin_locked)
+1|PetSpot Odoo 19|/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel|/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel|https://github.com/sabryyoussef/veterinarian_19.git|unresolved|sabryyoussef/veterinarian_19|true
+
+## policies
+1|PetSpot Test MVP|1|denied|true|true|true|true
+
+## session_counts
+sessions=4
+distinct_session_workdirs=1
+session_workdir_samples=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+workspaces=0
+workspace_path_samples=
+
+## github_allowlist_path_refs
+2|sabryyoussef/veterinarian_19|/srv/devhub/credentials/github/gh-profile|/srv/devhub/credentials/github/mint-devhub-pr-token
+
+## deploy_targets
+3|Bad staging|staging|pet_spot_elsahel_prod_fake_gated|/srv/devhub/runners/staging|/srv/devhub/runners/backup|dev_session_hub|true|1
+4|PetSpot Test Staging Deploy|staging|pet_spot_elsahel_test|/srv/devhub/runners/staging|/srv/devhub/runners/backup|dev_session_hub|true|1
+
+## credential_path_refs_under_srv
+allowlist_cred_refs=1
+runner_refs=2

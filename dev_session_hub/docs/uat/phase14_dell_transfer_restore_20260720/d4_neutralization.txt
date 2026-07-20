@@ -1,0 +1,47 @@
+CREATE TABLE
+INSERT 0 1
+UPDATE 0
+INSERT 0 1
+INSERT 0 1
+DO
+INSERT 0 1
+INSERT 0 1
+UPDATE 16
+INSERT 0 1
+INSERT 0 1
+DO
+INSERT 0 1
+INSERT 0 0
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+ phase  |             item             |                detail                
+--------+------------------------------+--------------------------------------
+ AFTER  | bad_staging_target           | 3:Bad staging:active=false
+ BEFORE | bad_staging_target           | 3:Bad staging:active=true
+ AFTER  | dev_policy                   | 1:denied:deploy=false
+ BEFORE | dev_policy                   | 1:denied:deploy=true
+ AFTER  | fake_prod_env                | 246:GateD Fake Prod Env:active=false
+ BEFORE | fake_prod_env                | 246:GateD Fake Prod Env:active=true
+ AFTER  | fetchmail_server             | 1 active=0
+ BEFORE | fetchmail_server             | 1 active=0
+ AFTER  | ir_cron_active               | 51
+ BEFORE | ir_cron_active               | 67
+ AFTER  | ir_cron_disabled_externalish | 13
+ AFTER  | ir_mail_server               | 1 active=0
+ BEFORE | ir_mail_server               | 1 active=0
+ AFTER  | payment_provider             | disabled=21
+ BEFORE | payment_provider             | disabled=21
+ AFTER  | web.base.url                 | http://127.0.0.1:8028
+ BEFORE | web.base.url                 | https://test.drpaws.ai
+(17 rows)
+
+D4_OK

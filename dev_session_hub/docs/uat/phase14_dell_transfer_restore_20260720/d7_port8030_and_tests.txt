@@ -1,0 +1,87 @@
+=== roadmap log head/tail ===
+1 /tmp/dell_roadmap_tests.log
+profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+---
+profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+=== port probe ===
+LISTEN 0      511                      127.0.0.1:8028       0.0.0.0:*          
+LISTEN 0      511                      127.0.0.1:8029       0.0.0.0:*          
+LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*          
+LISTEN 0      511                          [::1]:8028          [::]:*          
+LISTEN 0      511                          [::1]:8029          [::]:*          
+FREE=8030
+conf http_port = 8030
+UPDATE 1
+UPDATE 1
+              ?column?              
+------------------------------------
+ web.base.url=http://127.0.0.1:8030
+(1 row)
+
+UPDATE 0
+UPDATE 0
+roadmap_rc=1
+TOTALS=
+profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+launch_context_helper_present PASS
+launch_hostname_equality PASS
+hostname_equals_machine|PASS|sabry3-Precision-5540==sabry3-Precision-5540
+machine_not_production|PASS|False
+machine_trust_zone|PASS|trusted_dev
+env_type_test|PASS|test
+env_not_production|PASS|False
+production_access_denied|PASS|denied
+deploy_permission_false|PASS|False
+launch_allowed_true|PASS|True
+repo_workdir_dell|PASS|/home/sabry3/devhub/veterinarian_19
+repo_head_ff53a8d|PASS|ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+allowed_path_prefix|PASS|/home/sabry3/devhub/veterinarian_19
+env_port|PASS|8030
+assert_dev_hub_safe|PASS|
+NO_START_AND_LAUNCH
+http_try=1 code=000000
+http_try=2 code=000000
+http_try=3 code=000000
+http_try=4 code=000000
+http_try=5 code=000000
+http_try=6 code=000000
+http_try=7 code=000000
+http_try=8 code=000000
+http_try=9 code=000000
+http_try=10 code=000000
+http_try=11 code=000000
+http_try=12 code=000000
+http_try=13 code=000000
+http_try=14 code=000000
+http_try=15 code=000000
+http_try=16 code=000000
+http_try=17 code=000000
+http_try=18 code=000000
+http_try=19 code=000000
+http_try=20 code=000000
+http_try=21 code=000000
+http_try=22 code=000000
+http_try=23 code=000000
+http_try=24 code=000000
+http_try=25 code=000000
+http_try=26 code=000000
+http_try=27 code=000000
+http_try=28 code=000000
+http_try=29 code=000000
+http_try=30 code=000000
+http_try=31 code=000000
+http_try=32 code=000000
+http_try=33 code=000000
+http_try=34 code=000000
+http_try=35 code=000000
+http_try=36 code=000000
+http_try=37 code=000000
+http_try=38 code=000000
+http_try=39 code=000000
+http_try=40 code=000000
+http_try=41 code=000000
+http_try=42 code=000000
+http_try=43 code=000000
+http_try=44 code=000000
+http_try=45 code=000000
+http_final=000000

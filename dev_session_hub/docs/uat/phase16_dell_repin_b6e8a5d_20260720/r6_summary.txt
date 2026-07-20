@@ -1,0 +1,20 @@
+dev_session_hub|installed|19.0.8.0.1
+openproject_sync|installed|19.0.1.5.1
+=== fresh_full db=pr6_fresh_20260720T102052Z ===
+2026-07-20 10:24:49,451 636849 ERROR pr6_fresh_20260720T102052Z odoo.tests.result: 0 failed, 13 error(s) of 126 tests when loading database 'pr6_fresh_20260720T102052Z' 
+=== fresh_op db=pr6_fresh_20260720T102052Z ===
+2026-07-20 10:24:58,917 637360 INFO pr6_fresh_20260720T102052Z odoo.tests.result: 0 failed, 0 error(s) of 17 tests when loading database 'pr6_fresh_20260720T102052Z' 
+19.0.8.0.1
+baseline gh=PR App UAT Activation policy=f outbox=8
+=== handoff_roadmap db=pr6_handoff_20260720T102052Z ===
+2026-07-20 10:30:44,152 640019 INFO pr6_handoff_20260720T102052Z odoo.tests.result: 0 failed, 0 error(s) of 13 tests when loading database 'pr6_handoff_20260720T102052Z' 
+=== handoff_full db=pr6_handoff_20260720T102052Z ===
+2026-07-20 10:32:35,988 640165 INFO pr6_handoff_20260720T102052Z odoo.tests.result: 0 failed, 0 error(s) of 126 tests when loading database 'pr6_handoff_20260720T102052Z' 
+=== handoff_op db=pr6_handoff_20260720T102052Z ===
+2026-07-20 10:32:55,463 640890 INFO pr6_handoff_20260720T102052Z odoo.tests.result: 0 failed, 0 error(s) of 17 tests when loading database 'pr6_handoff_20260720T102052Z' 
+after gh=PR App UAT Activation policy=f outbox=8
+active
+LISTEN 0      128                        0.0.0.0:18028      0.0.0.0:*          
+LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*          
+2026-07-20 10:37:37,318 642748 ERROR pr6_fresh_path_20260720T103346Z odoo.tests.result: 0 failed, 13 error(s) of 126 tests when loading database 'pr6_fresh_path_20260720T103346Z' 
+2026-07-20 10:42:52,012 645114 INFO pr6_fresh_ok_20260720T103902Z odoo.tests.result: 0 failed, 0 error(s) of 126 tests when loading database 'pr6_fresh_ok_20260720T103902Z' 

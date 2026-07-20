@@ -1,0 +1,9 @@
+hostname=sabry3-Precision-5540
+repo_HEAD=ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+repo_porcelain=0
+origin	git@github.com:sabryyoussef/veterinarian_19.git (fetch)
+origin	git@github.com:sabryyoussef/veterinarian_19.git (push)
+ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+-rw-rw-r-- 1 sabry3 sabry3 20380 Jun  3 13:42 /home/sabry3/odoo_icon.png
+lrwxrwxrwx 1 sabry3 sabry3    37 Jun 12 21:07 /home/sabry3/odoo_ssd -> /mnt/downloads/home_extended/odoo_ssd

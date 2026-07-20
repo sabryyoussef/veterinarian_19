@@ -1,0 +1,2 @@
+odoo_version=19.0
+odoo_version_info=(19, 0, 0, 'final', 0, '')

@@ -1,0 +1,6 @@
+prior_path=/home/sabry3/devhub/addons_overlay_deps/openproject_sync
+quarantine_path=/home/sabry3/devhub/addons_overlay_deps/_quarantine_openproject_sync_20260720T101637Z
+overlay_git_pin=c52759c20a9c3cb915713de9bf57f9b8bfc32b63
+overlay_tree=9c6e94eb4052e67efbd9811f531208cf7ef5a3c22ca7624b74c14fa5fc99146c
+release_tree=9c6e94eb4052e67efbd9811f531208cf7ef5a3c22ca7624b74c14fa5fc99146c
+rollback=mv '/home/sabry3/devhub/addons_overlay_deps/_quarantine_openproject_sync_20260720T101637Z' '/home/sabry3/devhub/addons_overlay_deps/openproject_sync' && restore conf addons_path including addons_overlay_deps

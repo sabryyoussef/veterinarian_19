@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_openproject_status_map_list" model="ir.ui.view">
+        <field name="name">openproject.status.map.list</field>
+        <field name="model">openproject.status.map</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="backend_id"/>
+                <field name="op_status_id"/>
+                <field name="op_status_href"/>
+                <field name="op_status_name"/>
+                <field name="odoo_stage_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_openproject_status_map" model="ir.actions.act_window">
+        <field name="name">Status Maps</field>
+        <field name="res_model">openproject.status.map</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

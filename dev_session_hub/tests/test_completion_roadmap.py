@@ -11,6 +11,21 @@ from odoo.tests import TransactionCase, new_test_user, tagged
 TEST_GITHUB_APP_ID = 4340040
 TEST_GITHUB_INSTALLATION_ID = 990001376
 TEST_GITHUB_APP_SLUG = "devhub-test-pr-agent"
+TEST_GITHUB_INSTALLATION_NAME = "PR App Test Fixture"
+
+
+def _assert_test_github_installation_identity(installation):
+    """Reuse only rows that match the explicit test-owned fixture identity."""
+    if installation.app_slug != TEST_GITHUB_APP_SLUG:
+        raise AssertionError(
+            "Installation %s has unexpected app_slug %r (expected test fixture %r)."
+            % (installation.installation_id, installation.app_slug, TEST_GITHUB_APP_SLUG)
+        )
+    if installation.name != TEST_GITHUB_INSTALLATION_NAME:
+        raise AssertionError(
+            "Installation %s has unexpected name %r (expected test fixture %r)."
+            % (installation.installation_id, installation.name, TEST_GITHUB_INSTALLATION_NAME)
+        )
 
 
 @tagged("post_install", "-at_install")
@@ -48,7 +63,7 @@ class TestCompletionRoadmap(TransactionCase):
         if not cls.pr_installation:
             cls.pr_installation = Install.create(
                 {
-                    "name": "PR App Test Fixture",
+                    "name": TEST_GITHUB_INSTALLATION_NAME,
                     "app_slug": TEST_GITHUB_APP_SLUG,
                     "app_id": TEST_GITHUB_APP_ID,
                     "installation_id": TEST_GITHUB_INSTALLATION_ID,
@@ -58,6 +73,8 @@ class TestCompletionRoadmap(TransactionCase):
                     "allow_all_repositories": False,
                 }
             )
+        else:
+            _assert_test_github_installation_identity(cls.pr_installation)
         Allowlist = cls.env["dev.github.repository.allowlist"]
         cls.allowlist = Allowlist.search(
             [
@@ -104,6 +121,12 @@ class TestCompletionRoadmap(TransactionCase):
         self.assertEqual(after.app_id, snapshot["app_id"])
         self.assertEqual(after.app_role, snapshot["app_role"])
         self.assertEqual(after.active, snapshot["active"])
+
+    def test_fixture_reuses_only_matching_test_owned_installation(self):
+        """990001376 may be reused only when slug/name match the test fixture."""
+        self.assertEqual(self.pr_installation.installation_id, TEST_GITHUB_INSTALLATION_ID)
+        self.assertEqual(self.pr_installation.app_slug, TEST_GITHUB_APP_SLUG)
+        self.assertEqual(self.pr_installation.name, TEST_GITHUB_INSTALLATION_NAME)
 
     def test_allowlist_rejects_all_repositories(self):
         with self.assertRaises(ValidationError):

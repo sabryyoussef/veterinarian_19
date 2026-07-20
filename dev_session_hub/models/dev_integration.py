@@ -320,29 +320,52 @@ class DevExternalOutbox(models.Model):
             )
 
     @api.model
-    def service_lease(self, limit=10, lease_seconds=300, consumer_ref=None):
+    def service_lease(
+        self, limit=10, lease_seconds=300, consumer_ref=None, correlation_id=None
+    ):
         _require_outbox_service(self.env)
         self._recover_expired_leases()
         consumer_ref = _clean_text(consumer_ref, "Consumer reference", 120)
         limit = max(1, min(int(limit or 10), 50))
         now = fields.Datetime.now()
-        self.env.cr.execute(
-            """
-                SELECT id
-                  FROM dev_external_outbox
-                 WHERE state IN ('pending', 'retry', 'uncertain_delivery')
-                   AND (
-                        (channel = 'chatwoot' AND operation = 'public_message')
-                        OR (channel = 'openproject' AND operation = 'milestone')
-                   )
-                   AND next_attempt_at <= %s
-                   AND attempt_count < max_attempts
-                 ORDER BY next_attempt_at, id
-                 FOR UPDATE SKIP LOCKED
-                 LIMIT %s
-            """,
-            [now, limit],
-        )
+        if correlation_id:
+            correlation_id = _clean_text(correlation_id, "Correlation ID", 120)
+            self.env.cr.execute(
+                """
+                    SELECT id
+                      FROM dev_external_outbox
+                     WHERE correlation_id = %s
+                       AND state IN ('pending', 'retry', 'uncertain_delivery')
+                       AND (
+                            (channel = 'chatwoot' AND operation = 'public_message')
+                            OR (channel = 'openproject' AND operation = 'milestone')
+                       )
+                       AND next_attempt_at <= %s
+                       AND attempt_count < max_attempts
+                     ORDER BY next_attempt_at, id
+                     FOR UPDATE SKIP LOCKED
+                     LIMIT 1
+                """,
+                [correlation_id, now],
+            )
+        else:
+            self.env.cr.execute(
+                """
+                    SELECT id
+                      FROM dev_external_outbox
+                     WHERE state IN ('pending', 'retry', 'uncertain_delivery')
+                       AND (
+                            (channel = 'chatwoot' AND operation = 'public_message')
+                            OR (channel = 'openproject' AND operation = 'milestone')
+                       )
+                       AND next_attempt_at <= %s
+                       AND attempt_count < max_attempts
+                     ORDER BY next_attempt_at, id
+                     FOR UPDATE SKIP LOCKED
+                     LIMIT %s
+                """,
+                [now, limit],
+            )
         records = self.sudo().browse([row[0] for row in self.env.cr.fetchall()])
         result = []
         for record in records:

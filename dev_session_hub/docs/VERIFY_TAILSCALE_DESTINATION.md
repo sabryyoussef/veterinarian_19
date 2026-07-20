@@ -17,8 +17,9 @@
 | Threat | Mitigation |
 |--------|------------|
 | Command / shell injection | argv arrays only; `shell=False`; alias/DNS/IP validated by regex before use |
-| Malicious SSH config | Prefer registered Tailscale FQDN as HostName override; fixed ssh options; no agent forwarding |
-| DNS substitution | Compare `ssh -G` resolved HostName to registered FQDN; Tailscale status IP must match registry |
+| Malicious SSH config | `ssh -G` inspected for ProxyCommand/ProxyJump/LocalCommand/forwards; CLI forces ProxyCommand=none, ClearAllForwardings=yes, PermitLocalCommand=no, IdentityAgent=none, etc. |
+| DNS substitution | Compare `ssh -G` resolved HostName to registered FQDN or Tailscale IP; Tailscale status DNS+IP must uniquely match |
+| Forgeable ORM context | Verification field writes use private `_write_verification_private()` → parent `write`; no context-key bypass |
 | Changed host key | Observe ED25519 key, fingerprint must equal pin; then StrictHostKeyChecking against temp known_hosts containing only that key |
 | Stale Tailscale identity | Require peer Online in `tailscale status --json` for registered FQDN/IP |
 | Connecting to Production | Refuse `production=True` and non-`trusted_dev` before any network I/O |
@@ -66,7 +67,9 @@ allowlists are enforced separately at launch. Operators should still review path
 changes carefully.
 
 Direct writes to `tailscale_destination_verified` / `tailscale_verified_at` are
-blocked outside the verification action context.
+always rejected by `write()`. The verification action updates them only through
+`_write_verification_private()`, which calls the parent `write` implementation
+directly and cannot be forged via RPC context keys.
 
 ## Constraint
 

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import json
+import os
 import socket
+import tempfile
 from unittest.mock import patch
 
 from odoo import fields
@@ -505,4 +508,167 @@ class TestVerifyTailscaleDestination(TransactionCase):
         message = str(err.exception)
         self.assertNotIn("secret-token", message)
         self.assertNotIn(".ssh/id", message)
+
+    def test_forged_context_cannot_set_verification_fields(self):
+        with self.assertRaises(AccessError):
+            self.machine.with_context(dev_machine_verification_write=True).write(
+                {
+                    "tailscale_destination_verified": True,
+                    "tailscale_verified_at": fields.Datetime.now(),
+                }
+            )
+        self.assertFalse(self.machine.tailscale_destination_verified)
+        self.assertFalse(self.machine.tailscale_verified_at)
+
+    def test_dangerous_ssh_proxycommand_rejected(self):
+        with self.assertRaises(UserError) as err:
+            self.machine._assert_ssh_config_safe(
+                {"hostname": FQDN, "proxycommand": "nc evil 22"}
+            )
+        self.assertIn("unsafe", str(err.exception).lower())
+
+    def test_dangerous_ssh_localcommand_rejected(self):
+        with self.assertRaises(UserError):
+            self.machine._assert_ssh_config_safe(
+                {
+                    "hostname": FQDN,
+                    "permitlocalcommand": "yes",
+                    "localcommand": "touch /tmp/pwned",
+                }
+            )
+
+    def test_dangerous_ssh_forwarding_rejected(self):
+        with self.assertRaises(UserError):
+            self.machine._assert_ssh_config_safe(
+                {"hostname": FQDN, "localforward": "8080 localhost:80"}
+            )
+        with self.assertRaises(UserError):
+            self.machine._assert_ssh_config_safe(
+                {"hostname": FQDN, "forwardagent": "yes"}
+            )
+
+    def test_ambiguous_tailscale_peers_fail_closed(self):
+        payload = {
+            "Peer": {
+                "a": {
+                    "DNSName": FQDN + ".",
+                    "HostName": "a",
+                    "TailscaleIPs": [IP],
+                    "Online": True,
+                },
+                "b": {
+                    "DNSName": FQDN + ".",
+                    "HostName": "b",
+                    "TailscaleIPs": [IP],
+                    "Online": True,
+                },
+            }
+        }
+        with patch.object(
+            type(self.machine),
+            "_run_allowlisted",
+            return_value=(0, json.dumps(payload), ""),
+        ):
+            with self.assertRaises(UserError) as err:
+                self.machine._assert_tailscale_peer_current(FQDN, IP)
+        self.assertIn("Multiple", str(err.exception))
+
+    def test_fqdn_trailing_dot_and_case_normalization(self):
+        payload = {
+            "Peer": {
+                "a": {
+                    "DNSName": "DEV-TARGET.TAILCF9988.TS.NET.",
+                    "HostName": "dev-target",
+                    "TailscaleIPs": [IP],
+                    "Online": True,
+                }
+            }
+        }
+        with patch.object(
+            type(self.machine),
+            "_run_allowlisted",
+            return_value=(0, json.dumps(payload), ""),
+        ):
+            self.machine._assert_tailscale_peer_current(FQDN, IP)
+
+    def test_temp_known_hosts_mode_0600(self):
+        import os
+        import stat
+        import tempfile
+
+        from odoo.addons.dev_session_hub.models.dev_machine_verification import (
+            _write_private_mode_0600,
+        )
+
+        directory = tempfile.mkdtemp(prefix="devhub-kh-test-")
+        path = os.path.join(directory, "known_hosts")
+        try:
+            _write_private_mode_0600(path, "host ssh-ed25519 AAAATEST\n")
+            mode = stat.S_IMODE(os.stat(path).st_mode)
+            self.assertEqual(mode, 0o600)
+        finally:
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+            os.rmdir(directory)
+
+    def test_temp_known_hosts_cleanup_on_ssh_failure(self):
+        leftover = []
+        real_mkdtemp = tempfile.mkdtemp
+
+        def fake_mkdtemp(prefix="devhub-kh-"):
+            path = real_mkdtemp(prefix=prefix)
+            leftover.append(path)
+            return path
+
+        with patch.object(
+            type(self.machine),
+            "_ssh_resolve_alias",
+            return_value={"hostname": FQDN, "proxycommand": "none"},
+        ), patch.object(
+            type(self.machine), "_assert_ssh_config_safe"
+        ), patch.object(
+            type(self.machine), "_assert_tailscale_peer_current"
+        ), patch.object(
+            type(self.machine),
+            "_observe_ed25519_fingerprint",
+            return_value=(f"{FQDN} ssh-ed25519 AAAATEST", PIN),
+        ), patch(
+            "odoo.addons.dev_session_hub.models.dev_machine_verification.tempfile.mkdtemp",
+            side_effect=fake_mkdtemp,
+        ), patch.object(
+            type(self.machine),
+            "_run_allowlisted",
+            return_value=(1, "", "denied"),
+        ):
+            with self.assertRaises(UserError):
+                self._manager_machine().action_verify_tailscale_destination()
+        for path in leftover:
+            self.assertFalse(os.path.isdir(path), path)
+
+    def test_audit_events_immutable(self):
+        self._patch_success_stack()
+        self._manager_machine().action_verify_tailscale_destination()
+        event = self.env["dev.machine.verification.event"].search(
+            [("machine_id", "=", self.machine.id)], limit=1
+        )
+        with self.assertRaises(AccessError):
+            event.write({"reason_code": "tampered"})
+        with self.assertRaises(AccessError):
+            event.unlink()
+
+    def test_failed_verification_leaves_prior_verified_state(self):
+        self._patch_success_stack()
+        self._manager_machine().action_verify_tailscale_destination()
+        stamp = self.machine.tailscale_verified_at
+        with patch.object(
+            type(self.machine),
+            "_ssh_resolve_alias",
+            side_effect=lambda *_a, **_k: self.machine._raise_with_reason("ssh_failed"),
+        ):
+            with self.assertRaises(UserError):
+                self._manager_machine().action_verify_tailscale_destination()
+        self.assertTrue(self.machine.tailscale_destination_verified)
+        self.assertEqual(self.machine.tailscale_verified_at, stamp)
 

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_openproject_backend_list" model="ir.ui.view">
+        <field name="name">openproject.backend.list</field>
+        <field name="model">openproject.backend</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="api_url"/>
+                <field name="enable_pull"/>
+                <field name="enable_push"/>
+                <field name="last_pull_at"/>
+                <field name="last_test_state"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_openproject_backend_form" model="ir.ui.view">
+        <field name="name">openproject.backend.form</field>
+        <field name="model">openproject.backend</field>
+        <field name="arch" type="xml">
+            <form string="OpenProject Backend">
+                <header>
+                    <button name="action_test_connection" type="object" string="Test Connection" class="btn-primary"/>
+                    <button name="action_sync_now" type="object" string="Sync Now" class="btn-secondary"
+                            invisible="not enable_pull"/>
+                    <button name="action_full_sync_now" type="object" string="Full Sync (all WPs)" class="btn-secondary"
+                            invisible="not enable_pull"
+                            confirm="Pull ALL work packages for every mapped project (ignores last-pull watermark)?"/>
+                    <button name="action_refresh_classification_ui" type="object"
+                            string="Refresh Classification" class="btn-secondary"/>
+                    <button name="action_realign_tasks_wizard" type="object"
+                            string="Realign Task Placement" class="btn-secondary"/>
+                    <button name="action_open_public_url" type="object" string="Open OpenProject URL"/>
+                    <field name="last_test_state" widget="badge"
+                            decoration-success="last_test_state == 'ok'"
+                            decoration-danger="last_test_state == 'failed'"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_logs" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="log_count" widget="statinfo" string="Logs"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Backend name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Connection">
+                            <field name="api_url"/>
+                            <field name="public_url"/>
+                            <field name="api_token" password="True"/>
+                            <field name="host_header"/>
+                            <field name="verify_ssl"/>
+                        </group>
+                        <group string="Sync">
+                            <field name="enable_pull"/>
+                            <field name="enable_push"/>
+                            <field name="last_pull_at"/>
+                            <field name="cron_interval_minutes"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group string="Defaults for create">
+                        <field name="default_type_href"/>
+                        <field name="default_priority_href"/>
+                    </group>
+                    <group string="Last test" invisible="not last_test_date">
+                        <field name="last_test_date"/>
+                        <field name="last_test_message"/>
+                    </group>
+                    <notebook>
+                        <page string="Project Maps">
+                            <field name="project_map_ids">
+                                <list editable="bottom">
+                                    <field name="op_project_id"/>
+                                    <field name="op_project_name"/>
+                                    <field name="odoo_project_id"/>
+                                    <field name="auto_create_project"/>
+                                    <field name="op_push_create"/>
+                                    <field name="active"/>
+                                    <field name="last_pull_at"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Status Maps">
+                            <field name="status_map_ids">
+                                <list editable="bottom">
+                                    <field name="op_status_id"/>
+                                    <field name="op_status_href"/>
+                                    <field name="op_status_name"/>
+                                    <field name="odoo_stage_id"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="User Maps">
+                            <field name="user_map_ids">
+                                <list editable="bottom">
+                                    <field name="op_user_id"/>
+                                    <field name="op_user_email"/>
+                                    <field name="odoo_user_id"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_openproject_backend" model="ir.actions.act_window">
+        <field name="name">OpenProject Backends</field>
+        <field name="res_model">openproject.backend</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

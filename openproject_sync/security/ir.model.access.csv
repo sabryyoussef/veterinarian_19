@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_openproject_backend_manager,openproject.backend manager,model_openproject_backend,project.group_project_manager,1,1,1,1
+access_openproject_backend_user,openproject.backend user,model_openproject_backend,project.group_project_user,1,0,0,0
+access_openproject_project_map_manager,openproject.project.map manager,model_openproject_project_map,project.group_project_manager,1,1,1,1
+access_openproject_project_map_user,openproject.project.map user,model_openproject_project_map,project.group_project_user,1,0,0,0
+access_openproject_status_map_manager,openproject.status.map manager,model_openproject_status_map,project.group_project_manager,1,1,1,1
+access_openproject_status_map_user,openproject.status.map user,model_openproject_status_map,project.group_project_user,1,0,0,0
+access_openproject_user_map_manager,openproject.user.map manager,model_openproject_user_map,project.group_project_manager,1,1,1,1
+access_openproject_user_map_user,openproject.user.map user,model_openproject_user_map,project.group_project_user,1,0,0,0
+access_openproject_sync_log_manager,openproject.sync.log manager,model_openproject_sync_log,project.group_project_manager,1,1,1,1
+access_openproject_sync_log_user,openproject.sync.log user,model_openproject_sync_log,project.group_project_user,1,0,0,0
+access_openproject_task_realign_wizard_manager,openproject.task.realign.wizard manager,model_openproject_task_realign_wizard,project.group_project_manager,1,1,1,1
+access_openproject_task_realign_line_manager,openproject.task.realign.line manager,model_openproject_task_realign_line,project.group_project_manager,1,1,1,1

@@ -1,6 +1,0 @@
-master_hostname=master
-ActiveState=active
-MainPID=424403
-ActiveState=active
-MainPID=3429925
-unrelated=367

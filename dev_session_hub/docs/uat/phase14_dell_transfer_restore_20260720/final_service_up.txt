@@ -1,7 +1,0 @@
-i=1 state=active code=200
-MainPID=557938
-ActiveState=active
-LISTEN 0      128                        0.0.0.0:18028      0.0.0.0:*    users:(("python3",pid=557938,fd=4))   
-LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=3051,fd=3))     
-LISTEN 0      511                          [::1]:18028         [::]:*    users:(("cursor",pid=474709,fd=74))   
-SERVICE_UP_OK

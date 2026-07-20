@@ -1,36 +1,18 @@
-=== R7 service ===
-MainPID=645645
-ExecMainStartTimestamp=Mon 2026-07-20 13:42:53 EEST
+=== R7 smoke (sanitized) ===
 ActiveState=active
-LISTEN 0      128                        0.0.0.0:18028      0.0.0.0:*          
-LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*          
-=== HTTP ===
+LISTEN port=18028 (Dell Test)
+LISTEN port=8027 (Dell Production — untouched / still present)
 http_login=200
-=== conf provenance ===
-dbfilter = ^pet_spot_elsahel_test$
-addons_path = /mnt/downloads/home_extended/odoo_ssd/odoo19/odoo19/addons,/mnt/downloads/home_extended/odoo_ssd/odoo19/odoo19/enterprise,/home/sabry3/devhub/addons_overlay_deps,/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
-http_port = 18028
-data_dir = /home/sabry3/devhub/filestore/pet_spot_elsahel_test_data
-=== modules ===
-dev_session_hub|installed|19.0.8.0.1
-openproject_sync|installed|19.0.1.5.1
-=== repo/machine/policy ===
-/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d|/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
-77|true|false|trusted_dev|/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
-false|denied
-=== integrations ===
-1 backends active=0
-OpenProject: Pull Work Packages|false
-0
+dbfilter=^pet_spot_elsahel_test$
+http_port=18028
+modules:
+  dev_session_hub|installed|19.0.8.0.1
+  openproject_sync|installed|19.0.1.5.1
+repo_path_ref=/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
+machine_id=77 production=false trust_zone=trusted_dev
+deploy_policy=denied
 ASSERT_DEV_HUB_SAFE=PASS
-machine True False trusted_dev /home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
-repo /home/sabry3/devhub/releases/veterinarian_19_b6e8a5d /home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
-sessions 4
-deploy_records 0
-op_backends []
-profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
-state=active
-http=200
-LISTEN 0      128                        0.0.0.0:18028      0.0.0.0:*          
-LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*          
+deploy_records=0
+op_backends_active=0
 R7_OK
+# Note: phase17 supersedes this interim pin with standalone clone @ 4e2d14a

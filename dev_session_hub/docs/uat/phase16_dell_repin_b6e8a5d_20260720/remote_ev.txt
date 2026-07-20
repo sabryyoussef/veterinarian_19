@@ -1,1 +1,0 @@
-REMOTE_EV=/home/sabry3/devhub/logs/phase16_dell_repin_b6e8a5d_20260720T101550Z

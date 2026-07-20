@@ -1,5 +1,0 @@
-master_hostname=master
-master_test_active=active
-master_prod_active=active
-master_dirty_unrelated=367
-handoff_source_exists=yes

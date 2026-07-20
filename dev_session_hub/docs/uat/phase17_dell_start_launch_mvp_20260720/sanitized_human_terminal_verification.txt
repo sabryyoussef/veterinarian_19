@@ -4,6 +4,7 @@
 client=Ubuntu Dell Precision
 fallback=explicit_Remote-SSH
 working_directory=/home/sabry3/devhub/releases/veterinarian_19_4e2d14a_clone
+standalone_clone=required_and_used
 branch=staging
 HEAD=4e2d14acefcc790544b63e1da1a2661947f4d5fc
 git_status=clean
@@ -16,10 +17,3 @@ git_status_verified=clean
 dell_test_http_port=18028
 dell_test_http_result=200
 production_port_8027=untouched
-master_test_port_8027_note=Production/master Test/port 8027 untouched
-
-helper_executed=no
-deploy_executed=no
-runner_executed=no
-promotion_executed=no
-outbound_integration_action=no

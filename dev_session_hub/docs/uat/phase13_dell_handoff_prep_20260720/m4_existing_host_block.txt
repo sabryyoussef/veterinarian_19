@@ -1,8 +1,0 @@
-Host precision-ts sabry-precision-ts sabry3-precision-5540-ts
-  HostName 100.110.211.53
-  User sabry3
-  IdentityFile ~/.ssh/id_ed25519
-  IdentitiesOnly yes
-  ServerAliveInterval 30
-  ConnectTimeout 15
-

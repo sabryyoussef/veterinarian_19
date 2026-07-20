@@ -1,7 +1,0 @@
-hostname sabry3-Precision-5540
-dev_models_count 5
-dev_models_sample ['discuss.channel.rtc.session', 'pet.grooming.session', 'pet.training.session', 'pos.close.session.wizard', 'pos.session']
-has_dev_machine False
-has_dev_session False
-module_db dev_session_hub installed 19.0.8.0.0
-import_ok /home/sabry3/devhub/veterinarian_19/dev_session_hub/__init__.py

@@ -1,8 +1,0 @@
-=== stop service ===
-=== disposable DB from handoff dump ===
- pg_terminate_backend 
-----------------------
-(0 rows)
-
-DROP DATABASE
-CREATE DATABASE

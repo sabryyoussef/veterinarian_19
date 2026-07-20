@@ -1,7 +1,0 @@
-/dev/sda3           121G   77G       38G  68% /
-free_bytes 40219447296
-sabry3
-sabry3-Precision-5540
-drwx------ 3 sabry3 sabry3 4096 Jul 20 08:44 /home/sabry3/devhub/handoff
-drwx------ 3 sabry3 sabry3 4096 Jul 20 08:44 /home/sabry3/devhub/handoff/pet_spot_elsahel_test_20260720T053201Z
-drwx------ 2 sabry3 sabry3 4096 Jul 20 08:44 /home/sabry3/devhub/handoff/pet_spot_elsahel_test_20260720T053201Z/artifacts

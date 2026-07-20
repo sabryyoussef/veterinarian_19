@@ -9,53 +9,60 @@
 | Field | Value |
 |---|---|
 | Session | **890** |
-| Session state | **Started** (Draft → Started) |
-| Client | Ubuntu Dell Precision |
+| Created as | **Draft** |
+| Session state after Start & Launch | **Started** (Draft → Started) |
+| `active_client_id` | **Ubuntu Dell Precision** (assigned) |
 | Working directory | `/home/sabry3/devhub/releases/veterinarian_19_4e2d14a_clone` |
+| Standalone clone | **Required and used** (legacy 914-path preserved untouched) |
 | Branch | `staging` |
 | Runtime SHA | `4e2d14acefcc790544b63e1da1a2661947f4d5fc` |
 | Git status at final human verification | **clean** |
-| Cursor attach | **Remote-SSH fallback** (explicit) |
+| Cursor attach | **Explicit Remote-SSH fallback** (managed helper not used) |
 | Dell Test HTTP | **200** on port **18028** |
 | Production / port 8027 | **untouched** |
 | Helper / deploy / runner / promotion | **not executed** |
 
-## Checklist (required final statements)
+## Evidence-integrity checklist
 
-| Assertion | Result |
+| # | Assertion | Result |
+|---|---|---|
+| 1 | Session 890 created as Draft | **PASS** |
+| 2 | Safe machine / Tailscale verification succeeded (prior phases) | **PASS** |
+| 3 | Start & Launch transitioned session to Started | **PASS** |
+| 4 | `active_client_id` assigned (Ubuntu Dell Precision) | **PASS** |
+| 5 | Standalone clone required and used | **PASS** |
+| 6 | Explicit Remote-SSH fallback opened Cursor | **PASS** |
+| 7 | Human terminal: path, `staging`, SHA `4e2d14a…`, clean Git | **PASS** |
+| 8 | No deploy, runner, helper, promotion, or Production mutation | **PASS** |
+| 9 | Dell MVP result PASS / 100% | **PASS** |
+| 10 | Historical PR/merge SHA lineage consistent with staging tip | **PASS** (see below) |
+
+## Historical SHA lineage (staging)
+
+| SHA | Role |
 |---|---|
-| Start & Launch passed | **PASS** |
-| Session 890 transitioned Draft → Started | **PASS** |
-| Active client assigned | **PASS** (Ubuntu Dell Precision) |
-| Cursor opened through explicit Remote-SSH fallback | **PASS** |
-| Correct folder opened | **PASS** |
-| Branch/SHA matched | **PASS** (`staging` @ `4e2d14a…`) |
-| Git was clean | **PASS** |
-| Production / master Test / port 8027 untouched | **PASS** |
-| No helper, deploy, runner, promotion, or outbound integration | **PASS** |
-| Dell MVP verdict | **PASS / 100% complete** |
+| `ff53a8d…` | Earlier Dell restore pin (phase 14) |
+| `198be31…` | `openproject_sync` tracked dependency |
+| `b6e8a5d…` | Fresh-install / test isolation (phase 16 interim) |
+| `4e2d14a…` | Verify Tailscale Destination; **final MVP runtime** |
 
-## Pathway context (already evidenced)
+## Pathway reports (links)
 
-| Phase | Scope |
+| Phase | Report |
 |---|---|
-| 13 | Dell handoff prep (master Test isolation, backup, SSH readiness) |
-| 14 | Transfer + Dell restore/configure/validate (port 18028) |
-| 15 | Blocker remediation (openproject_sync pin path, test isolation) |
-| 16 | Dell repin toward staging SHA lineage |
-| **17** | **Start & Launch UAT + human Remote-SSH verification (this pack)** |
+| 13 | [`../phase13_dell_handoff_prep_20260720/HANDOFF_REPORT.md`](../phase13_dell_handoff_prep_20260720/HANDOFF_REPORT.md) |
+| 14 | [`../phase14_dell_transfer_restore_20260720/GATE12_FINAL_REPORT.md`](../phase14_dell_transfer_restore_20260720/GATE12_FINAL_REPORT.md) |
+| 15 | [`../phase15_blocker_remediation_20260720/BLOCKER_REMEDIATION_REPORT.md`](../phase15_blocker_remediation_20260720/BLOCKER_REMEDIATION_REPORT.md) |
+| 16 | [`../phase16_dell_repin_b6e8a5d_20260720/PHASE16_REPORT.md`](../phase16_dell_repin_b6e8a5d_20260720/PHASE16_REPORT.md) |
+| **17** | **This file** + sanitized terminal/safety artifacts |
 
 ## Security notes
 
 - No credential values recorded.
 - SSH host key referenced by **fingerprint only**: `SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU`.
-- Tailscale identity referenced by approved alias/IP evidence from prior phases; no private keys.
-- Runtime session state and machine records were **not** modified by this documentation PR.
+- Approved Dell Tailscale IP reference: `100.110.211.53` (alias `sabry3-precision-5540-ts`).
+- Runtime session 890 and machine records were **not** modified by this documentation PR.
 
-## Out of scope for this pack
+## Out of scope
 
-- Managed Cursor Helper install
-- Additional client registration
-- Central remote-execution architecture
-- Production activation
-- Merging this evidence PR (human review required)
+- Managed Cursor Helper install; additional clients; central agent cutover; Production activation; merging without human re-approval after trim.

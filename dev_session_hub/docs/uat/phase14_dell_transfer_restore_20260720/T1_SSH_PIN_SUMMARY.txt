@@ -1,0 +1,10 @@
+# T1 Permanent SSH pin — summary (sanitized)
+Date: 2026-07-20
+alias: sabry3-precision-5540-ts
+hostname_ref: 100.110.211.53
+fingerprint_ref: SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU
+fingerprint_match: PASS
+BatchMode: PASS
+StrictHostKeyChecking: yes
+HostKeyAlias: sabry3-precision-5540-ts
+host_key_material: REDACTED (fingerprint-only in Git)

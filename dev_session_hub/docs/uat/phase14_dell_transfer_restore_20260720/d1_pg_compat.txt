@@ -1,5 +1,0 @@
-# PostgreSQL compatibility
-master_dump_from=PostgreSQL 18.4
-dell_system_pg=16.14 (serves pet_spot_elsahel on :5432 / Odoo :8027 — UNTOUCHED)
-dell_test_strategy=Docker postgres:18 on 127.0.0.1:5433 isolated for pet_spot_elsahel_test only
-pet_spot_elsahel_test_preexisting_on_pg16=no

@@ -1,2 +1,0 @@
-=== clone disposable DB from verified Test DB ===
-clone_ok

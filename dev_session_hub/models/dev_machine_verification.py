@@ -16,7 +16,7 @@ from pathlib import Path
 from odoo import fields, models
 from odoo.exceptions import AccessError, UserError
 
-from .dev_registry import HOST_KEY_FINGERPRINT, TAILSCALE_DNS_NAME
+from .dev_registry import HOST_KEY_FINGERPRINT, SSH_USERNAME, TAILSCALE_DNS_NAME
 
 SSH_EXECUTABLE = "/usr/bin/ssh"
 SSH_KEYSCAN_EXECUTABLE = "/usr/bin/ssh-keyscan"
@@ -34,6 +34,7 @@ IDENTITY_INVALIDATION_FIELDS = frozenset(
     {
         "hostname",
         "ssh_alias",
+        "verification_ssh_user",
         "tailscale_name",
         "tailscale_ip_reference",
         "pinned_host_key_fingerprint",
@@ -55,27 +56,6 @@ VERIFICATION_PRIVATE_WRITE_FIELDS = frozenset(
     }
 )
 
-# Effective ssh -G keys that must be absent/disabled before any connection.
-_DANGEROUS_SSH_NONE_KEYS = frozenset(
-    {
-        "proxycommand",
-        "proxyjump",
-        "localcommand",
-        "remotecommand",
-        "controlpath",
-        "identityagent",
-    }
-)
-_DANGEROUS_SSH_FALSE_KEYS = frozenset(
-    {
-        "forwardagent",
-        "forwardx11",
-        "forwardx11trusted",
-        "permitlocalcommand",
-        "tunnel",
-    }
-)
-
 SSH_CONNECT_TIMEOUT = 8
 SSH_CONNECTION_ATTEMPTS = 1
 SUBPROCESS_TIMEOUT = 15
@@ -85,7 +65,10 @@ OUTPUT_BYTE_LIMIT = 1024 * 1024
 # Fixed remote identity probe — never accept caller-supplied commands.
 REMOTE_HOSTNAME_ARGV = ("hostname",)
 
-# Command-line overrides that must win over local ssh_config.
+# Empty config file: OpenSSH ignores user and system ssh_config (including Match exec).
+SSH_NULL_CONFIG = "/dev/null"
+
+# Command-line overrides used with ``-F /dev/null`` (no user/system ssh_config).
 SSH_SAFE_OPTIONS = (
     "BatchMode=yes",
     "StrictHostKeyChecking=yes",
@@ -100,10 +83,16 @@ SSH_SAFE_OPTIONS = (
     "RequestTTY=no",
     "ProxyCommand=none",
     "ProxyJump=none",
+    "ProxyUseFdpass=no",
     "Tunnel=no",
     "IdentityAgent=none",
     "ControlMaster=no",
     "ControlPath=none",
+    "ControlPersist=no",
+    "PKCS11Provider=none",
+    "SecurityKeyProvider=none",
+    "CanonicalizeHostname=no",
+    "KnownHostsCommand=none",
     f"ConnectTimeout={SSH_CONNECT_TIMEOUT}",
     f"ConnectionAttempts={SSH_CONNECTION_ATTEMPTS}",
     "NumberOfPasswordPrompts=0",
@@ -119,6 +108,10 @@ REASON_MESSAGES = {
     "production": "Production-bearing machines cannot be verified for launch.",
     "trust_zone": "Verification requires trust zone trusted_dev.",
     "ssh_alias": "The SSH alias is missing or not allowlisted.",
+    "ssh_user": (
+        "A verified-safe verification_ssh_user is required. "
+        "Active verification does not parse ssh_alias OpenSSH configuration."
+    ),
     "tailscale_fqdn": (
         "The Tailscale name must be a canonical DNS name ending in .ts.net. "
         "Correct the field before verifying; it is not rewritten automatically."
@@ -126,8 +119,6 @@ REASON_MESSAGES = {
     "tailscale_ip": "A valid Tailscale IP reference (100.64.0.0/10) is required.",
     "fingerprint": "A pinned SHA256 SSH host-key fingerprint is required.",
     "paths": "Allowed path prefixes must already be valid.",
-    "alias_resolve": "The SSH alias does not resolve to the registered Tailscale destination.",
-    "ssh_config": "The effective SSH configuration contains unsafe options.",
     "tailscale_offline": "The Tailscale destination is not currently online.",
     "tailscale_mismatch": "Tailscale status does not match the registered destination.",
     "tailscale_ambiguous": "Multiple Tailscale peers match the registered destination.",
@@ -158,16 +149,6 @@ def _is_tailscale_ipv4(value):
     except ValueError:
         return False
     return address in ipaddress.ip_network("100.64.0.0/10")
-
-
-def _ssh_option_disabled(value):
-    text = (value or "").strip().lower()
-    return text in {"", "none", "no", "false", "off"}
-
-
-def _ssh_option_enabled(value):
-    text = (value or "").strip().lower()
-    return text in {"yes", "true", "on", "1"}
 
 
 def _write_private_mode_0600(path, content):
@@ -364,6 +345,8 @@ class DevMachine(models.Model):
             return "trust_zone"
         if not SSH_ALIAS_SAFE.fullmatch(self.ssh_alias or ""):
             return "ssh_alias"
+        if not SSH_USERNAME.fullmatch(self.verification_ssh_user or ""):
+            return "ssh_user"
         if not TAILSCALE_DNS_NAME.fullmatch(self.tailscale_name or ""):
             return "tailscale_fqdn"
         if not _is_tailscale_ipv4(self.tailscale_ip_reference or ""):
@@ -379,21 +362,13 @@ class DevMachine(models.Model):
     def _perform_active_verification(self):
         """Run network identity checks. Raises UserError with a sanitized message."""
         self.ensure_one()
-        alias = self.ssh_alias
         fqdn = _normalize_fqdn(self.tailscale_name)
         expected_ip = self.tailscale_ip_reference
         expected_host = self.hostname
         pin = self.pinned_host_key_fingerprint
+        ssh_user = self.verification_ssh_user
 
-        resolved = self._ssh_resolve_alias(alias)
-        self._assert_ssh_config_safe(resolved)
-        resolved_host_raw = (resolved.get("hostname") or "").strip()
-        if (
-            _normalize_fqdn(resolved_host_raw) != fqdn
-            and resolved_host_raw != expected_ip
-        ):
-            self._raise_with_reason("alias_resolve")
-
+        # No ssh -G / alias config parsing: destination comes only from registry fields.
         self._assert_tailscale_peer_current(fqdn, expected_ip)
 
         observed_key_line, observed_fp = self._observe_ed25519_fingerprint(fqdn)
@@ -401,7 +376,7 @@ class DevMachine(models.Model):
             self._raise_with_reason("fingerprint_mismatch")
 
         remote_hostname = self._ssh_strict_hostname_probe(
-            alias=alias,
+            ssh_user=ssh_user,
             fqdn=fqdn,
             expected_ip=expected_ip,
             known_hosts_line=observed_key_line,
@@ -462,52 +437,18 @@ class DevMachine(models.Model):
             argv.extend(["-o", option])
         return argv
 
-    def _parse_ssh_g(self, stdout):
-        resolved = {}
-        for line in stdout.splitlines():
-            if not line or " " not in line:
-                continue
-            key, value = line.split(" ", 1)
-            resolved[key.strip().lower()] = value.strip()
-        return resolved
-
-    def _assert_ssh_config_safe(self, resolved):
-        for key in _DANGEROUS_SSH_NONE_KEYS:
-            if not _ssh_option_disabled(resolved.get(key)):
-                self._raise_with_reason("ssh_config")
-        for key in _DANGEROUS_SSH_FALSE_KEYS:
-            if _ssh_option_enabled(resolved.get(key)):
-                self._raise_with_reason("ssh_config")
-        # Explicit forwarding channel sizes / ports
-        for key, value in resolved.items():
-            if key.startswith("localforward") or key.startswith("remoteforward"):
-                if value and not _ssh_option_disabled(value):
-                    self._raise_with_reason("ssh_config")
-            if key.startswith("dynamicforward") and value and not _ssh_option_disabled(
-                value
-            ):
-                self._raise_with_reason("ssh_config")
-            if key == "controlmaster" and (value or "").strip().lower() not in {
-                "",
-                "no",
-                "false",
-                "off",
-            }:
-                self._raise_with_reason("ssh_config")
-
-    def _ssh_resolve_alias(self, alias):
-        # Apply safe overrides while resolving so -G reflects hardened effective config.
-        code, stdout, _stderr = self._run_allowlisted(
-            SSH_EXECUTABLE,
-            [*self._ssh_safe_option_argv(), "-G", alias],
-            timeout=SUBPROCESS_TIMEOUT,
-        )
-        if code != 0:
-            self._raise_with_reason("alias_resolve")
-        resolved = self._parse_ssh_g(stdout)
-        if "hostname" not in resolved:
-            self._raise_with_reason("alias_resolve")
-        return resolved
+    def _ssh_connection_argv(self, ssh_user, fqdn, known_hosts_path):
+        """Build strict SSH argv that never parses user/system ssh_config."""
+        return [
+            "-F",
+            SSH_NULL_CONFIG,
+            "-l",
+            ssh_user,
+            *self._ssh_safe_option_argv(f"UserKnownHostsFile={known_hosts_path}"),
+            "--",
+            fqdn,
+            *REMOTE_HOSTNAME_ARGV,
+        ]
 
     def _assert_tailscale_peer_current(self, fqdn, expected_ip):
         code, stdout, _stderr = self._run_allowlisted(
@@ -606,7 +547,7 @@ class DevMachine(models.Model):
             self._raise_with_reason("host_key")
         return normalized, match.group(1)
 
-    def _ssh_strict_hostname_probe(self, alias, fqdn, expected_ip, known_hosts_line):
+    def _ssh_strict_hostname_probe(self, ssh_user, fqdn, expected_ip, known_hosts_line):
         tmp = tempfile.mkdtemp(prefix="devhub-kh-")
         known_hosts = Path(tmp) / "known_hosts"
         try:
@@ -615,21 +556,14 @@ class DevMachine(models.Model):
                 self._raise_with_reason("host_key")
             key_type, key_data = parts[1], parts[2]
             host_tokens = []
-            for token in (alias, fqdn, expected_ip):
+            for token in (fqdn, expected_ip):
                 if token and token not in host_tokens:
                     host_tokens.append(token)
             content = "".join(
                 f"{token} {key_type} {key_data}\n" for token in host_tokens
             )
             _write_private_mode_0600(known_hosts, content)
-            argv = [
-                *self._ssh_safe_option_argv(
-                    f"UserKnownHostsFile={known_hosts}",
-                    f"Hostname={fqdn}",
-                ),
-                alias,
-                *REMOTE_HOSTNAME_ARGV,
-            ]
+            argv = self._ssh_connection_argv(ssh_user, fqdn, str(known_hosts))
             code, stdout, _stderr = self._run_allowlisted(
                 SSH_EXECUTABLE, argv, timeout=SUBPROCESS_TIMEOUT
             )

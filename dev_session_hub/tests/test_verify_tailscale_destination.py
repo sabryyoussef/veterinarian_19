@@ -78,6 +78,7 @@ class TestVerifyTailscaleDestination(TransactionCase):
                 "tailscale_destination_verified": False,
                 "pinned_host_key_fingerprint": PIN,
                 "ssh_alias": "verify-target-ts",
+                "verification_ssh_user": "verifyuser",
                 "role": "verification-test",
                 "trust_zone": "trusted_dev",
                 "production": False,
@@ -95,11 +96,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
 
     def _patch_success_stack(self):
         patches = [
-            patch.object(
-                type(self.machine),
-                "_ssh_resolve_alias",
-                return_value={"hostname": FQDN, "user": "sabry3"},
-            ),
             patch.object(
                 type(self.machine),
                 "_assert_tailscale_peer_current",
@@ -169,6 +165,7 @@ class TestVerifyTailscaleDestination(TransactionCase):
                 "tailscale_ip_reference": IP,
                 "pinned_host_key_fingerprint": PIN,
                 "ssh_alias": "bad;alias",
+                "verification_ssh_user": "verifyuser",
                 "role": "verification-test",
                 "trust_zone": "trusted_dev",
                 "production": False,
@@ -179,6 +176,12 @@ class TestVerifyTailscaleDestination(TransactionCase):
             bad.with_user(self.manager).action_verify_tailscale_destination()
         self.assertIn("SSH alias", str(err.exception))
 
+    def test_missing_verification_ssh_user_refused(self):
+        self.machine.verification_ssh_user = False
+        with self.assertRaises(UserError) as err:
+            self._manager_machine().action_verify_tailscale_destination()
+        self.assertIn("verification_ssh_user", str(err.exception))
+
     def test_non_ts_net_destination_refused(self):
         short = self.env["dev.machine"].create(
             {
@@ -188,6 +191,7 @@ class TestVerifyTailscaleDestination(TransactionCase):
                 "tailscale_ip_reference": IP,
                 "pinned_host_key_fingerprint": PIN,
                 "ssh_alias": "short-name-ts",
+                "verification_ssh_user": "sabry3",
                 "role": "verification-test",
                 "trust_zone": "trusted_dev",
                 "production": False,
@@ -211,10 +215,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
 
     def test_host_key_failure_no_timestamp(self):
         with patch.object(
-            type(self.machine),
-            "_ssh_resolve_alias",
-            return_value={"hostname": FQDN},
-        ), patch.object(
             type(self.machine), "_assert_tailscale_peer_current"
         ), patch.object(
             type(self.machine),
@@ -228,10 +228,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
 
     def test_fingerprint_mismatch_no_timestamp(self):
         with patch.object(
-            type(self.machine),
-            "_ssh_resolve_alias",
-            return_value={"hostname": FQDN},
-        ), patch.object(
             type(self.machine), "_assert_tailscale_peer_current"
         ), patch.object(
             type(self.machine),
@@ -248,10 +244,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
 
     def test_hostname_mismatch_no_timestamp(self):
         with patch.object(
-            type(self.machine),
-            "_ssh_resolve_alias",
-            return_value={"hostname": FQDN},
-        ), patch.object(
             type(self.machine), "_assert_tailscale_peer_current"
         ), patch.object(
             type(self.machine),
@@ -269,10 +261,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
     def test_tailscale_destination_mismatch_no_timestamp(self):
         with patch.object(
             type(self.machine),
-            "_ssh_resolve_alias",
-            return_value={"hostname": FQDN},
-        ), patch.object(
-            type(self.machine),
             "_assert_tailscale_peer_current",
             side_effect=lambda *_a, **_k: self.machine._raise_with_reason(
                 "tailscale_mismatch"
@@ -285,7 +273,7 @@ class TestVerifyTailscaleDestination(TransactionCase):
     def test_timeout_fails_closed(self):
         with patch.object(
             type(self.machine),
-            "_ssh_resolve_alias",
+            "_assert_tailscale_peer_current",
             side_effect=lambda *_a, **_k: self.machine._raise_with_reason("timeout"),
         ):
             with self.assertRaises(UserError) as err:
@@ -332,7 +320,9 @@ class TestVerifyTailscaleDestination(TransactionCase):
 
         with patch.object(verify_mod.subprocess, "run", side_effect=fake_run):
             code, _out, _err = self.machine._run_allowlisted(
-                verify_mod.SSH_EXECUTABLE, ["-G", "verify-target-ts"], timeout=5
+                verify_mod.SSH_EXECUTABLE,
+                ["-F", "/dev/null", "-l", "verifyuser", FQDN, "hostname"],
+                timeout=5,
             )
             self.assertEqual(code, 0)
         self.assertEqual(seen[0][0], verify_mod.SSH_EXECUTABLE)
@@ -341,10 +331,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
     def test_no_arbitrary_remote_command_injection(self):
         self.assertEqual(verify_mod.REMOTE_HOSTNAME_ARGV, ("hostname",))
         with patch.object(
-            type(self.machine),
-            "_ssh_resolve_alias",
-            return_value={"hostname": FQDN},
-        ), patch.object(
             type(self.machine), "_assert_tailscale_peer_current"
         ), patch.object(
             type(self.machine),
@@ -362,11 +348,18 @@ class TestVerifyTailscaleDestination(TransactionCase):
             with patch.object(type(self.machine), "_run_allowlisted", side_effect=fake_run):
                 self._manager_machine().action_verify_tailscale_destination()
         remote_calls = [
-            argv for exe, argv in captured if exe == verify_mod.SSH_EXECUTABLE and "hostname" in argv
+            argv
+            for exe, argv in captured
+            if exe == verify_mod.SSH_EXECUTABLE and "hostname" in argv
         ]
         self.assertTrue(remote_calls)
         for argv in remote_calls:
             self.assertEqual(argv[-1], "hostname")
+            self.assertEqual(argv[0], "-F")
+            self.assertEqual(argv[1], "/dev/null")
+            self.assertIn(FQDN, argv)
+            self.assertNotIn("verify-target-ts", argv)
+            self.assertNotIn("-G", argv)
             self.assertNotIn(";", "".join(argv))
             self.assertNotIn("&&", "".join(argv))
 
@@ -458,10 +451,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
         local_host = socket.gethostname()
         self.machine.hostname = local_host
         with patch.object(
-            type(self.machine),
-            "_ssh_resolve_alias",
-            return_value={"hostname": FQDN},
-        ), patch.object(
             type(self.machine), "_assert_tailscale_peer_current"
         ), patch.object(
             type(self.machine),
@@ -520,33 +509,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
         self.assertFalse(self.machine.tailscale_destination_verified)
         self.assertFalse(self.machine.tailscale_verified_at)
 
-    def test_dangerous_ssh_proxycommand_rejected(self):
-        with self.assertRaises(UserError) as err:
-            self.machine._assert_ssh_config_safe(
-                {"hostname": FQDN, "proxycommand": "nc evil 22"}
-            )
-        self.assertIn("unsafe", str(err.exception).lower())
-
-    def test_dangerous_ssh_localcommand_rejected(self):
-        with self.assertRaises(UserError):
-            self.machine._assert_ssh_config_safe(
-                {
-                    "hostname": FQDN,
-                    "permitlocalcommand": "yes",
-                    "localcommand": "touch /tmp/pwned",
-                }
-            )
-
-    def test_dangerous_ssh_forwarding_rejected(self):
-        with self.assertRaises(UserError):
-            self.machine._assert_ssh_config_safe(
-                {"hostname": FQDN, "localforward": "8080 localhost:80"}
-            )
-        with self.assertRaises(UserError):
-            self.machine._assert_ssh_config_safe(
-                {"hostname": FQDN, "forwardagent": "yes"}
-            )
-
     def test_ambiguous_tailscale_peers_fail_closed(self):
         payload = {
             "Peer": {
@@ -591,6 +553,112 @@ class TestVerifyTailscaleDestination(TransactionCase):
         ):
             self.machine._assert_tailscale_peer_current(FQDN, IP)
 
+    def test_ssh_connection_argv_isolates_config(self):
+        argv = self.machine._ssh_connection_argv(
+            "verifyuser", FQDN, "/tmp/devhub-kh-test/known_hosts"
+        )
+        self.assertEqual(argv[0], "-F")
+        self.assertEqual(argv[1], "/dev/null")
+        self.assertEqual(argv[2], "-l")
+        self.assertEqual(argv[3], "verifyuser")
+        self.assertIn("--", argv)
+        self.assertEqual(argv[argv.index("--") + 1], FQDN)
+        self.assertEqual(argv[-1], "hostname")
+        self.assertNotIn("-G", argv)
+        joined = " ".join(argv)
+        self.assertIn("ProxyCommand=none", joined)
+        self.assertIn("PermitLocalCommand=no", joined)
+        self.assertIn("KnownHostsCommand=none", joined)
+        self.assertIn("CanonicalizeHostname=no", joined)
+        self.assertIn("IdentityAgent=none", joined)
+        self.assertIn("ControlMaster=no", joined)
+        self.assertIn("PKCS11Provider=none", joined)
+        self.assertIn("SecurityKeyProvider=none", joined)
+
+    def test_match_exec_external_config_not_executed(self):
+        """Regression: verification argv must not parse external Match exec configs.
+
+        OpenSSH evaluates Match exec while reading a config file, before effective
+        options are usefully inspectable. CLI overrides alone do not stop that.
+        Production uses -F /dev/null; this test fails if that isolation is removed.
+        """
+        tmp = tempfile.mkdtemp(prefix="devhub-match-exec-")
+        sentinel = os.path.join(tmp, "sentinel")
+        evil_config = os.path.join(tmp, "evil_config")
+        try:
+            with open(evil_config, "w", encoding="utf-8") as handle:
+                handle.write(
+                    f'Match exec "touch {sentinel}"\n'
+                    "    HostName example.invalid\n"
+                )
+            os.chmod(evil_config, 0o600)
+
+            # Control: parsing the evil config via ssh -G must create the sentinel.
+            control = verify_mod.subprocess.run(
+                [
+                    verify_mod.SSH_EXECUTABLE,
+                    "-G",
+                    "-F",
+                    evil_config,
+                    "-o",
+                    "BatchMode=yes",
+                    "-o",
+                    "ProxyCommand=none",
+                    "-o",
+                    "PermitLocalCommand=no",
+                    "-o",
+                    "ClearAllForwardings=yes",
+                    "somealias",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=5,
+                shell=False,
+            )
+            self.assertEqual(control.returncode, 0)
+            self.assertTrue(
+                os.path.exists(sentinel),
+                "control ssh -G -F evil_config must execute Match exec",
+            )
+            os.unlink(sentinel)
+
+            # Production-shaped argv must not create the sentinel even if an evil
+            # config exists on disk (we deliberately do not pass -F evil_config).
+            known_hosts = os.path.join(tmp, "known_hosts")
+            with open(known_hosts, "w", encoding="utf-8") as handle:
+                handle.write(f"{FQDN} ssh-ed25519 AAAATEST\n")
+            os.chmod(known_hosts, 0o600)
+            argv = self.machine._ssh_connection_argv(
+                "verifyuser", "example.invalid", known_hosts
+            )
+            # Sanity: production builder must force null config, not the evil file.
+            self.assertEqual(argv[0:2], ["-F", "/dev/null"])
+            self.assertNotIn(evil_config, argv)
+            verify_mod.subprocess.run(
+                [verify_mod.SSH_EXECUTABLE, *argv],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=5,
+                shell=False,
+            )
+            self.assertFalse(
+                os.path.exists(sentinel),
+                "production verification argv must not execute Match exec",
+            )
+        finally:
+            for name in ("sentinel", "evil_config", "known_hosts"):
+                path = os.path.join(tmp, name)
+                try:
+                    os.unlink(path)
+                except OSError:
+                    pass
+            try:
+                os.rmdir(tmp)
+            except OSError:
+                pass
+
     def test_temp_known_hosts_mode_0600(self):
         import os
         import stat
@@ -623,12 +691,6 @@ class TestVerifyTailscaleDestination(TransactionCase):
             return path
 
         with patch.object(
-            type(self.machine),
-            "_ssh_resolve_alias",
-            return_value={"hostname": FQDN, "proxycommand": "none"},
-        ), patch.object(
-            type(self.machine), "_assert_ssh_config_safe"
-        ), patch.object(
             type(self.machine), "_assert_tailscale_peer_current"
         ), patch.object(
             type(self.machine),
@@ -664,11 +726,19 @@ class TestVerifyTailscaleDestination(TransactionCase):
         stamp = self.machine.tailscale_verified_at
         with patch.object(
             type(self.machine),
-            "_ssh_resolve_alias",
+            "_assert_tailscale_peer_current",
             side_effect=lambda *_a, **_k: self.machine._raise_with_reason("ssh_failed"),
         ):
             with self.assertRaises(UserError):
                 self._manager_machine().action_verify_tailscale_destination()
         self.assertTrue(self.machine.tailscale_destination_verified)
         self.assertEqual(self.machine.tailscale_verified_at, stamp)
+
+    def test_verification_ssh_user_change_invalidates(self):
+        self._patch_success_stack()
+        self._manager_machine().action_verify_tailscale_destination()
+        self.assertTrue(self.machine.tailscale_destination_verified)
+        self.machine.verification_ssh_user = "otheruser"
+        self.assertFalse(self.machine.tailscale_destination_verified)
+        self.assertFalse(self.machine.tailscale_verified_at)
 

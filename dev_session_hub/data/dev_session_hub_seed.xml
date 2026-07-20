@@ -14,6 +14,7 @@
         <field name="tailscale_verified_at">2026-07-18 16:20:00</field>
         <field name="pinned_host_key_fingerprint">SHA256:p/lGDKGwvUxeoO0c7NhcDwekltbxEh4Mb9qFqBG554o</field>
         <field name="ssh_alias">master-ts</field>
+        <field name="verification_ssh_user">sabry</field>
         <field name="os_name">Ubuntu 26.04 LTS</field>
         <field name="architecture">x86_64</field>
         <field name="role">Initial canonical development target</field>

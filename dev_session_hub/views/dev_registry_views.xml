@@ -40,6 +40,7 @@
                             <field name="stable_uuid" readonly="1"/>
                             <field name="hostname"/>
                             <field name="ssh_alias"/>
+                            <field name="verification_ssh_user"/>
                             <field name="role"/>
                         </group>
                         <group>

@@ -1,0 +1,29 @@
+# Safety invariants — Dell MVP final verification
+# No credentials, keys, cookies, or tokens.
+
+session_id=890
+session_created_as=Draft
+session_state_transition=Draft->Started
+active_client_assigned=Ubuntu Dell Precision
+cursor_open_method=explicit_Remote-SSH_fallback
+managed_helper_used=no
+standalone_clone_required_and_used=yes
+legacy_914_path_preserved=yes
+
+runtime_sha=4e2d14acefcc790544b63e1da1a2661947f4d5fc
+canonical_workdir=/home/sabry3/devhub/releases/veterinarian_19_4e2d14a_clone
+
+tailscale_verification=PASS
+ssh_host_key_fingerprint_ref=SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU
+ssh_alias_ref=sabry3-precision-5540-ts
+tailscale_ip_ref=100.110.211.53
+
+production_untouched=yes
+master_test_untouched=yes
+port_8027_untouched=yes
+no_deploy=yes
+no_runner=yes
+no_promotion=yes
+no_helper_install=yes
+no_outbound_integration=yes
+dell_mvp_verdict=PASS_100_PERCENT

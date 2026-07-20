@@ -1,0 +1,13 @@
+=== pre-transfer SHA256SUMS ===
+pet_spot_elsahel_test.dump: OK
+pet_spot_elsahel_test_filestore.tar.gz: OK
+dell_test_odoo.conf.template: OK
+RUNTIME_MANIFEST.json: OK
+RUNTIME_MANIFEST.md: OK
+pet_spot_elsahel_test.dump.toc.txt: OK
+module_version_at_dump.txt: OK
+filestore_exclusion_proof.txt: OK
+expected_dump=6f1fa95114a18e1ffbc4b28ef19805c64f107906e9c67d8b5f0db00d2734354d
+expected_fs=51bc865ce8b7479547e57b6004f3ae32c6428514a41cf301a7622712c592d079
+dump=6f1fa95114a18e1ffbc4b28ef19805c64f107906e9c67d8b5f0db00d2734354d
+filestore=51bc865ce8b7479547e57b6004f3ae32c6428514a41cf301a7622712c592d079

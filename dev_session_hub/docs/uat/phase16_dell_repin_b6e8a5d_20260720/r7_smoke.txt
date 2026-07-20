@@ -1,0 +1,18 @@
+=== R7 smoke (sanitized) ===
+ActiveState=active
+LISTEN port=18028 (Dell Test)
+LISTEN port=8027 (Dell Production — untouched / still present)
+http_login=200
+dbfilter=^pet_spot_elsahel_test$
+http_port=18028
+modules:
+  dev_session_hub|installed|19.0.8.0.1
+  openproject_sync|installed|19.0.1.5.1
+repo_path_ref=/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
+machine_id=77 production=false trust_zone=trusted_dev
+deploy_policy=denied
+ASSERT_DEV_HUB_SAFE=PASS
+deploy_records=0
+op_backends_active=0
+R7_OK
+# Note: phase17 supersedes this interim pin with standalone clone @ 4e2d14a

@@ -1,0 +1,19 @@
+=== T1 (sanitized) ===
+# Host sabry3-precision-5540-ts found
+alias=sabry3-precision-5540-ts
+host_key_type=ED25519
+host_key_material=REDACTED_PUBLIC_KEY
+host_key_fingerprint_ref=SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU
+user=sabry3
+hostname=100.110.211.53
+canonicalizehostname=false
+stricthostkeychecking=true
+hostkeyalias=sabry3-precision-5540-ts
+identityfile=~/.ssh/id_ed25519
+userknownhostsfile=REDACTED_LOCAL_PATH
+batch_ok
+remote_uname_host=sabry3-Precision-5540
+live_fingerprint=256 SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU (ED25519)
+master_dirty=367
+master_test=active
+master_prod=active

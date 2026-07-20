@@ -1,0 +1,10 @@
+# Phase 15 disposable / targeted test totals (sanitized summary)
+# Raw multi-run transcripts removed from Git; see BLOCKER_REMEDIATION_REPORT.md
+
+blocker_B_targeted_tests: PASS (Dell + master after isolation patch)
+disposable_full_suite_dev_session_hub: used for diagnosis only (not Production)
+operational_Test_DB_full_suite: NOT green while UAT rows present (documented; Gate 3 waited for merge+repin)
+openproject_sync_tree_hash: 9c6e94eb4052e67efbd9811f531208cf7ef5a3c22ca7624b74c14fa5fc99146c
+master_pin_commit_ref: ca9097b2e98ba03f9bdbbf88ec5f770137d0e7f4
+dell_overlay_pin_commit_ref: c52759c20a9c3cb915713de9bf57f9b8bfc32b63
+PR_lineage_note: openproject_sync later landed on staging as 198be31; isolation/port fixes via b6e8a5d; Tailscale verify via 4e2d14a

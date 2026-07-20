@@ -1,0 +1,2 @@
+dev_session_hub|installed|19.0.8.0.1
+openproject_sync|installed|19.0.1.5.1

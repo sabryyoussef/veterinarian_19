@@ -124,6 +124,40 @@
               sequence="33"
               groups="group_dev_hub_manager"/>
 
+    <menuitem id="menu_dev_session_hub_configuration"
+              name="Configuration"
+              parent="menu_dev_session_hub_root"
+              sequence="90"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_policies"
+              name="Policies"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_policy"
+              sequence="10"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_audit"
+              name="Lifecycle Audit"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_work_lifecycle_event"
+              sequence="20"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_outbox"
+              name="External Outbox"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_external_outbox"
+              sequence="30"
+              groups="group_dev_hub_manager"/>
+
+    <menuitem id="menu_dev_session_hub_generation"
+              name="Analysis / Plan Generation"
+              parent="menu_dev_session_hub_configuration"
+              action="action_dev_work_generation"
+              sequence="40"
+              groups="group_dev_hub_manager"/>
+
     <menuitem id="menu_dev_session_hub_github_apps"
               name="GitHub App Installations"
               parent="menu_dev_session_hub_configuration"
@@ -192,38 +226,4 @@
               action="action_dev_client"
               sequence="60"
               groups="group_dev_hub_user"/>
-
-    <menuitem id="menu_dev_session_hub_configuration"
-              name="Configuration"
-              parent="menu_dev_session_hub_root"
-              sequence="90"
-              groups="group_dev_hub_manager"/>
-
-    <menuitem id="menu_dev_session_hub_audit"
-              name="Lifecycle Audit"
-              parent="menu_dev_session_hub_configuration"
-              action="action_dev_work_lifecycle_event"
-              sequence="20"
-              groups="group_dev_hub_manager"/>
-
-    <menuitem id="menu_dev_session_hub_outbox"
-              name="External Outbox"
-              parent="menu_dev_session_hub_configuration"
-              action="action_dev_external_outbox"
-              sequence="30"
-              groups="group_dev_hub_manager"/>
-
-    <menuitem id="menu_dev_session_hub_generation"
-              name="Analysis / Plan Generation"
-              parent="menu_dev_session_hub_configuration"
-              action="action_dev_work_generation"
-              sequence="40"
-              groups="group_dev_hub_manager"/>
-
-    <menuitem id="menu_dev_session_hub_policies"
-              name="Policies"
-              parent="menu_dev_session_hub_configuration"
-              action="action_dev_policy"
-              sequence="10"
-              groups="group_dev_hub_manager"/>
 </odoo>

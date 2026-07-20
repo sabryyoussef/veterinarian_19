@@ -9,6 +9,12 @@ from psycopg2.errors import UniqueViolation
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import TransactionCase, tagged
 
+from odoo.addons.dev_session_hub.tests.common import (
+    ensure_dev_hub_safe_policy,
+    find_dev_policy,
+    snapshot_dev_policy,
+)
+
 
 @tagged("post_install", "-at_install")
 class TestDevSessionHub(TransactionCase):
@@ -94,6 +100,10 @@ class TestDevSessionHub(TransactionCase):
         )
         open_launcher_patch.start()
         self.addCleanup(open_launcher_patch.stop)
+        self._policy = find_dev_policy(self.env, self.project, self.environment)
+        self._original_policy = snapshot_dev_policy(self._policy)
+        ensure_dev_hub_safe_policy(self._policy)
+        self.addCleanup(lambda: self._policy.write(self._original_policy))
 
     def _session(self, client=None):
         return self.env["dev.session"].create(
@@ -127,7 +137,7 @@ class TestDevSessionHub(TransactionCase):
         manifest = json.loads(session.manifest_json)
         self.assertEqual(manifest["environment"], "PetSpot Test")
         self.assertEqual(manifest["database"], "pet_spot_elsahel_test")
-        self.assertEqual(manifest["port"], 8028)
+        self.assertEqual(manifest["port"], self.environment.port)
         self.assertFalse(manifest["production"])
         self.assertFalse(manifest["capabilities"]["deploy_allowed"])
         serialized = session.manifest_json.lower()
@@ -136,6 +146,26 @@ class TestDevSessionHub(TransactionCase):
 
         with self._mock_snapshot():
             session.action_abandon()
+
+    def test_start_manifest_port_follows_environment_record(self):
+        """Manifest port must follow dev.environment.port (8028, 18028, ...)."""
+        original_port = self.environment.port
+        try:
+            for port in (8028, 18028):
+                self.environment.write({"port": port})
+                session = self._session()
+                with self._mock_snapshot():
+                    session.action_start()
+                manifest = json.loads(session.manifest_json)
+                self.assertEqual(
+                    manifest["port"],
+                    port,
+                    "Manifest must reflect environment port %s" % port,
+                )
+                with self._mock_snapshot():
+                    session.action_abandon()
+        finally:
+            self.environment.write({"port": original_port})
 
     def test_valid_lifecycle_and_events(self):
         session = self._session()

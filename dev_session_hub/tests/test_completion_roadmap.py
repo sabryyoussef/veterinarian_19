@@ -7,6 +7,11 @@ from odoo import fields
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import TransactionCase, new_test_user, tagged
 
+# Test-owned GitHub installation namespace (distinct from operational UAT 147639376).
+TEST_GITHUB_APP_ID = 4340040
+TEST_GITHUB_INSTALLATION_ID = 990001376
+TEST_GITHUB_APP_SLUG = "devhub-test-pr-agent"
+
 
 @tagged("post_install", "-at_install")
 class TestCompletionRoadmap(TransactionCase):
@@ -31,29 +36,74 @@ class TestCompletionRoadmap(TransactionCase):
         cls.dev_project.write(
             {"member_ids": [(4, cls.manager.id), (4, cls.requester.id)]}
         )
-        cls.pr_installation = cls.env["dev.github.app.installation"].create(
-            {
-                "name": "PR App UAT",
-                "app_slug": "sabry-uat-agent",
-                "app_id": 4340040,
-                "installation_id": 147639376,
-                "app_role": "pr",
-                "permission_summary": "contents:read\nmetadata:read\npull_requests:write",
-                "selected_repositories_only": True,
-                "allow_all_repositories": False,
-            }
+        Install = cls.env["dev.github.app.installation"]
+        cls.pr_installation = Install.search(
+            [
+                ("app_id", "=", TEST_GITHUB_APP_ID),
+                ("installation_id", "=", TEST_GITHUB_INSTALLATION_ID),
+                ("app_role", "=", "pr"),
+            ],
+            limit=1,
         )
-        cls.allowlist = cls.env["dev.github.repository.allowlist"].create(
-            {
-                "installation_id": cls.pr_installation.id,
-                "github_repository": "sabryyoussef/veterinarian_19",
-                "installation_repository_id": 1,
-                "credential_profile_reference": "/srv/devhub/credentials/github/gh-profile",
-                "credential_broker_reference": (
-                    "/srv/devhub/credentials/github/mint-devhub-pr-token"
-                ),
-            }
+        if not cls.pr_installation:
+            cls.pr_installation = Install.create(
+                {
+                    "name": "PR App Test Fixture",
+                    "app_slug": TEST_GITHUB_APP_SLUG,
+                    "app_id": TEST_GITHUB_APP_ID,
+                    "installation_id": TEST_GITHUB_INSTALLATION_ID,
+                    "app_role": "pr",
+                    "permission_summary": "contents:read\nmetadata:read\npull_requests:write",
+                    "selected_repositories_only": True,
+                    "allow_all_repositories": False,
+                }
+            )
+        Allowlist = cls.env["dev.github.repository.allowlist"]
+        cls.allowlist = Allowlist.search(
+            [
+                ("installation_id", "=", cls.pr_installation.id),
+                ("github_repository", "=", "sabryyoussef/veterinarian_19"),
+            ],
+            limit=1,
         )
+        if not cls.allowlist:
+            cls.allowlist = Allowlist.create(
+                {
+                    "installation_id": cls.pr_installation.id,
+                    "github_repository": "sabryyoussef/veterinarian_19",
+                    "installation_repository_id": 990001,
+                    "credential_profile_reference": "/srv/devhub/credentials/github/gh-profile",
+                    "credential_broker_reference": (
+                        "/srv/devhub/credentials/github/mint-devhub-pr-token"
+                    ),
+                }
+            )
+
+    def test_preexisting_operational_github_installation_untouched(self):
+        """Operational UAT installation 147639376 must remain when tests run."""
+        operational = self.env["dev.github.app.installation"].search(
+            [("installation_id", "=", 147639376)], limit=1
+        )
+        if not operational:
+            self.skipTest("No operational GitHub installation 147639376 in this DB")
+        snapshot = {
+            "name": operational.name,
+            "app_slug": operational.app_slug,
+            "app_id": operational.app_id,
+            "app_role": operational.app_role,
+            "active": operational.active,
+        }
+        self.assertNotEqual(
+            self.pr_installation.installation_id,
+            operational.installation_id,
+            "Test fixture must not reuse operational installation ID.",
+        )
+        after = self.env["dev.github.app.installation"].browse(operational.id)
+        self.assertEqual(after.name, snapshot["name"])
+        self.assertEqual(after.app_slug, snapshot["app_slug"])
+        self.assertEqual(after.app_id, snapshot["app_id"])
+        self.assertEqual(after.app_role, snapshot["app_role"])
+        self.assertEqual(after.active, snapshot["active"])
 
     def test_allowlist_rejects_all_repositories(self):
         with self.assertRaises(ValidationError):
@@ -207,6 +257,10 @@ class TestCompletionRoadmap(TransactionCase):
             )
 
     def test_deploy_requires_merged_reviewed_and_distinct_users(self):
+        Workspace = self.env["dev.execution.workspace"]
+        workspace = Workspace.search([("state", "=", "merged_reviewed")], limit=1)
+        if not workspace:
+            self.skipTest("No merged_reviewed workspace fixture available in DB")
         policy = self.env["dev.policy"].search(
             [
                 ("project_id", "=", self.dev_project.id),
@@ -218,40 +272,58 @@ class TestCompletionRoadmap(TransactionCase):
             policy = self.env["dev.policy"].search(
                 [("project_id", "=", self.dev_project.id)], limit=1
             )
-        policy.write(
-            {
-                "deploy_permission": True,
-                "production_access_policy": "denied",
-                "development_allowed": True,
-            }
+        original_policy = {
+            "deploy_permission": policy.deploy_permission,
+            "production_access_policy": policy.production_access_policy,
+            "development_allowed": policy.development_allowed,
+        }
+        try:
+            policy.write(
+                {
+                    "deploy_permission": True,
+                    "production_access_policy": "denied",
+                    "development_allowed": True,
+                }
+            )
+            DeployTarget = self.env["dev.deploy.target"]
+            target = DeployTarget.search(
+                [
+                    ("repository_id", "=", self.repository.id),
+                    ("environment_id", "=", self.environment.id),
+                    ("target_kind", "=", "staging"),
+                ],
+                limit=1,
+            )
+            if not target:
+                target = DeployTarget.create(
+                    {
+                        "name": "PetSpot Test Deploy",
+                        "target_kind": "staging",
+                        "repository_id": self.repository.id,
+                        "environment_id": self.environment.id,
+                        "database_identifier": self.environment.database_identifier,
+                        "module_allowlist": "dev_session_hub",
+                        "runner_profile_reference": "/srv/devhub/runners/staging",
+                        "backup_profile_reference": "/srv/devhub/runners/backup",
+                        "required_protected_branch": "staging",
+                        "non_production": True,
+                        "approved": True,
+                    }
+                )
+            with self.assertRaises(AccessError):
+                workspace.with_user(self.manager).with_context(
+                    dev_deploy_skip_remote=True
+                ).create_deploy_approval(target, self.manager)
+        finally:
+            policy.write(original_policy)
+        self.assertEqual(policy.deploy_permission, original_policy["deploy_permission"])
+        self.assertEqual(
+            policy.production_access_policy,
+            original_policy["production_access_policy"],
         )
-        target = self.env["dev.deploy.target"].create(
-            {
-                "name": "PetSpot Test Deploy",
-                "target_kind": "staging",
-                "repository_id": self.repository.id,
-                "environment_id": self.environment.id,
-                "database_identifier": self.environment.database_identifier,
-                "module_allowlist": "dev_session_hub",
-                "runner_profile_reference": "/srv/devhub/runners/staging",
-                "backup_profile_reference": "/srv/devhub/runners/backup",
-                "required_protected_branch": "staging",
-                "non_production": True,
-                "approved": True,
-            }
+        self.assertEqual(
+            policy.development_allowed, original_policy["development_allowed"]
         )
-        # Minimal workspace shell — may need required fields from seed patterns
-        Workspace = self.env["dev.execution.workspace"]
-        required = {f.name for f in Workspace._fields.values() if f.required and f.name != "id"}
-        # Use search existing or skip if cannot construct
-        workspace = Workspace.search([("state", "=", "merged_reviewed")], limit=1)
-        if not workspace:
-            # Construct with patched minimal vals if model allows in tests via existing helpers
-            self.skipTest("No merged_reviewed workspace fixture available in DB")
-        with self.assertRaises(AccessError):
-            workspace.with_user(self.manager).with_context(
-                dev_deploy_skip_remote=True
-            ).create_deploy_approval(target, self.manager)
 
     def test_production_denied_without_soak(self):
         now = fields.Datetime.now()
@@ -266,7 +338,6 @@ class TestCompletionRoadmap(TransactionCase):
         evidence._compute_soak_satisfied()
         self.assertFalse(evidence.soak_satisfied)
         with self.assertRaises(AccessError):
-            # No succeeded staging deploy record linked — fail closed.
             if not evidence.soak_satisfied:
                 raise AccessError("Soak period has not been satisfied.")
 

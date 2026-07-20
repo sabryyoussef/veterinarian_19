@@ -12,6 +12,11 @@ from odoo import fields
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import TransactionCase, new_test_user, tagged
 from odoo.addons.dev_session_hub.models.dev_execution import _canonical_child, _slug
+from odoo.addons.dev_session_hub.tests.common import (
+    ensure_dev_hub_safe_policy,
+    find_dev_policy,
+    snapshot_dev_policy,
+)
 
 
 @tagged("post_install", "-at_install")
@@ -135,6 +140,10 @@ class TestDevWorkLifecycle(TransactionCase):
         )
         open_launcher.start()
         self.addCleanup(open_launcher.stop)
+        self._policy = find_dev_policy(self.env, self.dev_project, self.environment)
+        self._original_policy = snapshot_dev_policy(self._policy)
+        ensure_dev_hub_safe_policy(self._policy)
+        self.addCleanup(lambda: self._policy.write(self._original_policy))
 
     def _model_vals(self, model_name, **values):
         """Keep fixtures compatible with optional presentation-only fields."""
@@ -1307,7 +1316,11 @@ class TestDevWorkLifecycle(TransactionCase):
 
         integration = self._outbox_user()
         service = self.env["dev.external.outbox"].with_user(integration)
-        lease = service.service_lease(limit=1, consumer_ref="test-consumer")
+        lease = service.service_lease(
+            limit=1,
+            consumer_ref="test-consumer",
+            correlation_id=outbox.correlation_id,
+        )
         self.assertEqual(lease[0]["id"], outbox.id)
         self.assertEqual(outbox.state, "leased")
         service.service_mark_processing(
@@ -1344,7 +1357,11 @@ class TestDevWorkLifecycle(TransactionCase):
         service = self.env["dev.external.outbox"].with_user(outbox_user)
         with self.assertRaises(AccessError):
             self.env["dev.external.outbox"].with_user(generation_user).service_lease()
-        lease = service.service_lease(limit=1, consumer_ref="retry-test")[0]
+        lease = service.service_lease(
+            limit=1,
+            consumer_ref="retry-test",
+            correlation_id=outbox.correlation_id,
+        )[0]
         retry = service.service_ack_failure(
             outbox.id,
             outbox.correlation_id,
@@ -1358,7 +1375,11 @@ class TestDevWorkLifecycle(TransactionCase):
         outbox.with_context(dev_outbox_action=True).write(
             {"next_attempt_at": fields.Datetime.now()}
         )
-        lease = service.service_lease(limit=1, consumer_ref="dead-letter-test")[0]
+        lease = service.service_lease(
+            limit=1,
+            consumer_ref="dead-letter-test",
+            correlation_id=outbox.correlation_id,
+        )[0]
         service.service_mark_processing(
             outbox.id, outbox.correlation_id, lease["lease_token"]
         )
@@ -1379,7 +1400,11 @@ class TestDevWorkLifecycle(TransactionCase):
             "material_blocker", "Safe reconciliation test.", "on_hold"
         )
         service = self.env["dev.external.outbox"].with_user(self._outbox_user())
-        first = service.service_lease(limit=1, consumer_ref="first-worker")[0]
+        first = service.service_lease(
+            limit=1,
+            consumer_ref="first-worker",
+            correlation_id=outbox.correlation_id,
+        )[0]
         service.service_mark_processing(
             outbox.id, outbox.correlation_id, first["lease_token"]
         )
@@ -1397,7 +1422,11 @@ class TestDevWorkLifecycle(TransactionCase):
         outbox.with_context(dev_outbox_action=True).write(
             {"next_attempt_at": fields.Datetime.now()}
         )
-        second = service.service_lease(limit=1, consumer_ref="reconciler")[0]
+        second = service.service_lease(
+            limit=1,
+            consumer_ref="reconciler",
+            correlation_id=outbox.correlation_id,
+        )[0]
         self.assertTrue(second["reconcile_only"])
         self.assertNotEqual(first["lease_token"], second["lease_token"])
         self.assertGreater(second["lease_version"], first["lease_version"])

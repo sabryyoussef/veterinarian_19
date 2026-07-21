@@ -1690,6 +1690,48 @@ class TestDevWorkLifecycle(TransactionCase):
             analysis.write({"user_analysis_notes": notes})
         return analysis
 
+    # ------------------------------------------------------------------
+    # Plan Step detail UX (view-support: open form + immutability flag)
+    # ------------------------------------------------------------------
+    def test_plan_step_detail_action_opens_own_form(self):
+        work = self._work()
+        plan = self._plan(work, with_step=True)
+        step = plan.step_ids[:1]
+        self.assertTrue(step)
+        self.assertEqual(step.plan_status, "draft")
+        action = step.action_open_detail()
+        self.assertEqual(action["type"], "ir.actions.act_window")
+        self.assertEqual(action["res_model"], "dev.work.plan.step")
+        self.assertEqual(action["res_id"], step.id)
+        self.assertEqual(action["target"], "new")
+        form_view = self.env.ref("dev_session_hub.dev_work_plan_step_view_form")
+        self.assertIn((form_view.id, "form"), action["views"])
+
+    def test_plan_step_evidence_editable_after_approval(self):
+        work = self._work()
+        plan = self._approved_plan(work)
+        step = plan.step_ids.sorted(lambda item: (item.sequence, item.id))[:1]
+        self.assertTrue(step)
+        # The related flag the enhanced Steps view uses to lock the structure.
+        self.assertEqual(step.plan_status, "approved")
+        # Structural fields stay immutable on an approved plan...
+        with self.assertRaises(AccessError):
+            step.write({"title": "Renamed after approval"})
+        # ...but execution evidence remains writable during execution.
+        step.write({"status": "in_progress"})
+        self.assertTrue(step.started_at)
+        step.write(
+            {
+                "result_summary": "Implemented and verified in Test.",
+                "evidence_references": "commit abc123; log /tmp/run.log",
+            }
+        )
+        step.write({"status": "done"})
+        self.assertTrue(step.completed_at)
+        step.invalidate_recordset()
+        self.assertEqual(step.result_summary, "Implemented and verified in Test.")
+        self.assertIn("commit abc123", step.evidence_references)
+
     def test_merge_and_improve_creates_mixed_revision(self):
         work = self._generation_ready_work()
         service = self.env["dev.work.generation"].with_user(self._generation_user())

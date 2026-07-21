@@ -2079,10 +2079,44 @@ class DevWorkPlanStep(models.Model):
     blocker = fields.Text()
     result_summary = fields.Text()
     evidence_references = fields.Text()
+    # View-support only: lets the standalone step form make the immutable plan
+    # structure (title/description/acceptance_evidence/...) read-only once the plan
+    # leaves 'draft', mirroring the write() guard so users never hit a surprise
+    # AccessError while recording execution evidence on an approved plan.
+    plan_status = fields.Selection(
+        related="plan_id.status", string="Plan Status", readonly=True
+    )
 
     _step_key_unique = models.Constraint(
         "unique(plan_id, step_key)", "Step key must be unique within a plan revision."
     )
+
+    def action_open_detail(self):
+        """Open this step in its full detail form (modal).
+
+        Odoo's ``editable`` one2many list edits rows inline and never opens the
+        record's own form on row click, so an explicit action is the cleanest
+        Odoo-native way to expose the step's larger description/evidence fields
+        without disabling inline quick-edit. View-support only -- no business
+        logic runs here.
+        """
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": self.title or "Plan Step",
+            "res_model": "dev.work.plan.step",
+            "res_id": self.id,
+            "view_mode": "form",
+            "views": [
+                (
+                    self.env.ref(
+                        "dev_session_hub.dev_work_plan_step_view_form"
+                    ).id,
+                    "form",
+                )
+            ],
+            "target": "new",
+        }
 
     @api.model_create_multi
     def create(self, vals_list):

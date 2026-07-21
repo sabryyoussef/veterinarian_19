@@ -31,6 +31,58 @@
         </field>
     </record>
 
+    <record id="dev_work_plan_step_view_form" model="ir.ui.view">
+        <field name="name">dev.work.plan.step.form</field>
+        <field name="model">dev.work.plan.step</field>
+        <field name="arch" type="xml">
+            <form string="Plan Step">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="pending,in_progress,done"/>
+                </header>
+                <sheet>
+                    <field name="plan_status" invisible="1"/>
+                    <div class="oe_title">
+                        <label for="title"/>
+                        <h1>
+                            <field name="title" readonly="plan_status != 'draft'" placeholder="Step title"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Definition">
+                            <field name="plan_id" readonly="1"/>
+                            <field name="work_item_id" readonly="1"/>
+                            <field name="step_key" readonly="plan_status != 'draft'"/>
+                            <field name="sequence" readonly="plan_status != 'draft'"/>
+                            <field name="assignee_type"/>
+                            <field name="assignee_id"/>
+                            <field name="dependencies" readonly="plan_status != 'draft'"/>
+                            <field name="parallel_group" readonly="plan_status != 'draft'"/>
+                        </group>
+                        <group string="Execution">
+                            <field name="status"/>
+                            <field name="started_at"/>
+                            <field name="completed_at"/>
+                            <field name="run_reference"/>
+                            <field name="blocker" placeholder="Required reason if blocked or skipped"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" readonly="plan_status != 'draft'" placeholder="Planned work for this step (part of the immutable approved plan)"/>
+                        </page>
+                        <page string="Planned Acceptance">
+                            <field name="acceptance_evidence" readonly="plan_status != 'draft'" placeholder="Acceptance evidence planned at approval time (immutable once the plan leaves draft)"/>
+                        </page>
+                        <page string="Result &amp; Evidence">
+                            <field name="result_summary" placeholder="What was actually done / outcome of this step"/>
+                            <field name="evidence_references" placeholder="Links, commit SHAs, screenshots, log paths, test evidence"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="view_dev_work_item_list" model="ir.ui.view">
         <field name="name">dev.work.item.list</field>
         <field name="model">dev.work.item</field>
@@ -296,13 +348,16 @@
                                                 <field name="step_ids">
                                                     <list editable="bottom" decoration-success="status == 'done'" decoration-danger="status == 'blocked'" decoration-muted="status == 'skipped'">
                                                         <field name="sequence" widget="handle"/>
-                                                        <field name="step_key"/>
-                                                        <field name="title"/>
+                                                        <field name="plan_status" column_invisible="1"/>
+                                                        <field name="step_key" string="Step" readonly="plan_status != 'draft'"/>
+                                                        <field name="title" readonly="plan_status != 'draft'"/>
                                                         <field name="status" widget="badge"/>
-                                                        <field name="assignee_id"/>
-                                                        <field name="started_at" optional="hide"/>
-                                                        <field name="completed_at" optional="hide"/>
                                                         <field name="blocker" optional="show"/>
+                                                        <field name="started_at" optional="show"/>
+                                                        <field name="completed_at" optional="show"/>
+                                                        <field name="result_summary" optional="show"/>
+                                                        <field name="assignee_id" optional="hide"/>
+                                                        <button name="action_open_detail" type="object" icon="fa-expand" title="Open step detail"/>
                                                     </list>
                                                     <form string="Plan Step">
                                                         <group>

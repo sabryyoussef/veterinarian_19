@@ -13,6 +13,7 @@ from .dev_work import (
     _bounded,
     _canonical_hash,
     _clean_text,
+    _context_text,
     _validated_json,
 )
 
@@ -97,7 +98,7 @@ class DevWorkItem(models.Model):
             missing.append("repository HEAD snapshot")
         return missing
 
-    def _build_generation_context(self, kind):
+    def _build_generation_context(self, kind, base_analysis=None):
         self.ensure_one()
         missing = self._generation_prerequisites()
         if missing:
@@ -117,7 +118,7 @@ class DevWorkItem(models.Model):
             "work_item_uuid": self.uuid,
             "context_revision": self.context_revision,
             "source_summaries": [
-                _bounded(item.text_snapshot, 1200) for item in source_messages
+                _context_text(item.text_snapshot, 1200) for item in source_messages
             ],
             "openproject": {
                 "backend_id": self.op_backend_id.id,
@@ -126,16 +127,16 @@ class DevWorkItem(models.Model):
             },
             "odoo_task": {
                 "id": self.odoo_task_id.id,
-                "title": _bounded(self.odoo_task_id.name, 500),
-                "description": _bounded(task_description, 3000),
+                "title": _context_text(self.odoo_task_id.name, 500),
+                "description": _context_text(task_description, 3000),
                 "priority": self.priority_cache or "",
                 "deadline": str(self.deadline_cache or ""),
             },
             "project": {
                 "name": self.dev_project_id.name,
                 "code": self.dev_project_id.code,
-                "policy": _bounded(self.dev_project_id.production_policy, 1800),
-                "agent_guardrails": _bounded(
+                "policy": _context_text(self.dev_project_id.production_policy, 1800),
+                "agent_guardrails": _context_text(
                     self.dev_project_id.agent_instruction_summary, 1800
                 ),
             },
@@ -164,22 +165,55 @@ class DevWorkItem(models.Model):
             payload["accepted_analysis"] = {
                 "revision": analysis.revision,
                 "hash": analysis.content_hash,
-                "problem_summary": _bounded(analysis.problem_summary, 1800),
-                "technical_findings": _bounded(analysis.technical_findings, 3000),
-                "affected_components": _bounded(analysis.affected_components, 1800),
-                "risks": _bounded(analysis.risks, 1800),
-                "dependencies": _bounded(analysis.dependencies, 1800),
-                "open_questions": _bounded(analysis.open_questions, 1800),
+                "problem_summary": _context_text(analysis.problem_summary, 1800),
+                "technical_findings": _context_text(analysis.technical_findings, 3000),
+                "affected_components": _context_text(analysis.affected_components, 1800),
+                "risks": _context_text(analysis.risks, 1800),
+                "dependencies": _context_text(analysis.dependencies, 1800),
+                "open_questions": _context_text(analysis.open_questions, 1800),
             }
+        if kind == "merge_analysis":
+            base = base_analysis or self.current_analysis_id
+            if not base:
+                raise UserError("Merge & Improve requires an existing analysis revision.")
+            human = (base.user_analysis_notes or "").strip()
+            if not human:
+                raise UserError(
+                    "Write your notes in the 'My Analysis' tab before merging."
+                )
+            payload["base_analysis"] = {
+                "id": base.id,
+                "revision": base.revision,
+                "hash": base.content_hash,
+                "origin": base.origin,
+                "problem_summary": _context_text(base.problem_summary, 2000),
+                "original_request_summary": _context_text(
+                    base.original_request_summary, 3000
+                ),
+                "reproduction_context": _context_text(base.reproduction_context, 2000),
+                "current_behavior": _context_text(base.current_behavior, 2000),
+                "expected_behavior": _context_text(base.expected_behavior, 2000),
+                "technical_findings": _context_text(base.technical_findings, 6000),
+                "affected_components": _context_text(base.affected_components, 2000),
+                "risks": _context_text(base.risks, 2000),
+                "dependencies": _context_text(base.dependencies, 2000),
+                "open_questions": _context_text(base.open_questions, 2000),
+                "evidence_references": _context_text(base.evidence_references, 2000),
+            }
+            payload["human_analysis"] = _context_text(human, 6000)
         return json.loads(_validated_json(payload))
 
-    def _request_generation(self, kind):
+    def _request_generation(self, kind, base_analysis=None):
         self.ensure_one()
         if kind == "analysis" and self.current_phase != "registered":
             raise UserError("Analysis generation requires a Registered Work Item.")
         if kind == "plan" and self.current_phase != "analyzing":
             raise UserError("Plan generation requires an accepted analysis in Analyzing.")
-        context = self._build_generation_context(kind)
+        if kind == "merge_analysis" and self.current_phase != "analyzing":
+            raise UserError(
+                "Merge & Improve Analysis requires the Analyzing phase."
+            )
+        context = self._build_generation_context(kind, base_analysis=base_analysis)
         context_json = _validated_json(context)
         context_hash = _canonical_hash(context)
         key = "generation:%s:%s:%s" % (self.uuid, kind, context_hash[:24])
@@ -209,6 +243,24 @@ class DevWorkItem(models.Model):
         self.ensure_one()
         return self._request_generation("plan")
 
+    def request_analysis_merge(self, base_analysis):
+        """Queue a semantic merge of a specific analysis revision + its My Analysis notes."""
+        self.ensure_one()
+        base_analysis.ensure_one()
+        if base_analysis.work_item_id != self:
+            raise UserError("The analysis revision does not belong to this work item.")
+        if base_analysis.status in ("superseded", "rejected"):
+            raise UserError(
+                "Merge a working analysis revision (draft, generated, reviewed, "
+                "or accepted), not a superseded or rejected one."
+            )
+        if self.current_phase == "registered":
+            # A base analysis already exists (e.g. code/database run); ease into Analyzing.
+            self.transition_lifecycle(
+                "analyzing", "Merge & Improve Analysis", actor_type="automation"
+            )
+        return self._request_generation("merge_analysis", base_analysis=base_analysis)
+
     def action_register(self):
         result = super().action_register()
         for record in self:
@@ -233,6 +285,26 @@ class DevWorkAnalysis(models.Model):
             if record.work_item_id.dev_project_id.generation_policy == "automatic":
                 record.work_item_id.action_request_plan_generation()
         return result
+
+    def action_merge_and_improve_analysis(self):
+        """Human-triggered: queue a guarded semantic merge using this revision as base."""
+        self.ensure_one()
+        generation = self.work_item_id.request_analysis_merge(self)
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "Merge & Improve Analysis queued",
+                "message": (
+                    "A semantic merge request was queued (id %s). The external "
+                    "generation worker will produce a consolidated analysis "
+                    "revision shortly." % generation.id
+                ),
+                "type": "success",
+                "sticky": False,
+                "next": {"type": "ir.actions.act_window_close"},
+            },
+        }
 
 
 class DevExternalOutbox(models.Model):
@@ -577,7 +649,11 @@ class DevWorkGeneration(models.Model):
         "dev.work.item", required=True, ondelete="restrict", readonly=True, index=True
     )
     kind = fields.Selection(
-        [("analysis", "Analysis"), ("plan", "Plan")],
+        [
+            ("analysis", "Analysis"),
+            ("plan", "Plan"),
+            ("merge_analysis", "Merge Analysis"),
+        ],
         required=True,
         readonly=True,
         index=True,
@@ -825,7 +901,9 @@ class DevWorkGeneration(models.Model):
         if context.get("context_revision") != work.context_revision:
             stale_reason = "Work Item context changed after generation was requested."
         elif record.kind == "plan":
-            accepted = work.current_accepted_analysis_id
+            # Staleness reads run under the scoped generation-service user, which
+            # has no direct access to dev.work.analysis; sudo the read-only check.
+            accepted = work.sudo().current_accepted_analysis_id
             expected = context.get("accepted_analysis") or {}
             if (
                 not accepted
@@ -833,6 +911,19 @@ class DevWorkGeneration(models.Model):
                 or expected.get("hash") != accepted.content_hash
             ):
                 stale_reason = "Accepted analysis changed after planning was requested."
+        elif record.kind == "merge_analysis":
+            # Staleness reads run under the scoped generation-service user, which
+            # has no direct access to dev.work.analysis; sudo the read-only check.
+            expected = context.get("base_analysis") or {}
+            base = self.env["dev.work.analysis"].sudo().browse(
+                expected.get("id") or 0
+            ).exists()
+            if (
+                not base
+                or base.work_item_id.id != work.id
+                or expected.get("hash") != base.content_hash
+            ):
+                stale_reason = "Base analysis changed after the merge was requested."
         if stale_reason:
             record.with_context(dev_generation_action=True).write(
                 {
@@ -865,6 +956,19 @@ class DevWorkGeneration(models.Model):
         if record.kind == "plan":
             result["analysis_revision"] = work.current_accepted_analysis_id.revision
             result["run_reference"] = record.run_reference
+        if record.kind == "merge_analysis":
+            base_ctx = context.get("base_analysis") or {}
+            result.update(
+                {
+                    "provider_reference": record.provider_reference,
+                    "run_reference": record.run_reference,
+                    "model_reference": "managed-dify-workflow",
+                    "observed_head": (context.get("repository") or {}).get("head", ""),
+                    "base_analysis_id": base_ctx.get("id"),
+                    "human_input_snapshot": context.get("human_analysis"),
+                    "merged_by_id": record.requested_by_id.id,
+                }
+            )
         try:
             with self.env.cr.savepoint():
                 if record.kind == "analysis":
@@ -872,6 +976,13 @@ class DevWorkGeneration(models.Model):
                         self.env["dev.work.item"]
                         .with_context(dev_generation_import=True)
                         .import_analysis_draft(result)
+                    )
+                    artifact_model = "dev.work.analysis"
+                elif record.kind == "merge_analysis":
+                    artifact_id = (
+                        self.env["dev.work.item"]
+                        .with_context(dev_generation_import=True)
+                        .import_merged_analysis_draft(result)
                     )
                     artifact_model = "dev.work.analysis"
                 else:

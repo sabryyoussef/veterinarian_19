@@ -132,9 +132,65 @@ def _clean_text(value, label, limit=MAX_TEXT):
     return value
 
 
+def _clean_note_text(value, label, limit=MAX_TEXT):
+    """Softer guard for human-authored notes (e.g. My Analysis).
+
+    Humans legitimately quote diff hunks, env lines, or use words like
+    "messages:"/"transcript:" that trip FORBIDDEN_CONTENT. Those are neutralized
+    later via ``_neutralize_forbidden``/``_context_text`` when the merge context is
+    built, so we only enforce type, length, and SECRET_PATTERN here — real
+    credentials are still never allowed through.
+    """
+    if value is None or value is False:
+        value = ""
+    if not isinstance(value, str):
+        raise ValidationError("%s must be text." % label)
+    value = value.strip()
+    if len(value) > limit:
+        raise ValidationError("%s exceeds the %s-character storage limit." % (label, limit))
+    if SECRET_PATTERN.search(value):
+        raise ValidationError("%s appears to contain credential material." % label)
+    return value
+
+
 def _bounded(value, limit):
     value = (value or "").strip()
     return value if len(value) <= limit else value[: limit - 1].rstrip() + "…"
+
+
+def _neutralize_forbidden(value):
+    """Rewrite human-authored evidence so the outbox guard patterns do not reject it.
+
+    Analysis notes legitimately quote diff hunks, env lines, or use plain words like
+    "messages:"/"transcript:" that collide with FORBIDDEN_CONTENT. We keep the meaning
+    (bracketing/relabelling) instead of blocking the whole merge. SECRET_PATTERN still
+    applies afterwards, so real credentials are never let through.
+    """
+    if not value or not isinstance(value, str):
+        return value
+    text = value
+    text = re.sub(r"(?i)\braw_payload\s*:", "payload-ref:", text)
+    text = re.sub(r"(?i)\benvironment_dump\s*:", "env-ref:", text)
+    text = re.sub(r"(?i)\bfull_diff\s*:", "diff-ref:", text)
+    text = re.sub(r"(?i)\btranscript\s*:", "discussion:", text)
+    text = re.sub(r"(?i)\bmessages\s*:", "source notes:", text)
+    text = re.sub(
+        r"(?m)^(diff --git|index [0-9a-f]+\.\.[0-9a-f]+|@@ .+ @@|\+\+\+ b/|--- a/)",
+        r"[\1]",
+        text,
+    )
+    text = re.sub(
+        r"(?im)^(\s*)((?:export\s+)?"
+        r"(?:PATH|HOME|AWS_[A-Z0-9_]+|DATABASE_URL|OPENAI_API_KEY|ODOO_RC)\s*=)",
+        r"\1[env] \2",
+        text,
+    )
+    return text
+
+
+def _context_text(value, limit):
+    """Bounded, guard-safe rendering of human/analysis free text for generation context."""
+    return _bounded(_neutralize_forbidden(value), limit)
 
 
 def _validate_text_values(model, values, limit=MAX_TEXT):
@@ -916,6 +972,86 @@ class DevWorkItem(models.Model):
         return self.env["dev.work.analysis"].sudo().create(values).id
 
     @api.model
+    def import_merged_analysis_draft(self, payload):
+        """Strict callback for the guarded 'merge_analysis' generation kind.
+
+        Creates a new mixed-origin analysis revision that consolidates a base
+        analysis with the human 'My Analysis' notes. It never overwrites the
+        base revision; traceability links the new revision back to its base.
+        """
+        _require_importer(self.env)
+        actor_id = self.env.user.id
+        if not isinstance(payload, dict):
+            raise ValidationError("Merged analysis import must be a JSON object.")
+        allowed = {
+            "work_item_uuid",
+            "problem_summary",
+            "original_request_summary",
+            "reproduction_context",
+            "current_behavior",
+            "expected_behavior",
+            "technical_findings",
+            "affected_components",
+            "risks",
+            "dependencies",
+            "open_questions",
+            "evidence_references",
+            "model_reference",
+            "provider_reference",
+            "run_reference",
+            "observed_head",
+            "base_analysis_id",
+            "human_input_snapshot",
+            "merged_by_id",
+        }
+        unknown = set(payload) - allowed
+        if unknown:
+            raise ValidationError(
+                "Unsupported merged analysis fields: %s" % ", ".join(sorted(unknown))
+            )
+        required = ("problem_summary", "original_request_summary")
+        missing = [name for name in required if not payload.get(name)]
+        if missing:
+            raise ValidationError(
+                "Merged analysis import requires: %s." % ", ".join(missing)
+            )
+        work = self.sudo().with_context(
+            dev_integration_actor_id=actor_id
+        ).search([("uuid", "=", payload.get("work_item_uuid"))], limit=1)
+        if not work:
+            raise ValidationError("Unknown Work Item UUID.")
+        if work.current_phase != "analyzing":
+            raise UserError(
+                "Merged analysis may be imported only while Analyzing."
+            )
+        base = self.env["dev.work.analysis"].sudo().browse(
+            payload.get("base_analysis_id") or 0
+        ).exists()
+        if not base or base.work_item_id != work:
+            raise ValidationError("The base analysis is unknown for this work item.")
+        values = {
+            key: value
+            for key, value in payload.items()
+            if key not in ("work_item_uuid", "base_analysis_id", "merged_by_id")
+        }
+        merged_by = self.env["res.users"].sudo().browse(
+            payload.get("merged_by_id") or actor_id
+        ).exists()
+        values.update(
+            work_item_id=work.id,
+            status="generated",
+            origin="mixed",
+            parent_revision_id=base.id,
+            base_analysis_id=base.id,
+            merged_by_id=(merged_by.id if merged_by else actor_id),
+            merged_at=fields.Datetime.now(),
+            repository_id=(base.repository_id.id or work.preferred_repository_id.id),
+            generated_at=fields.Datetime.now(),
+            author_id=actor_id,
+        )
+        return self.env["dev.work.analysis"].sudo().create(values).id
+
+    @api.model
     def import_plan_draft(self, payload):
         """Strict authenticated RPC callback; exact human approval remains mandatory."""
         _require_importer(self.env)
@@ -1375,6 +1511,11 @@ class DevWorkAnalysis(models.Model):
     dependencies = fields.Text()
     open_questions = fields.Text()
     evidence_references = fields.Text()
+    user_analysis_notes = fields.Text(
+        string="My Analysis",
+        help="Your own analysis notes. Editable separately from generated findings "
+        "and excluded from the accepted content hash.",
+    )
     agent_reference = fields.Char()
     agent_name = fields.Char(related="agent_reference", readonly=False)
     model_reference = fields.Char()
@@ -1392,6 +1533,20 @@ class DevWorkAnalysis(models.Model):
     author_id = fields.Many2one(
         "res.users", required=True, default=lambda self: self.env.user, ondelete="restrict"
     )
+    # Traceability for human-driven "Merge & Improve Analysis" revisions.
+    base_analysis_id = fields.Many2one(
+        "dev.work.analysis", ondelete="restrict", readonly=True, copy=False,
+        help="The pre-merge analysis this revision consolidated with human input.",
+    )
+    human_input_snapshot = fields.Text(
+        readonly=True, copy=False,
+        help="Frozen copy of the My Analysis notes that fed the merge.",
+    )
+    merged_by_id = fields.Many2one(
+        "res.users", ondelete="restrict", readonly=True, copy=False,
+        help="User who triggered the semantic merge.",
+    )
+    merged_at = fields.Datetime(readonly=True, copy=False)
 
     _revision_unique = models.Constraint(
         "unique(work_item_id, revision)", "Analysis revision must be unique per work item."
@@ -1444,7 +1599,11 @@ class DevWorkAnalysis(models.Model):
                 raise ValidationError("Use the explicit Accept action.")
             for name, value in vals.items():
                 if name in self._fields and self._fields[name].type in ("char", "text"):
-                    _clean_text(value, self._fields[name].string or name)
+                    label = self._fields[name].string or name
+                    if name == "user_analysis_notes":
+                        _clean_note_text(value, label)
+                    else:
+                        _clean_text(value, label)
         records = super().create(vals_list)
         for record in records:
             super(DevWorkAnalysis, record).write(
@@ -1464,7 +1623,13 @@ class DevWorkAnalysis(models.Model):
                 "provider_name": "provider_reference",
             },
         )
-        if any(record.status in ("accepted", "superseded") for record in self):
+        user_note_keys = {"user_analysis_notes"}
+        only_user_notes = bool(vals) and set(vals.keys()) <= user_note_keys
+        if any(record.status == "superseded" for record in self) and not only_user_notes:
+            raise AccessError("Accepted and superseded analyses are immutable.")
+        if any(record.status == "superseded" for record in self) and only_user_notes:
+            raise AccessError("Superseded analyses cannot receive new notes.")
+        if any(record.status == "accepted" for record in self) and not only_user_notes:
             raise AccessError("Accepted and superseded analyses are immutable.")
         if {"revision", "parent_revision_id", "content_hash", "work_item_id"} & set(vals):
             raise AccessError("Analysis revision identity is immutable.")
@@ -1473,8 +1638,14 @@ class DevWorkAnalysis(models.Model):
         for name, value in vals.items():
             field = self._fields.get(name)
             if field and field.type in ("char", "text"):
-                _clean_text(value, field.string or name)
+                label = field.string or name
+                if name == "user_analysis_notes":
+                    _clean_note_text(value, label)
+                else:
+                    _clean_text(value, label)
         result = super().write(vals)
+        if only_user_notes:
+            return result
         for record in self:
             super(DevWorkAnalysis, record).write(
                 {"content_hash": record._hash_values()}

@@ -1605,6 +1605,202 @@ class TestDevWorkLifecycle(TransactionCase):
         with self.assertRaises(UserError):
             blocked.action_request_analysis_generation()
 
+    # ------------------------------------------------------------------
+    # Merge & Improve Analysis (guarded async semantic merge)
+    # ------------------------------------------------------------------
+    def _generated_base_analysis(self, work, service, notes=None):
+        request = work.action_request_analysis_generation()
+        lease = service.service_lease(limit=1, consumer_ref="merge-base")[0]
+        service.service_mark_processing(
+            request.id,
+            request.correlation_id,
+            lease["lease_token"],
+            "dify:analysis",
+            "base-run-%s" % uuid.uuid4().hex,
+        )
+        outcome = service.service_complete(
+            request.id,
+            request.correlation_id,
+            lease["lease_token"],
+            {
+                "problem_summary": "Base problem from code scan.",
+                "original_request_summary": "Base request summary.",
+                "technical_findings": "Base finding: no warranty auto-apply hook found.",
+                "risks": "Base risk: wrong warranty dates.",
+                "observed_head": "b" * 40,
+            },
+        )
+        analysis = self.env["dev.work.analysis"].browse(outcome["artifact_record_id"])
+        if notes:
+            analysis.write({"user_analysis_notes": notes})
+        return analysis
+
+    def test_merge_and_improve_creates_mixed_revision(self):
+        work = self._generation_ready_work()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        notes = (
+            "Human input: the warranty period lives on product.template; check the "
+            "sale.order.line onchange hook, not the vehicle model."
+        )
+        base = self._generated_base_analysis(work, service, notes=notes)
+        self.assertTrue(base.user_analysis_notes)
+
+        merge_request = work.request_analysis_merge(base)
+        self.assertEqual(merge_request.kind, "merge_analysis")
+        lease = service.service_lease(limit=1, consumer_ref="merge-run")[0]
+        self.assertEqual(lease["id"], merge_request.id)
+        self.assertEqual(lease["context"]["base_analysis"]["id"], base.id)
+        self.assertEqual(lease["context"]["base_analysis"]["hash"], base.content_hash)
+        self.assertTrue(lease["context"]["human_analysis"].startswith("Human input"))
+        service.service_mark_processing(
+            merge_request.id,
+            merge_request.correlation_id,
+            lease["lease_token"],
+            "dify:merge_analysis",
+            "merge-run-%s" % uuid.uuid4().hex,
+        )
+        outcome = service.service_complete(
+            merge_request.id,
+            merge_request.correlation_id,
+            lease["lease_token"],
+            {
+                "problem_summary": "Consolidated problem [CONFIRMED].",
+                "original_request_summary": "Consolidated request.",
+                "technical_findings": (
+                    "Merged: base code scan retained [CODE-EVIDENCE]; human pointer to "
+                    "sale.order.line onchange incorporated [HYPOTHESIS]."
+                ),
+                "risks": "Merged risk.",
+                "open_questions": "[MISSING-INFO] exact warranty source field.",
+            },
+        )
+        merged = self.env[outcome["artifact_model"]].browse(
+            outcome["artifact_record_id"]
+        )
+        self.assertEqual(merged.origin, "mixed")
+        self.assertEqual(merged.parent_revision_id, base)
+        self.assertEqual(merged.base_analysis_id, base)
+        self.assertTrue(merged.merged_by_id)
+        self.assertTrue(merged.merged_at)
+        self.assertTrue(merged.human_input_snapshot.startswith("Human input"))
+        self.assertEqual(merged.revision, base.revision + 1)
+        self.assertEqual(merged.status, "generated")
+        self.assertEqual(merge_request.state, "succeeded")
+        # Base revision is preserved (history), not overwritten.
+        self.assertEqual(base.problem_summary, "Base problem from code scan.")
+        self.assertNotEqual(base.content_hash, merged.content_hash)
+        # Merged revision becomes the current analysis shown in the tab.
+        self.assertEqual(work.current_analysis_id, merged)
+
+    def test_merge_button_action_returns_notification(self):
+        work = self._generation_ready_work()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        base = self._generated_base_analysis(work, service, notes="Human note.")
+        action = base.action_merge_and_improve_analysis()
+        self.assertEqual(action["tag"], "display_notification")
+        self.assertTrue(
+            work.generation_request_ids.filtered(
+                lambda g: g.kind == "merge_analysis"
+            )
+        )
+
+    def test_merge_accepts_notes_with_guard_patterns(self):
+        """Analysis notes that quote diffs / env lines / 'messages:' must not block merge."""
+        work = self._generation_ready_work()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        notes = (
+            "The chat messages: point to a warranty bug.\n"
+            "See transcript: user reported wrong dates.\n"
+            "--- a/models/sale.py\n"
+            "+++ b/models/sale.py\n"
+            "@@ -1,3 +1,4 @@\n"
+            "export PATH=/usr/bin"
+        )
+        base = self._generated_base_analysis(work, service, notes=notes)
+
+        merge_request = work.request_analysis_merge(base)
+        self.assertEqual(merge_request.kind, "merge_analysis")
+        lease = service.service_lease(limit=1, consumer_ref="merge-guard")[0]
+        human = lease["context"]["human_analysis"]
+        self.assertIn("source notes:", human)
+        self.assertIn("discussion:", human)
+        self.assertNotIn("messages:", human)
+        self.assertNotIn("transcript:", human)
+        self.assertNotIn("\n--- a/", human)
+
+    def test_merge_requires_human_notes(self):
+        work = self._generation_ready_work()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        base = self._generated_base_analysis(work, service)  # no notes
+        with self.assertRaises(UserError):
+            work.request_analysis_merge(base)
+
+    def test_merge_rejects_superseded_base(self):
+        work = self._generation_ready_work()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        base = self._generated_base_analysis(work, service, notes="Human note.")
+        base.action_accept()
+        successor = base.action_new_revision()
+        successor.action_accept()
+        self.assertEqual(base.status, "superseded")
+        with self.assertRaises(UserError):
+            work.request_analysis_merge(base)
+
+    def test_merge_dead_letters_on_stale_base(self):
+        work = self._generation_ready_work()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        base = self._generated_base_analysis(work, service, notes="Human note.")
+        merge_request = work.request_analysis_merge(base)
+        lease = service.service_lease(limit=1, consumer_ref="stale-merge")[0]
+        service.service_mark_processing(
+            merge_request.id,
+            merge_request.correlation_id,
+            lease["lease_token"],
+            "dify:merge_analysis",
+            "stale-merge-%s" % uuid.uuid4().hex,
+        )
+        # Base content changes after the merge was requested -> stale.
+        base.write({"technical_findings": "Mutated base finding after request."})
+        outcome = service.service_complete(
+            merge_request.id,
+            merge_request.correlation_id,
+            lease["lease_token"],
+            {
+                "problem_summary": "Should not persist.",
+                "original_request_summary": "Should not persist.",
+            },
+        )
+        self.assertEqual(outcome["error_code"], "stale_generation_context")
+        self.assertEqual(merge_request.state, "dead_letter")
+        self.assertFalse(merge_request.artifact_record_id)
+
+    def test_merge_rejects_unsupported_output_fields(self):
+        work = self._generation_ready_work()
+        service = self.env["dev.work.generation"].with_user(self._generation_user())
+        base = self._generated_base_analysis(work, service, notes="Human note.")
+        merge_request = work.request_analysis_merge(base)
+        lease = service.service_lease(limit=1, consumer_ref="bad-merge")[0]
+        service.service_mark_processing(
+            merge_request.id,
+            merge_request.correlation_id,
+            lease["lease_token"],
+            "dify:merge_analysis",
+            "bad-merge-%s" % uuid.uuid4().hex,
+        )
+        outcome = service.service_complete(
+            merge_request.id,
+            merge_request.correlation_id,
+            lease["lease_token"],
+            {
+                "problem_summary": "P",
+                "original_request_summary": "R",
+                "unexpected_field": "x",
+            },
+        )
+        self.assertEqual(outcome["error_code"], "invalid_generation_output")
+        self.assertEqual(merge_request.state, "dead_letter")
+        self.assertFalse(merge_request.artifact_record_id)
+
     def test_communication_context_cannot_forge_review_or_queue(self):
         work = self._work()
         report = self._approved_report(work)

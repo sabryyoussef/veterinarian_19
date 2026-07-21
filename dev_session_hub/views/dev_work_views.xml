@@ -173,7 +173,7 @@
                         </page>
                         <page string="Analysis">
                             <field name="analysis_ids">
-                                <list decoration-success="status == 'accepted'" decoration-muted="status in ('rejected', 'superseded')">
+                                <list decoration-success="status == 'accepted'" decoration-info="origin == 'mixed'" decoration-muted="status in ('rejected', 'superseded')">
                                     <field name="revision"/>
                                     <field name="parent_revision_id"/>
                                     <field name="status" widget="badge"/>
@@ -185,6 +185,7 @@
                                 </list>
                                 <form string="Analysis Revision">
                                     <header>
+                                        <button name="action_merge_and_improve_analysis" type="object" string="Merge &amp; Improve Analysis" class="btn-secondary" invisible="status not in ('draft', 'generated', 'reviewed', 'accepted') or not user_analysis_notes" confirm="Queue a semantic merge of this analysis with your 'My Analysis' notes? A new consolidated revision will be produced by the generation worker."/>
                                         <button name="action_accept" type="object" string="Accept Analysis" class="btn-primary" invisible="status not in ('draft', 'generated', 'reviewed')"/>
                                         <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('accepted', 'rejected', 'superseded')"/>
                                         <field name="status" widget="statusbar" statusbar_visible="draft,generated,reviewed,accepted,rejected,superseded"/>
@@ -208,6 +209,11 @@
                                                 <field name="observed_head"/>
                                             </group>
                                         </group>
+                                        <group string="Merge Provenance" invisible="origin != 'mixed'">
+                                            <field name="base_analysis_id"/>
+                                            <field name="merged_by_id"/>
+                                            <field name="merged_at"/>
+                                        </group>
                                         <notebook>
                                             <page string="Request">
                                                 <field name="problem_summary"/>
@@ -223,6 +229,12 @@
                                                 <field name="dependencies"/>
                                                 <field name="open_questions"/>
                                                 <field name="evidence_references"/>
+                                            </page>
+                                            <page string="My Analysis">
+                                                <div class="text-muted mb-2">Add corrections, missing context, or code/DB pointers, then click <b>Merge &amp; Improve Analysis</b> to produce a consolidated revision.</div>
+                                                <field name="user_analysis_notes"
+                                                         placeholder="Write your own analysis, decisions, and notes here…"/>
+                                                <field name="human_input_snapshot" readonly="1" invisible="origin != 'mixed'" string="Human input used in this merge"/>
                                             </page>
                                         </notebook>
                                     </sheet>

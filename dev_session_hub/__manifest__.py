@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Development Session Hub",
-    "version": "19.0.8.0.0",
+    "version": "19.0.8.8.0",
     "category": "Productivity",
     "summary": "Development work lifecycle, artifacts, checkpoints, and sessions",
     "description": """

@@ -4026,3 +4026,161 @@ class TestDevWorkLifecycle(TransactionCase):
         self._assert_failed_merge_reconciliation(
             None, "uncertain_remote_state", "merge_uncertain_state"
         )
+
+
+# Phrases that are ordinary security/technical prose (no actual secret VALUE) and
+# must be allowed through both the human-note path and the generated-import path.
+_GUARD_ALLOW = [
+    "root cause is a stale lease token; verify basic authentication and token refresh flow",
+    "stale lease token",
+    "token refresh flow",
+    "API key field",
+    "password policy",
+    "credential rotation",
+    "basic authentication",
+    "bearer token authorization",
+    "password: required",
+    "api_key: rotated_now",
+    "access_token: expired-yesterday",
+    "the secret sauce of our design",
+    "refresh_token handling in the reconciliation path",
+]
+def _pem_header(kind=""):
+    """Build a PEM private-key header WITHOUT a literal marker in source.
+
+    The ``-----BEGIN`` / ``PRIVATE KEY`` tokens are split into harmless fragments
+    so secret scanners never see a contiguous PEM marker in the repository.
+    """
+    return ("-----" + "BEGIN ") + (kind + " " if kind else "") + ("PRIVATE" + " KEY") + "-----"
+
+
+def _guard_block():
+    """Credential-shaped strings assembled at RUNTIME from harmless fragments.
+
+    Every value here intentionally matches ``SECRET_PATTERN`` (these MUST stay
+    blocked), but no literal secret-looking token is ever committed to the repo,
+    so secret scanners (e.g. GitGuardian) do not flag this test file. None of
+    these are real, valid, or reusable credentials -- they are shape-only stand-ins
+    built from concatenated non-secret pieces.
+    """
+    # JWT-like: eyJ<seg>.<seg>.<seg>, each segment [A-Za-z0-9_-]{8,}
+    jwt = ".".join(["eyJ" + "0eXAiOiJK" + "V1Qi", "cGF5bG9h" + "ZFNlZzE", "c2ln" + "U2VnMjM"])
+    # bearer/basic value: >=16 token chars including a digit / base64 marker
+    bearer_tok = "AbCdEf01" + "GhIjKl23" + "MnOp45"
+    basic_tok = "dXNlcjpw" + "YXNzd29y" + "ZDEy" + "=="
+    # AWS access-key-id shape: AKIA + 16 [0-9A-Z]
+    akia = "AKIA" + "1234567890" + "ABCDEF"
+    # GitHub PAT shape: ghp_ + >=20 [A-Za-z0-9_]
+    github = "gh" + "p_" + ("abcdefghij" + "klmnopqrst" + "uvwx")
+    # Slack token shape: xoxb- + >=10 chars
+    slack = "xox" + "b-" + "1234567890" + "abcd"
+    # credential embedded in a URL: scheme://user:pass@host
+    url_cred = "https://" + "user" + ":" + "s3cret" + "pass" + "@host.example.com"
+    # keyword := secret-like value (each contains a digit so it is treated as real)
+    pw = "password: " + "Hunter2" + "Trustno1"
+    apikey = "api_key=" + "9f8s7d6f" + "5g4h3j2k"
+    access = "access_token: " + "ya29." + "a0Af" + "H6SMB123"
+    pw_up = "PASSWORD = " + "P@ssw0rd" + "123"
+    return [
+        "Authorization: " + "Bearer " + jwt,
+        "bearer " + bearer_tok,
+        "basic " + basic_tok,
+        akia,
+        github,
+        slack,
+        jwt,
+        url_cred,
+        _pem_header("OPENSSH"),
+        _pem_header("RSA"),
+        pw,
+        apikey,
+        access,
+        pw_up,
+    ]
+
+
+@tagged("post_install", "-at_install")
+class TestContentGuardPrecision(TransactionCase):
+    """Precision of the credential/content guard (SECRET_PATTERN).
+
+    Regression coverage for the Test-hardening fix: normal security prose must
+    pass, actual credential material must stay blocked, on both the human "My
+    Analysis" note path (``_clean_note_text``) and the generated analysis / merge
+    / plan import path (``_clean_text`` / ``_validated_json``).
+    """
+
+    def _guards(self):
+        from odoo.addons.dev_session_hub.models.dev_work import (
+            SECRET_PATTERN,
+            _clean_note_text,
+            _clean_text,
+            _validated_json,
+        )
+        return SECRET_PATTERN, _clean_note_text, _clean_text, _validated_json
+
+    def test_technical_prose_allowed_on_note_path(self):
+        _, _clean_note_text, _, _ = self._guards()
+        for phrase in _GUARD_ALLOW:
+            self.assertEqual(
+                _clean_note_text(phrase, "My Analysis"),
+                phrase.strip(),
+                "note path wrongly rejected benign prose: %r" % phrase,
+            )
+
+    def test_technical_prose_allowed_on_generated_import_path(self):
+        _, _, _clean_text, _validated_json = self._guards()
+        for phrase in _GUARD_ALLOW:
+            self.assertEqual(
+                _clean_text(phrase, "Analysis"),
+                phrase.strip(),
+                "import path wrongly rejected benign prose: %r" % phrase,
+            )
+            # JSON import path (worker callback) uses the same guard per value.
+            _validated_json({"note": phrase})
+
+    def test_real_credentials_blocked_on_note_path(self):
+        _, _clean_note_text, _, _ = self._guards()
+        for secret in _guard_block():
+            with self.assertRaises(
+                ValidationError, msg="note path leaked a credential: %r" % secret
+            ):
+                _clean_note_text(secret, "My Analysis")
+
+    def test_real_credentials_blocked_on_generated_import_path(self):
+        _, _, _clean_text, _validated_json = self._guards()
+        for secret in _guard_block():
+            with self.assertRaises(
+                ValidationError, msg="import path leaked a credential: %r" % secret
+            ):
+                _clean_text(secret, "Analysis")
+            with self.assertRaises(ValidationError):
+                _validated_json({"note": secret})
+
+    def test_pem_private_key_header_blocked(self):
+        """Regression: verbose-flag bug previously let PEM headers pass."""
+        SECRET_PATTERN, _, _, _ = self._guards()
+        for header in (_pem_header("RSA"), _pem_header("OPENSSH"), _pem_header()):
+            self.assertTrue(
+                SECRET_PATTERN.search(header),
+                "PEM header not detected: %r" % header,
+            )
+
+    def test_regex_safety_no_catastrophic_backtracking(self):
+        """Bounded pathological input must complete quickly (no ReDoS)."""
+        import time
+
+        SECRET_PATTERN, _, _, _ = self._guards()
+        for payload in (
+            "bearer " + "a" * 12000,
+            "password: " + "a" * 12000,
+            "a" * 12000,
+            "https://" + "a" * 12000,
+        ):
+            start = time.perf_counter()
+            SECRET_PATTERN.search(payload)
+            elapsed = time.perf_counter() - start
+            self.assertLess(
+                elapsed,
+                2.0,
+                "SECRET_PATTERN too slow (%.3fs) on bounded input" % elapsed,
+            )

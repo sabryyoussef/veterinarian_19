@@ -16,17 +16,29 @@ MAX_BRIEF = 16000
 MAX_JSON_DEPTH = 6
 MAX_JSON_ITEMS = 200
 
+# A "secret-like value" is what distinguishes an actual credential from ordinary
+# technical prose. We require some length AND at least one digit or base64 marker
+# (+/=). This keeps detection fail-closed for real secrets while allowing phrases
+# like "password policy", "api_key: rotated_now", or "password: required" through.
+_SECRET_VALUE = r"(?=[^\s,;]{8,})(?=[^\s,;]*[0-9+/=])[^\s,;]+"
+# A bearer/basic credential value: token-charset, >=16 chars, with a digit or +/=,
+# so prose like "basic authentication" / "bearer token authorization" is allowed.
+_BEARER_VALUE = r"(?=[a-z0-9._~+/=-]{16,})(?=[a-z0-9._~+/=-]*[0-9+/=])[a-z0-9._~+/=-]+"
+
 SECRET_PATTERN = re.compile(
-    r"(?ix)"
+    # NB: case-insensitive only (no VERBOSE): the literal spaces in the PEM branch
+    # below are significant, otherwise "-----BEGIN OPENSSH PRIVATE KEY-----" (with
+    # spaces) would never match.
+    r"(?i)"
     r"(?:authorization|proxy-authorization)\s*[\"']?\s*[:=]\s*[^\s,;]+|"
-    r"\b(?:bearer|basic)\s+[a-z0-9._~+/=-]{8,}|"
+    r"\b(?:bearer|basic)\s+" + _BEARER_VALUE + r"|"
     r"\b(?:password|passwd|pwd|secret|client_secret|access_token|refresh_token|"
-    r"api[_-]?key|private[_-]?key)\b\s*[\"']?\s*[:=]\s*[^\s,;]+|"
+    r"api[_-]?key|private[_-]?key)\b\s*[\"']?\s*[:=]\s*" + _SECRET_VALUE + r"|"
     r"\bAKIA[0-9A-Z]{16}\b|"
     r"\bgh[opusr]_[A-Za-z0-9_]{20,}\b|"
     r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b|"
     r"\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b|"
-    r"[a-z][a-z0-9+.-]*://[^/\s:@]+:[^/\s@]+@|"
+    r"[a-z][a-z0-9+.-]{0,40}://[^/\s:@]+:[^/\s@]+@|"
     r"-----BEGIN [A-Z0-9 ]*(?:PRIVATE KEY|OPENSSH KEY)-----"
 )
 FORBIDDEN_CONTENT = re.compile(

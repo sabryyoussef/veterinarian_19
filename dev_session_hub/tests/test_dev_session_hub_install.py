@@ -40,7 +40,7 @@ class TestDevSessionHubInstall(TransactionCase):
         )
         self.assertTrue(module, "dev_session_hub must be installed for post_install tests")
         self.assertEqual(module.state, "installed")
-        self.assertEqual(module.latest_version, "19.0.8.2.0")
+        self.assertEqual(module.latest_version, "19.0.8.3.0")
 
     def test_openproject_sync_dependency_installed(self):
         module = self.env["ir.module.module"].search(

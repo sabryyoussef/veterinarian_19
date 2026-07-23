@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_work_approval_user,dev.work.approval user,model_dev_work_approval,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_work_approval_approver,dev.work.approval approver,model_dev_work_approval,devhub_core.group_dev_hub_approver,1,0,0,0

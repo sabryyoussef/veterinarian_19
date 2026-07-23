@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_approval_list" model="ir.ui.view">
+        <field name="name">dev.work.approval.list</field>
+        <field name="model">dev.work.approval</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0">
+                <field name="plan_id"/>
+                <field name="decision" widget="badge"/>
+                <field name="approver_id"/>
+                <field name="decided_at"/>
+                <field name="plan_hash"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_plan_form_approval" model="ir.ui.view">
+        <field name="name">dev.work.plan.form.approval</field>
+        <field name="model">dev.work.plan</field>
+        <field name="inherit_id" ref="devhub_plan.view_dev_work_plan_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_submit_for_approval']" position="after">
+                <button name="action_approve_exact" type="object" string="Approve Exact Hash" class="btn-primary" groups="devhub_core.group_dev_hub_approver" invisible="status != 'awaiting_approval'"/>
+                <button name="action_reject" type="object" string="Reject" groups="devhub_core.group_dev_hub_approver" invisible="status != 'awaiting_approval'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_item_form_plan_approval" model="ir.ui.view">
+        <field name="name">dev.work.item.form.plan.approval</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_plan.view_dev_work_item_form_plan"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='plan_ids']/form/header/button[@name='action_submit_for_approval']" position="after">
+                <button name="action_approve_exact" type="object" string="Approve Exact Hash" class="btn-primary" groups="devhub_core.group_dev_hub_approver" invisible="status != 'awaiting_approval'"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_dev_work_plan_form_approval_ids" model="ir.ui.view">
+        <field name="name">dev.work.plan.form.approval.ids</field>
+        <field name="model">dev.work.plan</field>
+        <field name="inherit_id" ref="devhub_plan.view_dev_work_plan_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Approvals">
+                    <field name="approval_ids" nolabel="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="decision"/>
+                            <field name="approver_id"/>
+                            <field name="decided_at"/>
+                            <field name="plan_hash"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

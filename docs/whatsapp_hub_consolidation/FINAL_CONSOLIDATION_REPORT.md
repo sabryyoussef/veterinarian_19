@@ -27,7 +27,7 @@
 | Item | Value |
 |------|--------|
 | Pre-closure pin (P3–P10) | `4ce0387d45c13eae347e459d1683ee3886da57f4` (`4ce0387`) |
-| Closure commit | See git log after this report is committed (`fix(whatsapp_hub): …`) |
+| Closure commit | `c858c0730dfb01e308a2fbf4e0f72fe75f9588d4` (`c858c07`) |
 | Branch | `feature/devhub-modularization-whatsapp` |
 | Canonical tree | `/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel` |
 

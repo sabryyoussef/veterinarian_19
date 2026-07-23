@@ -56,6 +56,55 @@ class TestWhatsappHubIngest(TransactionCase):
         )
         self.assertTrue(group)
 
+    def test_evolution_message_id_preserved_and_backfilled(self):
+        """Chatwoot id remains primary idempotency; Evolution id is optional metadata."""
+        Message = self.env["whatsapp.message"].with_user(self.service)
+        payload = {
+            "group_jid": "120363411424964076@g.us",
+            "chatwoot_message_id": 800010,
+            "chatwoot_conversation_id": 9010,
+            "chatwoot_account_id": 1,
+            "text": "Preserve Evolution id when present",
+            "sender_jid": "201003670502@s.whatsapp.net",
+            "evolution_message_id": "EVOTEST800010",
+        }
+        first = Message.service_ingest_normalized(payload)
+        self.assertFalse(first.get("duplicate"))
+        msg = self.env["whatsapp.message"].browse(first["message_id"])
+        self.assertEqual(msg.chatwoot_message_id, 800010)
+        self.assertEqual(msg.evolution_message_id, "EVOTEST800010")
+
+        # Replay without Evolution id must not wipe it / must stay duplicate.
+        replay = Message.service_ingest_normalized(
+            {**payload, "evolution_message_id": False}
+        )
+        self.assertTrue(replay.get("duplicate"))
+        self.assertEqual(
+            self.env["whatsapp.message"].search_count(
+                [("chatwoot_message_id", "=", 800010)]
+            ),
+            1,
+        )
+        self.assertEqual(msg.evolution_message_id, "EVOTEST800010")
+
+        # Chatwoot-only first, then backfill Evolution id on duplicate path.
+        payload2 = {
+            "group_jid": "120363411424964076@g.us",
+            "chatwoot_message_id": 800011,
+            "chatwoot_conversation_id": 9011,
+            "chatwoot_account_id": 1,
+            "text": "Backfill Evolution id",
+            "sender_jid": "201003670502@s.whatsapp.net",
+        }
+        created = Message.service_ingest_normalized(payload2)
+        self.assertFalse(created.get("duplicate"))
+        backfill = Message.service_ingest_normalized(
+            {**payload2, "evolution_message_id": "EVOBACKFILL800011"}
+        )
+        self.assertTrue(backfill.get("duplicate"))
+        msg2 = self.env["whatsapp.message"].browse(created["message_id"])
+        self.assertEqual(msg2.evolution_message_id, "EVOBACKFILL800011")
+
     def test_outbound_queue_creates_message(self):
         manager = new_test_user(
             self.env,

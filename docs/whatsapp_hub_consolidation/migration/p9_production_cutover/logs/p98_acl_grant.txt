@@ -1,0 +1,7 @@
+user_id 2
+login admin
+group_xmlid whatsapp_hub.group_whatsapp_manager
+group_id 149
+had_group_before False
+has_group_after True
+hub_msg_count_as_admin 0

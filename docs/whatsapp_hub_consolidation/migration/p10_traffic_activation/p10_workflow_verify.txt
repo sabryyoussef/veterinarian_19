@@ -1,0 +1,5 @@
+active True updated 2026-07-23T06:37:51.459Z
+hub_url ={{ $env.WHATSAPP_HUB_BASE_URL + '/whatsapp_hub/ingest' }}
+neverError True
+onError continueRegularOutput
+observe_only True

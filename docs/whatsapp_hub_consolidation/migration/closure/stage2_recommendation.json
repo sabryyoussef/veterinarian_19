@@ -1,0 +1,51 @@
+{
+  "pilot_remain": "120363411424964076@g.us",
+  "recommended_stage2_disabled": [
+    {
+      "jid": "120363422104853335@g.us",
+      "name": "Dev Needed",
+      "company": "edafa",
+      "managed": true,
+      "chatwoot_label": "dev-needed",
+      "project_id": 10,
+      "score": 13
+    },
+    {
+      "jid": "120363428056737368@g.us",
+      "name": "Asta development",
+      "company": "edafa",
+      "managed": true,
+      "chatwoot_label": "asta-development",
+      "project_id": 13,
+      "score": 10
+    },
+    {
+      "jid": "120363427125783045@g.us",
+      "name": "AZone - WorldPosta",
+      "company": "bright",
+      "managed": true,
+      "chatwoot_label": "azone-worldposta",
+      "project_id": 12,
+      "score": 0
+    },
+    {
+      "jid": "120363409479957889@g.us",
+      "name": "Alzaeem Medial project  - internal BIS",
+      "company": "bright",
+      "managed": true,
+      "chatwoot_label": "alzaem-medical",
+      "project_id": 29,
+      "score": 0
+    },
+    {
+      "jid": "120363408457090778@g.us",
+      "name": "Bright&I zone ( Odoo ERP )",
+      "company": "bright",
+      "managed": true,
+      "chatwoot_label": "izone-bright",
+      "project_id": 12,
+      "score": 0
+    }
+  ],
+  "all_managed_count": 12
+}

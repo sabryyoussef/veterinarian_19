@@ -1,0 +1,8 @@
+{
+  "filter_has_content_attrs": true,
+  "merge_has_evo": true,
+  "hub_payload_prefers_content_attrs": true,
+  "hub_payload_reads_conv_custom": true,
+  "observe_only_intact": true,
+  "pilot_jid_intact": true
+}

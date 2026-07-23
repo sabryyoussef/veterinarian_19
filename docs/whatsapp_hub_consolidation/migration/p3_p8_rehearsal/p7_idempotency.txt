@@ -1,0 +1,14 @@
+=== ingest 1 ===
+{"ok": true, "message_id": 1, "conversation_id": 1, "group_id": 1, "contact_id": 1, "duplicate": false, "skipped": false}
+=== ingest 2 ===
+{"ok": true, "message_id": 1, "conversation_id": 1, "group_id": 1, "contact_id": 1, "duplicate": true, "skipped": true, "reason": "duplicate_message"}
+ rows_for_cw_msg 
+-----------------
+               1
+(1 row)
+
+ id | direction |  state   |                     left                      
+----+-----------+----------+-----------------------------------------------
+  1 | in        | received | REHEARSAL-IDEM-20260723Z Please add a filter.
+(1 row)
+

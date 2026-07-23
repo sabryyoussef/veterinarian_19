@@ -1,0 +1,15 @@
+UI smoke method:
+1. HTTP login page 200 + firefox screenshot 01_login.png
+2. JSON-RPC authenticate admin OK
+3. After assigning WhatsApp Manager + server restart:
+   - whatsapp.message search_read OK (2 rows)
+   - whatsapp.message get_views list/form OK
+   - whatsapp.outbound.message search_read OK
+   - wa.campaign get_views OK
+   - petspot.wa.intake get_views OK
+4. /web returns 200 for authenticated session
+5. Playwright Chromium unavailable on ubuntu26.04; firefox headless used for public pages
+
+Ops condition for Production:
+- Assign Settings users who need Hub UI to group whatsapp_hub.group_whatsapp_manager (or User)
+- Restart HTTP workers after module install so ACL/session caches refresh

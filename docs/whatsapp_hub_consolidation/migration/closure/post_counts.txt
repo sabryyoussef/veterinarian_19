@@ -1,0 +1,5 @@
+petspot_wa_intake|12
+wa_campaign|14
+wa_campaign_line|2257
+whatsapp_message|4
+whatsapp_outbound_message|0

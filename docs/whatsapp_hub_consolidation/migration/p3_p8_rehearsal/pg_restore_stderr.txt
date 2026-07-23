@@ -1,0 +1,110 @@
+pg_restore: error: could not execute query: ERROR:  permission denied to create extension "vector"
+HINT:  Must be superuser to create this extension.
+Command was: CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
+
+
+pg_restore: error: could not execute query: ERROR:  extension "vector" does not exist
+Command was: COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
+
+
+pg_restore: error: could not execute query: ERROR:  type "public.vector" does not exist
+LINE 12:     embedding_vector public.vector(1536)
+                              ^
+Command was: CREATE TABLE public.ai_embedding (
+    id integer NOT NULL,
+    attachment_id integer NOT NULL,
+    sequence integer,
+    create_uid integer,
+    write_uid integer,
+    embedding_model character varying NOT NULL,
+    content text NOT NULL,
+    has_embedding_generation_failed boolean,
+    create_date timestamp without time zone,
+    write_date timestamp without time zone,
+    embedding_vector public.vector(1536)
+);
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON TABLE public.ai_embedding IS 'Attachment Chunks Embedding';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.attachment_id IS 'Attachment';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.sequence IS 'Sequence';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.create_uid IS 'Created by';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.write_uid IS 'Last Updated by';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.embedding_model IS 'Embedding Model';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.content IS 'Chunk Content';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.has_embedding_generation_failed IS 'Has Embedding Generation Failed';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.create_date IS 'Created on';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.write_date IS 'Last Updated on';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COMMENT ON COLUMN public.ai_embedding.embedding_vector IS 'Embedding Vector';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: ALTER SEQUENCE public.ai_embedding_id_seq1 OWNED BY public.ai_embedding.id;
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: ALTER TABLE ONLY public.ai_embedding ALTER COLUMN id SET DEFAULT nextval('public.ai_embedding_id_seq1'::regclass);
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: COPY public.ai_embedding (id, attachment_id, sequence, create_uid, write_uid, embedding_model, content, has_embedding_generation_failed, create_date, write_date, embedding_vector) FROM stdin;
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: ALTER TABLE ONLY public.ai_embedding
+    ADD CONSTRAINT ai_embedding_pkey PRIMARY KEY (id);
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: CREATE INDEX ai_embedding_embedding_vector_idx ON public.ai_embedding USING ivfflat (embedding_vector public.vector_cosine_ops);
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding_embedding_vector_idx" does not exist
+Command was: COMMENT ON INDEX public.ai_embedding_embedding_vector_idx IS 'INDEX USING ivfflat (embedding_vector vector_cosine_ops)';
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: ALTER TABLE ONLY public.ai_embedding
+    ADD CONSTRAINT ai_embedding_attachment_id_fkey FOREIGN KEY (attachment_id) REFERENCES public.ir_attachment(id) ON DELETE CASCADE;
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: ALTER TABLE ONLY public.ai_embedding
+    ADD CONSTRAINT ai_embedding_create_uid_fkey FOREIGN KEY (create_uid) REFERENCES public.res_users(id) ON DELETE SET NULL;
+
+
+pg_restore: error: could not execute query: ERROR:  relation "public.ai_embedding" does not exist
+Command was: ALTER TABLE ONLY public.ai_embedding
+    ADD CONSTRAINT ai_embedding_write_uid_fkey FOREIGN KEY (write_uid) REFERENCES public.res_users(id) ON DELETE SET NULL;
+
+
+pg_restore: warning: errors ignored on restore: 23

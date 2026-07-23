@@ -1,0 +1,6 @@
+{
+  "status": 200,
+  "body": "{\"ok\":true,\"contact_id\":32,\"conversation_id\":69,\"message_id\":14387,\"guided_bot\":{\"handled\":false,\"reason\":\"agent_bot_webhook\"},\"petspot_bot\":null}",
+  "marker": "WHATSAPP-HUB-EVOID-20260723T065927Z",
+  "evolution_message_id": "CLOSUREEVO1784789967"
+}

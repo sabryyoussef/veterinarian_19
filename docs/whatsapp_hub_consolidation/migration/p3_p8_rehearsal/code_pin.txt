@@ -1,0 +1,5 @@
+branch=feature/devhub-modularization-whatsapp
+rehearsal_pin_sha=4ce0387d45c13eae347e459d1683ee3886da57f4
+short=4ce0387
+dirty_remaining=60
+note=whatsapp_hub+consumers+P0P2 evidence committed; remaining dirty mostly untracked devhub_* not in Production upgrade path

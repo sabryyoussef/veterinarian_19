@@ -1,0 +1,13 @@
+{
+  "workflow_id": "gKMYWKVT5FtUAFwB",
+  "backup": "/home/sabry/infra/n8n/backups/workflows/chatwoot-ai-analysis-p10-pre-prod-hub-20260723T063751Z.json",
+  "hub_base": "https://drpaws.ai",
+  "pilot_jid": "120363411424964076@g.us",
+  "observe_only": true,
+  "devhub_intake": "forced_off",
+  "changed_nodes": [
+    "Build Dev Hub Intake Payload (forced observe-only)",
+    "env WHATSAPP_HUB_BASE_URL \u2192 Production",
+    "env WHATSAPP_HUB_BRIDGE_TOKEN \u2192 Production n8n token"
+  ]
+}

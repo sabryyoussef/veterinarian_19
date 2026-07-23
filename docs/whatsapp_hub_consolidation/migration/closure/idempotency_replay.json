@@ -1,0 +1,28 @@
+[
+  {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "message_id": 4,
+      "conversation_id": 3,
+      "group_id": 1,
+      "contact_id": 4,
+      "duplicate": true,
+      "skipped": true,
+      "reason": "duplicate_message"
+    }
+  },
+  {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "message_id": 4,
+      "conversation_id": 3,
+      "group_id": 1,
+      "contact_id": 4,
+      "duplicate": true,
+      "skipped": true,
+      "reason": "duplicate_message"
+    }
+  }
+]

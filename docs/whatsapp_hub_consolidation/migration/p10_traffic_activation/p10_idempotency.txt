@@ -1,0 +1,8 @@
+first_hub_id=3 chatwoot_message_id=14383
+=== replay ingest ===
+{"ok": true, "message_id": 3, "conversation_id": 3, "group_id": 1, "contact_id": 3, "duplicate": true, "skipped": true, "reason": "duplicate_message"}
+ rows_for_cw 
+-------------
+           1
+(1 row)
+

@@ -1,0 +1,8 @@
+test_bridge_cannot_overwrite_manual_keys_via_updates (test_custom_attributes_merge.CustomAttributesMergeTest.test_bridge_cannot_overwrite_manual_keys_via_updates) ... ok
+test_owned_prefixes (test_custom_attributes_merge.CustomAttributesMergeTest.test_owned_prefixes) ... ok
+test_preserves_unrelated_keys (test_custom_attributes_merge.CustomAttributesMergeTest.test_preserves_unrelated_keys) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK

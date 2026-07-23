@@ -1,0 +1,10 @@
+prod_hub_health=ok
+prod_service=active
+workflow_id=gKMYWKVT5FtUAFwB
+workflow_active=true
+backup=/home/sabry/infra/n8n/backups/workflows/chatwoot-ai-analysis-p10-pre-prod-hub-20260723T063751Z.json
+hub_endpoint=https://drpaws.ai/whatsapp_hub/ingest
+pilot_jid=120363411424964076@g.us
+pilot_name=Testopenclow
+observe_only=true
+code_pin=4ce0387

@@ -1,0 +1,8 @@
+BACKUP_ROOT=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p9_cutover_20260723T062315Z
+-rw-rw-r-- 1 sabry sabry 17M Jul 23 09:23 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p9_cutover_20260723T062315Z/pet_spot_elsahel.dump
+db_dump_ok=YES
+346M	/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p9_cutover_20260723T062315Z/filestore
+-rw-rw-r-- 1 sabry sabry 135K Jul 23 07:56 /home/sabry/infra/n8n/backups/workflows/chatwoot-ai-analysis-hub-ingest-20260723T045647Z.json
+n8n_workflow_id=gKMYWKVT5FtUAFwB
+n8n_backup=/home/sabry/infra/n8n/backups/workflows/chatwoot-ai-analysis-hub-ingest-20260723T045647Z.json
+backup_root=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p9_cutover_20260723T062315Z

@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:8080/message/sendText/sabry min",
+  "status": 201,
+  "body": "{\"key\":{\"remoteJid\":\"120363411424964076@g.us\",\"fromMe\":true,\"id\":\"3EB0CF6CDABF8724E51CAD\"},\"pushName\":\"Voc\u00ea\",\"status\":\"PENDING\",\"message\":{\"conversation\":\"WHATSAPP-HUB-PROD-LIVE-UAT-20260723T063900Z\"},\"messageType\":\"conversation\",\"messageTimestamp\":1784788740,\"instanceId\":\"3d2d2994-8446-4923-8dd8-76c9f97b497c\",\"source\":\"web\"}",
+  "marker": "WHATSAPP-HUB-PROD-LIVE-UAT-20260723T063900Z",
+  "jid": "120363411424964076@g.us",
+  "instance": "sabry min"
+}

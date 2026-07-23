@@ -1,0 +1,15 @@
+uid 2 groups_count_hint 5660
+user_read {'jsonrpc': '2.0', 'id': 1, 'result': [{'id': 2, 'group_ids': [36, 51, 52, 26, 27, 131, 50, 76, 21, 142, 110, 143, 48, 136, 145, 38, 79, 127, 129, 114, 71, 32, 82, 149, 85, 88, 91, 147, 94, 97, 40, 122, 58, 99, 112, 43, 125, 18, 4, 1, 53], 'login': 'admin'}]}
+messages ERROR
+{
+  "code": 0,
+  "message": "Odoo Server Error",
+  "data": {
+    "name": "odoo.exceptions.AccessError",
+    "message": "You are not allowed to access 'WhatsApp Message' (whatsapp.message) records.\n\nThis operation is allowed for the following groups:\n\t- WhatsApp Hub/WhatsApp Ingest Service\n\t- WhatsApp Hub/WhatsApp Manager\n\t- WhatsApp Hub/WhatsApp User\n\nContact your administrator to request access if necessary.",
+    "arguments": [
+      "You are not allowed to access 'WhatsApp Message' 
+get_views You are not allowed to access 'WhatsApp Message' (whatsapp.message) records.
+
+This operation is allowed for the followin
+load_menus keys ['62', '68', '140', '156', '298', '312', '337', '362', '397', '405']

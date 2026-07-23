@@ -1,0 +1,19 @@
+     name     |   state   | latest_version 
+--------------+-----------+----------------
+ whatsapp_hub | installed | 19.0.1.0.1
+(1 row)
+
+ whatsapp_message 
+------------------
+ whatsapp_message
+(1 row)
+
+ name | state 
+------+-------
+(0 rows)
+
+ installed 
+-----------
+       341
+(1 row)
+

@@ -1,0 +1,15 @@
+login_ok 2
+whatsapp_menus 1
+ - WhatsApp Hub
+model_reads:
+  ('whatsapp.message', 'ERROR', '{\'code\': 0, \'message\': \'Odoo Server Error\', \'data\': {\'name\': \'odoo.exceptions.AccessError\', \'message\': "You are not allo')
+  ('whatsapp.outbound.message', 'ERROR', '{\'code\': 0, \'message\': \'Odoo Server Error\', \'data\': {\'name\': \'odoo.exceptions.AccessError\', \'message\': "You are not allo')
+  ('wa.campaign', 'OK', 'rows=3')
+  ('petspot.wa.intake', 'OK', 'rows=3')
+  ('integration.bridge.token', 'OK', 'rows=3')
+view whatsapp.message FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message
+view wa.campaign OK get_views
+view petspot.wa.intake OK get_views
+view petspot.clinic.booking FAIL {'code': 404, 'message': '404: Not Found', 'data': {'name': 'werkzeug.exceptions.NotFound', 'message
+ir_models [{'id': 658, 'model': 'crm.lead', 'name': 'Lead'}, {'id': 1055, 'model': 'petspot.wa.intake', 'name': 'PetSpot WhatsApp Intake'}, {'id': 1014, 'model': 'wa.campaign', 'name': 'WA Campaign'}, {'id': 1352, 'model': 'whatsapp.message', 'name': 'WhatsApp Message'}]
+settings_marassi_ok True keys_present ['campaign_phone_marassi', 'campaign_phone_haram', 'campaign_phone_amwaj']

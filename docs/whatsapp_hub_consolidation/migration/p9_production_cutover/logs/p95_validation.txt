@@ -1,0 +1,19 @@
+          name           |   state   | latest_version 
+-------------------------+-----------+----------------
+ evolution_whatsapp_chat | installed | 19.0.1.10.1
+ petspot_wa_intake       | installed | 19.0.1.0.1
+(2 rows)
+
+         t         |  c   
+-------------------+------
+ wa_campaign       |   14
+ wa_campaign_line  | 2257
+ evo_wa_template   |   15
+ wa_message_log    |    2
+ petspot_wa_intake |   12
+(5 rows)
+
+ name | state 
+------+-------
+(0 rows)
+

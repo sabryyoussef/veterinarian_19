@@ -1,0 +1,10 @@
+whatsapp.message FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message': "You are not allowed to access 'WhatsApp Messag
+whatsapp.outbound.message FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message': "You are not allowed to access 'WhatsApp Outbou
+whatsapp.group FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message': "You are not allowed to access 'WhatsApp Group'
+whatsapp.contact FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message': "You are not allowed to access 'WhatsApp Contac
+whatsapp.conversation FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message': "You are not allowed to access 'WhatsApp Conver
+views whatsapp.message FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message
+views whatsapp.outbound.message FAIL {'code': 0, 'message': 'Odoo Server Error', 'data': {'name': 'odoo.exceptions.AccessError', 'message
+views wa.campaign OK
+views petspot.wa.intake OK
+web_status 200 len 7944

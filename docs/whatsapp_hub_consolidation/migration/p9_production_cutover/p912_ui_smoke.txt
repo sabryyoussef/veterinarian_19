@@ -1,0 +1,8 @@
+login_ok True uid 2
+views whatsapp.message OK
+views wa.campaign OK
+views petspot.wa.intake OK
+views whatsapp.outbound.message OK
+hub_messages [{'id': 1, 'direction': 'in', 'state': 'received'}]
+marassi_alias OK
+hub_menus [{'id': 888, 'name': 'WhatsApp Hub', 'complete_name': 'WhatsApp Hub'}]

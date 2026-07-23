@@ -1,0 +1,6 @@
+GET /whatsapp_hub/health 200 {"ok": true, "module": "whatsapp_hub"}
+GET /bridge/inbound/health 200 {"status": "ok", "module": "integration_bridge_core", "version": "19.0.1.0.0", "odoo": "19", "endpoints": {"inbound": "/bridge/inbound", "health": "/bridge/inbound/health"}, "platforms": ["evolution", "chatwoot", "typebot", "n8n", "dify"]}
+GET /petspot/wa/intake/health 200 {"ok": true, "module": "petspot_wa_intake", "endpoint": "/petspot/wa/intake"}
+OPTIONS /bridge/inbound 204
+OPTIONS /bridge/evolution/webhook 204
+OPTIONS /petspot/wa/intake 204

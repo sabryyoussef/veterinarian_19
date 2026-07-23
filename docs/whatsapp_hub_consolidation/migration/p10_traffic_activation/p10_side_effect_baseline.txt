@@ -1,0 +1,8 @@
+         t         |  c   
+-------------------+------
+ crm_lead          | 1929
+ petspot_wa_intake |   12
+ wa_campaign       |   14
+ whatsapp_message  |    2
+(4 rows)
+

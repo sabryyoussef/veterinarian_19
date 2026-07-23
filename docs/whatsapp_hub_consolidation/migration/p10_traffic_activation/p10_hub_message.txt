@@ -1,0 +1,5 @@
+ id | direction |  state   | chatwoot_message_id | evolution_message_id | group_id |                    left                     |        create_date        
+----+-----------+----------+---------------------+----------------------+----------+---------------------------------------------+---------------------------
+  3 | in        | received |               14383 |                      |        1 | WHATSAPP-HUB-PROD-LIVE-UAT-20260723T064122Z | 2026-07-23 06:41:24.21135
+(1 row)
+

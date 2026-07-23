@@ -1,0 +1,9 @@
+evo_wa_template: before=15 after=15 delta=0
+integration_bridge_log: before=127 after=127 delta=0
+integration_bridge_token: before=5 after=5 delta=0
+integration_outbound_queue: before=127 after=127 delta=0
+petspot_wa_intake: before=12 after=12 delta=0
+wa_campaign: before=14 after=14 delta=0
+wa_campaign_line: before=2257 after=2257 delta=0
+wa_message_log: before=2 after=2 delta=0
+ALL_ZERO_DELTA

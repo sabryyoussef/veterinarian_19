@@ -1,0 +1,7 @@
+ id | chatwoot_message_id | evolution_message_id |        group_jid        |                        body                        
+----+---------------------+----------------------+-------------------------+----------------------------------------------------
+  1 |              881001 |                      | 120363411424964076@g.us | PROD-CUTOVER-SYNTH-20260723Z isolated hub test onl
+  2 |              999001 |                      | 120363411424964076@g.us | P10-auth-probe-delete-me
+  3 |               14383 |                      | 120363411424964076@g.us | WHATSAPP-HUB-PROD-LIVE-UAT-20260723T064122Z
+(3 rows)
+

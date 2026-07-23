@@ -1,0 +1,13 @@
+             t              |  c   
+----------------------------+------
+ evo_wa_template            |   15
+ integration_bridge_log     |  127
+ integration_bridge_token   |    5
+ integration_outbound_queue |  127
+ petspot_wa_intake          |   12
+ wa_campaign                |   14
+ wa_campaign_line           | 2257
+ wa_message_log             |    2
+ whatsapp_message           |    0
+(9 rows)
+

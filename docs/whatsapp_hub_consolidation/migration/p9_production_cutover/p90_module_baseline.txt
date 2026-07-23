@@ -1,0 +1,12 @@
+           name           |   state   |   version   
+--------------------------+-----------+-------------
+ evolution_whatsapp_chat  | installed | 19.0.1.10.0
+ integration_bridge_core  | installed | 19.0.1.0.5
+ petspot_backend_sidebar  | installed | 19.0.1.1.1
+ petspot_campaign_rewards | installed | 19.0.1.2.0
+ petspot_clinic_portal    | installed | 19.0.2.2.1
+ petspot_vet_feedback     | installed | 19.0.1.0.0
+ petspot_wa_intake        | installed | 19.0.1.0.0
+ social_media_connector   | installed | 19.0.1.0.0
+(8 rows)
+

@@ -1,0 +1,8 @@
+{
+  "marker": "WHATSAPP-HUB-PROD-LIVE-UAT-20260723T064122Z",
+  "evolution_message_id": "P10PROD1784788882",
+  "group_jid": "120363411424964076@g.us",
+  "participant": "201155512345@s.whatsapp.net",
+  "bridge_status": 200,
+  "bridge_body": "{\"ok\":true,\"contact_id\":32,\"conversation_id\":69,\"message_id\":14383,\"guided_bot\":{\"handled\":false,\"reason\":\"agent_bot_webhook\"},\"petspot_bot\":null}"
+}

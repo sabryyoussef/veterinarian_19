@@ -1,0 +1,8 @@
+=== Stopping Production service ===
+inactive
+8027 free
+=== P9-3: -i whatsapp_hub ===
+P93_EXIT:0
+=== Starting Production service ===
+active
+LISTEN 0      16                         0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=2323008,fd=5),("python3",pid=2323006,fd=5),("python3",pid=2322733,fd=5))

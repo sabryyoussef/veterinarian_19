@@ -1,0 +1,4 @@
+2026-07-23 07:06:09,844 2485159 ERROR pet_spot_elsahel_mig_rehearsal odoo.addons.evolution_whatsapp_chat.tests.test_wa_campaign: FAIL: TestWaCampaignStateMachine.test_start_campaign_from_draft
+2026-07-23 07:06:10,134 2485159 ERROR pet_spot_elsahel_mig_rehearsal odoo.addons.integration_bridge_core.tests.test_bridge_core: FAIL: TestIntegrationOutboundQueue.test_process_pending_messages_returns_stats
+2026-07-23 07:06:10,145 2485159 ERROR pet_spot_elsahel_mig_rehearsal odoo.addons.integration_bridge_core.tests.test_bridge_core: FAIL: TestIntegrationOutboundQueue.test_send_exception_marks_failed
+2026-07-23 07:06:10,167 2485159 ERROR pet_spot_elsahel_mig_rehearsal odoo.addons.integration_bridge_core.tests.test_bridge_core: FAIL: TestIntegrationOutboundQueue.test_send_success_marks_sent

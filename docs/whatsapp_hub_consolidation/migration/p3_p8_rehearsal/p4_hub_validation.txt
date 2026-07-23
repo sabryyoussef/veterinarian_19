@@ -1,0 +1,40 @@
+     name     |   state   | latest_version 
+--------------+-----------+----------------
+ whatsapp_hub | installed | 19.0.1.0.1
+(1 row)
+
+             table_name              
+-------------------------------------
+ whatsapp_bulk_line
+ whatsapp_bulk_wizard
+ whatsapp_bulk_wizard_attachment_rel
+ whatsapp_contact
+ whatsapp_conversation
+ whatsapp_group
+ whatsapp_instance
+ whatsapp_message
+ whatsapp_message_event
+ whatsapp_outbound_message
+ whatsapp_send_wizard
+ whatsapp_wizard_attachment_rel
+(12 rows)
+
+           model           
+---------------------------
+ whatsapp.bulk.line
+ whatsapp.bulk.wizard
+ whatsapp.contact
+ whatsapp.conversation
+ whatsapp.group
+ whatsapp.hub.compat
+ whatsapp.instance
+ whatsapp.message
+ whatsapp.message.event
+ whatsapp.outbound.message
+ whatsapp.send.wizard
+(11 rows)
+
+ name | state 
+------+-------
+(0 rows)
+

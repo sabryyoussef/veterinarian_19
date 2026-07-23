@@ -212,9 +212,11 @@ class WhatsappMessage(models.Model):
             existing = self.sudo().search(
                 [("chatwoot_message_id", "=", int(chatwoot_message_id))], limit=1
             )
-            if existing and evolution_message_id and not existing.evolution_message_id:
-                existing.sudo().write({"evolution_message_id": evolution_message_id})
         if existing:
+            # Enrich optional Evolution id when a later normalized event carries it
+            # (Chatwoot id remains the primary idempotency key).
+            if evolution_message_id and not existing.evolution_message_id:
+                existing.sudo().write({"evolution_message_id": evolution_message_id})
             return {
                 "message_id": existing.id,
                 "conversation_id": existing.conversation_id.id,

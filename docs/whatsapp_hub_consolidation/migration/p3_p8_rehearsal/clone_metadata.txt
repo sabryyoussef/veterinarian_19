@@ -1,0 +1,9 @@
+clone_db=pet_spot_elsahel_mig_rehearsal
+filestore=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore_mig_rehearsal
+config=/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_mig_rehearsal.conf
+port=8035
+url=http://127.0.0.1:8035
+http_interface=127.0.0.1
+addons_path=community+enterprise+projects/pet_spot_elsahel (canonical only)
+source_backup=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/pet_spot_elsahel_20260723T060608Z.dump
+code_pin=4ce0387d45c13eae347e459d1683ee3886da57f4

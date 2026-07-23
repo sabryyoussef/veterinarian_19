@@ -1,0 +1,7 @@
+=== routes ===
+/whatsapp_hub/health 200 {"ok": true, "module": "whatsapp_hub"}
+/bridge/inbound/health 200 {"status": "ok", "module": "integration_bridge_core", "version": "19.0.1.0.0", "odoo": "19", "endpoints": {"inbound": "/bridge/inbound", "health": "/bridge/inbound/health"}, "platforms": ["evolution", "chatwoot", "typebot", "n8n", "dify"]}
+/petspot/wa/intake/health 200 {"ok": true, "module": "petspot_wa_intake", "endpoint": "/petspot/wa/intake"}
+/bridge/evolution/webhook OPTIONS 204
+/petspot/wa/intake OPTIONS 204
+/bridge/inbound OPTIONS 204

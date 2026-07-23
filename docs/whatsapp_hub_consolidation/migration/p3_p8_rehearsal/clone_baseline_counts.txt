@@ -1,0 +1,8 @@
+            t             |  c   
+--------------------------+------
+ wa_campaign              |   14
+ wa_campaign_line         | 2257
+ petspot_wa_intake        |   12
+ integration_bridge_token |    5
+(4 rows)
+

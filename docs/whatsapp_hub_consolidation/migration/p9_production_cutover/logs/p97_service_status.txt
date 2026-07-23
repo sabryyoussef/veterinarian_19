@@ -1,0 +1,20 @@
+● pet_spot_elsahel.service - Odoo 19 — PetSpot El Sahel (port 8027)
+     Loaded: loaded (/home/sabry/.config/systemd/user/pet_spot_elsahel.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2026-07-23 09:27:03 EEST; 6s ago
+ Invocation: a1a60c09ecf048db86a48c1d476a9b0b
+    Process: 2322723 ExecStartPre=/bin/bash -c for i in $(seq 1 60); do pg_isready -h localhost -p 5432 >/dev/null 2>&1 && exit 0; sleep 1; done; echo "PostgreSQL not ready" >&2; exit 1 (code=exited, status=0/SUCCESS)
+   Main PID: 2322733 (python3)
+      Tasks: 9 (limit: 37132)
+     Memory: 317.1M (peak: 317.9M)
+        CPU: 6.811s
+     CGroup: /user.slice/user-1000.slice/user@1000.service/app.slice/pet_spot_elsahel.service
+             ├─2322733 /home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf -d pet_spot_elsahel
+             ├─2323006 /home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf -d pet_spot_elsahel
+             ├─2323008 /home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf -d pet_spot_elsahel
+             ├─2323009 /home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin gevent -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf -d pet_spot_elsahel
+             └─2323018 /home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf -d pet_spot_elsahel
+
+Jul 23 09:27:07 master python3[2323006]: 2026-07-23 06:27:07,989 2323006 INFO pet_spot_elsahel odoo.service.server: Worker WorkerHTTP (2323006) alive
+Jul 23 09:27:08 master python3[2323008]: 2026-07-23 06:27:08,002 2323008 INFO pet_spot_elsahel odoo.service.server: Worker WorkerHTTP (2323008) alive
+Jul 23 09:27:08 master python3[2323018]: 2026-07-23 06:27:08,017 2323018 INFO pet_spot_elsahel odoo.service.server: Worker WorkerCron (2323018) alive
+Jul 23 09:27:08 master python3[2323006]: 2026-07-23 06:27:08,722 2323006 INFO pet_spot_elsahel odoo.addons.base.models.ir_http: Generating routing map for key 1

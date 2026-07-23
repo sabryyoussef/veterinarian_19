@@ -55,6 +55,13 @@ class PetspotWaIntake(models.Model):
     chatwoot_inbox_id = fields.Integer(string='Chatwoot Inbox')
     chatwoot_message_id = fields.Integer(string='Chatwoot Message')
     evolution_message_id = fields.Char(string='Evolution Message ID', index=True)
+    whatsapp_message_id = fields.Many2one(
+        'whatsapp.message',
+        string='WhatsApp Hub Message',
+        ondelete='set null',
+        index=True,
+        help='Canonical message in whatsapp_hub (shared infrastructure).',
+    )
     pet_name = fields.Char(string='Pet Name (extracted)')
     product_name = fields.Char(string='Product (extracted)')
     amount = fields.Float(string='Amount (extracted)')
@@ -151,6 +158,26 @@ class PetspotWaIntake(models.Model):
         if not message_text:
             message_text = '[empty message]'
 
+        # Canonical WhatsApp Hub store (shared infrastructure)
+        hub_message_id = False
+        if 'whatsapp.message' in self.env:
+            try:
+                hub_res = self.env['whatsapp.message'].sudo().service_ingest_normalized({
+                    **payload,
+                    'group_jid': group_jid or self._allowed_group_jid(),
+                    'text': message_text,
+                    'evolution_message_id': evo_msg_id or False,
+                    'chatwoot_message_id': payload.get('chatwoot_message_id') or False,
+                    'chatwoot_conversation_id': payload.get('chatwoot_conversation_id') or False,
+                    'chatwoot_inbox_id': inbox_id or False,
+                    'sender_jid': payload.get('sender_jid') or '',
+                    'sender_phone': payload.get('sender_phone') or '',
+                    'sender_name': payload.get('sender_name') or payload.get('push_name') or '',
+                })
+                hub_message_id = hub_res.get('message_id') or False
+            except Exception:
+                _logger.warning('petspot_wa_intake: whatsapp_hub ingest failed', exc_info=True)
+
         vals = {
             'intent': intent,
             'message_text': message_text,
@@ -163,6 +190,7 @@ class PetspotWaIntake(models.Model):
             'chatwoot_inbox_id': inbox_id or allowed_inbox,
             'chatwoot_message_id': payload.get('chatwoot_message_id') or False,
             'evolution_message_id': str(evo_msg_id) if evo_msg_id else False,
+            'whatsapp_message_id': hub_message_id or False,
             'pet_name': payload.get('pet_name') or '',
             'product_name': payload.get('product_name') or '',
             'amount': float(payload.get('amount') or 0.0),

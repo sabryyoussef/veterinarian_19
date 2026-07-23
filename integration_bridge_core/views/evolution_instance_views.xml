@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_evolution_instance_list" model="ir.ui.view">
+        <field name="name">evolution.instance.list</field>
+        <field name="model">evolution.instance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="instance_name"/>
+                <field name="purpose"/>
+                <field name="api_url"/>
+                <field name="is_default"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_evolution_instance_form" model="ir.ui.view">
+        <field name="name">evolution.instance.form</field>
+        <field name="model">evolution.instance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="purpose"/>
+                            <field name="is_default"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="api_url"/>
+                            <field name="api_key" password="True"/>
+                            <field name="instance_name"/>
+                            <field name="web_url"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_evolution_instance" model="ir.actions.act_window">
+        <field name="name">Evolution Instances</field>
+        <field name="res_model">evolution.instance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

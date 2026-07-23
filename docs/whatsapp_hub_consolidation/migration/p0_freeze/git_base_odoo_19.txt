@@ -1,0 +1,2 @@
+repo=/home/sabry/odoo_base/base_odoo_19
+is_git=no

@@ -29,3 +29,6 @@ tests/playwright/test-results/
 tests/playwright/report/
 tests/playwright/.env
 tests/playwright/browsers/
+
+.secrets/
+

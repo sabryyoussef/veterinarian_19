@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lead_engine_intake_log_list" model="ir.ui.view">
+        <field name="name">lead.engine.intake.log.list</field>
+        <field name="model">lead.engine.intake.log</field>
+        <field name="arch" type="xml">
+            <list string="Intake Logs" create="false">
+                <field name="received_at"/>
+                <field name="source_id"/>
+                <field name="channel"/>
+                <field name="status"/>
+                <field name="processing_stage"/>
+                <field name="external_ref"/>
+                <field name="request_uuid"/>
+                <field name="lead_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_intake_log_form" model="ir.ui.view">
+        <field name="name">lead.engine.intake.log.form</field>
+        <field name="model">lead.engine.intake.log</field>
+        <field name="arch" type="xml">
+            <form string="Intake Log" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="source_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="channel"/>
+                            <field name="status"/>
+                            <field name="processing_stage"/>
+                        </group>
+                        <group>
+                            <field name="received_at"/>
+                            <field name="processed_at"/>
+                            <field name="external_ref"/>
+                            <field name="request_uuid"/>
+                            <field name="lead_id"/>
+                            <field name="duplicate_of_id"/>
+                        </group>
+                    </group>
+                    <group string="Payload">
+                        <field name="payload_raw" widget="text"/>
+                        <field name="normalized_payload" widget="json"/>
+                    </group>
+                    <group string="Error">
+                        <field name="error_message"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_lead_engine_intake_log" model="ir.actions.act_window">
+        <field name="name">Intake logs</field>
+        <field name="res_model">lead.engine.intake.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

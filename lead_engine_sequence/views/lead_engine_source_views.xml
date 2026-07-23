@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="lead_engine_source_form_playbook" model="ir.ui.view">
+        <field name="name">lead.engine.source.form.playbook</field>
+        <field name="model">lead.engine.source</field>
+        <field name="inherit_id" ref="lead_engine_core.view_lead_engine_source_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[field[@name='utm_source_id']]" position="after">
+                <group string="Playbook">
+                    <field name="playbook_id"/>
+                    <field name="playbook_auto_start"/>
+                    <field name="playbook_auto_start_duplicate"/>
+                </group>
+                <div
+                    class="alert alert-warning"
+                    role="alert"
+                    colspan="2"
+                    groups="lead_engine_core.group_lead_engine_manager"
+                    invisible="not playbook_auto_start or not playbook_id"
+                >
+                    <strong>Effect:</strong>
+                    Auto-start runs playbook steps (activities, email, assignment, server actions) on real leads after intake.
+                    Test in a sandbox first; email steps need a working outbound mail configuration.
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Core — Demo Sources
+        ================================
+        Four demo lead sources matching the four workflow scenarios:
+
+          A  Website Contact Form   (channel=form,  HTTP intake)
+          C  Trade Show 2026        (channel=other, manual CRM entry, no token)
+          D  Google Ads Campaign    (channel=ads,   HTTP intake)
+          D  Organic Blog Form      (channel=form,  HTTP intake)
+
+        Demo sources for qualification flows.
+    -->
+    <data noupdate="1">
+
+        <!-- ── Scenario A — Website Contact Form ──────────────────────────── -->
+        <record id="demo_src_webform" model="lead.engine.source">
+            <field name="name">[DEMO] Website Contact Form</field>
+            <field name="code">DEMO_WF</field>
+            <field name="channel">form</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="10"/>
+            <field name="description">
+                Main website contact-form leads.
+                Score: +10 baseline, +15 email, +25 senior title → max 50 for a Director with email.
+                Playbook: immediate call → assign team → 2-day follow-up.
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+        <!-- ── Scenario C — Trade Show (manual entry, no HTTP token) ───────── -->
+        <record id="demo_src_tradeshow" model="lead.engine.source">
+            <field name="name">[DEMO] Trade Show 2026</field>
+            <field name="code">DEMO_TS</field>
+            <field name="channel">other</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="20"/>
+            <field name="description">
+                Contacts collected at trade shows and field events.
+                Leads are created manually by sales reps in CRM, then qualified via the playbook wizard.
+                Score: +20 attendance, +30 if company name provided → max 50.
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+        <!-- ── Scenario D — Google Ads (high-intent, fast response) ─────────── -->
+        <record id="demo_src_ads" model="lead.engine.source">
+            <field name="name">[DEMO] Google Ads — Enterprise Campaign</field>
+            <field name="code">DEMO_ADS</field>
+            <field name="channel">ads</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="30"/>
+            <field name="description">
+                Paid-ads leads from the Google Ads enterprise campaign.
+                High-intent, high-cost channel — aim to call within 1 hour.
+                Score: +60 baseline, +15 email → 75 with email (routes to Senior Sales).
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+        <!-- ── Scenario D — Organic Blog Form (low-intent, nurture first) ───── -->
+        <record id="demo_src_organic" model="lead.engine.source">
+            <field name="name">[DEMO] Organic Blog Contact Form</field>
+            <field name="code">DEMO_ORG</field>
+            <field name="channel">form</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="40"/>
+            <field name="description">
+                Low-intent leads arriving via the blog "contact us" form.
+                Nurture with email + delayed call before handing to sales.
+                Score: +20 baseline, +15 email → 35 with email (routes to Nurture Team).
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

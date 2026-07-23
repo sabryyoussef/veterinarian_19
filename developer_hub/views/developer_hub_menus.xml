@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_developer_partner_contacts" model="ir.actions.act_window">
+        <field name="name">Odoo Partners</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,pivot,kanban,form</field>
+        <field name="search_view_id" ref="view_developer_partner_search"/>
+        <!-- Include both Hub and odoo_partners tags (duplicate names may exist after dual-module install). -->
+        <field name="domain" eval="[('category_id', 'in', [ref('developer_hub.category_odoo_partner'), ref('developer_hub.category_odoo_company'), ref('odoo_partners.category_odoo_partner'), ref('odoo_partners.category_odoo_company')])]"/>
+        <field name="context" eval="{
+            'default_is_company': True,
+            'default_category_id': [ref('developer_hub.category_odoo_partner')],
+            'search_default_group_country': 1,
+        }"/>
+    </record>
+
+    <record id="action_developer_outreach_leads" model="ir.actions.act_window">
+        <field name="name">Partner Outreach Leads</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain" eval="[('team_id', '=', ref('developer_hub.crm_team_odoo_partner_outreach'))]"/>
+        <field name="context" eval="{'default_type': 'lead', 'default_team_id': ref('developer_hub.crm_team_odoo_partner_outreach')}"/>
+    </record>
+
+    <menuitem id="menu_developer_hub_root"
+              name="Developer Hub"
+              sequence="85"
+              web_icon="developer_hub,static/description/icon.png"/>
+
+    <menuitem id="menu_developer_hub_partners"
+              name="Odoo Partners"
+              parent="menu_developer_hub_root"
+              action="action_developer_partner_contacts"
+              sequence="10"/>
+
+    <menuitem id="menu_developer_hub_outreach"
+              name="Outreach CRM"
+              parent="menu_developer_hub_root"
+              action="action_developer_outreach_leads"
+              sequence="20"/>
+
+    <record id="action_developer_partner_contacts_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_developer_partner_list"/>
+        <field name="act_window_id" ref="action_developer_partner_contacts"/>
+    </record>
+    <record id="action_developer_partner_contacts_view_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="view_developer_partner_pivot"/>
+        <field name="act_window_id" ref="action_developer_partner_contacts"/>
+    </record>
+</odoo>

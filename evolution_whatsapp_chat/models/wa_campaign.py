@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 class WhatsAppCampaign(models.Model):
     _name = 'wa.campaign'
-    _description = 'WhatsApp Campaign'
+    _description = 'WA Campaign'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc'
 

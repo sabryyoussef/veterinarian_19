@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Smart button + WhatsApp Chat tab on crm.lead form -->
+    <!-- Smart button + WA Chat tab on crm.lead form -->
     <record id="view_crm_lead_whatsapp_form" model="ir.ui.view">
         <field name="name">crm.lead.whatsapp.form</field>
         <field name="model">crm.lead</field>
@@ -18,18 +18,18 @@
                         <span class="o_stat_value">
                             <field name="wa_message_count_lead"/>
                         </span>
-                        <span class="o_stat_text">WhatsApp</span>
+                        <span class="o_stat_text">WA</span>
                     </div>
                 </button>
             </div>
 
-            <!-- WhatsApp Chat tab -->
+            <!-- WA Chat tab -->
             <notebook position="inside">
-                <page string="WhatsApp Chat" name="wa_chat_tab_lead"
+                <page string="WA Chat" name="wa_chat_tab_lead"
                       invisible="not id">
                     <div class="d-flex justify-content-between align-items-center mb-2 p-2"
                          style="background:#f8f9fa;border-radius:6px">
-                        <b style="color:#25D366">&#128241; WhatsApp</b>
+                        <b style="color:#25D366">&#128241; WA</b>
                         <div>
                             <button name="action_send_whatsapp_lead" type="object"
                                     string="Send Message" class="btn btn-sm btn-success"/>
@@ -40,7 +40,7 @@
                     </div>
                     <div invisible="not partner_id">
                         <p class="text-muted text-center mt-3">
-                            Click <b>Open Chat</b> to view the full WhatsApp conversation in Odoo Discuss,
+                            Click <b>Open Chat</b> to view the full WA conversation in Odoo Discuss,
                             or <b>Send Message</b> to send a quick message.
                         </p>
                         <p class="text-center">
@@ -50,7 +50,7 @@
                     </div>
                     <div invisible="partner_id">
                         <p class="text-muted text-center mt-3">
-                            Link a contact to this lead first to enable WhatsApp.
+                            Link a contact to this lead first to enable WA.
                         </p>
                     </div>
                 </page>

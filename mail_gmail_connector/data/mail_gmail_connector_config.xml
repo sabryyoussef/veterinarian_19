@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Tweak in Settings → Technical → Parameters, or here (after export). -->
+    <record id="icp_job_outreach_keywords" model="ir.config_parameter">
+        <field name="key">mail_gmail_connector.job_outreach_keywords</field>
+        <field name="value">interview,recruiter,application,position,hiring,opportunity,candidate,resume,job offer,job opening,screening,schedule a call</field>
+    </record>
+    <record id="icp_job_outreach_sender_domains" model="ir.config_parameter">
+        <field name="key">mail_gmail_connector.job_outreach_sender_domains</field>
+        <field name="value">linkedin.com,indeed.com,greenhouse.io,lever.co,myworkday.com,smartrecruiters.com,ashbyhq.com,jobvite.com,icims.com</field>
+    </record>
+</odoo>

@@ -1,6 +1,7 @@
 # PetSpot — Evolution API (WhatsApp gateway for evolution_whatsapp_chat)
 # Docs: https://doc.evolution-api.com/v2/en/install/docker
-# Odoo modules expect API at http://127.0.0.1:8099 (see integration_bridge.evolution_url)
+# Dedicated PetSpot Evolution on localhost :8199 (8099 reserved by sabry-mobile-hub).
+# Live Odoo ICP currently uses main Evolution at http://127.0.0.1:8080 — do not merge stacks.
 
 name: petspot-evolution
 
@@ -13,7 +14,7 @@ services:
       - evolution-redis
       - evolution-postgres
     ports:
-      - "127.0.0.1:8099:8080"
+      - "127.0.0.1:8199:8080"
     volumes:
       - evolution_instances:/evolution/instances
     env_file:

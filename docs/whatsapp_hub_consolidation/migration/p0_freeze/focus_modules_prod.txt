@@ -1,0 +1,16 @@
+              name               | latest_version |    state    
+---------------------------------+----------------+-------------
+ chatwoot_evolution_error_bridge |                | uninstalled
+ developer_hub                   | 19.0.1.1.0     | installed
+ dev_session_hub                 |                | uninstalled
+ evolution_whatsapp_chat         | 19.0.1.10.0    | installed
+ integration_bridge_core         | 19.0.1.0.5     | installed
+ openproject_sync                |                | uninstalled
+ petspot_backend_sidebar         | 19.0.1.1.1     | installed
+ petspot_campaign_rewards        | 19.0.1.2.0     | installed
+ petspot_clinic_portal           | 19.0.2.2.1     | installed
+ petspot_vet_feedback            | 19.0.1.0.0     | installed
+ petspot_wa_intake               | 19.0.1.0.0     | installed
+ social_media_connector          | 19.0.1.0.0     | installed
+(12 rows)
+

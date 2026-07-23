@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Default phone SMS gateway (edit Base URL / API key after install) -->
+        <record id="gateway_android_default" model="sms.gateway.config">
+            <field name="name">Android Phone (default)</field>
+            <field name="gateway_type">smsgate</field>
+            <field name="base_url">http://10.92.110.233:8080</field>
+            <field name="default_sender"></field>
+            <field name="is_default" eval="True"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Webhook token — CHANGE THIS after install (Settings ▸ Technical ▸ System Parameters) -->
+        <record id="param_webhook_token" model="ir.config_parameter">
+            <field name="key">phone_sms_connector.webhook_token</field>
+            <field name="value">change-me-phone-sms-token</field>
+        </record>
+
+    </data>
+</odoo>

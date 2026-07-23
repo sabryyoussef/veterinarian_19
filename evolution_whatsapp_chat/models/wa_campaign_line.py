@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class WhatsAppCampaignLine(models.Model):
     _name = 'wa.campaign.line'
-    _description = 'WhatsApp Campaign Recipient'
+    _description = 'WA Campaign Recipient'
     _order = 'sent_date desc, create_date desc'
 
     # ── Relations ─────────────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ class WhatsAppCampaignLine(models.Model):
     # ── Evolution Integration ─────────────────────────────────────────────────
 
     wa_message_id = fields.Char(
-        string='WhatsApp Message ID',
+        string='WA Message ID',
         help='Evolution API message ID'
     )
 
@@ -162,7 +162,7 @@ class WhatsAppCampaignLine(models.Model):
         """Post sent message to partner/lead chatter."""
         self.ensure_one()
         body = f"""
-        <p><b>📱 WhatsApp Campaign Message ({status})</b></p>
+        <p><b>📱 WA Campaign Message ({status})</b></p>
         <p>Campaign: {self.campaign_id.name}</p>
         <p>Phone: {self.phone}</p>
         <div style="border-left: 3px solid #25D366; padding-left: 10px; margin-top: 10px;">
@@ -172,14 +172,14 @@ class WhatsAppCampaignLine(models.Model):
         if self.lead_id:
             self.lead_id.message_post(
                 body=body,
-                subject=f"WhatsApp Campaign: {self.campaign_id.name}",
+                subject=f"WA Campaign: {self.campaign_id.name}",
                 message_type='comment',
                 subtype_xmlid='mail.mt_note',
             )
         elif self.partner_id:
             self.partner_id.message_post(
                 body=body,
-                subject=f"WhatsApp Campaign: {self.campaign_id.name}",
+                subject=f"WA Campaign: {self.campaign_id.name}",
                 message_type='comment',
                 subtype_xmlid='mail.mt_note',
             )

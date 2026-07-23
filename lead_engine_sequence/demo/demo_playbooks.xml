@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Sequence — Demo Playbooks
+        =======================================
+        Four playbooks matching the workflow scenarios:
+
+          A  Web Form Lead Nurture      — 3 steps: call → assign team → 2-day follow-up call
+          C  Trade Show Lead Nurture    — 2 steps: call → assign team
+          D  Enterprise Ads Nurture     — 1 step:  immediate high-priority call
+          D  Organic Blog Lead Nurture  — 2 steps: 1-day call + first-touch email
+
+        NOTE: The email step in "Organic Blog" requires a configured outgoing mail server.
+              Replace [DEMO] templates with real content before go-live.
+    -->
+    <data noupdate="1">
+
+        <!-- ── Shared mail template (used by Organic Blog email step) ─────── -->
+        <record id="demo_mail_template_first_touch" model="mail.template">
+            <field name="name">[DEMO] Lead Engine — First Touch Email</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">[DEMO] Hi {{ object.contact_name or object.partner_name }}, thanks for reaching out</field>
+            <field name="email_to">{{ object.email_from }}</field>
+            <field name="body_html" type="html">
+                <p>Hi
+                    <t t-out="object.contact_name or object.partner_name or 'there'"/>,
+                </p>
+                <p>
+                    Thank you for getting in touch with us. One of our team members will
+                    be following up with you shortly to learn more about your needs.
+                </p>
+                <p>In the meantime, feel free to reply to this email with any questions.</p>
+                <p>
+                    <em>
+                        [DEMO] Replace this template with your real content and signature
+                        before go-live. Sending requires a configured outgoing mail server.
+                    </em>
+                </p>
+            </field>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCENARIO A — Web Form Lead Nurture (3 steps)
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_pb_webform" model="lead.engine.playbook">
+            <field name="name">[DEMO] Web Form Lead Nurture</field>
+            <field name="code">DEMO_WF_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="10"/>
+            <field name="description">
+                3-step playbook for website contact-form leads.
+                Step 1 (immediate): phone call to qualify interest and timeline.
+                Step 2 (immediate): assign lead to the Web Leads Team.
+                Step 3 (2 days later): scheduled follow-up call to confirm next steps.
+            </field>
+        </record>
+
+        <record id="demo_pb_webform_step1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_webform"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">Immediate qualification call</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">First contact — qualify interest and timeline</field>
+            <field name="activity_note" type="html">
+                <p>Goals for this call:</p>
+                <ul>
+                    <li>Confirm who the decision-maker is</li>
+                    <li>Understand the use case and timeline</li>
+                    <li>Qualify budget (rough range is fine)</li>
+                    <li>Agree on next step before hanging up</li>
+                </ul>
+            </field>
+        </record>
+
+        <record id="demo_pb_webform_step2" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_webform"/>
+            <field name="sequence" eval="20"/>
+            <field name="name">Assign to Web Leads Team</field>
+            <field name="step_type">assign_owner</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="assign_team_id" ref="lead_engine_qualification.demo_crm_team_web"/>
+        </record>
+
+        <record id="demo_pb_webform_step3" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_webform"/>
+            <field name="sequence" eval="30"/>
+            <field name="name">Follow-up call (2 days after first contact)</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">days</field>
+            <field name="delay_amount" eval="2"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Follow up — confirm next steps and send proposal if ready</field>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCENARIO C — Trade Show Lead Nurture (2 steps)
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_pb_tradeshow" model="lead.engine.playbook">
+            <field name="name">[DEMO] Trade Show Lead Nurture</field>
+            <field name="code">DEMO_TS_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="20"/>
+            <field name="description">
+                2-step playbook for contacts collected at trade shows and field events.
+                Step 1 (immediate): call while the meeting is fresh in the prospect's mind.
+                Step 2 (immediate): assign to Field Sales team for ongoing ownership.
+            </field>
+        </record>
+
+        <record id="demo_pb_tradeshow_step1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_tradeshow"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">Qualification call (same day as entry)</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Trade show follow-up — confirm interest while it is fresh</field>
+            <field name="activity_note" type="html">
+                <p>Reference the trade show / event where you met.</p>
+                <p>Goals:</p>
+                <ul>
+                    <li>Re-establish rapport from the event</li>
+                    <li>Confirm their pain point and timeline</li>
+                    <li>Schedule a proper discovery call if interest is strong</li>
+                </ul>
+            </field>
+        </record>
+
+        <record id="demo_pb_tradeshow_step2" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_tradeshow"/>
+            <field name="sequence" eval="20"/>
+            <field name="name">Assign to Field Sales Team</field>
+            <field name="step_type">assign_owner</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="assign_team_id" ref="lead_engine_qualification.demo_crm_team_fieldwork"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCENARIO D — Enterprise Ads Lead Nurture (1 step, fast response)
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_pb_ads" model="lead.engine.playbook">
+            <field name="name">[DEMO] Enterprise Ads Lead Nurture</field>
+            <field name="code">DEMO_ADS_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="30"/>
+            <field name="description">
+                Single-step high-priority playbook for paid-ads leads (score = 75+).
+                Aim to call within 1 hour — response speed is a major conversion factor
+                for high-intent paid-search traffic.
+            </field>
+        </record>
+
+        <record id="demo_pb_ads_step1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_ads"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">Immediate high-priority call (within 1 hour)</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">HIGH PRIORITY — ads lead, call within 1 hour</field>
+            <field name="activity_note" type="html">
+                <p><strong>Speed matters.</strong> This lead came from a paid ad — they are actively looking now.</p>
+                <p>Goals:</p>
+                <ul>
+                    <li>Confirm interest and buying timeline</li>
+                    <li>Identify decision-maker and budget authority</li>
+                    <li>Book a demo or next call before hanging up</li>
+                </ul>
+            </field>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCENARIO D — Organic Blog Lead Nurture (2 steps, low pressure)
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_pb_organic" model="lead.engine.playbook">
+            <field name="name">[DEMO] Organic Blog Lead Nurture</field>
+            <field name="code">DEMO_ORG_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="40"/>
+            <field name="description">
+                2-step low-pressure playbook for organic / exploratory leads (score = 35).
+                Step 1: first-touch email sent immediately (requires outgoing mail server).
+                Step 2: phone call scheduled next business day.
+                No rush — nurture before handing to sales.
+            </field>
+        </record>
+
+        <record id="demo_pb_organic_step1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_organic"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">First-touch email (immediate)</field>
+            <field name="step_type">send_email_template</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="mail_template_id" ref="demo_mail_template_first_touch"/>
+        </record>
+
+        <record id="demo_pb_organic_step2" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_pb_organic"/>
+            <field name="sequence" eval="20"/>
+            <field name="name">Follow-up call (next day)</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">days</field>
+            <field name="delay_amount" eval="1"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Organic lead — no rush, follow up at their pace</field>
+        </record>
+
+    </data>
+</odoo>

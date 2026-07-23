@@ -1,0 +1,13 @@
+evo.wa.template	{"en_US": "Evolution WA Message Template"}
+integration.bridge.log	{"en_US": "Integration Bridge Request/Response Log"}
+integration.bridge.settings	{"en_US": "Integration Bridge Settings (Master Token)"}
+integration.bridge.token	{"en_US": "Integration Bridge Authentication Tokens"}
+integration.outbound.queue	{"en_US": "Outbound Integration Message Queue"}
+petspot.wa.intake	{"en_US": "PetSpot WhatsApp Intake"}
+wa.campaign	{"en_US": "WA Campaign"}
+wa.campaign.line	{"en_US": "WA Campaign Recipient"}
+wa.campaign.recipient.wizard	{"en_US": "Select Campaign Recipients"}
+wa.message.log	{"en_US": "WA Message Log"}
+whatsapp.bulk.line	{"en_US": "WA Bulk Send — Contact Line"}
+whatsapp.bulk.wizard	{"en_US": "Send WA to Multiple Contacts"}
+whatsapp.send.wizard	{"en_US": "Send WA Message"}

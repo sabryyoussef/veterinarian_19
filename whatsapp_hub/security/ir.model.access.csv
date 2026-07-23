@@ -1,0 +1,20 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_whatsapp_instance_user,whatsapp.instance user,model_whatsapp_instance,group_whatsapp_user,1,0,0,0
+access_whatsapp_instance_manager,whatsapp.instance manager,model_whatsapp_instance,group_whatsapp_manager,1,1,1,1
+access_whatsapp_group_user,whatsapp.group user,model_whatsapp_group,group_whatsapp_user,1,0,0,0
+access_whatsapp_group_manager,whatsapp.group manager,model_whatsapp_group,group_whatsapp_manager,1,1,1,1
+access_whatsapp_contact_user,whatsapp.contact user,model_whatsapp_contact,group_whatsapp_user,1,0,0,0
+access_whatsapp_contact_manager,whatsapp.contact manager,model_whatsapp_contact,group_whatsapp_manager,1,1,1,1
+access_whatsapp_conversation_user,whatsapp.conversation user,model_whatsapp_conversation,group_whatsapp_user,1,0,0,0
+access_whatsapp_conversation_manager,whatsapp.conversation manager,model_whatsapp_conversation,group_whatsapp_manager,1,1,1,1
+access_whatsapp_message_user,whatsapp.message user,model_whatsapp_message,group_whatsapp_user,1,0,0,0
+access_whatsapp_message_manager,whatsapp.message manager,model_whatsapp_message,group_whatsapp_manager,1,1,1,1
+access_whatsapp_message_ingest,whatsapp.message ingest,model_whatsapp_message,group_whatsapp_ingest_service,1,1,1,0
+access_whatsapp_outbound_user,whatsapp.outbound.message user,model_whatsapp_outbound_message,group_whatsapp_user,1,0,0,0
+access_whatsapp_outbound_manager,whatsapp.outbound.message manager,model_whatsapp_outbound_message,group_whatsapp_manager,1,1,1,1
+access_whatsapp_event_user,whatsapp.message.event user,model_whatsapp_message_event,group_whatsapp_user,1,0,0,0
+access_whatsapp_event_manager,whatsapp.message.event manager,model_whatsapp_message_event,group_whatsapp_manager,1,1,1,1
+access_whatsapp_event_ingest,whatsapp.message.event ingest,model_whatsapp_message_event,group_whatsapp_ingest_service,1,1,1,0
+access_whatsapp_group_ingest,whatsapp.group ingest,model_whatsapp_group,group_whatsapp_ingest_service,1,1,1,0
+access_whatsapp_contact_ingest,whatsapp.contact ingest,model_whatsapp_contact,group_whatsapp_ingest_service,1,1,1,0
+access_whatsapp_conversation_ingest,whatsapp.conversation ingest,model_whatsapp_conversation,group_whatsapp_ingest_service,1,1,1,0

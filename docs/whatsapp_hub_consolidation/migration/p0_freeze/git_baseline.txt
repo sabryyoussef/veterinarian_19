@@ -1,0 +1,102 @@
+repo=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+branch=feature/devhub-modularization-whatsapp
+sha=22e8b5414613da1e286b280c4884abd0cb3061d2
+short=22e8b54
+dirty=421
+M  .gitignore
+A  .petspot-backend-proxy/proxy.js
+A  chatwoot_evolution_error_bridge/README.md
+A  chatwoot_evolution_error_bridge/__init__.py
+A  chatwoot_evolution_error_bridge/__manifest__.py
+A  chatwoot_evolution_error_bridge/controllers/__init__.py
+A  chatwoot_evolution_error_bridge/controllers/bridge_api.py
+A  chatwoot_evolution_error_bridge/data/system_parameters.xml
+A  chatwoot_evolution_error_bridge/docs/MODULE_DOCUMENTATION.md
+A  chatwoot_evolution_error_bridge/migrations/19.0.1.0.0/pre-migrate.py
+A  chatwoot_evolution_error_bridge/models/__init__.py
+A  chatwoot_evolution_error_bridge/models/crm_lead.py
+A  chatwoot_evolution_error_bridge/models/res_config_settings.py
+A  chatwoot_evolution_error_bridge/security/ir.model.access.csv
+A  chatwoot_evolution_error_bridge/static/description/index.html
+A  chatwoot_evolution_error_bridge/tests/__init__.py
+A  chatwoot_evolution_error_bridge/tests/test_chatwoot_bridge.py
+A  chatwoot_evolution_error_bridge/views/crm_lead_chatwoot_views.xml
+A  chatwoot_evolution_error_bridge/views/res_config_settings_views.xml
+ M dev_session_hub/__init__.py
+ M dev_session_hub/__manifest__.py
+ M dev_session_hub/data/dev_session_hub_seed.xml
+ M dev_session_hub/models/__init__.py
+ D dev_session_hub/models/dev_integration.py
+ D dev_session_hub/models/dev_registry.py
+ D dev_session_hub/models/dev_session.py
+ D dev_session_hub/models/dev_work.py
+ D dev_session_hub/security/dev_session_hub_security.xml
+ M dev_session_hub/security/ir.model.access.csv
+ M dev_session_hub/tests/__init__.py
+ D dev_session_hub/tests/test_dev_session_hub.py
+ D dev_session_hub/tests/test_dev_work_lifecycle.py
+ D dev_session_hub/views/dev_dashboard_views.xml
+ D dev_session_hub/views/dev_integration_views.xml
+ D dev_session_hub/views/dev_launch_wizard_views.xml
+ D dev_session_hub/views/dev_registry_views.xml
+ D dev_session_hub/views/dev_resume_brief_wizard_views.xml
+ M dev_session_hub/views/dev_session_hub_menus.xml
+ D dev_session_hub/views/dev_session_views.xml
+ D dev_session_hub/views/dev_work_views.xml
+ D dev_session_hub/wizards/__init__.py
+ D dev_session_hub/wizards/dev_launch_wizard.py
+ D dev_session_hub/wizards/dev_resume_brief_wizard.py
+A  developer_hub/__init__.py
+A  developer_hub/__manifest__.py
+A  developer_hub/data/crm_team_data.xml
+A  developer_hub/data/partner_category_data.xml
+A  developer_hub/models/__init__.py
+A  developer_hub/models/res_partner.py
+A  developer_hub/static/description/icon.png
+A  developer_hub/views/developer_hub_menus.xml
+A  developer_hub/views/res_partner_views.xml
+A  docs/OPENPROJECT_ODOO_INTEGRATION_ARCHITECTURE.md
+A  docs/ops-audits/D2_final_20260713_195830.md
+A  docs/ops-audits/D2_pre_meta_20260713_195459.md
+A  docs/ops-audits/D2_pre_snapshot_20260713_195459.csv
+A  docs/ops-audits/D3_parent_child_20260713_200425.csv
+A  docs/ops-audits/D3_parent_child_20260713_200425.json
+A  docs/ops-audits/D3_parent_child_20260713_200425.md
+A  docs/ops-audits/D4_final_1to1_20260713_201031.csv
+A  docs/ops-audits/D4_final_1to1_20260713_201031.json
+A  docs/ops-audits/D4_final_1to1_20260713_201031.md
+A  docs/ops-audits/D5_evidence_20260713_202558/counts.txt
+A  docs/ops-audits/D5_evidence_20260713_202558/cron_progress.txt
+A  docs/ops-audits/D5_evidence_20260713_202558/mandatory_samples.txt
+A  docs/ops-audits/D5_evidence_20260713_202558/odoo_http_headers.txt
+A  docs/ops-audits/D5_evidence_20260713_202558/op_http_headers.txt
+A  docs/ops-audits/D5_evidence_20260713_202558/pull_summaries.txt
+A  docs/ops-audits/D5_evidence_20260713_202558/ui_access_note.txt
+A  docs/ops-audits/D5_final_uat_20260713_202600.md
+A  docs/ops-audits/GAP_izone_op12_odoo19_20260713_194055.json
+A  docs/ops-audits/GAP_izone_op12_odoo19_20260713_194055.md
+A  docs/ops-audits/OPS1_final_20260713_192820.md
+A  docs/ops-audits/OPS1_pre_cron72_20260713_192523.md
+A  docs/ops-audits/OPS1_pre_cron72_20260713_192549.md
+M  evolution-api/docker-compose.yml
+MM evolution_whatsapp_chat/__manifest__.py
+ M evolution_whatsapp_chat/models/__init__.py
+M  evolution_whatsapp_chat/models/crm_lead.py
+M  evolution_whatsapp_chat/models/discuss_channel.py
+--- worktrees ---
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel                         22e8b54 [feature/devhub-modularization-whatsapp]
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0                   893b3e1 [devhub/DH-P0-land-20260720]
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a                  4e2d14a (detached HEAD)
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe                 879acff (detached HEAD)
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d                  43a2a7f [feature/dev-hub-merge-and-improve-analysis]
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix 74f8544 [fix/gate-c-onboarding-hotfixes]
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc          0960fcc (detached HEAD)
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511          6e31511 (detached HEAD)
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b          791cd1b (detached HEAD)
+/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat              658ed04 [docs/dell-start-launch-uat-20260720]
+/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux                           7fb6d91 [feature/dev-hub-plan-steps-ux]
+/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0                7590b9d [feat/pptu-security-hardening-19.0.1.4.0]
+/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync                    5c949bb [feat/pr1-openproject-sync]
+/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation           6d23b9a [feat/pr2-dev-session-hub-isolation]
+/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination            8b5bbf6 [feat/verify-tailscale-destination]
+/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d                  b6e8a5d (detached HEAD)

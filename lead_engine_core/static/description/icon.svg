@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Lead Engine Core  funnel / intake -->
+  <rect width="128" height="128" rx="22" fill="#6B4FA0"/>
+  <!-- funnel body -->
+  <path d="M18 26 L110 26 L74 66 L74 106 L54 106 L54 66 Z" fill="white" opacity="0.92"/>
+  <!-- small dots representing leads -->
+  <circle cx="38" cy="38" r="5" fill="#6B4FA0" opacity="0.7"/>
+  <circle cx="64" cy="34" r="5" fill="#6B4FA0" opacity="0.7"/>
+  <circle cx="90" cy="38" r="5" fill="#6B4FA0" opacity="0.7"/>
+</svg>

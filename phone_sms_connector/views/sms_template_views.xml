@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sms_template_list" model="ir.ui.view">
+        <field name="name">phone.sms.template.list</field>
+        <field name="model">phone.sms.template</field>
+        <field name="arch" type="xml">
+            <list string="SMS Templates">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="category" widget="badge"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sms_template_form" model="ir.ui.view">
+        <field name="name">phone.sms.template.form</field>
+        <field name="model">phone.sms.template</field>
+        <field name="arch" type="xml">
+            <form string="SMS Template">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Template name..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="category"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="note" placeholder="Internal note..."/>
+                        </group>
+                    </group>
+                    <group string="Message Body">
+                        <field name="body" nolabel="1"
+                               placeholder="Use {name}, {first}, {company}, {phone} as placeholders..."/>
+                    </group>
+                    <div class="alert alert-info" role="status">
+                        <b>Placeholders:</b>
+                        <code>{name}</code> full name, <code>{first}</code> first name,
+                        <code>{company}</code> company, <code>{phone}</code> phone
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sms_template_search" model="ir.ui.view">
+        <field name="name">phone.sms.template.search</field>
+        <field name="model">phone.sms.template</field>
+        <field name="arch" type="xml">
+            <search string="SMS Templates">
+                <field name="name"/>
+                <field name="body"/>
+                <filter string="Active" name="active" domain="[('active','=',True)]"/>
+                <separator/>
+                <filter string="Reminder" name="reminder" domain="[('category','=','reminder')]"/>
+                <filter string="Follow-up" name="followup" domain="[('category','=','followup')]"/>
+                <filter string="Promotion" name="promo" domain="[('category','=','promo')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sms_template" model="ir.actions.act_window">
+        <field name="name">SMS Templates</field>
+        <field name="res_model">phone.sms.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No templates yet</p>
+            <p>Create reusable SMS templates for quick sending from contacts and leads.</p>
+        </field>
+    </record>
+</odoo>

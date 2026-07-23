@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════
+         Lead Engine Dashboard — standalone application
+         Read-only analytics for sources, qualification,
+         assignment, and intake
+         ═══════════════════════════════════════════════════ -->
+    <menuitem
+        id="menu_lead_engine_analytics_root"
+        name="Analytics"
+        web_icon="lead_engine_dashboard,static/description/icon.png"
+        sequence="203"
+        groups="lead_engine_core.group_lead_engine_user"
+    />
+
+    <!-- ── Sources ── -->
+    <menuitem
+        id="menu_lead_engine_analytics_sources"
+        name="Sources"
+        parent="menu_lead_engine_analytics_root"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_lead_engine_analytics_by_source"
+        name="Leads by Source"
+        parent="menu_lead_engine_analytics_sources"
+        action="action_lead_engine_leads_by_source"
+        sequence="10"
+    />
+
+    <!-- ── Pipeline ── -->
+    <menuitem
+        id="menu_lead_engine_analytics_pipeline"
+        name="Pipeline"
+        parent="menu_lead_engine_analytics_root"
+        sequence="20"
+    />
+    <menuitem
+        id="menu_lead_engine_analytics_qualification"
+        name="Qualification Overview"
+        parent="menu_lead_engine_analytics_pipeline"
+        action="action_lead_engine_qualification_mix"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_lead_engine_analytics_assignment"
+        name="Assignment Overview"
+        parent="menu_lead_engine_analytics_pipeline"
+        action="action_lead_engine_assignment_mix"
+        sequence="20"
+    />
+
+    <!-- ── Intake ── -->
+    <menuitem
+        id="menu_lead_engine_analytics_inbound"
+        name="Inbound"
+        parent="menu_lead_engine_analytics_root"
+        sequence="30"
+    />
+    <menuitem
+        id="menu_lead_engine_analytics_intake"
+        name="Intake Analytics"
+        parent="menu_lead_engine_analytics_inbound"
+        action="action_lead_engine_intake_analytics"
+        sequence="10"
+    />
+</odoo>

@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'WhatsApp Chat',
-    'version': '19.0.1.7.0',
+    'name': 'WA Campaign',
+    'version': '19.0.1.10.1',
     'category': 'Productivity',
-    'summary': 'Send & receive WhatsApp from CRM leads and contacts via Evolution API + Campaigns',
+    'summary': 'Send & receive WA from CRM leads and contacts via Evolution API + Campaigns',
     'description': """
-Evolution WhatsApp Chat — Odoo 19
+Evolution WA Campaign — Odoo 19
 ===================================
-Adds a WhatsApp quick-send button + live chat panel to both
+Adds a WA quick-send button + live chat panel to both
 CRM leads and contacts, routed through the Evolution API.
 
 Features:
-- "Send WhatsApp" smart button on contacts and CRM leads
+- "Send WA" smart button on contacts and CRM leads
 - Quick-send wizard with message templates
-- Dedicated WhatsApp channel per contact in Odoo Discuss
-- Incoming WhatsApp messages appear in the Discuss channel + chatter
+- Dedicated WA channel per contact in Odoo Discuss
+- Incoming WA messages appear in the Discuss channel + chatter
 - Predefined message templates (CV intro, follow-up, interview)
 - Full outbound via Evolution API /message/sendText
 - **Campaign Management**: Multi-contact campaigns with status tracking
@@ -32,6 +32,7 @@ Author: Sabry Youssef
         'crm',
         'contacts',
         'integration_bridge_core',
+        'whatsapp_hub',
     ],
     'data': [
         'security/ir.model.access.csv',

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Core — Hospital Group Demo Sources
+        ===============================================
+        Five sources covering every channel in the hospital group workflow
+        described in GETTING_STARTED.md.
+
+        Code          Channel   Token?   Entry method
+        ──────────────────────────────────────────────────────────────────
+        HOSP_WEB      form      yes      Website "Book a Consultation" form
+        HOSP_ADS_CRD  ads       yes      Google Ads — Cardiology Campaign
+        HOSP_CAMP_26  other     NO       Health & Wellness Fair 2026 (manual)
+        HOSP_ORG      form      yes      Blog "Contact Us" form (organic)
+        HOSP_REF      other     NO       Doctor Referral logged by front desk (manual)
+
+        Demo sources for hospital-group qualification workflows.
+    -->
+    <data noupdate="1">
+
+        <!-- ── HOSP_WEB — Website "Book a Consultation" form ─────────────────
+             Patients visiting the hospital website and filling the booking form.
+             High-volume, mixed intent.  Target score with email + phone = 45.
+        ──────────────────────────────────────────────────────────────────── -->
+        <record id="demo_hosp_src_web" model="lead.engine.source">
+            <field name="name">[HOSP] Website — Book a Consultation</field>
+            <field name="code">HOSP_WEB</field>
+            <field name="channel">form</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="10"/>
+            <field name="description">
+                General public booking a specialist consultation through the hospital website.
+                Scoring: +10 baseline, +15 email, +20 phone, +25 Director/Manager title,
+                +30 company name (B2B / corporate health enquiry).
+                Max score for a Director with email and phone: 70.
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+        <!-- ── HOSP_ADS_CRD — Google Ads Cardiology Campaign ────────────────
+             Paid-search leads from the Cardiology department ad campaign.
+             High-intent, high-cost.  Call within 1 hour.  Score = 75-95.
+        ──────────────────────────────────────────────────────────────────── -->
+        <record id="demo_hosp_src_ads_crd" model="lead.engine.source">
+            <field name="name">[HOSP] Google Ads — Cardiology Campaign</field>
+            <field name="code">HOSP_ADS_CRD</field>
+            <field name="channel">ads</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="20"/>
+            <field name="description">
+                Paid-search leads from the Google Ads Cardiology campaign.
+                High-intent channel — response speed is critical (target: call within 1 hour).
+                Scoring: +60 baseline, +15 email, +20 phone.  Score with email + phone = 95.
+                Routes automatically to Cardiology Business Team.
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+        <!-- ── HOSP_CAMP_26 — Health and Wellness Fair 2026 ──────────────────
+             Contacts scanned / collected at the annual health fair.
+             No API token: front-desk staff create leads manually in CRM.
+             Playbook launched manually via the Start Playbook wizard.
+        ──────────────────────────────────────────────────────────────────── -->
+        <record id="demo_hosp_src_camp26" model="lead.engine.source">
+            <field name="name">[HOSP] Health and Wellness Fair 2026</field>
+            <field name="code">HOSP_CAMP_26</field>
+            <field name="channel">other</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="30"/>
+            <field name="description">
+                Contacts collected at the Health and Wellness Fair 2026.
+                Leads are entered manually by sales reps (no API intake).
+                Scoring: +20 attendance, +15 email, +30 company name (corporate HR contact).
+                Max score for corporate contact with email: 65.
+                Playbook must be started manually from the lead form.
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+        <!-- ── HOSP_ORG — Organic Blog "Contact Us" form ─────────────────────
+             Low-intent visitors reading health articles on the blog.
+             Nurture with email first, then call next day.  Score = 25-35.
+        ──────────────────────────────────────────────────────────────────── -->
+        <record id="demo_hosp_src_organic" model="lead.engine.source">
+            <field name="name">[HOSP] Blog — Organic Contact Form</field>
+            <field name="code">HOSP_ORG</field>
+            <field name="channel">form</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="40"/>
+            <field name="description">
+                Visitors reading health and wellness articles on the hospital blog who
+                submit the "Contact Us" form.  Low-intent exploratory leads.
+                Scoring: +10 baseline, +15 email.  Score with email = 25.
+                Nurture with a welcome email first, then a low-pressure follow-up call.
+                Routes to Marketing / Nurture team until score improves.
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+        <!-- ── HOSP_REF — Doctor Referral (logged by front desk) ─────────────
+             Referrals received via phone, WhatsApp, or direct doctor contact.
+             No API token: front-desk staff log these manually in CRM.
+             Pre-qualified by the referring doctor — high trust, start fast.
+        ──────────────────────────────────────────────────────────────────── -->
+        <record id="demo_hosp_src_referral" model="lead.engine.source">
+            <field name="name">[HOSP] Doctor Referral</field>
+            <field name="code">HOSP_REF</field>
+            <field name="channel">other</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="50"/>
+            <field name="description">
+                Patient referrals received from other doctors, clinics, or hospitals.
+                Logged manually by front-desk or patient relations staff.
+                Scoring: +30 baseline (referrals are pre-qualified), +15 email,
+                +20 partner_name (the referring clinic / hospital).
+                Routes to Medical Liaison Team for specialist matching.
+                Use External Reference = the referring doctor's contact ID or call log number.
+            </field>
+            <field name="auto_score" eval="True"/>
+            <field name="auto_assign" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

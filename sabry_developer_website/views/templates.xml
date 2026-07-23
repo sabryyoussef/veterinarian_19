@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="page_home" name="Sabry Home">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="container py-5">
+                    <h1>Sabry Youssef</h1>
+                    <p class="lead">Odoo Developer — integrations, CRM outreach, and custom apps.</p>
+                    <p>
+                        <a href="/sabry/cv" class="btn btn-primary">CV</a>
+                        <a href="/sabry/contact" class="btn btn-secondary">Contact</a>
+                    </p>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="page_cv" name="Sabry CV">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="container py-5">
+                    <h1>Curriculum Vitae</h1>
+                    <p>Odoo 19 Enterprise — CRM integrations, WhatsApp, Gmail, clinic systems.</p>
+                    <a href="/sabry/contact" class="btn btn-primary">Contact for opportunities</a>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="page_contact" name="Sabry Contact">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="container py-5">
+                    <h1>Contact</h1>
+                    <p>Use the website contact form or email for Odoo partner / employment outreach.</p>
+                    <p>
+                        <a href="/contactus" class="btn btn-primary">Open contact form</a>
+                    </p>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

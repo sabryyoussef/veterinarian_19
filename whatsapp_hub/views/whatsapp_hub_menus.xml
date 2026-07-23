@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_whatsapp_hub_root"
+              name="WhatsApp Hub"
+              sequence="45"/>
+
+    <menuitem id="menu_whatsapp_hub_messages"
+              name="Messages"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_message"
+              sequence="10"/>
+
+    <menuitem id="menu_whatsapp_hub_conversations"
+              name="Conversations"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_conversation"
+              sequence="20"/>
+
+    <menuitem id="menu_whatsapp_hub_groups"
+              name="Groups"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_group"
+              sequence="30"/>
+
+    <menuitem id="menu_whatsapp_hub_contacts"
+              name="Contacts"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_contact"
+              sequence="40"/>
+
+    <menuitem id="menu_whatsapp_hub_outbound"
+              name="Outbound Queue"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_outbound"
+              sequence="50"/>
+
+    <menuitem id="menu_whatsapp_hub_config"
+              name="Configuration"
+              parent="menu_whatsapp_hub_root"
+              sequence="90"/>
+
+    <menuitem id="menu_whatsapp_hub_instances"
+              name="Instances"
+              parent="menu_whatsapp_hub_config"
+              action="action_whatsapp_instance"
+              sequence="10"/>
+</odoo>

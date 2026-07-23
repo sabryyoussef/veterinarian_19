@@ -4,10 +4,10 @@
         <field name="name">whatsapp.send.wizard.form</field>
         <field name="model">whatsapp.send.wizard</field>
         <field name="arch" type="xml">
-            <form string="Send WhatsApp Message">
+            <form string="Send WA Message">
                 <sheet>
                     <div class="oe_title">
-                        <h2>📱 Send WhatsApp</h2>
+                        <h2>📱 Send WA</h2>
                     </div>
                     <group>
                         <group string="Recipient">
@@ -49,7 +49,7 @@
     </record>
 
     <record id="action_whatsapp_send_wizard" model="ir.actions.act_window">
-        <field name="name">Send WhatsApp</field>
+        <field name="name">Send WA</field>
         <field name="res_model">whatsapp.send.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

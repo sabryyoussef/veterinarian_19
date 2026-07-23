@@ -19,8 +19,8 @@
         Valid until: <t t-out="ctx.get('expiry_date', '')"/>
     </p>
     <p>
-        Redeem at reception (Amwaj 1 or Marsa Matruh) or mention the code when booking on WhatsApp.<br/>
-        📞 01201568888
+        Redeem at reception (Amwaj 1 or Haram) or mention the code when booking on WhatsApp.<br/>
+        📞 Call center: 01201568888 | Amwaj: 01280833332 | Haram: 01000059085
     </p>
     <p>
         <a t-att-href="ctx.get('reward_url', '#')">View your reward page</a>

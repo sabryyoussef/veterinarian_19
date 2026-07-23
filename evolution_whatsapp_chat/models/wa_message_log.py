@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 class WaMessageLog(models.Model):
     _name        = 'wa.message.log'
-    _description = 'WhatsApp Message Log'
+    _description = 'WA Message Log'
     _order       = 'sent_at desc, id desc'
     _rec_name    = 'display_name'
 

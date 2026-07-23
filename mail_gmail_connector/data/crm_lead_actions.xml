@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+      Intentionally does NOT override crm.crm_lead_all_leads / crm.crm_lead_action_pipeline
+      on install. Shared-database coexistence (clinic + developer hub) requires an
+      unfiltered CRM menu by default.
+
+      Enable Job Outreach default filters via:
+        Settings → Gmail Connector → Apply Job Outreach CRM defaults
+      or ICP mail_gmail_connector.apply_job_outreach_crm_defaults = True
+    -->
+    <record id="icp_apply_job_outreach_crm_defaults" model="ir.config_parameter">
+        <field name="key">mail_gmail_connector.apply_job_outreach_crm_defaults</field>
+        <field name="value">False</field>
+    </record>
+</odoo>

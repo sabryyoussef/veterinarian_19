@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Transient wizards: resolve ir.model by name (CSV model_id:id needs ir.model.data xmlids). -->
+    <record id="access_mail_gmail_inbox_check_wizard" model="ir.model.access">
+        <field name="name">mail.gmail.inbox.check.wizard</field>
+        <field name="model_id" model="ir.model" search="[('model', '=', 'mail.gmail.inbox.check.wizard')]"/>
+        <field name="group_id" ref="mail_gmail_connector.group_gmail_manager"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_unlink">1</field>
+    </record>
+    <record id="access_mail_gmail_fetch_import_wizard" model="ir.model.access">
+        <field name="name">mail.gmail.fetch.import.wizard</field>
+        <field name="model_id" model="ir.model" search="[('model', '=', 'mail.gmail.fetch.import.wizard')]"/>
+        <field name="group_id" ref="mail_gmail_connector.group_gmail_manager"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_unlink">1</field>
+    </record>
+</odoo>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lead_engine_playbook_run_list" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.run.list</field>
+        <field name="model">lead.engine.playbook.run</field>
+        <field name="arch" type="xml">
+            <list
+                string="Playbook runs"
+                default_order="create_date desc, id desc"
+                decoration-danger="state == 'error'"
+                decoration-info="state == 'running'"
+                decoration-muted="state == 'done' or state == 'cancelled'"
+            >
+                <field name="name"/>
+                <field name="playbook_id"/>
+                <field name="lead_id"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'done'"
+                    decoration-info="state == 'running'"
+                    decoration-danger="state == 'error'"
+                    decoration-muted="state == 'cancelled'"
+                />
+                <field name="pending_due_line_count" string="Due now" optional="show"/>
+                <field name="started_at"/>
+                <field name="completed_at"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_run_search" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.run.search</field>
+        <field name="model">lead.engine.playbook.run</field>
+        <field name="arch" type="xml">
+            <search string="Playbook runs">
+                <field name="name"/>
+                <field name="playbook_id"/>
+                <field name="lead_id"/>
+                <filter string="Running" name="running" domain="[('state', '=', 'running')]"/>
+                <filter string="Error" name="error" domain="[('state', '=', 'error')]"/>
+                <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <group>
+                    <filter string="Playbook" name="group_playbook" context="{'group_by': 'playbook_id'}"/>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Lead" name="group_lead" context="{'group_by': 'lead_id'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_run_form" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.run.form</field>
+        <field name="model">lead.engine.playbook.run</field>
+        <field name="arch" type="xml">
+            <form string="Playbook run">
+                <header>
+                    <button
+                        name="action_process_due_steps"
+                        string="Process due steps"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'running'"
+                        groups="lead_engine_core.group_lead_engine_manager"
+                    />
+                    <button
+                        name="action_retry_run"
+                        string="Retry after error"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="state != 'error'"
+                        groups="lead_engine_core.group_lead_engine_manager"
+                    />
+                    <button
+                        name="action_cancel_run"
+                        string="Cancel run"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="state not in ('draft', 'running', 'error')"
+                        groups="lead_engine_core.group_lead_engine_manager"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,running,done,cancelled,error"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_open_lead"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-handshake-o"
+                            invisible="not lead_id"
+                        >
+                            <span class="o_stat_text">Lead</span>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="playbook_id"/>
+                            <field name="lead_id"/>
+                            <field name="pending_due_line_count" invisible="state != 'running'"/>
+                        </group>
+                        <group>
+                            <field name="started_at"/>
+                            <field name="completed_at"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group invisible="not error_message">
+                        <field name="error_message" nolabel="1" colspan="2"/>
+                    </group>
+                    <notebook>
+                        <page string="Steps" name="lines">
+                            <field name="line_ids" nolabel="1">
+                                <list
+                                    decoration-danger="state == 'error'"
+                                    decoration-success="state == 'done'"
+                                    decoration-muted="state == 'skipped'"
+                                >
+                                    <field name="sequence"/>
+                                    <field name="step_id"/>
+                                    <field name="state" widget="badge"/>
+                                    <field name="scheduled_at"/>
+                                    <field name="executed_at"/>
+                                    <field name="error_message" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_run_graph" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.run.graph</field>
+        <field name="model">lead.engine.playbook.run</field>
+        <field name="arch" type="xml">
+            <graph string="Playbook runs" type="bar" stacked="True">
+                <field name="playbook_id"/>
+                <field name="state"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_run_pivot" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.run.pivot</field>
+        <field name="model">lead.engine.playbook.run</field>
+        <field name="arch" type="xml">
+            <pivot string="Playbook runs">
+                <field name="playbook_id" type="row"/>
+                <field name="state" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_lead_engine_playbook_run" model="ir.actions.act_window">
+        <field name="name">Playbook runs</field>
+        <field name="res_model">lead.engine.playbook.run</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="search_view_id" ref="view_lead_engine_playbook_run_search"/>
+        <field name="context">{}</field>
+    </record>
+</odoo>

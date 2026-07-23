@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Template list ── -->
+    <record id="view_lead_engine_campaign_template_list" model="ir.ui.view">
+        <field name="name">lead.engine.campaign.template.list</field>
+        <field name="model">lead.engine.campaign.template</field>
+        <field name="arch" type="xml">
+            <list string="Campaign Templates" decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="channel"/>
+                <field name="assign_min_score" string="Min. score"/>
+                <field name="playbook_name" string="Playbook name" optional="show"/>
+                <field name="contact_source" string="Contact source" optional="show"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Template form ── -->
+    <record id="view_lead_engine_campaign_template_form" model="ir.ui.view">
+        <field name="name">lead.engine.campaign.template.form</field>
+        <field name="model">lead.engine.campaign.template</field>
+        <field name="arch" type="xml">
+            <form string="Campaign Template">
+                <sheet>
+
+                    <!-- ══ Top tip banner ══════════════════════════════════════════════ -->
+                    <div class="alert alert-primary d-flex align-items-start gap-3 mb-0 rounded-0 border-start-0 border-end-0 border-top-0"
+                         role="alert">
+                        <i class="fa fa-lightbulb-o fa-2x mt-1 text-primary flex-shrink-0" title="Tip"/>
+                        <div>
+                            <strong>What is a Campaign Template?</strong>
+                            A template is a <em>reusable blueprint</em> that pre-fills the
+                            "New Campaign" wizard in one click — so you never have to enter
+                            the same channel, scoring rules, or playbook steps twice.
+                            <span class="text-muted ms-1">
+                                See the <strong>Guide</strong> tab for step-by-step instructions.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="oe_title mt-3">
+                        <label for="name" string="Template name"/>
+                        <h1><field name="name" placeholder="e.g. Hospital Inbound"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Defaults">
+                            <field name="channel"
+                                   help="The lead source channel this template is designed for.
+The wizard will pre-select this channel in Step 1 (Campaign).
+• Web Form — leads come from a website contact form
+• Paid Ads — Facebook/Google Ads campaigns
+• Email — outbound cold email sequences
+• API / Webhook — programmatic lead creation
+• Other — anything else"/>
+                            <field name="assign_min_score"
+                                   help="The minimum qualification score a lead must reach before
+it is automatically assigned to a salesperson or team.
+Example: set 50 if you only want to follow up leads that
+answered at least 2–3 profiling questions correctly.
+The wizard pre-fills this value in Step 3 (Assignment)."/>
+                            <field name="playbook_name"
+                                   help="Suggested name for the playbook that will be created
+when the wizard runs. You can rename it in the wizard.
+Example: 'Hospital Onboarding Q1 2026'"/>
+                            <field name="default_email_template_id"
+                                options="{'no_create': True}"
+                                help="Optional email template to pre-fill in the campaign wizard.
+            If selected in the wizard, this email is sent once to each newly created lead."/>
+                            <field name="lead_name_prefix"
+                                   help="When contacts are bulk-converted to leads, this text
+becomes the lead subject. The contact's name is appended
+automatically. Example: 'New enquiry — Dr. Sarah Jones'"/>
+                        </group>
+                        <group string="">
+                            <field name="active" widget="boolean_toggle"
+                                   help="Inactive templates are hidden from the wizard's template
+picker but their data is preserved. Deactivate templates
+you no longer use instead of deleting them."/>
+                            <field name="sequence"
+                                   help="Lower numbers appear first in the template list and in
+the wizard's template picker. Use multiples of 10 so you
+can insert new templates between existing ones later."/>
+                        </group>
+                    </group>
+
+                    <group string="Description">
+                        <field name="description" nolabel="1"
+                               placeholder="Describe when to use this template — e.g. 'Use for inbound hospital leads coming via the website contact form. Requires at least email + phone to qualify.'"
+                               help="Shown to the user in the wizard's template picker so they
+can choose the right blueprint without opening the record.
+Be specific: mention the industry, channel, and minimum
+lead quality you expect."/>
+                    </group>
+
+                    <notebook>
+
+                        <!-- ── Score rules ── -->
+                        <page string="Score rules" name="scoring">
+                            <div class="alert alert-light border mb-3" role="alert">
+                                <i class="fa fa-star-half-o me-1 text-warning" title="Scoring rules"/>
+                                <strong>Tip — Score rules</strong>
+                                Add one row per data point you want to reward.
+                                Leave <em>Lead field</em> blank to create a base rule that
+                                gives every lead a starting score (useful as a floor).
+                                The wizard copies these rules to a new scoring engine in Step 2.
+                            </div>
+                            <field name="score_line_ids"
+                                   help="Each row becomes a qualification rule.
+Points are positive (reward) or negative (penalty).
+The total score decides whether the lead is assigned.">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name" placeholder="e.g. Email provided"
+                                           help="Short label — shown in reports and on the lead timeline."/>
+                                    <field name="lead_field"
+                                           placeholder="— always (every lead) —"
+                                           help="The CRM field that must be filled for this rule to score.
+Leave blank → rule applies to every lead (base score)."/>
+                                    <field name="score_delta" string="Points"
+                                           help="Points added (positive) or deducted (negative).
+Typical range: 5–30 per rule. Base score: 10–20."/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- ── Playbook steps ── -->
+                        <page string="Playbook steps" name="steps">
+                            <div class="alert alert-light border mb-3" role="alert">
+                                <i class="fa fa-tasks me-1 text-success" title="Playbook steps"/>
+                                <strong>Tip — Playbook steps</strong>
+                                Define the follow-up sequence a salesperson should execute
+                                after a lead is qualified. Steps run in order; each can
+                                schedule an <em>activity</em> (call, meeting, to-do) or
+                                send an <em>email template</em> automatically.
+                                The wizard copies these steps to a new playbook in Step 4.
+                            </div>
+                            <field name="step_line_ids"
+                                   help="Each row is one follow-up action in the sequence.
+Drag the handle to re-order steps.">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name" placeholder="Step name…"
+                                           help="Visible to the salesperson in their activity list.
+Be action-oriented: 'Call to confirm interest', 'Send proposal'."/>
+                                    <field name="step_type"
+                                           help="Create activity → schedules a manual task for the salesperson.
+Send email → fires an automated email via a mail template."/>
+                                    <field name="delay_unit"
+                                           help="When to trigger this step relative to the previous one.
+Immediate → runs right after the previous step completes.
+Hours / Days → waits the specified amount before triggering."/>
+                                    <field name="delay_amount"
+                                           help="Number of hours or days to wait. Ignored when Delay is Immediate."/>
+                                    <field name="activity_type_id"
+                                           invisible="step_type != 'create_activity'"
+                                           optional="show"
+                                           help="The type of activity to schedule (e.g. Phone Call, Email, Meeting).
+Must match an activity type configured in your Odoo instance."/>
+                                    <field name="activity_summary"
+                                           invisible="step_type != 'create_activity'"
+                                           optional="show"
+                                           help="A short note shown on the activity card so the salesperson
+knows exactly what to do without opening the lead."/>
+                                    <field name="mail_template_id"
+                                           invisible="step_type != 'send_email_template'"
+                                           optional="show"
+                                           help="The email template to send. Must target the crm.lead model.
+Create or edit email templates in Technical → Email Templates."/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- ── Contact Group ── -->
+                        <page string="Contact Group" name="contacts">
+
+                            <div class="alert alert-light border mb-3" role="alert">
+                                <i class="fa fa-address-book-o me-1 text-info" title="Contact group"/>
+                                <strong>Tip — Contact Group</strong>
+                                If your campaign targets a <em>known list</em> of contacts
+                                (e.g. existing customers, prospects from a trade show),
+                                select a source below. When the wizard uses this template,
+                                Step 5 (Contacts) will be pre-filled automatically — saving
+                                you from picking them one by one every time.
+                                Leave it as <em>No contacts</em> for inbound campaigns
+                                (website forms, ads) where leads arrive on their own.
+                            </div>
+
+                            <group string="How should the wizard load contacts for this campaign?">
+                                <field name="contact_source" widget="radio"
+                                       nolabel="1"
+                                       help="No contacts — inbound / API campaigns; leads are created externally.
+All active contacts — blast to your entire contact database.
+By tag — target a specific audience segment (e.g. 'Hospital', 'VIP').
+Manual — pick contacts one by one for a highly targeted campaign."/>
+                            </group>
+
+                            <!-- ▸ All contacts -->
+                            <div invisible="contact_source != 'all'"
+                                 class="alert alert-info mt-2" role="alert">
+                                <i class="fa fa-users me-1" title="All contacts"/>
+                                <strong>All active individual contacts</strong> in your database
+                                will be pre-loaded into the wizard. You can still remove
+                                contacts before launching the campaign.
+                            </div>
+
+                            <!-- ▸ By tag -->
+                            <div invisible="contact_source != 'by_tag'">
+                                <group string="Select one or more contact tags">
+                                    <field name="partner_category_ids"
+                                           widget="many2many_tags"
+                                           nolabel="1"
+                                           placeholder="Type a tag name…"
+                                           options="{'no_create': True}"
+                                           help="All active contacts that carry ANY of the selected tags
+will be loaded into the wizard automatically.
+Tags are managed in Contacts → Configuration → Contact Tags."/>
+                                </group>
+                                <div class="alert alert-info mt-2" role="alert"
+                                     invisible="not partner_category_ids">
+                                    <i class="fa fa-tag me-1" title="Tags"/>
+                                    Every active contact tagged with <strong>any</strong> of the
+                                    above tags will be pre-loaded in Step 5 of the wizard.
+                                    You can review and deselect contacts before launching.
+                                </div>
+                                <div class="alert alert-warning mt-2" role="alert"
+                                     invisible="partner_category_ids">
+                                    <i class="fa fa-exclamation-triangle me-1" title="Warning"/>
+                                    No tags selected yet — add at least one tag above so the
+                                    wizard knows which contacts to load.
+                                </div>
+                            </div>
+
+                            <!-- ▸ Manual -->
+                            <div invisible="contact_source != 'manual'">
+                                <div class="alert alert-light border mb-2 mt-2" role="alert">
+                                    <i class="fa fa-hand-pointer-o me-1" title="Manual selection"/>
+                                    <strong>Add contacts below.</strong>
+                                    These exact contacts will be pre-loaded every time this
+                                    template is used in the wizard. Click
+                                    <em>Add a line</em> to search and pick contacts.
+                                </div>
+                                <field name="partner_ids"
+                                       nolabel="1"
+                                       options="{'no_create': True}"
+                                       help="Fixed list of contacts always included when this template is used.">
+                                    <list string="Selected contacts">
+                                        <field name="name"/>
+                                        <field name="company_name" optional="show"/>
+                                        <field name="email" optional="show"/>
+                                        <field name="phone" optional="show"/>
+                                        <field name="category_id" widget="many2many_tags"
+                                               optional="show" string="Tags"/>
+                                    </list>
+                                </field>
+                            </div>
+
+                            <!-- ▸ None -->
+                            <div invisible="contact_source != 'none'"
+                                 class="alert alert-secondary mt-2" role="alert">
+                                <i class="fa fa-info-circle me-1" title="Info"/>
+                                <strong>Inbound / API mode.</strong>
+                                No contacts will be pre-loaded. Leads arrive via web form,
+                                API endpoint, CRM import, or are entered manually by the team.
+                            </div>
+
+                        </page>
+
+                        <!-- ── Notes ── -->
+                        <page string="Notes" name="notes">
+                            <field name="note"
+                                   placeholder="Internal notes about this template — visible only to managers…"
+                                   help="Free-text internal notes. Not shown to end users.
+Use this to document: who owns the template, when it was
+last reviewed, and any special setup instructions."/>
+                        </page>
+
+                        <!-- ── Guide ── -->
+                        <page string="Guide" name="guide">
+                            <div class="container-fluid py-3">
+
+                                <h4 class="text-primary mb-3">
+                                    <i class="fa fa-book me-2" title="Guide"/>How to fill in a Campaign Template
+                                </h4>
+
+                                <div class="row g-3">
+
+                                    <!-- Step 1 -->
+                                    <div class="col-12">
+                                        <div class="card border-primary">
+                                            <div class="card-header bg-primary text-white py-2">
+                                                <strong>Step 1 — Give the template a name and channel</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>The <strong>Template name</strong> is shown in the wizard's
+                                                template picker — make it descriptive.
+                                                Examples: <em>"Hospital Inbound — Web Form"</em>,
+                                                <em>"Cold Email — SME Sector"</em>.</p>
+                                                <p><strong>Channel</strong> tells the wizard which lead source
+                                                to create. Pick the channel that matches how leads will arrive:</p>
+                                                <ul class="mb-0">
+                                                    <li><strong>Web Form</strong> — website contact / enquiry form</li>
+                                                    <li><strong>Paid Ads</strong> — Facebook Lead Ads, Google Ads</li>
+                                                    <li><strong>Email</strong> — outbound cold email sequences</li>
+                                                    <li><strong>API / Webhook</strong> — programmatic integrations</li>
+                                                    <li><strong>Other</strong> — trade shows, events, referrals</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 2 -->
+                                    <div class="col-12">
+                                        <div class="card border-warning">
+                                            <div class="card-header bg-warning text-dark py-2">
+                                                <strong>Step 2 — Score rules tab</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>Score rules determine how <em>qualified</em> a lead is.
+                                                Each rule adds or deducts points when a CRM field is filled.</p>
+                                                <table class="table table-sm table-bordered mb-2">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Lead field</th>
+                                                            <th>Points</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr><td>Base score</td><td><em>(blank — always)</em></td><td>10</td></tr>
+                                                        <tr><td>Email provided</td><td>Email filled in</td><td>20</td></tr>
+                                                        <tr><td>Phone provided</td><td>Phone filled in</td><td>15</td></tr>
+                                                        <tr><td>Company known</td><td>Company name filled in</td><td>10</td></tr>
+                                                    </tbody>
+                                                </table>
+                                                <p class="mb-0">Set <strong>Min. score to assign</strong> (in Defaults)
+                                                to the threshold above which a lead gets routed to sales.
+                                                A score of 50 means the lead must provide email + phone + company.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 3 -->
+                                    <div class="col-12">
+                                        <div class="card border-success">
+                                            <div class="card-header bg-success text-white py-2">
+                                                <strong>Step 3 — Playbook steps tab</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>Playbook steps are the follow-up actions executed
+                                                <em>after a lead qualifies</em>. They run in sequence:</p>
+                                                <ul>
+                                                    <li><strong>Create activity</strong> — schedules a task
+                                                    (call, meeting, email) for the assigned salesperson.</li>
+                                                    <li><strong>Send email</strong> — fires an automated email
+                                                    via a pre-built Odoo mail template.</li>
+                                                </ul>
+                                                <p class="mb-0">Use <em>Delay</em> to space steps out:
+                                                "Immediate" → runs right away; "1 Day" → waits 24 hours.
+                                                A typical sequence: <em>Call (immediate) → Proposal email
+                                                (3 days) → Follow-up call (7 days)</em>.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 4 -->
+                                    <div class="col-12">
+                                        <div class="card border-info">
+                                            <div class="card-header bg-info text-white py-2">
+                                                <strong>Step 4 — Contact Group tab (optional)</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>Only needed for <em>outbound</em> campaigns where you
+                                                already know who you want to target:</p>
+                                                <ul class="mb-0">
+                                                    <li><strong>No contacts</strong> — leave this for inbound
+                                                    campaigns (web form, ads). Leads arrive on their own.</li>
+                                                    <li><strong>All active contacts</strong> — broadcast to
+                                                    your entire contact database.</li>
+                                                    <li><strong>By tag</strong> — target a segment, e.g. all
+                                                    contacts tagged "Hospital" or "VIP Customer".</li>
+                                                    <li><strong>Manual</strong> — hand-pick a small group
+                                                    (e.g. 10 key accounts for a personalised campaign).</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 5 — using the template -->
+                                    <div class="col-12">
+                                        <div class="card bg-light">
+                                            <div class="card-header py-2">
+                                                <strong><i class="fa fa-rocket me-1" title="Wizard"/>Using the template in the wizard</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <ol class="mb-0">
+                                                    <li>Go to <strong>Campaign → New Campaign</strong>.</li>
+                                                    <li>In Step 1, open the <strong>Load from template</strong>
+                                                    dropdown and pick this template.</li>
+                                                    <li>All steps are pre-filled — review and adjust any value.</li>
+                                                    <li>Click <strong>Launch</strong> on the Review step.
+                                                    The engine, scoring rules, playbook, and leads are
+                                                    created automatically.</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /row -->
+                            </div>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Action ── -->
+    <record id="action_lead_engine_campaign_template" model="ir.actions.act_window">
+        <field name="name">Campaign Templates</field>
+        <field name="res_model">lead.engine.campaign.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

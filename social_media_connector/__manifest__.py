@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Social Media Connector",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Marketing",
     "summary": "Compose Facebook posts locally and push scheduled posts to Odoo Online Social",
     "author": "Sabry Youssef",

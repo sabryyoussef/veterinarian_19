@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Inbound — Demo Data (Workflow Integration)
+        =======================================================
+        This file runs AFTER core/qualification/sequence demo files.
+        It wires playbooks to sources and enables auto-start, completing
+        the four end-to-end workflow scenarios.
+
+        Scenario A — Web form lead: HTTP intake → score → assign → 3-step playbook
+          Source code : DEMO_WF          Bearer token: demo-wf-rotate-before-use
+          Score path  : +10 (baseline) +15 (email) +25 (Director title) = 50 max
+          Assignment  : Web Leads Team (source-bound rule)
+          Playbook    : call → assign team → 2-day follow-up call
+
+        Scenario B — Duplicate detection (same source + external_ref re-submitted)
+          No extra config needed — the engine handles it automatically.
+          Result      : same lead returned, identity map unchanged, 2 intake logs.
+
+        Scenario C — Trade show lead: CRM manual entry → wizard → 2-step playbook
+          Source code : DEMO_TS          (no inbound token — manual entry only)
+          Score path  : +20 (attendance) +30 (company name) = 50 max
+          Assignment  : Field Sales Team (source-bound rule)
+          Playbook    : call → assign team (started via playbook wizard by sales rep)
+
+        Scenario D — Multi-source routing by score band
+          Ads  source : DEMO_ADS / token: demo-ads-rotate-before-use
+                        score 75 (email)  → Senior Sales + Enterprise Playbook
+          Org  source : DEMO_ORG / token: demo-org-rotate-before-use
+                        score 35 (email)  → Nurture Team  + Organic Playbook
+
+        SECURITY: rotate all inbound_api_token values before production.
+
+        CURL examples
+        ─────────────
+          # Scenario A — web form lead
+          curl -X POST http://localhost:8069/lead_engine/v1/intake \
+               -H "Authorization: Bearer demo-wf-rotate-before-use" \
+               -H "Content-Type: application/json" \
+               -d '{"external_ref":"WF-001","name":"Acme Opportunity",
+                    "contact_name":"Alice Director",
+                    "email_from":"alice@acme.com","le_channel":"form"}'
+
+          # Scenario D — ads lead
+          curl -X POST http://localhost:8069/lead_engine/v1/intake \
+               -H "Authorization: Bearer demo-ads-rotate-before-use" \
+               -H "Content-Type: application/json" \
+               -d '{"external_ref":"ADS-001","name":"CloudSoft Deal",
+                    "contact_name":"Bob VP","email_from":"bob@cloudsoft.com",
+                    "le_channel":"ads"}'
+    -->
+    <data noupdate="1">
+
+        <!-- ── Scenario A: link playbook to web-form source ─────────────────── -->
+        <record id="lead_engine_core.demo_src_webform" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_pb_webform"/>
+            <field name="playbook_auto_start" eval="True"/>
+        </record>
+
+        <!-- ── Scenario C: link playbook to trade-show source ───────────────── -->
+        <!--
+            playbook_auto_start = False here: sales reps launch the playbook
+            manually via the "Start Playbook" wizard on the CRM lead form.
+            Set to True if you prefer automatic kick-off on source assignment.
+        -->
+        <record id="lead_engine_core.demo_src_tradeshow" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_pb_tradeshow"/>
+            <field name="playbook_auto_start" eval="False"/>
+        </record>
+
+        <!-- ── Scenario D: link enterprise-ads playbook to ads source ────────── -->
+        <record id="lead_engine_core.demo_src_ads" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_pb_ads"/>
+            <field name="playbook_auto_start" eval="True"/>
+        </record>
+
+        <!-- ── Scenario D: link organic playbook to organic source ──────────── -->
+        <record id="lead_engine_core.demo_src_organic" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_pb_organic"/>
+            <field name="playbook_auto_start" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

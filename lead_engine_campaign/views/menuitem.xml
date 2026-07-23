@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════
+         Lead Engine Campaign — standalone application
+         ═══════════════════════════════════════════════════ -->
+    <menuitem
+        id="menu_lead_engine_campaign_root"
+        name="Campaign"
+        web_icon="lead_engine_campaign,static/description/icon.png"
+        sequence="199"
+        groups="lead_engine_core.group_lead_engine_user"
+    />
+
+    <!-- ── Campaigns list ── -->
+    <menuitem
+        id="menu_lead_engine_campaigns_list"
+        name="Campaigns"
+        parent="menu_lead_engine_campaign_root"
+        action="lead_engine_core.action_lead_engine_source"
+        sequence="10"
+    />
+
+    <!-- ── Launch wizard ── -->
+    <menuitem
+        id="menu_lead_engine_campaign_new"
+        name="New Campaign"
+        parent="menu_lead_engine_campaign_root"
+        action="action_lead_engine_campaign_wizard"
+        sequence="20"
+    />
+
+    <!-- ── Templates (manager) ── -->
+    <menuitem
+        id="menu_lead_engine_campaign_templates"
+        name="Campaign Templates"
+        parent="menu_lead_engine_campaign_root"
+        action="action_lead_engine_campaign_template"
+        sequence="30"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+</odoo>

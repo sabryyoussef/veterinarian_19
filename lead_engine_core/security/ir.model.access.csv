@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lead_engine_source_user,access.lead.engine.source.user,model_lead_engine_source,lead_engine_core.group_lead_engine_user,1,0,0,0
+access_lead_engine_source_manager,access.lead.engine.source.manager,model_lead_engine_source,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_intake_log_user,access.lead.engine.intake.log.user,model_lead_engine_intake_log,lead_engine_core.group_lead_engine_user,1,0,0,0

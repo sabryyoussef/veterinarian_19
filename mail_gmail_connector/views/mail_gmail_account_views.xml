@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mail_gmail_account_list" model="ir.ui.view">
+        <field name="name">mail.gmail.account.list</field>
+        <field name="model">mail.gmail.account</field>
+        <field name="arch" type="xml">
+            <list string="Gmail accounts" sample="1">
+                <field name="name"/>
+                <field name="gmail_email"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'connected'"
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'error'"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ir.actions.server (not act_window): avoids res_model registry check on wizard models during upgrade. -->
+    <record id="action_mail_gmail_inbox_check_wizard_from_account" model="ir.actions.server">
+        <field name="name">Compare Gmail vs CRM leads</field>
+        <field name="model_id" model="ir.model" search="[('model', '=', 'mail.gmail.account')]"/>
+        <field name="state">code</field>
+        <field name="group_ids" eval="[(4, ref('mail_gmail_connector.group_gmail_manager'))]"/>
+        <field name="code"><![CDATA[
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Compare Gmail vs CRM leads',
+    'res_model': 'mail.gmail.inbox.check.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {'default_account_id': env.context.get('active_id')},
+}
+]]></field>
+    </record>
+    <record id="action_mail_gmail_fetch_import_wizard_from_account" model="ir.actions.server">
+        <field name="name">Search Gmail and import</field>
+        <field name="model_id" model="ir.model" search="[('model', '=', 'mail.gmail.account')]"/>
+        <field name="state">code</field>
+        <field name="group_ids" eval="[(4, ref('mail_gmail_connector.group_gmail_manager'))]"/>
+        <field name="code"><![CDATA[
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Search Gmail and import',
+    'res_model': 'mail.gmail.fetch.import.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {'default_account_id': env.context.get('active_id')},
+}
+]]></field>
+    </record>
+
+    <record id="view_mail_gmail_account_form" model="ir.ui.view">
+        <field name="name">mail.gmail.account.form</field>
+        <field name="model">mail.gmail.account</field>
+        <field name="arch" type="xml">
+            <form string="Gmail account">
+                <header>
+                    <!-- type="action": avoids strict object-button validation on mail.gmail.account (Odoo 19). -->
+                    <button name="%(mail_gmail_connector.action_mail_gmail_inbox_check_wizard_from_account)d"
+                            type="action" string="Compare vs CRM leads"
+                            groups="mail_gmail_connector.group_gmail_manager"
+                            class="btn-secondary"/>
+                    <button name="%(mail_gmail_connector.action_mail_gmail_fetch_import_wizard_from_account)d"
+                            type="action" string="Search Gmail &amp; import"
+                            groups="mail_gmail_connector.group_gmail_manager"
+                            class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,connected,error"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div name="button_box" class="oe_button_box">
+                        <button type="object" name="action_view_outgoing_server"
+                                class="oe_stat_button" icon="fa-paper-plane"
+                                invisible="not outgoing_mail_server_id"
+                                groups="mail_gmail_connector.group_gmail_manager">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Outgoing</span>
+                                <span class="o_stat_text">SMTP</span>
+                            </div>
+                        </button>
+                        <button type="object" name="action_view_incoming_server"
+                                class="oe_stat_button" icon="fa-inbox"
+                                invisible="not incoming_mail_server_id"
+                                groups="mail_gmail_connector.group_gmail_manager">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Incoming</span>
+                                <span class="o_stat_text">IMAP</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Sales inbox"/></h1>
+                    </div>
+                    <group>
+                        <group string="Mailbox">
+                            <field name="active" invisible="1"/>
+                            <field name="gmail_email" placeholder="name@gmail.com"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="OAuth credentials" groups="mail_gmail_connector.group_gmail_manager">
+                            <field name="oauth_client_id" password="True"/>
+                            <field name="oauth_client_secret" password="True"/>
+                            <field name="refresh_token" password="True"/>
+                            <field name="scopes" placeholder="Space- or newline-separated scopes"/>
+                        </group>
+                    </group>
+                    <group string="Status">
+                        <field name="last_sync_at"/>
+                        <field name="last_error"/>
+                    </group>
+                    <group string="Linked mail servers" groups="mail_gmail_connector.group_gmail_manager"
+                           invisible="not outgoing_mail_server_id and not incoming_mail_server_id">
+                        <field name="outgoing_mail_server_id" readonly="1"/>
+                        <field name="incoming_mail_server_id" readonly="1"/>
+                    </group>
+                    <group string="Inbound import (IMAP)" groups="mail_gmail_connector.group_gmail_manager"
+                           invisible="not incoming_mail_server_id">
+                        <field name="gmail_imap_fetch_scope"/>
+                        <field name="gmail_allow_inbox_all" invisible="gmail_imap_fetch_scope != 'all_in_mailbox'"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mail_gmail_account" model="ir.actions.act_window">
+        <field name="name">Gmail accounts</field>
+        <field name="res_model">mail.gmail.account</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register a Gmail mailbox for OAuth (send/receive via API).
+            </p>
+            <p>
+                Gmail managers: set OAuth Client ID and secret, then <strong>Connect with Google</strong>
+                or paste a refresh token. Use <strong>Send test email</strong> and <strong>Refresh profile</strong>
+                to verify. Register the redirect URI in Google Cloud (see module description / PLAN.md).
+            </p>
+        </field>
+    </record>
+</odoo>

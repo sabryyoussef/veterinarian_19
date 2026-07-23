@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root app menu — shows as a tile on the home screen with icon.png -->
+    <menuitem id="menu_mail_gmail_root"
+              name="Gmail"
+              sequence="90"
+              web_icon="mail_gmail_connector,static/description/icon.png"
+              groups="mail_gmail_connector.group_gmail_user"/>
+
+    <!-- Top-level sections -->
+    <menuitem id="menu_mail_gmail_accounts_section"
+              name="Mailboxes"
+              parent="menu_mail_gmail_root"
+              sequence="10"
+              groups="mail_gmail_connector.group_gmail_user"/>
+
+    <menuitem id="menu_mail_gmail_tools_section"
+              name="Tools"
+              parent="menu_mail_gmail_root"
+              sequence="20"
+              groups="mail_gmail_connector.group_gmail_manager"/>
+
+    <menuitem id="menu_mail_gmail_config_section"
+              name="Configuration"
+              parent="menu_mail_gmail_root"
+              sequence="30"
+              groups="mail_gmail_connector.group_gmail_manager"/>
+
+    <!-- Mailboxes -->
+    <menuitem id="menu_mail_gmail_account"
+              name="Gmail Accounts"
+              parent="menu_mail_gmail_accounts_section"
+              action="action_mail_gmail_account"
+              sequence="10"
+              groups="mail_gmail_connector.group_gmail_user"/>
+
+    <!-- Tools (wizards) -->
+    <menuitem id="menu_mail_gmail_fetch_import"
+              name="Search Gmail and Import"
+              parent="menu_mail_gmail_tools_section"
+              action="action_mail_gmail_fetch_import_wizard"
+              sequence="10"
+              groups="mail_gmail_connector.group_gmail_manager"/>
+
+    <menuitem id="menu_mail_gmail_inbox_check"
+              name="Compare Gmail vs CRM Leads"
+              parent="menu_mail_gmail_tools_section"
+              action="action_mail_gmail_inbox_check_wizard"
+              sequence="20"
+              groups="mail_gmail_connector.group_gmail_manager"/>
+</odoo>

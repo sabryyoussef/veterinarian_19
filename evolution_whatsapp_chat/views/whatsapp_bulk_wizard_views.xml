@@ -5,10 +5,10 @@
         <field name="name">whatsapp.bulk.wizard.form</field>
         <field name="model">whatsapp.bulk.wizard</field>
         <field name="arch" type="xml">
-            <form string="Send WhatsApp to Multiple Contacts">
+            <form string="Send WA to Multiple Contacts">
                 <sheet>
                     <div class="oe_title">
-                        <h2>&#128241; Bulk WhatsApp Send</h2>
+                        <h2>&#128241; Bulk WA Send</h2>
                     </div>
 
                     <!-- Summary bar -->
@@ -88,7 +88,7 @@
 
     <!-- Server action for res.partner list view -->
     <record id="action_partner_send_whatsapp_bulk" model="ir.actions.server">
-        <field name="name">Send WhatsApp</field>
+        <field name="name">Send WA</field>
         <field name="model_id" ref="base.model_res_partner"/>
         <field name="binding_model_id" ref="base.model_res_partner"/>
         <field name="binding_view_types">list</field>
@@ -96,7 +96,7 @@
         <field name="code">
 action = {
     'type': 'ir.actions.act_window',
-    'name': 'Send WhatsApp',
+    'name': 'Send WA',
     'res_model': 'whatsapp.bulk.wizard',
     'view_mode': 'form',
     'target': 'new',
@@ -110,7 +110,7 @@ action = {
 
     <!-- Server action for crm.lead list view -->
     <record id="action_lead_send_whatsapp_bulk" model="ir.actions.server">
-        <field name="name">Send WhatsApp</field>
+        <field name="name">Send WA</field>
         <field name="model_id" ref="crm.model_crm_lead"/>
         <field name="binding_model_id" ref="crm.model_crm_lead"/>
         <field name="binding_view_types">list</field>
@@ -118,7 +118,7 @@ action = {
         <field name="code">
 action = {
     'type': 'ir.actions.act_window',
-    'name': 'Send WhatsApp',
+    'name': 'Send WA',
     'res_model': 'whatsapp.bulk.wizard',
     'view_mode': 'form',
     'target': 'new',

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Default system parameters (only set if not already present) -->
+    <record id="param_llm_provider" model="ir.config_parameter">
+        <field name="key">lead_engine_ai.llm_provider</field>
+        <field name="value">openai</field>
+    </record>
+
+    <record id="param_llm_model" model="ir.config_parameter">
+        <field name="key">lead_engine_ai.llm_model</field>
+        <field name="value">gpt-4o-mini</field>
+    </record>
+
+    <record id="param_llm_api_key" model="ir.config_parameter">
+        <field name="key">lead_engine_ai.llm_api_key</field>
+        <field name="value"></field>
+    </record>
+
+    <record id="param_monitored_emails" model="ir.config_parameter">
+        <field name="key">lead_engine_ai.monitored_emails</field>
+        <field name="value">vendorah2@gmail.com, abhorya@gmail.com</field>
+    </record>
+
+    <record id="param_system_prompt" model="ir.config_parameter">
+        <field name="key">lead_engine_ai.system_prompt</field>
+        <field name="value"></field>
+    </record>
+
+</odoo>

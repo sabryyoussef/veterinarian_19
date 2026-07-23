@@ -1,0 +1,34 @@
+[
+  {
+    "severity": "HIGH",
+    "issue": "many_duplicate_copies",
+    "module": "integration_bridge_core",
+    "count": 18
+  },
+  {
+    "severity": "HIGH",
+    "issue": "many_duplicate_copies",
+    "module": "evolution_whatsapp_chat",
+    "count": 18
+  },
+  {
+    "severity": "HIGH",
+    "issue": "many_duplicate_copies",
+    "module": "petspot_wa_intake",
+    "count": 17
+  },
+  {
+    "severity": "CRITICAL",
+    "issue": "test_overlay_shadow",
+    "module": "dev_session_hub",
+    "runtime": "/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_staging/dev_session_hub",
+    "canonical_ver": "19.0.9.0.0",
+    "runtime_ver": "19.0.8.5.6"
+  },
+  {
+    "severity": "HIGH",
+    "issue": "many_duplicate_copies",
+    "module": "dev_session_hub",
+    "count": 21
+  }
+]

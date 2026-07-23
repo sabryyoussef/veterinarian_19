@@ -16,7 +16,7 @@ class SocialMediaPostTemplate(models.Model):
         required=True,
         help=(
             "Use placeholders from campaign settings: "
-            "{location_en}, {location_ar}, {phone_amwaj}, {phone_marassi}, "
+            "{location_en}, {location_ar}, {phone_amwaj}, {phone_haram}, "
             "{whatsapp}, {call_center}, {website}, {website_display}, "
             "{maps_url}, {hashtags}, {facebook_url}, {linkedin_url}"
         ),

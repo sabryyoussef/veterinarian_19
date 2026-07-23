@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════
+         Lead Engine Sequence — standalone application
+         Playbook setup and run tracking
+         ═══════════════════════════════════════════════════ -->
+    <menuitem
+        id="menu_lead_engine_seq_root"
+        name="Playbooks"
+        web_icon="lead_engine_sequence,static/description/icon.png"
+        sequence="202"
+        groups="lead_engine_core.group_lead_engine_user"
+    />
+
+    <!-- ── Runs (operational — all users) ── -->
+    <menuitem
+        id="menu_lead_engine_runs"
+        name="Runs"
+        parent="menu_lead_engine_seq_root"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_lead_engine_playbook_runs"
+        name="Playbook Runs"
+        parent="menu_lead_engine_runs"
+        action="action_lead_engine_playbook_run"
+        sequence="10"
+    />
+
+    <!-- ── Setup (manager only) ── -->
+    <menuitem
+        id="menu_lead_engine_seq_config"
+        name="Setup"
+        parent="menu_lead_engine_seq_root"
+        sequence="20"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+    <menuitem
+        id="menu_lead_engine_playbooks"
+        name="Playbooks"
+        parent="menu_lead_engine_seq_config"
+        action="action_lead_engine_playbook"
+        sequence="10"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+    <menuitem
+        id="menu_lead_engine_playbook_steps"
+        name="Playbook Steps"
+        parent="menu_lead_engine_seq_config"
+        action="action_lead_engine_playbook_step"
+        sequence="20"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+</odoo>

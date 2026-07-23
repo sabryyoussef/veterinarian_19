@@ -32,7 +32,7 @@
                     </group>
                     <label for="body"/>
                     <field name="body" widget="text" nolabel="1"
-                           placeholder="Use {location_en}, {phone_amwaj}, {phone_marassi}, {whatsapp}, {hashtags}, …"/>
+                           placeholder="Use {location_en}, {phone_amwaj}, {phone_haram}, {call_center}, {whatsapp}, {hashtags}, …"/>
                 </sheet>
             </form>
         </field>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_lead_engine_playbook_run_analytics" model="ir.actions.act_window">
+        <field name="name">Playbook analytics</field>
+        <field name="res_model">lead.engine.playbook.run</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="search_view_id" ref="view_lead_engine_playbook_run_search"/>
+        <field name="context">{'search_default_group_playbook': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Operational view: runs by playbook and state.</p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_lead_engine_playbook_analytics"
+        name="Playbook analytics"
+        parent="lead_engine_core.menu_lead_engine_root"
+        action="action_lead_engine_playbook_run_analytics"
+        sequence="37"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_search_openproject" model="ir.ui.view">
+        <field name="name">project.task.search.openproject</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_tasks']" position="after">
+                <separator/>
+                <filter string="OpenProject Synced" name="op_synced"
+                        domain="[('op_work_package_id', '!=', False)]"/>
+                <filter string="Cross-Project OP Parent" name="op_cross_parent"
+                        domain="[('op_cross_project_parent', '=', True)]"/>
+                <filter string="Misplaced OP Project" name="op_misplaced"
+                        domain="[('op_work_package_id', '!=', False)]"
+                        help="Use realign wizard for full audit"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="OP Project" name="group_op_project"
+                        context="{'group_by': 'op_project_name'}"/>
+                <filter string="OP Project ID" name="group_op_project_id"
+                        context="{'group_by': 'op_project_id'}"/>
+                <filter string="Odoo Project" name="group_project"
+                        context="{'group_by': 'project_id'}"/>
+                <filter string="Parent Task" name="group_parent"
+                        context="{'group_by': 'parent_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_task_tree_openproject" model="ir.ui.view">
+        <field name="name">project.task.list.openproject</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="op_project_name" optional="hide"/>
+                <field name="op_work_package_id" optional="hide"/>
+                <field name="op_parent_subject" optional="hide"/>
+                <field name="op_cross_project_parent" optional="hide"/>
+                <field name="op_sync_state" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

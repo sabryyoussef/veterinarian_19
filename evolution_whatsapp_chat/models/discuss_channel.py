@@ -23,7 +23,15 @@ _EVO_INSTANCE_DEFAULT = 'sabry min'
 # Evolution API helpers (read config from ir.config_parameter at runtime)
 # ---------------------------------------------------------------------------
 
-def _evo_config(env):
+def _evo_config(env, purpose=None, instance_name=None):
+    """Prefer evolution.instance (multi-instance); fall back to ICP singleton."""
+    Evo = env.get('evolution.instance')
+    if Evo is not None:
+        if instance_name:
+            return Evo.get_config_by_instance_name(instance_name)
+        if purpose:
+            return Evo.get_config_for_purpose(purpose)
+        return Evo.get_default_config()
     ICP = env['ir.config_parameter'].sudo()
     instance = ICP.get_param('integration_bridge.evolution_instance', _EVO_INSTANCE_DEFAULT)
     return {
@@ -32,6 +40,8 @@ def _evo_config(env):
         'instance': instance,
         # Instance names may contain spaces (e.g. "sabry min").
         'instance_path': quote(instance or '', safe=''),
+        'instance_id': False,
+        'purpose': False,
     }
 
 
@@ -139,13 +149,13 @@ class DiscussChannelWhatsApp(models.Model):
     # ── WhatsApp fields ───────────────────────────────────────────────────────
 
     wa_partner_id = fields.Many2one(
-        'res.partner', string='WhatsApp Contact',
+        'res.partner', string='WA Contact',
         index=True, ondelete='set null',
-        help='The Odoo contact this WhatsApp channel belongs to'
+        help='The Odoo contact this WA channel belongs to'
     )
 
     wa_phone = fields.Char(
-        string='WhatsApp Phone',
+        string='WA Phone',
         help='Phone number in E.164-ish format (no + sign): 201000059085'
     )
 
@@ -208,7 +218,7 @@ class DiscussChannelWhatsApp(models.Model):
             _logger.info(f"[WA Channel] Outbound delivered to {self.wa_phone} (msg_id={wa_msg_id})")
         else:
             self.sudo().message_post(
-                body=f"<em>⚠️ WhatsApp delivery failed: {response}</em>",
+                body=f"<em>⚠️ WA delivery failed: {response}</em>",
                 message_type='notification',
                 subtype_xmlid='mail.mt_note',
             )

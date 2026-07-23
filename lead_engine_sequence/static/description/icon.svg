@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Lead Engine Sequence  stacked steps / playbook flow -->
+  <rect width="128" height="128" rx="22" fill="#C2622A"/>
+  <!-- step 1 -->
+  <rect x="14" y="26" width="42" height="22" rx="5" fill="white" opacity="0.92"/>
+  <!-- step 2 -->
+  <rect x="43" y="53" width="42" height="22" rx="5" fill="white" opacity="0.92"/>
+  <!-- step 3 -->
+  <rect x="72" y="80" width="42" height="22" rx="5" fill="white" opacity="0.92"/>
+  <!-- connectors -->
+  <line x1="56" y1="37" x2="56" y2="53" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <line x1="85" y1="64" x2="85" y2="80" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+</svg>

@@ -1,0 +1,19 @@
+HTTP/2 302 
+cache-control: no-cache
+content-security-policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://start.openproject.com; font-src 'self' data:; form-action 'self'; frame-ancestors 'self'; frame-src 'self' https://player.vimeo.com https://releases.openproject.com/v1/check.svg; img-src * data: blob:; media-src 'self'; object-src https://releases.openproject.com/v1/check.svg; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'
+content-type: text/html; charset=utf-8
+date: Mon, 13 Jul 2026 20:24:52 GMT
+location: https://master.tailcf9988.ts.net:10081/login?back_url=https%3A%2F%2Fmaster.tailcf9988.ts.net%3A10081%2Fprojects%2Fwa-120363427125783045
+referrer-policy: origin-when-cross-origin
+server: Apache/2.4.62 (Debian)
+set-cookie: _open_project_session=b2fbc0ff01af8e074cea1842e18eb94a; path=/; secure; HttpOnly; SameSite=Lax
+strict-transport-security: max-age=63072000; includeSubDomains
+vary: Accept-Encoding
+x-content-type-options: nosniff
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: 0cfa9ad7-b798-4080-bf24-9d8ae79a4608
+x-runtime: 0.018292
+x-xss-protection: 1; mode=block
+

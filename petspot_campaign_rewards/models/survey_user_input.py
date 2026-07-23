@@ -268,8 +268,8 @@ class SurveyUserInput(models.Model):
             "Your discount code: %(code)s\n"
             "Discount: %(discount)s%% off clinic services\n"
             "Valid until: %(expiry)s\n\n"
-            "Redeem at Amwaj 1 or Marsa Matruh — show this code at reception.\n"
-            "📞 01201568888 | 💬 WhatsApp booking welcome\n"
+            "Redeem at Amwaj 1 or Haram — show this code at reception.\n"
+            "📞 Call center 01201568888 | Amwaj 01280833332 | Haram 01000059085\n"
             "%(book)s"
             "🌐 %(url)s"
         ) % {

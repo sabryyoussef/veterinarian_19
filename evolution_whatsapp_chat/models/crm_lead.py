@@ -9,7 +9,7 @@ class CrmLeadWhatsApp(models.Model):
     _inherit = 'crm.lead'
 
     wa_message_count_lead = fields.Integer(
-        string='WhatsApp Messages',
+        string='WA Messages',
         compute='_compute_wa_message_count_lead',
     )
 
@@ -55,7 +55,7 @@ class CrmLeadWhatsApp(models.Model):
         ) or ''
         return {
             'type':      'ir.actions.act_window',
-            'name':      'Send WhatsApp',
+            'name':      'Send WA',
             'res_model': 'whatsapp.send.wizard',
             'view_mode': 'form',
             'target':    'new',

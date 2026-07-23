@@ -32,7 +32,15 @@ EPISODES = [
 </ul>
 """,
         "slide_html": "<p>Quick guide: keep walks early morning or after sunset at the North Coast.</p>",
-        "fb_teaser": "🌞 Episode 1 — Summer heat safety for your pet on the North Coast!\nLearn the signs of heatstroke and how PetSpot El Sahel can help.\n\n🐾 بيت سبوت الساحل",
+        "fb_teaser": (
+            "🌞 Episode 1 — Summer heat safety for your pet on the North Coast!\n"
+            "Learn the signs of heatstroke and how PetSpot El Sahel can help.\n\n"
+            "🌡️ الحلقة 1: حماية أليفك من حرارة الساحل\n"
+            "ازاي تعرف ضربة الشمس؟ لهث شديد، ضعف، سيلان لعاب — ومتسيبش أليفك في العربية أبداً.\n"
+            "مشي في الصبح أو بعد المغرب، ووفّر مية وظل دايماً.\n\n"
+            "📝 جاوب على أسئلة الحلقة — كل إجابة تقرّبك من هدايا الحملة في الحلقات 6 و 7!\n\n"
+            "🐾 بيت سبوت الساحل"
+        ),
         "quiz_title": "Summer Heat Safety Quiz",
         "quiz_questions": [
             ("Should you leave a dog in a parked car in summer?", "simple_choice", [("Yes | نعم", False), ("No | لا", True)]),
@@ -55,7 +63,13 @@ EPISODES = [
 <p>حدّث تطعيمات أليفك قبل السفر إلى الساحل.</p>
 """,
         "slide_html": "<p>Book a pre-travel check at PetSpot — vaccinations, health certificate advice.</p>",
-        "fb_teaser": "💉 Episode 2 — Vaccinate before you travel to the Sahel with your pet!",
+        "fb_teaser": (
+            "💉 Episode 2 — Vaccinate before you travel to the Sahel with your pet!\n\n"
+            "💉 الحلقة 2: التطعيمات قبل السفر للساحل\n"
+            "حدّث التطعيمات الأساسية قبل الإجازة — ده بيحمي أليفك في الإجازة.\n"
+            "احجز كشف قبل السفر في بيت سبوت الساحل.\n\n"
+            "📝 جاوب على الاختبار — كل حلقة بتقربك من كود الخصم والهدايا!"
+        ),
         "quiz_title": "Vaccination Quiz",
         "quiz_questions": [
             ("Vaccinations help protect pets during vacation.", "simple_choice", TRUE_FALSE_LABELS),
@@ -74,7 +88,13 @@ EPISODES = [
         "reward_discount_percent": 0,
         "article_html": "<h2>Summer grooming</h2><p>Professional grooming keeps coats healthy in humid coastal weather.</p>",
         "slide_html": "<p>Grooming services at PetSpot El Sahel — fresh summer look for dogs and cats.</p>",
-        "fb_teaser": "✨ Episode 3 — Summer grooming tips at PetSpot El Sahel!",
+        "fb_teaser": (
+            "✨ Episode 3 — Summer grooming tips at PetSpot El Sahel!\n\n"
+            "✨ الحلقة 3: الجروومينج في صيف الساحل\n"
+            "الحر والرطوبة بتأثر على الفراء والجلد — الجروومينج المظبوط بيحافظ على صحة أليفك طول الصيف.\n"
+            "احجز جلسة جروومينج في بيت سبوت الساحل.\n\n"
+            "📝 جاوب على أسئلة الحلقة — شارك في الحملة واربح هدايا وخصومات!"
+        ),
         "quiz_title": "Grooming Quiz",
         "quiz_questions": [
             ("Grooming helps skin and coat health in summer.", "simple_choice", TRUE_FALSE_LABELS),
@@ -93,7 +113,13 @@ EPISODES = [
         "reward_discount_percent": 0,
         "article_html": "<h2>Boarding checklist</h2><p>Pack vaccination record, favorite food, and emergency contact.</p>",
         "slide_html": "<p>Safe supervised boarding while you enjoy the coast.</p>",
-        "fb_teaser": "🏠 Episode 4 — Boarding checklist for a worry-free Sahel vacation!",
+        "fb_teaser": (
+            "🏠 Episode 4 — Boarding checklist for a worry-free Sahel vacation!\n\n"
+            "🏠 الحلقة 4: قائمة البوردينج قبل الإجازة\n"
+            "جهّز: سجل التطعيمات، أكل أليفك المعتاد، وأرقام الطوارئ.\n"
+            "سيب أليفك في بوردينج آمن في بيت سبوت وأنت تستمتع بالساحل.\n\n"
+            "📝 جاوب على الاستبيان — كل إجابة بتقربك من هدايا الحملة!"
+        ),
         "quiz_title": "Boarding Checklist Survey",
         "quiz_questions": [
             ("Vaccination records are useful for boarding.", "simple_choice", TRUE_FALSE_LABELS),
@@ -111,7 +137,13 @@ EPISODES = [
         "reward_discount_percent": 0,
         "article_html": "<h2>Nutrition basics</h2><p>Balanced diet and fresh water — especially active summer days.</p>",
         "slide_html": "<p>Ask our vets about nutrition during your next visit.</p>",
-        "fb_teaser": "🍽 Episode 5 — Pet nutrition basics for an active Sahel summer!",
+        "fb_teaser": (
+            "🍽 Episode 5 — Pet nutrition basics for an active Sahel summer!\n\n"
+            "🍽 الحلقة 5: التغذية في صيف نشيط\n"
+            "مية نظيفة دايماً، وأكل متوازن — مفيش تغيير مفاجئ في الأكل.\n"
+            "اسأل دكاترة بيت سبوت عن الأكل المناسب لأليفك في الحر.\n\n"
+            "📝 جاوب على الاختبار — شارك وتعلّم واربح هدايا الحملة!"
+        ),
         "quiz_title": "Nutrition Quiz",
         "quiz_questions": [
             ("Fresh water should always be available.", "simple_choice", TRUE_FALSE_LABELS),
@@ -133,7 +165,12 @@ EPISODES = [
         "reward_discount_percent": 10,
         "article_html": "<h2>Grand quiz recap</h2><p>Review heat safety, vaccines, grooming, boarding, and nutrition — then take the grand quiz!</p>",
         "slide_html": "<p>Complete the grand quiz with 80%+ to receive your 10% clinic discount code.</p>",
-        "fb_teaser": "🎁 Episode 6 — Grand Quiz! Pass and win 10% off at PetSpot El Sahel!\n🐾 أكمل الاختبار واربح خصم 10%",
+        "fb_teaser": (
+            "🎁 Episode 6 — Grand Quiz! Pass and win 10% off at PetSpot El Sahel!\n\n"
+            "🎁 الحلقة 6: الاختبار الكبير — هدية خصم 10%!\n"
+            "راجع كل اللي اتعلمته (حرارة، تطعيمات، جروومينج، بوردينج، تغذية) وجاوب على الاختبار.\n"
+            "لو جبت 80% أو أكتر → هدية: كود خصم 10% على خدمات العيادة! 🎉"
+        ),
         "quiz_title": "PetSpot Grand Summer Quiz",
         "quiz_questions": [
             ("Your name | الاسم", "char_box", [], "name"),
@@ -142,8 +179,9 @@ EPISODES = [
             ("Heatstroke can be fatal without quick action.", "simple_choice", TRUE_FALSE_LABELS),
             ("Vaccinations should be considered before travel.", "simple_choice", TRUE_FALSE_LABELS),
             ("PetSpot offers grooming and boarding.", "simple_choice", TRUE_FALSE_LABELS),
-            ("Amwaj 1 branch phone is 01201568888.", "simple_choice", TRUE_FALSE_LABELS),
-            ("Marsa Matruh branch phone is 01280833332.", "simple_choice", TRUE_FALSE_LABELS),
+            ("Amwaj 1 branch phone is 01280833332.", "simple_choice", TRUE_FALSE_LABELS),
+            ("Haram branch phone is 01000059085.", "simple_choice", TRUE_FALSE_LABELS),
+            ("Call center phone is 01201568888.", "simple_choice", TRUE_FALSE_LABELS),
             ("Fresh water prevents dehydration in summer.", "simple_choice", TRUE_FALSE_LABELS),
             ("PetSpot is located on Egypt's North Coast.", "simple_choice", TRUE_FALSE_LABELS),
         ],
@@ -157,7 +195,12 @@ EPISODES = [
         "reward_discount_percent": 15,
         "article_html": "<h2>Bonus gift survey</h2><p>Tell us about your pet and receive 15% off!</p>",
         "slide_html": "",
-        "fb_teaser": "🎉 Final Episode — Share & win 15% off at PetSpot El Sahel!\nاملأ الاستبيان واحصل على كود الخصم",
+        "fb_teaser": (
+            "🎉 Final Episode — Share & win 15% off at PetSpot El Sahel!\n\n"
+            "🎉 الحلقة الأخيرة — هدية خصم 15%!\n"
+            "املأ الاستبيان عن أليفك والخدمة اللي محتاجها (كشف، تطعيم، جروومينج، بوردينج).\n"
+            "بعد الإجابة → هدية: كود خصم 15% على زيارتك القادمة في بيت سبوت الساحل! 🎁"
+        ),
         "quiz_title": "PetSpot Bonus Gift Survey",
         "quiz_questions": [
             ("Your name | الاسم", "char_box", [], "name"),
@@ -165,7 +208,7 @@ EPISODES = [
             ("Pet type | نوع الأليف (dog/cat/other)", "char_box", [], "pet_type"),
             ("Which PetSpot branch is closer to you?", "simple_choice", [
                 ("Amwaj 1 — North Coast", True),
-                ("Marsa Matruh", True),
+                ("Haram", True),
                 ("Both / Not sure", True),
             ]),
             ("Which service interests you most?", "simple_choice", [

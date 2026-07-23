@@ -343,7 +343,7 @@ def build_homepage_arch(c: dict[str, Any]) -> str:
           <h2>Follow &amp; book with PetSpot</h2>
           <p dir="rtl" class="lead">تابعونا واحجزوا بسهولة</p>
           <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-            <a class="btn btn-primary btn-lg" href="{fb}" target="_blank" rel="noopener"><i class="fa fa-facebook me-2"/> Facebook — Marsa Matruh</a>
+            <a class="btn btn-primary btn-lg" href="{fb}" target="_blank" rel="noopener"><i class="fa fa-facebook me-2"/> Facebook — Haram</a>
             <a class="btn btn-outline-primary btn-lg" href="{c.get("facebook_sister", fb)}" target="_blank" rel="noopener"><i class="fa fa-facebook me-2"/> Main Page</a>
             <a class="btn btn-danger btn-lg" href="{ig}" target="_blank" rel="noopener"><i class="fa fa-instagram me-2"/> Instagram</a>
             <a class="btn btn-success btn-lg" href="{wa}" target="_blank" rel="noopener"><i class="fa fa-whatsapp me-2"/> WhatsApp</a>
@@ -393,7 +393,7 @@ def build_contact_arch(c: dict[str, Any]) -> str:
               <p class="text-center mt-3"><strong>Email:</strong> <a href="mailto:{c["email"]}">{c["email"]}</a></p>
               <p class="text-center mt-3">
                 <a class="btn btn-primary me-2" href="{maps}" target="_blank" rel="noopener">Google Maps</a>
-                <a class="btn btn-outline-primary me-2" href="{fb}" target="_blank" rel="noopener"><i class="fa fa-facebook me-1"/> Facebook — Marsa Matruh</a>
+                <a class="btn btn-outline-primary me-2" href="{fb}" target="_blank" rel="noopener"><i class="fa fa-facebook me-1"/> Facebook — Haram</a>
                 <a class="btn btn-outline-secondary" href="{c.get("facebook_sister", fb)}" target="_blank" rel="noopener"><i class="fa fa-facebook me-1"/> Main Page</a>
               </p>
             </div>
@@ -489,13 +489,13 @@ def build_footer_inherit_arch(c: dict[str, Any]) -> str:
                 <li><i class="fa fa-phone fa-fw me-2"/><a href="tel:{phone_tel}"><span class="o_force_ltr">{phone}</span></a></li>
                 {alt_line}
                 <li><i class="fa fa-whatsapp fa-fw me-2"/><a href="{c["whatsapp_url"]}" target="_blank" rel="noopener">WhatsApp</a></li>
-                <li><i class="fa fa-facebook fa-fw me-2"/><a href="{c["facebook"]}" target="_blank" rel="noopener">Facebook — Marsa Matruh</a></li>
+                <li><i class="fa fa-facebook fa-fw me-2"/><a href="{c["facebook"]}" target="_blank" rel="noopener">Facebook — Haram</a></li>
                 {f'<li><i class="fa fa-facebook fa-fw me-2"/><a href="{fb_sister}" target="_blank" rel="noopener">Facebook — Main page</a></li>' if fb_sister and fb_sister != c["facebook"] else ''}
                 <li><i class="fa fa-map-marker fa-fw me-2"/><a href="{c["maps_url"]}" target="_blank" rel="noopener">Google Maps</a></li>
               </ul>
               <div class="s_social_media text-start o_not_editable" data-snippet="s_social_media" data-name="Social Media" contenteditable="false">
                 <h5 class="s_social_media_title d-none">Follow us</h5>
-                <a href="{c["facebook"]}" class="s_social_media_facebook" target="_blank" rel="noopener" aria-label="Facebook Marsa Matruh">
+                <a href="{c["facebook"]}" class="s_social_media_facebook" target="_blank" rel="noopener" aria-label="Facebook Haram">
                   <i class="fa fa-facebook rounded-circle shadow-sm o_editable_media"/>
                 </a>
                 {sister_social}

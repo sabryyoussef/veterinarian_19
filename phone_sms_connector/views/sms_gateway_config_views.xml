@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sms_gateway_config_list" model="ir.ui.view">
+        <field name="name">sms.gateway.config.list</field>
+        <field name="model">sms.gateway.config</field>
+        <field name="arch" type="xml">
+            <list string="SMS Gateways">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="gateway_type"/>
+                <field name="base_url"/>
+                <field name="is_default" widget="boolean_toggle"/>
+                <field name="last_test_state" widget="badge"
+                       decoration-success="last_test_state == 'ok'"
+                       decoration-danger="last_test_state == 'failed'"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sms_gateway_config_form" model="ir.ui.view">
+        <field name="name">sms.gateway.config.form</field>
+        <field name="model">sms.gateway.config</field>
+        <field name="arch" type="xml">
+            <form string="SMS Gateway">
+                <header>
+                    <button name="action_test_connection" type="object"
+                            string="Test Connection" class="btn-primary" icon="fa-plug"/>
+                    <field name="last_test_state" widget="badge" nolabel="1"
+                           decoration-success="last_test_state == 'ok'"
+                           decoration-danger="last_test_state == 'failed'"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Gateway name..."/></h1>
+                    </div>
+                    <group>
+                        <group string="Connection">
+                            <field name="gateway_type"/>
+                            <field name="base_url" placeholder="http://10.92.110.233:8080"/>
+                            <field name="api_key" password="True"
+                                   placeholder="token or user:password"/>
+                            <field name="default_sender" placeholder="Optional SIM / sender id"/>
+                        </group>
+                        <group string="Options">
+                            <field name="is_default"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group string="Last Test" invisible="last_test_state == 'none'">
+                        <field name="last_test_message" readonly="1"/>
+                        <field name="last_test_date" readonly="1"/>
+                    </group>
+                    <div class="alert alert-info" role="status">
+                        The API Key is only visible to system administrators. Use
+                        <code>user:password</code> for HTTP Basic auth (e.g. SMSGate) or a plain token for Bearer auth.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sms_gateway_config" model="ir.actions.act_window">
+        <field name="name">SMS Gateways</field>
+        <field name="res_model">sms.gateway.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Configure your phone SMS gateway</p>
+            <p>Add the phone's SMS gateway URL and credentials, then use "Test Connection".</p>
+        </field>
+    </record>
+</odoo>

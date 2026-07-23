@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_developer_partner_list" model="ir.ui.view">
+        <field name="name">res.partner.list.developer.hub</field>
+        <field name="model">res.partner</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <list string="Odoo Partners" default_order="country_id, odoo_partner_tier, name">
+                <field name="name"/>
+                <field name="country_id" optional="show"/>
+                <field name="odoo_partner_tier" optional="show" widget="badge"
+                       decoration-warning="odoo_partner_tier == 'ready'"
+                       decoration-info="odoo_partner_tier == 'silver'"
+                       decoration-success="odoo_partner_tier == 'gold'"/>
+                <field name="email" optional="show"/>
+                <field name="phone" optional="hide"/>
+                <field name="website" optional="show"/>
+                <field name="city" optional="hide"/>
+                <field name="category_id" widget="many2many_tags" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_developer_partner_search" model="ir.ui.view">
+        <field name="name">res.partner.search.developer.hub</field>
+        <field name="model">res.partner</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <search string="Odoo Partners">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="website"/>
+                <field name="country_id"/>
+                <field name="odoo_partner_tier"/>
+                <separator/>
+                <filter string="Gold" name="tier_gold" domain="[('odoo_partner_tier', '=', 'gold')]"/>
+                <filter string="Silver" name="tier_silver" domain="[('odoo_partner_tier', '=', 'silver')]"/>
+                <filter string="Ready" name="tier_ready" domain="[('odoo_partner_tier', '=', 'ready')]"/>
+                <filter string="Bronze" name="tier_bronze" domain="[('odoo_partner_tier', '=', 'bronze')]"/>
+                <filter string="No tier" name="tier_none" domain="[('odoo_partner_tier', '=', False)]"/>
+                <separator/>
+                <filter string="Has country" name="has_country" domain="[('country_id', '!=', False)]"/>
+                <group>
+                    <filter string="Country" name="group_country" context="{'group_by': 'country_id'}"/>
+                    <filter string="Partnership Level" name="group_tier" context="{'group_by': 'odoo_partner_tier'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_developer_partner_pivot" model="ir.ui.view">
+        <field name="name">res.partner.pivot.developer.hub</field>
+        <field name="model">res.partner</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <pivot string="Odoo Partners by Country and Level">
+                <field name="country_id" type="row"/>
+                <field name="odoo_partner_tier" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_developer_partner_contacts" model="ir.actions.act_window">
+        <field name="view_mode">list,pivot,kanban,form</field>
+        <field name="search_view_id" ref="view_developer_partner_search"/>
+        <field name="context" eval="{
+            'default_is_company': True,
+            'default_category_id': [ref('developer_hub.category_odoo_partner')],
+            'search_default_group_country_tier': 1,
+        }"/>
+    </record>
+
+</odoo>

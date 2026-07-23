@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="lead_engine_source_form_inbound" model="ir.ui.view">
+        <field name="name">lead.engine.source.form.inbound</field>
+        <field name="model">lead.engine.source</field>
+        <field name="inherit_id" ref="lead_engine_core.view_lead_engine_source_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div
+                    class="alert alert-danger mb-0"
+                    role="alert"
+                    groups="lead_engine_core.group_lead_engine_manager"
+                >
+                    <strong>Security:</strong>
+                    The API token is a shared secret (like a password). Anyone with it can post leads to this source.
+                    Rotate it if exposed; never commit real tokens to source control.
+                </div>
+            </xpath>
+            <xpath expr="//group[field[@name='description']]" position="before">
+                <group string="HTTP intake (API)" groups="lead_engine_core.group_lead_engine_manager">
+                    <field
+                        name="inbound_api_token"
+                        widget="password"
+                        placeholder="Leave empty to disable HTTP intake for this source"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

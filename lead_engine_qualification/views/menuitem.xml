@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════
+         Lead Engine Qualification — standalone application
+         Scoring, assignment rules, and identity dedup
+         ═══════════════════════════════════════════════════ -->
+    <menuitem
+        id="menu_lead_engine_qual_root"
+        name="Qualification"
+        web_icon="lead_engine_qualification,static/description/icon.png"
+        sequence="201"
+        groups="lead_engine_core.group_lead_engine_user"
+    />
+
+    <!-- ── Scoring ── -->
+    <menuitem
+        id="menu_lead_engine_scoring"
+        name="Scoring"
+        parent="menu_lead_engine_qual_root"
+        sequence="10"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+    <menuitem
+        id="menu_lead_engine_score_rules"
+        name="Score Rules"
+        parent="menu_lead_engine_scoring"
+        action="action_lead_engine_score_rule"
+        sequence="10"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+
+    <!-- ── Assignment ── -->
+    <menuitem
+        id="menu_lead_engine_assignment"
+        name="Assignment"
+        parent="menu_lead_engine_qual_root"
+        sequence="20"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+    <menuitem
+        id="menu_lead_engine_assignment_rules"
+        name="Assignment Rules"
+        parent="menu_lead_engine_assignment"
+        action="action_lead_engine_assignment_rule"
+        sequence="10"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+
+    <!-- ── Identity / Dedup ── -->
+    <menuitem
+        id="menu_lead_engine_identity"
+        name="Identity"
+        parent="menu_lead_engine_qual_root"
+        sequence="30"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+    <menuitem
+        id="menu_lead_engine_identity_maps"
+        name="Identity Maps"
+        parent="menu_lead_engine_identity"
+        action="action_lead_engine_identity_map"
+        sequence="10"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+</odoo>

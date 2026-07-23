@@ -6,3 +6,5 @@ access_integration_bridge_token_manager,integration.bridge.token manager,model_i
 access_integration_outbound_queue_user,integration.outbound.queue user,model_integration_outbound_queue,base.group_user,1,0,0,0
 access_integration_outbound_queue_manager,integration.outbound.queue manager,model_integration_outbound_queue,base.group_system,1,1,1,1
 access_integration_bridge_settings,integration.bridge.settings,model_integration_bridge_settings,base.group_system,1,1,1,1
+access_evolution_instance_user,evolution.instance user,model_evolution_instance,base.group_user,1,0,0,0
+access_evolution_instance_manager,evolution.instance manager,model_evolution_instance,base.group_system,1,1,1,1

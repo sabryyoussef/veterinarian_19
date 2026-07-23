@@ -83,7 +83,7 @@ export class PetClinicFinanceDashboard extends Component {
     }
 
     formatAmount(amount) {
-        const value = Number(amount || 0);
+        const value = Number(amount ?? 0) || 0;
         return value.toLocaleString("en-EG", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,

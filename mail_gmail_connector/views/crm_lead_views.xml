@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_crm_case_leads_filter_inherit_gmail" model="ir.ui.view">
+        <field name="name">crm.lead.search.lead.inherit.gmail</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="email_from" string="Sender email"
+                       filter_domain="[('email_from', 'ilike', self)]"/>
+                <field name="sender_domain" string="Sender domain"
+                       filter_domain="[('sender_domain', 'ilike', self)]"/>
+                <field name="gmail_labels" string="Gmail labels"
+                       filter_domain="[('gmail_labels', 'ilike', self)]"/>
+                <field name="gateway_mail_to" string="Mail To"
+                       filter_domain="[('gateway_mail_to', 'ilike', self)]"/>
+                <field name="mail_list_id" string="List-Id"
+                       filter_domain="[('mail_list_id', 'ilike', self)]"/>
+            </field>
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <separator string="Gmail / mail gateway"/>
+                <!-- Domain mirrors default ICP keywords/domains (no job_outreach_match in arch: avoids client crash if addon path differs e.g. Docker). -->
+                <filter string="Job Outreach"
+                        name="job_outreach_smart"
+                        domain="['|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', ('gmail_labels', 'ilike', 'Job Outreach'), ('gmail_labels', 'ilike', 'job-outreach'), ('name', 'ilike', 'interview'), ('name', 'ilike', 'recruiter'), ('name', 'ilike', 'application'), ('name', 'ilike', 'position'), ('name', 'ilike', 'hiring'), ('name', 'ilike', 'opportunity'), ('name', 'ilike', 'candidate'), ('name', 'ilike', 'resume'), ('name', 'ilike', 'job offer'), ('name', 'ilike', 'job opening'), ('sender_domain', 'ilike', 'linkedin.com'), ('sender_domain', 'ilike', 'indeed.com'), ('sender_domain', 'ilike', 'greenhouse.io'), ('sender_domain', 'ilike', 'lever.co'), ('sender_domain', 'ilike', 'myworkday.com'), ('sender_domain', 'ilike', 'smartrecruiters.com')]"/>
+                <filter string="Gmail label Job Outreach (strict)"
+                        name="gmail_label_job_outreach_strict"
+                        domain="[('gmail_labels', 'ilike', 'Job Outreach')]"/>
+                <filter string="Sender: LinkedIn"
+                        name="sender_linkedin"
+                        domain="[('sender_domain', 'ilike', 'linkedin')]"/>
+                <filter string="Sender: Indeed"
+                        name="sender_indeed"
+                        domain="[('sender_domain', 'ilike', 'indeed')]"/>
+                <filter string="Has mailing List-Id"
+                        name="has_list_id"
+                        domain="[('mail_list_id', '!=', False)]"/>
+                <filter string="Exclude common newsletters"
+                        name="exclude_social_noise"
+                        domain="['!', '|', '|', '|',
+                            ('sender_domain', 'ilike', 'youtube.com'),
+                            ('sender_domain', 'ilike', 'facebook.com'),
+                            ('sender_domain', 'ilike', 'instagram.com'),
+                            ('sender_domain', 'ilike', 'quora.com')]"/>
+            </xpath>
+            <xpath expr="//group/filter[@name='month']" position="after">
+                <filter string="Sender domain" name="groupby_sender_domain" context="{'group_by':'sender_domain'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_view_form_inherit_gmail" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.gmail</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='lead_partner']" position="after">
+                <group name="gmail_connector" string="Mail gateway">
+                    <field name="sender_domain"/>
+                    <field name="gmail_labels" colspan="2"/>
+                    <field name="gateway_mail_to" colspan="2"/>
+                    <field name="gateway_mail_cc" colspan="2" invisible="not gateway_mail_cc"/>
+                    <field name="mail_list_id" colspan="2" invisible="not mail_list_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_case_tree_view_leads_inherit_gmail" model="ir.ui.view">
+        <field name="name">crm.lead.list.lead.inherit.gmail</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <field name="email_from" position="after">
+                <field name="sender_domain" optional="show"/>
+                <field name="gmail_labels" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_crm_case_opportunities_filter_inherit_gmail" model="ir.ui.view">
+        <field name="name">crm.lead.search.opportunity.inherit.gmail</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="email_from" string="Sender email"
+                       filter_domain="[('email_from', 'ilike', self)]"/>
+                <field name="sender_domain" string="Sender domain"
+                       filter_domain="[('sender_domain', 'ilike', self)]"/>
+                <field name="gmail_labels" string="Gmail labels"
+                       filter_domain="[('gmail_labels', 'ilike', self)]"/>
+                <field name="gateway_mail_to" string="Mail To"
+                       filter_domain="[('gateway_mail_to', 'ilike', self)]"/>
+                <field name="mail_list_id" string="List-Id"
+                       filter_domain="[('mail_list_id', 'ilike', self)]"/>
+            </field>
+            <xpath expr="//filter[@name='filter_won_status_lost']" position="after">
+                <separator string="Gmail / mail gateway"/>
+                <filter string="Job Outreach"
+                        name="job_outreach_smart_opp"
+                        domain="['|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', ('gmail_labels', 'ilike', 'Job Outreach'), ('gmail_labels', 'ilike', 'job-outreach'), ('name', 'ilike', 'interview'), ('name', 'ilike', 'recruiter'), ('name', 'ilike', 'application'), ('name', 'ilike', 'position'), ('name', 'ilike', 'hiring'), ('name', 'ilike', 'opportunity'), ('name', 'ilike', 'candidate'), ('name', 'ilike', 'resume'), ('name', 'ilike', 'job offer'), ('name', 'ilike', 'job opening'), ('sender_domain', 'ilike', 'linkedin.com'), ('sender_domain', 'ilike', 'indeed.com'), ('sender_domain', 'ilike', 'greenhouse.io'), ('sender_domain', 'ilike', 'lever.co'), ('sender_domain', 'ilike', 'myworkday.com'), ('sender_domain', 'ilike', 'smartrecruiters.com')]"/>
+                <filter string="Gmail label Job Outreach (strict)"
+                        name="gmail_label_job_outreach_strict_opp"
+                        domain="[('gmail_labels', 'ilike', 'Job Outreach')]"/>
+                <filter string="Sender: LinkedIn"
+                        name="sender_linkedin_opp"
+                        domain="[('sender_domain', 'ilike', 'linkedin')]"/>
+                <filter string="Sender: Indeed"
+                        name="sender_indeed_opp"
+                        domain="[('sender_domain', 'ilike', 'indeed')]"/>
+                <filter string="Exclude common newsletters"
+                        name="exclude_social_noise_opp"
+                        domain="['!', '|', '|', '|',
+                            ('sender_domain', 'ilike', 'youtube.com'),
+                            ('sender_domain', 'ilike', 'facebook.com'),
+                            ('sender_domain', 'ilike', 'instagram.com'),
+                            ('sender_domain', 'ilike', 'quora.com')]"/>
+            </xpath>
+            <xpath expr="//group/filter[@name='month']" position="after">
+                <filter string="Sender domain" name="groupby_sender_domain_opp" context="{'group_by':'sender_domain'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

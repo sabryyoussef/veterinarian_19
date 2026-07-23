@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lead_engine_playbook_user,access.lead.engine.playbook.user,model_lead_engine_playbook,lead_engine_core.group_lead_engine_user,1,0,0,0
+access_lead_engine_playbook_manager,access.lead.engine.playbook.manager,model_lead_engine_playbook,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_playbook_step_user,access.lead.engine.playbook.step.user,model_lead_engine_playbook_step,lead_engine_core.group_lead_engine_user,1,0,0,0
+access_lead_engine_playbook_step_manager,access.lead.engine.playbook.step.manager,model_lead_engine_playbook_step,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_playbook_run_user,access.lead.engine.playbook.run.user,model_lead_engine_playbook_run,lead_engine_core.group_lead_engine_user,1,0,0,0
+access_lead_engine_playbook_run_manager,access.lead.engine.playbook.run.manager,model_lead_engine_playbook_run,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_playbook_run_line_user,access.lead.engine.playbook.run.line.user,model_lead_engine_playbook_run_line,lead_engine_core.group_lead_engine_user,1,0,0,0
+access_lead_engine_playbook_run_line_manager,access.lead.engine.playbook.run.line.manager,model_lead_engine_playbook_run_line,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_playbook_start_wizard_manager,access.lead.engine.playbook.start.wizard.manager,model_lead_engine_playbook_start_wizard,lead_engine_core.group_lead_engine_manager,1,1,1,1

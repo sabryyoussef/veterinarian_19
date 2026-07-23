@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lead_engine_playbook_step_list" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.step.list</field>
+        <field name="model">lead.engine.playbook.step</field>
+        <field name="arch" type="xml">
+            <list string="Playbook steps" default_order="playbook_id, sequence, id">
+                <field name="playbook_id"/>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="step_type"/>
+                <field name="delay_unit"/>
+                <field name="delay_amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_step_form" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.step.form</field>
+        <field name="model">lead.engine.playbook.step</field>
+        <field name="arch" type="xml">
+            <form string="Playbook step">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="playbook_id"/>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="step_type"/>
+                            <field name="delay_unit"/>
+                            <field name="delay_amount"/>
+                        </group>
+                    </group>
+                    <group string="Activity" invisible="step_type != 'create_activity'">
+                        <field name="activity_type_id"/>
+                        <field name="activity_summary"/>
+                        <field name="activity_note"/>
+                        <field name="activity_user_id"/>
+                    </group>
+                    <group string="Email" invisible="step_type != 'send_email_template'">
+                        <field name="mail_template_id" domain="[('model', '=', 'crm.lead')]"/>
+                    </group>
+                    <group string="Assign" invisible="step_type != 'assign_owner'">
+                        <field name="assign_user_id"/>
+                        <field name="assign_team_id"/>
+                    </group>
+                    <group string="Server action" invisible="step_type != 'server_action'">
+                        <field name="server_action_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_step_search" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.step.search</field>
+        <field name="model">lead.engine.playbook.step</field>
+        <field name="arch" type="xml">
+            <search string="Playbook steps">
+                <field name="name"/>
+                <field name="playbook_id"/>
+                <field name="step_type"/>
+                <filter string="Activity" name="type_activity" domain="[('step_type', '=', 'create_activity')]"/>
+                <filter string="Email" name="type_email" domain="[('step_type', '=', 'send_email_template')]"/>
+                <filter string="Assign" name="type_assign" domain="[('step_type', '=', 'assign_owner')]"/>
+                <group>
+                    <filter string="Playbook" name="group_playbook" context="{'group_by': 'playbook_id'}"/>
+                    <filter string="Step type" name="group_type" context="{'group_by': 'step_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_lead_engine_playbook_step" model="ir.actions.act_window">
+        <field name="name">Playbook steps</field>
+        <field name="res_model">lead.engine.playbook.step</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_lead_engine_playbook_step_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Steps are usually edited on each playbook form.</p>
+        </field>
+    </record>
+</odoo>

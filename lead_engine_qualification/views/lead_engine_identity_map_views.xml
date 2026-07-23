@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lead_engine_identity_map_list" model="ir.ui.view">
+        <field name="name">lead.engine.identity.map.list</field>
+        <field name="model">lead.engine.identity.map</field>
+        <field name="arch" type="xml">
+            <list string="Identity Maps">
+                <field name="source_id"/>
+                <field name="external_ref"/>
+                <field name="lead_id"/>
+                <field name="normalized_email"/>
+                <field name="matched_by"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_identity_map_form" model="ir.ui.view">
+        <field name="name">lead.engine.identity.map.form</field>
+        <field name="model">lead.engine.identity.map</field>
+        <field name="arch" type="xml">
+            <form string="Identity Map">
+                <sheet>
+                    <group>
+                        <field name="source_id"/>
+                        <field name="external_ref"/>
+                        <field name="active"/>
+                    </group>
+                    <group>
+                        <field name="lead_id"/>
+                        <field name="partner_id"/>
+                        <field name="matched_by"/>
+                    </group>
+                    <group string="Hints">
+                        <field name="email"/>
+                        <field name="mobile"/>
+                        <field name="company_name"/>
+                        <field name="normalized_email"/>
+                        <field name="normalized_mobile"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_lead_engine_identity_map" model="ir.actions.act_window">
+        <field name="name">Identity Maps</field>
+        <field name="res_model">lead.engine.identity.map</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

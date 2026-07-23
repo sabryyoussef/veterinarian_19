@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Inbound — Hospital Group Demo (Playbook + Source Wiring)
+        ======================================================================
+        This file runs after core / qualification / sequence demo files.
+        It links each hospital source to its playbook and sets auto-start.
+
+        Source          Playbook             Auto-start   Why
+        ─────────────────────────────────────────────────────────────────────
+        HOSP_WEB        HOSP_WEB_PB          YES   HTTP intake, call immediately
+        HOSP_ADS_CRD    HOSP_ADS_PB          YES   HTTP intake, HIGH PRIORITY 1hr
+        HOSP_CAMP_26    HOSP_CAMP_PB         NO    Manual entry, rep starts wizard
+        HOSP_ORG        HOSP_ORG_PB          YES   HTTP intake, email + next-day call
+        HOSP_REF        HOSP_REF_PB          NO    Manual entry, liaison starts wizard
+
+        CURL EXAMPLES — test with these after installation
+        ────────────────────────────────────────────────────────────────
+        Website consultation form (HOSP_WEB):
+
+          curl -X POST https://your-odoo.com/lead_engine/v1/intake \
+               -H "Authorization: Bearer hosp-web-rotate-before-use" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "external_ref": "WEB-001",
+                 "name": "Enquiry — Orthopaedics Consultation",
+                 "contact_name": "Layla Director",
+                 "email_from": "layla@example.com",
+                 "phone": "+880-1711-000000",
+                 "partner_name": "Rahman Group",
+                 "le_channel": "form",
+                 "description": "Interested in knee replacement consultation for a team of 4 executives"
+               }'
+
+        Google Ads Cardiology (HOSP_ADS_CRD):
+
+          curl -X POST https://your-odoo.com/lead_engine/v1/intake \
+               -H "Authorization: Bearer hosp-ads-crd-rotate-before-use" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "external_ref": "ADS-CRD-001",
+                 "name": "Cardiology Enquiry — chest pain symptoms",
+                 "contact_name": "Karim Hassan",
+                 "email_from": "karim.hassan@example.com",
+                 "phone": "+880-1812-000000",
+                 "le_channel": "ads",
+                 "description": "Experiencing occasional chest tightness, saw our Google ad"
+               }'
+
+        Organic blog form (HOSP_ORG):
+
+          curl -X POST https://your-odoo.com/lead_engine/v1/intake \
+               -H "Authorization: Bearer hosp-org-rotate-before-use" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "external_ref": "ORG-001",
+                 "name": "Blog reader — diabetes management article",
+                 "contact_name": "Fatima Begum",
+                 "email_from": "fatima.begum@example.com",
+                 "le_channel": "form",
+                 "description": "Read our article on diabetes management, has questions about our endocrinology clinic"
+               }'
+    -->
+    <data noupdate="1">
+
+        <!-- ── HOSP_WEB: auto-start website consultation playbook ──────────── -->
+        <record id="lead_engine_core.demo_hosp_src_web" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_hosp_pb_web"/>
+            <field name="playbook_auto_start" eval="True"/>
+        </record>
+
+        <!-- ── HOSP_ADS_CRD: auto-start high-priority cardiology playbook ─── -->
+        <record id="lead_engine_core.demo_hosp_src_ads_crd" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_hosp_pb_ads"/>
+            <field name="playbook_auto_start" eval="True"/>
+        </record>
+
+        <!-- ── HOSP_CAMP_26: playbook assigned but NOT auto-started ──────────
+             Sales reps launch it manually from the lead form after reviewing
+             the contact notes they collected at the fair.
+        ──────────────────────────────────────────────────────────────────── -->
+        <record id="lead_engine_core.demo_hosp_src_camp26" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_hosp_pb_camp"/>
+            <field name="playbook_auto_start" eval="False"/>
+        </record>
+
+        <!-- ── HOSP_ORG: auto-start organic nurture (email + next-day call) ── -->
+        <record id="lead_engine_core.demo_hosp_src_organic" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_hosp_pb_organic"/>
+            <field name="playbook_auto_start" eval="True"/>
+        </record>
+
+        <!-- ── HOSP_REF: playbook assigned but NOT auto-started ──────────────
+             Medical Liaison staff review the referral details first, then
+             launch the playbook wizard to start the doctor callback.
+        ──────────────────────────────────────────────────────────────────── -->
+        <record id="lead_engine_core.demo_hosp_src_referral" model="lead.engine.source">
+            <field name="playbook_id" ref="lead_engine_sequence.demo_hosp_pb_referral"/>
+            <field name="playbook_auto_start" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

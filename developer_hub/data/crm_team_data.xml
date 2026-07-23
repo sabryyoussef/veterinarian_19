@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="crm_team_odoo_partner_outreach" model="crm.team">
+        <field name="name">Odoo Partner Outreach</field>
+        <field name="sequence">20</field>
+    </record>
+</odoo>

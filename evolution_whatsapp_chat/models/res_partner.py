@@ -30,21 +30,21 @@ class ResPartnerWhatsApp(models.Model):
 
     wa_channel_id = fields.Many2one(
         'discuss.channel',
-        string='WhatsApp Channel',
+        string='WA Channel',
         copy=False, ondelete='set null',
-        help='Dedicated WhatsApp Discuss channel for this contact'
+        help='Dedicated WA Discuss channel for this contact'
     )
 
     wa_message_count = fields.Integer(
-        string='WhatsApp Messages',
+        string='WA Messages',
         compute='_compute_wa_message_count',
-        help='Total messages in the WhatsApp channel'
+        help='Total messages in the WA channel'
     )
 
     wa_unread_count = fields.Integer(
-        string='Unread WhatsApp',
+        string='Unread WA',
         compute='_compute_wa_unread_count',
-        help='Unread inbound messages in the WhatsApp channel'
+        help='Unread inbound messages in the WA channel'
     )
 
     # ── Computed counts ───────────────────────────────────────────────────────
@@ -105,7 +105,7 @@ class ResPartnerWhatsApp(models.Model):
             'channel_type':  'group',
             'wa_partner_id': self.id,
             'wa_phone':      phone,
-            'description':   f"Evolution WhatsApp — {self.name} ({phone})",
+            'description':   f"Evolution WA — {self.name} ({phone})",
         })
 
         # Subscribe the current user so they see messages
@@ -127,7 +127,7 @@ class ResPartnerWhatsApp(models.Model):
         if self.wa_channel_id:
             return {
                 'type':      'ir.actions.act_window',
-                'name':      f"WhatsApp — {self.name}",
+                'name':      f"WA — {self.name}",
                 'res_model': 'discuss.channel',
                 'res_id':    self.wa_channel_id.id,
                 'view_mode': 'form',
@@ -148,7 +148,7 @@ class ResPartnerWhatsApp(models.Model):
         )
         return {
             'type':      'ir.actions.act_window',
-            'name':      'Send WhatsApp',
+            'name':      'Send WA',
             'res_model': 'whatsapp.send.wizard',
             'view_mode': 'form',
             'target':    'new',

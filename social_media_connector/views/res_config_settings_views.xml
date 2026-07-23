@@ -54,7 +54,8 @@
                     <group string="Campaign Contact Footer">
                         <field name="campaign_whatsapp"/>
                         <field name="campaign_call_center"/>
-                        <field name="campaign_phone_marassi"/>
+                        <field name="campaign_phone_amwaj"/>
+                        <field name="campaign_phone_haram"/>
                         <field name="campaign_website"/>
                         <field name="campaign_facebook_url"/>
                         <field name="campaign_linkedin_url"/>

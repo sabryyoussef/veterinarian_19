@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Smart button on crm.lead form -->
+    <record id="view_crm_lead_form_ai_button" model="ir.ui.view">
+        <field name="name">crm.lead.form.ai.button</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_ai_replies"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-robot"
+                        invisible="ai_reply_count == 0">
+                    <field name="ai_reply_pending_count"
+                           widget="statinfo"
+                           string="AI Drafts"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

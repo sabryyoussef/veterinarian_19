@@ -1,0 +1,71 @@
+{
+  "order": [
+    "whatsapp_hub",
+    "integration_bridge_core",
+    "chatwoot_evolution_error_bridge",
+    "devhub_core",
+    "devhub_infrastructure",
+    "devhub_odoo_runtime",
+    "devhub_work",
+    "devhub_code_analysis",
+    "devhub_generation",
+    "devhub_openproject",
+    "devhub_outbox",
+    "devhub_session",
+    "devhub_execution",
+    "devhub_git",
+    "devhub_github",
+    "devhub_deploy",
+    "devhub_whatsapp",
+    "dev_session_hub",
+    "evolution_whatsapp_chat",
+    "petspot_wa_intake",
+    "petspot_clinic_portal",
+    "petspot_backend_sidebar",
+    "petspot_campaign_rewards",
+    "petspot_vet_feedback"
+  ],
+  "compat": [
+    {
+      "module": "evolution_whatsapp_chat",
+      "consumers": [],
+      "decision": "BRIDGE later (campaigns still need models); KEEP FULL until campaigns moved"
+    },
+    {
+      "module": "integration_bridge_core",
+      "consumers": [
+        "petspot_wa_intake",
+        "petspot_clinic_portal",
+        "chatwoot_evolution_error_bridge",
+        "petspot_campaign_rewards",
+        "evolution_whatsapp_chat"
+      ],
+      "decision": "KEEP FULL then BRIDGE (HTTP/token/queue still used)"
+    },
+    {
+      "module": "petspot_wa_intake",
+      "consumers": [
+        "petspot_clinic_portal",
+        "petspot_backend_sidebar"
+      ],
+      "decision": "KEEP FULL then SLIM/BRIDGE after hub consumers"
+    },
+    {
+      "module": "chatwoot_evolution_error_bridge",
+      "consumers": [],
+      "decision": "LATER REMOVE from dep graph (uninstalled on prod)"
+    },
+    {
+      "module": "dev_session_hub",
+      "consumers": [],
+      "decision": "KEEP FULL as meta on modular; NOT on prod; Test shadowed \u2014 pin fix"
+    },
+    {
+      "module": "developer_hub",
+      "consumers": [
+        "sabry_developer_website"
+      ],
+      "decision": "KEEP FULL (CRM partner hub; unrelated WA)"
+    }
+  ]
+}

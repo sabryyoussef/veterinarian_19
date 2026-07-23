@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Analytics: failures and workload by model -->
+    <record id="ir_cron_view_graph_resume" model="ir.ui.view">
+        <field name="name">ir.cron.graph.cron.control</field>
+        <field name="model">ir.cron</field>
+        <field name="arch" type="xml">
+            <graph string="Cron jobs — failures by model" type="bar" sample="1">
+                <field name="model_id"/>
+                <field name="failure_count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="ir_cron_view_pivot_resume" model="ir.ui.view">
+        <field name="name">ir.cron.pivot.cron.control</field>
+        <field name="model">ir.cron</field>
+        <field name="arch" type="xml">
+            <pivot string="Cron jobs — summary" sample="1">
+                <field name="model_id" type="row"/>
+                <field name="active" type="col"/>
+                <field name="failure_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_resume_cron_analytics" model="ir.actions.act_window">
+        <field name="name">Results &amp; analytics</field>
+        <field name="res_model">ir.cron</field>
+        <field name="path">cron-results</field>
+        <field name="view_mode">list,graph,pivot,calendar</field>
+        <field name="context">{'search_default_all': 1}</field>
+        <field name="help" type="html">
+            <p>
+                <strong>Latest results</strong> per job: <strong>Last execution</strong>,
+                <strong>Failure count</strong> (consecutive failures; resets on success),
+                <strong>Next run</strong>.
+            </p>
+            <p>
+                Use <strong>Graph</strong> to compare failures by target model,
+                and <strong>Pivot</strong> to slice active vs inactive and totals.
+            </p>
+        </field>
+    </record>
+</odoo>

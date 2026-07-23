@@ -64,7 +64,7 @@ _logger = logging.getLogger(__name__)
 
 class WhatsappBulkLine(models.TransientModel):
     _name        = 'whatsapp.bulk.line'
-    _description = 'WhatsApp Bulk Send — Contact Line'
+    _description = 'WA Bulk Send — Contact Line'
 
     wizard_id    = fields.Many2one('whatsapp.bulk.wizard', ondelete='cascade')
     partner_id   = fields.Many2one('res.partner', string='Contact')  # not required — leads may have no partner
@@ -98,7 +98,7 @@ class WhatsappBulkLine(models.TransientModel):
 
 class WhatsappBulkWizard(models.TransientModel):
     _name        = 'whatsapp.bulk.wizard'
-    _description = 'Send WhatsApp to Multiple Contacts'
+    _description = 'Send WA to Multiple Contacts'
 
     # ── Recipients ────────────────────────────────────────────────────────────
 
@@ -399,7 +399,7 @@ class WhatsappBulkWizard(models.TransientModel):
             'type':  'ir.actions.client',
             'tag':   'display_notification',
             'params': {
-                'title':   'WhatsApp Bulk Send',
+                'title':   'WA Bulk Send',
                 'message': (
                     f"Done: {sent} sent directly, {queued} queued"
                     + (f", {errors} errors" if errors else "")
@@ -413,7 +413,7 @@ class WhatsappBulkWizard(models.TransientModel):
         """Post a note on the lead or partner chatter."""
         body = (
             f"<div style='padding:8px;border-left:3px solid #25D366'>"
-            f"<b>📱 WhatsApp {status} → {line.phone}</b><br/>"
+            f"<b>📱 WA {status} → {line.phone}</b><br/>"
             f"<div style='white-space:pre-wrap;margin-top:4px;font-size:12px'>{text[:300]}</div>"
             f"</div>"
         )

@@ -48,14 +48,27 @@ class ResConfigSettings(models.TransientModel):
         default="01201568888",
     )
     campaign_call_center = fields.Char(
-        string="Amwaj 1 Phone",
+        string="Call Center Phone",
         config_parameter="social_media_connector.campaign_call_center",
         default="01201568888",
     )
-    campaign_phone_marassi = fields.Char(
-        string="Marsa Matruh Phone",
-        config_parameter="social_media_connector.campaign_phone_marassi",
+    campaign_phone_amwaj = fields.Char(
+        string="Amwaj 1 Phone",
+        config_parameter="social_media_connector.campaign_phone_amwaj",
         default="01280833332",
+    )
+    campaign_phone_haram = fields.Char(
+        string="Haram Phone",
+        config_parameter="social_media_connector.campaign_phone_haram",
+        default="01000059085",
+    )
+    # Legacy alias: older settings views still reference campaign_phone_marassi.
+    # Keep the same ICP key so upgrades validate without inventing a new phone.
+    campaign_phone_marassi = fields.Char(
+        string="Marassi Phone (legacy alias)",
+        config_parameter="social_media_connector.campaign_phone_haram",
+        default="01000059085",
+        help="Deprecated alias of Haram phone for stale view compatibility.",
     )
     campaign_website = fields.Char(
         string="Campaign Website",

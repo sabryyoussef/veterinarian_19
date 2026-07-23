@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root application icon -->
+    <menuitem id="menu_lead_engine_ai_root"
+              name="Lead Engine AI"
+              web_icon="lead_engine_ai,static/description/icon.png"
+              sequence="210"/>
+
+    <!-- Pending Replies — most prominent -->
+    <menuitem id="menu_lead_engine_ai_pending"
+              name="Pending Replies"
+              parent="menu_lead_engine_ai_root"
+              action="action_lead_engine_ai_reply_pending"
+              sequence="10"/>
+
+    <!-- All Drafts -->
+    <menuitem id="menu_lead_engine_ai_all"
+              name="All Drafts"
+              parent="menu_lead_engine_ai_root"
+              action="action_lead_engine_ai_reply_all"
+              sequence="20"/>
+
+    <!-- Settings -->
+    <menuitem id="menu_lead_engine_ai_settings"
+              name="Settings"
+              parent="menu_lead_engine_ai_root"
+              action="action_lead_engine_ai_settings"
+              sequence="90"/>
+
+</odoo>

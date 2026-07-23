@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Lead Engine Qualification  star badge / scoring -->
+  <rect width="128" height="128" rx="22" fill="#2E8B5C"/>
+  <!-- star -->
+  <polygon points="64,16 75,48 110,48 83,68 93,100 64,80 35,100 45,68 18,48 53,48"
+           fill="white" opacity="0.92"/>
+</svg>

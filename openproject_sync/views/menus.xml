@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- App root: shows in Apps / home menu with web_icon.
+         Reuses menu_openproject_sync_root so upgrade moves it out of Project Config. -->
+    <menuitem id="menu_openproject_sync_root"
+              name="OpenProject Sync"
+              web_icon="openproject_sync,static/description/icon.png"
+              groups="project.group_project_manager"
+              sequence="95"/>
+
+    <menuitem id="menu_openproject_backend"
+              name="Backends"
+              parent="menu_openproject_sync_root"
+              action="action_openproject_backend"
+              sequence="10"/>
+
+    <menuitem id="menu_openproject_project_map"
+              name="Project Maps"
+              parent="menu_openproject_sync_root"
+              action="action_openproject_project_map"
+              sequence="20"/>
+
+    <menuitem id="menu_openproject_status_map"
+              name="Status Maps"
+              parent="menu_openproject_sync_root"
+              action="action_openproject_status_map"
+              sequence="30"/>
+
+    <menuitem id="menu_openproject_user_map"
+              name="User Maps"
+              parent="menu_openproject_sync_root"
+              action="action_openproject_user_map"
+              sequence="40"/>
+
+    <menuitem id="menu_openproject_sync_log"
+              name="Sync Logs"
+              parent="menu_openproject_sync_root"
+              action="action_openproject_sync_log"
+              sequence="50"/>
+
+    <!-- Also under Project → Configuration -->
+    <menuitem id="menu_openproject_sync_config"
+              name="OpenProject Sync"
+              parent="project.menu_project_config"
+              groups="project.group_project_manager"
+              sequence="90"/>
+
+    <menuitem id="menu_openproject_backend_config"
+              name="Backends"
+              parent="menu_openproject_sync_config"
+              action="action_openproject_backend"
+              sequence="10"/>
+
+    <menuitem id="menu_openproject_project_map_config"
+              name="Project Maps"
+              parent="menu_openproject_sync_config"
+              action="action_openproject_project_map"
+              sequence="20"/>
+
+    <menuitem id="menu_openproject_sync_log_config"
+              name="Sync Logs"
+              parent="menu_openproject_sync_config"
+              action="action_openproject_sync_log"
+              sequence="30"/>
+</odoo>

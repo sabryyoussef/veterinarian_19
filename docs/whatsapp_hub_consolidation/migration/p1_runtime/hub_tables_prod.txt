@@ -1,0 +1,5 @@
+ whatsapp_message | whatsapp_thread | whatsapp_account 
+------------------+-----------------+------------------
+                  |                 | 
+(1 row)
+

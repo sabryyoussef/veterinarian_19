@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_message_list" model="ir.ui.view">
+        <field name="name">whatsapp.message.list</field>
+        <field name="model">whatsapp.message</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="message_timestamp"/>
+                <field name="direction"/>
+                <field name="state"/>
+                <field name="group_jid"/>
+                <field name="sender_jid"/>
+                <field name="chatwoot_message_id"/>
+                <field name="evolution_message_id"/>
+                <field name="body"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_whatsapp_message_form" model="ir.ui.view">
+        <field name="name">whatsapp.message.form</field>
+        <field name="model">whatsapp.message</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="direction"/>
+                        <field name="state"/>
+                        <field name="delivery_state"/>
+                        <field name="message_timestamp"/>
+                        <field name="conversation_id"/>
+                        <field name="group_id"/>
+                        <field name="contact_id"/>
+                    </group>
+                    <group string="External IDs">
+                        <field name="dedupe_key"/>
+                        <field name="provider"/>
+                        <field name="provider_message_id"/>
+                        <field name="evolution_message_id"/>
+                        <field name="chatwoot_account_id"/>
+                        <field name="chatwoot_inbox_id"/>
+                        <field name="chatwoot_conversation_id"/>
+                        <field name="chatwoot_message_id"/>
+                        <field name="group_jid"/>
+                        <field name="sender_jid"/>
+                    </group>
+                    <group string="Content">
+                        <field name="body"/>
+                        <field name="attachment_references"/>
+                        <field name="reply_to_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_whatsapp_message" model="ir.actions.act_window">
+        <field name="name">Messages</field>
+        <field name="res_model">whatsapp.message</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

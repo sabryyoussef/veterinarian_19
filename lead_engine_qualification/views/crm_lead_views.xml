@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_lead_engine" model="ir.ui.view">
+        <field name="name">crm.lead.form.lead.engine</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='internal_notes']"
+                position="after"
+                groups="lead_engine_core.group_lead_engine_user"
+            >
+                <page string="Lead Engine" name="lead_engine">
+                    <group>
+                        <group string="Capture">
+                            <field name="lead_engine_source_id"/>
+                            <field name="le_channel"/>
+                            <field name="external_ref"/>
+                        </group>
+                        <group string="Qualification">
+                            <field name="lead_score"/>
+                            <field name="lead_temperature"/>
+                            <field name="qualification_state"/>
+                            <field name="duplicate_status"/>
+                            <field name="duplicate_master_id"/>
+                            <field name="assignment_status"/>
+                        </group>
+                    </group>
+                    <group string="SLA (optional)">
+                        <field name="first_response_deadline"/>
+                        <field name="last_engagement_at"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Search: filters + group by OP Company -->
+    <record id="view_project_project_filter_openproject" model="ir.ui.view">
+        <field name="name">project.project.select.openproject</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <separator/>
+                <filter string="OP Work Projects"
+                        name="op_work_projects"
+                        domain="[('op_is_work_project', '=', True)]"/>
+                <filter string="OP Company Folders"
+                        name="op_company_folders"
+                        domain="[('op_is_company_folder', '=', True)]"/>
+                <filter string="Missing OP Company"
+                        name="op_missing_company"
+                        domain="[('op_project_id', '!=', False), ('op_company_key', '=', False)]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="OP Company"
+                        name="groupby_op_company"
+                        context="{'group_by': 'op_company_name'}"/>
+                <filter string="OP Company Key"
+                        name="groupby_op_company_key"
+                        context="{'group_by': 'op_company_key'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Default: group Projects by OP Company -->
+    <record id="project.open_view_project_all" model="ir.actions.act_window">
+        <field name="context">{
+            'display_milestone_deadline': True,
+            'search_default_groupby_op_company': 1,
+        }</field>
+    </record>
+    <record id="project.open_view_project_all_group_stage" model="ir.actions.act_window">
+        <field name="context">{
+            'display_milestone_deadline': True,
+            'search_default_groupby_op_company': 1,
+        }</field>
+    </record>
+    <record id="project.open_view_project_all_config" model="ir.actions.act_window">
+        <field name="context">{
+            'display_milestone_deadline': True,
+            'search_default_groupby_op_company': 1,
+        }</field>
+    </record>
+    <record id="project.open_view_project_all_config_group_stage" model="ir.actions.act_window">
+        <field name="context">{
+            'display_milestone_deadline': True,
+            'search_default_groupby_op_company': 1,
+        }</field>
+    </record>
+
+    <!-- List: show company column -->
+    <record id="view_project_list_openproject_company" model="ir.ui.view">
+        <field name="name">project.project.list.openproject.company</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="op_company_name" string="OP Company" optional="show"/>
+                <field name="op_is_work_project" optional="hide"/>
+                <field name="op_is_company_folder" optional="hide"/>
+                <field name="op_project_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Form: OpenProject classification page -->
+    <record id="view_project_form_openproject_classification" model="ir.ui.view">
+        <field name="name">project.project.form.openproject.classification</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_op_sync_now" type="object" string="Sync OpenProject"
+                        groups="project.group_project_manager"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="OpenProject" name="openproject_classification"
+                      groups="project.group_project_manager">
+                    <group>
+                        <group string="Identity">
+                            <field name="op_project_id"/>
+                            <field name="op_parent_project_id"/>
+                            <field name="op_company_project_id"/>
+                        </group>
+                        <group string="Classification">
+                            <field name="op_company_key"/>
+                            <field name="op_company_name"/>
+                            <field name="op_is_company_folder"/>
+                            <field name="op_is_work_project"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

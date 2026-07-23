@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_openproject_project_map_list" model="ir.ui.view">
+        <field name="name">openproject.project.map.list</field>
+        <field name="model">openproject.project.map</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="backend_id"/>
+                <field name="op_company_name"/>
+                <field name="op_project_id"/>
+                <field name="op_project_name"/>
+                <field name="op_parent_project_id" optional="show"/>
+                <field name="op_is_company_folder"/>
+                <field name="op_is_work_project"/>
+                <field name="odoo_project_id"/>
+                <field name="op_push_create"/>
+                <field name="last_pull_at"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_openproject_project_map_form" model="ir.ui.view">
+        <field name="name">openproject.project.map.form</field>
+        <field name="model">openproject.project.map</field>
+        <field name="arch" type="xml">
+            <form string="OpenProject Project Map">
+                <header>
+                    <button name="action_sync_now" type="object" string="Sync Now" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="OpenProject">
+                            <field name="backend_id"/>
+                            <field name="op_project_id"/>
+                            <field name="op_project_name"/>
+                            <field name="op_parent_project_id"/>
+                        </group>
+                        <group string="Classification">
+                            <field name="op_company_key"/>
+                            <field name="op_company_name"/>
+                            <field name="op_company_project_id"/>
+                            <field name="op_is_company_folder"/>
+                            <field name="op_is_work_project"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Odoo">
+                            <field name="odoo_project_id"/>
+                            <field name="auto_create_project"/>
+                            <field name="op_push_create"/>
+                            <field name="active"/>
+                            <field name="last_pull_at"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_openproject_project_map" model="ir.actions.act_window">
+        <field name="name">Project Maps</field>
+        <field name="res_model">openproject.project.map</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

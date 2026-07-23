@@ -1,0 +1,20 @@
+PRODUCTION
+  service: odoo-bin pet_spot_elsahel
+  master_pid: 3960576 (from earlier ps)
+  conf: /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf
+  http: 0.0.0.0:8027
+  addons_path:
+    - /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons
+    - /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise
+    - /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+
+TEST
+  service: odoo-bin pet_spot_elsahel_test (activation_staging conf)
+  master_pid: 299149
+  conf: /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_staging.conf
+  http: 0.0.0.0:8028
+  addons_path:
+    - /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons
+    - /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise
+    - /home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_staging
+    - /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel

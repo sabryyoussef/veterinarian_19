@@ -16,6 +16,21 @@ class PetspotNotifyMixin(models.AbstractModel):
     def _petspot_icp(self):
         return self.env['ir.config_parameter'].sudo()
 
+    def _petspot_clinic_evolution_config(self):
+        """Clinic WhatsApp identity — purpose=clinic when multi-instance exists."""
+        Evo = self.env.get('evolution.instance')
+        if Evo is not None:
+            return Evo.get_config_for_purpose('clinic')
+        ICP = self._petspot_icp()
+        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
+        return {
+            'url': ICP.get_param(
+                'integration_bridge.evolution_url', 'http://127.0.0.1:8080'
+            ).rstrip('/'),
+            'key': ICP.get_param('integration_bridge.evolution_key', ''),
+            'instance': instance,
+        }
+
     def _petspot_group_jid(self):
         return self._petspot_icp().get_param(
             'petspot_wa_intake.group_jid',
@@ -44,15 +59,32 @@ class PetspotNotifyMixin(models.AbstractModel):
     def petspot_notify_whatsapp_group(self, text):
         import requests
 
-        ICP = self._petspot_icp()
-        evo_url = ICP.get_param('integration_bridge.evolution_url', 'http://127.0.0.1:8080').rstrip('/')
-        evo_key = ICP.get_param('integration_bridge.evolution_key', '')
-        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
+        cfg = self._petspot_clinic_evolution_config()
+        evo_url = cfg.get('url') or ''
+        evo_key = cfg.get('key') or ''
+        instance = cfg.get('instance') or 'sabry min'
         group_jid = self._petspot_group_jid()
         number = self._petspot_evolution_number(group_jid)
         if not evo_key or not number:
             _logger.warning('petspot notify: Evolution not configured')
             return False
+        # Prefer WhatsApp Hub outbound when installed (records + queue)
+        if 'whatsapp.outbound.message' in self.env:
+            try:
+                self.env['whatsapp.outbound.message'].sudo().service_queue_outbound(
+                    {
+                        'destination': number,
+                        'body': text,
+                        'purpose': 'clinic',
+                        'name': 'PetSpot group notify',
+                        'related_model': self._name if self else False,
+                        'related_res_id': self.ids[0] if self else False,
+                        'send_now': True,
+                    }
+                )
+                return True
+            except Exception:
+                _logger.warning('petspot notify via hub failed; falling back', exc_info=True)
         return self._petspot_send_evolution_text(evo_url, evo_key, instance, number, text)
 
     def petspot_notify_whatsapp_number(self, phone, text):
@@ -63,10 +95,10 @@ class PetspotNotifyMixin(models.AbstractModel):
         if not number or not text:
             _logger.warning('petspot notify: missing phone or text for DM')
             return False
-        ICP = self._petspot_icp()
-        evo_url = ICP.get_param('integration_bridge.evolution_url', 'http://127.0.0.1:8080').rstrip('/')
-        evo_key = ICP.get_param('integration_bridge.evolution_key', '')
-        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
+        cfg = self._petspot_clinic_evolution_config()
+        evo_url = cfg.get('url') or ''
+        evo_key = cfg.get('key') or ''
+        instance = cfg.get('instance') or 'sabry min'
         if not evo_key:
             _logger.warning('petspot notify: Evolution not configured')
             return False
@@ -91,10 +123,10 @@ class PetspotNotifyMixin(models.AbstractModel):
     def petspot_notify_whatsapp_button(self, title, description, display_text, url):
         import requests
 
-        ICP = self._petspot_icp()
-        evo_url = ICP.get_param('integration_bridge.evolution_url', 'http://127.0.0.1:8080').rstrip('/')
-        evo_key = ICP.get_param('integration_bridge.evolution_key', '')
-        instance = ICP.get_param('integration_bridge.evolution_instance', 'sabry min')
+        cfg = self._petspot_clinic_evolution_config()
+        evo_url = cfg.get('url') or ''
+        evo_key = cfg.get('key') or ''
+        instance = cfg.get('instance') or 'sabry min'
         group_jid = self._petspot_group_jid()
         number = self._petspot_evolution_number(group_jid)
         if not evo_key or not number or not url:

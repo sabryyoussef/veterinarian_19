@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_whatsapp_hub" model="ir.module.category">
+        <field name="name">WhatsApp Hub</field>
+        <field name="sequence">35</field>
+    </record>
+
+    <record id="privilege_whatsapp_hub" model="res.groups.privilege">
+        <field name="name">WhatsApp Hub</field>
+        <field name="category_id" ref="module_category_whatsapp_hub"/>
+        <field name="sequence">35</field>
+    </record>
+
+    <record id="group_whatsapp_user" model="res.groups">
+        <field name="name">WhatsApp User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="privilege_whatsapp_hub"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_whatsapp_manager" model="res.groups">
+        <field name="name">WhatsApp Manager</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="privilege_whatsapp_hub"/>
+        <field name="implied_ids" eval="[(4, ref('group_whatsapp_user'))]"/>
+    </record>
+
+    <record id="group_whatsapp_ingest_service" model="res.groups">
+        <field name="name">WhatsApp Ingest Service</field>
+        <field name="sequence">5</field>
+        <field name="privilege_id" ref="privilege_whatsapp_hub"/>
+        <field name="api_key_duration">30</field>
+        <field name="comment">May only ingest Chatwoot-normalized WhatsApp messages into WhatsApp Hub.</field>
+    </record>
+
+    <record id="rule_whatsapp_message_user" model="ir.rule">
+        <field name="name">WhatsApp Message: users read</field>
+        <field name="model_id" ref="model_whatsapp_message"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_whatsapp_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_whatsapp_message_manager" model="ir.rule">
+        <field name="name">WhatsApp Message: managers all</field>
+        <field name="model_id" ref="model_whatsapp_message"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_whatsapp_manager'))]"/>
+    </record>
+</odoo>

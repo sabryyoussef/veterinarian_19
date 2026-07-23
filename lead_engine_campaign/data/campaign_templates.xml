@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <!-- ══════════════════════════════════════════════════
+         Built-in campaign templates
+         noupdate=1 so user edits are preserved on upgrade
+         ══════════════════════════════════════════════════ -->
+
+    <!-- ── 1. Web Form ──────────────────────────────────── -->
+    <record id="tpl_web_form" model="lead.engine.campaign.template">
+        <field name="name">Website Contact Form</field>
+        <field name="sequence">10</field>
+        <field name="channel">form</field>
+        <field name="assign_min_score">40</field>
+        <field name="playbook_name">Website Form Follow-up</field>
+        <field name="description">Standard inbound lead from a website contact / enquiry form.</field>
+    </record>
+
+    <record id="tpl_web_form_score_email" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_web_form"/>
+        <field name="sequence">10</field>
+        <field name="name">Base score (every web lead)</field>
+        <field name="lead_field"/>
+        <field name="score_delta">10</field>
+    </record>
+    <record id="tpl_web_form_score_phone" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_web_form"/>
+        <field name="sequence">20</field>
+        <field name="name">Phone provided</field>
+        <field name="lead_field">phone</field>
+        <field name="score_delta">20</field>
+    </record>
+    <record id="tpl_web_form_score_company" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_web_form"/>
+        <field name="sequence">30</field>
+        <field name="name">Company name provided</field>
+        <field name="lead_field">partner_name</field>
+        <field name="score_delta">15</field>
+    </record>
+    <record id="tpl_web_form_score_note" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_web_form"/>
+        <field name="sequence">40</field>
+        <field name="name">Filled in description / message</field>
+        <field name="lead_field">description</field>
+        <field name="score_delta">15</field>
+    </record>
+
+    <record id="tpl_web_form_step_call" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_web_form"/>
+        <field name="sequence">10</field>
+        <field name="name">Initial call</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">immediate</field>
+        <field name="delay_amount">0</field>
+        <field name="activity_summary">Call the lead — introduce your service</field>
+    </record>
+    <record id="tpl_web_form_step_followup" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_web_form"/>
+        <field name="sequence">20</field>
+        <field name="name">Follow-up if no answer</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">days</field>
+        <field name="delay_amount">2</field>
+        <field name="activity_summary">Follow-up — no answer on first call</field>
+    </record>
+    <record id="tpl_web_form_step_meeting" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_web_form"/>
+        <field name="sequence">30</field>
+        <field name="name">Schedule meeting</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">days</field>
+        <field name="delay_amount">5</field>
+        <field name="activity_summary">Book a discovery meeting</field>
+    </record>
+
+    <!-- ── 2. Paid Ads ──────────────────────────────────── -->
+    <record id="tpl_paid_ads" model="lead.engine.campaign.template">
+        <field name="name">Paid Ads (Google / Meta)</field>
+        <field name="sequence">20</field>
+        <field name="channel">ads</field>
+        <field name="assign_min_score">30</field>
+        <field name="playbook_name">Ads Lead Follow-up</field>
+        <field name="description">Lead captured via a paid ad campaign (Google Ads, Meta, LinkedIn).</field>
+    </record>
+
+    <record id="tpl_ads_score_base" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_paid_ads"/>
+        <field name="sequence">10</field>
+        <field name="name">Base score (every ads lead)</field>
+        <field name="score_delta">15</field>
+    </record>
+    <record id="tpl_ads_score_email" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_paid_ads"/>
+        <field name="sequence">20</field>
+        <field name="name">Email provided</field>
+        <field name="lead_field">email_from</field>
+        <field name="score_delta">10</field>
+    </record>
+    <record id="tpl_ads_score_phone" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_paid_ads"/>
+        <field name="sequence">30</field>
+        <field name="name">Phone provided</field>
+        <field name="lead_field">phone</field>
+        <field name="score_delta">20</field>
+    </record>
+
+    <record id="tpl_ads_step_respond" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_paid_ads"/>
+        <field name="sequence">10</field>
+        <field name="name">Respond within 1 hour</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">immediate</field>
+        <field name="delay_amount">0</field>
+        <field name="activity_summary">Call immediately — ads leads go cold fast</field>
+    </record>
+    <record id="tpl_ads_step_nurture" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_paid_ads"/>
+        <field name="sequence">20</field>
+        <field name="name">Nurture if not answered</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">hours</field>
+        <field name="delay_amount">24</field>
+        <field name="activity_summary">Second contact attempt</field>
+    </record>
+
+    <!-- ── 3. Referral ──────────────────────────────────── -->
+    <record id="tpl_referral" model="lead.engine.campaign.template">
+        <field name="name">Referral / Word of Mouth</field>
+        <field name="sequence">30</field>
+        <field name="channel">other</field>
+        <field name="assign_min_score">25</field>
+        <field name="playbook_name">Referral Follow-up</field>
+        <field name="description">Leads referred by existing customers or partners.</field>
+    </record>
+
+    <record id="tpl_ref_score_base" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_referral"/>
+        <field name="sequence">10</field>
+        <field name="name">Base score (high-trust referral)</field>
+        <field name="score_delta">25</field>
+    </record>
+    <record id="tpl_ref_score_phone" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_referral"/>
+        <field name="sequence">20</field>
+        <field name="name">Phone provided</field>
+        <field name="lead_field">phone</field>
+        <field name="score_delta">15</field>
+    </record>
+
+    <record id="tpl_ref_step_thank" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_referral"/>
+        <field name="sequence">10</field>
+        <field name="name">Welcome call</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">immediate</field>
+        <field name="delay_amount">0</field>
+        <field name="activity_summary">Call — welcome the referral, ask about their need</field>
+    </record>
+    <record id="tpl_ref_step_proposal" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_referral"/>
+        <field name="sequence">20</field>
+        <field name="name">Send proposal</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">days</field>
+        <field name="delay_amount">3</field>
+        <field name="activity_summary">Prepare and send customised proposal</field>
+    </record>
+
+    <!-- ── 4. Email Campaign ─────────────────────────────── -->
+    <record id="tpl_email_campaign" model="lead.engine.campaign.template">
+        <field name="name">Email Campaign / Newsletter</field>
+        <field name="sequence">40</field>
+        <field name="channel">email</field>
+        <field name="assign_min_score">20</field>
+        <field name="playbook_name">Email Lead Nurture</field>
+        <field name="description">Leads generated from outbound email campaigns or newsletters.</field>
+    </record>
+
+    <record id="tpl_email_score_base" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_email_campaign"/>
+        <field name="sequence">10</field>
+        <field name="name">Base score (email response)</field>
+        <field name="score_delta">10</field>
+    </record>
+    <record id="tpl_email_score_company" model="lead.engine.campaign.template.score.line">
+        <field name="template_id" ref="tpl_email_campaign"/>
+        <field name="sequence">20</field>
+        <field name="name">Company name filled in</field>
+        <field name="lead_field">partner_name</field>
+        <field name="score_delta">15</field>
+    </record>
+
+    <record id="tpl_email_step_qualify" model="lead.engine.campaign.template.step.line">
+        <field name="template_id" ref="tpl_email_campaign"/>
+        <field name="sequence">10</field>
+        <field name="name">Qualify by email or call</field>
+        <field name="step_type">create_activity</field>
+        <field name="delay_unit">immediate</field>
+        <field name="delay_amount">0</field>
+        <field name="activity_summary">Qualify this email lead — are they ready to buy?</field>
+    </record>
+
+</data>
+</odoo>

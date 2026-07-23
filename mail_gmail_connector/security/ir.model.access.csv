@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mail_gmail_account_user,mail.gmail.account.user,model_mail_gmail_account,mail_gmail_connector.group_gmail_user,1,1,1,1
+access_mail_gmail_account_manager,mail.gmail.account.manager,model_mail_gmail_account,mail_gmail_connector.group_gmail_manager,1,1,1,1

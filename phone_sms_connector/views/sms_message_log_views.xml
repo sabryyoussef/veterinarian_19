@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sms_message_log_list" model="ir.ui.view">
+        <field name="name">sms.message.log.list</field>
+        <field name="model">sms.message.log</field>
+        <field name="arch" type="xml">
+            <list string="SMS Messages"
+                  decoration-success="state == 'delivered'"
+                  decoration-info="state == 'sent'"
+                  decoration-muted="state == 'queued'"
+                  decoration-danger="state == 'failed'">
+                <field name="sent_at"/>
+                <field name="direction" widget="badge"
+                       decoration-info="direction == 'out'"
+                       decoration-success="direction == 'in'"/>
+                <field name="partner_id"/>
+                <field name="phone"/>
+                <field name="body"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'delivered'"
+                       decoration-info="state in ('sent','received')"
+                       decoration-muted="state == 'queued'"
+                       decoration-danger="state == 'failed'"/>
+                <field name="gateway_id" optional="hide"/>
+                <field name="external_id" optional="hide"/>
+                <field name="error_message" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sms_message_log_form" model="ir.ui.view">
+        <field name="name">sms.message.log.form</field>
+        <field name="model">sms.message.log</field>
+        <field name="arch" type="xml">
+            <form string="SMS Message">
+                <sheet>
+                    <widget name="web_ribbon" title="Failed" bg_color="text-bg-danger"
+                            invisible="state != 'failed'"/>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="lead_id"/>
+                            <field name="phone"/>
+                            <field name="direction"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="gateway_id"/>
+                            <field name="external_id"/>
+                            <field name="sent_at"/>
+                            <field name="delivered_at"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="body" nolabel="1"/>
+                    </group>
+                    <group string="Error" invisible="not error_message">
+                        <field name="error_message" nolabel="1" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sms_message_log_search" model="ir.ui.view">
+        <field name="name">sms.message.log.search</field>
+        <field name="model">sms.message.log</field>
+        <field name="arch" type="xml">
+            <search string="SMS Messages">
+                <field name="phone"/>
+                <field name="partner_id"/>
+                <field name="body"/>
+                <separator/>
+                <filter string="Outbound" name="out" domain="[('direction','=','out')]"/>
+                <filter string="Inbound" name="in" domain="[('direction','=','in')]"/>
+                <separator/>
+                <filter string="Queued" name="queued" domain="[('state','=','queued')]"/>
+                <filter string="Sent" name="sent" domain="[('state','=','sent')]"/>
+                <filter string="Delivered" name="delivered" domain="[('state','=','delivered')]"/>
+                <filter string="Failed" name="failed" domain="[('state','=','failed')]"/>
+                <filter string="Received" name="received" domain="[('state','=','received')]"/>
+                <group>
+                    <filter string="Direction" name="group_direction" context="{'group_by': 'direction'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Contact" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Gateway" name="group_gateway" context="{'group_by': 'gateway_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sms_message_log" model="ir.actions.act_window">
+        <field name="name">SMS Messages</field>
+        <field name="res_model">sms.message.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No SMS yet</p>
+            <p>Outbound and inbound phone SMS will appear here.</p>
+        </field>
+    </record>
+
+    <record id="action_sms_log_outbound" model="ir.actions.act_window">
+        <field name="name">Sent SMS</field>
+        <field name="res_model">sms.message.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('direction','=','out')]</field>
+        <field name="context">{'search_default_out': 1}</field>
+    </record>
+
+    <record id="action_sms_log_inbound" model="ir.actions.act_window">
+        <field name="name">Received SMS</field>
+        <field name="res_model">sms.message.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('direction','=','in')]</field>
+        <field name="context">{'search_default_in': 1}</field>
+    </record>
+</odoo>

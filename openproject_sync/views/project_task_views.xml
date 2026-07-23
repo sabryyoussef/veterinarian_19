@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_form_openproject" model="ir.ui.view">
+        <field name="name">project.task.form.openproject</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="OpenProject" name="openproject_sync">
+                    <group>
+                        <group>
+                            <field name="op_backend_id"/>
+                            <field name="op_project_id"/>
+                            <field name="op_project_name"/>
+                            <field name="op_work_package_id"/>
+                            <field name="op_lock_version"/>
+                            <field name="op_url" widget="url"/>
+                            <button name="action_open_op_url" type="object" string="Open in OpenProject"
+                                    invisible="not op_url" class="btn-link"/>
+                        </group>
+                        <group>
+                            <field name="op_sync_state"/>
+                            <field name="op_last_sync"/>
+                            <field name="op_sync_hash"/>
+                            <field name="op_last_error"/>
+                        </group>
+                    </group>
+                    <group string="Logical OpenProject Parent">
+                        <group>
+                            <field name="op_parent_work_package_id"/>
+                            <field name="op_parent_subject"/>
+                            <field name="op_parent_op_project_id"/>
+                            <field name="op_cross_project_parent"/>
+                        </group>
+                    </group>
+                    <group string="Raw description">
+                        <field name="op_description_raw" nolabel="1" colspan="2"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

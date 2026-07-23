@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_mail_gmail" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.mail.gmail</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Gmail Connector" name="mail_gmail_connector">
+                    <block title="CRM coexistence">
+                        <setting string="Apply Job Outreach CRM defaults"
+                                 help="OFF by default for shared clinic + developer databases. When ON, CRM Leads/Pipeline open filtered to Job Outreach.">
+                            <field name="apply_job_outreach_crm_defaults"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_resume_cron_bulk_server" model="ir.actions.server">
+        <field name="name">Bulk control</field>
+        <field name="model_id" ref="base.model_ir_cron"/>
+        <field name="binding_model_id" ref="base.model_ir_cron"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = {
+    "type": "ir.actions.act_window",
+    "name": "Bulk control",
+    "res_model": "resume.cron.bulk.wizard",
+    "view_mode": "form",
+    "target": "new",
+    "context": {
+        "active_model": "ir.cron",
+        "active_ids": records.ids,
+    },
+}</field>
+    </record>
+
+    <!-- Richer list: health + timing at a glance -->
+    <record id="ir_cron_view_tree_resume_cron_control" model="ir.ui.view">
+        <field name="name">ir.cron.list.cron.control</field>
+        <field name="model">ir.cron</field>
+        <field name="inherit_id" ref="base.ir_cron_view_tree"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="string">Scheduled jobs</attribute>
+                <attribute name="decoration-danger">failure_count &gt; 0</attribute>
+            </list>
+            <list position="inside">
+                <header>
+                    <button name="%(resume_cron_control.action_resume_cron_bulk_server)d"
+                            type="action"
+                            string="Bulk control"
+                            class="btn-primary"
+                            display="always"/>
+                </header>
+            </list>
+            <field name="nextcall" position="after">
+                <field name="lastcall" optional="show"/>
+                <field name="failure_count" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="ir_cron_view_search_resume_cron_control" model="ir.ui.view">
+        <field name="name">ir.cron.search.cron.control</field>
+        <field name="model">ir.cron</field>
+        <field name="inherit_id" ref="base.ir_cron_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator/>
+                <filter string="Has failures" name="has_failures" domain="[('failure_count', '>', 0)]"/>
+                <filter string="Frequent (≤5 min)" name="high_frequency"
+                        domain="[('interval_type', '=', 'minutes'), ('interval_number', '&lt;=', 5)]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

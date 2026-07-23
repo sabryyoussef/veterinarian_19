@@ -1,0 +1,9 @@
+{
+  "gate_failures": [
+    "devhub_intake_mode",
+    "not_actionable:request_type=other",
+    "low_confidence:0.45<0.75"
+  ],
+  "gate_fail_reason": "devhub_intake_mode; not_actionable:request_type=other; low_confidence:0.45<0.75",
+  "auto_create_eligible": false
+}

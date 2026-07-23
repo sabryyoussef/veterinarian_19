@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_playbook_stat" model="ir.ui.view">
+        <field name="name">crm.lead.form.playbook.stat</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[@name='button_box']"
+                position="inside"
+                groups="lead_engine_core.group_lead_engine_user"
+            >
+                <button
+                    name="action_le_playbook_runs"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-list-ol"
+                >
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value"><field name="playbook_run_count"/></span>
+                        <span class="o_stat_text">Playbooks</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_view_form_playbook" model="ir.ui.view">
+        <field name="name">crm.lead.form.playbook</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="lead_engine_qualification.crm_lead_view_form_lead_engine"/>
+        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='lead_engine']"
+                position="inside"
+                groups="lead_engine_core.group_lead_engine_user"
+            >
+                <group string="Playbooks" name="lead_engine_playbooks">
+                    <field name="playbook_run_count" invisible="1"/>
+                    <div class="o_row">
+                        <button
+                            name="action_le_start_playbook_wizard"
+                            type="object"
+                            string="Start playbook…"
+                            class="btn-secondary"
+                            groups="lead_engine_core.group_lead_engine_manager"
+                        />
+                        <button
+                            name="action_le_start_source_playbook"
+                            type="object"
+                            string="Start source playbook"
+                            class="btn-secondary"
+                            groups="lead_engine_core.group_lead_engine_user"
+                        />
+                        <button
+                            name="action_le_playbook_runs"
+                            type="object"
+                            string="All runs"
+                            class="btn-link"
+                        />
+                    </div>
+                    <field
+                        name="playbook_run_ids"
+                        nolabel="1"
+                        readonly="1"
+                        colspan="2"
+                    >
+                        <list default_order="create_date desc, id desc">
+                            <field name="playbook_id"/>
+                            <field name="state" widget="badge"
+                                decoration-success="state == 'done'"
+                                decoration-info="state == 'running'"
+                                decoration-danger="state == 'error'"
+                                decoration-muted="state == 'cancelled'"
+                            />
+                            <field name="pending_due_line_count" string="Due" optional="show"/>
+                            <field name="started_at"/>
+                            <field name="completed_at" optional="hide"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

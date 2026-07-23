@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Expense categories for bank SMS (product.product + can_be_expensed) -->
+        <record id="product_expense_bank_transfer" model="product.product">
+            <field name="name">Bank Transfer</field>
+            <field name="default_code">BANK_TRF</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="can_be_expensed" eval="True"/>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="True"/>
+        </record>
+
+        <record id="product_expense_card" model="product.product">
+            <field name="name">Card / Debit</field>
+            <field name="default_code">BANK_CARD</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="can_be_expensed" eval="True"/>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="True"/>
+        </record>
+
+        <record id="product_expense_family" model="product.product">
+            <field name="name">Family / Personal</field>
+            <field name="default_code">BANK_FAM</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="can_be_expensed" eval="True"/>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="True"/>
+        </record>
+
+        <record id="product_expense_utilities" model="product.product">
+            <field name="name">Utilities / Bills</field>
+            <field name="default_code">BANK_UTIL</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="can_be_expensed" eval="True"/>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="True"/>
+        </record>
+
+        <record id="product_expense_food" model="product.product">
+            <field name="name">Food / Groceries</field>
+            <field name="default_code">BANK_FOOD</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="can_be_expensed" eval="True"/>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="True"/>
+        </record>
+
+        <record id="product_expense_other" model="product.product">
+            <field name="name">Other Expense</field>
+            <field name="default_code">BANK_OTHER</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="can_be_expensed" eval="True"/>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

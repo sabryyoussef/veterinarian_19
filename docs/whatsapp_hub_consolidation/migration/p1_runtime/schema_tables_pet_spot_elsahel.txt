@@ -1,0 +1,24 @@
+                table_name                
+------------------------------------------
+ evo_wa_template
+ integration_bridge_log
+ integration_bridge_settings
+ integration_bridge_token
+ integration_outbound_queue
+ petspot_wa_intake
+ wa_campaign
+ wa_campaign_attachment_rel
+ wa_campaign_lead_rel
+ wa_campaign_line
+ wa_campaign_partner_rel
+ wa_campaign_recipient_wizard
+ wa_campaign_recipient_wizard_lead_rel
+ wa_campaign_recipient_wizard_partner_rel
+ wa_message_log
+ whatsapp_bulk_line
+ whatsapp_bulk_wizard
+ whatsapp_bulk_wizard_attachment_rel
+ whatsapp_send_wizard
+ whatsapp_wizard_attachment_rel
+(20 rows)
+

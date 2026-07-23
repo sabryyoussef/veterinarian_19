@@ -1,0 +1,84 @@
+         model         |           name           |   ttype   |       relation        
+-----------------------+--------------------------+-----------+-----------------------
+ whatsapp.bulk.line    | create_date              | datetime  | 
+ whatsapp.bulk.line    | create_uid               | many2one  | res.users
+ whatsapp.bulk.line    | display_name             | char      | 
+ whatsapp.bulk.line    | error_msg                | char      | 
+ whatsapp.bulk.line    | id                       | integer   | 
+ whatsapp.bulk.line    | lead_id                  | many2one  | crm.lead
+ whatsapp.bulk.line    | message                  | text      | 
+ whatsapp.bulk.line    | partner_id               | many2one  | res.partner
+ whatsapp.bulk.line    | phone                    | char      | 
+ whatsapp.bulk.line    | status                   | selection | 
+ whatsapp.bulk.line    | wizard_id                | many2one  | whatsapp.bulk.wizard
+ whatsapp.bulk.line    | write_date               | datetime  | 
+ whatsapp.bulk.line    | write_uid                | many2one  | res.users
+ whatsapp.bulk.wizard  | attachment_ids           | many2many | ir.attachment
+ whatsapp.bulk.wizard  | create_date              | datetime  | 
+ whatsapp.bulk.wizard  | create_uid               | many2one  | res.users
+ whatsapp.bulk.wizard  | delay_between            | integer   | 
+ whatsapp.bulk.wizard  | display_name             | char      | 
+ whatsapp.bulk.wizard  | done                     | boolean   | 
+ whatsapp.bulk.wizard  | error_count              | integer   | 
+ whatsapp.bulk.wizard  | id                       | integer   | 
+ whatsapp.bulk.wizard  | line_ids                 | one2many  | whatsapp.bulk.line
+ whatsapp.bulk.wizard  | message                  | text      | 
+ whatsapp.bulk.wizard  | personalise              | boolean   | 
+ whatsapp.bulk.wizard  | queued_count             | integer   | 
+ whatsapp.bulk.wizard  | recipient_count          | integer   | 
+ whatsapp.bulk.wizard  | scheduled_at             | datetime  | 
+ whatsapp.bulk.wizard  | send_mode                | selection | 
+ whatsapp.bulk.wizard  | sent_count               | integer   | 
+ whatsapp.bulk.wizard  | skip_count               | integer   | 
+ whatsapp.bulk.wizard  | template_id              | many2one  | evo.wa.template
+ whatsapp.bulk.wizard  | valid_count              | integer   | 
+ whatsapp.bulk.wizard  | write_date               | datetime  | 
+ whatsapp.bulk.wizard  | write_uid                | many2one  | res.users
+ whatsapp.contact      | active                   | boolean   | 
+ whatsapp.contact      | create_date              | datetime  | 
+ whatsapp.contact      | create_uid               | many2one  | res.users
+ whatsapp.contact      | display_name             | char      | 
+ whatsapp.contact      | id                       | integer   | 
+ whatsapp.contact      | jid                      | char      | 
+ whatsapp.contact      | name                     | char      | 
+ whatsapp.contact      | partner_id               | many2one  | res.partner
+ whatsapp.contact      | phone_e164               | char      | 
+ whatsapp.contact      | push_name                | char      | 
+ whatsapp.contact      | write_date               | datetime  | 
+ whatsapp.contact      | write_uid                | many2one  | res.users
+ whatsapp.conversation | active                   | boolean   | 
+ whatsapp.conversation | chatwoot_account_id      | integer   | 
+ whatsapp.conversation | chatwoot_conversation_id | integer   | 
+ whatsapp.conversation | chatwoot_inbox_id        | integer   | 
+ whatsapp.conversation | contact_id               | many2one  | whatsapp.contact
+ whatsapp.conversation | conversation_type        | selection | 
+ whatsapp.conversation | create_date              | datetime  | 
+ whatsapp.conversation | create_uid               | many2one  | res.users
+ whatsapp.conversation | display_name             | char      | 
+ whatsapp.conversation | group_id                 | many2one  | whatsapp.group
+ whatsapp.conversation | id                       | integer   | 
+ whatsapp.conversation | instance_id              | many2one  | whatsapp.instance
+ whatsapp.conversation | last_message_at          | datetime  | 
+ whatsapp.conversation | message_ids              | one2many  | whatsapp.message
+ whatsapp.conversation | name                     | char      | 
+ whatsapp.conversation | write_date               | datetime  | 
+ whatsapp.conversation | write_uid                | many2one  | res.users
+ whatsapp.group        | active                   | boolean   | 
+ whatsapp.group        | chatwoot_inbox_id        | integer   | 
+ whatsapp.group        | chatwoot_label           | char      | 
+ whatsapp.group        | conversation_ids         | one2many  | whatsapp.conversation
+ whatsapp.group        | create_date              | datetime  | 
+ whatsapp.group        | create_uid               | many2one  | res.users
+ whatsapp.group        | display_name             | char      | 
+ whatsapp.group        | id                       | integer   | 
+ whatsapp.group        | instance_id              | many2one  | whatsapp.instance
+ whatsapp.group        | jid                      | char      | 
+ whatsapp.group        | message_count            | integer   | 
+ whatsapp.group        | name                     | char      | 
+ whatsapp.group        | notes                    | text      | 
+ whatsapp.group        | write_date               | datetime  | 
+ whatsapp.group        | write_uid                | many2one  | res.users
+ whatsapp.hub.compat   | display_name             | char      | 
+ whatsapp.hub.compat   | id                       | integer   | 
+(80 rows)
+

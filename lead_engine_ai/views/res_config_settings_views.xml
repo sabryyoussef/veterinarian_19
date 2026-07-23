@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  lead.engine.ai.settings — Dedicated form          -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <record id="view_lead_engine_ai_settings_form" model="ir.ui.view">
+        <field name="name">lead.engine.ai.settings.form</field>
+        <field name="model">lead.engine.ai.settings</field>
+        <field name="arch" type="xml">
+            <form string="Lead Engine AI — Settings">
+                <sheet>
+
+                    <!-- How it works -->
+                    <div class="alert alert-info d-flex gap-2" role="alert">
+                        <i class="fa fa-info-circle mt-1 flex-shrink-0" title="Info"/>
+                        <div>
+                            <strong>How it works:</strong>
+                            When an external reply arrives on a CRM lead from a monitored address,
+                            the AI automatically drafts a response. A smart button on the lead form
+                            lights up — click it to review, edit, and send.
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="d-flex gap-2 mb-3">
+                        <button name="action_save" type="object"
+                                string="Save Settings" class="btn btn-primary"/>
+                        <button name="action_test_connection" type="object"
+                                string="Test Connection" class="btn btn-secondary"/>
+                    </div>
+
+                    <!-- ══ PRIMARY LLM ════════════════════════════════════ -->
+                    <group string="Primary LLM Provider">
+                        <group>
+                            <field name="llm_provider" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="llm_model"
+                                   placeholder="e.g. gpt-4o-mini"/>
+                            <!-- Dynamic model hint -->
+                            <div class="text-muted small alert alert-secondary p-2"
+                                 role="status"
+                                 invisible="not llm_model_hint">
+                                <strong>Available models:</strong><br/>
+                                <field name="llm_model_hint" nolabel="1" readonly="1"
+                                       style="white-space:pre-line; font-family:monospace"/>
+                            </div>
+                            <field name="llm_api_key"
+                                   password="True"
+                                   placeholder="API key (leave empty for Ollama)"
+                                   invisible="llm_provider == 'ollama'"/>
+                            <field name="llm_endpoint"
+                                   placeholder="http://localhost:11434/v1/chat/completions"
+                                   invisible="llm_provider not in ('ollama', 'custom')"/>
+                            <!-- Ollama endpoint always shown when selected -->
+                            <div class="text-muted small"
+                                 invisible="llm_provider != 'ollama'">
+                                Make sure Ollama is running:
+                                <code>ollama serve</code> and the model is pulled:
+                                <code>ollama pull llama3</code>
+                            </div>
+                            <!-- OpenRouter note -->
+                            <div class="text-muted small alert alert-warning p-2"
+                                 role="alert"
+                                 invisible="llm_provider != 'openrouter'">
+                                OpenRouter requires an API key from
+                                <a href="https://openrouter.ai" target="_blank">openrouter.ai</a>.
+                                Model names use the format <code>provider/model</code>
+                                (e.g. <code>openai/gpt-4o</code>).
+                            </div>
+                        </group>
+                    </group>
+
+                    <!-- ══ SECONDARY LLM (fallback) ═══════════════════════ -->
+                    <group string="Secondary LLM Provider (optional fallback)">
+                        <group>
+                            <field name="llm_provider_2"/>
+                        </group>
+                        <group invisible="not llm_provider_2">
+                            <field name="llm_model_2"
+                                   placeholder="e.g. claude-3-haiku-20240307"
+                                   invisible="not llm_provider_2"/>
+                            <div class="text-muted small alert alert-secondary p-2"
+                                 role="status"
+                                 invisible="not llm_model_hint_2">
+                                <strong>Available models:</strong><br/>
+                                <field name="llm_model_hint_2" nolabel="1" readonly="1"
+                                       style="white-space:pre-line; font-family:monospace"/>
+                            </div>
+                            <field name="llm_api_key_2"
+                                   password="True"
+                                   placeholder="Secondary API key"
+                                   invisible="llm_provider_2 == 'ollama'"/>
+                            <field name="llm_endpoint_2"
+                                   placeholder="Secondary endpoint URL"
+                                   invisible="llm_provider_2 not in ('ollama', 'custom')"/>
+                        </group>
+                        <div class="text-muted small col-12" invisible="llm_provider_2">
+                            Leave disabled if you only use one provider.
+                            When set, the secondary is tried automatically if the primary fails.
+                        </div>
+                    </group>
+
+                    <!-- ══ MONITORED ADDRESSES ════════════════════════════ -->
+                    <group string="Monitored Email Addresses">
+                        <field name="monitored_emails"
+                               nolabel="1"
+                               placeholder="vendorah2@gmail.com, abhorya@gmail.com"/>
+                        <div class="text-muted small col-12">
+                            Comma-separated list. AI drafts are only created when a reply arrives
+                            at one of these addresses.
+                            Leave <strong>empty</strong> to trigger for every inbound email on any CRM lead.
+                        </div>
+                    </group>
+
+                    <!-- ══ SYSTEM PROMPT ══════════════════════════════════ -->
+                    <group string="System Prompt Override">
+                        <field name="system_prompt"
+                               nolabel="1"
+                               placeholder="Leave empty to use the built-in professional reply prompt…"/>
+                        <div class="text-muted small col-12">
+                            Built-in prompt: matches incoming language, concise, signed with
+                            salesperson name, no invented facts.
+                            Only override if you need a very specific style.
+                        </div>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  Action                                            -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <record id="action_lead_engine_ai_settings" model="ir.actions.act_window">
+        <field name="name">Lead Engine AI Settings</field>
+        <field name="res_model">lead.engine.ai.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+</odoo>

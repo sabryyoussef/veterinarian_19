@@ -1,0 +1,182 @@
+[
+  {
+    "from": "evolution_whatsapp_chat",
+    "to": "integration_bridge_core"
+  },
+  {
+    "from": "evolution_whatsapp_chat",
+    "to": "whatsapp_hub"
+  },
+  {
+    "from": "petspot_wa_intake",
+    "to": "integration_bridge_core"
+  },
+  {
+    "from": "petspot_wa_intake",
+    "to": "whatsapp_hub"
+  },
+  {
+    "from": "petspot_clinic_portal",
+    "to": "petspot_wa_intake"
+  },
+  {
+    "from": "petspot_clinic_portal",
+    "to": "integration_bridge_core"
+  },
+  {
+    "from": "petspot_vet_feedback",
+    "to": "petspot_clinic_portal"
+  },
+  {
+    "from": "petspot_campaign_rewards",
+    "to": "social_media_connector"
+  },
+  {
+    "from": "petspot_campaign_rewards",
+    "to": "integration_bridge_core"
+  },
+  {
+    "from": "petspot_campaign_rewards",
+    "to": "petspot_clinic_portal"
+  },
+  {
+    "from": "chatwoot_evolution_error_bridge",
+    "to": "integration_bridge_core"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_core"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_work"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_session"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_execution"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_outbox"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_generation"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_git"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_github"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_deploy"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_odoo_runtime"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_infrastructure"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_openproject"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_code_analysis"
+  },
+  {
+    "from": "dev_session_hub",
+    "to": "devhub_whatsapp"
+  },
+  {
+    "from": "devhub_work",
+    "to": "devhub_core"
+  },
+  {
+    "from": "devhub_work",
+    "to": "openproject_sync"
+  },
+  {
+    "from": "devhub_session",
+    "to": "devhub_work"
+  },
+  {
+    "from": "devhub_execution",
+    "to": "devhub_session"
+  },
+  {
+    "from": "devhub_outbox",
+    "to": "devhub_work"
+  },
+  {
+    "from": "devhub_generation",
+    "to": "devhub_work"
+  },
+  {
+    "from": "devhub_git",
+    "to": "devhub_execution"
+  },
+  {
+    "from": "devhub_github",
+    "to": "devhub_git"
+  },
+  {
+    "from": "devhub_deploy",
+    "to": "devhub_github"
+  },
+  {
+    "from": "devhub_odoo_runtime",
+    "to": "devhub_core"
+  },
+  {
+    "from": "devhub_infrastructure",
+    "to": "devhub_core"
+  },
+  {
+    "from": "devhub_openproject",
+    "to": "devhub_work"
+  },
+  {
+    "from": "devhub_openproject",
+    "to": "openproject_sync"
+  },
+  {
+    "from": "devhub_code_analysis",
+    "to": "devhub_work"
+  },
+  {
+    "from": "devhub_code_analysis",
+    "to": "devhub_odoo_runtime"
+  },
+  {
+    "from": "devhub_whatsapp",
+    "to": "devhub_work"
+  },
+  {
+    "from": "devhub_whatsapp",
+    "to": "whatsapp_hub"
+  },
+  {
+    "from": "veterinary_pet_management_bridge",
+    "to": "veterinary_petget_bridge"
+  },
+  {
+    "from": "petspot_backend_sidebar",
+    "to": "petspot_wa_intake"
+  },
+  {
+    "from": "petspot_backend_sidebar",
+    "to": "petspot_clinic_portal"
+  }
+]

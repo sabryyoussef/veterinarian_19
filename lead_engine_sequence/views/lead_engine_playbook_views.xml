@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Referenced from playbook form stat button; must load before form -->
+    <record id="action_lead_engine_playbook_run_from_playbook" model="ir.actions.act_window">
+        <field name="name">Playbook runs</field>
+        <field name="res_model">lead.engine.playbook.run</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="domain">[("playbook_id", "=", active_id)]</field>
+    </record>
+
+    <record id="view_lead_engine_playbook_list" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.list</field>
+        <field name="model">lead.engine.playbook</field>
+        <field name="arch" type="xml">
+            <list string="Playbooks" default_order="sequence, name, id">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="run_count_running" string="Active"/>
+                <field name="run_count_error" string="Errors" optional="show"/>
+                <field name="run_count_done" string="Done" optional="hide"/>
+                <field name="run_count_total" string="Runs" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_search" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.search</field>
+        <field name="model">lead.engine.playbook</field>
+        <field name="arch" type="xml">
+            <search string="Playbooks">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Active definitions" name="active_only" domain="[('active', '=', True)]"/>
+                <group>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_lead_engine_playbook_form" model="ir.ui.view">
+        <field name="name">lead.engine.playbook.form</field>
+        <field name="model">lead.engine.playbook</field>
+        <field name="arch" type="xml">
+            <form string="Playbook">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="%(action_lead_engine_playbook_run_from_playbook)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-list-alt"
+                            invisible="run_count_total == 0"
+                        >
+                            <div class="o_stat_info">
+                                <span class="o_stat_value"><field name="run_count_total"/></span>
+                                <span class="o_stat_text">Runs</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <label for="run_count_total" string="Run summary"/>
+                            <div class="o_row">
+                                <span class="text-muted">Total</span>
+                                <field name="run_count_total" class="oe_inline"/>
+                                <span class="text-muted ms-3">Active</span>
+                                <field name="run_count_running" class="oe_inline"/>
+                                <span class="text-muted ms-3">Errors</span>
+                                <field name="run_count_error" class="oe_inline"/>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Operator notes"/>
+                    <notebook>
+                        <page string="Steps" name="steps">
+                            <field name="step_ids" nolabel="1" context="{'default_playbook_id': id}">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="step_type"/>
+                                    <field name="delay_unit"/>
+                                    <field name="delay_amount"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="sequence"/>
+                                        <field name="step_type"/>
+                                        <field name="delay_unit"/>
+                                        <field name="delay_amount"/>
+                                    </group>
+                                    <group string="Activity" invisible="step_type != 'create_activity'">
+                                        <field name="activity_type_id"/>
+                                        <field name="activity_summary"/>
+                                        <field name="activity_note"/>
+                                        <field name="activity_user_id"/>
+                                    </group>
+                                    <group string="Email" invisible="step_type != 'send_email_template'">
+                                        <field name="mail_template_id" domain="[('model', '=', 'crm.lead')]"/>
+                                    </group>
+                                    <group string="Assign" invisible="step_type != 'assign_owner'">
+                                        <field name="assign_user_id"/>
+                                        <field name="assign_team_id"/>
+                                    </group>
+                                    <group string="Server action" invisible="step_type != 'server_action'">
+                                        <field name="server_action_id"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_lead_engine_playbook" model="ir.actions.act_window">
+        <field name="name">Playbooks</field>
+        <field name="res_model">lead.engine.playbook</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_lead_engine_playbook_search"/>
+        <field name="context">{}</field>
+    </record>
+</odoo>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Qualification — Demo Score Rules + Assignment Rules
+        ================================================================
+        Score rules are ALL source-bound (no global accumulation across runs).
+        Assignment rules use score bands plus source filters.
+
+        Expected scores per scenario
+        ─────────────────────────────
+          A  Web form, email + "Director" in name  → 10 + 15 + 25 = 50
+          A  Web form, email only                  → 10 + 15      = 25
+          C  Trade show, company name + email      → 20 + 30      = 50
+          C  Trade show, no company name           → 20
+          D  Ads lead, email                       → 60 + 15      = 75
+          D  Organic lead, email                   → 20 + 15      = 35
+
+        Assignment routing (Scenario D score bands)
+        ────────────────────────────────────────────
+          Score >= 50  →  [DEMO] Senior Sales (Paid Ads)
+          Score  < 50  →  [DEMO] Nurture Team (Organic)
+        Source-specific rules run first (lower sequence numbers).
+    -->
+    <data noupdate="1">
+
+        <!-- ── Demo CRM Sales Teams (used by assignment rules) ──────────────── -->
+        <record id="demo_crm_team_web" model="crm.team">
+            <field name="name">[DEMO] Web Leads Team</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_crm_team_fieldwork" model="crm.team">
+            <field name="name">[DEMO] Field Sales (Trade Shows)</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_crm_team_senior" model="crm.team">
+            <field name="name">[DEMO] Senior Sales (Paid Ads)</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_crm_team_nurture" model="crm.team">
+            <field name="name">[DEMO] Nurture Team (Organic)</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCORE RULES
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <!-- ── Scenario A — Website Contact Form ──────────────────────────── -->
+        <record id="demo_sr_webform_base" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Web form: +10 baseline</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="10"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_webform"/>
+        </record>
+
+        <record id="demo_sr_webform_email" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Web form: +15 email provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_webform"/>
+        </record>
+
+        <record id="demo_sr_webform_title" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Web form: +25 senior decision-maker (Director)</field>
+            <field name="sequence" eval="30"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">contact_name</field>
+            <field name="operator">contains</field>
+            <field name="value">Director</field>
+            <field name="score_delta" eval="25"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_webform"/>
+        </record>
+
+        <!-- ── Scenario C — Trade Show ────────────────────────────────────── -->
+        <record id="demo_sr_tradeshow_base" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Trade show: +20 event attendance</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="20"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_tradeshow"/>
+        </record>
+
+        <record id="demo_sr_tradeshow_company" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Trade show: +30 company name provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">partner_name</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="30"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_tradeshow"/>
+        </record>
+
+        <!-- ── Scenario D — Google Ads ─────────────────────────────────────── -->
+        <record id="demo_sr_ads_base" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Ads: +60 paid-ads baseline (high intent)</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="60"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_ads"/>
+        </record>
+
+        <record id="demo_sr_ads_email" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Ads: +15 email provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_ads"/>
+        </record>
+
+        <!-- ── Scenario D — Organic Blog ──────────────────────────────────── -->
+        <record id="demo_sr_organic_base" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Organic: +20 exploratory-intent baseline</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="20"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_organic"/>
+        </record>
+
+        <record id="demo_sr_organic_email" model="lead.engine.score.rule">
+            <field name="name">[DEMO] Organic: +15 email provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_organic"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             ASSIGNMENT RULES
+             (source-specific rules first, score-band routing after)
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <!-- ── Scenario A — source-based assignment ───────────────────────── -->
+        <record id="demo_ar_webform" model="lead.engine.assignment.rule">
+            <field name="name">[DEMO] Web form leads → Web Leads Team</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_webform"/>
+            <field name="team_id" ref="demo_crm_team_web"/>
+            <field name="note">Routes all web-form leads to the dedicated web team regardless of score.</field>
+        </record>
+
+        <!-- ── Scenario C — source-based assignment ───────────────────────── -->
+        <record id="demo_ar_tradeshow" model="lead.engine.assignment.rule">
+            <field name="name">[DEMO] Trade show leads → Field Sales Team</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="source_id" ref="lead_engine_core.demo_src_tradeshow"/>
+            <field name="team_id" ref="demo_crm_team_fieldwork"/>
+            <field name="note">Routes trade show leads to the field sales team.</field>
+        </record>
+
+        <!-- ── Scenario D — score-band assignment (applies to ads + organic) -->
+        <record id="demo_ar_highscore" model="lead.engine.assignment.rule">
+            <field name="name">[DEMO] Score ≥ 50 → Senior Sales (Paid Ads)</field>
+            <field name="sequence" eval="30"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="min_score" eval="50"/>
+            <field name="team_id" ref="demo_crm_team_senior"/>
+            <field name="note">
+                Applies to Ads leads (score=75) and any other high-scoring leads.
+                Runs after source-specific rules (higher sequence number).
+            </field>
+        </record>
+
+        <record id="demo_ar_lowscore" model="lead.engine.assignment.rule">
+            <field name="name">[DEMO] Score &lt; 50 → Nurture Team (Organic)</field>
+            <field name="sequence" eval="40"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="max_score" eval="49"/>
+            <field name="team_id" ref="demo_crm_team_nurture"/>
+            <field name="note">
+                Applies to Organic leads (score=35) and any other low-scoring unmatched leads.
+                Last-resort catch-all for nurture.
+            </field>
+        </record>
+
+    </data>
+</odoo>

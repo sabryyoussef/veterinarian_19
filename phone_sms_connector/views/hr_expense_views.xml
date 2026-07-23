@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Show bank SMS link on expense form -->
+    <record id="view_hr_expense_form_bank_sms" model="ir.ui.view">
+        <field name="name">hr.expense.form.bank.sms</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="bank_sms_transaction_id" readonly="1"
+                         invisible="not bank_sms_transaction_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

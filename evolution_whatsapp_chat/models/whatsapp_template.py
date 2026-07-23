@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 
 class WhatsappTemplate(models.Model):
     _name        = 'evo.wa.template'
-    _description = 'Evolution WhatsApp Message Template'
+    _description = 'Evolution WA Message Template'
     _order       = 'sequence, name'
     _rec_name    = 'name'
 

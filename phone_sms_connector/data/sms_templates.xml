@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="sms_tmpl_appointment_reminder" model="phone.sms.template">
+            <field name="name">Appointment Reminder</field>
+            <field name="sequence">1</field>
+            <field name="category">reminder</field>
+            <field name="body">Hi {first}, this is a reminder of your appointment at PetSpot El Sahel. Call 01201568888 to reschedule.</field>
+        </record>
+
+        <record id="sms_tmpl_followup" model="phone.sms.template">
+            <field name="name">Visit Follow-up</field>
+            <field name="sequence">2</field>
+            <field name="category">followup</field>
+            <field name="body">Hi {first}, how is your pet doing after the visit? We're here if you need anything — PetSpot El Sahel, 01201568888.</field>
+        </record>
+
+        <record id="sms_tmpl_promo" model="phone.sms.template">
+            <field name="name">Seasonal Promo</field>
+            <field name="sequence">3</field>
+            <field name="category">promo</field>
+            <field name="body">Hi {first}! PetSpot El Sahel is open all summer on the North Coast. Vet, grooming &amp; boarding. Book: 01201568888</field>
+        </record>
+
+    </data>
+</odoo>

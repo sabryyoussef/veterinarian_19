@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════
+         Lead Engine Core — standalone application root
+         Appears as its own icon on the Odoo home screen
+         ═══════════════════════════════════════════════════ -->
+    <menuitem
+        id="menu_lead_engine_root"
+        name="Lead Engine"
+        web_icon="lead_engine_core,static/description/icon.png"
+        sequence="200"
+        groups="lead_engine_core.group_lead_engine_user"
+    />
+
+    <!-- ── Operational ── -->
+    <menuitem
+        id="menu_lead_engine_ops"
+        name="Operations"
+        parent="menu_lead_engine_root"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_lead_engine_intake_logs"
+        name="Intake Logs"
+        parent="menu_lead_engine_ops"
+        action="action_lead_engine_intake_log"
+        sequence="10"
+    />
+
+    <!-- ── Configuration ── (manager only) -->
+    <menuitem
+        id="menu_lead_engine_config"
+        name="Configuration"
+        parent="menu_lead_engine_root"
+        sequence="90"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+    <menuitem
+        id="menu_lead_engine_sources"
+        name="Sources"
+        parent="menu_lead_engine_config"
+        action="action_lead_engine_source"
+        sequence="10"
+        groups="lead_engine_core.group_lead_engine_manager"
+    />
+</odoo>

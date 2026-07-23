@@ -1,0 +1,1166 @@
+[
+  {
+    "module": "base_industry_data",
+    "version": "1.2",
+    "depends_on": [
+      "base",
+      "digest",
+      "hr",
+      "knowledge"
+    ],
+    "required_models": [],
+    "models_defined": [],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.be",
+      "base.es",
+      "base.group_portal",
+      "base.main_partner",
+      "base.partner_admin",
+      "base.state_us_27",
+      "base.us",
+      "base.user_admin",
+      "digest.ir_cron_digest_scheduler_action",
+      "hr.employee_admin",
+      "hr.model_hr_employee"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "chatwoot_evolution_error_bridge",
+    "version": "19.0.1.0.1",
+    "depends_on": [
+      "base",
+      "web",
+      "mail",
+      "crm",
+      "integration_bridge_core"
+    ],
+    "required_models": [
+      "crm.lead",
+      "res.config.settings"
+    ],
+    "models_defined": [],
+    "inherits": [
+      "crm.lead",
+      "res.config.settings"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.res_config_settings_view_form",
+      "crm.crm_lead_view_form"
+    ],
+    "risk_if_dep_changes": "HIGH"
+  },
+  {
+    "module": "dev_session_hub",
+    "version": "19.0.9.0.0",
+    "depends_on": [
+      "devhub_core",
+      "devhub_work",
+      "devhub_session",
+      "devhub_execution",
+      "devhub_outbox",
+      "devhub_generation",
+      "devhub_git",
+      "devhub_github",
+      "devhub_deploy",
+      "devhub_odoo_runtime",
+      "devhub_infrastructure",
+      "devhub_openproject",
+      "devhub_code_analysis",
+      "devhub_whatsapp"
+    ],
+    "required_models": [
+      "dev_project_openproject_map_rel"
+    ],
+    "models_defined": [
+      "dev_project_openproject_map_rel"
+    ],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.user_admin",
+      "devhub_core.group_dev_hub_manager",
+      "devhub_core.group_dev_hub_user",
+      "devhub_core.model_dev_environment",
+      "devhub_core.model_dev_machine",
+      "devhub_core.model_dev_policy",
+      "devhub_core.model_dev_project",
+      "devhub_core.model_dev_repository",
+      "devhub_core.model_dev_task_link",
+      "devhub_execution.model_dev_execution_workspace",
+      "devhub_execution.model_dev_execution_workspace_event",
+      "devhub_generation.model_dev_work_generation",
+      "devhub_git.model_dev_git_commit_approval",
+      "devhub_git.model_dev_git_commit_approval_event",
+      "devhub_git.model_dev_git_commit_record",
+      "devhub_git.model_dev_git_push_approval",
+      "devhub_git.model_dev_git_push_approval_event",
+      "devhub_git.model_dev_git_push_record",
+      "devhub_github.model_dev_git_merge_approval",
+      "devhub_github.model_dev_git_merge_approval_event",
+      "devhub_github.model_dev_git_merge_record",
+      "devhub_github.model_dev_git_pr_approval",
+      "devhub_github.model_dev_git_pr_approval_event",
+      "devhub_github.model_dev_git_pr_record",
+      "devhub_infrastructure.model_dev_machine_verification_event",
+      "devhub_session.model_dev_launch_wizard",
+      "devhub_session.model_dev_session",
+      "devhub_session.model_dev_session_event",
+      "devhub_work.model_dev_completion_report",
+      "devhub_work.model_dev_external_outbox",
+      "devhub_work.model_dev_work_analysis",
+      "devhub_work.model_dev_work_approval",
+      "devhub_work.model_dev_work_checkpoint",
+      "devhub_work.model_dev_work_communication",
+      "devhub_work.model_dev_work_external_link",
+      "devhub_work.model_dev_work_item",
+      "devhub_work.model_dev_work_lifecycle_event",
+      "devhub_work.model_dev_work_plan",
+      "devhub_work.model_dev_work_plan_step",
+      "devhub_work.model_dev_work_source_message"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "developer_hub",
+    "version": "19.0.1.1.0",
+    "depends_on": [
+      "base",
+      "crm",
+      "contacts",
+      "odoo_partners"
+    ],
+    "required_models": [
+      "res.partner"
+    ],
+    "models_defined": [],
+    "inherits": [
+      "res.partner"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "odoo_partners.category_odoo_company",
+      "odoo_partners.category_odoo_partner"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "evolution_whatsapp_chat",
+    "version": "19.0.1.10.1",
+    "depends_on": [
+      "base",
+      "mail",
+      "crm",
+      "contacts",
+      "integration_bridge_core",
+      "whatsapp_hub"
+    ],
+    "required_models": [
+      "crm.lead",
+      "discuss.channel",
+      "display_name",
+      "evo.wa.template",
+      "mail.activity.mixin",
+      "mail.thread",
+      "name",
+      "res.partner",
+      "wa.campaign",
+      "wa.campaign.line",
+      "wa.campaign.recipient.wizard",
+      "wa.message.log",
+      "whatsapp.bulk.line",
+      "whatsapp.bulk.wizard",
+      "whatsapp.send.wizard",
+      "\u2014"
+    ],
+    "models_defined": [
+      "display_name",
+      "evo.wa.template",
+      "name",
+      "wa.campaign",
+      "wa.campaign.line",
+      "wa.campaign.recipient.wizard",
+      "wa.message.log",
+      "whatsapp.bulk.line",
+      "whatsapp.bulk.wizard",
+      "whatsapp.send.wizard",
+      "\u2014"
+    ],
+    "inherits": [
+      "crm.lead",
+      "discuss.channel",
+      "mail.activity.mixin",
+      "mail.thread",
+      "res.partner",
+      "wa.message.log"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.model_res_partner",
+      "base.view_partner_form",
+      "crm.crm_lead_view_form",
+      "crm.model_crm_lead"
+    ],
+    "risk_if_dep_changes": "HIGH"
+  },
+  {
+    "module": "integration_bridge_core",
+    "version": "19.0.1.1.1",
+    "depends_on": [
+      "base",
+      "web",
+      "mail",
+      "crm",
+      "contacts"
+    ],
+    "required_models": [
+      "evolution.instance",
+      "integration.bridge.log",
+      "integration.bridge.settings",
+      "integration.bridge.token",
+      "integration.outbound.queue",
+      "name"
+    ],
+    "models_defined": [
+      "evolution.instance",
+      "integration.bridge.log",
+      "integration.bridge.settings",
+      "integration.bridge.token",
+      "integration.outbound.queue",
+      "name"
+    ],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "linkedin_connector",
+    "version": "19.0.2.7.0",
+    "depends_on": [
+      "base",
+      "web",
+      "mail",
+      "base_setup"
+    ],
+    "required_models": [
+      ", ",
+      "Conversation",
+      "display_name",
+      "linkedin.account",
+      "linkedin.conversation",
+      "linkedin.job",
+      "linkedin.job.search",
+      "linkedin.message",
+      "linkedin.message.reply",
+      "linkedin.post",
+      "linkedin.post.bulk.schedule",
+      "linkedin.resume",
+      "linkedin.stream.post",
+      "message_preview",
+      "name",
+      "res.config.settings",
+      "title"
+    ],
+    "models_defined": [
+      ", ",
+      "Conversation",
+      "display_name",
+      "linkedin.account",
+      "linkedin.conversation",
+      "linkedin.job",
+      "linkedin.job.search",
+      "linkedin.message",
+      "linkedin.message.reply",
+      "linkedin.post",
+      "linkedin.post.bulk.schedule",
+      "linkedin.resume",
+      "linkedin.stream.post",
+      "message_preview",
+      "name",
+      "title"
+    ],
+    "inherits": [
+      "res.config.settings"
+    ],
+    "python_cross_imports": [
+      "odoo_rpc"
+    ],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "linkedin_nodb_compat",
+    "version": "19.0.1.0.0",
+    "depends_on": [
+      "web"
+    ],
+    "required_models": [],
+    "models_defined": [],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "mail_gmail_connector",
+    "version": "19.0.7.1.0",
+    "depends_on": [
+      "base",
+      "web",
+      "mail",
+      "google_gmail",
+      "crm"
+    ],
+    "required_models": [
+      "crm.lead",
+      "fetchmail.server",
+      "ir.mail_server",
+      "mail.activity.mixin",
+      "mail.gmail.account",
+      "mail.gmail.fetch.import.wizard",
+      "mail.gmail.inbox.check.wizard",
+      "mail.thread",
+      "res.config.settings"
+    ],
+    "models_defined": [
+      "mail.gmail.account",
+      "mail.gmail.fetch.import.wizard",
+      "mail.gmail.inbox.check.wizard"
+    ],
+    "inherits": [
+      "crm.lead",
+      "fetchmail.server",
+      "ir.mail_server",
+      "mail.activity.mixin",
+      "mail.gmail.account",
+      "mail.thread",
+      "res.config.settings"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.module_category_productivity",
+      "base.res_config_settings_view_form",
+      "base.user_admin",
+      "base.user_root",
+      "crm.crm_case_tree_view_leads",
+      "crm.crm_lead_view_form",
+      "crm.view_crm_case_leads_filter",
+      "crm.view_crm_case_opportunities_filter",
+      "mail.view_email_server_form"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "odoo_partners",
+    "version": "19.0.1.1.0",
+    "depends_on": [
+      "base",
+      "contacts"
+    ],
+    "required_models": [
+      "res_partner"
+    ],
+    "models_defined": [
+      "res_partner"
+    ],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.ad",
+      "base.ae",
+      "base.af",
+      "base.al",
+      "base.am",
+      "base.ao",
+      "base.ar",
+      "base.at",
+      "base.au",
+      "base.aw",
+      "base.az",
+      "base.ba",
+      "base.bb",
+      "base.bd",
+      "base.be",
+      "base.bf",
+      "base.bg",
+      "base.bh",
+      "base.bi",
+      "base.bj",
+      "base.bn",
+      "base.bo",
+      "base.bq",
+      "base.br",
+      "base.bs",
+      "base.bt",
+      "base.bw",
+      "base.bz",
+      "base.ca",
+      "base.ch",
+      "base.ci",
+      "base.cl",
+      "base.cm",
+      "base.cn",
+      "base.co",
+      "base.cr",
+      "base.cw",
+      "base.cy",
+      "base.cz",
+      "base.de"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "odoo_remote_connector",
+    "version": "19.0.1.0.0",
+    "depends_on": [
+      "base",
+      "web",
+      "mail"
+    ],
+    "required_models": [
+      "odoo.remote.connection"
+    ],
+    "models_defined": [
+      "odoo.remote.connection"
+    ],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "openproject_sync",
+    "version": "19.0.1.6.0",
+    "depends_on": [
+      "project",
+      "mail",
+      "web"
+    ],
+    "required_models": [
+      "display_name",
+      "ir.attachment",
+      "op_status_name",
+      "op_user_email",
+      "openproject.backend",
+      "openproject.project.map",
+      "openproject.status.map",
+      "openproject.sync.log",
+      "openproject.task.realign.line",
+      "openproject.task.realign.wizard",
+      "openproject.user.map",
+      "project.project",
+      "project.task"
+    ],
+    "models_defined": [
+      "display_name",
+      "op_status_name",
+      "op_user_email",
+      "openproject.backend",
+      "openproject.project.map",
+      "openproject.status.map",
+      "openproject.sync.log",
+      "openproject.task.realign.line",
+      "openproject.task.realign.wizard",
+      "openproject.user.map"
+    ],
+    "inherits": [
+      "ir.attachment",
+      "project.project",
+      "project.task"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "project.edit_project",
+      "project.open_view_project_all",
+      "project.open_view_project_all_config",
+      "project.open_view_project_all_config_group_stage",
+      "project.open_view_project_all_group_stage",
+      "project.view_project",
+      "project.view_project_project_filter",
+      "project.view_task_form2",
+      "project.view_task_search_form",
+      "project.view_task_tree2"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "pet_management",
+    "version": "19.0.1.8.3",
+    "depends_on": [
+      "base",
+      "base_setup",
+      "mail",
+      "contacts",
+      "hr",
+      "product",
+      "account",
+      "analytic",
+      "sale_management",
+      "calendar",
+      "appointment"
+    ],
+    "required_models": [
+      "Weight Record",
+      "account.move",
+      "account.move.line",
+      "account.payment.register",
+      "appointment.type",
+      "calendar.event",
+      "display_name",
+      "hr.employee",
+      "mail.activity.mixin",
+      "mail.thread",
+      "name",
+      "pet.appointment",
+      "pet.appointment.additional.invoice.wizard",
+      "pet.appointment.billing.repair.wizard",
+      "pet.appointment.inventory",
+      "pet.appointment.pet.quick.wizard",
+      "pet.appointment.service.line",
+      "pet.billing.integrity.issue",
+      "pet.boarding.stay",
+      "pet.breed",
+      "pet.clinic.expense",
+      "pet.clinic.finance",
+      "pet.clinic.finance.setup",
+      "pet.clinic.partner.reimbursement",
+      "pet.clinic.partner.reimbursement.wizard",
+      "pet.clinic.quick.expense.wizard",
+      "pet.clinic.wallet.transfer",
+      "pet.diet.plan",
+      "pet.diet.plan.line",
+      "pet.exam.price.config",
+      "pet.expense.category",
+      "pet.funding.source",
+      "pet.grooming.equipment",
+      "pet.grooming.service",
+      "pet.grooming.session",
+      "pet.help",
+      "pet.kennel",
+      "pet.kennel.equipment",
+      "pet.medical.diagnostic.report",
+      "pet.medical.visit",
+      "pet.medical.visit.line",
+      "pet.notification",
+      "pet.pet",
+      "pet.species",
+      "pet.training.program",
+      "pet.training.session",
+      "pet.vaccination",
+      "pet.vaccine",
+      "pet.vet.performance.report",
+      "pet.weight.history",
+      "res.config.settings",
+      "sale.order",
+      "vet_employee_id"
+    ],
+    "models_defined": [
+      "Weight Record",
+      "display_name",
+      "name",
+      "pet.appointment",
+      "pet.appointment.additional.invoice.wizard",
+      "pet.appointment.billing.repair.wizard",
+      "pet.appointment.inventory",
+      "pet.appointment.pet.quick.wizard",
+      "pet.appointment.service.line",
+      "pet.billing.integrity.issue",
+      "pet.boarding.stay",
+      "pet.breed",
+      "pet.clinic.expense",
+      "pet.clinic.finance",
+      "pet.clinic.finance.setup",
+      "pet.clinic.partner.reimbursement",
+      "pet.clinic.partner.reimbursement.wizard",
+      "pet.clinic.quick.expense.wizard",
+      "pet.clinic.wallet.transfer",
+      "pet.diet.plan",
+      "pet.diet.plan.line",
+      "pet.exam.price.config",
+      "pet.expense.category",
+      "pet.funding.source",
+      "pet.grooming.equipment",
+      "pet.grooming.service",
+      "pet.grooming.session",
+      "pet.help",
+      "pet.kennel",
+      "pet.kennel.equipment",
+      "pet.medical.diagnostic.report",
+      "pet.medical.visit",
+      "pet.medical.visit.line",
+      "pet.notification",
+      "pet.pet",
+      "pet.species",
+      "pet.training.program",
+      "pet.training.session",
+      "pet.vaccination",
+      "pet.vaccine"
+    ],
+    "inherits": [
+      "account.move",
+      "account.move.line",
+      "account.payment.register",
+      "appointment.type",
+      "calendar.event",
+      "hr.employee",
+      "mail.activity.mixin",
+      "mail.thread",
+      "res.config.settings",
+      "sale.order"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "appointment.calendar_event_view_tree_booking",
+      "base.EGP",
+      "base.group_system",
+      "base.main_company",
+      "base.partner_admin",
+      "base.res_config_settings_view_form",
+      "base.user_root",
+      "calendar.view_calendar_event_form",
+      "calendar.view_calendar_event_tree",
+      "hr.view_employee_form",
+      "hr.view_employee_tree"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "petget_core",
+    "version": "19.0.1.0.0",
+    "depends_on": [
+      "base",
+      "mail",
+      "contacts"
+    ],
+    "required_models": [
+      "[%s] %s",
+      "image.mixin",
+      "mail.activity.mixin",
+      "mail.thread",
+      "petget.animal",
+      "petget.document",
+      "petget.note",
+      "petget.reminder"
+    ],
+    "models_defined": [
+      "[%s] %s",
+      "petget.animal",
+      "petget.document",
+      "petget.note",
+      "petget.reminder"
+    ],
+    "inherits": [
+      "image.mixin",
+      "mail.activity.mixin",
+      "mail.thread"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.group_user",
+      "base.user_admin"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "petget_dog",
+    "version": "19.0.1.0.0",
+    "depends_on": [
+      "petget_core"
+    ],
+    "required_models": [
+      "petget.animal",
+      "petget.dog.breed"
+    ],
+    "models_defined": [
+      "petget.dog.breed"
+    ],
+    "inherits": [
+      "petget.animal"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "petget_core.petget_core_view_form_animal",
+      "petget_core.petget_core_view_list_animal"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "petget_dog_knowledge",
+    "version": "19.0.1.0.0",
+    "depends_on": [
+      "petget_dog"
+    ],
+    "required_models": [
+      "image.mixin",
+      "petget.animal",
+      "petget.breed.growth",
+      "petget.dog.breed",
+      "petget.dog.color",
+      "petget.dog.life.stage"
+    ],
+    "models_defined": [
+      "petget.breed.growth",
+      "petget.dog.breed",
+      "petget.dog.color",
+      "petget.dog.life.stage"
+    ],
+    "inherits": [
+      "image.mixin",
+      "petget.animal",
+      "petget.dog.breed"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.ca",
+      "base.de",
+      "base.fr",
+      "base.mx",
+      "base.ru",
+      "base.uk",
+      "petget_core.petget_core_view_form_animal",
+      "petget_dog.breed_beagle",
+      "petget_dog.breed_boxer",
+      "petget_dog.breed_bulldog",
+      "petget_dog.breed_cavalier_king_charles_spaniel",
+      "petget_dog.breed_chihuahua",
+      "petget_dog.breed_dachshund",
+      "petget_dog.breed_french_bulldog",
+      "petget_dog.breed_german_shepherd_dog",
+      "petget_dog.breed_golden_retriever",
+      "petget_dog.breed_labrador_retriever",
+      "petget_dog.breed_pembroke_welsh_corgi",
+      "petget_dog.breed_poodle_standard",
+      "petget_dog.breed_rottweiler",
+      "petget_dog.breed_siberian_husky",
+      "petget_dog.breed_yorkshire_terrier",
+      "petget_dog.petget_dog_action_breed",
+      "petget_dog.petget_dog_view_form_breed"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "petspot_backend_sidebar",
+    "version": "19.0.1.1.1",
+    "depends_on": [
+      "web",
+      "web_enterprise",
+      "pet_management",
+      "petspot_wa_intake",
+      "petspot_clinic_portal",
+      "sale_management",
+      "point_of_sale",
+      "stock",
+      "account",
+      "crm"
+    ],
+    "required_models": [],
+    "models_defined": [],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "HIGH"
+  },
+  {
+    "module": "petspot_campaign_rewards",
+    "version": "19.0.1.2.0",
+    "depends_on": [
+      "website",
+      "survey",
+      "website_slides",
+      "website_slides_survey",
+      "website_knowledge",
+      "loyalty",
+      "sale_loyalty",
+      "pos_loyalty",
+      "survey_crm",
+      "crm",
+      "knowledge",
+      "social_media_connector",
+      "integration_bridge_core",
+      "petspot_clinic_portal"
+    ],
+    "required_models": [
+      "crm.lead",
+      "loyalty.card",
+      "pet.appointment",
+      "petspot.campaign",
+      "petspot.campaign.step",
+      "petspot.portal.token",
+      "res.config.settings",
+      "survey.question",
+      "survey.survey",
+      "survey.user_input"
+    ],
+    "models_defined": [
+      "petspot.campaign",
+      "petspot.campaign.step"
+    ],
+    "inherits": [
+      "crm.lead",
+      "loyalty.card",
+      "pet.appointment",
+      "petspot.portal.token",
+      "res.config.settings",
+      "survey.question",
+      "survey.survey",
+      "survey.user_input"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "social_media_connector.view_social_media_config_settings_form",
+      "step.public_url",
+      "step.survey_start_url",
+      "survey.model_survey_user_input",
+      "survey.survey_fill_form_start",
+      "survey.survey_page_fill",
+      "survey.survey_question_form",
+      "survey.survey_survey_view_form"
+    ],
+    "risk_if_dep_changes": "HIGH"
+  },
+  {
+    "module": "petspot_clinic_portal",
+    "version": "19.0.2.3.0",
+    "depends_on": [
+      "pet_management",
+      "petspot_wa_intake",
+      "mail",
+      "integration_bridge_core",
+      "sale"
+    ],
+    "required_models": [
+      "pet.appointment",
+      "pet.medical.visit",
+      "petspot.clinic.slot",
+      "petspot.notify.mixin",
+      "petspot.portal.submit.log",
+      "petspot.portal.token"
+    ],
+    "models_defined": [
+      "pet.appointment",
+      "pet.medical.visit",
+      "petspot.clinic.slot",
+      "petspot.notify.mixin",
+      "petspot.portal.submit.log",
+      "petspot.portal.token"
+    ],
+    "inherits": [
+      "pet.appointment",
+      "pet.medical.visit",
+      "petspot.notify.mixin"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "pet_management.model_pet_medical_visit",
+      "pet_management.view_pet_medical_visit_form",
+      "token_rec.exam_access_url",
+      "token_rec.odoo_case_url"
+    ],
+    "risk_if_dep_changes": "HIGH"
+  },
+  {
+    "module": "petspot_vet_feedback",
+    "version": "19.0.1.0.0",
+    "depends_on": [
+      "petspot_clinic_portal",
+      "survey",
+      "sale_loyalty",
+      "base_automation"
+    ],
+    "required_models": [
+      "hr.employee",
+      "pet.medical.visit",
+      "pet.vet.performance.report",
+      "survey.user_input"
+    ],
+    "models_defined": [],
+    "inherits": [
+      "hr.employee",
+      "pet.medical.visit",
+      "pet.vet.performance.report",
+      "survey.user_input"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.user_admin",
+      "pet_management.model_pet_medical_visit",
+      "pet_management.view_employee_form_pet_vet_hr_settings",
+      "pet_management.view_pet_medical_visit_form",
+      "pet_management.view_pet_vet_performance_list",
+      "pet_management.view_pet_vet_performance_pivot"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "petspot_wa_intake",
+    "version": "19.0.1.0.1",
+    "depends_on": [
+      "integration_bridge_core",
+      "whatsapp_hub",
+      "pet_management",
+      "sale",
+      "mail"
+    ],
+    "required_models": [
+      "mail.activity.mixin",
+      "mail.thread",
+      "petspot.wa.intake",
+      "res.config.settings"
+    ],
+    "models_defined": [
+      "petspot.wa.intake"
+    ],
+    "inherits": [
+      "mail.activity.mixin",
+      "mail.thread",
+      "res.config.settings"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.res_config_settings_view_form"
+    ],
+    "risk_if_dep_changes": "HIGH"
+  },
+  {
+    "module": "planning_field_service_worksheet",
+    "version": "1.0",
+    "depends_on": [
+      "planning",
+      "industry_fsm_report",
+      "sale_planning"
+    ],
+    "required_models": [],
+    "models_defined": [],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "pos_stock",
+    "version": "1.0",
+    "depends_on": [
+      "point_of_sale",
+      "stock"
+    ],
+    "required_models": [],
+    "models_defined": [],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "social_media_connector",
+    "version": "19.0.1.0.1",
+    "depends_on": [
+      "base",
+      "web",
+      "mail",
+      "base_setup"
+    ],
+    "required_models": [
+      "res.config.settings",
+      "social.media.page",
+      "social.media.post",
+      "social.media.post.template"
+    ],
+    "models_defined": [
+      "social.media.page",
+      "social.media.post",
+      "social.media.post.template"
+    ],
+    "inherits": [
+      "res.config.settings"
+    ],
+    "python_cross_imports": [
+      "odoo_rpc"
+    ],
+    "external_xml_ids_sample": [],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "veterinary_clinic",
+    "version": "1.3",
+    "depends_on": [
+      "base_industry_data",
+      "crm_enterprise",
+      "documents_sign",
+      "knowledge",
+      "planning_field_service_worksheet",
+      "pos_online_payment",
+      "pos_stock",
+      "sale_planning",
+      "sale_timesheet",
+      "web_studio",
+      "website_appointment_crm"
+    ],
+    "required_models": [],
+    "models_defined": [],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "appointment_sms.calendar_alarm_data_1h_sms",
+      "base.be",
+      "base.group_system",
+      "base.group_user",
+      "base.main_company",
+      "base.main_partner",
+      "base.model_res_partner",
+      "base.module_theme_default",
+      "base.partner_admin",
+      "base.partner_root",
+      "base.public_user",
+      "base.user_admin",
+      "base.view_partner_form",
+      "base_industry_data.res_partner_21",
+      "base_industry_data.res_partner_23",
+      "base_industry_data.res_partner_24",
+      "base_industry_data.res_partner_25",
+      "base_industry_data.res_partner_26",
+      "base_industry_data.res_partner_27",
+      "base_industry_data.res_partner_28",
+      "base_industry_data.res_partner_35",
+      "calendar.alarm_mail_1",
+      "calendar.model_calendar_event",
+      "calendar.view_calendar_event_form",
+      "crm.crm_case_kanban_view_leads",
+      "crm.stage_lead1",
+      "crm.stage_lead2",
+      "crm.stage_lead4",
+      "documents_project.document_project_folder",
+      "mail.channel_all_employees",
+      "mail.mt_comment",
+      "product.product_category_goods",
+      "product.product_category_services",
+      "sale.model_sale_order",
+      "sales_team.team_sales_department",
+      "sign.sign_item_role_default",
+      "sign.sign_item_type_email",
+      "sign.sign_item_type_name",
+      "sign.sign_item_type_phone",
+      "website.contactus"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "veterinary_pet_management_bridge",
+    "version": "19.0.1.0.0",
+    "depends_on": [
+      "veterinary_clinic",
+      "pet_management",
+      "veterinary_petget_bridge"
+    ],
+    "required_models": [
+      "display_name",
+      "pet.clinic.species.map",
+      "pet.clinic.sync.mixin",
+      "pet.pet"
+    ],
+    "models_defined": [
+      "display_name",
+      "pet.clinic.species.map",
+      "pet.clinic.sync.mixin",
+      "pet.pet"
+    ],
+    "inherits": [
+      "pet.clinic.sync.mixin",
+      "pet.pet"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "pet_management.species_cat",
+      "pet_management.species_dog",
+      "pet_management.species_hamster",
+      "pet_management.species_rabbit",
+      "pet_management.view_pet_pet_form",
+      "pet_management.view_pet_pet_tree",
+      "veterinary_clinic.form_view_for_x_pets",
+      "veterinary_clinic.x_pets_model",
+      "veterinary_clinic.x_species_1",
+      "veterinary_clinic.x_species_2",
+      "veterinary_clinic.x_species_3",
+      "veterinary_clinic.x_species_4"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "veterinary_petget_bridge",
+    "version": "19.0.2.1.0",
+    "depends_on": [
+      "veterinary_clinic",
+      "petget_dog_knowledge"
+    ],
+    "required_models": [
+      "petget.document",
+      "petget.note",
+      "petget.reminder"
+    ],
+    "models_defined": [],
+    "inherits": [
+      "petget.document",
+      "petget.note",
+      "petget.reminder"
+    ],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "petget_core.petget_core_menu_root",
+      "petget_core.petget_core_view_form_document",
+      "petget_core.petget_core_view_form_note",
+      "petget_core.petget_core_view_form_reminder",
+      "petget_dog.petget_dog_menu_breeds",
+      "petget_dog.petget_dog_menu_config",
+      "petget_dog_knowledge.petget_dog_knowledge_menu_colours",
+      "petget_dog_knowledge.petget_dog_knowledge_menu_life_stages",
+      "veterinary_clinic.form_view_for_x_pets",
+      "veterinary_clinic.kanban_custom_view_for_x_pets",
+      "veterinary_clinic.list_view_for_x_pets_default",
+      "veterinary_clinic.menu_pets_configuration",
+      "veterinary_clinic.x_breed_pets_model_field",
+      "veterinary_clinic.x_pets_model"
+    ],
+    "risk_if_dep_changes": "LOW"
+  },
+  {
+    "module": "whatsapp_hub",
+    "version": "19.0.1.0.1",
+    "depends_on": [
+      "base",
+      "mail",
+      "web",
+      "contacts"
+    ],
+    "required_models": [
+      "display_name",
+      "whatsapp.contact",
+      "whatsapp.conversation",
+      "whatsapp.group",
+      "whatsapp.hub.compat",
+      "whatsapp.instance",
+      "whatsapp.message",
+      "whatsapp.message.event",
+      "whatsapp.outbound.message"
+    ],
+    "models_defined": [
+      "display_name",
+      "whatsapp.contact",
+      "whatsapp.conversation",
+      "whatsapp.group",
+      "whatsapp.hub.compat",
+      "whatsapp.instance",
+      "whatsapp.message",
+      "whatsapp.message.event",
+      "whatsapp.outbound.message"
+    ],
+    "inherits": [],
+    "python_cross_imports": [],
+    "external_xml_ids_sample": [
+      "base.group_user"
+    ],
+    "risk_if_dep_changes": "LOW"
+  }
+]

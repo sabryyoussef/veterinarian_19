@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Campaign Setup Wizard — multi-step form
+         ═══════════════════════════════════════════════════════════════════ -->
+    <record id="view_lead_engine_campaign_wizard_form" model="ir.ui.view">
+        <field name="name">lead.engine.campaign.wizard.form</field>
+        <field name="model">lead.engine.campaign.wizard</field>
+        <field name="arch" type="xml">
+            <form string="New Campaign">
+
+                <!-- Progress bar + navigation buttons -->
+                <header>
+                    <button name="action_back" type="object" string="Back"
+                            invisible="state == 'step_campaign'"
+                            class="btn-secondary"/>
+                    <button name="action_next" type="object" string="Next →"
+                            class="btn-primary"
+                            invisible="state == 'step_review'"/>
+                    <button name="action_launch" type="object"
+                            string="🚀  Launch Campaign"
+                            class="btn-success"
+                            invisible="state != 'step_review'"/>
+                    <button special="cancel" string="Discard"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="step_campaign,step_scoring,step_assignment,step_playbook,step_contacts,step_review"
+                           options="{'clickable': false}"/>
+                </header>
+
+                <sheet>
+
+                    <!-- ── Step 1: Campaign ────────────────────────────────── -->
+                    <div invisible="state != 'step_campaign'">
+                        <div class="o_form_sheet_bg">
+                            <h2 class="mb-1">
+                                <i class="fa fa-bullhorn me-2 text-primary" title="Campaign"/>
+                                Set up your campaign
+                            </h2>
+                            <p class="text-muted mb-4">
+                                Give your campaign a name and choose how leads will arrive.
+                                Pick a template to pre-fill scoring and follow-up steps.
+                            </p>
+                        </div>
+
+                        <group>
+                            <group string="Start from a template (optional)">
+                                <field name="template_id"
+                                       options="{'no_open': True}"
+                                       placeholder="— choose a template to pre-fill everything —"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group string="Campaign details">
+                                <field name="campaign_name" placeholder="e.g. Hospital Website Form Q2-2026"/>
+                                <field name="channel"/>
+                                <field name="source_code" placeholder="AUTO_GENERATED"/>
+                            </group>
+                            <group string="Default owner &amp; outreach">
+                                <field name="default_team_id" placeholder="Sales team…"/>
+                                <field name="default_user_id" placeholder="Salesperson…"/>
+                                <field name="send_initial_email"/>
+                                <field name="email_template_id"
+                                       options="{'no_create': True}"
+                                       placeholder="Default email template..."/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="description"
+                                   placeholder="Internal notes about this campaign source…"
+                                   nolabel="1"/>
+                        </group>
+                    </div>
+
+                    <!-- ── Step 2: Scoring ────────────────────────────────── -->
+                    <div invisible="state != 'step_scoring'">
+                        <div>
+                            <h2 class="mb-1">
+                                <i class="fa fa-star me-2 text-warning" title="Scoring"/>
+                                Score your leads
+                            </h2>
+                            <p class="text-muted mb-3">
+                                Add rules to award points to incoming leads.
+                                Higher-scoring leads get assigned and followed-up first.
+                                Leave empty to skip automatic scoring.
+                            </p>
+                        </div>
+
+                        <!-- ▸ Scenario quick-fill ── -->
+                        <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-light rounded border">
+                            <i class="fa fa-magic fa-lg text-warning flex-shrink-0" title="Quick fill"/>
+                            <div class="flex-grow-1">
+                                <strong>Load a ready-made scoring scenario</strong>
+                                <div class="text-muted" style="font-size:0.88em;">
+                                    Pick one to instantly fill the rules below.
+                                    You can still add, remove, or edit any rule afterwards.
+                                </div>
+                            </div>
+                            <field name="score_scenario"
+                                   nolabel="1"
+                                   placeholder="— choose a scenario —"
+                                   style="min-width:300px;"/>
+                        </div>
+
+                        <field name="score_line_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="name" placeholder="e.g. Email provided"/>
+                                <field name="lead_field" optional="show"
+                                       placeholder="— always (every lead) —"/>
+                                <field name="score_delta" string="Points"/>
+                            </list>
+                        </field>
+
+                        <div class="alert alert-info mt-3" role="alert">
+                            <i class="fa fa-info-circle me-1" title="Tip"/>
+                            <strong>Tip:</strong> Add an "always" rule (no field selected) as a base score
+                            (e.g. 10 points) so every lead from this source starts with a head-start.
+                        </div>
+                    </div>
+
+                    <!-- ── Step 3: Assignment ─────────────────────────────── -->
+                    <div invisible="state != 'step_assignment'">
+                        <div>
+                            <h2 class="mb-1">
+                                <i class="fa fa-user-plus me-2 text-success" title="Assignment"/>
+                                Assign leads
+                            </h2>
+                            <p class="text-muted mb-4">
+                                Choose whether this campaign assigns leads by score,
+                                assigns them directly to one owner, or leaves only the
+                                source default owner from step 1.
+                            </p>
+                        </div>
+
+                        <group>
+                            <group string="Assignment mode">
+                                <field name="assignment_mode" widget="radio"/>
+                            </group>
+                            <group string="Assign to">
+                                <field name="assign_team_id" placeholder="Sales team…"/>
+                                <field name="assign_user_id" placeholder="Salesperson…"/>
+                            </group>
+                        </group>
+
+                        <group invisible="assignment_mode != 'auto_score'">
+                            <group string="Score trigger">
+                                <field name="assign_min_score"
+                                       widget="integer"
+                                       help="Leads at or above this score will be routed."/>
+                            </group>
+                        </group>
+
+                        <div class="alert alert-info mt-3" role="alert"
+                             invisible="assignment_mode != 'manual'">
+                            <i class="fa fa-info-circle me-1" title="Info"/>
+                            All leads created by this campaign will be assigned directly to the selected team and/or salesperson.
+                        </div>
+                    </div>
+
+                    <!-- ── Step 4: Playbook ───────────────────────────────── -->
+                    <div invisible="state != 'step_playbook'">
+                        <div>
+                            <h2 class="mb-1">
+                                <i class="fa fa-list-ol me-2 text-danger" title="Playbook"/>
+                                Follow-up playbook
+                            </h2>
+                            <p class="text-muted mb-4">
+                                A playbook is a sequence of activities and emails
+                                that run automatically after a lead qualifies.
+                            </p>
+                        </div>
+
+                        <group>
+                            <group string="Playbook">
+                                <field name="playbook_choice" widget="radio"/>
+                                <field name="playbook_id"
+                                       invisible="playbook_choice != 'existing'"
+                                       options="{'no_create': True}"
+                                       placeholder="Select an existing playbook…"/>
+                                <field name="playbook_name"
+                                       invisible="playbook_choice != 'new'"
+                                       placeholder="e.g. Hospital Website Follow-up"/>
+                                <field name="playbook_auto_start"
+                                       invisible="playbook_choice == 'none'"/>
+                            </group>
+                        </group>
+
+                        <div invisible="playbook_choice != 'new'">
+
+                            <!-- ▸ Scenario quick-fill ── -->
+                            <div class="d-flex align-items-center gap-3 mt-3 mb-3 p-3 bg-light rounded border">
+                                <i class="fa fa-magic fa-lg text-primary flex-shrink-0" title="Quick fill"/>
+                                <div class="flex-grow-1">
+                                    <strong>Load a ready-made scenario</strong>
+                                    <div class="text-muted" style="font-size:0.88em;">
+                                        Pick one below to instantly fill the steps table.
+                                        You can still add, remove, or reorder steps afterwards.
+                                    </div>
+                                </div>
+                                <field name="playbook_scenario"
+                                       nolabel="1"
+                                       placeholder="— choose a scenario —"
+                                       style="min-width:300px;"/>
+                            </div>
+
+                            <h3 class="mb-1">Steps</h3>
+                            <p class="text-muted mb-2">
+                                Steps run in order; use delays to space them out.
+                                Drag the handle to reorder.
+                            </p>
+                            <field name="step_line_ids" nolabel="1">
+                                <list editable="bottom" default_order="sequence">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name" placeholder="Step name…"/>
+                                    <field name="step_type"/>
+                                    <field name="delay_unit" optional="show"/>
+                                    <field name="delay_amount" optional="show"/>
+                                    <field name="activity_type_id"
+                                           invisible="step_type != 'create_activity'"
+                                           optional="show"/>
+                                    <field name="activity_summary"
+                                           invisible="step_type != 'create_activity'"
+                                           optional="show"/>
+                                    <field name="mail_template_id"
+                                           invisible="step_type != 'send_email_template'"
+                                           optional="show"/>
+                                </list>
+                            </field>
+                        </div>
+
+                        <div invisible="playbook_choice != 'existing'">
+                            <h3 class="mb-1">Existing playbook steps</h3>
+                            <p class="text-muted mb-2">
+                                Read-only preview of the selected playbook sequence.
+                            </p>
+                            <field name="existing_playbook_step_ids" nolabel="1">
+                                <list default_order="sequence" editable="bottom" create="0" delete="0" open_form_view="1">
+                                    <field name="sequence"/>
+                                    <field name="name"/>
+                                    <field name="step_type"/>
+                                    <field name="delay_unit" optional="show"/>
+                                    <field name="delay_amount" optional="show"/>
+                                    <field name="activity_type_id" optional="show"/>
+                                    <field name="activity_summary" optional="show"/>
+                                    <field name="mail_template_id"
+                                           invisible="step_type != 'send_email_template'"
+                                           optional="show"/>
+                                </list>
+                            </field>
+                        </div>
+                    </div>
+
+                    <!-- ── Step 5: Contacts ──────────────────────────────── -->
+                    <div invisible="state != 'step_contacts'">
+                        <div>
+                            <h2 class="mb-1">
+                                <i class="fa fa-users me-2 text-info" title="Contacts"/>
+                                Target contacts <span class="text-muted fw-normal fs-6">(optional)</span>
+                            </h2>
+                            <p class="text-muted mb-3">
+                                Select contacts from your database to bulk-create leads for this campaign.
+                                Each contact becomes a lead, the pipeline runs automatically
+                                (scoring → assignment → playbook).
+                                Skip this step if leads will arrive via form, API, or CRM entry.
+                            </p>
+                        </div>
+
+                        <group>
+                            <field name="create_leads_from_contacts" widget="boolean_toggle"
+                                   string="Create leads from contacts now"/>
+                        </group>
+
+                        <div invisible="not create_leads_from_contacts">
+                            <group>
+                                <group string="Lead subject">
+                                    <field name="lead_name_prefix"
+                                           placeholder="e.g. Interested in our service"/>
+                                </group>
+                                <group string="Initial outreach email">
+                                    <field name="send_initial_email"/>
+                                    <field name="email_template_id"
+                                           options="{'no_create': True}"
+                                           invisible="not send_initial_email"
+                                           required="send_initial_email"
+                                           placeholder="Select a CRM lead email template..."/>
+                                </group>
+                            </group>
+
+                            <h3 class="mt-3 mb-1">Select contacts</h3>
+                            <p class="text-muted mb-2">
+                                Use the search bar to filter by name, company, country, or tags.
+                            </p>
+                            <field name="target_partner_ids" widget="many2many"
+                                   options="{'no_create': True}"
+                                   nolabel="1">
+                                <list string="Contacts">
+                                    <field name="name"/>
+                                    <field name="company_name" optional="show"/>
+                                    <field name="email" optional="show"/>
+                                    <field name="phone" optional="show"/>
+                                    <field name="country_id" optional="show"/>
+                                </list>
+                            </field>
+                        </div>
+
+                        <div invisible="create_leads_from_contacts"
+                             class="alert alert-info mt-3" role="alert">
+                            <i class="fa fa-info-circle me-1" title="Info"/>
+                            No contacts selected — leads will be created when people submit a form,
+                            hit your API endpoint, or are entered manually in CRM.
+                        </div>
+                    </div>
+
+                    <!-- ── Step 6: Review & Launch ────────────────────────── -->
+                    <div invisible="state != 'step_review'">
+                        <div>
+                            <h2 class="mb-1">
+                                <i class="fa fa-rocket me-2 text-primary" title="Launch"/>
+                                Ready to launch
+                            </h2>
+                            <p class="text-muted mb-4">
+                                Review the summary below and click <strong>Launch Campaign</strong>
+                                to create all records at once.
+                            </p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header fw-bold">
+                                        <i class="fa fa-bullhorn me-1" title="Campaign"/> Campaign
+                                    </div>
+                                    <div class="card-body">
+                                        <group col="2">
+                                            <field name="campaign_name" readonly="1"/>
+                                            <field name="review_source_code" readonly="1"/>
+                                            <field name="channel" readonly="1"/>
+                                            <field name="default_team_id" readonly="1"/>
+                                            <field name="default_user_id" readonly="1"/>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header fw-bold">
+                                        <i class="fa fa-cogs me-1" title="Summary"/> What will be created
+                                    </div>
+                                    <div class="card-body">
+                                        <group col="2">
+                                            <field name="review_score_rules" readonly="1"/>
+                                            <field name="assign_min_score" readonly="1"
+                                                   string="Min. score to assign"/>
+                                            <field name="assign_team_id" readonly="1"/>
+                                            <field name="assign_user_id" readonly="1"/>
+                                            <field name="review_playbook" readonly="1"/>
+                                            <field name="review_steps" readonly="1"/>
+                                            <field name="review_contacts" readonly="1"/>
+                                        </group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </sheet>
+
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the wizard full-page -->
+    <record id="action_lead_engine_campaign_wizard" model="ir.actions.act_window">
+        <field name="name">New Campaign</field>
+        <field name="res_model">lead.engine.campaign.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+</odoo>

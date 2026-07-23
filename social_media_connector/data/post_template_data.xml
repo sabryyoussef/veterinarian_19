@@ -11,10 +11,9 @@ Trusted veterinary care on Egypt's North Coast — clinic, grooming, boarding &a
 📍 Branch 1 — Amwaj 1 (North Coast)
 {location_en}
 📞 {phone_amwaj}
-🗺️ Google Maps: {maps_url}
 
-📍 Branch 2 — Marsa Matruh
-📞 {phone_marassi}
+📞 Call center: {call_center}
+📞 Haram: {phone_haram}
 
 💬 WhatsApp: {whatsapp}
 🌐 {website_display}
@@ -31,8 +30,8 @@ Trusted veterinary care on Egypt's North Coast — clinic, grooming, boarding &a
 {location_ar}
 📞 {phone_amwaj}
 
-📍 الفرع 2 — مرسى مطروح
-📞 {phone_marassi}
+📞 الكول سنتر: {call_center}
+📞 الهرم: {phone_haram}
 
 💬 واتساب: {whatsapp}
 🌐 {website_display}

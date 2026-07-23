@@ -1,0 +1,4 @@
+OP URL redirects to login (session required for Glass UI)
+odoo URL redirects to /web/login
+cursor-ide-browser tools not registered in CallMcpTool catalog this session
+UAT data path: authenticated OpenProject API via Odoo backend + Odoo DB (same SoT as UI)

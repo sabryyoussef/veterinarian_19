@@ -1,0 +1,5 @@
+# Optional Python deps for Phase B+ (Gmail API). Install on the Odoo server, e.g.:
+#   pip install -r addons/mail_gmail_connector/requirements.txt
+google-api-python-client>=2.100.0
+google-auth>=2.23.0
+google-auth-oauthlib>=1.1.0

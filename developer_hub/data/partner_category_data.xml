@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="category_odoo_partner" model="res.partner.category">
+        <field name="name">Odoo Partner</field>
+        <field name="color">4</field>
+    </record>
+    <record id="category_odoo_company" model="res.partner.category">
+        <field name="name">Odoo Company</field>
+        <field name="color">3</field>
+    </record>
+    <record id="category_recruiter" model="res.partner.category">
+        <field name="name">Recruiter</field>
+        <field name="color">5</field>
+    </record>
+    <record id="category_potential_employer" model="res.partner.category">
+        <field name="name">Potential Employer</field>
+        <field name="color">6</field>
+    </record>
+    <record id="category_professional_contact" model="res.partner.category">
+        <field name="name">Professional Contact</field>
+        <field name="color">2</field>
+    </record>
+</odoo>

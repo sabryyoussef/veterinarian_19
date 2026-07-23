@@ -1,0 +1,12 @@
+             t              | count 
+----------------------------+-------
+ wa_message_log             |     2
+ evo_wa_template            |    15
+ petspot_wa_intake          |    12
+ integration_bridge_log     |   127
+ integration_outbound_queue |   127
+ integration_bridge_token   |     5
+ wa_campaign                |    14
+ wa_campaign_line           |  2257
+(8 rows)
+

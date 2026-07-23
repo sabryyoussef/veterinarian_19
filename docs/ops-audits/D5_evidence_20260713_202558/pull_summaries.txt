@@ -1,0 +1,9 @@
+  id   |        create_date         | state |                                  left                                  
+-------+----------------------------+-------+------------------------------------------------------------------------
+ 59338 | 2026-07-13 20:13:13.584531 | ok    | Pull done — pulled:0 created:0 updated:0 skipped:0 warnings:0 errors:0
+ 59295 | 2026-07-13 19:58:03.983279 | ok    | Pull done — pulled:0 created:0 updated:0 skipped:0 warnings:0 errors:0
+ 59202 | 2026-07-13 19:50:12.133885 | ok    | Pull done — pulled:2 created:0 updated:1 skipped:1 warnings:0 errors:0
+ 59157 | 2026-07-13 19:35:05.829563 | ok    | Pull done — pulled:0 created:0 updated:0 skipped:0 warnings:0 errors:0
+ 59114 | 2026-07-13 19:27:43.725885 | ok    | Pull done — pulled:0 created:0 updated:0 skipped:0 warnings:0 errors:0
+(5 rows)
+

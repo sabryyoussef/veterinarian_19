@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fetchmail_server_view_form_gmail_connector" model="ir.ui.view">
+        <field name="name">fetchmail.server.view.form.inherit.gmail.connector</field>
+        <field name="model">fetchmail.server</field>
+        <field name="inherit_id" ref="mail.view_email_server_form"/>
+        <field name="arch" type="xml">
+            <field name="object_id" position="after">
+                <group string="Gmail Connector — what to import"
+                       invisible="server_type != 'gmail'"
+                       groups="base.group_system">
+                    <field name="gmail_imap_mailbox" placeholder="INBOX or exact Gmail label name"/>
+                    <field name="gmail_inbound_subject_keywords" placeholder="e.g. interview, offer, recruiter"/>
+                    <field name="gmail_inbound_exclude_domains" placeholder="youtube.com, noreply@, facebookmail.com"/>
+                </group>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Sequence — Hospital Group Demo Playbooks
+        =====================================================
+        Five playbooks matching each hospital lead source.
+
+        Playbook         Source         Steps   Auto-start
+        ─────────────────────────────────────────────────────────────
+        HOSP_WEB_PB      HOSP_WEB       3       YES (HTTP intake)
+        HOSP_ADS_PB      HOSP_ADS_CRD  1       YES (HTTP intake, call within 1 hr)
+        HOSP_CAMP_PB     HOSP_CAMP_26   2       NO  (manual wizard by sales rep)
+        HOSP_ORG_PB      HOSP_ORG       2       YES (HTTP intake, email then call)
+        HOSP_REF_PB      HOSP_REF       2       NO  (manual wizard by liaison team)
+
+        Email steps require a configured outgoing mail server.
+        Replace [HOSP] template content before go-live.
+    -->
+    <data noupdate="1">
+
+        <!-- ── Shared mail template for organic + referral welcome emails ──── -->
+        <record id="demo_hosp_mail_tpl_welcome" model="mail.template">
+            <field name="name">[HOSP] Patient Welcome — Thank You for Reaching Out</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Thank you for contacting {{ object.company_id.name or 'our hospital' }}</field>
+            <field name="email_to">{{ object.email_from }}</field>
+            <field name="body_html" type="html">
+                <p>
+                    Dear
+                    <t t-out="object.contact_name or object.partner_name or 'Patient'"/>,
+                </p>
+                <p>
+                    Thank you for reaching out to
+                    <t t-out="object.company_id.name or 'our hospital'"/>.
+                    We have received your enquiry and a member of our patient relations
+                    team will be in touch with you shortly.
+                </p>
+                <p>
+                    In the meantime, if you have any urgent medical concerns, please
+                    contact our 24-hour helpline or visit our nearest emergency department.
+                </p>
+                <p>Warm regards,</p>
+                <p>
+                    <strong>Patient Relations Team</strong><br/>
+                    <t t-out="object.company_id.name or 'Hospital Group'"/>
+                </p>
+                <p>
+                    <em>
+                        [DEMO] Replace this template with your real hospital name, contact
+                        details, and branding before go-live.
+                        Sending requires a configured outgoing mail server.
+                    </em>
+                </p>
+            </field>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             HOSP_WEB_PB — Website Consultation Request (3 steps)
+             ─────────────────────────────────────────────────────
+             Step 1 (immediate) : qualification call — understand department + insurance
+             Step 2 (immediate) : assign to Online Enquiries Team
+             Step 3 (+2 days)   : follow-up call — did they book? any questions?
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_hosp_pb_web" model="lead.engine.playbook">
+            <field name="name">[HOSP] Website Consultation Enquiry</field>
+            <field name="code">HOSP_WEB_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="10"/>
+            <field name="description">
+                3-step playbook for patients who submit the "Book a Consultation" form
+                on the hospital website.
+
+                Step 1 (immediate): Call to understand which department they need,
+                confirm insurance / self-pay, and check if appointment is urgent.
+                Step 2 (immediate): Assign to Online Enquiries Team for ongoing ownership.
+                Step 3 (2 days later): Follow-up call to confirm booking and answer questions.
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_web_s1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_web"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">Qualification call — understand department and insurance</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Call patient — qualify department need and confirm insurance / payment method</field>
+            <field name="activity_note" type="html">
+                <p><strong>Goals for this call:</strong></p>
+                <ol>
+                    <li>Introduce yourself and confirm this is a good time to talk.</li>
+                    <li>Ask what type of consultation they need (e.g. cardiology, orthopaedics, general).</li>
+                    <li>Confirm whether they are using health insurance or self-pay.</li>
+                    <li>Check urgency — are they in pain now or planning ahead?</li>
+                    <li>Offer available appointment slots or book a callback with the specialist team.</li>
+                    <li>Log outcome in the lead notes before hanging up.</li>
+                </ol>
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_web_s2" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_web"/>
+            <field name="sequence" eval="20"/>
+            <field name="name">Assign to Online Enquiries Team</field>
+            <field name="step_type">assign_owner</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="assign_team_id" ref="lead_engine_qualification.demo_hosp_team_online"/>
+        </record>
+
+        <record id="demo_hosp_pb_web_s3" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_web"/>
+            <field name="sequence" eval="30"/>
+            <field name="name">Follow-up call — confirm booking (2 days later)</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">days</field>
+            <field name="delay_amount" eval="2"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Follow-up — confirm appointment booking and answer any remaining questions</field>
+            <field name="activity_note" type="html">
+                <p><strong>Goals for this follow-up:</strong></p>
+                <ol>
+                    <li>Confirm the patient booked their appointment (if so, close this lead as Won).</li>
+                    <li>If not booked: ask what is holding them back and offer alternatives.</li>
+                    <li>If they chose another provider: log as Lost with reason for future analysis.</li>
+                    <li>If still deciding: schedule another follow-up in 5 days.</li>
+                </ol>
+            </field>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             HOSP_ADS_PB — Cardiology Ads Lead (1 step, HIGH PRIORITY)
+             ─────────────────────────────────────────────────────────
+             Step 1 (immediate) : HIGH PRIORITY call within 1 hour
+             Studies show 78% conversion drop-off if first contact takes > 1 hour.
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_hosp_pb_ads" model="lead.engine.playbook">
+            <field name="name">[HOSP] Cardiology Ads — High Priority Response</field>
+            <field name="code">HOSP_ADS_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="20"/>
+            <field name="description">
+                Single-step high-priority playbook for paid Cardiology Ads leads.
+                These leads are actively searching for cardiac care right now.
+                Target: call within 1 hour. The Cardiology Business Team owns these leads.
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_ads_s1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_ads"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">HIGH PRIORITY — Call within 1 hour (Cardiology Ads lead)</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">HIGH PRIORITY — Cardiology Ads lead. Call within 1 hour.</field>
+            <field name="activity_note" type="html">
+                <p>
+                    <strong>This is a paid Cardiology Ads lead — call immediately.</strong>
+                    Speed is the biggest conversion factor for paid-search patients.
+                </p>
+                <p><strong>Goals for this call:</strong></p>
+                <ol>
+                    <li>Introduce yourself from the Cardiology department.</li>
+                    <li>Ask what cardiac symptom or concern brought them to search today.</li>
+                    <li>Assess urgency — chest pain, palpitations, or routine ECG check?</li>
+                    <li>If urgent: connect directly to triage nurse or emergency line.</li>
+                    <li>If routine: offer a same-week or next-day specialist appointment.</li>
+                    <li>Confirm insurance / payment and book the slot before hanging up.</li>
+                </ol>
+                <p>
+                    <em>
+                        If no answer: leave a brief voicemail mentioning the hospital name,
+                        then schedule a callback activity for 3 hours later.
+                    </em>
+                </p>
+            </field>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             HOSP_CAMP_PB — Health and Wellness Fair Contact (2 steps)
+             ─────────────────────────────────────────────────────────
+             Step 1 (immediate) : call while the fair is fresh in their memory
+             Step 2 (immediate) : assign to Field Sales Team for ongoing ownership
+             Auto-start: OFF — sales rep launches via Start Playbook wizard
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_hosp_pb_camp" model="lead.engine.playbook">
+            <field name="name">[HOSP] Health and Wellness Fair — Event Follow-Up</field>
+            <field name="code">HOSP_CAMP_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="30"/>
+            <field name="description">
+                2-step playbook for contacts collected at the Health and Wellness Fair 2026.
+                Sales reps launch this manually from the CRM lead form after entering the contact.
+                Step 1: call the same day to re-establish rapport while the event is fresh.
+                Step 2: assign to Field Sales Team for long-term ownership.
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_camp_s1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_camp"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">Call today — while the event is fresh in their memory</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Health fair follow-up call — re-establish rapport, confirm interest</field>
+            <field name="activity_note" type="html">
+                <p><strong>Context:</strong> You met this person at the Health and Wellness Fair.</p>
+                <p><strong>Goals for this call:</strong></p>
+                <ol>
+                    <li>Remind them where you met and what you discussed at the booth.</li>
+                    <li>Ask if they had a chance to review any materials you shared.</li>
+                    <li>For corporate contacts (HR Managers): offer a free group health screening package — ask how many employees.</li>
+                    <li>For individuals: ask which health concern they are most interested in addressing.</li>
+                    <li>Agree on a next step (appointment, proposal, or another call).</li>
+                </ol>
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_camp_s2" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_camp"/>
+            <field name="sequence" eval="20"/>
+            <field name="name">Assign to Field Sales Team</field>
+            <field name="step_type">assign_owner</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="assign_team_id" ref="lead_engine_qualification.demo_hosp_team_field"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             HOSP_ORG_PB — Organic Blog Visitor (2 steps)
+             ─────────────────────────────────────────────
+             Step 1 (immediate) : welcome email (low-pressure, no sales)
+             Step 2 (+1 day)    : gentle follow-up call
+             Auto-start: YES — triggered by HTTP intake
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_hosp_pb_organic" model="lead.engine.playbook">
+            <field name="name">[HOSP] Organic Blog — Nurture Sequence</field>
+            <field name="code">HOSP_ORG_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="40"/>
+            <field name="description">
+                2-step low-pressure playbook for exploratory leads from the hospital blog.
+                These visitors are researching, not yet ready to book.
+                Step 1: send a warm welcome email immediately (no sales pressure).
+                Step 2: gentle follow-up call the next day to answer questions.
+                Routes to Marketing / Nurture team until they warm up.
+                Requires a configured outgoing mail server for Step 1.
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_organic_s1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_organic"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">Send welcome email (immediate — no sales pressure)</field>
+            <field name="step_type">send_email_template</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="mail_template_id" ref="demo_hosp_mail_tpl_welcome"/>
+        </record>
+
+        <record id="demo_hosp_pb_organic_s2" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_organic"/>
+            <field name="sequence" eval="20"/>
+            <field name="name">Gentle follow-up call (next day — answer questions, no pressure)</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">days</field>
+            <field name="delay_amount" eval="1"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Organic blog lead — low-pressure call, answer questions, no hard sell</field>
+            <field name="activity_note" type="html">
+                <p><strong>Approach:</strong> This person is researching, not ready to commit yet. Be helpful, not pushy.</p>
+                <p><strong>Goals for this call:</strong></p>
+                <ol>
+                    <li>Reference the welcome email you sent yesterday.</li>
+                    <li>Ask what health topic they were reading about on the blog.</li>
+                    <li>Answer any questions about services, costs, or what to expect at a consultation.</li>
+                    <li>If interest is strong: offer a free 15-minute phone consultation with a specialist.</li>
+                    <li>If still exploring: offer to send relevant articles or a service brochure via email.</li>
+                    <li>Do NOT pressure them to book — that will lose the relationship.</li>
+                </ol>
+            </field>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             HOSP_REF_PB — Doctor Referral (2 steps)
+             ─────────────────────────────────────────
+             Step 1 (immediate) : call the referring doctor to confirm details + urgency
+             Step 2 (immediate) : assign to Medical Liaison Team for specialist matching
+             Auto-start: OFF — launched manually by front-desk / liaison team
+             ════════════════════════════════════════════════════════════════════ -->
+        <record id="demo_hosp_pb_referral" model="lead.engine.playbook">
+            <field name="name">[HOSP] Doctor Referral — Specialist Matching</field>
+            <field name="code">HOSP_REF_PB</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence" eval="50"/>
+            <field name="description">
+                2-step playbook for patient referrals received from other doctors or clinics.
+                Referrals are pre-qualified — the priority is fast specialist matching.
+                Step 1: call the referring doctor (not the patient) to clarify diagnosis,
+                urgency, and what specialist they recommend.
+                Step 2: assign to Medical Liaison Team who coordinates specialist booking.
+                Launch this manually from the lead form after logging the referral.
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_referral_s1" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_referral"/>
+            <field name="sequence" eval="10"/>
+            <field name="name">Call referring doctor — confirm diagnosis, urgency, specialist needed</field>
+            <field name="step_type">create_activity</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="activity_summary">Call referring doctor — confirm patient details, urgency level, and specialist recommendation</field>
+            <field name="activity_note" type="html">
+                <p>
+                    <strong>Call the referring doctor (Dr. / Clinic in the lead's Company field),
+                    not the patient directly.</strong>
+                </p>
+                <p><strong>Questions to cover:</strong></p>
+                <ol>
+                    <li>Confirm patient name, age, and contact number.</li>
+                    <li>What is the primary diagnosis or concern being referred for?</li>
+                    <li>Is this urgent (days) or routine (weeks)?</li>
+                    <li>Which specialist or department do you recommend?</li>
+                    <li>Are there any existing test results or imaging we should receive?</li>
+                    <li>Should the patient contact you before coming in, or go directly to us?</li>
+                </ol>
+                <p>Log all details as a note on this lead before closing the activity.</p>
+            </field>
+        </record>
+
+        <record id="demo_hosp_pb_referral_s2" model="lead.engine.playbook.step">
+            <field name="playbook_id" ref="demo_hosp_pb_referral"/>
+            <field name="sequence" eval="20"/>
+            <field name="name">Assign to Medical Liaison Team for specialist matching</field>
+            <field name="step_type">assign_owner</field>
+            <field name="delay_unit">immediate</field>
+            <field name="delay_amount" eval="0"/>
+            <field name="assign_team_id" ref="lead_engine_qualification.demo_hosp_team_liaison"/>
+        </record>
+
+    </data>
+</odoo>

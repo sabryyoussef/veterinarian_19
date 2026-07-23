@@ -841,10 +841,14 @@ class SocialMediaPost(models.Model):
                 "social_media_connector.campaign_call_center", "01201568888"
             ),
             "phone_amwaj": ICP.get_param(
-                "social_media_connector.campaign_call_center", "01201568888"
+                "social_media_connector.campaign_phone_amwaj", "01280833332"
             ),
+            "phone_haram": ICP.get_param(
+                "social_media_connector.campaign_phone_haram", "01000059085"
+            ),
+            # Legacy alias for old templates
             "phone_marassi": ICP.get_param(
-                "social_media_connector.campaign_phone_marassi", "01280833332"
+                "social_media_connector.campaign_phone_haram", "01000059085"
             ),
             "website": website,
             "website_display": (website or "").replace("https://", "").replace(
@@ -1006,9 +1010,13 @@ class SocialMediaPost(models.Model):
 
     @api.model
     def _strip_campaign_footer(self, message):
-        if CAMPAIGN_CONTACT_MARKER not in (message or ""):
-            return (message or "").rstrip()
-        return (message or "").split(CAMPAIGN_CONTACT_MARKER)[0].rstrip()
+        message = message or ""
+        if CAMPAIGN_CONTACT_MARKER in message:
+            return message.split(CAMPAIGN_CONTACT_MARKER)[0].rstrip()
+        match = re.search(r"\n---\n", message)
+        if match:
+            return message[: match.start()].rstrip()
+        return message.rstrip()
 
     @api.model
     def _apply_campaign_footer(self, message):
@@ -1027,8 +1035,9 @@ class SocialMediaPost(models.Model):
         hashtag_block = f"\n{hashtags}" if hashtags else ""
         return (
             f"\n\n---\n"
+            f"📞 Call center: {cfg['call_center']}\n"
             f"📞 Amwaj 1: {cfg['phone_amwaj']}\n"
-            f"📞 Marsa Matruh: {cfg['phone_marassi']}\n"
+            f"📞 Haram: {cfg['phone_haram']}\n"
             f"💬 WhatsApp: {cfg['whatsapp']}\n"
             f"🌐 {website}\n"
             f"📘 Facebook: بيت الدواء البيطري -pet spot\n"
@@ -1036,8 +1045,9 @@ class SocialMediaPost(models.Model):
             f"🗺️ Google Maps: PetSpot Amwaj 1 gate"
             f"{hashtag_block}\n\n"
             f"---\n"
+            f"📞 الكول سنتر: {cfg['call_center']}\n"
             f"📞 أمواج 1: {cfg['phone_amwaj']}\n"
-            f"📞 مرسى مطروح: {cfg['phone_marassi']}\n"
+            f"📞 الهرم: {cfg['phone_haram']}\n"
             f"💬 واتساب: {cfg['whatsapp']}\n"
             f"🌐 {website}\n"
             f"📘 فيسبوك: بيت الدواء البيطري -pet spot\n"

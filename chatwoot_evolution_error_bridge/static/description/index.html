@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Chatwoot Evolution Error Bridge</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            max-width: 900px; 
+            margin: 40px auto; 
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 { 
+            color: #00A09D; 
+            border-bottom: 3px solid #00A09D;
+            padding-bottom: 10px;
+        }
+        h2 { 
+            color: #0073AA; 
+            margin-top: 30px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px;
+        }
+        .badge-primary { background: #00A09D; color: white; }
+        .badge-success { background: #28a745; color: white; }
+        .badge-info { background: #17a2b8; color: white; }
+        .feature { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            margin: 10px 0;
+            border-left: 4px solid #00A09D;
+            border-radius: 4px;
+        }
+        .api-endpoint {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .api-method {
+            color: #50fa7b;
+            font-weight: bold;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+        }
+        ul { margin: 10px 0; }
+        li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>🌉 Chatwoot Evolution Error Bridge</h1>
+    
+    <p>
+        <span class="badge badge-primary">v18.0.1.0.0</span>
+        <span class="badge badge-success">Odoo 18</span>
+        <span class="badge badge-info">Production Ready</span>
+    </p>
+
+    <p>
+        Secure API bridge connecting <strong>Chatwoot/Evolution WhatsApp</strong> conversations 
+        with Odoo's <strong>Error Reporter</strong> module through <strong>n8n</strong> automation.
+    </p>
+
+    <h2>✨ Key Features</h2>
+
+    <div class="feature">
+        <strong>🔐 Secure Authentication</strong>
+        <p>Token-based authentication with configurable CORS. Replace insecure public auth with proper security.</p>
+    </div>
+
+    <div class="feature">
+        <strong>📊 Complete Context Tracking</strong>
+        <p>Store all Chatwoot conversation details: conversation_id, contact_id, message_id, full webhook payload.</p>
+    </div>
+
+    <div class="feature">
+        <strong>🚫 Duplicate Prevention</strong>
+        <p>Unique constraint on external reference prevents duplicate error reports from same conversation.</p>
+    </div>
+
+    <div class="feature">
+        <strong>💬 Reply Message Generation</strong>
+        <p>Generate customer-ready WhatsApp messages with error tracking links and status updates.</p>
+    </div>
+
+    <div class="feature">
+        <strong>📱 Phone Sanitization</strong>
+        <p>Automatic cleanup of phone numbers (removes + and @s.whatsapp.net suffixes).</p>
+    </div>
+
+    <h2>🌐 API Endpoints</h2>
+
+    <div class="api-endpoint">
+        <span class="api-method">POST</span> /bridge/error_reports
+    </div>
+    <p>Create error report from WhatsApp conversation. Requires <code>X-Bridge-Token</code> header.</p>
+
+    <div class="api-endpoint">
+        <span class="api-method">POST</span> /bridge/error_reports/&lt;id&gt;/status
+    </div>
+    <p>Update error status and post note to chatter.</p>
+
+    <div class="api-endpoint">
+        <span class="api-method">GET</span> /bridge/error_reports/&lt;id&gt;
+    </div>
+    <p>Retrieve error report details.</p>
+
+    <div class="api-endpoint">
+        <span class="api-method">GET</span> /bridge/error_reports/&lt;id&gt;/reply_message
+    </div>
+    <p>Get formatted reply message for sending to customer.</p>
+
+    <div class="api-endpoint">
+        <span class="api-method">GET</span> /bridge/health
+    </div>
+    <p>Health check endpoint (no authentication required).</p>
+
+    <h2>📊 New Fields Added</h2>
+
+    <p>Extends <code>error.report</code> model with 11 new fields:</p>
+
+    <ul>
+        <li><code>x_source_platform</code> - whatsapp/chatwoot/web/other</li>
+        <li><code>x_reporter_phone</code> - Sanitized phone number</li>
+        <li><code>x_reporter_name</code> - Reporter's name</li>
+        <li><code>x_reporter_email</code> - Reporter's email</li>
+        <li><code>x_chatwoot_account_id</code> - Chatwoot account</li>
+        <li><code>x_chatwoot_inbox_id</code> - Chatwoot inbox</li>
+        <li><code>x_chatwoot_conversation_id</code> - <strong>Critical for replies</strong></li>
+        <li><code>x_chatwoot_contact_id</code> - Chatwoot contact</li>
+        <li><code>x_chatwoot_message_id</code> - Last message ID</li>
+        <li><code>x_chatwoot_payload</code> - Full webhook JSON</li>
+        <li><code>x_external_ref</code> - Unique reference (CW-xxx)</li>
+    </ul>
+
+    <h2>⚡ Quick Setup</h2>
+
+    <ol>
+        <li>Install module: <code>Apps → Search "Chatwoot Evolution" → Install</code></li>
+        <li>Generate token: <code>openssl rand -hex 32</code></li>
+        <li>Configure: <code>Settings → General Settings → Chatwoot Bridge</code></li>
+        <li>Test: <code>curl https://odoo18.freezonermirror.online/bridge/health</code></li>
+    </ol>
+
+    <div class="alert alert-warning">
+        <strong>⚠️ Security Notice:</strong> Change the default token immediately after installation! 
+        Never use the default <code>CHANGE_ME_TO_SECURE_TOKEN</code> in production.
+    </div>
+
+    <h2>🔗 Integration Flow</h2>
+
+    <p><strong>WhatsApp → Evolution API → Chatwoot → n8n → Bridge API → Odoo</strong></p>
+
+    <ol>
+        <li>User sends error message via WhatsApp</li>
+        <li>Evolution API forwards to Chatwoot</li>
+        <li>Chatwoot webhook triggers n8n workflow</li>
+        <li>n8n calls Bridge API with parsed data</li>
+        <li>Bridge API creates error in Odoo</li>
+        <li>Confirmation sent back to user via WhatsApp</li>
+    </ol>
+
+    <h2>📚 Documentation Files</h2>
+
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr style="background: #f0f0f0;">
+                <th>File</th>
+                <th>Purpose</th>
+                <th>Read Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="MODULE_SUMMARY.md">MODULE_SUMMARY.md</a></td>
+                <td>Quick overview and key features</td>
+                <td>5 min</td>
+            </tr>
+            <tr>
+                <td><a href="QUICKSTART.md">QUICKSTART.md</a></td>
+                <td>5-minute setup guide</td>
+                <td>5 min</td>
+            </tr>
+            <tr>
+                <td><a href="README.md">README.md</a></td>
+                <td>Complete API documentation</td>
+                <td>15 min</td>
+            </tr>
+            <tr>
+                <td><a href="N8N_WORKFLOW_GUIDE.md">N8N_WORKFLOW_GUIDE.md</a></td>
+                <td>n8n workflow creation guide</td>
+                <td>20 min</td>
+            </tr>
+            <tr>
+                <td><a href="DATA_MODEL.md">DATA_MODEL.md</a></td>
+                <td>Database schema and fields</td>
+                <td>10 min</td>
+            </tr>
+            <tr>
+                <td><a href="DEPLOYMENT_GUIDE.md">DEPLOYMENT_GUIDE.md</a></td>
+                <td>Step-by-step deployment</td>
+                <td>15 min</td>
+            </tr>
+            <tr>
+                <td><a href="TEST_SCRIPT.md">TEST_SCRIPT.md</a></td>
+                <td>15 comprehensive test cases</td>
+                <td>30 min</td>
+            </tr>
+            <tr>
+                <td><a href="CHANGELOG.md">CHANGELOG.md</a></td>
+                <td>Version history</td>
+                <td>3 min</td>
+            </tr>
+            <tr>
+                <td><a href="CURL_EXAMPLES.sh">CURL_EXAMPLES.sh</a></td>
+                <td>Bash test script</td>
+                <td>Run it!</td>
+            </tr>
+            <tr>
+                <td><a href="test_api.py">test_api.py</a></td>
+                <td>Python test suite</td>
+                <td>Run it!</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>🎓 Learning Paths</h2>
+
+    <h3>Path 1: Quick User (30 minutes)</h3>
+    <ol>
+        <li>MODULE_SUMMARY.md</li>
+        <li>QUICKSTART.md</li>
+        <li>Run CURL_EXAMPLES.sh</li>
+        <li>Done!</li>
+    </ol>
+
+    <h3>Path 2: Integrator (2 hours)</h3>
+    <ol>
+        <li>MODULE_SUMMARY.md</li>
+        <li>QUICKSTART.md</li>
+        <li>README.md (API section)</li>
+        <li>N8N_WORKFLOW_GUIDE.md</li>
+        <li>Build n8n workflow</li>
+        <li>TEST_SCRIPT.md (run tests)</li>
+    </ol>
+
+    <h3>Path 3: Developer (3 hours)</h3>
+    <ol>
+        <li>MODULE_SUMMARY.md</li>
+        <li>DATA_MODEL.md</li>
+        <li>Review Python code in models/ and controllers/</li>
+        <li>README.md (complete)</li>
+        <li>TEST_SCRIPT.md</li>
+        <li>DEPLOYMENT_GUIDE.md</li>
+    </ol>
+
+    <h3>Path 4: DevOps (2 hours)</h3>
+    <ol>
+        <li>DEPLOYMENT_GUIDE.md</li>
+        <li>Run test_api.py</li>
+        <li>MODULE_SUMMARY.md (security section)</li>
+        <li>Set up monitoring</li>
+    </ol>
+
+    <div class="alert alert-info">
+        <strong>💡 Pro Tip:</strong> Bookmark this INDEX.md file for quick access to all documentation!
+    </div>
+
+    <h2>🔗 External Resources</h2>
+
+    <ul>
+        <li><strong>Odoo:</strong> https://odoo18.freezonermirror.online</li>
+        <li><strong>n8n:</strong> https://n8n.freezonermirror.online</li>
+        <li><strong>Evolution API:</strong> https://evo.freezonermirror.online</li>
+        <li><strong>Evolution Docs:</strong> https://doc.evolution-api.com</li>
+        <li><strong>Chatwoot Docs:</strong> https://www.chatwoot.com/developers/api/</li>
+        <li><strong>n8n Docs:</strong> https://docs.n8n.io/</li>
+    </ul>
+
+    <hr style="margin: 40px 0;">
+
+    <p style="text-align: center; color: #666;">
+        <strong>Chatwoot Evolution Error Bridge</strong> v18.0.1.0.0<br>
+        Made with ❤️ by Sabry Youssef | License: LGPL-3<br>
+        <em>Bridging conversations with error resolution</em>
+    </p>
+</body>
+</html>

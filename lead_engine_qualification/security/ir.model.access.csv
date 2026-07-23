@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lead_engine_identity_map_manager,access.lead.engine.identity.map.manager,model_lead_engine_identity_map,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_identity_map_user,access.lead.engine.identity.map.user,model_lead_engine_identity_map,lead_engine_core.group_lead_engine_user,1,0,0,0
+access_lead_engine_score_rule_manager,access.lead.engine.score.rule.manager,model_lead_engine_score_rule,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_score_rule_user,access.lead.engine.score.rule.user,model_lead_engine_score_rule,lead_engine_core.group_lead_engine_user,1,0,0,0
+access_lead_engine_assignment_rule_manager,access.lead.engine.assignment.rule.manager,model_lead_engine_assignment_rule,lead_engine_core.group_lead_engine_manager,1,1,1,1
+access_lead_engine_assignment_rule_user,access.lead.engine.assignment.rule.user,model_lead_engine_assignment_rule,lead_engine_core.group_lead_engine_user,1,0,0,0

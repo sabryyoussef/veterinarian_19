@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  lead.engine.ai.reply — List view                  -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <record id="view_lead_engine_ai_reply_list" model="ir.ui.view">
+        <field name="name">lead.engine.ai.reply.list</field>
+        <field name="model">lead.engine.ai.reply</field>
+        <field name="arch" type="xml">
+            <list string="AI Draft Replies"
+                  decoration-warning="state == 'pending'"
+                  decoration-success="state == 'sent'"
+                  decoration-muted="state == 'discarded'">
+                <field name="create_date" string="Received" optional="show"/>
+                <field name="lead_id" string="Lead"/>
+                <field name="from_email" string="From"/>
+                <field name="subject"/>
+                <field name="gmail_account" string="Via" optional="show"/>
+                <field name="ai_model_used" string="Model" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'pending'"
+                       decoration-success="state == 'sent'"
+                       decoration-muted="state == 'discarded'"/>
+                <button name="action_review_and_send"
+                        type="object"
+                        string="Review &amp; Send"
+                        class="btn-primary btn-sm"
+                        invisible="state != 'pending'"/>
+                <button name="action_discard"
+                        type="object"
+                        string="Discard"
+                        class="btn-sm"
+                        invisible="state != 'pending'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  lead.engine.ai.reply — Form view                  -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <record id="view_lead_engine_ai_reply_form" model="ir.ui.view">
+        <field name="name">lead.engine.ai.reply.form</field>
+        <field name="model">lead.engine.ai.reply</field>
+        <field name="arch" type="xml">
+            <form string="AI Draft Reply">
+                <sheet>
+                    <!-- Error banner -->
+                    <div class="alert alert-warning d-flex align-items-start gap-2"
+                         role="alert"
+                         invisible="not ai_error">
+                        <i class="fa fa-exclamation-triangle mt-1 flex-shrink-0" title="Warning"/>
+                        <div>
+                            <strong>AI generation failed:</strong>
+                            <field name="ai_error" nolabel="1" readonly="1"
+                                   class="text-muted small"/>
+                            <br/>
+                            You can still write a reply manually in the field below,
+                            or click <strong>Regenerate</strong> after fixing the settings.
+                        </div>
+                    </div>
+
+                    <!-- State ribbon -->
+                    <widget name="web_ribbon" title="Sent" bg_color="text-bg-success"
+                            invisible="state != 'sent'"/>
+                    <widget name="web_ribbon" title="Discarded" bg_color="text-bg-secondary"
+                            invisible="state != 'discarded'"/>
+
+                    <!-- Header buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_review_and_send"
+                                type="object"
+                                string="Review &amp; Send"
+                                class="btn-primary"
+                                invisible="state != 'pending'"/>
+                        <button name="action_regenerate"
+                                type="object"
+                                string="Regenerate"
+                                class="btn-secondary"
+                                invisible="state != 'pending'"/>
+                        <button name="action_discard"
+                                type="object"
+                                string="Discard"
+                                class="btn-secondary"
+                                invisible="state != 'pending'"/>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1><field name="subject"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Email details">
+                            <field name="lead_id"/>
+                            <field name="from_email"/>
+                            <field name="gmail_account" invisible="not gmail_account"/>
+                            <field name="create_date" string="Received at" readonly="1"/>
+                        </group>
+                        <group string="AI info">
+                            <field name="state" widget="badge"
+                                   decoration-warning="state == 'pending'"
+                                   decoration-success="state == 'sent'"
+                                   decoration-muted="state == 'discarded'"/>
+                            <field name="ai_model_used" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="AI Draft Reply" name="draft">
+                            <div class="alert alert-info d-flex gap-2" role="alert">
+                                <i class="fa fa-info-circle mt-1 flex-shrink-0" title="Info"/>
+                                <span>
+                                    This is the AI-generated draft. Edit it as needed,
+                                    then click <strong>Review &amp; Send</strong> to open
+                                    the Odoo compose window and send via your email server.
+                                </span>
+                            </div>
+                            <field name="ai_draft" nolabel="1" widget="html"
+                                   placeholder="AI draft will appear here…"
+                                   readonly="state != 'pending'"/>
+                            <separator string="Attachments"/>
+                            <field name="attachment_ids" widget="many2many_binary"
+                                   readonly="state != 'pending'"
+                                   string="Files to attach in reply"/>
+                        </page>
+                        <page string="Original Email" name="original">
+                            <field name="original_body" nolabel="1" widget="html" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  Actions                                           -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <record id="action_lead_engine_ai_reply_pending" model="ir.actions.act_window">
+        <field name="name">Pending AI Replies</field>
+        <field name="res_model">lead.engine.ai.reply</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("state", "=", "pending")]</field>
+        <field name="context">{"search_default_state_pending": 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No pending AI drafts</p>
+            <p>
+                When a reply arrives on a CRM lead from a monitored email address,
+                the AI will automatically draft a response here for your approval.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_lead_engine_ai_reply_all" model="ir.actions.act_window">
+        <field name="name">All AI Drafts</field>
+        <field name="res_model">lead.engine.ai.reply</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No AI drafts yet</p>
+            <p>Configure a monitored email address and LLM API key in Settings.</p>
+        </field>
+    </record>
+
+</odoo>

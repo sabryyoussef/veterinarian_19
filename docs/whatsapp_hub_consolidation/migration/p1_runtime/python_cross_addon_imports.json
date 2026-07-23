@@ -1,0 +1,12 @@
+[
+  {
+    "from_module": "petspot_wa_intake",
+    "imports_addon": "integration_bridge_core",
+    "file": "petspot_wa_intake/controllers/intake_controller.py"
+  },
+  {
+    "from_module": "petspot_clinic_portal",
+    "imports_addon": "integration_bridge_core",
+    "file": "petspot_clinic_portal/controllers/portal.py"
+  }
+]

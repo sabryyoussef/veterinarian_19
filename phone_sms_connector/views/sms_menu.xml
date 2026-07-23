@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root app menu -->
+    <menuitem id="menu_phone_sms_root"
+              name="Phone SMS"
+              sequence="92"
+              web_icon="phone_sms_connector,static/description/icon.png"/>
+
+    <!-- Sections — Bank Transactions first so the app opens on amounts/balance -->
+    <menuitem id="menu_phone_sms_bank"
+              name="Bank Transactions"
+              parent="menu_phone_sms_root"
+              sequence="5"/>
+
+    <menuitem id="menu_phone_sms_messaging"
+              name="Messages"
+              parent="menu_phone_sms_root"
+              sequence="20"/>
+
+    <menuitem id="menu_phone_sms_config_section"
+              name="Configuration"
+              parent="menu_phone_sms_root"
+              sequence="90"/>
+
+    <!-- Bank Transactions (default landing) -->
+    <menuitem id="menu_bank_sms_transactions"
+              name="Transactions"
+              parent="menu_phone_sms_bank"
+              action="action_bank_sms_transaction"
+              sequence="5"/>
+
+    <menuitem id="menu_bank_sms_report"
+              name="Cashflow Analysis"
+              parent="menu_phone_sms_bank"
+              action="action_bank_sms_transaction_report"
+              sequence="10"/>
+
+    <!-- Messaging -->
+    <menuitem id="menu_phone_sms_received"
+              name="Received"
+              parent="menu_phone_sms_messaging"
+              action="action_sms_log_inbound"
+              sequence="5"/>
+
+    <menuitem id="menu_phone_sms_all"
+              name="All Messages"
+              parent="menu_phone_sms_messaging"
+              action="action_sms_message_log"
+              sequence="10"/>
+
+    <menuitem id="menu_phone_sms_sent"
+              name="Sent"
+              parent="menu_phone_sms_messaging"
+              action="action_sms_log_outbound"
+              sequence="20"/>
+
+    <menuitem id="menu_phone_sms_send"
+              name="Send SMS"
+              parent="menu_phone_sms_messaging"
+              action="action_sms_send_wizard"
+              sequence="30"/>
+
+    <menuitem id="menu_phone_sms_templates"
+              name="Templates"
+              parent="menu_phone_sms_messaging"
+              action="action_sms_template"
+              sequence="40"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_phone_sms_gateways"
+              name="Gateways"
+              parent="menu_phone_sms_config_section"
+              action="action_sms_gateway_config"
+              sequence="10"/>
+
+    <menuitem id="menu_bank_sms_counterparty_mappings"
+              name="Counterparty Mappings"
+              parent="menu_phone_sms_config_section"
+              action="action_bank_sms_counterparty_map"
+              groups="base.group_system"
+              sequence="20"/>
+
+    <menuitem id="menu_bank_sms_counterparty_backfill"
+              name="Backfill Counterparties"
+              parent="menu_phone_sms_config_section"
+              action="action_bank_sms_backfill_wizard"
+              groups="base.group_system"
+              sequence="30"/>
+</odoo>

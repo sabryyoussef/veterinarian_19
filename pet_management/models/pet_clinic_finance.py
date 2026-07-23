@@ -69,9 +69,15 @@ class PetClinicFinance(models.AbstractModel):
             ('date', '>=', d_from),
             ('date', '<=', d_to),
         ]
+        def _group_balance(groups):
+            """read_group may return balance=False when there are no lines."""
+            if not groups:
+                return 0.0
+            return float(groups[0].get('balance') or 0.0)
+
         expense_groups = MoveLine.read_group(expense_domain, ['balance:sum'], [])
         # expense accounts normally have debit balance (positive balance)
-        expenses_total = expense_groups[0].get('balance', 0.0) if expense_groups else 0.0
+        expenses_total = _group_balance(expense_groups)
 
         income_domain = [
             ('company_id', '=', company.id),
@@ -84,7 +90,7 @@ class PetClinicFinance(models.AbstractModel):
         ]
         income_groups = MoveLine.read_group(income_domain, ['balance:sum'], [])
         # income accounts normally credit → balance negative; revenue = -balance
-        income_balance = income_groups[0].get('balance', 0.0) if income_groups else 0.0
+        income_balance = _group_balance(income_groups)
         revenue_total = -income_balance
 
         quick_expense_moves = self.env['pet.clinic.expense'].search([
@@ -96,7 +102,7 @@ class PetClinicFinance(models.AbstractModel):
         ]).mapped('move_id')
         quick_domain = expense_domain + [('move_id', 'in', quick_expense_moves.ids)] if quick_expense_moves else expense_domain + [('id', '=', 0)]
         quick_groups = MoveLine.read_group(quick_domain, ['balance:sum'], []) if quick_expense_moves else []
-        quick_expenses_total = quick_groups[0].get('balance', 0.0) if quick_groups else 0.0
+        quick_expenses_total = _group_balance(quick_groups)
 
         today = fields.Date.context_today(self)
         expenses_today = MoveLine.read_group(
@@ -110,7 +116,7 @@ class PetClinicFinance(models.AbstractModel):
             ],
             ['balance:sum'], [],
         )
-        expenses_today_total = expenses_today[0].get('balance', 0.0) if expenses_today else 0.0
+        expenses_today_total = _group_balance(expenses_today)
 
         month_start = today.replace(day=1)
         expenses_month = MoveLine.read_group(
@@ -125,7 +131,7 @@ class PetClinicFinance(models.AbstractModel):
             ],
             ['balance:sum'], [],
         )
-        expenses_month_total = expenses_month[0].get('balance', 0.0) if expenses_month else 0.0
+        expenses_month_total = _group_balance(expenses_month)
 
         revenue_today_g = MoveLine.read_group(
             [
@@ -136,7 +142,7 @@ class PetClinicFinance(models.AbstractModel):
             ],
             ['balance:sum'], [],
         )
-        revenue_today = -(revenue_today_g[0].get('balance', 0.0) if revenue_today_g else 0.0)
+        revenue_today = -_group_balance(revenue_today_g)
 
         net_profit_loss = revenue_total - expenses_total
 

@@ -1,0 +1,9 @@
+chatwoot_evolution_bridge	chatwoot-evolution-bridge-bridge	100.76.217.35:3010->3010/tcp, 127.0.0.1:3010->3010/tcp, 192.168.100.66:3010->3010/tcp
+chatwoot_ai_worker	chatwoot-evolution-bridge-ai-worker	3010/tcp
+evolution_auth_proxy	nginx:alpine	127.0.0.1:18080->80/tcp
+evolution_api	evoapicloud/evolution-api:latest	127.0.0.1:8080->8080/tcp
+petspot_evolution_api	evoapicloud/evolution-api:latest	127.0.0.1:8199->8080/tcp
+petspot_evolution_postgres	postgres:15-alpine	5432/tcp
+petspot_evolution_redis	redis:7-alpine	6379/tcp
+evolution_postgres	postgres:15-alpine	5432/tcp
+evolution_redis	redis:7-alpine	6379/tcp

@@ -1,0 +1,45 @@
+{
+  "conflicts": [
+    {
+      "model": "display_name",
+      "field": "display_name",
+      "hub": "Char",
+      "evo": "Char",
+      "note": "same_name_same_or_type"
+    },
+    {
+      "model": "display_name",
+      "field": "direction",
+      "hub": "Selection",
+      "evo": "Selection",
+      "note": "same_name_same_or_type"
+    }
+  ],
+  "hub_models": [
+    "whatsapp.hub.compat",
+    "whatsapp.message",
+    "display_name",
+    "whatsapp.contact",
+    "whatsapp.outbound.message",
+    "whatsapp.group",
+    "whatsapp.instance",
+    "whatsapp.conversation",
+    "whatsapp.message.event"
+  ],
+  "evo_models": [
+    "wa.message.log",
+    "display_name",
+    "wa.campaign.recipient.wizard",
+    "wa.campaign.line",
+    "wa.campaign",
+    "crm.lead",
+    "res.partner",
+    "evo.wa.template",
+    "name",
+    "whatsapp.send.wizard",
+    "whatsapp.bulk.line",
+    "\u2014",
+    "whatsapp.bulk.wizard",
+    "discuss.channel"
+  ]
+}

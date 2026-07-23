@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Lead Engine Qualification — Hospital Group Demo Rules
+        ======================================================
+        All score rules are source-bound (no global accumulation).
+        Assignment rules run source-specific first (low seq), score-band last.
+
+        Expected scores per source
+        ───────────────────────────────────────────────────────────────
+        HOSP_WEB     email + phone + Director title  →  10+15+20+25 = 70
+        HOSP_WEB     email + phone only              →  10+15+20    = 45
+        HOSP_ADS_CRD email + phone                  →  60+15+20    = 95
+        HOSP_ADS_CRD email only                     →  60+15       = 75
+        HOSP_CAMP_26 corporate HR + email           →  20+30+15    = 65
+        HOSP_CAMP_26 individual, email only          →  20+15       = 35
+        HOSP_ORG     email only                      →  10+15       = 25
+        HOSP_REF     referring clinic + email        →  30+20+15    = 65
+        HOSP_REF     individual doctor + email       →  30+15       = 45
+
+        Assignment routing
+        ─────────────────────────────────────────────────────────────────
+        Source-specific rules (seq 10-40) fire before score-band rules.
+        Score-band rules (seq 50-70) catch any lead not matched by source.
+    -->
+    <data noupdate="1">
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             HOSPITAL CRM SALES TEAMS
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <record id="demo_hosp_team_online" model="crm.team">
+            <field name="name">[HOSP] Online Enquiries Team</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_hosp_team_cardio" model="crm.team">
+            <field name="name">[HOSP] Cardiology Business Team</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_hosp_team_field" model="crm.team">
+            <field name="name">[HOSP] Field Sales (Health Camps)</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_hosp_team_liaison" model="crm.team">
+            <field name="name">[HOSP] Medical Liaison Team</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_hosp_team_senior" model="crm.team">
+            <field name="name">[HOSP] Senior Account Managers</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_hosp_team_inside" model="crm.team">
+            <field name="name">[HOSP] Inside Sales</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <record id="demo_hosp_team_nurture" model="crm.team">
+            <field name="name">[HOSP] Marketing / Nurture</field>
+            <field name="use_opportunities" eval="True"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCORE RULES — HOSP_WEB (Website Consultation Form)
+             Max score: Director + email + phone + company = 10+25+15+20+30 = 100
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <record id="demo_hosp_sr_web_base" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Web: +10 website enquiry baseline</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="10"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_web"/>
+        </record>
+
+        <record id="demo_hosp_sr_web_email" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Web: +15 email address provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_web"/>
+        </record>
+
+        <record id="demo_hosp_sr_web_phone" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Web: +20 phone number provided</field>
+            <field name="sequence" eval="30"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">phone</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="20"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_web"/>
+        </record>
+
+        <record id="demo_hosp_sr_web_director" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Web: +25 decision-maker — Director title</field>
+            <field name="sequence" eval="40"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">contact_name</field>
+            <field name="operator">contains</field>
+            <field name="value">Director</field>
+            <field name="score_delta" eval="25"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_web"/>
+        </record>
+
+        <record id="demo_hosp_sr_web_manager" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Web: +25 decision-maker — Manager title</field>
+            <field name="sequence" eval="41"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">contact_name</field>
+            <field name="operator">contains</field>
+            <field name="value">Manager</field>
+            <field name="score_delta" eval="25"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_web"/>
+        </record>
+
+        <record id="demo_hosp_sr_web_company" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Web: +30 company name — B2B corporate health enquiry</field>
+            <field name="sequence" eval="50"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">partner_name</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="30"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_web"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCORE RULES — HOSP_ADS_CRD (Google Ads Cardiology)
+             Max score: email + phone = 60+15+20 = 95
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <record id="demo_hosp_sr_ads_base" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Cardiology Ads: +60 paid-search baseline (high intent)</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="60"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_ads_crd"/>
+        </record>
+
+        <record id="demo_hosp_sr_ads_email" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Cardiology Ads: +15 email provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_ads_crd"/>
+        </record>
+
+        <record id="demo_hosp_sr_ads_phone" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Cardiology Ads: +20 phone number provided</field>
+            <field name="sequence" eval="30"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">phone</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="20"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_ads_crd"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCORE RULES — HOSP_CAMP_26 (Health and Wellness Fair 2026)
+             Max score: corporate HR + email = 20+30+15 = 65
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <record id="demo_hosp_sr_camp_base" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Health Camp: +20 event attendance</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="20"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_camp26"/>
+        </record>
+
+        <record id="demo_hosp_sr_camp_email" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Health Camp: +15 email provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_camp26"/>
+        </record>
+
+        <record id="demo_hosp_sr_camp_company" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Health Camp: +30 corporate HR contact (company name set)</field>
+            <field name="sequence" eval="30"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">partner_name</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="30"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_camp26"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCORE RULES — HOSP_ORG (Organic Blog)
+             Max score: email = 10+15 = 25  (low intent — nurture first)
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <record id="demo_hosp_sr_org_base" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Organic: +10 blog visitor baseline (exploratory)</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="10"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_organic"/>
+        </record>
+
+        <record id="demo_hosp_sr_org_email" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Organic: +15 email provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_organic"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             SCORE RULES — HOSP_REF (Doctor Referral)
+             Max score: referring clinic + email = 30+20+15 = 65
+             (referrals start with a high baseline — pre-qualified by the doctor)
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <record id="demo_hosp_sr_ref_base" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Referral: +30 pre-qualified by referring doctor</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">always</field>
+            <field name="score_delta" eval="30"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_referral"/>
+        </record>
+
+        <record id="demo_hosp_sr_ref_email" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Referral: +15 email address provided</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">email_from</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="15"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_referral"/>
+        </record>
+
+        <record id="demo_hosp_sr_ref_clinic" model="lead.engine.score.rule">
+            <field name="name">[HOSP] Referral: +20 referring clinic / hospital name provided</field>
+            <field name="sequence" eval="30"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="rule_type">field</field>
+            <field name="field_name">partner_name</field>
+            <field name="operator">set</field>
+            <field name="score_delta" eval="20"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_referral"/>
+        </record>
+
+        <!-- ════════════════════════════════════════════════════════════════════
+             ASSIGNMENT RULES
+             Run order: source-specific first (seq 10-40), score-band last (50-70).
+             First matching rule wins; lower sequence = higher priority.
+             ════════════════════════════════════════════════════════════════════ -->
+
+        <!-- Seq 10 — Website enquiries → Online Enquiries Team ──────────────── -->
+        <record id="demo_hosp_ar_web" model="lead.engine.assignment.rule">
+            <field name="name">[HOSP] Website enquiries → Online Enquiries Team</field>
+            <field name="sequence" eval="10"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_web"/>
+            <field name="team_id" ref="demo_hosp_team_online"/>
+            <field name="note">
+                All website consultation-form leads go to the Online Enquiries Team first.
+                The team qualifies the department need and hands over to a specialist team.
+            </field>
+        </record>
+
+        <!-- Seq 20 — Cardiology ads → Cardiology Business Team ─────────────── -->
+        <record id="demo_hosp_ar_ads" model="lead.engine.assignment.rule">
+            <field name="name">[HOSP] Cardiology Ads leads → Cardiology Business Team</field>
+            <field name="sequence" eval="20"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_ads_crd"/>
+            <field name="team_id" ref="demo_hosp_team_cardio"/>
+            <field name="note">
+                Paid Cardiology Ads leads go directly to the Cardiology Business Team.
+                High-priority: target callback within 1 hour.
+            </field>
+        </record>
+
+        <!-- Seq 30 — Health camp → Field Sales Team ─────────────────────────── -->
+        <record id="demo_hosp_ar_camp" model="lead.engine.assignment.rule">
+            <field name="name">[HOSP] Health Camp leads → Field Sales Team</field>
+            <field name="sequence" eval="30"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_camp26"/>
+            <field name="team_id" ref="demo_hosp_team_field"/>
+            <field name="note">
+                Trade show and health camp contacts are owned by the Field Sales Team
+                who attended the event and have the relationship context.
+            </field>
+        </record>
+
+        <!-- Seq 40 — Doctor referral → Medical Liaison Team ────────────────── -->
+        <record id="demo_hosp_ar_ref" model="lead.engine.assignment.rule">
+            <field name="name">[HOSP] Doctor Referrals → Medical Liaison Team</field>
+            <field name="sequence" eval="40"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="source_id" ref="lead_engine_core.demo_hosp_src_referral"/>
+            <field name="team_id" ref="demo_hosp_team_liaison"/>
+            <field name="note">
+                Referred patients go to the Medical Liaison Team who coordinates with
+                the referring doctor and matches the patient to the right specialist.
+            </field>
+        </record>
+
+        <!-- Seq 50 — Score >= 70 → Senior Account Managers (B2B / high-value) -->
+        <record id="demo_hosp_ar_highscore" model="lead.engine.assignment.rule">
+            <field name="name">[HOSP] Score >= 70 → Senior Account Managers</field>
+            <field name="sequence" eval="50"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="min_score" eval="70"/>
+            <field name="team_id" ref="demo_hosp_team_senior"/>
+            <field name="note">
+                High-scoring leads not already matched by a source rule.
+                Typically B2B / corporate health enquiries that scored high on company
+                name + decision-maker title signals.
+            </field>
+        </record>
+
+        <!-- Seq 60 — Score 40-69 → Inside Sales ─────────────────────────────── -->
+        <record id="demo_hosp_ar_midscore" model="lead.engine.assignment.rule">
+            <field name="name">[HOSP] Score 40-69 → Inside Sales</field>
+            <field name="sequence" eval="60"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="min_score" eval="40"/>
+            <field name="max_score" eval="69"/>
+            <field name="team_id" ref="demo_hosp_team_inside"/>
+            <field name="note">
+                Mid-range qualified leads with some engagement signals.
+                Inside Sales handles the qualification call and moves them
+                to the right specialist team once the department is confirmed.
+            </field>
+        </record>
+
+        <!-- Seq 70 — Score < 40 → Marketing / Nurture (catch-all) ─────────── -->
+        <record id="demo_hosp_ar_lowscore" model="lead.engine.assignment.rule">
+            <field name="name">[HOSP] Score &lt; 40 → Marketing / Nurture (catch-all)</field>
+            <field name="sequence" eval="70"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="max_score" eval="39"/>
+            <field name="team_id" ref="demo_hosp_team_nurture"/>
+            <field name="note">
+                Low-intent exploratory leads.  Marketing team nurtures with content
+                and re-qualifies periodically.  Primarily organic blog visitors.
+            </field>
+        </record>
+
+    </data>
+</odoo>

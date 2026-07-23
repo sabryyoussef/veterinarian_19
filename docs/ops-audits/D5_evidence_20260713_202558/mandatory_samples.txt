@@ -1,0 +1,15 @@
+ wp  | task |                            title                             |          stage           | parent_wp | op_sync_state | err |                          op_url                          
+-----+------+--------------------------------------------------------------+--------------------------+-----------+---------------+-----+----------------------------------------------------------
+  58 |  147 | [Vendor] Review CloudEdge tenant credentials & VPN certifica | {"en_US": "Done"}        | 170       | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/58
+ 133 |  162 | [Vendor] Post-UAT Remediation — Implemented & Verified (2026 | {"en_US": "Done"}        | 69        | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/133
+ 170 |  163 | izone_azone_parent                                           | {"en_US": "Done"}        |           | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/170
+ 208 |   45 | [Delivery] Shopify Connector — full module delivery (10 phas | {"en_US": "In Progress"} |           | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/208
+ 209 |  202 | Phase 1/10 — Foundation & store configuration                | {"en_US": "Done"}        | 208       | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/209
+ 218 |  211 | Phase 10/10 — Ops, logs, UAT & handover                      | {"en_US": "Done"}        | 208       | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/218
+ 225 |  166 | WP71 — Shopify connector product sync review and remediation | {"en_US": "Done"}        | 170       | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/225
+ 230 |  171 | [iZone] P5 — Validation report and 24h monitoring sign-off   | {"en_US": "Done"}        | 225       | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/230
+ 328 |  340 | PLAN — Consolidate iZone into one Odoo + OpenProject project | {"en_US": "New"}         |           | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/328
+ 335 |  347 | [Bright] project.task sync issue after migration             | {"en_US": "New"}         |           | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/335
+ 341 |  353 | [Bright] User account password setup                         | {"en_US": "New"}         |           | synced        | ok  | https://master.tailcf9988.ts.net:10081/work_packages/341
+(11 rows)
+

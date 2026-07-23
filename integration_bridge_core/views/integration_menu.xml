@@ -22,6 +22,12 @@
               action="action_integration_bridge_token"
               sequence="10"/>
 
+    <menuitem id="menu_evolution_instance"
+              name="Evolution Instances"
+              parent="menu_integration_bridge_config"
+              action="action_evolution_instance"
+              sequence="15"/>
+
     <menuitem id="menu_integration_bridge_monitoring"
               name="Monitoring"
               parent="menu_integration_bridge_root"

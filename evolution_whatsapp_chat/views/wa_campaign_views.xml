@@ -2,7 +2,7 @@
 <odoo>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
-         WhatsApp Campaign Views
+         WA Campaign Views
     ════════════════════════════════════════════════════════════════════════ -->
 
     <!-- Form View -->
@@ -10,7 +10,7 @@
         <field name="name">wa.campaign.form</field>
         <field name="model">wa.campaign</field>
         <field name="arch" type="xml">
-            <form string="WhatsApp Campaign">
+            <form string="WA Campaign">
                 <header>
                     <button name="action_load_recipients" string="📋 Load Recipients"
                             type="object" class="btn-primary"
@@ -164,7 +164,7 @@
         <field name="name">wa.campaign.tree</field>
         <field name="model">wa.campaign</field>
         <field name="arch" type="xml">
-            <list string="WhatsApp Campaigns"
+            <list string="WA Campaigns"
                   decoration-success="state == 'completed'"
                   decoration-info="state == 'running'"
                   decoration-muted="state in ['cancelled', 'draft']">
@@ -300,14 +300,14 @@
 
     <!-- Action -->
     <record id="action_wa_campaign" model="ir.actions.act_window">
-        <field name="name">WhatsApp Campaigns</field>
+        <field name="name">WA Campaigns</field>
         <field name="res_model">wa.campaign</field>
         <field name="view_mode">kanban,list,form,pivot,graph</field>
         <field name="search_view_id" ref="view_wa_campaign_search"/>
         <field name="context">{'search_default_running': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create your first WhatsApp Campaign
+                Create your first WA Campaign
             </p>
             <p>
                 Campaigns let you send targeted messages to multiple contacts<br/>

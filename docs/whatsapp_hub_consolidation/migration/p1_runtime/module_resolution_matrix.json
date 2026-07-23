@@ -1,0 +1,810 @@
+[
+  {
+    "module": "whatsapp_hub",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/whatsapp_hub",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/whatsapp_hub",
+    "canonical_manifest_version": "19.0.1.0.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/whatsapp_hub"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "base",
+      "mail",
+      "web",
+      "contacts"
+    ]
+  },
+  {
+    "module": "integration_bridge_core",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/integration_bridge_core",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/integration_bridge_core",
+    "canonical_manifest_version": "19.0.1.1.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/projects/resume/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/integration_bridge_core",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/integration_bridge_core"
+    ],
+    "copy_count": 18,
+    "depends": [
+      "base",
+      "web",
+      "mail",
+      "crm",
+      "contacts"
+    ]
+  },
+  {
+    "module": "evolution_whatsapp_chat",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/evolution_whatsapp_chat",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/evolution_whatsapp_chat",
+    "canonical_manifest_version": "19.0.1.10.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/projects/resume/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/evolution_whatsapp_chat",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/evolution_whatsapp_chat"
+    ],
+    "copy_count": 18,
+    "depends": [
+      "base",
+      "mail",
+      "crm",
+      "contacts",
+      "integration_bridge_core",
+      "whatsapp_hub"
+    ]
+  },
+  {
+    "module": "petspot_wa_intake",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_wa_intake",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_wa_intake",
+    "canonical_manifest_version": "19.0.1.0.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/petspot_wa_intake",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/petspot_wa_intake"
+    ],
+    "copy_count": 17,
+    "depends": [
+      "integration_bridge_core",
+      "whatsapp_hub",
+      "pet_management",
+      "sale",
+      "mail"
+    ]
+  },
+  {
+    "module": "petspot_clinic_portal",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_clinic_portal",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_clinic_portal",
+    "canonical_manifest_version": "19.0.2.3.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/petspot_clinic_portal",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/petspot_clinic_portal"
+    ],
+    "copy_count": 17,
+    "depends": [
+      "pet_management",
+      "petspot_wa_intake",
+      "mail",
+      "integration_bridge_core",
+      "sale"
+    ]
+  },
+  {
+    "module": "petspot_vet_feedback",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_vet_feedback",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_vet_feedback",
+    "canonical_manifest_version": "19.0.1.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_vet_feedback"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "petspot_clinic_portal",
+      "survey",
+      "sale_loyalty",
+      "base_automation"
+    ]
+  },
+  {
+    "module": "petspot_campaign_rewards",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_campaign_rewards",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_campaign_rewards",
+    "canonical_manifest_version": "19.0.1.2.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_campaign_rewards"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "website",
+      "survey",
+      "website_slides",
+      "website_slides_survey",
+      "website_knowledge",
+      "loyalty",
+      "sale_loyalty",
+      "pos_loyalty",
+      "survey_crm",
+      "crm",
+      "knowledge",
+      "social_media_connector",
+      "integration_bridge_core",
+      "petspot_clinic_portal"
+    ]
+  },
+  {
+    "module": "chatwoot_evolution_error_bridge",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/chatwoot_evolution_error_bridge",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/chatwoot_evolution_error_bridge",
+    "canonical_manifest_version": "19.0.1.0.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/chatwoot_evolution_error_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/projects/resume/chatwoot_evolution_error_bridge"
+    ],
+    "copy_count": 2,
+    "depends": [
+      "base",
+      "web",
+      "mail",
+      "crm",
+      "integration_bridge_core"
+    ]
+  },
+  {
+    "module": "dev_session_hub",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/dev_session_hub",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_staging/dev_session_hub",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": true,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_879acffe/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_ff53a8d/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_gate_c_land/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_staging/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/dev_session_hub",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/dev_session_hub"
+    ],
+    "copy_count": 21,
+    "depends": [
+      "devhub_core",
+      "devhub_work",
+      "devhub_session",
+      "devhub_execution",
+      "devhub_outbox",
+      "devhub_generation",
+      "devhub_git",
+      "devhub_github",
+      "devhub_deploy",
+      "devhub_odoo_runtime",
+      "devhub_infrastructure",
+      "devhub_openproject",
+      "devhub_code_analysis",
+      "devhub_whatsapp"
+    ]
+  },
+  {
+    "module": "openproject_sync",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/openproject_sync",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/openproject_sync",
+    "canonical_manifest_version": "19.0.1.6.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/openproject_sync",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/openproject_sync"
+    ],
+    "copy_count": 13,
+    "depends": [
+      "project",
+      "mail",
+      "web"
+    ]
+  },
+  {
+    "module": "developer_hub",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/developer_hub",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/developer_hub",
+    "canonical_manifest_version": "19.0.1.1.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/developer_hub",
+      "/home/sabry/odoo_base/base_odoo_19/projects/resume/developer_hub"
+    ],
+    "copy_count": 2,
+    "depends": [
+      "base",
+      "crm",
+      "contacts",
+      "odoo_partners"
+    ]
+  },
+  {
+    "module": "devhub_core",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_core",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_core",
+    "canonical_manifest_version": "19.0.9.0.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_core"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "base",
+      "mail",
+      "web"
+    ]
+  },
+  {
+    "module": "devhub_work",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_work",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_work",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_work"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_core",
+      "project",
+      "openproject_sync"
+    ]
+  },
+  {
+    "module": "devhub_session",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_session",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_session",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_session"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_work"
+    ]
+  },
+  {
+    "module": "devhub_execution",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_execution",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_execution",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_execution"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_session"
+    ]
+  },
+  {
+    "module": "devhub_outbox",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_outbox",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_outbox",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_outbox"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_work"
+    ]
+  },
+  {
+    "module": "devhub_generation",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_generation",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_generation",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_generation"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_work"
+    ]
+  },
+  {
+    "module": "devhub_git",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_execution"
+    ]
+  },
+  {
+    "module": "devhub_github",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_git"
+    ]
+  },
+  {
+    "module": "devhub_deploy",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_deploy",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_deploy",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_deploy"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_github"
+    ]
+  },
+  {
+    "module": "devhub_odoo_runtime",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_odoo_runtime",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_odoo_runtime",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_odoo_runtime"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_core"
+    ]
+  },
+  {
+    "module": "devhub_infrastructure",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_infrastructure",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_infrastructure",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_infrastructure"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_core"
+    ]
+  },
+  {
+    "module": "devhub_openproject",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_openproject",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_openproject",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_openproject"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_work",
+      "openproject_sync"
+    ]
+  },
+  {
+    "module": "devhub_code_analysis",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_code_analysis",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_code_analysis",
+    "canonical_manifest_version": "19.0.9.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_code_analysis"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_work",
+      "devhub_odoo_runtime"
+    ]
+  },
+  {
+    "module": "devhub_whatsapp",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_whatsapp",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_whatsapp",
+    "canonical_manifest_version": "19.0.9.0.2",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_whatsapp"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "devhub_work",
+      "whatsapp_hub"
+    ]
+  },
+  {
+    "module": "social_media_connector",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/social_media_connector",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/social_media_connector",
+    "canonical_manifest_version": "19.0.1.0.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/social_media_connector",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/social_media_connector"
+    ],
+    "copy_count": 17,
+    "depends": [
+      "base",
+      "web",
+      "mail",
+      "base_setup"
+    ]
+  },
+  {
+    "module": "veterinary_petget_bridge",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/veterinary_petget_bridge",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/veterinary_petget_bridge",
+    "canonical_manifest_version": "19.0.2.1.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/veterinary_petget_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/veterinary_petget_bridge"
+    ],
+    "copy_count": 17,
+    "depends": [
+      "veterinary_clinic",
+      "petget_dog_knowledge"
+    ]
+  },
+  {
+    "module": "veterinary_pet_management_bridge",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/veterinary_pet_management_bridge",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/veterinary_pet_management_bridge",
+    "canonical_manifest_version": "19.0.1.0.0",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel_dh_p0/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_4e2d14a/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_879acffe/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_gate_c_onboarding_hotfix/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_0960fcc/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_6e31511/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/docs-dell-start-launch-uat/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/plan-steps-ux/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-security-19.0.1.4.0/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pptu-test-assertion-hardening/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr1-openproject-sync/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/pr2-dev-session-hub-isolation/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-tailscale-destination/veterinary_pet_management_bridge",
+      "/home/sabry/odoo_base/base_odoo_19/worktrees/verify-ts-base-b6e8a5d/veterinary_pet_management_bridge"
+    ],
+    "copy_count": 17,
+    "depends": [
+      "veterinary_clinic",
+      "pet_management",
+      "veterinary_petget_bridge"
+    ]
+  },
+  {
+    "module": "petspot_backend_sidebar",
+    "prod_installed_version": "",
+    "prod_state": "absent",
+    "prod_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_backend_sidebar",
+    "test_installed_version": "",
+    "test_state": "absent",
+    "test_runtime_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_backend_sidebar",
+    "canonical_manifest_version": "19.0.1.1.1",
+    "prod_match": null,
+    "test_match_runtime_manifest": null,
+    "test_shadows_canonical": false,
+    "all_copies": [
+      "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/petspot_backend_sidebar"
+    ],
+    "copy_count": 1,
+    "depends": [
+      "web",
+      "web_enterprise",
+      "pet_management",
+      "petspot_wa_intake",
+      "petspot_clinic_portal",
+      "sale_management",
+      "point_of_sale",
+      "stock",
+      "account",
+      "crm"
+    ]
+  }
+]

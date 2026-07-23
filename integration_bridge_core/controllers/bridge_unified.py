@@ -242,8 +242,11 @@ class BridgeUnifiedController(BridgeControllerBase):
                     update = item.get('update', {})
                     msg_id = key.get('id', '')
                     status = update.get('status', '')
-                    if msg_id and status and 'wa.message.log' in request.env:
-                        request.env['wa.message.log'].sudo().update_delivery_status(msg_id, status)
+                    if msg_id and status:
+                        if 'wa.message.log' in request.env:
+                            request.env['wa.message.log'].sudo().update_delivery_status(msg_id, status)
+                        if 'whatsapp.message' in request.env:
+                            request.env['whatsapp.message'].sudo().update_delivery_status(msg_id, status)
 
             elif event in ('messages.upsert', 'message.upsert'):
                 items = data if isinstance(data, list) else [data]

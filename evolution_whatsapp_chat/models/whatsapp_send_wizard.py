@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 class WhatsappSendWizard(models.TransientModel):
     _name        = 'whatsapp.send.wizard'
-    _description = 'Send WhatsApp Message'
+    _description = 'Send WA Message'
 
     # ── Context fields ────────────────────────────────────────────────────────
 
@@ -30,7 +30,7 @@ class WhatsappSendWizard(models.TransientModel):
     # ── Message fields ────────────────────────────────────────────────────────
 
     phone = fields.Char(
-        string='WhatsApp Number', required=True,
+        string='WA Number', required=True,
         help='Number in any format — will be normalised automatically'
     )
 
@@ -42,7 +42,7 @@ class WhatsappSendWizard(models.TransientModel):
 
     message = fields.Text(
         string='Message', required=True,
-        help='The text to send via WhatsApp'
+        help='The text to send via WA'
     )
 
     send_mode = fields.Selection([
@@ -137,7 +137,7 @@ class WhatsappSendWizard(models.TransientModel):
         if self.send_mode == 'now':
             success, response, wa_msg_id = _send_via_evolution(self.env, clean_phone, self.message)
             if not success:
-                raise UserError(f"WhatsApp delivery failed: {response}")
+                raise UserError(f"WA delivery failed: {response}")
             # Send attachments
             for att in self._get_attachment_info():
                 from .whatsapp_bulk_wizard import _send_media_evolution
@@ -156,7 +156,7 @@ class WhatsappSendWizard(models.TransientModel):
             # Queue text
             endpoint = f"{evo_url}/message/sendText/{evo_instance}"
             self.env['integration.outbound.queue'].sudo().create_outbound_message(
-                name=f"WhatsApp → {clean_phone}",
+                name=f"WA → {clean_phone}",
                 platform='evolution',
                 endpoint_url=endpoint,
                 payload={'number': clean_phone, 'text': self.message, 'options': {'delay': 1000}},
@@ -168,7 +168,7 @@ class WhatsappSendWizard(models.TransientModel):
             # Queue attachments
             for att in self._get_attachment_info():
                 self.env['integration.outbound.queue'].sudo().create_outbound_message(
-                    name=f"WhatsApp Media → {clean_phone}",
+                    name=f"WA Media → {clean_phone}",
                     platform='evolution',
                     endpoint_url=f"{evo_url}/message/sendMedia/{evo_instance}",
                     payload={'number': clean_phone, 'mediatype': att['type'],
@@ -200,7 +200,7 @@ class WhatsappSendWizard(models.TransientModel):
         """Post the sent message to the lead/partner chatter and wa_channel."""
         body_html = (
             f"<div style='padding:8px;border-left:3px solid #25D366'>"
-            f"<b>📱 WhatsApp {status} → {phone}</b><br/>"
+            f"<b>📱 WA {status} → {phone}</b><br/>"
             f"<div style='white-space:pre-wrap;margin-top:6px'>{text}</div>"
             f"</div>"
         )
@@ -233,7 +233,7 @@ class WhatsappSendWizard(models.TransientModel):
             'type':  'ir.actions.client',
             'tag':   'display_notification',
             'params': {
-                'title':   'WhatsApp',
+                'title':   'WA',
                 'message': msg,
                 'type':    'success',
                 'sticky':  False,

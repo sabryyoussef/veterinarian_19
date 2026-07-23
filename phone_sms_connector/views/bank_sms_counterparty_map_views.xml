@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bank_sms_counterparty_map_list" model="ir.ui.view">
+        <field name="name">bank.sms.counterparty.map.list</field>
+        <field name="model">bank.sms.counterparty.map</field>
+        <field name="arch" type="xml">
+            <list string="Counterparty Mappings" multi_edit="1">
+                <field name="priority"/>
+                <field name="match_type"/>
+                <field name="masked_name"/>
+                <field name="real_name"/>
+                <field name="default_category_id"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_bank_sms_counterparty_map_form" model="ir.ui.view">
+        <field name="name">bank.sms.counterparty.map.form</field>
+        <field name="model">bank.sms.counterparty.map</field>
+        <field name="arch" type="xml">
+            <form string="Counterparty Mapping">
+                <header>
+                    <button name="action_apply_to_transactions" type="object"
+                            string="Apply to Transactions" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="masked_name"/>
+                            <field name="real_name"/>
+                            <field name="default_category_id"
+                                   options="{'no_create': False}"/>
+                        </group>
+                        <group>
+                            <field name="match_type"/>
+                            <field name="priority"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bank_sms_counterparty_map_search" model="ir.ui.view">
+        <field name="name">bank.sms.counterparty.map.search</field>
+        <field name="model">bank.sms.counterparty.map</field>
+        <field name="arch" type="xml">
+            <search string="Counterparty Mappings">
+                <field name="masked_name"/>
+                <field name="real_name"/>
+                <field name="default_category_id"/>
+                <filter name="inactive" string="Inactive"
+                        domain="[('active','=',False)]"/>
+                <group>
+                    <filter name="gb_real_name" string="Real Name"
+                            context="{'group_by':'real_name'}"/>
+                    <filter name="gb_masked_name" string="Masked Name"
+                            context="{'group_by':'masked_name'}"/>
+                    <filter name="gb_category" string="Category"
+                            context="{'group_by':'default_category_id'}"/>
+                    <filter name="gb_match_type" string="Match Type"
+                            context="{'group_by':'match_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_bank_sms_counterparty_map" model="ir.actions.act_window">
+        <field name="name">Counterparty Mappings</field>
+        <field name="res_model">bank.sms.counterparty.map</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bank_sms_counterparty_map_search"/>
+    </record>
+</odoo>

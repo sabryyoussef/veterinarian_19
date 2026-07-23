@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_server_gmail_send_test" model="ir.actions.server">
+        <field name="name">Gmail: send test email</field>
+        <field name="model_id" ref="model_mail_gmail_account"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.action_gmail_send_test()
+        </field>
+    </record>
+
+    <record id="action_server_gmail_refresh_profile" model="ir.actions.server">
+        <field name="name">Gmail: refresh profile</field>
+        <field name="model_id" ref="model_mail_gmail_account"/>
+        <field name="group_ids" eval="[(4, ref('group_gmail_manager'))]"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.action_gmail_refresh_profile()
+        </field>
+    </record>
+
+    <record id="action_server_gmail_connect_google" model="ir.actions.server">
+        <field name="name">Gmail: connect with Google (OAuth)</field>
+        <field name="model_id" ref="model_mail_gmail_account"/>
+        <field name="group_ids" eval="[(4, ref('group_gmail_manager'))]"/>
+        <field name="state">code</field>
+        <field name="code">
+# Inline (no call to model method) so this works even if the HTTP worker still
+# holds an old Python import of mail.gmail.account without action_gmail_connect_google.
+if not records:
+    raise UserError("No Gmail account selected.")
+records.ensure_one()
+if not records.id:
+    raise UserError("Save the Gmail account before using Connect with Google.")
+records.check_access("write")
+if not env.user.has_group("mail_gmail_connector.group_gmail_manager"):
+    raise UserError("Only Gmail managers can run the OAuth connection flow.")
+if not (records.oauth_client_id and records.oauth_client_secret):
+    raise UserError("Set OAuth Client ID and Client secret on this account before connecting.")
+action = {
+    "type": "ir.actions.act_url",
+    "url": "/google_gmail/mail_connector_oauth/start?account_id=%s" % records.id,
+    "target": "self",
+}
+        </field>
+    </record>
+
+    <!-- Buttons in same file as actions so %(xmlid)d resolves during load. Base form is in views (loaded before this file). -->
+    <record id="view_mail_gmail_account_form_server_buttons" model="ir.ui.view">
+        <field name="name">mail.gmail.account.form.server.buttons</field>
+        <field name="model">mail.gmail.account</field>
+        <field name="inherit_id" ref="mail_gmail_connector.view_mail_gmail_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(action_server_gmail_connect_google)d" type="action"
+                        string="Connect with Google"
+                        groups="mail_gmail_connector.group_gmail_manager"/>
+                <button name="action_provision_mail_servers" type="object"
+                        string="Provision Mail Servers"
+                        class="btn-primary"
+                        invisible="state != 'connected'"
+                        groups="mail_gmail_connector.group_gmail_manager"/>
+                <button name="%(action_server_gmail_send_test)d" type="action"
+                        string="Send test email"/>
+                <button name="%(action_server_gmail_refresh_profile)d" type="action"
+                        string="Refresh profile"
+                        groups="mail_gmail_connector.group_gmail_manager"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

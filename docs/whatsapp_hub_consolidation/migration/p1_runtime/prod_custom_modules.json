@@ -1,0 +1,152 @@
+[
+  {
+    "name": "base",
+    "installed": "19.0.1.3",
+    "in_canon": false,
+    "canon_ver": null
+  },
+  {
+    "name": "base_industry_data",
+    "installed": "19.0.1.2",
+    "in_canon": true,
+    "canon_ver": "1.2"
+  },
+  {
+    "name": "developer_hub",
+    "installed": "19.0.1.1.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.1.0"
+  },
+  {
+    "name": "evolution_whatsapp_chat",
+    "installed": "19.0.1.10.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.10.1"
+  },
+  {
+    "name": "integration_bridge_core",
+    "installed": "19.0.1.0.5",
+    "in_canon": true,
+    "canon_ver": "19.0.1.1.1"
+  },
+  {
+    "name": "linkedin_connector",
+    "installed": "19.0.2.7.0",
+    "in_canon": true,
+    "canon_ver": "19.0.2.7.0"
+  },
+  {
+    "name": "linkedin_nodb_compat",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.0"
+  },
+  {
+    "name": "mail_gmail_connector",
+    "installed": "19.0.7.1.0",
+    "in_canon": true,
+    "canon_ver": "19.0.7.1.0"
+  },
+  {
+    "name": "odoo_partners",
+    "installed": "19.0.1.1.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.1.0"
+  },
+  {
+    "name": "odoo_remote_connector",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.0"
+  },
+  {
+    "name": "petget_core",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.0"
+  },
+  {
+    "name": "petget_dog",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.0"
+  },
+  {
+    "name": "petget_dog_knowledge",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.0"
+  },
+  {
+    "name": "pet_management",
+    "installed": "19.0.1.8.3",
+    "in_canon": true,
+    "canon_ver": "19.0.1.8.3"
+  },
+  {
+    "name": "petspot_backend_sidebar",
+    "installed": "19.0.1.1.1",
+    "in_canon": true,
+    "canon_ver": "19.0.1.1.1"
+  },
+  {
+    "name": "petspot_campaign_rewards",
+    "installed": "19.0.1.2.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.2.0"
+  },
+  {
+    "name": "petspot_clinic_portal",
+    "installed": "19.0.2.2.1",
+    "in_canon": true,
+    "canon_ver": "19.0.2.3.0"
+  },
+  {
+    "name": "petspot_vet_feedback",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.0"
+  },
+  {
+    "name": "petspot_wa_intake",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.1"
+  },
+  {
+    "name": "planning_field_service_worksheet",
+    "installed": "19.0.1.0",
+    "in_canon": true,
+    "canon_ver": "1.0"
+  },
+  {
+    "name": "pos_stock",
+    "installed": "19.0.1.0",
+    "in_canon": true,
+    "canon_ver": "1.0"
+  },
+  {
+    "name": "social_media_connector",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.1"
+  },
+  {
+    "name": "veterinary_clinic",
+    "installed": "19.0.1.3",
+    "in_canon": true,
+    "canon_ver": "1.3"
+  },
+  {
+    "name": "veterinary_petget_bridge",
+    "installed": "19.0.2.1.0",
+    "in_canon": true,
+    "canon_ver": "19.0.2.1.0"
+  },
+  {
+    "name": "veterinary_pet_management_bridge",
+    "installed": "19.0.1.0.0",
+    "in_canon": true,
+    "canon_ver": "19.0.1.0.0"
+  }
+]

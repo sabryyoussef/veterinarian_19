@@ -1,0 +1,47 @@
+id,name,project_id,stage_id,op_work_package_id,op_sync_hash,op_sync_state,op_last_error,parent_id
+147,[Vendor] Review CloudEdge tenant credentials & VPN certificate,19,1,58,633238db6dd9f984b0ac11c1904b9a58366281edbbe642b7ff7acece681e2db8,synced,"",163
+148,[Vendor] Port forwarding: Odoo 8069 and 8072 to 172.20.1.1,19,1,59,4ed9e6bc6dba7b6d75fbf73d7b15772d17ad0f9fdd0fa44146723d780e56977d,synced,"",163
+149,[Vendor] Fix external Odoo access (timeout after redirect from client IP),19,1,60,3e367ee95905713c32dd6c37cc859b8d32f35c33910ac8273d83e78f2beb48f7,synced,"",163
+150,[Vendor] Connect production domain and configure Let's Encrypt SSL,19,1,61,d59c6f722adcc5dfc6c087a54fd3edf723a84ad129769eaa18bf5a579983e83d,synced,"",163
+151,[Vendor] Obtain Shopify main account credentials,19,1,62,d25565f8934be99824aab0a8de595830dd3cf0969fba3f5c0058715dd63e3413,synced,"",163
+152,[Vendor] Resolve missing Odoo user in credentials file,19,1,63,cab00ee09008be08add4f1485d930940c80e546beea87c8c8a7ef23442ff53e3,synced,"",163
+153,[Vendor] Change all default passwords (security hardening),19,1,64,b30b7b3de99897b247df20d83f4c6a5ff7ab9129a5a504682f5834d06585b95a,synced,"",163
+154,[Vendor] Configure automated backups before go-live,19,1,65,38828fc36a1a8e04b3c32e84e3c64dca8360ab0a5e1f2e986c9322304014ea98,synced,"",163
+155,[Vendor] Deploy Odoo modules + test data (coordinate Ali / Selim),19,1,66,da97e7f26eb9e188387d00296599cefc0064f8b63381402b7b085d59a263e531,synced,"",163
+156,[Vendor] Shopify ↔ Odoo integration,19,1,67,6b3deb2bf2b65c50f81552546d48ba6d60e5d513a4a53fd2eba1115ca8686093,synced,"",163
+157,"[Internal] A-Zone VM access runbook — CloudEdge VPN, SSH, and Odoo",19,1,68,2abccfb62deb0902235747cf256440e9bb432d6be45504c5f14ba30abb1b3b68,synced,"",163
+158,[Vendor] iZone requirements: Shopify-Odoo integration spec (21 tasks + Amazon),19,1,69,6ecc7b45fe03787fc924ea645e92e0e45f2db553769680b08d7eb9ef1e9c3e16,synced,"",163
+159,[Client] Odoo 19 / Shopify iZone EG — Final Remediation Report (2026-06-28),19,1,70,b1f67f581c52be5986ebed3fe74c820b07eac400ab8445e18f8d0a6b6eb738ec,synced,"",163
+160,[Client] Shopify Connector User Guide — screenshots & use cases (odoo_test),19,1,71,3ae0332af4ddb2205d7beb52cf45c1baa57ddd40296ee66d9e8315cdd48fb982,synced,"",163
+161,"[Client] Shopify-Odoo connector — full UAT & integration feedback (Jun 29, 2026)",19,1,132,297313df740b67f9eeac37277219431167cbd93d2d064ed70906f8bcb2257543,synced,"",163
+162,[Vendor] Post-UAT Remediation — Implemented & Verified (2026-07-02),19,1,133,6deec6d969175dbdbc84d2af7888e2a8930f98c3b104a3ed29ff2c50337682aa,synced,"",158
+163,izone_azone_parent,19,1,170,b90a255d4b3971c25f5a8c3cd9ab5d154f0345f25bd4c697c9d200bd892c5214,synced,"",
+164,"[iZone] feat: WP69 payment fees, refunds, exchange, and ops (Phases A-E)",19,1,171,9f554b2fc9bc4c89c5ba617211119ec095fe0b1ca4ff75cd89036de0d427fc89,synced,"",163
+165,"[iZone] Post-UAT remediation: order update sync, refund restock, exchange wizard, payment fees, and connector tests/docs",19,1,172,ec3f53896441db2d4b7d1fa9ecd4335f77df2021588552edc8f6762d634575f4,synced,"",163
+45,[Delivery] Shopify Connector — full module delivery (10 phases),19,18,208,bf9b27d24b7e77658f7d208b230e97c6f87d0d1f05006290a7089bf8f42de189,synced,"",
+202,Phase 1/10 — Foundation & store configuration,19,1,209,85e373ef44e49ec1db8c8d05b619dfd0601540f6f51d8eaaa5b4e6653c44311c,synced,"",45
+203,Phase 2/10 — Product catalog sync,19,1,210,4a9ec94a0abafc2879a719ec78d0c3f06ff6390dc1122843d5932eb006592f75,synced,"",45
+204,Phase 3/10 — Customer sync,19,1,211,afd79481eb935cc21cdfb2de927d23a48aabf719539d887127858a065d0acae8,synced,"",45
+205,Phase 4/10 — Inventory & locations,19,1,212,bc549789280daa8defae837d4dc87ef2c824c6acd7ed1a534a28da847fb3a201,synced,"",45
+206,Phase 5/10 — Order import & pricing,19,1,213,420a6d4e80e8759cbd9e68d05916198c2d0f7e3ff3f4cd4306ab8a9b65eca415,synced,"",45
+207,Phase 6/10 — Payments & fees,19,1,214,9da9c0b9770f51cc740a2b4401042ae48025151ab68d0c396bfa3fc663322479,synced,"",45
+208,Phase 7/10 — Shipping & fulfillment,19,1,215,0e862b001fcbf88a91a6132f479bc91975a31803c980fab5ddf3dfb69d675f5e,synced,"",45
+209,Phase 8/10 — Refunds & cancellations,19,1,216,0882920bd0c67d07d5e7e374de8ddafd29b5d18a77718f02de59cb7d2ee1f55a,synced,"",45
+210,Phase 9/10 — Exchange & order edit,19,1,217,cf29465e8ae3d358e64e99fecf26cfca655ee6829f1a45cf267ea9b914a81a1a,synced,"",45
+211,"Phase 10/10 — Ops, logs, UAT & handover",19,1,218,55f7833d2032661164ba09cddb3503a01099fb5890cbc4a075fdccb39bda089e,synced,"",45
+46,[Bright] Database connectivity issue,19,16,224,85a39e27acc92ab3f067b01d438a1bce55d59d7b9065005ebe3438edaaab00fe,synced,"",
+166,WP71 — Shopify connector product sync review and remediation,19,1,225,e660b2af59aca3f3993d051688d634fe2a109397d96e75c44777a2c810944504,synced,"",163
+167,"[iZone] P1 — Audit: logs, queue health, product sync baseline",19,1,226,d68b7cb6d6ba01d6dca1eecfd0b9b8919d062a989576f532a00b146c1d939b5b,synced,"",166
+168,"[iZone] P2 — Log noise fix + queue recovery (stuck processing, claim limits)",19,1,227,447ed45207a3002d031a0623cf4e4610aa9fa8c4063fe0b0a735c35879f9e290,synced,"",166
+169,"[iZone] P3 — Product variant sync fix (integrity, PTAV, attribute lines)",19,1,228,e8a9cdc63308e7619c6dee97af8ed16bc81314785568ad8ab6a4334c4102d4ae,synced,"",166
+170,"[iZone] P4 — Tests, module upgrade, retry failed queue on odoo_test",19,1,229,edb7e7c95f6879e107059a90fc3db0c7493af6b2518c013f82dd1d80c0296853,synced,"",166
+171,[iZone] P5 — Validation report and 24h monitoring sign-off,19,1,230,1fceec860d7f291663c84f9698765adc33ae884c61243e23c6c330ec7e6708db,synced,"",166
+340,PLAN — Consolidate iZone into one Odoo + OpenProject project,19,16,328,0b2c319ce87b60bb136fc20e9fe52d9b42cd7d77ffa7dcfe84f442018946b4ff,synced,"",
+341,"Phase 0 — Backup, freeze sync, export inventory",19,16,329,19bcd153c1029015c686fae28a95edfbc596838fe013588f27a6b8eed6308551,synced,"",340
+342,Phase 1 — OpenProject: move WPs to project #12,19,16,330,9776d324a1d0944f77b4f640b722b74ff38ed293c9a793f1c4ccc28340ecd713,synced,"",340
+343,Phase 2 — Odoo: merge tasks into project #19,19,16,331,46b49a24deb1919887bb435fd750f8e1860e18acaeea5b866ba450c8aaf25474,synced,"",340
+344,Phase 3 — Sync maps & prevent re-split,19,16,332,51d1f866f1710dba5b039ff22529bdc760247c7c6e07bac8aad6d619a25b4c8c,synced,"",340
+345,Phase 4 — Validation & smoke tests,19,16,333,a1522770d9a0589b6a8f2949f7aeac264da5e7afee4de9773e731a51fe1cca5f,synced,"",340
+346,Phase 5 — Optional: audience tagging in one board,19,16,334,072a3c974cec2c6b52d337fec9002d3aa96ff8da37ce51d32cdf9c2e1e3a7093,synced,"",340
+347,[Bright] project.task sync issue after migration,19,16,335,f3be9759890f8a4c9484d5363f15352bbcf6e52af3e80c79cac4b5318671d13d,synced,"",
+353,[Bright] User account password setup,19,16,341,2f7de2f84ddfb0b66524619350e2ce4040638cebbed731a403ab5f90b4d5b556,synced,"",

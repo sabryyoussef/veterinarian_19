@@ -1,0 +1,14 @@
+2026-07-23 05:55:41,624 2190428 WARNING ? odoo.tools.config: option --without-demo: since 19.0, invalid boolean value: 'all', assume True 
+2026-07-23 05:55:41,624 2190428 INFO ? odoo: Odoo version 19.0 
+2026-07-23 05:55:41,624 2190428 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/whatsapp_hub_fresh.conf 
+2026-07-23 05:55:41,624 2190428 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-07-23 05:55:41,624 2190428 INFO ? odoo: database: odoo@localhost:5432 
+2026-07-23 05:55:42,031 2190428 INFO whatsapp_hub_fresh odoo.modules.loading: loading 1 modules... 
+2026-07-23 05:55:42,042 2190428 INFO whatsapp_hub_fresh odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-07-23 05:55:42,068 2190428 INFO whatsapp_hub_fresh odoo.modules.loading: loading 40 modules... 
+2026-07-23 05:55:42,575 2190428 INFO whatsapp_hub_fresh odoo.modules.loading: 40 modules loaded in 0.51s, 0 queries (+0 extra) 
+2026-07-23 05:55:42,694 2190428 INFO whatsapp_hub_fresh odoo.modules.loading: Modules loaded. 
+2026-07-23 05:55:42,723 2190428 INFO whatsapp_hub_fresh odoo.registry: Registry loaded in 0.729s 
+2026-07-23 05:55:42,724 2190428 INFO whatsapp_hub_fresh odoo.service.server: Initiating shutdown 
+2026-07-23 05:55:42,724 2190428 INFO whatsapp_hub_fresh odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-07-23 05:55:42,724 2190428 INFO whatsapp_hub_fresh odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=32): Closed 1 connections  

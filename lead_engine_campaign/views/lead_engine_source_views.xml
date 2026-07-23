@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lead_engine_source_form_campaign_template" model="ir.ui.view">
+        <field name="name">lead.engine.source.form.campaign.template</field>
+        <field name="model">lead.engine.source</field>
+        <field name="inherit_id" ref="lead_engine_core.view_lead_engine_source_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group/group[2]/field[@name='default_user_id']" position="after">
+                <field name="campaign_template_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

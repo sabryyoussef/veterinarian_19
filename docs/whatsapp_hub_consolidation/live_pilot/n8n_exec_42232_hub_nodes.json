@@ -1,0 +1,42 @@
+{
+  "Build Hub Payload": {
+    "hub_enabled": true,
+    "message_id": 14381
+  },
+  "WhatsApp Hub Ingest": {
+    "ok": true,
+    "message_id": 5,
+    "duplicate": false,
+    "skipped": false,
+    "full": {
+      "ok": true,
+      "message_id": 5,
+      "conversation_id": 3,
+      "group_id": 1,
+      "contact_id": 2,
+      "duplicate": false,
+      "skipped": false
+    }
+  },
+  "Merge Hub Result": {
+    "hub_enabled": true,
+    "message_id": 14381,
+    "whatsapp_message_id": 5
+  },
+  "Dev Hub Intake RPC": {
+    "error": {
+      "message": "timeout of 60000ms exceeded",
+      "name": "AxiosError",
+      "stack": "AxiosError: timeout of 60000ms exceeded\n    at RedirectableRequest.handleRequestTimeout (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/axios@1.8.3/node_modules/axios/lib/adapters/http.js:657:16)\n    at RedirectableRequest.emit (node:events:518:28)\n    at Timeout.<anonymous> (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/follow-redirects@1.15.9/node_modules/follow-redirects/index.js:221:12)\n    at listOnTimeout (node:internal/timers:588:17)\n    at processTimers (node:internal/timers:523:7)\n    at Axios.request (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/axios@1.8.3/node_modules/axios/lib/core/Axios.js:45:41)\n    at invokeAxios (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_openai@4.78.1_encoding@0.1.13_zod@3.24.1_/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:315:10)\n    at proxyRequestToAxios (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_openai@4.78.1_encoding@0.1.13_zod@3.24.1_/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:707:20)\n    at Object.request (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_openai@4.78.1_encoding@0.1.13_zod@3.24.1_/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:1753:4)",
+      "code": "ECONNABORTED"
+    }
+  },
+  "Evaluate Auto-Create Gates": {
+    "message_id": 14381,
+    "auto_create_eligible": false
+  },
+  "Filter Events": {
+    "message_id": 14381,
+    "skipped": false
+  }
+}

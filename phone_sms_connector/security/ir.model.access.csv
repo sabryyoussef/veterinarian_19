@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sms_gateway_config_user,sms.gateway.config user,model_sms_gateway_config,base.group_user,1,0,0,0
+access_sms_gateway_config_manager,sms.gateway.config manager,model_sms_gateway_config,base.group_system,1,1,1,1
+access_sms_template_user,phone.sms.template user,model_phone_sms_template,base.group_user,1,0,0,0
+access_sms_template_manager,phone.sms.template manager,model_phone_sms_template,base.group_system,1,1,1,1
+access_sms_message_log_user,sms.message.log user,model_sms_message_log,base.group_user,1,0,0,0
+access_sms_message_log_manager,sms.message.log manager,model_sms_message_log,base.group_system,1,1,1,1
+access_sms_send_wizard_user,sms.send.wizard user,model_sms_send_wizard,base.group_user,1,1,1,1
+access_bank_sms_transaction_user,bank.sms.transaction user,model_bank_sms_transaction,base.group_user,1,0,0,0
+access_bank_sms_transaction_manager,bank.sms.transaction manager,model_bank_sms_transaction,base.group_system,1,1,1,1
+access_bank_sms_counterparty_map_user,bank.sms.counterparty.map user,model_bank_sms_counterparty_map,base.group_user,1,0,0,0
+access_bank_sms_counterparty_map_manager,bank.sms.counterparty.map manager,model_bank_sms_counterparty_map,base.group_system,1,1,1,1
+access_bank_sms_backfill_wizard_manager,bank.sms.backfill.wizard manager,model_bank_sms_backfill_wizard,base.group_system,1,1,1,1

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sms_send_wizard_form" model="ir.ui.view">
+        <field name="name">sms.send.wizard.form</field>
+        <field name="model">sms.send.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send SMS">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>📱 Send SMS</h2>
+                    </div>
+                    <group>
+                        <group string="Recipients">
+                            <field name="partner_ids" widget="many2many_tags"
+                                   placeholder="Pick contacts..."/>
+                            <field name="lead_id" invisible="not lead_id" readonly="1"/>
+                            <field name="phone"
+                                   placeholder="Or type a phone number"
+                                   invisible="partner_ids"/>
+                            <field name="recipient_count" readonly="1"/>
+                        </group>
+                        <group string="Options">
+                            <field name="gateway_id" options="{'no_create': True}"/>
+                            <field name="template_id" options="{'no_create': True}"
+                                   placeholder="Select template (optional)..."/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="body" nolabel="1" widget="text"
+                               placeholder="Type your SMS message here..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_send" string="Send" type="object"
+                            class="btn-primary" data-hotkey="s"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sms_send_wizard" model="ir.actions.act_window">
+        <field name="name">Send SMS</field>
+        <field name="res_model">sms.send.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Batch send from a contact list selection -->
+    <record id="action_sms_send_wizard_partners" model="ir.actions.act_window">
+        <field name="name">Send SMS</field>
+        <field name="res_model">sms.send.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

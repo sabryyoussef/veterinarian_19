@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'PetSpot WhatsApp Intake',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Services',
     'summary': 'Draft pets, visits, and sales from PetSpot Sahel WhatsApp / Chatwoot',
     'description': """
@@ -20,6 +20,7 @@ Author: Sabry Youssef
     'license': 'LGPL-3',
     'depends': [
         'integration_bridge_core',
+        'whatsapp_hub',
         'pet_management',
         'sale',
         'mail',

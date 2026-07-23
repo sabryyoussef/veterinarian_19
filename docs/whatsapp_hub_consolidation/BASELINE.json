@@ -1,0 +1,58 @@
+{
+  "pinned_at": "2026-07-23T04:30:00Z",
+  "canonical_tree": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel",
+  "git_branch": "feature/devhub-modularization-whatsapp",
+  "git_head": "22e8b5414613da1e286b280c4884abd0cb3061d2",
+  "modules": {
+    "integration_bridge_core": {"manifest_version": "19.0.1.1.0"},
+    "evolution_whatsapp_chat": {"manifest_version": "19.0.1.10.0"},
+    "petspot_wa_intake": {"manifest_version": "19.0.1.0.0"},
+    "petspot_clinic_portal": {"manifest_version": "19.0.2.3.0"},
+    "chatwoot_evolution_error_bridge": {"manifest_version": "19.0.1.0.1"},
+    "devhub_whatsapp": {"manifest_version": "19.0.9.0.0"}
+  },
+  "db_install_matrix": {
+    "pet_spot_elsahel_prod_8027": {
+      "integration_bridge_core": "installed:19.0.1.0.5",
+      "evolution_whatsapp_chat": "installed:19.0.1.10.0",
+      "petspot_wa_intake": "installed:19.0.1.0.0",
+      "petspot_clinic_portal": "installed:19.0.2.2.1",
+      "chatwoot_evolution_error_bridge": "uninstalled",
+      "devhub_whatsapp": "absent",
+      "note": "PRODUCTION — do not modify during consolidation UAT"
+    },
+    "pet_spot_elsahel_test_8028": {
+      "integration_bridge_core": "installed:19.0.1.1.0",
+      "evolution_whatsapp_chat": "installed:19.0.1.8.0",
+      "petspot_wa_intake": "installed:19.0.1.0.0",
+      "petspot_clinic_portal": "installed:19.0.2.3.0",
+      "chatwoot_evolution_error_bridge": "installed:19.0.1.0.1",
+      "devhub_whatsapp": "uninstalled"
+    },
+    "devhub_modular_fresh_8032": {
+      "devhub_whatsapp": "installed:19.0.9.0.0",
+      "integration_bridge_core": "uninstalled",
+      "evolution_whatsapp_chat": "uninstalled",
+      "note": "Preferred non-prod target for whatsapp_hub install UAT"
+    },
+    "resume_8029": {
+      "integration_bridge_core": "installed:19.0.1.0.5",
+      "evolution_whatsapp_chat": "installed:19.0.1.7.0"
+    }
+  },
+  "external_stack": {
+    "evolution_main": "evolution_api :8080 instance sabry min",
+    "n8n_inbound_workflow": "Evolution WhatsApp Webhook (workflow-evolution-whatsapp.json)",
+    "n8n_ai_workflow": "chatwoot-ai-analysis (workflow-chatwoot-ai-analysis.json)",
+    "bridge": "chatwoot_evolution_bridge :3010",
+    "chatwoot": "inbox 2 default / inbox 3 PetSpot",
+    "group_map": "/home/sabry/nextcloud/group-project-map.json"
+  },
+  "risks": [
+    "Dual Evolution stacks (main :8080 vs PetSpot :8199 direct Odoo webhook)",
+    "Dev Hub service_ingest_message not yet called from n8n",
+    "Production must remain untouched"
+  ],
+  "target_module": "whatsapp_hub",
+  "target_version": "19.0.1.0.0"
+}

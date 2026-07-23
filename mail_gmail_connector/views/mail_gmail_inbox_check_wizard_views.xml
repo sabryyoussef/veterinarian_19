@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mail_gmail_inbox_check_wizard_form" model="ir.ui.view">
+        <field name="name">mail.gmail.inbox.check.wizard.form</field>
+        <field name="model">mail.gmail.inbox.check.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Compare Gmail vs CRM leads">
+                <sheet>
+                    <group>
+                        <field name="account_id" options="{'no_create': True}"/>
+                        <field name="incoming_mail_server_id" invisible="1"/>
+                        <field name="message_limit"/>
+                        <field name="gmail_query" placeholder="in:inbox"/>
+                    </group>
+                    <group string="Result" invisible="not result_html">
+                        <field name="result_html" nolabel="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_run_compare" type="object" string="Run comparison" class="btn-primary"/>
+                    <button name="action_open_incoming_server" type="object" string="Open incoming mail server"
+                            class="btn-secondary"
+                            invisible="not incoming_mail_server_id"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mail_gmail_inbox_check_wizard" model="ir.actions.act_window">
+        <field name="name">Compare Gmail vs CRM leads</field>
+        <field name="res_model">mail.gmail.inbox.check.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

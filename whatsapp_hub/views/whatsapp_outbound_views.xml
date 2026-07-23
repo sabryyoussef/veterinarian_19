@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_outbound_list" model="ir.ui.view">
+        <field name="name">whatsapp.outbound.message.list</field>
+        <field name="model">whatsapp.outbound.message</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="destination"/>
+                <field name="state"/>
+                <field name="purpose"/>
+                <field name="retry_count"/>
+                <field name="sent_at"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_whatsapp_outbound_form" model="ir.ui.view">
+        <field name="name">whatsapp.outbound.message.form</field>
+        <field name="model">whatsapp.outbound.message</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send" type="object" string="Send Now" class="btn-primary"
+                            invisible="state == 'sent'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="destination"/>
+                        <field name="body"/>
+                        <field name="purpose"/>
+                        <field name="instance_id"/>
+                        <field name="message_id"/>
+                        <field name="conversation_id"/>
+                        <field name="evolution_message_id"/>
+                        <field name="error_message"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_whatsapp_outbound" model="ir.actions.act_window">
+        <field name="name">Outbound Queue</field>
+        <field name="res_model">whatsapp.outbound.message</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

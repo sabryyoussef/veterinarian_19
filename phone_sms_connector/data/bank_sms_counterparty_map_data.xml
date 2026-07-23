@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="counterparty_map_ahmed_haram_rent" model="bank.sms.counterparty.map">
+            <field name="masked_name">احمد ع******** ا******* س**</field>
+            <field name="real_name">إيجار عيادة الهرم</field>
+            <field name="match_type">exact</field>
+            <field name="priority">100</field>
+        </record>
+        <record id="counterparty_map_essam_market" model="bank.sms.counterparty.map">
+            <field name="masked_name">عصام ر**** ع******** ع********</field>
+            <field name="real_name">ماركت عصام</field>
+            <field name="match_type">exact</field>
+            <field name="priority">100</field>
+        </record>
+        <record id="counterparty_map_walaa" model="bank.sms.counterparty.map">
+            <field name="masked_name">ولاء ع******** ي****</field>
+            <field name="real_name">ولاء</field>
+            <field name="match_type">exact</field>
+            <field name="priority">100</field>
+        </record>
+        <record id="counterparty_map_youssef" model="bank.sms.counterparty.map">
+            <field name="masked_name">YOUSSEF S**** M****** Y******</field>
+            <field name="real_name">يوسف</field>
+            <field name="match_type">exact</field>
+            <field name="priority">100</field>
+        </record>
+        <record id="counterparty_map_abdelazim_hadayek_rent" model="bank.sms.counterparty.map">
+            <field name="masked_name">عبدالعظيم م**** ع******** ع********</field>
+            <field name="real_name">إيجار عيادة الحدائق</field>
+            <field name="match_type">exact</field>
+            <field name="priority">100</field>
+        </record>
+        <record id="counterparty_map_ebrar" model="bank.sms.counterparty.map">
+            <field name="masked_name">EBRAR A******* M****</field>
+            <field name="real_name">إبرار</field>
+            <field name="match_type">exact</field>
+            <field name="priority">100</field>
+        </record>
+    </data>
+</odoo>

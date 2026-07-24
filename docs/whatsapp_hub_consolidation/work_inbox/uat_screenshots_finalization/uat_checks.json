@@ -1,0 +1,81 @@
+{
+  "auth": "cookie_inject",
+  "a25": {
+    "url": "http://127.0.0.1:8028/odoo/dev.whatsapp.analysis/25",
+    "DEMO": false,
+    "Create": false,
+    "Attach": false,
+    "Reject": false,
+    "Reanalyse": true,
+    "Retry": false,
+    "unmapped": false,
+    "ambiguous": false,
+    "dify_n8n": true,
+    "bytes": 216979
+  },
+  "a24": {
+    "url": "http://127.0.0.1:8028/odoo/dev.whatsapp.analysis/24",
+    "DEMO": true,
+    "Create": true,
+    "Attach": false,
+    "Reject": true,
+    "Reanalyse": true,
+    "Retry": false,
+    "unmapped": false,
+    "ambiguous": false,
+    "dify_n8n": false,
+    "bytes": 165403
+  },
+  "inbox": {
+    "url": "http://127.0.0.1:8028/odoo/wa-work-inbox",
+    "DEMO": false,
+    "Create": false,
+    "Attach": false,
+    "Reject": false,
+    "Reanalyse": false,
+    "Retry": false,
+    "unmapped": false,
+    "ambiguous": false,
+    "dify_n8n": false,
+    "bytes": 127847
+  },
+  "wi3344": {
+    "url": "http://127.0.0.1:8028/odoo/dev.work.item/3344",
+    "DEMO": false,
+    "Create": false,
+    "Attach": false,
+    "Reject": false,
+    "Reanalyse": false,
+    "Retry": false,
+    "unmapped": false,
+    "ambiguous": false,
+    "dify_n8n": false,
+    "bytes": 190862
+  },
+  "src4": {
+    "url": "http://127.0.0.1:8028/odoo/dev.whatsapp.source/4",
+    "DEMO": false,
+    "Create": false,
+    "Attach": false,
+    "Reject": false,
+    "Reanalyse": false,
+    "Retry": false,
+    "unmapped": true,
+    "ambiguous": true,
+    "dify_n8n": false,
+    "bytes": 128075
+  },
+  "src9": {
+    "url": "http://127.0.0.1:8028/odoo/dev.whatsapp.source/9",
+    "DEMO": false,
+    "Create": false,
+    "Attach": false,
+    "Reject": false,
+    "Reanalyse": false,
+    "Retry": false,
+    "unmapped": true,
+    "ambiguous": true,
+    "dify_n8n": false,
+    "bytes": 121909
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "devhub-wa-analysis-test",
+  "active": false,
+  "notes": "INACTIVE BY DEFAULT. Test only. No OpenProject. No Production URLs. No Work Item creation. Leases Odoo jobs and calls Dify Dev Hub WhatsApp Triage.",
+  "nodes_outline": [
+    {
+      "name": "Cron or Manual Trigger",
+      "type": "schedule/manual"
+    },
+    {
+      "name": "Odoo JSON-RPC service_lease",
+      "type": "httpRequest",
+      "params": {
+        "method": "dev.whatsapp.analysis.job.service_lease",
+        "kwargs": {
+          "limit": 1,
+          "lease_seconds": 600,
+          "consumer_ref": "n8n-devhub-wa-analysis-test"
+        },
+        "auth": "Odoo Test service user with group_dev_hub_wa_analysis_service"
+      }
+    },
+    {
+      "name": "service_start",
+      "type": "httpRequest"
+    },
+    {
+      "name": "Dify workflows/run",
+      "type": "httpRequest",
+      "url": "{{$env.DIFY_BASE_URL}}/v1/workflows/run",
+      "auth": "DIFY_API_KEY_DEVHUB_WA_TRIAGE"
+    },
+    {
+      "name": "service_complete or service_fail",
+      "type": "httpRequest",
+      "complete_body": {
+        "job_id": "...",
+        "correlation_id": "...",
+        "lease_token": "...",
+        "result": {
+          "raw_response": "<dify text or json string>",
+          "provider_model": "dify"
+        }
+      }
+    }
+  ],
+  "forbidden": [
+    "OpenProject nodes",
+    "Production Odoo URL",
+    "Direct DB access",
+    "Creating dev.work.item",
+    "Mutating inbox_state"
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "name": "devhub-wa-project-aware-analysis-test",
+  "active": false,
+  "notes": "TEST ONLY. Lease Odoo analysis jobs, call Dify Dev Hub WhatsApp Project Resolver, complete/fail. No OpenProject. No WI create. No inbox mutation. No Production URL.",
+  "nodes_outline": [
+    {
+      "name": "Every 1 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "parameters": { "rule": { "interval": [{ "field": "minutes", "minutesInterval": 1 }] } }
+    },
+    {
+      "name": "Lease Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.ODOO_TEST_JSON2_BASE}}/json/2/dev.whatsapp.analysis.job/service_lease",
+        "jsonBody": {
+          "limit": 1,
+          "lease_seconds": 600,
+          "consumer_ref": "n8n-devhub-wa-project-aware-analysis-test"
+        },
+        "authentication": "genericCredentialType",
+        "notes": "Service user with group_dev_hub_wa_analysis_service"
+      }
+    },
+    {
+      "name": "Has Job?",
+      "type": "n8n-nodes-base.if"
+    },
+    {
+      "name": "Start Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "service_start with job_id, correlation_id, lease_token"
+    },
+    {
+      "name": "Call Dify",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.DIFY_BASE_URL}}/v1/workflows/run",
+        "authentication": "headerAuth DIFY_API_KEY_DEVHUB_WA_RESOLVER",
+        "jsonBody": {
+          "inputs": { "request_json": "={{$json.payload_json}}" },
+          "response_mode": "blocking",
+          "user": "n8n-devhub-wa-test"
+        }
+      }
+    },
+    {
+      "name": "Complete Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.ODOO_TEST_JSON2_BASE}}/json/2/dev.whatsapp.analysis.job/service_complete",
+        "jsonBody": {
+          "job_id": "={{$json.job_id}}",
+          "correlation_id": "={{$json.correlation_id}}",
+          "lease_token": "={{$json.lease_token}}",
+          "result": {
+            "raw_response": "={{$json.dify_text}}",
+            "provider_model": "dify-gpt-4o-mini",
+            "dify_app_ref": "Dev Hub WhatsApp Project Resolver",
+            "dify_workflow_run_id": "={{$json.workflow_run_id}}",
+            "n8n_execution_id": "={{$execution.id}}",
+            "provider_latency_ms": "={{$json.latency_ms}}"
+          }
+        }
+      }
+    },
+    {
+      "name": "Fail Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "service_fail on Dify/transport errors"
+    }
+  ],
+  "forbidden": [
+    "OpenProject nodes",
+    "Production Odoo URL",
+    "Direct DB access",
+    "Creating dev.work.item",
+    "Mutating inbox_state",
+    "Fixture completion"
+  ],
+  "env_keys": [
+    "ODOO_TEST_JSON2_BASE",
+    "DIFY_BASE_URL",
+    "DIFY_API_KEY_DEVHUB_WA_RESOLVER"
+  ]
+}

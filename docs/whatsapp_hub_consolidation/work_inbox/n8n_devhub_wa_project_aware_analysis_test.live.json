@@ -1,0 +1,499 @@
+{
+  "name": "devhub-wa-project-aware-analysis-test",
+  "id": "j3xV5kXRQUu1k0p4",
+  "active": true,
+  "notes": "Sanitized live export. Secrets in n8n env only. Test Odoo URL via DEV_HUB_ODOO_BASE_URL / ODOO_TEST_JSON2_BASE.",
+  "nodes": [
+    {
+      "id": "sched-wa",
+      "name": "Every 1 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "manual-wa",
+      "name": "Manual Test Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        220
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "lease-wa",
+      "name": "Lease Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        80
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.ODOO_TEST_JSON2_BASE || $env.DEV_HUB_ODOO_BASE_URL) + '/json/2/dev.whatsapp.analysis.job/service_lease' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.DEV_HUB_WA_ANALYSIS_ODOO_API_KEY }}"
+            },
+            {
+              "name": "X-Odoo-Database",
+              "value": "={{ $env.DEV_HUB_DATABASE }}"
+            },
+            {
+              "name": "User-Agent",
+              "value": "DevHub-n8n-wa-analysis/1.0"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({limit: 1, lease_seconds: 600, consumer_ref: 'n8n-devhub-wa-project-aware-analysis-test'}) }}"
+      }
+    },
+    {
+      "id": "split-wa",
+      "name": "Split Jobs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        80
+      ],
+      "parameters": {
+        "jsCode": "const root = $input.first().json || {};\nconst jobs = Array.isArray(root.jobs) ? root.jobs : (Array.isArray(root) ? root : []);\nif (!jobs.length) {\n  return [{ json: { skip: true, reason: 'no_job' } }];\n}\nreturn jobs.slice(0, 1).map((job) => ({\n  json: {\n    skip: false,\n    job_id: job.job_id,\n    analysis_id: job.analysis_id,\n    correlation_id: job.correlation_id,\n    lease_token: job.lease_token,\n    lease_version: job.lease_version,\n    kind: job.kind,\n    payload_json: job.payload_json,\n    attempt_count: job.attempt_count,\n    leased_at_ms: Date.now(),\n  }\n}));"
+      }
+    },
+    {
+      "id": "has-wa",
+      "name": "Has Job?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        80
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "start-wa",
+      "name": "Start Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.ODOO_TEST_JSON2_BASE || $env.DEV_HUB_ODOO_BASE_URL) + '/json/2/dev.whatsapp.analysis.job/service_start' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.DEV_HUB_WA_ANALYSIS_ODOO_API_KEY }}"
+            },
+            {
+              "name": "X-Odoo-Database",
+              "value": "={{ $env.DEV_HUB_DATABASE }}"
+            },
+            {
+              "name": "User-Agent",
+              "value": "DevHub-n8n-wa-analysis/1.0"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({job_id: $('Has Job?').item.json.job_id, correlation_id: $('Has Job?').item.json.correlation_id, lease_token: $('Has Job?').item.json.lease_token}) }}"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "dify-wa",
+      "name": "Call Dify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.DIFY_BASE_URL + '/workflows/run' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.DIFY_API_KEY_DEVHUB_WA_RESOLVER }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 180000
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({inputs: {request_json: String($('Has Job?').item.json.payload_json || '')}, response_mode: 'blocking', user: 'n8n-devhub-wa-test'}) }}"
+      },
+      "onError": "continueErrorOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "parse-wa",
+      "name": "Parse Dify Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const job = $('Has Job?').item.json;\nconst started = Number(job.leased_at_ms || Date.now());\nconst latency = Math.max(0, Date.now() - started);\nconst resp = $json || {};\nconst baseFail = {\n  ok: false,\n  job_id: job.job_id,\n  analysis_id: job.analysis_id,\n  correlation_id: job.correlation_id,\n  lease_token: job.lease_token,\n  latency_ms: latency,\n};\nif (resp.error || (resp.message && !resp.data && !resp.workflow_run_id && resp.statusCode >= 400)) {\n  const fail = Object.assign({}, baseFail, {\n    error_code: 'provider_http_error',\n    error_summary: String(resp.error?.message || resp.message || 'Dify HTTP error').slice(0, 500),\n  });\n  fail.fail_payload = {\n    job_id: fail.job_id,\n    correlation_id: fail.correlation_id,\n    lease_token: fail.lease_token,\n    error_code: fail.error_code,\n    error_summary: fail.error_summary,\n  };\n  return [{ json: fail }];\n}\nconst data = resp.data || resp;\nconst runId = data.workflow_run_id || data.id || resp.workflow_run_id || '';\nlet raw = data.outputs?.result ?? data.outputs?.text ?? data.outputs?.output ?? null;\nif (raw && typeof raw === 'object') raw = JSON.stringify(raw);\nif (typeof raw !== 'string' || !raw.trim()) {\n  const fail = Object.assign({}, baseFail, {\n    error_code: 'empty_output',\n    error_summary: 'Dify returned empty or non-text result',\n    dify_workflow_run_id: runId,\n  });\n  fail.fail_payload = {\n    job_id: fail.job_id,\n    correlation_id: fail.correlation_id,\n    lease_token: fail.lease_token,\n    error_code: fail.error_code,\n    error_summary: fail.error_summary,\n  };\n  return [{ json: fail }];\n}\nraw = raw.trim();\nconst fenced = raw.match(/^```(?:json)?\\s*\\n([\\s\\S]*?)\\n```$/i);\nif (fenced) raw = fenced[1].trim();\ntry { JSON.parse(raw); } catch (e) {\n  const fail = Object.assign({}, baseFail, {\n    error_code: 'malformed_json',\n    error_summary: ('Dify output is not JSON: ' + e.message).slice(0, 500),\n    dify_workflow_run_id: runId,\n    raw_response: raw.slice(0, 4000),\n  });\n  fail.fail_payload = {\n    job_id: fail.job_id,\n    correlation_id: fail.correlation_id,\n    lease_token: fail.lease_token,\n    error_code: fail.error_code,\n    error_summary: fail.error_summary,\n  };\n  return [{ json: fail }];\n}\nconst usage = data.total_tokens || data.metadata?.usage || null;\nconst ok = {\n  ok: true,\n  job_id: job.job_id,\n  analysis_id: job.analysis_id,\n  correlation_id: job.correlation_id,\n  lease_token: job.lease_token,\n  raw_response: raw,\n  dify_workflow_run_id: String(runId),\n  latency_ms: latency,\n  token_usage: usage,\n  provider_model: 'dify-gpt-4o-mini',\n  dify_app_ref: 'Dev Hub WhatsApp Project Resolver',\n  n8n_execution_id: String($execution.id),\n};\nok.complete_payload = {\n  job_id: ok.job_id,\n  correlation_id: ok.correlation_id,\n  lease_token: ok.lease_token,\n  result: {\n    raw_response: ok.raw_response,\n    provider_model: ok.provider_model,\n    dify_app_ref: ok.dify_app_ref,\n    dify_workflow_run_id: ok.dify_workflow_run_id,\n    n8n_execution_id: ok.n8n_execution_id,\n    provider_latency_ms: ok.latency_ms,\n    token_usage: ok.token_usage,\n  },\n};\nreturn [{ json: ok }];"
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "ok-wa",
+      "name": "Dify OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1660,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "complete-wa",
+      "name": "Complete Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        -80
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.ODOO_TEST_JSON2_BASE || $env.DEV_HUB_ODOO_BASE_URL) + '/json/2/dev.whatsapp.analysis.job/service_complete' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.DEV_HUB_WA_ANALYSIS_ODOO_API_KEY }}"
+            },
+            {
+              "name": "X-Odoo-Database",
+              "value": "={{ $env.DEV_HUB_DATABASE }}"
+            },
+            {
+              "name": "User-Agent",
+              "value": "DevHub-n8n-wa-analysis/1.0"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify($json.complete_payload) }}"
+      }
+    },
+    {
+      "id": "fail-wa",
+      "name": "Fail Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        160
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.ODOO_TEST_JSON2_BASE || $env.DEV_HUB_ODOO_BASE_URL) + '/json/2/dev.whatsapp.analysis.job/service_fail' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.DEV_HUB_WA_ANALYSIS_ODOO_API_KEY }}"
+            },
+            {
+              "name": "X-Odoo-Database",
+              "value": "={{ $env.DEV_HUB_DATABASE }}"
+            },
+            {
+              "name": "User-Agent",
+              "value": "DevHub-n8n-wa-analysis/1.0"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify($json.fail_payload || {job_id: $json.job_id || $('Has Job?').item.json.job_id, correlation_id: $json.correlation_id || $('Has Job?').item.json.correlation_id, lease_token: $json.lease_token || $('Has Job?').item.json.lease_token, error_code: $json.error_code || 'provider_error', error_summary: String($json.error_summary || ($json.error && $json.error.message) || $json.message || 'Provider failure').slice(0, 500)}) }}"
+      }
+    },
+    {
+      "id": "idle-wa",
+      "name": "No Job Idle",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        960,
+        200
+      ],
+      "parameters": {}
+    }
+  ],
+  "connections": {
+    "Every 1 min": {
+      "main": [
+        [
+          {
+            "node": "Lease Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Test Trigger": {
+      "main": [
+        [
+          {
+            "node": "Lease Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lease Job": {
+      "main": [
+        [
+          {
+            "node": "Split Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Jobs": {
+      "main": [
+        [
+          {
+            "node": "Has Job?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Job?": {
+      "main": [
+        [
+          {
+            "node": "Start Job",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Job Idle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Job": {
+      "main": [
+        [
+          {
+            "node": "Call Dify",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fail Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Dify": {
+      "main": [
+        [
+          {
+            "node": "Parse Dify Output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fail Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Dify Output": {
+      "main": [
+        [
+          {
+            "node": "Dify OK?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fail Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dify OK?": {
+      "main": [
+        [
+          {
+            "node": "Complete Job",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fail Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "forbidden": [
+    "OpenProject",
+    "Production Odoo",
+    "Direct DB",
+    "Create WI",
+    "Fixture complete"
+  ],
+  "env_keys": [
+    "DEV_HUB_ODOO_BASE_URL",
+    "ODOO_TEST_JSON2_BASE",
+    "DEV_HUB_DATABASE",
+    "DEV_HUB_WA_ANALYSIS_ODOO_API_KEY",
+    "DIFY_BASE_URL",
+    "DIFY_API_KEY_DEVHUB_WA_RESOLVER"
+  ]
+}

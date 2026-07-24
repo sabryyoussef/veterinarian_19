@@ -67,6 +67,9 @@
                     <div class="alert alert-info" role="alert" invisible="not is_demo_result">
                         DEMO / FIXTURE RESULT — not a live Dify analysis.
                     </div>
+                    <div class="alert alert-warning" role="alert" invisible="not is_evaluation_result">
+                        HISTORICAL QUALITY EVALUATION — review only; no inbox or Work Item mutations.
+                    </div>
                     <div class="alert alert-warning" role="alert"
                          invisible="not requires_project_confirmation">
                         Project confirmation required — do not treat the project as final.
@@ -100,6 +103,8 @@
                             <field name="requires_human_review"/>
                             <field name="provider"/>
                             <field name="is_demo_result"/>
+                            <field name="is_evaluation_result"/>
+                            <field name="evaluation_sample_id"/>
                             <field name="provider_model"/>
                             <field name="dify_app_ref"/>
                             <field name="dify_workflow_run_id"/>

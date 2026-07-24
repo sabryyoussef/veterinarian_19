@@ -195,6 +195,13 @@ class DevWhatsappAnalysis(models.Model):
     safe_to_create_work = fields.Boolean(default=False, readonly=True)
     safe_to_attach_to_existing_work = fields.Boolean(default=False, readonly=True)
     is_demo_result = fields.Boolean(default=False, readonly=True, index=True)
+    is_evaluation_result = fields.Boolean(
+        default=False,
+        readonly=True,
+        index=True,
+        help="Historical quality evaluation — no inbox/WI mutation allowed.",
+    )
+    evaluation_sample_id = fields.Char(readonly=True, index=True, copy=False)
     dify_app_ref = fields.Char(readonly=True)
     dify_workflow_run_id = fields.Char(readonly=True)
     n8n_execution_id = fields.Char(readonly=True)
@@ -386,6 +393,106 @@ class DevWhatsappAnalysis(models.Model):
         )
         return analysis
 
+    @api.model
+    def action_enqueue_historical_quality_evaluation(
+        self, source_id, message_ids, sample_id, force_reanalyse=False
+    ):
+        """Enqueue a reversible historical quality evaluation (real n8n→Dify).
+
+        Safety:
+        - Does not change source project_mapping_state / ai_triage_enabled
+        - Does not alter inbox states on complete
+        - Blocks create/attach/ignore approval
+        - Labels records with is_evaluation_result + evaluation_sample_id
+        """
+        _require_manager(self.env)
+        source = self.env["dev.whatsapp.source"].browse(int(source_id)).exists()
+        if not source:
+            raise UserError("WhatsApp source not found.")
+        source.check_access("read")
+        Msg = self.env["whatsapp.message"]
+        messages = Msg.browse([int(i) for i in (message_ids or [])]).exists()
+        if not messages:
+            raise UserError("No messages provided for evaluation sample.")
+        if any(m.group_jid != source.group_jid for m in messages):
+            raise UserError("All evaluation messages must belong to the source group.")
+        if len(messages) > 12:
+            raise UserError("Evaluation samples are limited to 12 messages.")
+        messages = messages.sorted(
+            lambda m: (m.message_timestamp or fields.Datetime.now(), m.id)
+        )
+        sample_id = (sample_id or "").strip() or ("eval-%s" % _uuid()[:8])
+        analysis_mode = "historical_quality_evaluation|%s" % sample_id
+        prompt_version = source.analysis_prompt_version or DEFAULT_PROMPT_VERSION
+        if prompt_version == "wa_triage_v1":
+            prompt_version = DEFAULT_PROMPT_VERSION
+        fingerprint = batch_fingerprint(
+            source.group_jid,
+            messages.ids,
+            prompt_version,
+            SCHEMA_VERSION,
+            analysis_mode,
+        )
+        existing = self.search([("batch_fingerprint", "=", fingerprint)], limit=1)
+        if existing and not force_reanalyse:
+            return existing
+        if existing and force_reanalyse:
+            analysis_mode = "%s|force:%s" % (analysis_mode, _uuid()[:8])
+            fingerprint = batch_fingerprint(
+                source.group_jid,
+                messages.ids,
+                prompt_version,
+                SCHEMA_VERSION,
+                analysis_mode,
+            )
+
+        # Baseline project for required FK only — candidates still drive Dify.
+        project = source.dev_project_id
+        if not project:
+            project = self.env["dev.project"].search([], limit=1)
+        if not project:
+            raise UserError("No Dev Hub project available for evaluation baseline FK.")
+
+        name = "EVAL · %s · %s · %s msgs" % (sample_id, source.name, len(messages))
+        analysis = self.create(
+            {
+                "name": name[:200],
+                "group_jid": source.group_jid,
+                "source_id": source.id,
+                "conversation_ids": [(6, 0, messages.mapped("conversation_id").ids)],
+                "batch_message_ids": [(6, 0, messages.ids)],
+                "dev_project_id": project.id,
+                "batch_fingerprint": fingerprint,
+                "analysis_mode": analysis_mode,
+                "schema_version": SCHEMA_VERSION,
+                "prompt_version": prompt_version,
+                "state": "pending",
+                "provider": "dify_n8n",
+                "is_demo_result": False,
+                "is_evaluation_result": True,
+                "evaluation_sample_id": sample_id[:64],
+                "contains_multiple_tasks": False,
+                "segment_index": 0,
+                "segment_total": 1,
+            }
+        )
+        Job = self.env["dev.whatsapp.analysis.job"].sudo()
+        Job.with_context(dev_wa_analysis_internal=True).create(
+            {
+                "analysis_id": analysis.id,
+                "kind": "wa_group_triage",
+                "state": "pending",
+                "payload_json": safe_json_dumps(analysis._job_payload()),
+            }
+        )
+        analysis.message_post(
+            body=(
+                "Historical quality evaluation sample %s enqueued "
+                "(no inbox/WI mutations allowed)." % sample_id
+            )
+        )
+        return analysis
+
     def _job_payload(self):
         self.ensure_one()
         msgs = []
@@ -561,6 +668,12 @@ class DevWhatsappAnalysis(models.Model):
             )
 
         source = self.source_id
+        # Evaluation mode: never auto-ignore or mutate inbox.
+        if self.is_evaluation_result:
+            vals["state"] = "awaiting_review"
+            vals["is_evaluation_result"] = True
+            self.sudo().write(vals)
+            return True
         auto_ignore = (
             source.auto_ignore_enabled
             and validated["should_ignore"]
@@ -701,6 +814,10 @@ class DevWhatsappAnalysis(models.Model):
 
     def action_approve_ignore(self, auto=False):
         self.ensure_one()
+        if self.is_evaluation_result:
+            raise UserError(
+                "Evaluation analyses cannot mutate inbox states (ignore blocked)."
+            )
         if not auto:
             _require_manager(self.env)
         if self.state not in ("awaiting_review", "succeeded"):
@@ -750,6 +867,8 @@ class DevWhatsappAnalysis(models.Model):
 
     def action_restore_messages(self):
         self.ensure_one()
+        if self.is_evaluation_result:
+            raise UserError("Evaluation analyses cannot restore/mutate inbox states.")
         _require_user(self.env)
         targets = self.noise_message_ids or self.batch_message_ids
         targets.action_inbox_restore()
@@ -758,6 +877,10 @@ class DevWhatsappAnalysis(models.Model):
 
     def action_approve_create_work(self):
         self.ensure_one()
+        if self.is_evaluation_result:
+            raise UserError(
+                "Evaluation analyses cannot create Work Items. Review only."
+            )
         _require_manager(self.env)
         if self.state not in ("awaiting_review", "succeeded"):
             raise UserError("Analysis is not ready for Work Item creation.")
@@ -852,6 +975,10 @@ class DevWhatsappAnalysis(models.Model):
     def action_approve_attach_existing(self):
         """Attach batch messages as context on the proposed existing Work Item."""
         self.ensure_one()
+        if self.is_evaluation_result:
+            raise UserError(
+                "Evaluation analyses cannot attach Work Items. Review only."
+            )
         _require_manager(self.env)
         if self.state not in ("awaiting_review", "succeeded"):
             raise UserError("Analysis is not ready for attach approval.")

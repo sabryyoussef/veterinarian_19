@@ -10,8 +10,9 @@
 | Item | Value |
 |------|--------|
 | Commit (Odoo modules) | `51e400f` — `feat(devhub): add project-aware WhatsApp AI analysis` |
+| Commit (Dify/n8n docs) | `cf9bf2a` — sanitized Dify/n8n notes + exports |
+| Commit (finalization) | `4e202f9` — delivery cert, corrected claims, UAT screenshots |
 | Modules added | `devhub_work`, `devhub_whatsapp`, `devhub_analysis` |
-| Docs commit | (see follow-up commit on same branch) |
 
 ## Modules (Test)
 

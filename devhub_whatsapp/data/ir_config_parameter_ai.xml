@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="icp_allow_fixture_ai" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.allow_fixture_ai</field>
+        <field name="value">False</field>
+    </record>
+</odoo>

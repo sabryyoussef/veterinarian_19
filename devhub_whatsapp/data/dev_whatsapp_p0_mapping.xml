@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <function model="dev.whatsapp.source" name="_apply_p0_mapping_corrections"/>
+</odoo>

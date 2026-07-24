@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+{
+    "name": "Dev Hub WhatsApp Intake",
+    "version": "19.0.9.2.18",
+    "category": "Productivity",
+    "summary": "Whitelisted WhatsApp group intake into Dev Hub work items",
+    "author": "Sabry Youssef",
+    "license": "LGPL-3",
+    "depends": ["devhub_work", "devhub_analysis", "whatsapp_hub"],
+    "data": [
+        "security/devhub_whatsapp_security.xml",
+        "security/ir.model.access.csv",
+        "data/devhub_whatsapp_seed.xml",
+        "data/dev_whatsapp_p0_mapping.xml",
+        "data/ir_config_parameter_ai.xml",
+        "views/dev_whatsapp_views.xml",
+        "views/dev_whatsapp_hub_backfill_views.xml",
+        "views/dev_whatsapp_work_inbox_views.xml",
+        "views/dev_whatsapp_analysis_views.xml",
+        "views/dev_whatsapp_menus.xml",
+    ],
+    "assets": {
+        "web.assets_backend": [
+            "devhub_whatsapp/static/src/work_inbox/work_inbox.css",
+            "devhub_whatsapp/static/src/work_inbox/work_inbox.js",
+            "devhub_whatsapp/static/src/work_inbox/work_inbox.xml",
+        ],
+    },
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

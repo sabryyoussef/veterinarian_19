@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Nested under WhatsApp Hub — Dev Hub WA intake, not a separate home tile. -->
+    <menuitem id="menu_devhub_whatsapp_root"
+              name="DH WhatsApp"
+              parent="whatsapp_hub.menu_whatsapp_hub_root"
+              sequence="30"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <record id="menu_devhub_whatsapp_root" model="ir.ui.menu">
+        <field name="web_icon" eval="False"/>
+    </record>
+
+    <menuitem id="menu_devhub_whatsapp_work_inbox"
+              name="Work Inbox"
+              parent="menu_devhub_whatsapp_root"
+              action="action_devhub_whatsapp_work_inbox"
+              sequence="5"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_whatsapp_ai_analysis"
+              name="AI Analyses"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_analysis"
+              sequence="8"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_whatsapp_ai_jobs"
+              name="AI Analysis Jobs"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_analysis_job"
+              sequence="9"
+              groups="devhub_core.group_dev_hub_manager,group_dev_hub_wa_analysis_service"/>
+
+    <menuitem id="menu_devhub_whatsapp_intake"
+              name="Intake Candidates"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_intake"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_whatsapp_hub_messages"
+              name="Hub Messages (whitelist)"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_hub_messages_window"
+              sequence="15"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_whatsapp_sources"
+              name="Sources"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_source"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_manager"/>
+
+    <menuitem id="menu_devhub_whatsapp_sync"
+              name="Sync whitelist from Hub"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_sync_whitelist"
+              sequence="30"
+              groups="devhub_core.group_dev_hub_manager"/>
+
+    <menuitem id="menu_devhub_whatsapp_backfill"
+              name="Backfill Hub → Dev Hub"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_hub_backfill"
+              sequence="35"
+              groups="devhub_core.group_dev_hub_user"/>
+</odoo>

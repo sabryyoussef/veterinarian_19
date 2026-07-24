@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_whatsapp_analysis_list" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.list</field>
+        <field name="model">dev.whatsapp.analysis</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="source_id"/>
+                <field name="state"/>
+                <field name="classification"/>
+                <field name="confidence"/>
+                <field name="recommended_action"/>
+                <field name="work_item_id"/>
+                <field name="requested_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_whatsapp_analysis_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.form</field>
+        <field name="model">dev.whatsapp.analysis</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp AI Analysis">
+                <header>
+                    <button name="action_approve_ignore" type="object" string="Approve Ignore"
+                            class="btn-secondary"
+                            invisible="state not in ('awaiting_review', 'succeeded') or not should_ignore"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_reject_ignore" type="object" string="Reject Ignore"
+                            invisible="state != 'awaiting_review' or not should_ignore"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_approve_create_work" type="object"
+                            string="Approve &amp; Create New Work Item" class="btn-primary"
+                            invisible="state not in ('awaiting_review', 'succeeded') or not contains_work or work_item_id or work_item_decision == 'existing'"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_approve_attach_existing" type="object"
+                            string="Approve &amp; Attach to Existing Work Item" class="btn-primary"
+                            invisible="state not in ('awaiting_review', 'succeeded') or not proposed_work_item_id or work_item_id or work_item_decision != 'existing'"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_apply_demo_result" type="object"
+                            string="Apply Demo AI Result (disabled unless ICP)" class="btn-secondary"
+                            invisible="state not in ('pending', 'running', 'failed')"
+                            groups="devhub_core.group_dev_hub_manager"
+                            confirm="Fixture/demo is disabled by default. Only use when allow_fixture_ai=True."/>
+                    <button name="action_reject_analysis" type="object" string="Reject Analysis"
+                            invisible="state in ('applied', 'rejected')"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_restore_messages" type="object" string="Restore"
+                            invisible="state != 'applied'"/>
+                    <button name="action_reanalyse" type="object" string="Reanalyse"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_retry_failed_job" type="object" string="Retry Failed Job"
+                            invisible="state != 'failed'"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_open_work_item" type="object" string="Open Work Item"
+                            invisible="not work_item_id"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,running,awaiting_review,succeeded,applied,rejected,failed"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="state not in ('pending', 'running')">
+                        Waiting for n8n → Dify (provider dify_n8n). Fixture/demo completion is disabled
+                        unless explicitly enabled. Approve actions appear after Awaiting Review.
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="not is_demo_result">
+                        DEMO / FIXTURE RESULT — not a live Dify analysis.
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not requires_project_confirmation">
+                        Project confirmation required — do not treat the project as final.
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not contains_multiple_tasks">
+                        Multiple task segments detected — review before creating one Work Item.
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="source_id"/>
+                            <field name="group_jid"/>
+                            <field name="dev_project_id"/>
+                            <field name="resolved_project_id"/>
+                            <field name="work_item_id"/>
+                            <field name="proposed_work_item_id"/>
+                            <field name="work_item_decision"/>
+                            <field name="batch_fingerprint"/>
+                            <field name="correlation_id"/>
+                        </group>
+                        <group>
+                            <field name="classification"/>
+                            <field name="confidence"/>
+                            <field name="recommended_action"/>
+                            <field name="should_ignore"/>
+                            <field name="ignore_reason"/>
+                            <field name="contains_work"/>
+                            <field name="requires_human_review"/>
+                            <field name="provider"/>
+                            <field name="is_demo_result"/>
+                            <field name="provider_model"/>
+                            <field name="dify_app_ref"/>
+                            <field name="dify_workflow_run_id"/>
+                            <field name="n8n_execution_id"/>
+                            <field name="provider_latency_ms"/>
+                            <field name="prompt_version"/>
+                            <field name="schema_version"/>
+                            <field name="language"/>
+                            <field name="segment_index"/>
+                            <field name="segment_total"/>
+                        </group>
+                    </group>
+                    <group string="AI result">
+                        <field name="summary"/>
+                        <field name="work_title"/>
+                        <field name="work_description"/>
+                        <field name="priority"/>
+                        <field name="missing_information_json"/>
+                    </group>
+                    <group string="Errors" invisible="not error_code">
+                        <field name="error_code"/>
+                        <field name="error_message"/>
+                        <field name="retry_count"/>
+                    </group>
+                    <notebook>
+                        <page string="Messages analysed">
+                            <div class="alert alert-info" role="alert">
+                                These are the New/Pending messages that were sent to AI for this run.
+                                Actioned and Ignored messages are not included.
+                            </div>
+                            <field name="batch_message_ids">
+                                <list>
+                                    <field name="message_timestamp" string="When"/>
+                                    <field name="sender_jid" string="From"/>
+                                    <field name="inbox_state" string="Inbox"/>
+                                    <field name="body" string="Message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Noise / Work ids">
+                            <field name="noise_message_ids"/>
+                            <field name="work_message_ids"/>
+                        </page>
+                        <page string="Jobs">
+                            <field name="job_ids">
+                                <list>
+                                    <field name="kind"/>
+                                    <field name="state"/>
+                                    <field name="attempt_count"/>
+                                    <field name="requested_at"/>
+                                    <field name="last_error_code"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Raw (managers)" groups="devhub_core.group_dev_hub_manager">
+                            <field name="validated_json"/>
+                            <field name="raw_response_json"/>
+                            <field name="participants_json"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_whatsapp_analysis_job_list" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.job.list</field>
+        <field name="model">dev.whatsapp.analysis.job</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0"
+                  decoration-info="state in ('leased', 'processing')"
+                  decoration-warning="state == 'retry'"
+                  decoration-danger="state == 'dead_letter'"
+                  decoration-success="state == 'succeeded'">
+                <field name="analysis_id"/>
+                <field name="kind"/>
+                <field name="state"/>
+                <field name="attempt_count"/>
+                <field name="requested_at"/>
+                <field name="lease_expires_at"/>
+                <field name="last_error_code"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_analysis" model="ir.actions.act_window">
+        <field name="name">WhatsApp AI Analyses</field>
+        <field name="res_model">dev.whatsapp.analysis</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_whatsapp_analysis_job" model="ir.actions.act_window">
+        <field name="name">WhatsApp AI Analysis Jobs</field>
+        <field name="res_model">dev.whatsapp.analysis.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_whatsapp_source_ai_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.source.ai.form</field>
+        <field name="model">dev.whatsapp.source</field>
+        <field name="inherit_id" ref="view_dev_whatsapp_source_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="AI triage (Hub)" groups="devhub_core.group_dev_hub_manager">
+                    <field name="ai_triage_enabled"/>
+                    <field name="project_mapping_state"/>
+                    <field name="project_mapping_confidence"/>
+                    <field name="project_mapping_evidence"/>
+                    <field name="project_mapping_confirmed_by"/>
+                    <field name="project_mapping_confirmed_at"/>
+                    <button name="action_confirm_project_mapping" type="object"
+                            string="Confirm project mapping" class="btn-secondary"
+                            invisible="project_mapping_state == 'confirmed'"/>
+                    <field name="auto_ignore_enabled"/>
+                    <field name="auto_ignore_min_confidence"/>
+                    <field name="max_messages_per_batch"/>
+                    <field name="max_chars_per_batch"/>
+                    <field name="cooldown_minutes"/>
+                    <field name="analysis_prompt_version"/>
+                    <field name="analysis_mode"/>
+                    <button name="action_enqueue_ai_analysis" type="object"
+                            string="Analyse now" class="btn-primary"
+                            invisible="not ai_triage_enabled"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_project_work_items_wa_form" model="ir.ui.view">
+        <field name="name">dev.project.work.items.wa.form</field>
+        <field name="model">dev.project</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_project_work_items_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='work_items']//list" position="inside">
+                <field name="whatsapp_analysis_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_item_wa_analysis_form" model="ir.ui.view">
+        <field name="name">dev.work.item.wa.analysis.form</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_origin_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin_ai_whatsapp']" position="after">
+                <field name="whatsapp_analysis_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_whatsapp_analysis" type="object"
+                        class="oe_stat_button" icon="fa-magic"
+                        invisible="not whatsapp_analysis_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">WA Analysis</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

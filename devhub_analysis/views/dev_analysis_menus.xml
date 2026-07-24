@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_devhub_analysis_root"
+              name="DH Analysis"
+              sequence="87"
+              web_icon="devhub_analysis,static/description/icon.png"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_analysis_revisions"
+              name="Analysis Revisions"
+              parent="menu_devhub_analysis_root"
+              action="action_dev_work_analysis"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+</odoo>

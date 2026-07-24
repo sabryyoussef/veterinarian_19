@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="devhub_whatsapp.WorkInbox">
+        <div class="o_wa_work_inbox">
+            <header class="o_wi_header">
+                <div>
+                    <span class="o_wi_kicker">Dev Hub</span>
+                    <h1 class="o_wi_title">WhatsApp Work Inbox</h1>
+                    <p class="o_wi_sub">Left: group messages · Right: Chat or AI Analysis (readable summary + which messages were included)</p>
+                </div>
+                <div class="o_wi_counters" t-if="state.counters">
+                    <span>New <strong t-esc="state.counters.new or 0"/></span>
+                    <span>Pending <strong t-esc="state.counters.pending or 0"/></span>
+                    <span>Ignored <strong t-esc="state.counters.ignored or 0"/></span>
+                </div>
+            </header>
+
+            <div t-if="state.error" class="o_wi_error" t-esc="state.error"/>
+
+            <div class="o_wi_filters">
+                <t t-foreach="[['default','Inbox'],['new','New'],['pending','Pending'],['actioned','Actioned'],['ignored','Ignored'],['untriaged','Not in Inbox']]" t-as="f" t-key="f[0]">
+                    <button type="button"
+                            class="o_wi_chip"
+                            t-att-class="{'is-active': state.filters.inbox_state === f[0]}"
+                            t-att-data-state="f[0]"
+                            t-on-click="onFilterClick"
+                            t-esc="f[1]"/>
+                </t>
+            </div>
+            <div class="o_wi_filters o_wi_date_filters">
+                <span class="o_wi_filter_label">Dates</span>
+                <t t-foreach="datePresets" t-as="p" t-key="p.id">
+                    <button type="button"
+                            class="o_wi_chip o_wi_chip_date"
+                            t-att-class="{'is-active': state.datePreset === p.id}"
+                            t-att-data-preset="p.id"
+                            t-on-click="onDatePresetClick"
+                            t-esc="p.label"/>
+                </t>
+                <button type="button"
+                        class="o_wi_btn o_wi_btn_primary o_wi_analyse_all"
+                        t-on-click="analyseAllGroups"
+                        t-att-disabled="state.analysingAll ? true : undefined">
+                    <t t-if="state.analysingAll">Analysing…</t>
+                    <t t-else="">Analyse all groups (New/Pending · date filter)</t>
+                </button>
+            </div>
+
+            <div class="o_wi_layout">
+                <!-- LEFT: group tree; expand to show messages -->
+                <aside class="o_wi_list">
+                    <div class="o_wi_pane_title">Groups</div>
+                    <div t-if="state.loadingInbox" class="o_wi_muted">Loading…</div>
+                    <t t-foreach="state.conversations" t-as="conv" t-key="conv.group_jid or ('c' + conv.conversation_id)">
+                        <div class="o_wi_tree_node">
+                            <button type="button"
+                                    class="o_wi_parent"
+                                    t-att-class="{'is-open': isExpandedKey(convKey(conv))}"
+                                    t-att-data-conversation-id="conv.conversation_id"
+                                    t-att-data-group-jid="conv.group_jid or ''"
+                                    t-on-click="toggleConversation">
+                                <span class="o_wi_caret" t-esc="isExpandedKey(convKey(conv)) ? '▾' : '▸'"/>
+                                <span class="o_wi_parent_body">
+                                    <strong>
+                                        <t t-esc="conv.name"/>
+                                        <t t-if="conv.ai_label">
+                                            <span class="o_wi_ai_badge"
+                                                  t-att-class="'ai-' + (conv.ai_state or 'none')"
+                                                  t-att-data-group-jid="conv.group_jid or ''"
+                                                  t-on-click="onAiBadgeClick"
+                                                  t-esc="'AI · ' + conv.ai_label"/>
+                                        </t>
+                                    </strong>
+                                    <span class="o_wi_parent_meta">
+                                        <t t-esc="conv.msg_count"/> msgs
+                                        <t t-if="conv.new_count"> · <t t-esc="conv.new_count"/> new</t>
+                                        <t t-if="conv.pending_count"> · <t t-esc="conv.pending_count"/> pending</t>
+                                    </span>
+                                </span>
+                            </button>
+                            <t t-if="isExpandedKey(convKey(conv))">
+                                <div class="o_wi_children">
+                                    <div t-if="state.loadingChildren" class="o_wi_muted">Loading messages…</div>
+                                    <t t-foreach="childSections" t-as="section" t-key="section.key">
+                                        <div class="o_wi_date_header" t-esc="section.label"/>
+                                        <t t-foreach="section.rows" t-as="row" t-key="row.id">
+                                            <button type="button"
+                                                    class="o_wi_row o_wi_child"
+                                                    t-att-class="{'is-active': state.selectedId === row.id}"
+                                                    t-att-data-id="row.id"
+                                                    t-on-click="selectRow">
+                                                <div class="o_wi_row_top">
+                                                    <strong t-esc="row.sender_label or row.sender_jid or 'Message'"/>
+                                                    <span class="o_wi_time" t-esc="row.message_timestamp"/>
+                                                </div>
+                                                <div class="o_wi_row_body" t-esc="row.body_preview"/>
+                                                <div class="o_wi_row_meta">
+                                                    <span class="o_wi_state" t-esc="row.inbox_state"/>
+                                                    <span t-if="row.media_kind !== 'none'" class="o_wi_media" t-esc="row.media_kind"/>
+                                                </div>
+                                            </button>
+                                        </t>
+                                    </t>
+                                    <button t-if="state.childCursor" type="button" class="o_wi_btn" t-on-click="loadMoreChildren">
+                                        Load more
+                                    </button>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <div t-if="!state.loadingInbox and !state.conversations.length" class="o_wi_muted">
+                        No groups in this filter.
+                    </div>
+                </aside>
+
+                <!-- RIGHT: Chat | AI Analysis tabs -->
+                <section class="o_wi_context">
+                    <div class="o_wi_right_tabs">
+                        <button type="button"
+                                class="o_wi_tab"
+                                t-att-class="{'is-active': state.rightTab === 'chat'}"
+                                data-tab="chat"
+                                t-on-click="onRightTabClick">Chat</button>
+                        <button type="button"
+                                class="o_wi_tab"
+                                t-att-class="{'is-active': state.rightTab === 'ai'}"
+                                data-tab="ai"
+                                t-on-click="onRightTabClick">AI Analysis</button>
+                        <button t-if="state.expandedGroupJid"
+                                type="button"
+                                class="o_wi_btn o_wi_btn_primary o_wi_analyse_group"
+                                t-on-click="analyseExpandedGroup"
+                                t-att-disabled="state.analysingGroup ? true : undefined">
+                            <t t-if="state.analysingGroup">Queuing…</t>
+                            <t t-else="">Analyse New/Pending</t>
+                        </button>
+                    </div>
+
+                    <t t-if="state.rightTab === 'chat'">
+                        <div class="o_wi_toolbar">
+                            <button type="button" class="o_wi_btn" t-on-click="addToInboxSelected">Add to Inbox</button>
+                            <button type="button" class="o_wi_btn" t-on-click="pendingSelected">Pending</button>
+                            <button type="button" class="o_wi_btn" t-on-click="actionedSelected">Actioned</button>
+                            <button type="button" class="o_wi_btn" t-on-click="ignoreSelected">Ignore</button>
+                            <button type="button" class="o_wi_btn" t-on-click="restoreSelected">Restore</button>
+                            <button type="button" class="o_wi_btn o_wi_btn_primary" t-on-click="openCreateWork">Create Work</button>
+                        </div>
+
+                        <div t-if="!state.selectedId and !state.loadingContext" class="o_wi_muted">
+                            Expand a group on the left, then click a message to open the chat here.
+                        </div>
+                        <div t-if="state.loadingContext" class="o_wi_muted">Loading chat…</div>
+
+                        <t t-if="state.context">
+                            <div class="o_wi_ctx_head">
+                                <strong t-esc="state.context.conversation_name"/>
+                                <span t-esc="state.context.conversation_type"/>
+                            </div>
+                            <button t-if="state.context.has_older" type="button" class="o_wi_btn" t-on-click="loadOlder">
+                                Load older
+                            </button>
+                            <div class="o_wi_bubbles">
+                                <t t-foreach="state.context.messages" t-as="msg" t-key="msg.id">
+                                    <div class="o_wi_bubble"
+                                         t-att-class="{
+                                            'is-out': msg.direction === 'out',
+                                            'is-focus': isFocus(msg.id),
+                                            'is-highlight': isHighlight(msg.id),
+                                         }">
+                                        <label class="o_wi_check">
+                                            <input type="checkbox"
+                                                   t-att-checked="isSelected(msg.id)"
+                                                   t-att-data-id="msg.id"
+                                                   t-on-change="toggleContextSelect"/>
+                                        </label>
+                                        <div class="o_wi_bubble_body">
+                                            <div class="o_wi_bubble_meta">
+                                                <span t-esc="msg.sender_jid or (msg.direction === 'out' ? 'me' : 'unknown')"/>
+                                                <span t-esc="msg.message_timestamp"/>
+                                                <span class="o_wi_state" t-esc="msg.inbox_state"/>
+                                                <span t-if="msg.media_kind !== 'none'" class="o_wi_media" t-esc="msg.media_kind"/>
+                                            </div>
+                                            <div class="o_wi_bubble_text" t-esc="msg.body or ('[' + msg.media_kind + ' — file unavailable]')"/>
+                                            <div t-if="msg.attachment_references" class="o_wi_att" t-esc="msg.attachment_references"/>
+                                            <button t-if="msg.primary_work_item_id"
+                                                    type="button"
+                                                    class="o_wi_link"
+                                                    t-att-data-work-id="msg.primary_work_item_id"
+                                                    t-on-click="openWork">
+                                                Linked Work: <t t-esc="msg.primary_work_name"/> — <t t-esc="msg.primary_work_phase"/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                            <button t-if="state.context.has_newer" type="button" class="o_wi_btn" t-on-click="loadNewer">
+                                Load newer
+                            </button>
+                        </t>
+                    </t>
+
+                    <t t-if="state.rightTab === 'ai'">
+                        <div t-if="!state.expandedGroupJid" class="o_wi_muted">
+                            Expand a group on the left to see AI analyses for that group only.
+                        </div>
+                        <div t-if="state.loadingAnalyses" class="o_wi_muted">Loading analyses…</div>
+                        <div t-if="state.expandedGroupJid and !state.loadingAnalyses and !state.groupAnalyses.length"
+                             class="o_wi_muted">
+                            No AI analyses yet. Dates filter is “<t t-esc="state.datePreset"/>”.
+                            Click <strong>Analyse New/Pending</strong> — it only uses New + Pending messages in that date range (not every chat ever).
+                        </div>
+                        <div t-if="state.expandedGroupJid" class="o_wi_ai_hint">
+                            AI looks at <strong>New + Pending</strong> messages only for this group, limited by the Dates chips above.
+                            Actioned / Ignored messages are skipped.
+                        </div>
+                        <t t-foreach="state.groupAnalyses" t-as="an" t-key="an.id">
+                            <article class="o_wi_analysis_card">
+                                <div class="o_wi_analysis_top">
+                                    <div>
+                                        <strong t-esc="an.source_name or an.name"/>
+                                        <div class="o_wi_muted o_wi_analysis_when">
+                                            <t t-if="an.requested_at">Queued <t t-esc="an.requested_at"/></t>
+                                            <t t-if="an.completed_at"> · Done <t t-esc="an.completed_at"/></t>
+                                        </div>
+                                    </div>
+                                    <span class="o_wi_ai_badge" t-att-class="'ai-' + an.state" t-esc="an.state"/>
+                                </div>
+
+                                <div class="o_wi_analysis_scope">
+                                    <span class="o_wi_scope_pill" t-esc="an.batch_count + ' messages analysed'"/>
+                                    <span class="o_wi_muted" t-esc="an.scope_note"/>
+                                </div>
+
+                                <section t-if="an.summary" class="o_wi_analysis_block">
+                                    <h3 class="o_wi_block_title">Summary</h3>
+                                    <p class="o_wi_analysis_summary" t-esc="an.summary"/>
+                                </section>
+                                <div t-if="!an.summary and (an.state === 'pending' || an.state === 'running')"
+                                     class="o_wi_muted o_wi_analysis_block">
+                                    Waiting for AI worker. On Test use <strong>Apply Demo AI</strong> to fill a readable result.
+                                </div>
+
+                                <section class="o_wi_analysis_block o_wi_analysis_verdict">
+                                    <div t-if="an.classification_label">
+                                        <span class="o_wi_label">Type</span>
+                                        <span t-esc="an.classification_label"/>
+                                    </div>
+                                    <div t-if="an.recommended_action_label">
+                                        <span class="o_wi_label">Suggest</span>
+                                        <span t-esc="an.recommended_action_label"/>
+                                    </div>
+                                    <div t-if="an.confidence">
+                                        <span class="o_wi_label">Confidence</span>
+                                        <span t-esc="an.confidence"/>
+                                    </div>
+                                </section>
+
+                                <section t-if="an.work_title" class="o_wi_analysis_block o_wi_analysis_work">
+                                    <h3 class="o_wi_block_title">Proposed Work Item</h3>
+                                    <p class="o_wi_work_title" t-esc="an.work_title"/>
+                                    <p t-if="an.work_description" class="o_wi_work_desc" t-esc="an.work_description"/>
+                                </section>
+
+                                <section class="o_wi_analysis_block">
+                                    <h3 class="o_wi_block_title">Messages included</h3>
+                                    <div t-if="!(an.batch_messages and an.batch_messages.length)" class="o_wi_muted">
+                                        (no message preview)
+                                    </div>
+                                    <ul class="o_wi_batch_list">
+                                        <t t-foreach="an.batch_messages or []" t-as="bm" t-key="bm.id">
+                                            <li class="o_wi_batch_item">
+                                                <div class="o_wi_batch_meta">
+                                                    <strong t-esc="bm.sender"/>
+                                                    <span t-esc="bm.timestamp"/>
+                                                    <span class="o_wi_state" t-esc="bm.inbox_state"/>
+                                                </div>
+                                                <div class="o_wi_batch_body" t-esc="bm.body"/>
+                                            </li>
+                                        </t>
+                                    </ul>
+                                    <div t-if="an.batch_truncated" class="o_wi_muted">
+                                        Showing first 30 of <t t-esc="an.batch_count"/> — open the form for the full list.
+                                    </div>
+                                </section>
+
+                                <div t-if="an.error_message" class="o_wi_error" t-esc="an.error_message"/>
+                                <div class="o_wi_analysis_actions">
+                                    <button type="button" class="o_wi_btn" t-att-data-id="an.id" t-on-click="openAnalysisForm">Open form</button>
+                                    <button t-if="an.state === 'pending' || an.state === 'running' || an.state === 'failed'"
+                                            type="button" class="o_wi_btn o_wi_btn_primary"
+                                            t-att-data-id="an.id" t-on-click="applyDemoAnalysis">Apply Demo AI</button>
+                                    <button t-if="an.work_item_id" type="button" class="o_wi_btn" t-att-data-work-id="an.work_item_id" t-on-click="openWork">Work Item</button>
+                                    <button t-if="an.state === 'awaiting_review' and an.should_ignore"
+                                            type="button" class="o_wi_btn"
+                                            t-att-data-id="an.id" t-on-click="approveIgnoreAnalysis">Approve Ignore</button>
+                                    <button t-if="an.state === 'awaiting_review' and an.contains_work and !an.work_item_id"
+                                            type="button" class="o_wi_btn o_wi_btn_primary"
+                                            t-att-data-id="an.id" t-on-click="approveCreateWorkAnalysis">Approve &amp; Create Work</button>
+                                </div>
+                            </article>
+                        </t>
+                    </t>
+                </section>
+            </div>
+        </div>
+    </t>
+</templates>

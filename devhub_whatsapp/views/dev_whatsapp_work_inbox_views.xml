@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_devhub_whatsapp_work_inbox" model="ir.actions.client">
+        <field name="name">WhatsApp Work Inbox</field>
+        <field name="tag">devhub_whatsapp_work_inbox</field>
+        <field name="path">wa-work-inbox</field>
+    </record>
+
+    <record id="view_dev_whatsapp_create_work_wizard_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.create.work.wizard.form</field>
+        <field name="model">dev.whatsapp.create.work.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Dev Hub Work">
+                <group>
+                    <field name="existing_work_warning" readonly="1"
+                             invisible="not existing_work_warning"/>
+                    <field name="existing_work_item_id" readonly="1"
+                             invisible="not existing_work_item_id"/>
+                    <field name="allow_additional_work"
+                             groups="devhub_core.group_dev_hub_manager"/>
+                </group>
+                <group>
+                    <field name="title"/>
+                    <field name="summary"/>
+                    <field name="message_ids" widget="many2many_tags"/>
+                    <field name="primary_message_id"/>
+                    <field name="include_context_before"/>
+                    <field name="include_context_after"/>
+                    <field name="post_create_inbox_state"/>
+                </group>
+                <group string="Routing">
+                    <field name="source_id" readonly="1"/>
+                    <field name="dev_project_id"/>
+                    <field name="odoo_project_id"/>
+                    <field name="preferred_environment_id"/>
+                    <field name="preferred_repository_id"/>
+                    <field name="responsible_user_id"/>
+                    <field name="priority_cache"/>
+                </group>
+                <footer>
+                    <button name="action_open_existing_work" type="object"
+                            string="Open Existing Work"
+                            class="btn-secondary"
+                            invisible="not existing_work_item_id"/>
+                    <button name="action_create_work" type="object"
+                            string="Create Work Item"
+                            class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Entry points on Hub message form -->
+    <record id="view_whatsapp_message_form_work_inbox" model="ir.ui.view">
+        <field name="name">whatsapp.message.form.work.inbox</field>
+        <field name="model">whatsapp.message</field>
+        <field name="inherit_id" ref="whatsapp_hub.view_whatsapp_message_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_work_inbox" type="object"
+                        string="Open Chat Context"
+                        class="btn-secondary"
+                        groups="devhub_core.group_dev_hub_user"/>
+                <button name="action_inbox_add" type="object"
+                        string="Add to Work Inbox"
+                        class="btn-secondary"
+                        groups="devhub_core.group_dev_hub_user"
+                        invisible="inbox_state != 'untriaged'"/>
+                <button name="action_open_create_work_wizard" type="object"
+                        string="Create Work…"
+                        class="btn-primary"
+                        groups="devhub_core.group_dev_hub_user"/>
+            </xpath>
+            <xpath expr="//group[@name='attachments_refs']" position="after">
+                <group string="Work Inbox" groups="devhub_core.group_dev_hub_user">
+                    <field name="inbox_state"/>
+                    <field name="previous_inbox_state"/>
+                    <field name="has_work_item"/>
+                    <field name="work_item_count"/>
+                    <field name="primary_work_item_id"/>
+                    <field name="primary_work_phase"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_whatsapp_conversation_form_work_inbox" model="ir.ui.view">
+        <field name="name">whatsapp.conversation.form.work.inbox</field>
+        <field name="model">whatsapp.conversation</field>
+        <field name="inherit_id" ref="whatsapp_hub.view_whatsapp_conversation_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_open_work_inbox_from_conversation" type="object"
+                            string="Open in Work Inbox"
+                            class="btn-primary"
+                            groups="devhub_core.group_dev_hub_user"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_item_form_whatsapp_context" model="ir.ui.view">
+        <field name="name">dev.work.item.form.whatsapp.context</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_open_whatsapp_context" type="object"
+                        class="oe_stat_button" icon="fa-whatsapp"
+                        groups="devhub_core.group_dev_hub_user">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">WhatsApp</span>
+                        <span class="o_stat_text">Context</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

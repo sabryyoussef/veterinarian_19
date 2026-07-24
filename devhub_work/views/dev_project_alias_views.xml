@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_project_alias_list" model="ir.ui.view">
+        <field name="name">dev.project.alias.list</field>
+        <field name="model">dev.project.alias</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="normalized_name"/>
+                <field name="dev_project_id"/>
+                <field name="alias_type"/>
+                <field name="language"/>
+                <field name="priority"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_project_alias_form" model="ir.ui.view">
+        <field name="name">dev.project.alias.form</field>
+        <field name="model">dev.project.alias</field>
+        <field name="arch" type="xml">
+            <form string="Project Alias">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="normalized_name"/>
+                        <field name="dev_project_id"/>
+                        <field name="alias_type"/>
+                        <field name="language"/>
+                        <field name="priority"/>
+                        <field name="active"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_project_alias" model="ir.actions.act_window">
+        <field name="name">Project Aliases</field>
+        <field name="res_model">dev.project.alias</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_project_form_aliases" model="ir.ui.view">
+        <field name="name">dev.project.form.aliases</field>
+        <field name="model">dev.project</field>
+        <field name="inherit_id" ref="devhub_core.view_dev_project_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Aliases" name="aliases">
+                    <field name="alias_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="alias_type"/>
+                            <field name="language"/>
+                            <field name="priority"/>
+                            <field name="active"/>
+                            <field name="normalized_name"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

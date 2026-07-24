@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_item_form_analysis" model="ir.ui.view">
+        <field name="name">dev.work.item.form.analysis</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_source_request']" position="after">
+                        <page name="page_analysis" string="Analysis">
+                            <field name="analysis_ids">
+                                <list decoration-success="status == 'accepted'"
+                                      decoration-info="origin == 'mixed'"
+                                      decoration-muted="status in ('rejected', 'superseded')">
+                                    <field name="revision"/>
+                                    <field name="parent_revision_id"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="problem_summary"/>
+                                    <field name="origin"/>
+                                    <field name="repository_id"/>
+                                    <field name="observed_head"/>
+                                    <field name="created_date"/>
+                                </list>
+                                <form string="Analysis Revision">
+                                    <header>
+                                        <button name="action_accept" type="object" string="Accept Analysis" class="btn-primary" invisible="status not in ('draft', 'generated', 'reviewed')"/>
+                                        <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('accepted', 'rejected', 'superseded')"/>
+                                        <field name="status" widget="statusbar" statusbar_visible="draft,generated,reviewed,accepted,rejected,superseded"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="revision"/>
+                                                <field name="parent_revision_id"/>
+                                                <field name="content_hash" readonly="1"/>
+                                                <field name="origin"/>
+                                                <field name="created_date" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="agent_name"/>
+                                                <field name="model_name"/>
+                                                <field name="provider_name"/>
+                                                <field name="run_reference"/>
+                                                <field name="repository_id"/>
+                                                <field name="observed_head"/>
+                                            </group>
+                                        </group>
+                                        <group name="group_merge_provenance" string="Merge Provenance" invisible="origin != 'mixed'">
+                                            <field name="base_analysis_id"/>
+                                            <field name="merged_by_id"/>
+                                            <field name="merged_at"/>
+                                        </group>
+                                        <notebook>
+                                            <page string="Request">
+                                                <field name="problem_summary"/>
+                                                <field name="original_request_snapshot"/>
+                                                <field name="reproduction_context"/>
+                                                <field name="current_behavior"/>
+                                                <field name="expected_behavior"/>
+                                            </page>
+                                            <page string="Findings">
+                                                <field name="technical_findings"/>
+                                                <field name="affected_modules_files"/>
+                                                <field name="risks"/>
+                                                <field name="dependencies"/>
+                                                <field name="open_questions"/>
+                                                <field name="evidence_references"/>
+                                            </page>
+                                            <page string="My Analysis">
+                                                <div class="text-muted mb-2">Add corrections, missing context, or code/DB pointers, then click <b>Merge &amp; Improve Analysis</b> to produce a consolidated revision.</div>
+                                                <field name="user_analysis_notes"
+                                                         placeholder="Write your own analysis, decisions, and notes here…"/>
+                                                <field name="human_input_snapshot" readonly="1" invisible="origin != 'mixed'" string="Human input used in this merge"/>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_analysis_list" model="ir.ui.view">
+        <field name="name">dev.work.analysis.list</field>
+        <field name="model">dev.work.analysis</field>
+        <field name="arch" type="xml">
+            <list default_order="work_item_id, revision desc"
+                  decoration-success="status == 'accepted'"
+                  decoration-muted="status in ('rejected', 'superseded')">
+                <field name="work_item_id"/>
+                <field name="revision"/>
+                <field name="parent_revision_id"/>
+                <field name="status" widget="badge"/>
+                <field name="problem_summary"/>
+                <field name="origin"/>
+                <field name="repository_id"/>
+                <field name="observed_head"/>
+                <field name="created_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_analysis_form" model="ir.ui.view">
+        <field name="name">dev.work.analysis.form</field>
+        <field name="model">dev.work.analysis</field>
+        <field name="arch" type="xml">
+            <form string="Analysis Revision">
+                <header>
+                    <button name="action_accept" type="object" string="Accept Analysis" class="btn-primary" invisible="status not in ('draft', 'generated', 'reviewed')"/>
+                    <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('accepted', 'rejected', 'superseded')"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,generated,reviewed,accepted,rejected,superseded"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-danger" role="alert" invisible="step_guide_state != 'blocked'">
+                        <strong><field name="step_guide_title" readonly="1" class="oe_inline"/></strong>
+                        <field name="step_guide_message" readonly="1" nolabel="1"/>
+                    </div>
+                    <div class="alert alert-success" role="alert" invisible="step_guide_state != 'ready'">
+                        <strong><field name="step_guide_title" readonly="1" class="oe_inline"/></strong>
+                        <field name="step_guide_message" readonly="1" nolabel="1"/>
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="step_guide_state not in ('done', 'info')">
+                        <strong><field name="step_guide_title" readonly="1" class="oe_inline"/></strong>
+                        <field name="step_guide_message" readonly="1" nolabel="1"/>
+                    </div>
+                    <field name="step_guide_state" invisible="1"/>
+                    <field name="step_guide_blocked" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="revision"/>
+                            <field name="parent_revision_id"/>
+                            <field name="content_hash" readonly="1"/>
+                            <field name="origin"/>
+                            <field name="created_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="agent_name"/>
+                            <field name="model_name"/>
+                            <field name="provider_name"/>
+                            <field name="run_reference"/>
+                            <field name="repository_id"/>
+                            <field name="observed_head"/>
+                        </group>
+                    </group>
+                    <group name="group_merge_provenance" string="Merge Provenance" invisible="origin != 'mixed'">
+                        <field name="base_analysis_id"/>
+                        <field name="merged_by_id"/>
+                        <field name="merged_at"/>
+                    </group>
+                    <notebook>
+                        <page string="Request">
+                            <field name="problem_summary"/>
+                            <field name="original_request_summary"/>
+                            <field name="original_request_snapshot"/>
+                            <field name="reproduction_context"/>
+                            <field name="current_behavior"/>
+                            <field name="expected_behavior"/>
+                        </page>
+                        <page string="Findings">
+                            <field name="technical_findings"/>
+                            <field name="affected_components"/>
+                            <field name="affected_modules_files"/>
+                            <field name="risks"/>
+                            <field name="dependencies"/>
+                            <field name="open_questions"/>
+                            <field name="evidence_references"/>
+                        </page>
+                        <page string="My Analysis">
+                            <div class="text-muted mb-2">Add corrections, missing context, or code/DB pointers, then click <b>Merge &amp; Improve Analysis</b> to produce a consolidated revision.</div>
+                            <field name="user_analysis_notes"
+                                     placeholder="Write your own analysis, decisions, and notes here…"/>
+                            <field name="human_input_snapshot" readonly="1" invisible="origin != 'mixed'" string="Human input used in this merge"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_work_analysis" model="ir.actions.act_window">
+        <field name="name">Analysis Revisions</field>
+        <field name="res_model">dev.work.analysis</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+
+<record id="view_dev_work_item_form_analysis_summary" model="ir.ui.view">
+        <field name="name">dev.work.item.form.analysis.summary</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="priority" eval="21"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='completion_report_id']" position="before">
+                <field name="current_accepted_analysis_id" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_plan_form_analysis" model="ir.ui.view">
+        <field name="name">dev.work.plan.form.analysis</field>
+        <field name="model">dev.work.plan</field>
+        <field name="inherit_id" ref="devhub_plan.view_dev_work_plan_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_revision_id']" position="after">
+                <field name="analysis_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

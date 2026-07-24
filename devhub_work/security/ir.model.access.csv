@@ -1,0 +1,18 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_work_item_user,dev.work.item user,model_dev_work_item,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_work_item_manager,dev.work.item manager,model_dev_work_item,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_work_source_user,dev.work.source.message user,model_dev_work_source_message,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_work_source_manager,dev.work.source.message manager,model_dev_work_source_message,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_work_external_user,dev.work.external.link user,model_dev_work_external_link,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_work_external_manager,dev.work.external.link manager,model_dev_work_external_link,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_completion_report_user,dev.completion.report user,model_dev_completion_report,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_completion_report_manager,dev.completion.report manager,model_dev_completion_report,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_work_communication_user,dev.work.communication user,model_dev_work_communication,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_work_communication_manager,dev.work.communication manager,model_dev_work_communication,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_work_lifecycle_event_user,dev.work.lifecycle.event user,model_dev_work_lifecycle_event,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_work_lifecycle_event_manager,dev.work.lifecycle.event manager,model_dev_work_lifecycle_event,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_external_outbox_user,dev.external.outbox user,model_dev_external_outbox,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_external_outbox_manager,dev.external.outbox manager,model_dev_external_outbox,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_external_outbox_integration,dev.external.outbox scoped integration,model_dev_external_outbox,devhub_core.group_dev_hub_integration,1,0,0,0
+access_dev_project_alias_user,dev.project.alias user,model_dev_project_alias,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_project_alias_manager,dev.project.alias manager,model_dev_project_alias,devhub_core.group_dev_hub_manager,1,1,1,1

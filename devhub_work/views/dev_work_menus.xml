@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_devhub_work_root"
+              name="DH Work"
+              sequence="86"
+              web_icon="devhub_work,static/description/icon.png"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_work_items"
+              name="Work Items"
+              parent="menu_devhub_work_root"
+              action="action_dev_work_item"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_work_active"
+              name="Active"
+              parent="menu_devhub_work_root"
+              action="action_dev_work_item_active"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_work_awaiting_approval"
+              name="Awaiting Plan Approval"
+              parent="menu_devhub_work_root"
+              action="action_dev_work_item_awaiting_plan_approval"
+              sequence="30"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_project_aliases"
+              name="Project Aliases"
+              parent="menu_devhub_work_root"
+              action="action_dev_project_alias"
+              sequence="40"
+              groups="devhub_core.group_dev_hub_manager"/>
+</odoo>

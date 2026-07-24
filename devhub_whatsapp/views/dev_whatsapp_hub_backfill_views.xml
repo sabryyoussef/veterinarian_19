@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_whatsapp_hub_backfill_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.hub.backfill.wizard.form</field>
+        <field name="model">dev.whatsapp.hub.backfill.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Backfill Hub → Dev Hub">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Backfill Hub history</h1>
+                        <p class="text-muted">
+                            Pull existing WhatsApp Hub messages into DH (preview or create intakes).
+                            Sync whitelist only creates sources — use this for old history.
+                        </p>
+                    </div>
+                    <group>
+                        <group string="Date">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group string="Scope">
+                            <field name="include_group_chats"/>
+                            <field name="include_dm_chats"/>
+                            <field name="direction"/>
+                            <field name="limit"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Group / source">
+                            <field name="source_ids" widget="many2many_tags"/>
+                            <field name="group_jid" placeholder="…@g.us"/>
+                        </group>
+                        <group string="Sender / mentions">
+                            <field name="sender_jid" placeholder="2010… or name@"/>
+                            <field name="mention_text" placeholder="@sabry or keyword"/>
+                            <field name="only_with_mention"/>
+                        </group>
+                    </group>
+                    <group string="Action">
+                        <field name="mode"/>
+                        <field name="skip_already_linked"/>
+                        <field name="match_count"/>
+                        <field name="result_summary" nolabel="1" colspan="2"
+                                  placeholder="Run Preview or Backfill to see results"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_preview" type="object" string="Preview messages"
+                            class="btn-secondary"/>
+                    <button name="action_run" type="object" string="Run backfill"
+                            class="btn-primary"
+                            invisible="mode == 'preview'"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_hub_backfill" model="ir.actions.act_window">
+        <field name="name">Backfill Hub → Dev Hub</field>
+        <field name="res_model">dev.whatsapp.hub.backfill.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

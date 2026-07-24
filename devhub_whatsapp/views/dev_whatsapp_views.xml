@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_whatsapp_source_list" model="ir.ui.view">
+        <field name="name">dev.whatsapp.source.list</field>
+        <field name="model">dev.whatsapp.source</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="group_jid"/>
+                <field name="chatwoot_label"/>
+                <field name="dev_project_id"/>
+                <field name="intake_mode"/>
+                <field name="hub_message_count"/>
+                <field name="last_hub_message_at"/>
+                <field name="sender_policy"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_whatsapp_source_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.source.form</field>
+        <field name="model">dev.whatsapp.source</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Development Source">
+                <header>
+                    <button name="action_open_hub_messages" type="object"
+                            string="Open Hub Messages" class="btn-primary"
+                            invisible="not group_jid"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_hub_messages" type="object"
+                                class="oe_stat_button" icon="fa-comments"
+                                invisible="not group_jid">
+                            <field name="hub_message_count" widget="statinfo" string="Hub msgs"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="group_jid"/>
+                            <field name="chatwoot_label"/>
+                            <field name="hub_group_id"/>
+                            <field name="last_hub_message_at"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="intake_mode"/>
+                            <field name="sender_policy"/>
+                            <field name="require_human_confirm"/>
+                            <field name="auto_create_candidate"/>
+                            <field name="min_confidence"/>
+                            <field name="grouping_window_minutes"/>
+                        </group>
+                    </group>
+                    <group string="Routing">
+                        <field name="dev_project_id"/>
+                        <field name="default_environment_id"/>
+                        <field name="default_repository_id"/>
+                        <field name="odoo_project_id"/>
+                        <field name="evolution_instance_ref"/>
+                        <field name="chatwoot_inbox_id"/>
+                        <field name="chatwoot_conversation_id"/>
+                        <field name="map_sync_key"/>
+                    </group>
+                    <notebook>
+                        <page string="Senders">
+                            <field name="sender_ids">
+                                <list editable="bottom">
+                                    <field name="sender_jid"/>
+                                    <field name="display_name"/>
+                                    <field name="role"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Intakes">
+                            <field name="intake_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_source" model="ir.actions.act_window">
+        <field name="name">WhatsApp Sources</field>
+        <field name="res_model">dev.whatsapp.source</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_whatsapp_sync_whitelist" model="ir.actions.server">
+        <field name="name">Sync whitelist from Hub</field>
+        <field name="model_id" ref="model_dev_whatsapp_source"/>
+        <field name="binding_model_id" ref="model_dev_whatsapp_source"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_sync_whitelist_from_hub()</field>
+    </record>
+
+    <record id="action_dev_whatsapp_hub_messages" model="ir.actions.server">
+        <field name="name">Hub Messages (whitelist)</field>
+        <field name="model_id" ref="model_dev_whatsapp_source"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_whitelisted_hub_messages()</field>
+    </record>
+
+    <!-- DH-facing Hub message list/form with attachments + next-step actions -->
+    <record id="view_dh_whatsapp_hub_message_list" model="ir.ui.view">
+        <field name="name">whatsapp.message.dh.list</field>
+        <field name="model">whatsapp.message</field>
+        <field name="inherit_id" ref="whatsapp_hub.view_whatsapp_message_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="multi_edit">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='body']" position="before">
+                <field name="dh_has_attachment" string="📎"/>
+                <field name="dh_source_id" string="DH Source" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dh_whatsapp_hub_message_search" model="ir.ui.view">
+        <field name="name">whatsapp.message.dh.search</field>
+        <field name="model">whatsapp.message</field>
+        <field name="inherit_id" ref="whatsapp_hub.view_whatsapp_message_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='group_id']" position="after">
+                <field name="dh_source_id" string="DH Source"/>
+            </xpath>
+            <xpath expr="//filter[@name='filter_mentions']" position="after">
+                <filter name="filter_dh_whitelisted" string="DH whitelisted"
+                        domain="[('dh_source_id', '!=', False)]"/>
+                <filter name="filter_dh_has_intake" string="Has DH Intake"
+                        domain="[('dh_intake_id', '!=', False)]"/>
+            </xpath>
+            <xpath expr="//filter[@name='groupby_group']" position="before">
+                <filter name="groupby_dh_source" string="DH Source"
+                        context="{'group_by': 'dh_source_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_hub_messages_window" model="ir.actions.act_window">
+        <field name="name">Hub Messages (whitelist)</field>
+        <field name="res_model">whatsapp.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="whatsapp_hub.view_whatsapp_message_search"/>
+        <field name="context">{'search_default_filter_to_group': 1, 'search_default_filter_dh_whitelisted': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Hub messages for whitelisted groups</p>
+            <p>Use Filters / Group By in the search bar (date, group, sender, mentions). Sync whitelist first if empty.</p>
+        </field>
+    </record>
+
+    <record id="view_dh_whatsapp_hub_message_form" model="ir.ui.view">
+        <field name="name">whatsapp.message.dh.form</field>
+        <field name="model">whatsapp.message</field>
+        <field name="inherit_id" ref="whatsapp_hub.view_whatsapp_message_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_dh_send_to_intake" type="object"
+                        string="Send to Intake"
+                        class="btn-secondary"
+                        groups="devhub_core.group_dev_hub_user"
+                        invisible="not dh_source_id"/>
+                <button name="action_dh_create_work_item" type="object"
+                        string="Create Work Item"
+                        class="btn-primary"
+                        groups="devhub_core.group_dev_hub_user"
+                        invisible="not dh_source_id"
+                        confirm="Create a Dev Hub work item from this message?"/>
+                <button name="action_dh_send_to_analysis" type="object"
+                        string="Send to Analysis"
+                        class="btn-primary"
+                        groups="devhub_core.group_dev_hub_user"
+                        invisible="not dh_source_id"
+                        confirm="Create a work item and open Analysis from this message?"/>
+            </xpath>
+            <xpath expr="//div[contains(@class,'oe_title')]" position="after">
+                <group>
+                    <group>
+                        <field name="dh_source_id"/>
+                        <field name="dh_intake_id"/>
+                        <field name="dh_work_item_id"/>
+                    </group>
+                    <group>
+                        <field name="dh_has_attachment"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='attachments_refs']" position="after">
+                <group string="Files" col="1">
+                    <field name="dh_attachment_ids" nolabel="1" widget="many2many_binary"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Multi-select actions on Hub message list -->
+    <record id="action_server_dh_hub_send_intake" model="ir.actions.server">
+        <field name="name">DH: Send to Intake</field>
+        <field name="model_id" ref="whatsapp_hub.model_whatsapp_message"/>
+        <field name="binding_model_id" ref="whatsapp_hub.model_whatsapp_message"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_dh_send_to_intake()</field>
+    </record>
+    <record id="action_server_dh_hub_create_work" model="ir.actions.server">
+        <field name="name">DH: Create Work Item</field>
+        <field name="model_id" ref="whatsapp_hub.model_whatsapp_message"/>
+        <field name="binding_model_id" ref="whatsapp_hub.model_whatsapp_message"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_dh_create_work_item()</field>
+    </record>
+    <record id="action_server_dh_hub_send_analysis" model="ir.actions.server">
+        <field name="name">DH: Send to Analysis</field>
+        <field name="model_id" ref="whatsapp_hub.model_whatsapp_message"/>
+        <field name="binding_model_id" ref="whatsapp_hub.model_whatsapp_message"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_dh_send_to_analysis()</field>
+    </record>
+
+    <record id="view_dev_whatsapp_intake_list" model="ir.ui.view">
+        <field name="name">dev.whatsapp.intake.list</field>
+        <field name="model">dev.whatsapp.intake</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="source_id"/>
+                <field name="state"/>
+                <field name="classification"/>
+                <field name="confidence"/>
+                <field name="hub_has_attachment" string="📎"/>
+                <field name="group_jid"/>
+                <field name="work_item_id"/>
+                <field name="last_message_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_whatsapp_intake_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.intake.form</field>
+        <field name="model">dev.whatsapp.intake</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Intake Candidate">
+                <header>
+                    <button name="action_mark_awaiting_confirm" type="object" string="Mark Ready for Confirm"
+                            invisible="state in ('awaiting_confirm','confirmed','rejected','merged','abandoned')"/>
+                    <button name="action_confirm_create_work_item" type="object" string="Confirm → Work Item"
+                            class="btn-primary"
+                            invisible="state in ('confirmed','rejected','merged','abandoned') or work_item_id"
+                            groups="devhub_core.group_dev_hub_approver"/>
+                    <button name="action_reject" type="object" string="Reject"
+                            invisible="state in ('confirmed','rejected','merged')"
+                            groups="devhub_core.group_dev_hub_approver"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="received,collecting,draft_ready,awaiting_confirm,confirmed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="source_id"/>
+                            <field name="dev_project_id"/>
+                            <field name="classification"/>
+                            <field name="confidence"/>
+                        </group>
+                        <group>
+                            <field name="group_jid"/>
+                            <field name="primary_sender_jid"/>
+                            <field name="chatwoot_conversation_id"/>
+                            <field name="whatsapp_message_id"/>
+                            <field name="work_item_id"/>
+                            <field name="last_message_at"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Hub Message &amp; Attachments">
+                            <group>
+                                <field name="hub_has_attachment"/>
+                                <field name="hub_body"/>
+                                <field name="hub_attachment_references"/>
+                                <field name="hub_attachment_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Draft">
+                            <group>
+                                <field name="draft_summary"/>
+                                <field name="draft_problem"/>
+                                <field name="draft_current_behavior"/>
+                                <field name="draft_expected_behavior"/>
+                                <field name="draft_acceptance_criteria"/>
+                                <field name="draft_missing_information"/>
+                                <field name="draft_urgency"/>
+                            </group>
+                        </page>
+                        <page string="Source Messages">
+                            <field name="source_message_ids"/>
+                        </page>
+                        <page string="Audit">
+                            <field name="event_ids">
+                                <list>
+                                    <field name="create_date"/>
+                                    <field name="event_type"/>
+                                    <field name="actor_id"/>
+                                    <field name="detail"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_intake" model="ir.actions.act_window">
+        <field name="name">WhatsApp Intake</field>
+        <field name="res_model">dev.whatsapp.intake</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_work_item_whatsapp_button" model="ir.ui.view">
+        <field name="name">dev.work.item.whatsapp.button</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[contains(@class,'oe_button_box')]" position="inside">
+                <button name="action_open_whatsapp_intakes" type="object" class="oe_stat_button" icon="fa-whatsapp"
+                        invisible="whatsapp_intake_count == 0">
+                    <field name="whatsapp_intake_count" widget="statinfo" string="WA Intake"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

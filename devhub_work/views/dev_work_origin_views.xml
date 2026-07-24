@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_project_work_items_form" model="ir.ui.view">
+        <field name="name">dev.project.work.items.form</field>
+        <field name="model">dev.project</field>
+        <field name="inherit_id" ref="devhub_core.view_dev_project_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Work Items" name="work_items">
+                    <field name="work_item_count" invisible="1"/>
+                    <field name="work_item_ids" mode="list" readonly="1">
+                        <list create="0" delete="0" open_form_view="1">
+                            <field name="name"/>
+                            <field name="current_phase"/>
+                            <field name="priority_cache"/>
+                            <field name="source_type"/>
+                            <field name="origin_ai_whatsapp" optional="show"/>
+                            <field name="create_date"/>
+                            <field name="responsible_user_id" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_item_origin_form" model="ir.ui.view">
+        <field name="name">dev.work.item.origin.form</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="view_dev_work_item_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[1]/group[1]" position="inside">
+                <field name="source_type"/>
+                <field name="origin_ai_whatsapp" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

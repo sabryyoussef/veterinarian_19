@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Dev Hub WhatsApp Intake",
-    "version": "19.0.9.2.19",
+    "version": "19.0.9.2.21",
     "category": "Productivity",
     "summary": "Whitelisted WhatsApp group intake into Dev Hub work items",
     "author": "Sabry Youssef",

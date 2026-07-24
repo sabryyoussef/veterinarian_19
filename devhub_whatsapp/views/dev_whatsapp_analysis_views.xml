@@ -38,6 +38,18 @@
                             string="Approve &amp; Attach to Existing Work Item" class="btn-primary"
                             invisible="state not in ('awaiting_review', 'succeeded') or not proposed_work_item_id or work_item_id or work_item_decision != 'existing'"
                             groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_confirm_proposed_project" type="object"
+                            string="Confirm Project" class="btn-secondary"
+                            invisible="state not in ('awaiting_review', 'succeeded') or not resolved_project_id or project_resolution_status == 'confirmed' or is_evaluation_result"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_choose_different_project" type="object"
+                            string="Choose Different Project" class="btn-secondary"
+                            invisible="state not in ('awaiting_review', 'succeeded') or is_evaluation_result"
+                            groups="devhub_core.group_dev_hub_manager"/>
+                    <button name="action_reject_proposed_project" type="object"
+                            string="Reject Resolution" class="btn-secondary"
+                            invisible="state not in ('awaiting_review', 'succeeded') or not resolved_project_id or is_evaluation_result"
+                            groups="devhub_core.group_dev_hub_manager"/>
                     <button name="action_apply_demo_result" type="object"
                             string="Apply Demo AI Result (disabled unless ICP)" class="btn-secondary"
                             invisible="state not in ('pending', 'running', 'failed')"
@@ -72,7 +84,14 @@
                     </div>
                     <div class="alert alert-warning" role="alert"
                          invisible="not requires_project_confirmation">
-                        Project confirmation required — do not treat the project as final.
+                        <strong>Proposed Project</strong>
+                        <field name="resolved_project_id" readonly="1" class="oe_inline"/>
+                        — Source group:
+                        <field name="source_id" readonly="1" class="oe_inline"/>
+                        mapping may be Ambiguous / multi-project.
+                        Human confirmation required before Work Item create/attach.
+                        Evidence: <field name="project_selection_evidence" readonly="1" class="oe_inline"/>
+                        Status: <field name="project_resolution_status" readonly="1" class="oe_inline"/>
                     </div>
                     <div class="alert alert-warning" role="alert"
                          invisible="not contains_multiple_tasks">
@@ -87,6 +106,9 @@
                             <field name="group_jid"/>
                             <field name="dev_project_id"/>
                             <field name="resolved_project_id"/>
+                            <field name="project_resolution_status"/>
+                            <field name="project_selection_evidence"/>
+                            <field name="requires_project_confirmation"/>
                             <field name="work_item_id"/>
                             <field name="proposed_work_item_id"/>
                             <field name="work_item_decision"/>
@@ -116,6 +138,9 @@
                             <field name="segment_index"/>
                             <field name="segment_total"/>
                         </group>
+                    </group>
+                    <group string="Selection policy" groups="devhub_core.group_dev_hub_manager">
+                        <field name="selection_policy_json" widget="text"/>
                     </group>
                     <group string="AI result">
                         <field name="summary"/>

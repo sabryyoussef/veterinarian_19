@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 
 SCHEMA_VERSION = "2"
 SCHEMA_VERSION_V1 = "1"
-DEFAULT_PROMPT_VERSION = "wa_project_aware_v2"
+DEFAULT_PROMPT_VERSION = "wa_project_aware_v2.1"
 
 CLASSIFICATIONS_V1 = frozenset(
     {
@@ -65,6 +65,41 @@ V2_TO_V1_CLASS = {
     "noise": "noise",
     "unclear": "information",
 }
+
+# Coarse / legacy evaluation labels → canonical schema-v2
+COARSE_TO_V2_CLASS = {
+    "bug": "bug",
+    "bug_report": "bug",
+    "feature": "new_task",
+    "new_task": "new_task",
+    "new_dev_request": "new_task",
+    "follow_up": "existing_work_followup",
+    "follow_up_existing": "existing_work_followup",
+    "existing_work_followup": "existing_work_followup",
+    "context": "context_update",
+    "context_addition": "context_update",
+    "context_update": "context_update",
+    "info": "unclear",
+    "information": "unclear",
+    "noise": "noise",
+    "unrelated": "noise",
+    "question": "question",
+    "decision": "decision",
+    "unclear": "unclear",
+}
+
+
+def normalize_classification_v2(label):
+    """Map coarse/legacy/v1/v2 labels onto CLASSIFICATIONS_V2."""
+    if not label:
+        return "unclear"
+    key = str(label).strip().lower()
+    mapped = COARSE_TO_V2_CLASS.get(key)
+    if mapped in CLASSIFICATIONS_V2:
+        return mapped
+    if key in CLASSIFICATIONS_V2:
+        return key
+    return "unclear"
 
 
 def batch_fingerprint(group_jid, message_ids, prompt_version, schema_version, analysis_mode):
@@ -244,7 +279,10 @@ def _validate_v2(data, batch_ids, project_candidate_ids=None, work_item_candidat
         raise ValidationError("Unsupported language: %s" % language)
     summary = str(mu.get("summary") or "").strip()
     if not summary:
-        raise ValidationError("message_understanding.summary is required.")
+        if classification == "noise":
+            summary = "(no actionable content)"
+        else:
+            raise ValidationError("message_understanding.summary is required.")
 
     decision = wr.get("decision") or "unclear"
     if decision not in WI_DECISIONS:

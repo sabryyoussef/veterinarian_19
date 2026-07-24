@@ -4,4 +4,16 @@
         <field name="key">devhub_whatsapp.allow_fixture_ai</field>
         <field name="value">False</field>
     </record>
+    <record id="icp_unique_candidate_min_score" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.unique_candidate_min_score</field>
+        <field name="value">0.70</field>
+    </record>
+    <record id="icp_strong_candidate_min_score" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.strong_candidate_min_score</field>
+        <field name="value">0.85</field>
+    </record>
+    <record id="icp_candidate_score_margin" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.candidate_score_margin</field>
+        <field name="value">0.20</field>
+    </record>
 </odoo>

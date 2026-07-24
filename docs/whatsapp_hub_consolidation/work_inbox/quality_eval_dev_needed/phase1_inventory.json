@@ -1,0 +1,106 @@
+{
+  "source_id": 9,
+  "group": "Dev Needed",
+  "jid_sanitized": "12036342210485…",
+  "date_range": [
+    "2026-03-30 00:24:16",
+    "2026-07-23 21:26:22"
+  ],
+  "total": 3428,
+  "senders": 11,
+  "with_body": 3428,
+  "empty": 0,
+  "media": 790,
+  "media_placeholder": 734,
+  "replies": 0,
+  "linked_wi": 3,
+  "actioned": 3,
+  "ignored": 2,
+  "long_gaps_6h": 117,
+  "gap_examples": [
+    {
+      "after_id": 4130,
+      "before_id": 4129,
+      "hours": 32.4
+    },
+    {
+      "after_id": 4103,
+      "before_id": 4102,
+      "hours": 16.6
+    },
+    {
+      "after_id": 4089,
+      "before_id": 4088,
+      "hours": 6.1
+    },
+    {
+      "after_id": 4082,
+      "before_id": 4081,
+      "hours": 10.4
+    },
+    {
+      "after_id": 4055,
+      "before_id": 4054,
+      "hours": 64.1
+    },
+    {
+      "after_id": 4019,
+      "before_id": 4018,
+      "hours": 13.7
+    },
+    {
+      "after_id": 4015,
+      "before_id": 4014,
+      "hours": 21.8
+    },
+    {
+      "after_id": 4003,
+      "before_id": 4002,
+      "hours": 12.5
+    },
+    {
+      "after_id": 3966,
+      "before_id": 3965,
+      "hours": 7.4
+    },
+    {
+      "after_id": 3882,
+      "before_id": 3881,
+      "hours": 15.6
+    },
+    {
+      "after_id": 3878,
+      "before_id": 3877,
+      "hours": 10.8
+    },
+    {
+      "after_id": 3873,
+      "before_id": 3872,
+      "hours": 6.1
+    },
+    {
+      "after_id": 3785,
+      "before_id": 3784,
+      "hours": 46.5
+    },
+    {
+      "after_id": 3752,
+      "before_id": 3749,
+      "hours": 21.2
+    },
+    {
+      "after_id": 3690,
+      "before_id": 3689,
+      "hours": 7.4
+    }
+  ],
+  "alias_hits": {
+    "ASTA": 116,
+    "KAFAAT": 88,
+    "CYCLEX": 8,
+    "AZONE": 0,
+    "PETSPOT": 0,
+    "TOURZ": 0,
+    "ALSHMOUKH": 9
+  }
+}

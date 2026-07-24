@@ -1,0 +1,190 @@
+{
+  "mapping_before": {
+    "project_mapping_state": "ambiguous",
+    "project_mapping_confidence": 0.35,
+    "ai_triage_enabled": false,
+    "dev_project_id": 1
+  },
+  "mapping_after": {
+    "project_mapping_state": "ambiguous",
+    "project_mapping_confidence": 0.35,
+    "ai_triage_enabled": false,
+    "dev_project_id": 1
+  },
+  "enqueued": [
+    {
+      "sample_id": "DN-01",
+      "analysis_id": 37,
+      "job_id": 32,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-02",
+      "analysis_id": 38,
+      "job_id": 33,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-03",
+      "analysis_id": 39,
+      "job_id": 34,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-04",
+      "analysis_id": 40,
+      "job_id": 35,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-05",
+      "analysis_id": 41,
+      "job_id": 36,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-06",
+      "analysis_id": 42,
+      "job_id": 37,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-07",
+      "analysis_id": 43,
+      "job_id": 38,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-08",
+      "analysis_id": 44,
+      "job_id": 39,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-09",
+      "analysis_id": 45,
+      "job_id": 40,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-10",
+      "analysis_id": 46,
+      "job_id": 41,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-11",
+      "analysis_id": 47,
+      "job_id": 42,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-12",
+      "analysis_id": 48,
+      "job_id": 43,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-13",
+      "analysis_id": 49,
+      "job_id": 44,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-14",
+      "analysis_id": 50,
+      "job_id": 45,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-15",
+      "analysis_id": 51,
+      "job_id": 46,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-16",
+      "analysis_id": 52,
+      "job_id": 47,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-17",
+      "analysis_id": 53,
+      "job_id": 48,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-18",
+      "analysis_id": 54,
+      "job_id": 49,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-19",
+      "analysis_id": 55,
+      "job_id": 50,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-20",
+      "analysis_id": 56,
+      "job_id": 51,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-21",
+      "analysis_id": 57,
+      "job_id": 52,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-22",
+      "analysis_id": 58,
+      "job_id": 53,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-23",
+      "analysis_id": 59,
+      "job_id": 54,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-24",
+      "analysis_id": 60,
+      "job_id": 55,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-25",
+      "analysis_id": 61,
+      "job_id": 56,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-26",
+      "analysis_id": 62,
+      "job_id": 57,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-27",
+      "analysis_id": 63,
+      "job_id": 58,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-28",
+      "analysis_id": 64,
+      "job_id": 59,
+      "state": "pending"
+    },
+    {
+      "sample_id": "DN-29",
+      "analysis_id": 65,
+      "job_id": 60,
+      "state": "pending"
+    }
+  ]
+}

@@ -35,6 +35,10 @@ class TestWhatsappMediaPhase1(TransactionCase):
         cls.env["dev.whatsapp.media.job"].sudo().search(
             [("state", "in", ["pending", "leased", "processing", "retry"])]
         ).with_context(dev_wa_media_action=True).write({"state": "cancelled"})
+        ICP = cls.env["ir.config_parameter"].sudo()
+        ICP.set_param("devhub_whatsapp.media_transcription_circuit_open_until", False)
+        ICP.set_param("devhub_whatsapp.media_transcription_circuit_last_rate", False)
+        ICP.set_param("devhub_whatsapp.media_transcription_circuit_lookback_sec", "1")
         cls.manager = new_test_user(
             cls.env,
             login="wa_media_mgr",

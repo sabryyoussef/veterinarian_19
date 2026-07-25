@@ -5,6 +5,8 @@ from __future__ import annotations
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+from .dev_whatsapp_historical_guard import CTX_NON_MUTATING
+
 
 class DevWhatsappMediaBackfill(models.AbstractModel):
     _name = "dev.whatsapp.media.backfill"
@@ -212,9 +214,15 @@ class DevWhatsappMediaBackfill(models.AbstractModel):
             media_type=media_type,
         )
         selected = dry["selected"][:limit]
-        Message = self.env["whatsapp.message"].sudo()
-        Media = self.env["dev.whatsapp.media"].sudo()
-        Job = self.env["dev.whatsapp.media.job"].sudo()
+        Message = self.env["whatsapp.message"].sudo().with_context(
+            **{CTX_NON_MUTATING: True}
+        )
+        Media = self.env["dev.whatsapp.media"].sudo().with_context(
+            **{CTX_NON_MUTATING: True}
+        )
+        Job = self.env["dev.whatsapp.media.job"].sudo().with_context(
+            **{CTX_NON_MUTATING: True}
+        )
         enqueued = []
         for item in selected:
             message = Message.browse(item["message_id"]).exists()

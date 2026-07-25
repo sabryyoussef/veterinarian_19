@@ -29,6 +29,11 @@ class TestWhatsappMediaPhase2(TransactionCase):
         cls.env["dev.whatsapp.media.job"].sudo().search(
             [("state", "in", ["pending", "leased", "processing", "retry"])]
         ).with_context(dev_wa_media_action=True).write({"state": "cancelled"})
+        ICP = cls.env["ir.config_parameter"].sudo()
+        ICP.set_param("devhub_whatsapp.media_transcription_circuit_open_until", False)
+        ICP.set_param("devhub_whatsapp.media_transcription_circuit_last_rate", False)
+        # Keep unit leases independent of live Test provider-failure history.
+        ICP.set_param("devhub_whatsapp.media_transcription_circuit_lookback_sec", "1")
         cls.manager = new_test_user(
             cls.env,
             login="wa_m2_mgr",
@@ -120,14 +125,29 @@ class TestWhatsappMediaPhase2(TransactionCase):
         Media._store_downloaded_bytes(media, raw=raw, filename=f"t.{media_type}")
         return media
 
-    def _lease_one(self):
-        Job = self.env["dev.whatsapp.media.job"].with_user(self.service)
+    def _lease_one(self, media=None):
+        Job = self.env["dev.whatsapp.media.job"].with_user(self.service).with_context(
+            dev_wa_media_bypass_transcription_circuit=True
+        )
+        # Keep unit leases deterministic against concurrent Test backfill retries.
+        open_jobs = Job.sudo().search(
+            [("state", "in", ["pending", "leased", "processing", "retry"])]
+        )
+        if media is not None:
+            foreign = open_jobs.filtered(lambda j: j.media_id.id != media.id)
+        else:
+            foreign = open_jobs.filtered(
+                lambda j: j.media_id.whatsapp_message_id.conversation_id.id
+                != self.conv.id
+            )
+        if foreign:
+            foreign.with_context(dev_wa_media_action=True).write({"state": "cancelled"})
         out = Job.service_lease(limit=1, lease_seconds=300, consumer_ref="p2-test")
         self.assertTrue(out["jobs"], "expected a leasable job")
         return Job, out["jobs"][0]
 
-    def _complete(self, enrichment, provider="tesseract", model="tesseract-5"):
-        Job, job = self._lease_one()
+    def _complete(self, enrichment, provider="tesseract", model="tesseract-5", media=None):
+        Job, job = self._lease_one(media=media)
         Job.service_start(job["job_id"], job["correlation_id"], job["lease_token"])
         return Job.service_complete(
             job["job_id"],

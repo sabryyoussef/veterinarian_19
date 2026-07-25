@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import base64
 import json
+import random
 import uuid
 from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+from .dev_whatsapp_historical_guard import CTX_NON_MUTATING
 from .dev_whatsapp_media_utils import (
     classify_evolution_error,
     idempotency_key,
@@ -187,6 +189,110 @@ class DevWhatsappMediaJob(models.Model):
         "video_enrichment",
     )
     VIDEO_SUB_KINDS = ("video_audio_extraction", "video_keyframe_extraction")
+    WHISPER_KINDS = ("audio_transcription", "video_audio_extraction")
+    PROVIDER_ERROR_CODES = (
+        "provider_outage",
+        "provider_auth_failed",
+        "provider_rate_limited",
+        "transcription_failed",
+    )
+
+    @api.model
+    def _transcription_circuit_open(self):
+        """Return True when Whisper provider failure rate exceeds threshold."""
+        ICP = self.env["ir.config_parameter"].sudo()
+        force_closed = ICP.get_param(
+            "devhub_whatsapp.media_transcription_circuit_force_closed_until"
+        )
+        if force_closed:
+            try:
+                closed_until = fields.Datetime.to_datetime(force_closed)
+                if closed_until and closed_until > fields.Datetime.now():
+                    return False
+            except Exception:
+                pass
+        until = ICP.get_param("devhub_whatsapp.media_transcription_circuit_open_until")
+        if until:
+            try:
+                until_dt = fields.Datetime.to_datetime(until)
+                if until_dt and until_dt > fields.Datetime.now():
+                    return True
+            except Exception:
+                pass
+        window = int(
+            ICP.get_param("devhub_whatsapp.media_transcription_circuit_window", "20")
+            or 20
+        )
+        threshold = float(
+            ICP.get_param(
+                "devhub_whatsapp.media_transcription_circuit_threshold_pct", "10"
+            )
+            or 10
+        )
+        lookback = int(
+            ICP.get_param(
+                "devhub_whatsapp.media_transcription_circuit_lookback_sec", "3600"
+            )
+            or 3600
+        )
+        # Allow short lookbacks in tests; production ICP defaults remain hours.
+        since = fields.Datetime.now() - timedelta(seconds=max(1, lookback))
+        recent = self.search(
+            [
+                ("kind", "in", list(self.WHISPER_KINDS)),
+                ("state", "in", ["retry", "dead_letter", "succeeded"]),
+                ("write_date", ">=", since),
+                ("attempt_count", ">", 0),
+            ],
+            order="id desc",
+            limit=max(1, window),
+        )
+        if not recent:
+            return False
+        failures = recent.filtered(
+            lambda job: (job.last_error_code or "") in self.PROVIDER_ERROR_CODES
+            or (
+                job.state in ("retry", "dead_letter")
+                and (job.last_error_code or "").startswith("provider_")
+            )
+        )
+        rate = 100.0 * len(failures) / float(len(recent))
+        if rate > threshold:
+            cooldown = int(
+                ICP.get_param(
+                    "devhub_whatsapp.media_transcription_circuit_cooldown_sec",
+                    "900",
+                )
+                or 900
+            )
+            open_until = fields.Datetime.now() + timedelta(seconds=max(60, cooldown))
+            ICP.set_param(
+                "devhub_whatsapp.media_transcription_circuit_open_until",
+                fields.Datetime.to_string(open_until),
+            )
+            ICP.set_param(
+                "devhub_whatsapp.media_transcription_circuit_last_rate",
+                "%.1f" % rate,
+            )
+            return True
+        return False
+
+    @api.model
+    def _provider_backoff_seconds(self, attempt_count, provider_response=None):
+        """Exponential backoff with jitter; honor Retry-After when present."""
+        attempt = max(int(attempt_count or 1), 1)
+        base = min(900, 30 * (2 ** max(attempt - 1, 0)))
+        jitter = random.randint(0, min(30, base // 3 or 1))
+        retry_after = 0
+        if isinstance(provider_response, dict):
+            raw = provider_response.get("retry_after") or provider_response.get(
+                "Retry-After"
+            )
+            try:
+                retry_after = int(float(raw))
+            except (TypeError, ValueError):
+                retry_after = 0
+        return max(base + jitter, retry_after)
 
     @api.model
     def _enrichment_kinds_for_media(self, media):
@@ -401,7 +507,7 @@ class DevWhatsappMediaJob(models.Model):
                     if record.kind in self.VIDEO_SUB_KINDS:
                         self._maybe_enqueue_video_final(record.media_id)
             else:
-                backoff = min(900, 30 * (2 ** max(record.attempt_count - 1, 0)))
+                backoff = self._provider_backoff_seconds(record.attempt_count)
                 record.with_context(dev_wa_media_action=True).write(
                     {
                         "state": "retry",
@@ -415,18 +521,28 @@ class DevWhatsappMediaJob(models.Model):
                     }
                 )
 
+        circuit_open = self._transcription_circuit_open()
+        if self.env.context.get("dev_wa_media_bypass_transcription_circuit"):
+            circuit_open = False
         candidates = self.search(
             [
                 ("state", "in", ["pending", "retry"]),
                 ("next_attempt_at", "<=", now),
             ],
             order="next_attempt_at asc, id asc",
-            limit=limit,
+            limit=limit * 3,
         )
         leased = []
         for record in candidates:
+            if len(leased) >= limit:
+                break
+            if circuit_open and record.kind in self.WHISPER_KINDS:
+                # Leave Whisper jobs pending; download/OCR continue independently.
+                continue
             token = _uuid()
-            record.with_context(dev_wa_media_action=True).write(
+            record.with_context(
+                dev_wa_media_action=True, **{CTX_NON_MUTATING: True}
+            ).write(
                 {
                     "state": "leased",
                     "lease_owner_id": self.env.user.id,
@@ -439,7 +555,7 @@ class DevWhatsappMediaJob(models.Model):
                 }
             )
             if record.kind == "media_download":
-                record.media_id.write(
+                record.media_id.with_context(**{CTX_NON_MUTATING: True}).write(
                     {
                         "retrieval_state": "downloading",
                         "retrieval_attempts": record.media_id.retrieval_attempts + 1,
@@ -452,7 +568,7 @@ class DevWhatsappMediaJob(models.Model):
                 }
                 if not record.media_id.enrichment_started_at:
                     vals["enrichment_started_at"] = now
-                record.media_id.write(vals)
+                record.media_id.with_context(**{CTX_NON_MUTATING: True}).write(vals)
             leased.append(
                 {
                     "job_id": record.id,
@@ -464,9 +580,13 @@ class DevWhatsappMediaJob(models.Model):
                     "kind": record.kind,
                     "payload_json": record.payload_json,
                     "attempt_count": record.attempt_count,
+                    "transcription_circuit_open": bool(circuit_open),
                 }
             )
-        return {"jobs": leased}
+        return {
+            "jobs": leased,
+            "transcription_circuit_open": bool(circuit_open),
+        }
 
     def _service_record(self, job_id, correlation_id, lease_token):
         record = self.browse(int(job_id)).exists()
@@ -774,7 +894,12 @@ class DevWhatsappMediaJob(models.Model):
             if record.kind in self.VIDEO_SUB_KINDS:
                 self._maybe_enqueue_video_final(record.media_id)
         else:
-            backoff = min(900, 30 * (2 ** max(record.attempt_count - 1, 0)))
+            backoff = self._provider_backoff_seconds(
+                record.attempt_count,
+                provider_response
+                if isinstance(provider_response, dict)
+                else None,
+            )
             record.with_context(dev_wa_media_action=True).write(
                 {
                     "state": "retry",
@@ -789,6 +914,9 @@ class DevWhatsappMediaJob(models.Model):
                 }
             )
             record.media_id.write({"enrichment_state": "pending"})
+            if code in self.PROVIDER_ERROR_CODES:
+                # Re-evaluate circuit after recording the provider failure.
+                self._transcription_circuit_open()
         return {
             "ok": True,
             "job_id": record.id,

@@ -2,6 +2,7 @@ from . import dev_whatsapp_source
 from . import dev_whatsapp_intake
 from . import dev_whatsapp_hub_message
 from . import dev_whatsapp_inbox
+from . import dev_whatsapp_historical_guard
 from . import dev_whatsapp_analysis_utils
 from . import dev_whatsapp_analysis_segment
 from . import dev_whatsapp_analysis_candidates

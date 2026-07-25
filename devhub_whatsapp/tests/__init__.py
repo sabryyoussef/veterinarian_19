@@ -7,3 +7,4 @@ from . import test_whatsapp_historical_review
 from . import test_whatsapp_media_phase1
 from . import test_whatsapp_media_phase2
 from . import test_whatsapp_media_backfill
+from . import test_whatsapp_media_recovery

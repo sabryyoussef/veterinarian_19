@@ -39,6 +39,7 @@ class DevWhatsappInboxEvent(models.Model):
             ("ai_ignore", "AI Ignore Applied"),
             ("ai_work_created", "AI Work Created"),
             ("ai_work_attached", "AI Work Attached"),
+            ("historical_skip", "Historical Review Skip"),
         ],
         required=True,
         index=True,
@@ -155,6 +156,7 @@ class WhatsappMessageWorkInbox(models.Model):
 
     def _inbox_set_state(self, new_state, *, event_type, remember_previous=True, note=""):
         self._inbox_require_triage_user()
+        self._assert_historical_non_mutating("inbox_state mutation (%s)" % event_type)
         if new_state not in dict(INBOX_STATES):
             raise ValidationError("Invalid inbox state: %s" % new_state)
         for rec in self:
@@ -172,9 +174,20 @@ class WhatsappMessageWorkInbox(models.Model):
         return True
 
     def action_inbox_add(self):
-        """Admit untriaged/historical messages into the Work Inbox as New."""
+        """Admit untriaged/historical messages into the Work Inbox as New.
+
+        Messages under historical media review are skipped with an audit event
+        so concurrent operational admission cannot mutate selected backfill rows.
+        """
         self._inbox_require_triage_user()
-        for rec in self:
+        self._assert_historical_non_mutating("action_inbox_add")
+        protected = self._messages_with_historical_media()
+        if protected:
+            protected._log_historical_skip(
+                "action_inbox_add",
+                "message under historical media review",
+            )
+        for rec in self - protected:
             if rec.inbox_state == "untriaged":
                 rec._inbox_set_state("new", event_type="add_to_inbox", remember_previous=False)
             elif rec.inbox_state == "ignored":
@@ -195,7 +208,14 @@ class WhatsappMessageWorkInbox(models.Model):
 
     def action_inbox_restore(self):
         self._inbox_require_triage_user()
-        for rec in self:
+        self._assert_historical_non_mutating("action_inbox_restore")
+        protected = self._messages_with_historical_media()
+        if protected:
+            protected._log_historical_skip(
+                "action_inbox_restore",
+                "message under historical media review",
+            )
+        for rec in self - protected:
             if rec.inbox_state != "ignored":
                 continue
             target = rec.previous_inbox_state or "new"

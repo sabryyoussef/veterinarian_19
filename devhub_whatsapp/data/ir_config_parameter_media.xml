@@ -40,4 +40,26 @@
         <field name="key">devhub_whatsapp.media_softwait_video_sec</field>
         <field name="value">900</field>
     </record>
+    <record id="icp_media_transcription_circuit_window" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_transcription_circuit_window</field>
+        <field name="value">20</field>
+    </record>
+    <record id="icp_media_transcription_circuit_threshold_pct" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_transcription_circuit_threshold_pct</field>
+        <field name="value">10</field>
+    </record>
+    <record id="icp_media_transcription_circuit_cooldown_sec" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_transcription_circuit_cooldown_sec</field>
+        <field name="value">900</field>
+    </record>
+    <record id="icp_media_transcription_circuit_lookback_sec" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_transcription_circuit_lookback_sec</field>
+        <field name="value">3600</field>
+    </record>
+    <!-- Empty by default; admin sets an ISO datetime to temporarily ignore
+         historical Whisper failure rate after a confirmed provider recovery. -->
+    <record id="icp_media_transcription_circuit_force_closed_until" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_transcription_circuit_force_closed_until</field>
+        <field name="value"></field>
+    </record>
 </odoo>

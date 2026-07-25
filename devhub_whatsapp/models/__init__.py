@@ -11,4 +11,5 @@ from . import dev_whatsapp_analysis_job
 from . import dev_whatsapp_media_utils
 from . import dev_whatsapp_media
 from . import dev_whatsapp_media_job
+from . import dev_whatsapp_media_backfill
 from . import dev_whatsapp_work_item

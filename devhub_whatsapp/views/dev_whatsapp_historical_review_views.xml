@@ -16,6 +16,16 @@
                 <field name="state"/>
                 <field name="review_final_decision"/>
                 <field name="review_usefulness"/>
+                <field name="media_review_count" string="Media" sum="Total media"/>
+                <field name="media_downloaded_count" string="Downloaded"
+                       sum="Downloaded"/>
+                <field name="media_enriched_count" string="Enriched" sum="Enriched"/>
+                <field name="media_partial_count" string="Partial" sum="Partial"/>
+                <field name="media_failed_count" string="Failed" sum="Failed"/>
+                <field name="media_pending_review_count" string="Media pending review"
+                       sum="Pending review"/>
+                <field name="media_reviewed_count" string="Media reviewed"
+                       sum="Reviewed"/>
                 <field name="review_completed_at"/>
                 <field name="requested_at"/>
             </list>
@@ -44,9 +54,43 @@
                         domain="[('historical_review_lane', '=', 'multi_project')]"/>
                 <filter name="lane_confirmed" string="Confirmed-single lane"
                         domain="[('historical_review_lane', '=', 'confirmed_single')]"/>
+                <separator/>
+                <filter name="media_pending_review" string="Media: pending review"
+                        domain="[('batch_message_ids.media_asset_ids', '!=', False),
+                                 ('batch_message_ids.media_asset_ids.media_review_completed_at', '=', False)]"/>
+                <filter name="media_reviewed" string="Media: reviewed"
+                        domain="[('batch_message_ids.media_asset_ids.media_review_completed_at', '!=', False)]"/>
+                <filter name="media_image" string="Image"
+                        domain="[('batch_message_ids.media_asset_ids.media_type', '=', 'image')]"/>
+                <filter name="media_audio" string="Audio"
+                        domain="[('batch_message_ids.media_asset_ids.media_type', '=', 'audio')]"/>
+                <filter name="media_video" string="Video"
+                        domain="[('batch_message_ids.media_asset_ids.media_type', '=', 'video')]"/>
+                <filter name="media_partial" string="Enrichment partial"
+                        domain="[('batch_message_ids.media_asset_ids.enrichment_state', '=', 'partial')]"/>
+                <filter name="media_failed" string="Enrichment failed"
+                        domain="[('batch_message_ids.media_asset_ids.enrichment_state', 'in', ['failed', 'skipped'])]"/>
+                <filter name="media_manual_review" string="Manual review required"
+                        domain="[('batch_message_ids.media_asset_ids.needs_manual_review', '=', True)]"/>
+                <filter name="media_corrected" string="Media corrected"
+                        domain="[('batch_message_ids.media_asset_ids.media_final_status', '=', 'corrected')]"/>
+                <filter name="media_reprocess" string="Reprocess requested"
+                        domain="[('batch_message_ids.media_asset_ids.media_reprocess_requested', '=', True)]"/>
+                <filter name="decision_new" string="Proposed new work"
+                        domain="[('work_item_decision', '=', 'new')]"/>
+                <filter name="decision_existing" string="Proposed existing follow-up"
+                        domain="[('work_item_decision', '=', 'existing')]"/>
+                <filter name="decision_unclear" string="Unclear"
+                        domain="[('work_item_decision', '=', 'unclear')]"/>
+                <filter name="classification_noise" string="Noise"
+                        domain="[('classification', '=', 'noise')]"/>
                 <group>
                     <filter name="group_source" string="Source"
                             context="{'group_by': 'source_id'}"/>
+                    <filter name="group_project" string="Project"
+                            context="{'group_by': 'resolved_project_id'}"/>
+                    <filter name="group_classification" string="Classification"
+                            context="{'group_by': 'classification'}"/>
                     <filter name="group_decision" string="Review decision"
                             context="{'group_by': 'review_final_decision'}"/>
                     <filter name="group_usefulness" string="Usefulness"
@@ -222,7 +266,17 @@
                         the inbox or Work Items. Open each media record to answer
                         the media questionnaire and save corrections.
                     </div>
-                    <field name="media_review_count" invisible="1"/>
+                    <group string="Media counters" col="8">
+                        <field name="media_review_count"/>
+                        <field name="media_downloaded_count"/>
+                        <field name="media_enriched_count"/>
+                        <field name="media_partial_count"/>
+                        <field name="media_failed_count"/>
+                        <field name="media_pending_review_count"/>
+                        <field name="media_reviewed_count"/>
+                        <field name="media_corrected_count"/>
+                        <field name="media_reprocess_count"/>
+                    </group>
                     <field name="media_review_ids" nolabel="1" readonly="1">
                         <list>
                             <field name="whatsapp_message_id"/>

@@ -83,14 +83,20 @@ class WhatsappMessageDevHub(models.Model):
     def _search_dh_source(self, operator, value):
         Source = self.env["dev.whatsapp.source"].sudo()
         if operator in ("=", "in") and value:
-            sources = Source.browse(value if isinstance(value, list) else [value]).exists()
+            ids = (
+                list(value)
+                if operator == "in" and not isinstance(value, (str, int))
+                else [value]
+            )
+            sources = Source.browse(ids).exists()
             jids = sources.mapped("group_jid")
             return [("group_jid", "in", jids)]
         if operator in ("!=", "not in") and not value:
             jids = Source.search([("active", "=", True)]).mapped("group_jid")
             return [("group_jid", "in", jids)] if jids else [("id", "=", 0)]
         if operator == "!=" and value:
-            sources = Source.browse(value if isinstance(value, list) else [value]).exists()
+            ids = list(value) if not isinstance(value, (str, int)) else [value]
+            sources = Source.browse(ids).exists()
             jids = sources.mapped("group_jid")
             return ["!", ("group_jid", "in", jids)] if jids else []
         return [("id", "=", 0)]

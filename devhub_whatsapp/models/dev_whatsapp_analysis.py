@@ -367,6 +367,14 @@ class DevWhatsappAnalysis(models.Model):
         help="Media assets of this analysis segment (Phase 2 questionnaire).",
     )
     media_review_count = fields.Integer(compute="_compute_media_review_ids")
+    media_downloaded_count = fields.Integer(compute="_compute_media_review_ids")
+    media_enriched_count = fields.Integer(compute="_compute_media_review_ids")
+    media_partial_count = fields.Integer(compute="_compute_media_review_ids")
+    media_failed_count = fields.Integer(compute="_compute_media_review_ids")
+    media_pending_review_count = fields.Integer(compute="_compute_media_review_ids")
+    media_reviewed_count = fields.Integer(compute="_compute_media_review_ids")
+    media_corrected_count = fields.Integer(compute="_compute_media_review_ids")
+    media_reprocess_count = fields.Integer(compute="_compute_media_review_ids")
 
     def _compute_media_review_ids(self):
         Media = self.env["dev.whatsapp.media"].sudo()
@@ -379,6 +387,36 @@ class DevWhatsappAnalysis(models.Model):
             )
             rec.media_review_ids = medias.ids
             rec.media_review_count = len(medias)
+            rec.media_downloaded_count = len(
+                medias.filtered(lambda media: media.retrieval_state == "downloaded")
+            )
+            rec.media_enriched_count = len(
+                medias.filtered(
+                    lambda media: media.enrichment_state in ("succeeded", "partial")
+                )
+            )
+            rec.media_partial_count = len(
+                medias.filtered(lambda media: media.enrichment_state == "partial")
+            )
+            rec.media_failed_count = len(
+                medias.filtered(
+                    lambda media: media.retrieval_state
+                    in ("expired", "unavailable", "failed")
+                    or media.enrichment_state in ("failed", "skipped")
+                )
+            )
+            rec.media_pending_review_count = len(
+                medias.filtered(lambda media: not media.media_review_completed_at)
+            )
+            rec.media_reviewed_count = len(
+                medias.filtered(lambda media: bool(media.media_review_completed_at))
+            )
+            rec.media_corrected_count = len(
+                medias.filtered(lambda media: media.media_final_status == "corrected")
+            )
+            rec.media_reprocess_count = len(
+                medias.filtered(lambda media: media.media_reprocess_requested)
+            )
 
     # Display helpers for the historical review header / AI result block
     review_message_date = fields.Datetime(

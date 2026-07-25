@@ -30,6 +30,11 @@ class TestWhatsappMediaPhase1(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Isolate lease assertions from any real Test queue rows. The test
+        # transaction rolls this cancellation back after the class.
+        cls.env["dev.whatsapp.media.job"].sudo().search(
+            [("state", "in", ["pending", "leased", "processing", "retry"])]
+        ).with_context(dev_wa_media_action=True).write({"state": "cancelled"})
         cls.manager = new_test_user(
             cls.env,
             login="wa_media_mgr",

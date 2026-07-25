@@ -44,7 +44,7 @@ class TestWhatsappResolutionPolicy(TransactionCase):
         cls._conv = sample.conversation_id
         cls.Message = Message
 
-    def _msg(self, body, minutes_ago=0, dedupe=None):
+    def _msg(self, body, minutes_ago=0, dedupe=None, media_kind="none"):
         return self.Message.create(
             {
                 "conversation_id": self._conv.id,
@@ -56,7 +56,7 @@ class TestWhatsappResolutionPolicy(TransactionCase):
                 "body": body,
                 "message_timestamp": fields.Datetime.now()
                 - timedelta(minutes=minutes_ago),
-                "media_kind": "none",
+                "media_kind": media_kind,
                 "inbox_state": "new",
             }
         )
@@ -105,6 +105,18 @@ class TestWhatsappResolutionPolicy(TransactionCase):
         self.assertEqual(normalize_classification_v2("context"), "context_update")
         self.assertEqual(normalize_classification_v2("info"), "unclear")
         self.assertEqual(normalize_classification_v2("new_task"), "new_task")
+        self.assertEqual(
+            normalize_classification_v2(
+                "none", wi_decision="none", is_actionable=False
+            ),
+            "noise",
+        )
+        self.assertEqual(
+            normalize_classification_v2(
+                "none", wi_decision="none", is_actionable=True
+            ),
+            "unclear",
+        )
 
     def test_alias_switch_creates_boundary(self):
         if not self.kafaat:
@@ -134,6 +146,142 @@ class TestWhatsappResolutionPolicy(TransactionCase):
         self.assertTrue(pack["work_item_candidates"][0].get("direct_message_link"))
         self.assertEqual(pack["recommended_work_item_decision"], "existing")
         self.assertEqual(pack["recommended_work_item_id"], work.id)
+
+    # ---- Round 2: project relevance gating ----
+    def test_alias_in_actionable_sentence_is_current_topic(self):
+        msg = self._msg(
+            "مشكلة في استا في صفحة الموظفين لما اضغط new يظهر خطأ",
+            dedupe="rel-actionable-1",
+        )
+        pack = self.Candidates.build_project_candidates(self.ambiguous, msg)
+        top = pack["project_candidates"][0]
+        self.assertEqual(top["project_id"], self.asta.id)
+        self.assertTrue(top["project_relevance"]["is_current_topic"])
+        self.assertTrue(pack["selection_policy"]["eligible_for_proposed_selection"])
+
+    def test_alias_only_in_bare_and_boilerplate_not_current_topic(self):
+        # DN-18 pattern: alias only in a 2-token fragment + pasted traceback.
+        m1 = self._msg("في استا", minutes_ago=3, dedupe="rel-bare-1")
+        m2 = self._msg(
+            "install or update sign module", minutes_ago=2, dedupe="rel-bare-2"
+        )
+        m3 = self._msg(
+            "RPC_ERROR\nOdoo Server Error\nOccured on erp.asta.edu.sa\n"
+            'Traceback (most recent call last):\n  File "x", line 1, in y',
+            minutes_ago=1,
+            dedupe="rel-bare-3",
+        )
+        pack = self.Candidates.build_project_candidates(
+            self.ambiguous, m1 | m2 | m3
+        )
+        policy = pack["selection_policy"]
+        self.assertFalse(policy["eligible_for_proposed_selection"])
+        self.assertIsNone(policy["proposed_project_id"])
+        self.assertTrue(pack["requires_project_confirmation"])
+        top = next(
+            (c for c in pack["project_candidates"] if c["project_id"] == self.asta.id),
+            None,
+        )
+        if top:
+            self.assertFalse(top["project_relevance"]["is_current_topic"])
+
+    def test_media_incidental_alias_not_proposed(self):
+        # DN-25 pattern: media-dominated, low text, alias only in a short note.
+        msgs = (
+            self._msg("[image]", minutes_ago=5, dedupe="rel-media-1", media_kind="image")
+            | self._msg("[image]", minutes_ago=4, dedupe="rel-media-2", media_kind="image")
+            | self._msg("[image]", minutes_ago=3, dedupe="rel-media-3", media_kind="image")
+            | self._msg("both installed in asta test", minutes_ago=2, dedupe="rel-media-4")
+        )
+        pack = self.Candidates.build_project_candidates(self.ambiguous, msgs)
+        policy = pack["selection_policy"]
+        self.assertFalse(policy["eligible_for_proposed_selection"])
+        self.assertIsNone(policy["proposed_project_id"])
+        top = next(
+            (c for c in pack["project_candidates"] if c["project_id"] == self.asta.id),
+            None,
+        )
+        if top:
+            self.assertTrue(top["project_relevance"]["media_weak"])
+
+    def test_repeated_standalone_alias_is_current_topic(self):
+        if not self.kafaat:
+            self.skipTest("KAFAAT missing")
+        msgs = (
+            self._msg("RFID Gates", minutes_ago=5, dedupe="rel-rep-0")
+            | self._msg("كفاءات", minutes_ago=4, dedupe="rel-rep-1")
+            | self._msg("كفاءات", minutes_ago=3, dedupe="rel-rep-2")
+            | self._msg("كفاءات", minutes_ago=2, dedupe="rel-rep-3")
+        )
+        pack = self.Candidates.build_project_candidates(self.ambiguous, msgs)
+        top = pack["project_candidates"][0]
+        self.assertEqual(top["project_id"], self.kafaat.id)
+        self.assertTrue(top["project_relevance"]["is_current_topic"])
+
+    def test_score_breakdown_present(self):
+        msg = self._msg("مشكلة في استا employees", dedupe="rel-brk-1")
+        pack = self.Candidates.build_project_candidates(self.ambiguous, msg)
+        brk = pack["project_candidates"][0]["score_breakdown"]
+        for key in (
+            "alias_score",
+            "current_topic_score",
+            "direct_link_score",
+            "context_score",
+            "conflict_penalty",
+            "final_score",
+        ):
+            self.assertIn(key, brk)
+
+    def test_segment_actionability_signals(self):
+        msg = self._msg("please fix the login error on employees page", dedupe="act-1")
+        act = self.Candidates._segment_actionability(msg)
+        self.assertTrue(act["is_actionable"])
+        self.assertGreater(act["score"], 0.0)
+        noise = self._msg("ok thanks 👍", dedupe="act-2")
+        self.assertFalse(self.Candidates._segment_actionability(noise)["is_actionable"])
+
+    def test_future_alias_does_not_override_current_project(self):
+        cyclex = self.env["dev.project"].search(
+            [("code", "=", "CYCLEX")], limit=1
+        )
+        if not cyclex:
+            self.skipTest("CYCLEX missing")
+        msg = self._msg(
+            "I am in Cycle X in parallel; once one finish I will test ASTA",
+            dedupe="rel-future-1",
+        )
+        pack = self.Candidates.build_project_candidates(self.ambiguous, msg)
+        policy = pack["selection_policy"]
+        self.assertTrue(policy["eligible_for_proposed_selection"])
+        self.assertEqual(policy["proposed_project_id"], cyclex.id)
+        asta = next(
+            c
+            for c in pack["project_candidates"]
+            if c["project_id"] == self.asta.id
+        )
+        self.assertFalse(asta["project_relevance"]["is_current_topic"])
+
+    def test_inferred_title_match_is_not_existing_grade(self):
+        Work = self.env["dev.work.item"].sudo()
+        work = Work.search([("dev_project_id", "=", self.asta.id)], limit=1)
+        if not work:
+            self.skipTest("No ASTA work item")
+        # A message that merely shares a common token with the WI title must not
+        # produce an existing-grade recommendation.
+        token = next(
+            (t for t in (work.name or "").lower().split() if len(t) >= 5),
+            "employees",
+        )
+        msg = self._msg("مشكلة في استا %s" % token, dedupe="wi-inferred-1")
+        pack = self.Candidates.build_work_item_candidates(self.asta, msg)
+        self.assertNotEqual(pack["recommended_work_item_decision"], "existing")
+        for c in pack["work_item_candidates"]:
+            if not c.get("direct_message_link"):
+                types = [
+                    e.get("type") if isinstance(e, dict) else e
+                    for e in c.get("evidence", [])
+                ]
+                self.assertNotIn("explicit_work_item_ref", types)
 
     def test_foreign_wi_rejected_for_other_project(self):
         Work = self.env["dev.work.item"].sudo()

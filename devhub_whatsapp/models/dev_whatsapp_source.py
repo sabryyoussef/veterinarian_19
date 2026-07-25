@@ -137,6 +137,23 @@ class DevWhatsappSource(models.Model):
         help="Included in batch fingerprint; bump to force a new analysis version.",
     )
     analysis_mode = fields.Char(default="group_triage")
+    # Historical quality review allowlist (separate from live AI triage).
+    historical_review_enabled = fields.Boolean(
+        default=False,
+        index=True,
+        help="Allow historical quality evaluation / reviewer questionnaire for this source.",
+    )
+    historical_review_lane = fields.Selection(
+        [
+            ("confirmed_single", "Confirmed single-project"),
+            ("multi_project", "Multi-project (Dev Needed)"),
+            ("excluded", "Excluded"),
+        ],
+        default="excluded",
+        required=True,
+        index=True,
+        help="Dashboard lane for historical review. Multi-project does not remap the source.",
+    )
     sender_policy = fields.Selection(
         [
             ("any_member", "Any group member"),
@@ -422,6 +439,54 @@ class DevWhatsappSource(models.Model):
         self.ensure_one()
         return self.project_mapping_state == "confirmed" and bool(self.dev_project_id)
 
+    def _historical_review_allowed(self):
+        """True when this source may enter historical evaluation review.
+
+        Confirmed single-project groups and explicitly approved multi-project
+        groups (Dev Needed) are allowed. Alzaeem / unmapped / inactive stay out.
+        Does not require or change live AI triage / mapping state.
+        """
+        self.ensure_one()
+        if not self.active:
+            return False
+        if not self.historical_review_enabled:
+            return False
+        if self.historical_review_lane == "excluded":
+            return False
+        if self.historical_review_lane == "confirmed_single":
+            return self.project_mapping_state == "confirmed" and bool(
+                self.dev_project_id
+            )
+        if self.historical_review_lane == "multi_project":
+            # Explicit approval only — mapping stays ambiguous; AI triage stays off.
+            return self.project_mapping_state == "ambiguous"
+        return False
+
+    def _historical_review_block_reason(self):
+        self.ensure_one()
+        if self._historical_review_allowed():
+            return None
+        if not self.active:
+            return "WhatsApp source is inactive."
+        if self.project_mapping_state == "unmapped":
+            return (
+                "Source is unmapped (e.g. Alzaeem). Historical review is excluded "
+                "until a dedicated Dev Hub project is mapped and approved."
+            )
+        if self.historical_review_lane == "excluded" or not self.historical_review_enabled:
+            return (
+                "Source is not on the historical review allowlist "
+                "(confirmed single-project or approved multi-project Dev Needed)."
+            )
+        if self.historical_review_lane == "confirmed_single":
+            return "Confirmed-single historical review requires a confirmed project mapping."
+        if self.historical_review_lane == "multi_project":
+            return (
+                "Multi-project historical review requires project_mapping_state=ambiguous "
+                "(Dev Needed). Do not remap to a single project."
+            )
+        return "Historical review is not allowed for this source."
+
     def _ai_mapping_block_reason(self):
         self.ensure_one()
         if self.project_mapping_state == "confirmed" and self.dev_project_id:
@@ -558,12 +623,22 @@ class DevWhatsappSource(models.Model):
             if state == "confirmed":
                 vals["project_mapping_confirmed_by"] = self.env.user.id
                 vals["project_mapping_confirmed_at"] = fields.Datetime.now()
+                vals["historical_review_enabled"] = True
+                vals["historical_review_lane"] = "confirmed_single"
             else:
                 vals["project_mapping_confirmed_by"] = False
                 vals["project_mapping_confirmed_at"] = False
                 # Keep AI off until confirmed for ambiguous/unmapped
                 if state in ("ambiguous", "unmapped"):
                     vals["ai_triage_enabled"] = False
+                if jid == "120363422104853335@g.us" and state == "ambiguous":
+                    # Dev Needed: approved multi-project historical review only.
+                    vals["historical_review_enabled"] = True
+                    vals["historical_review_lane"] = "multi_project"
+                else:
+                    # Alzaeem / other unmapped → excluded from historical review.
+                    vals["historical_review_enabled"] = False
+                    vals["historical_review_lane"] = "excluded"
             source.write(vals)
             report.append(
                 {
@@ -576,6 +651,28 @@ class DevWhatsappSource(models.Model):
                 }
             )
         _logger.info("P0 WhatsApp source mapping corrections applied: %s", report)
+        # Backfill historical review lane onto existing evaluation analyses.
+        Analysis = self.env["dev.whatsapp.analysis"].sudo()
+        for lane, domain_lane in (
+            ("multi_project", "multi_project"),
+            ("confirmed_single", "confirmed_single"),
+        ):
+            sources = Source.search(
+                [
+                    ("historical_review_enabled", "=", True),
+                    ("historical_review_lane", "=", domain_lane),
+                ]
+            )
+            if sources:
+                Analysis.search(
+                    [
+                        ("is_evaluation_result", "=", True),
+                        ("source_id", "in", sources.ids),
+                        "|",
+                        ("historical_review_lane", "=", False),
+                        ("historical_review_lane", "!=", domain_lane),
+                    ]
+                ).write({"historical_review_lane": domain_lane})
         return report
 
 

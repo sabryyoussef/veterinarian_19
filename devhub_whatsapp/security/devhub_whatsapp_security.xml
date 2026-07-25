@@ -40,6 +40,14 @@
         <field name="comment">May lease/complete WhatsApp AI analysis jobs only. Cannot create Work Items.</field>
     </record>
 
+    <record id="group_dev_hub_wa_media_service" model="res.groups">
+        <field name="name">Dev Hub Scoped WhatsApp Media Service</field>
+        <field name="sequence">9</field>
+        <field name="privilege_id" ref="devhub_core.privilege_devhub"/>
+        <field name="api_key_duration">30</field>
+        <field name="comment">May lease/complete WhatsApp media download jobs only. Cannot create Work Items or mutate inbox.</field>
+    </record>
+
     <record id="rule_dev_whatsapp_analysis_user" model="ir.rule">
         <field name="name">WhatsApp analysis project members</field>
         <field name="model_id" ref="model_dev_whatsapp_analysis"/>
@@ -62,6 +70,31 @@
         <field name="name">WhatsApp analysis job service all</field>
         <field name="model_id" ref="model_dev_whatsapp_analysis_job"/>
         <field name="groups" eval="[(4, ref('group_dev_hub_wa_analysis_service'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_whatsapp_media_manager" model="ir.rule">
+        <field name="name">WhatsApp media managers all</field>
+        <field name="model_id" ref="model_dev_whatsapp_media"/>
+        <field name="groups" eval="[(4, ref('devhub_core.group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_whatsapp_media_user" model="ir.rule">
+        <field name="name">WhatsApp media users company</field>
+        <field name="model_id" ref="model_dev_whatsapp_media"/>
+        <field name="groups" eval="[(4, ref('devhub_core.group_dev_hub_user'))]"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_whatsapp_media_service" model="ir.rule">
+        <field name="name">WhatsApp media service all</field>
+        <field name="model_id" ref="model_dev_whatsapp_media"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_wa_media_service'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_whatsapp_media_job_service" model="ir.rule">
+        <field name="name">WhatsApp media job service all</field>
+        <field name="model_id" ref="model_dev_whatsapp_media_job"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_wa_media_service'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
     </record>
 </odoo>

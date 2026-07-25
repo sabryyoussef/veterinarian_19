@@ -25,12 +25,46 @@
               sequence="8"
               groups="devhub_core.group_dev_hub_user"/>
 
+    <menuitem id="menu_devhub_whatsapp_historical_review"
+              name="Historical Review"
+              parent="menu_devhub_whatsapp_root"
+              sequence="8"
+              groups="devhub_core.group_dev_hub_manager"/>
+
+    <menuitem id="menu_devhub_whatsapp_historical_confirmed"
+              name="Confirmed Single-Project"
+              parent="menu_devhub_whatsapp_historical_review"
+              action="action_dev_whatsapp_historical_review_confirmed"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_manager"/>
+
+    <menuitem id="menu_devhub_whatsapp_historical_multi"
+              name="Multi-Project Historical Review"
+              parent="menu_devhub_whatsapp_historical_review"
+              action="action_dev_whatsapp_historical_review_multi"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_manager"/>
+
     <menuitem id="menu_devhub_whatsapp_ai_jobs"
               name="AI Analysis Jobs"
               parent="menu_devhub_whatsapp_root"
               action="action_dev_whatsapp_analysis_job"
               sequence="9"
               groups="devhub_core.group_dev_hub_manager,group_dev_hub_wa_analysis_service"/>
+
+    <menuitem id="menu_devhub_whatsapp_media"
+              name="Media Assets"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_media"
+              sequence="9"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_whatsapp_media_jobs"
+              name="Media Jobs"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_media_job"
+              sequence="9"
+              groups="devhub_core.group_dev_hub_manager,group_dev_hub_wa_media_service"/>
 
     <menuitem id="menu_devhub_whatsapp_intake"
               name="Intake Candidates"

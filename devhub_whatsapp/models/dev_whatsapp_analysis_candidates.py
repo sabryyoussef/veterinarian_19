@@ -2,7 +2,48 @@
 """Project and Work Item candidate retrieval for WhatsApp AI."""
 from __future__ import annotations
 
+import re
+
 from odoo import api, models
+
+# Auto-generated Odoo/error boilerplate that must be stripped before judging
+# whether a project alias is part of a genuine user request (current topic).
+_ERROR_BOILERPLATE = re.compile(
+    r"(RPC_ERROR|Odoo Server Error|Traceback \(most recent call last\)|"
+    r"Occured on|Occurred on|See stack trace|handleError|_dispatch|assets_web|"
+    r"حدث خطأ ما|إذا كنت حقا|إذا كنت حقاً|قم بمشاركة التقرير|خدمة الدعم|"
+    r"خطأ في خادم أودو|حطأ في خادم|خطأ في خادم|File \"|line \d+, in )",
+    re.I,
+)
+_MEDIA_ONLY = re.compile(
+    r"^(?:\s*\[(?:image|audio|video|document|sticker|gif)\]\s*)+$", re.I
+)
+# Request / bug / imperative language signalling an actionable statement.
+_REQUEST_LANG = re.compile(
+    r"(عايز|عاوز|محتاج|محتاجين|ممكن|ياريت|يا ريت|برجاء|رجاء|لو سمحت|من فضلك|"
+    r"please|need|needs|can you|could you|kindly|fix|add|install|update|upgrade|"
+    r"deploy|check|review|implement|correct|integrat|investigat|analy|"
+    r"مشكلة|مشاكل|خطأ|ايرور|error|errors|bug|لا يعمل|مش شغال|مش راضي|not work|"
+    r"fails|failed|عطل|صحح|عدل|اعمل|نفذ|اضف|ثبت|اختبار|افتح|سجل)",
+    re.I,
+)
+# Explicit repository / database / server / environment references that tie a
+# statement to a concrete project deployment.
+_ENV_CONTEXT = re.compile(
+    r"(سيرفر|server|داتا ?بيز|داتا ?بايز|database|host|بيئة|environment|"
+    r"repo|repository|erp\.|\.odoo\.com|\.edu|portal\.|https?://|بورت)",
+    re.I,
+)
+_FUTURE_CONTEXT = re.compile(
+    r"(once\b.*\bfinish\b.*\bwill\b|will\s+(?:later\s+)?(?:test|check|review)|"
+    r"after\s+.*\bfinish\b|لاحق[ًاا]?|بعد\s+ما\s+(?:اخلص|نخلص|يخلص))",
+    re.I,
+)
+_FUTURE_ALIAS_PREFIX = re.compile(
+    r"(?:\bwill\s+(?:later\s+)?(?:test|check|review)\s+|"
+    r"\blater\s+(?:test|check|review)\s+|لاحق[ًاا]?\s+)",
+    re.I,
+)
 
 STRONG_EVIDENCE_TYPES = frozenset(
     {
@@ -68,6 +109,68 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
             "candidate_score_margin": _f(
                 "devhub_whatsapp.candidate_score_margin", 0.20
             ),
+            "project_relevance_min_confidence": _f(
+                "devhub_whatsapp.project_relevance_min_confidence", 0.50
+            ),
+            "media_dominant_ratio": _f(
+                "devhub_whatsapp.media_dominant_ratio", 0.40
+            ),
+        }
+
+    # ---- Deterministic text helpers for project relevance / actionability ----
+    @api.model
+    def _clean_user_text(self, body):
+        """Strip auto-generated Odoo/error boilerplate, keep user prose."""
+        if not body:
+            return ""
+        out = []
+        for ln in str(body).splitlines():
+            s = ln.strip()
+            if not s or _ERROR_BOILERPLATE.search(s):
+                continue
+            out.append(s)
+        return " ".join(out).strip()
+
+    @api.model
+    def _prose_token_count(self, text):
+        return len([t for t in re.split(r"\s+", text or "") if t])
+
+    @api.model
+    def _message_is_media_only(self, msg):
+        body = (msg.body or "").strip()
+        if msg.media_kind and msg.media_kind != "none":
+            stripped = re.sub(
+                r"\[(image|audio|video|document|sticker|gif)\]",
+                "",
+                body,
+                flags=re.I,
+            ).strip()
+            return len(stripped) < 3
+        return bool(_MEDIA_ONLY.match(body))
+
+    @api.model
+    def _segment_actionability(self, messages):
+        """Deterministic segment actionability: request/bug language + signals."""
+        signals = []
+        for m in messages[:20]:
+            clean = self._clean_user_text(m.body or "")
+            # Negated "no problem" / success-report language is not a request.
+            if re.search(
+                r"(مافيش\s+مشكلة|لا\s+مشكلة|no\s+problem|تم\s+اختبار.{0,40}بنجاح)",
+                clean,
+                re.I,
+            ):
+                continue
+            hit = _REQUEST_LANG.search(clean)
+            if hit and self._prose_token_count(clean) >= 3:
+                signals.append(hit.group(0).lower())
+        is_actionable = bool(signals)
+        return {
+            "is_actionable": is_actionable,
+            "score": round(min(1.0, 0.4 + 0.2 * len(set(signals))), 3)
+            if is_actionable
+            else 0.0,
+            "signals": sorted(set(signals))[:8],
         }
 
     @api.model
@@ -77,6 +180,14 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
             if etype in STRONG_EVIDENCE_TYPES:
                 return True
         return False
+
+    @api.model
+    def _entry_has_direct(self, entry):
+        return any(
+            (ev.get("type") if isinstance(ev, dict) else None)
+            == "direct_source_message_link"
+            for ev in (entry.get("evidence") or [])
+        )
 
     @api.model
     def _compute_selection_policy(self, ranked, source, thresholds):
@@ -108,9 +219,17 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
             }
 
         top = ranked[0]
-        top_score = float(top["deterministic_score"])
+        top_score = float(
+            (top.get("score_breakdown") or {}).get("final_score")
+            or top["deterministic_score"]
+        )
         second_score = (
-            float(ranked[1]["deterministic_score"]) if len(ranked) > 1 else 0.0
+            float(
+                (ranked[1].get("score_breakdown") or {}).get("final_score")
+                or ranked[1]["deterministic_score"]
+            )
+            if len(ranked) > 1
+            else 0.0
         )
         strong = self._has_strong_evidence(top)
 
@@ -161,7 +280,16 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
             "proposed_project_id": proposed["project_id"] if proposed else None,
             "proposed_project_name": proposed["project_name"] if proposed else None,
             "proposed_project_code": proposed.get("project_code") if proposed else None,
-            "proposed_confidence": round(float(proposed["deterministic_score"]), 3)
+            "proposed_confidence": round(
+                min(
+                    1.0,
+                    float(
+                        (proposed.get("score_breakdown") or {}).get("final_score")
+                        or proposed["deterministic_score"]
+                    ),
+                ),
+                3,
+            )
             if proposed
             else 0.0,
             "resolution_status": "proposed" if eligible else "unresolved",
@@ -228,25 +356,113 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
                 ],
             )
 
-        # 2–4) Alias matches in message bodies + group name
-        blob = " ".join(
-            [(source.name or "")]
-            + [(m.body or "")[:500] for m in messages[:20]]
-        )
-        for alias in Alias.match_text(blob, limit=20):
+        # 2) Group-name aliases are only a weak mapping hint (context), never
+        #    proof that the *current* actionable request is about that project.
+        for alias in Alias.match_text(source.name or "", limit=20):
+            if not alias.dev_project_id:
+                continue
             ev_type = ALIAS_TYPE_TO_EVIDENCE.get(alias.alias_type, "message_alias")
             add(
                 alias.dev_project_id,
-                min(0.97, 0.6 + (alias.priority or 0) / 200.0),
-                [
-                    {
-                        "type": ev_type,
-                        "value": "Matched alias %r (%s)"
-                        % (alias.name, alias.alias_type),
-                    }
-                ],
+                min(0.70, 0.5 + (alias.priority or 0) / 300.0),
+                [{"type": ev_type, "value": "Group-name alias %r" % alias.name}],
                 aliases_matched=[alias.name],
             )
+
+        # 3–4) Per-message alias matches + deterministic project_relevance:
+        #      does the alias appear as part of the *current* actionable topic,
+        #      or only as an incidental/context/boilerplate mention?
+        relevance = {}
+
+        def rel(pid):
+            return relevance.setdefault(
+                pid,
+                {
+                    "strong_topic_hits": 0,
+                    "env_hits": 0,
+                    "standalone_hits": 0,
+                    "context_hits": 0,
+                    "max_alias_prose_tokens": 0,
+                    "alias_msg_ids": set(),
+                    "evidence": [],
+                },
+            )
+
+        total_msgs = 0
+        media_msgs = 0
+        total_prose_tokens = 0
+        for m in messages[:20]:
+            total_msgs += 1
+            body = m.body or ""
+            if self._message_is_media_only(m):
+                media_msgs += 1
+            clean = self._clean_user_text(body)
+            prose_tokens = self._prose_token_count(clean)
+            total_prose_tokens += prose_tokens
+            actionable = bool(_REQUEST_LANG.search(clean))
+            env_ctx = bool(_ENV_CONTEXT.search(clean))
+            clean_hits = {
+                a.dev_project_id.id
+                for a in Alias.match_text(clean, limit=20)
+                if a.dev_project_id
+            }
+            for alias in Alias.match_text(body, limit=20):
+                proj = alias.dev_project_id
+                if not proj:
+                    continue
+                ev_type = ALIAS_TYPE_TO_EVIDENCE.get(alias.alias_type, "message_alias")
+                add(
+                    proj,
+                    min(0.97, 0.6 + (alias.priority or 0) / 200.0),
+                    [
+                        {
+                            "type": ev_type,
+                            "value": "Matched alias %r (%s)"
+                            % (alias.name, alias.alias_type),
+                        }
+                    ],
+                    aliases_matched=[alias.name],
+                )
+                info = rel(proj.id)
+                info["alias_msg_ids"].add(m.id)
+                in_clean = proj.id in clean_hits
+                is_env_alias = alias.alias_type in (
+                    "database",
+                    "environment",
+                    "repository",
+                )
+                alias_pos = clean.lower().find((alias.name or "").lower())
+                future_prefix = _FUTURE_ALIAS_PREFIX.search(clean)
+                future_ctx = bool(
+                    _FUTURE_CONTEXT.search(clean)
+                    and future_prefix
+                    and alias_pos >= future_prefix.start()
+                )
+                if in_clean and prose_tokens <= 2:
+                    info["standalone_hits"] += 1
+                if in_clean and not future_ctx and prose_tokens >= 4:
+                    info["max_alias_prose_tokens"] = max(
+                        info["max_alias_prose_tokens"], prose_tokens
+                    )
+                if in_clean and not future_ctx and prose_tokens >= 4 and (
+                    actionable or is_env_alias or env_ctx
+                ):
+                    info["strong_topic_hits"] += 1
+                    info["evidence"].append(
+                        "alias in actionable statement (msg %s)" % m.id
+                    )
+                elif (
+                    in_clean
+                    and not future_ctx
+                    and (is_env_alias or env_ctx)
+                    and prose_tokens >= 3
+                ):
+                    info["env_hits"] += 1
+                    info["evidence"].append(
+                        "alias near environment reference (msg %s)" % m.id
+                    )
+                else:
+                    info["context_hits"] += 1
 
         # 5–6) Existing WI links on messages (direct source-message links)
         for msg in messages:
@@ -271,10 +487,102 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
                         scored[source.dev_project_id.id]["deterministic_score"], 0.4
                     )
 
+        # Attach deterministic project_relevance + score decomposition per entry
+        media_ratio = (media_msgs / total_msgs) if total_msgs else 0.0
+        media_dom = media_ratio >= thresholds["media_dominant_ratio"]
+        distinct_alias_projects = len(
+            [1 for e in scored.values() if e.get("aliases_matched")]
+        )
+        for entry in scored.values():
+            info = relevance.get(entry["project_id"]) or {}
+            has_direct = self._entry_has_direct(entry)
+            strong = int(info.get("strong_topic_hits") or 0)
+            env = int(info.get("env_hits") or 0)
+            standalone = int(info.get("standalone_hits") or 0)
+            context = int(info.get("context_hits") or 0)
+            max_prose = int(info.get("max_alias_prose_tokens") or 0)
+            # Current topic requires the alias to appear in at least one
+            # substantive user statement (>=4 prose tokens), or be repeated
+            # standalone, or be tied to a direct WI link / environment ref.
+            # An alias seen only in a 2-token fragment and error boilerplate
+            # (e.g. "في استا" + a pasted traceback) is NOT the current topic.
+            is_current_topic = bool(
+                has_direct
+                or strong >= 1
+                or env >= 1
+                or standalone >= 3
+                or max_prose >= 4
+            )
+            # A media-dominated, low-text segment where the alias is only a
+            # short incidental caption / environment note (e.g. "installed in
+            # asta test") must not commit a project.
+            media_weak = bool(
+                media_dom
+                and not has_direct
+                and max_prose < 8
+                and total_prose_tokens < 40
+            )
+            if has_direct:
+                confidence = 0.95
+            elif strong >= 1 or env >= 1:
+                confidence = 0.80
+            elif standalone >= 3 or max_prose >= 8:
+                confidence = 0.70
+            elif max_prose >= 4:
+                confidence = 0.60
+            else:
+                confidence = 0.20
+            # Score decomposition is authoritative for ranking and policy.
+            alias_score = round(min(0.97, entry["deterministic_score"]), 3)
+            direct_link_score = 0.95 if has_direct else 0.0
+            current_topic_score = round(
+                0.5
+                if strong >= 1
+                else (
+                    0.35
+                    if (env or standalone >= 3 or max_prose >= 4)
+                    else 0.0
+                ),
+                3,
+            )
+            context_score = round(min(0.1, 0.03 * context), 3)
+            conflict_penalty = 0.0
+            if distinct_alias_projects > 1 and not has_direct:
+                conflict_penalty += 0.3
+            if not is_current_topic:
+                conflict_penalty += 0.3
+            if media_weak:
+                conflict_penalty += 0.3
+            conflict_penalty = round(conflict_penalty, 3)
+            final_score = round(
+                max(
+                    0.0,
+                    max(alias_score, direct_link_score)
+                    + current_topic_score
+                    + context_score
+                    - conflict_penalty,
+                ),
+                3,
+            )
+            entry["project_relevance"] = {
+                "is_current_topic": is_current_topic,
+                "confidence": round(confidence, 3),
+                "media_weak": media_weak,
+                "evidence": (info.get("evidence") or [])[:6],
+            }
+            entry["score_breakdown"] = {
+                "alias_score": alias_score,
+                "current_topic_score": current_topic_score,
+                "direct_link_score": direct_link_score,
+                "context_score": context_score,
+                "conflict_penalty": conflict_penalty,
+                "final_score": final_score,
+            }
+
         ranked = sorted(
             scored.values(),
             key=lambda r: (
-                r["deterministic_score"],
+                (r.get("score_breakdown") or {}).get("final_score", 0.0),
                 any(
                     (ev.get("type") if isinstance(ev, dict) else None)
                     == "direct_source_message_link"
@@ -296,7 +604,10 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
             )
 
         ranked.sort(
-            key=lambda r: (1 if _has_direct(r) else 0, r["deterministic_score"]),
+            key=lambda r: (
+                1 if _has_direct(r) else 0,
+                (r.get("score_breakdown") or {}).get("final_score", 0.0),
+            ),
             reverse=True,
         )
 
@@ -332,6 +643,48 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
             policy["resolution_status"] = "unresolved"
             policy["selection_reason"] = "ambiguous_requires_strong_score"
             policy["requires_project_confirmation"] = True
+
+        # Project relevance gate (ambiguous sources only): a project alias alone
+        # is not enough — the current actionable topic must be about that
+        # project. Direct WI links bypass this gate. Confirmed single-project
+        # sources rely on their group mapping and are never gated here.
+        ambiguous = source.project_mapping_state in ("ambiguous", "unmapped")
+        if (
+            ambiguous
+            and not direct
+            and policy.get("eligible_for_proposed_selection")
+            and policy.get("proposed_project_id")
+        ):
+            proposed_entry = next(
+                (
+                    e
+                    for e in ranked
+                    if e["project_id"] == policy["proposed_project_id"]
+                ),
+                None,
+            )
+            prj = (proposed_entry or {}).get("project_relevance") or {}
+            min_conf = thresholds["project_relevance_min_confidence"]
+            gate_ok = (
+                bool(prj.get("is_current_topic"))
+                and not prj.get("media_weak")
+                and float(prj.get("confidence") or 0.0) >= min_conf
+            )
+            if not gate_ok:
+                reason = (
+                    "media_incidental_reference"
+                    if prj.get("media_weak")
+                    else "alias_not_current_topic"
+                )
+                policy = dict(policy)
+                policy["eligible_for_proposed_selection"] = False
+                policy["proposed_project_id"] = None
+                policy["proposed_project_name"] = None
+                policy["proposed_project_code"] = None
+                policy["proposed_confidence"] = 0.0
+                policy["resolution_status"] = "unresolved"
+                policy["selection_reason"] = reason
+                policy["requires_project_confirmation"] = True
 
         for entry in ranked:
             entry["eligible_for_proposed_selection"] = bool(
@@ -454,10 +807,16 @@ class DevWhatsappAnalysisCandidates(models.AbstractModel):
                             }
                         )
                     elif term in title:
-                        score = max(score, 0.75)
+                        # Generic single-token title overlap is weak, inferred
+                        # evidence — never enough on its own to claim an
+                        # *existing* Work Item (only direct link / explicit id).
+                        score = max(score, 0.45)
                         matched.append(term)
                         evidence.append(
-                            {"type": "title_match", "value": "Title term match"}
+                            {
+                                "type": "inferred_title_match",
+                                "value": "Weak title term overlap",
+                            }
                         )
                 if work.id in scored_map:
                     # already boosted via direct link

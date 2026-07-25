@@ -149,16 +149,25 @@ class TestWhatsappAiAnalysis(TransactionCase):
         Analysis = self.env["dev.whatsapp.analysis"].with_user(self.manager)
         analysis = Analysis.action_enqueue_analysis(self.source.id, force=True)
         analysis.action_ingest_fixture_json(self._fixture(should_ignore=True, ignore_reason="noise", contains_work=False, work_title=None, work_description=None, recommended_action="ignore", classification="noise", work_message_ids=[], noise_message_ids=[self.msg1.id, self.msg2.id]))
-        # If not auto-ignore, messages stay new until approve
+        # Recommendations never auto-mutate the inbox
         self.msg1.invalidate_recordset()
-        if analysis.state == "awaiting_review":
-            self.assertEqual(self.msg1.inbox_state, "new")
+        self.assertEqual(self.msg1.inbox_state, "new")
+        if analysis.state == "awaiting_review" and analysis.should_ignore:
             analysis.action_approve_ignore()
             self.msg1.invalidate_recordset()
             self.assertEqual(self.msg1.inbox_state, "ignored")
             analysis.action_restore_messages()
             self.msg1.invalidate_recordset()
             self.assertIn(self.msg1.inbox_state, ("new", "pending"))
+        else:
+            # Quality-round policy: actionable segment text overrides a
+            # noise/ignore AI result — ignore approval must be blocked and
+            # nothing may mutate.
+            self.assertFalse(analysis.should_ignore)
+            with self.assertRaises(UserError):
+                analysis.action_approve_ignore()
+            self.msg1.invalidate_recordset()
+            self.assertEqual(self.msg1.inbox_state, "new")
 
     def test_approve_create_work_item(self):
         Analysis = self.env["dev.whatsapp.analysis"].with_user(self.manager)

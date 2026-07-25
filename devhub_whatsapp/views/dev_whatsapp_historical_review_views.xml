@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Historical review list: shared columns -->
+    <record id="view_dev_whatsapp_analysis_historical_list" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.historical.list</field>
+        <field name="model">dev.whatsapp.analysis</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="evaluation_sample_id"/>
+                <field name="name"/>
+                <field name="source_id"/>
+                <field name="historical_review_lane"/>
+                <field name="resolved_project_id"/>
+                <field name="work_item_decision"/>
+                <field name="classification"/>
+                <field name="state"/>
+                <field name="review_final_decision"/>
+                <field name="review_usefulness"/>
+                <field name="review_completed_at"/>
+                <field name="requested_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_whatsapp_analysis_historical_search" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.historical.search</field>
+        <field name="model">dev.whatsapp.analysis</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="evaluation_sample_id"/>
+                <field name="name"/>
+                <field name="source_id"/>
+                <field name="resolved_project_id"/>
+                <field name="review_final_decision"/>
+                <field name="review_usefulness"/>
+                <filter name="awaiting_review" string="Awaiting AI review"
+                        domain="[('state', '=', 'awaiting_review')]"/>
+                <filter name="review_pending" string="Questionnaire incomplete"
+                        domain="[('review_completed_at', '=', False)]"/>
+                <filter name="review_done" string="Questionnaire saved"
+                        domain="[('review_completed_at', '!=', False)]"/>
+                <separator/>
+                <filter name="lane_multi" string="Multi-project lane"
+                        domain="[('historical_review_lane', '=', 'multi_project')]"/>
+                <filter name="lane_confirmed" string="Confirmed-single lane"
+                        domain="[('historical_review_lane', '=', 'confirmed_single')]"/>
+                <group>
+                    <filter name="group_source" string="Source"
+                            context="{'group_by': 'source_id'}"/>
+                    <filter name="group_decision" string="Review decision"
+                            context="{'group_by': 'review_final_decision'}"/>
+                    <filter name="group_usefulness" string="Usefulness"
+                            context="{'group_by': 'review_usefulness'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Confirmed single-project historical review -->
+    <record id="action_dev_whatsapp_historical_review_confirmed" model="ir.actions.act_window">
+        <field name="name">Historical Review (Confirmed)</field>
+        <field name="res_model">dev.whatsapp.analysis</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_whatsapp_analysis_historical_search"/>
+        <field name="domain">[
+            ('is_evaluation_result', '=', True),
+            ('historical_review_lane', '=', 'confirmed_single')
+        ]</field>
+        <field name="context">{
+            'search_default_review_pending': 1,
+            'default_is_evaluation_result': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Confirmed single-project historical quality evaluations.
+            </p>
+            <p>
+                Human review only. No Work Item create/attach and no inbox mutations.
+            </p>
+        </field>
+    </record>
+
+    <!-- Multi-Project Historical Review — Dev Needed -->
+    <record id="action_dev_whatsapp_historical_review_multi" model="ir.actions.act_window">
+        <field name="name">Multi-Project Historical Review</field>
+        <field name="res_model">dev.whatsapp.analysis</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dev_whatsapp_analysis_historical_search"/>
+        <field name="domain">[
+            ('is_evaluation_result', '=', True),
+            ('historical_review_lane', '=', 'multi_project')
+        ]</field>
+        <field name="context">{
+            'search_default_review_pending': 1,
+            'default_is_evaluation_result': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Multi-Project Historical Review (Dev Needed).
+            </p>
+            <p>
+                Mapping stays <b>ambiguous</b>. AI triage stays off.
+                Per-segment project candidates only; human confirmation required for every
+                selected project. No Work Items created or attached; inbox states unchanged.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_historical_review_confirmed_list"
+             model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_dev_whatsapp_analysis_historical_list"/>
+        <field name="act_window_id" ref="action_dev_whatsapp_historical_review_confirmed"/>
+    </record>
+    <record id="action_dev_whatsapp_historical_review_multi_list"
+             model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_dev_whatsapp_analysis_historical_list"/>
+        <field name="act_window_id" ref="action_dev_whatsapp_historical_review_multi"/>
+    </record>
+
+    <!-- Extend analysis form: review header + questionnaire -->
+    <record id="view_dev_whatsapp_analysis_historical_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.historical.form</field>
+        <field name="model">dev.whatsapp.analysis</field>
+        <field name="inherit_id" ref="view_dev_whatsapp_analysis_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_save_historical_review" type="object"
+                        string="Save Historical Review" class="btn-primary"
+                        invisible="not is_evaluation_result"
+                        groups="devhub_core.group_dev_hub_manager"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div class="alert alert-info" role="alert"
+                     invisible="not is_evaluation_result or historical_review_lane != 'multi_project'">
+                    <strong>Multi-Project Historical Review (Dev Needed)</strong>
+                    — mapping stays ambiguous; AI triage off; proposed project needs human
+                    confirmation conceptually; no WI create/attach; no inbox changes.
+                </div>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Historical Review" invisible="not is_evaluation_result"
+                      groups="devhub_core.group_dev_hub_manager">
+                    <group string="WhatsApp Historical Analysis Review">
+                        <group>
+                            <field name="source_id" string="Group"/>
+                            <field name="historical_review_lane"/>
+                            <field name="dev_project_id" string="Mapped project (baseline FK)"/>
+                            <field name="resolved_project_id" string="Proposed project"/>
+                            <field name="review_message_date"/>
+                            <field name="evaluation_sample_id"/>
+                            <field name="proposed_work_item_id" string="Proposed Work Item"/>
+                        </group>
+                        <group>
+                            <field name="requires_project_confirmation"/>
+                            <field name="project_resolution_status"/>
+                            <field name="work_item_decision" string="Existing or new Work Item"/>
+                            <field name="review_completed_by"/>
+                            <field name="review_completed_at"/>
+                        </group>
+                    </group>
+                    <group string="AI result">
+                        <field name="summary"/>
+                        <field name="classification"/>
+                        <field name="recommended_action"/>
+                        <field name="review_project_relevance_display"/>
+                        <field name="work_item_decision"/>
+                        <field name="proposed_work_item_id"/>
+                        <field name="review_technical_evidence_display"/>
+                        <field name="review_likely_affected_display"/>
+                        <field name="review_missing_info_display"/>
+                        <field name="review_acceptance_display"/>
+                    </group>
+                    <group string="Reviewer questionnaire">
+                        <group string="1. Summary">
+                            <field name="review_summary_ok"/>
+                            <field name="review_summary_correction"/>
+                        </group>
+                        <group string="2. Project">
+                            <field name="review_project_ok"/>
+                            <field name="review_correct_project"/>
+                        </group>
+                        <group string="3. Classification">
+                            <field name="review_classification_ok"/>
+                            <field name="review_correct_classification"/>
+                        </group>
+                        <group string="4. Actionability">
+                            <field name="review_actionable"/>
+                            <field name="review_required_action"/>
+                        </group>
+                        <group string="5–6. Work Item">
+                            <field name="review_new_or_existing"/>
+                            <field name="review_correct_work_item"/>
+                            <field name="review_proposed_wi_ok"/>
+                            <field name="review_proposed_wi_notes"/>
+                        </group>
+                        <group string="7–9. Technical / acceptance">
+                            <field name="review_technical_relevance"/>
+                            <field name="review_technical_correction"/>
+                            <field name="review_unsupported_claims"/>
+                            <field name="review_unsupported_claims_detail"/>
+                            <field name="review_acceptance_useful"/>
+                            <field name="review_acceptance_corrected"/>
+                        </group>
+                        <group string="10–12. Decision">
+                            <field name="review_needs_more_info"/>
+                            <field name="review_questions_to_ask"/>
+                            <field name="review_final_decision"/>
+                            <field name="review_usefulness"/>
+                            <field name="review_final_notes"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Media Review" invisible="not is_evaluation_result"
+                      groups="devhub_core.group_dev_hub_manager">
+                    <div class="alert alert-warning" role="alert">
+                        Media enrichment is OCR/transcript-derived and treated as
+                        <b>untrusted content</b>. Reviewing media never mutates
+                        the inbox or Work Items. Open each media record to answer
+                        the media questionnaire and save corrections.
+                    </div>
+                    <field name="media_review_count" invisible="1"/>
+                    <field name="media_review_ids" nolabel="1" readonly="1">
+                        <list>
+                            <field name="whatsapp_message_id"/>
+                            <field name="media_type"/>
+                            <field name="filename"/>
+                            <field name="retrieval_state"/>
+                            <field name="enrichment_state"/>
+                            <field name="enrichment_confidence"/>
+                            <field name="needs_manual_review"/>
+                            <field name="media_final_status"/>
+                            <field name="media_usefulness_score"/>
+                            <field name="media_review_completed_at"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

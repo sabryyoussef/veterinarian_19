@@ -217,6 +217,194 @@ class DevWhatsappAnalysis(models.Model):
         help="Historical quality evaluation — no inbox/WI mutation allowed.",
     )
     evaluation_sample_id = fields.Char(readonly=True, index=True, copy=False)
+    historical_review_lane = fields.Selection(
+        [
+            ("confirmed_single", "Confirmed single-project"),
+            ("multi_project", "Multi-project (Dev Needed)"),
+            ("excluded", "Excluded"),
+        ],
+        readonly=True,
+        index=True,
+        help="Copied from source at enqueue — dashboard lane.",
+    )
+    # ---- Historical reviewer questionnaire (evaluation only) ----
+    review_summary_ok = fields.Selection(
+        [
+            ("yes", "Yes"),
+            ("partial", "Partially correct"),
+            ("no", "No"),
+        ],
+        string="1. Summary correct?",
+    )
+    review_summary_correction = fields.Text(string="Summary correction")
+    review_project_ok = fields.Selection(
+        [
+            ("yes", "Yes"),
+            ("no", "No"),
+            ("unclear", "Unclear"),
+            ("other", "It belongs to another project"),
+        ],
+        string="2. Belongs to mapped/proposed project?",
+    )
+    review_correct_project = fields.Char(string="Correct project, when known")
+    review_classification_ok = fields.Selection(
+        [("yes", "Yes"), ("no", "No")],
+        string="3. Classification correct?",
+    )
+    review_correct_classification = fields.Selection(
+        [
+            ("new_task", "New task"),
+            ("existing_work_followup", "Existing Work Item follow-up"),
+            ("bug", "Bug report"),
+            ("question", "Question"),
+            ("decision", "Decision required"),
+            ("context_update", "Context update"),
+            ("information", "Information"),
+            ("completed", "Completed work"),
+            ("noise", "Noise"),
+            ("unclear", "Unclear"),
+        ],
+        string="Correct classification",
+    )
+    review_actionable = fields.Selection(
+        [
+            ("yes", "Yes"),
+            ("no", "No"),
+            ("needs_context", "More context is required"),
+        ],
+        string="4. Actionable work?",
+    )
+    review_required_action = fields.Text(string="What action is required?")
+    review_new_or_existing = fields.Selection(
+        [
+            ("create_new", "Create a new Work Item"),
+            ("attach_proposed", "Attach to the proposed Work Item"),
+            ("attach_other", "Attach to a different Work Item"),
+            ("no_wi", "No Work Item is needed"),
+            ("unclear", "Unclear"),
+        ],
+        string="5. New or existing work?",
+    )
+    review_correct_work_item = fields.Char(
+        string="Correct existing Work Item, when known"
+    )
+    review_proposed_wi_ok = fields.Selection(
+        [
+            ("yes", "Yes"),
+            ("no", "No"),
+            ("none_proposed", "No Work Item was proposed"),
+            ("need_evidence", "More evidence is needed"),
+        ],
+        string="6. Proposed Work Item correct?",
+    )
+    review_proposed_wi_notes = fields.Text(string="Proposed WI reviewer notes")
+    review_technical_relevance = fields.Selection(
+        [
+            ("full", "Fully relevant"),
+            ("partial", "Partially relevant"),
+            ("generic", "Generic"),
+            ("incorrect", "Incorrect"),
+            ("insufficient", "Insufficient evidence"),
+        ],
+        string="7. Technical analysis relevant?",
+    )
+    review_technical_correction = fields.Text(
+        string="Incorrect or missing technical details"
+    )
+    review_unsupported_claims = fields.Selection(
+        [("no", "No"), ("yes", "Yes"), ("unclear", "Unclear")],
+        string="8. Unsupported claims?",
+    )
+    review_unsupported_claims_detail = fields.Text(string="Unsupported claims detail")
+    review_acceptance_useful = fields.Selection(
+        [
+            ("ready", "Ready to use"),
+            ("minor", "Need minor correction"),
+            ("major", "Need major correction"),
+            ("na", "Not applicable"),
+        ],
+        string="9. Acceptance criteria useful?",
+    )
+    review_acceptance_corrected = fields.Text(string="Corrected acceptance criteria")
+    review_needs_more_info = fields.Selection(
+        [("no", "No"), ("yes", "Yes")],
+        string="10. More information required?",
+    )
+    review_questions_to_ask = fields.Text(string="Questions to ask")
+    review_final_decision = fields.Selection(
+        [
+            ("approve_new", "Approve as New Work"),
+            ("approve_existing", "Approve as Existing Work Follow-up"),
+            ("needs_clarification", "Needs Clarification"),
+            ("question_or_decision", "Question or Decision"),
+            ("information_completed", "Information / Completed"),
+            ("noise", "Noise"),
+            ("wrong_project", "Wrong Project or Group"),
+            ("reject", "Reject Analysis"),
+            ("reanalyse", "Reanalyse"),
+        ],
+        string="11. Final review decision",
+        index=True,
+    )
+    review_usefulness = fields.Selection(
+        [
+            ("1", "1 — Unusable"),
+            ("2", "2 — Mostly incorrect"),
+            ("3", "3 — Partially useful"),
+            ("4", "4 — Useful with minor corrections"),
+            ("5", "5 — Ready for operational review"),
+        ],
+        string="12. Overall usefulness",
+        index=True,
+    )
+    review_final_notes = fields.Text(string="Final reviewer notes")
+    review_completed_by = fields.Many2one("res.users", readonly=True)
+    review_completed_at = fields.Datetime(readonly=True)
+    media_review_ids = fields.Many2many(
+        "dev.whatsapp.media",
+        compute="_compute_media_review_ids",
+        string="Media under review",
+        help="Media assets of this analysis segment (Phase 2 questionnaire).",
+    )
+    media_review_count = fields.Integer(compute="_compute_media_review_ids")
+
+    def _compute_media_review_ids(self):
+        Media = self.env["dev.whatsapp.media"].sudo()
+        for rec in self:
+            msgs = rec.batch_message_ids | rec.context_message_ids
+            medias = (
+                Media.search([("whatsapp_message_id", "in", msgs.ids)])
+                if msgs
+                else Media.browse()
+            )
+            rec.media_review_ids = medias.ids
+            rec.media_review_count = len(medias)
+
+    # Display helpers for the historical review header / AI result block
+    review_message_date = fields.Datetime(
+        string="Message date",
+        compute="_compute_historical_review_display",
+    )
+    review_project_relevance_display = fields.Text(
+        string="Project relevance",
+        compute="_compute_historical_review_display",
+    )
+    review_technical_evidence_display = fields.Text(
+        string="Technical evidence used",
+        compute="_compute_historical_review_display",
+    )
+    review_likely_affected_display = fields.Text(
+        string="Likely affected modules/models",
+        compute="_compute_historical_review_display",
+    )
+    review_acceptance_display = fields.Text(
+        string="Acceptance criteria (AI)",
+        compute="_compute_historical_review_display",
+    )
+    review_missing_info_display = fields.Text(
+        string="Missing information (AI)",
+        compute="_compute_historical_review_display",
+    )
     dify_app_ref = fields.Char(readonly=True)
     dify_workflow_run_id = fields.Char(readonly=True)
     n8n_execution_id = fields.Char(readonly=True)
@@ -231,6 +419,63 @@ class DevWhatsappAnalysis(models.Model):
         "unique(batch_fingerprint)",
         "An analysis with this batch fingerprint already exists.",
     )
+
+    def _compute_historical_review_display(self):
+        for rec in self:
+            msgs = rec.batch_message_ids.sorted(
+                lambda m: (m.message_timestamp or fields.Datetime.now(), m.id)
+            )
+            rec.review_message_date = (
+                msgs[:1].message_timestamp if msgs else False
+            )
+            raw = {}
+            detail = {}
+            try:
+                raw = json.loads(rec.raw_response_json or "{}") or {}
+            except Exception:
+                raw = {}
+            try:
+                detail = json.loads(rec.analysis_detail_json or "{}") or {}
+            except Exception:
+                detail = {}
+            if not isinstance(detail, dict):
+                detail = {}
+            if not detail and isinstance(raw.get("analysis"), dict):
+                detail = raw.get("analysis") or {}
+            rel = raw.get("project_relevance") or {}
+            if isinstance(rel, dict):
+                rec.review_project_relevance_display = safe_json_dumps(rel)
+            else:
+                rec.review_project_relevance_display = str(rel or "")
+            evidence = raw.get("evidence_used") or []
+            rec.review_technical_evidence_display = (
+                safe_json_dumps(evidence) if evidence else ""
+            )
+            affected = {
+                "modules": detail.get("likely_affected_modules") or [],
+                "models": detail.get("likely_affected_models") or [],
+                "views": detail.get("likely_affected_views") or [],
+            }
+            rec.review_likely_affected_display = safe_json_dumps(affected)
+            criteria = detail.get("acceptance_criteria") or []
+            rec.review_acceptance_display = (
+                "\n".join(str(x) for x in criteria)
+                if isinstance(criteria, list)
+                else str(criteria or "")
+            )
+            missing = []
+            try:
+                missing = json.loads(rec.missing_information_json or "[]") or []
+            except Exception:
+                missing = []
+            mu = raw.get("message_understanding") or {}
+            if isinstance(mu, dict) and mu.get("missing_information"):
+                missing = mu.get("missing_information") or missing
+            rec.review_missing_info_display = (
+                "\n".join(str(x) for x in missing)
+                if isinstance(missing, list)
+                else str(missing or "")
+            )
 
     @api.model
     def _build_batch(self, source, force=False, date_from=None, date_to=None):
@@ -425,6 +670,9 @@ class DevWhatsappAnalysis(models.Model):
         if not source:
             raise UserError("WhatsApp source not found.")
         source.check_access("read")
+        block = source._historical_review_block_reason()
+        if block:
+            raise UserError(block)
         Msg = self.env["whatsapp.message"]
         messages = Msg.browse([int(i) for i in (message_ids or [])]).exists()
         if not messages:
@@ -485,6 +733,8 @@ class DevWhatsappAnalysis(models.Model):
                 "is_demo_result": False,
                 "is_evaluation_result": True,
                 "evaluation_sample_id": sample_id[:64],
+                "historical_review_lane": source.historical_review_lane
+                or "excluded",
                 "contains_multiple_tasks": False,
                 "segment_index": 0,
                 "segment_total": 1,
@@ -509,39 +759,67 @@ class DevWhatsappAnalysis(models.Model):
 
     def _job_payload(self):
         self.ensure_one()
+        Media = self.env["dev.whatsapp.media"].sudo()
         msgs = []
+        media_counts = {"succeeded": 0, "partial": 0, "failed": 0, "pending": 0}
+        total_media = 0
         for msg in self.batch_message_ids.sorted(
             lambda m: (m.message_timestamp or fields.Datetime.now(), m.id)
         ):
-            msgs.append(
-                {
-                    "id": msg.id,
-                    "timestamp": fields.Datetime.to_string(msg.message_timestamp)
-                    if msg.message_timestamp
-                    else None,
-                    "sender_jid": msg.sender_jid or "",
-                    "body": (msg.body or "")[:2000],
-                    "media_kind": msg.media_kind or "none",
-                    "inbox_state": msg.inbox_state,
-                    "context_only": False,
-                    "linked_work_item_ids": msg.work_item_ids.ids[:5],
-                }
+            entry = {
+                "id": msg.id,
+                "timestamp": fields.Datetime.to_string(msg.message_timestamp)
+                if msg.message_timestamp
+                else None,
+                "sender_jid": msg.sender_jid or "",
+                "body": (msg.body or "")[:2000],
+                "media_kind": msg.media_kind or "none",
+                "inbox_state": msg.inbox_state,
+                "context_only": False,
+                "linked_work_item_ids": msg.work_item_ids.ids[:5],
+            }
+            media_info = Media.message_media_payload(msg)
+            entry.update(media_info)
+            status = media_info.get("media_status")
+            if status and status != "none":
+                total_media += 1
+                if status == "succeeded":
+                    media_counts["succeeded"] += 1
+                elif status == "partial":
+                    media_counts["partial"] += 1
+                elif status == "pending":
+                    media_counts["pending"] += 1
+                else:
+                    media_counts["failed"] += 1
+            msgs.append(entry)
+        text_bodies = [
+            m["body"].strip()
+            for m in msgs
+            if m["body"].strip()
+            and not (
+                m["body"].strip().startswith("[")
+                and m["body"].strip().endswith("]")
             )
+        ]
+        media_only_segment = total_media > 0 and not text_bodies
+        analysis_incomplete = bool(
+            media_counts["failed"] or media_counts["pending"] or media_counts["partial"]
+        )
         for msg in self.context_message_ids:
-            msgs.append(
-                {
-                    "id": msg.id,
-                    "timestamp": fields.Datetime.to_string(msg.message_timestamp)
-                    if msg.message_timestamp
-                    else None,
-                    "sender_jid": msg.sender_jid or "",
-                    "body": (msg.body or "")[:2000],
-                    "media_kind": msg.media_kind or "none",
-                    "inbox_state": msg.inbox_state,
-                    "context_only": True,
-                    "linked_work_item_ids": msg.work_item_ids.ids[:5],
-                }
-            )
+            entry = {
+                "id": msg.id,
+                "timestamp": fields.Datetime.to_string(msg.message_timestamp)
+                if msg.message_timestamp
+                else None,
+                "sender_jid": msg.sender_jid or "",
+                "body": (msg.body or "")[:2000],
+                "media_kind": msg.media_kind or "none",
+                "inbox_state": msg.inbox_state,
+                "context_only": True,
+                "linked_work_item_ids": msg.work_item_ids.ids[:5],
+            }
+            entry.update(Media.message_media_payload(msg))
+            msgs.append(entry)
         Candidates = self.env["dev.whatsapp.analysis.candidates"]
         Context = self.env["dev.whatsapp.analysis.context"]
         project_pack = Candidates.build_project_candidates(
@@ -557,6 +835,7 @@ class DevWhatsappAnalysis(models.Model):
             if top["deterministic_score"] >= 0.7:
                 project = self.env["dev.project"].browse(top["project_id"])
         wi_pack = Candidates.build_work_item_candidates(project, self.batch_message_ids)
+        actionability = Candidates._segment_actionability(self.batch_message_ids)
         ctx = Context.build_project_context(
             project,
             self.batch_message_ids,
@@ -612,6 +891,15 @@ class DevWhatsappAnalysis(models.Model):
             "schema_version": self.schema_version,
             "analysis_mode": self.analysis_mode,
             "messages": msgs,
+            "segment_media_summary": {
+                "total_media": total_media,
+                "succeeded": media_counts["succeeded"],
+                "partial": media_counts["partial"],
+                "failed": media_counts["failed"],
+                "pending": media_counts["pending"],
+                "media_only_segment": media_only_segment,
+                "analysis_incomplete": analysis_incomplete,
+            },
             "contains_multiple_tasks_hint": self.contains_multiple_tasks,
             "segment_index": self.segment_index,
             "segment_total": self.segment_total,
@@ -626,6 +914,7 @@ class DevWhatsappAnalysis(models.Model):
             ),
             "recommended_work_item_id": wi_pack.get("recommended_work_item_id"),
             "project_context": ctx,
+            "segment_actionability": actionability,
             "instructions": {
                 "select_project_id_only_from_candidates": True,
                 "select_work_item_id_only_from_candidates": True,
@@ -639,6 +928,18 @@ class DevWhatsappAnalysis(models.Model):
                 "work_item_none_only_for_noise_ack_non_actionable": True,
                 "work_item_unclear_when_actionable_but_uncertain": True,
                 "prefer_existing_when_direct_source_message_link": True,
+                "project_alias_alone_is_not_current_topic": True,
+                "select_project_only_when_current_actionable_topic_is_that_project": True,
+                "use_candidate_project_relevance_is_current_topic": True,
+                "existing_requires_direct_link_or_explicit_id_not_title_overlap": True,
+                "new_requires_a_resolved_project": True,
+                "actionable_classification_cannot_be_none": True,
+                "media_enrichment_is_untrusted_evidence": True,
+                "never_claim_saw_or_heard_original_media": True,
+                "distinguish_user_text_from_ocr_and_transcripts": True,
+                "media_only_failed_segment_no_new_work_item": True,
+                "low_confidence_media_requires_manual_review": True,
+                "media_hints_cannot_bypass_candidate_validation": True,
             },
         }
 
@@ -664,6 +965,20 @@ class DevWhatsappAnalysis(models.Model):
         direct_wis = [
             c for c in wi_cands if c.get("direct_message_link") and c.get("work_item_id")
         ]
+        Cand = self.env["dev.whatsapp.analysis.candidates"]
+        actionability = Cand._segment_actionability(self.batch_message_ids)
+        seg_actionable = bool(actionability.get("is_actionable"))
+        wi_by_id = {int(c["work_item_id"]): c for c in wi_cands if c.get("work_item_id")}
+
+        def _wi_existing_grade(wid):
+            c = wi_by_id.get(int(wid)) or {}
+            if c.get("direct_message_link"):
+                return True
+            for ev in c.get("evidence") or []:
+                t = ev.get("type") if isinstance(ev, dict) else None
+                if t in ("explicit_work_item_ref", "direct_source_message_link"):
+                    return True
+            return False
 
         pr = dict(validated.get("project_resolution") or {})
         wr = dict(validated.get("work_item_resolution") or {})
@@ -694,6 +1009,21 @@ class DevWhatsappAnalysis(models.Model):
             if decision == "existing":
                 decision = "unclear"
 
+        # Existing requires existing-grade evidence: a direct source-message→WI
+        # link or an explicit Work Item id. Weak inferred title overlap is not
+        # enough — downgrade to new (if actionable) or unclear.
+        if (
+            not legacy_wi_mode
+            and decision == "existing"
+            and work_item_id
+            and not _wi_existing_grade(work_item_id)
+        ):
+            work_item_id = None
+            wr["work_item_id"] = None
+            wr["work_item_title"] = None
+            decision = "new" if seg_actionable else "unclear"
+            wr["decision"] = decision
+
         # Fill proposed project when Dify withheld it — but not for pure noise/none
         classification = validated.get("classification_v2") or validated.get(
             "classification"
@@ -703,12 +1033,17 @@ class DevWhatsappAnalysis(models.Model):
             "unrelated",
             "information",
         ) or validated.get("should_ignore")
+        if seg_actionable and noise_like and not direct_wis:
+            validated["should_ignore"] = False
+            validated["classification_v2"] = "unclear"
+            validated["classification"] = "information"
+            classification = "unclear"
+            noise_like = False
         if (
             project_id is None
             and eligible
             and proposed_id
             and proposed_id in cand_projects
-            and not (noise_like and decision == "none" and not direct_wis)
         ):
             project_id = proposed_id
             pr["project_id"] = proposed_id
@@ -724,24 +1059,59 @@ class DevWhatsappAnalysis(models.Model):
                 }
             )
             pr["evidence"] = evidence
-        elif noise_like and decision == "none" and not direct_wis:
-            # Do not commit incidental alias hits on noise segments
+            # A unique strong Odoo candidate means the segment is about that
+            # project. Dify calling it noise/none is inconsistent — surface as
+            # reviewable work rather than ignore.
+            if noise_like and decision == "none" and not direct_wis:
+                noise_like = False
+                validated["should_ignore"] = False
+                validated["classification_v2"] = "unclear"
+                validated["classification"] = "information"
+                classification = "unclear"
+                decision = "new"
+                wr["decision"] = "new"
+        elif (
+            eligible
+            and project_id
+            and noise_like
+            and decision == "none"
+            and not direct_wis
+        ):
+            # Dify already picked the eligible project but still marked noise/none.
+            noise_like = False
+            validated["should_ignore"] = False
+            validated["classification_v2"] = "unclear"
+            validated["classification"] = "information"
+            classification = "unclear"
+            decision = "new"
+            wr["decision"] = "new"
+        elif (
+            noise_like
+            and decision == "none"
+            and not direct_wis
+            and not eligible
+        ):
+            # Do not commit incidental alias hits on genuine noise segments
             project_id = None
             pr["project_id"] = None
             pr["resolution_status"] = "unresolved"
 
-        # Safety: on ambiguous sources without eligibility, drop weak Dify picks
-        if project_id is not None and ambiguous and not eligible:
-            top = cand_list[0] if cand_list else {}
-            if int(project_id) != int(top.get("project_id") or 0) or not top.get(
-                "has_strong_evidence"
-            ):
-                if not (
-                    top.get("has_strong_evidence")
-                    and int(project_id) == int(top.get("project_id") or 0)
-                ):
-                    project_id = None
-                    pr["project_id"] = None
+        # Safety: on ambiguous sources, Odoo eligibility is authoritative.
+        # Dify may not arbitrate candidates that Odoo rejected as too close,
+        # incidental, historical, media-weak, or not the current topic.
+        if project_id is not None and ambiguous and not eligible and not direct_wis:
+            project_id = None
+            pr["project_id"] = None
+            pr["resolution_status"] = "unresolved"
+            gate_reason = policy.get("selection_reason")
+            evidence = list(pr.get("evidence") or [])
+            evidence.append(
+                {
+                    "type": "odoo_selection_policy",
+                    "value": gate_reason or "candidate_not_eligible",
+                }
+            )
+            pr["evidence"] = evidence
 
         requires_confirmation = bool(
             ambiguous
@@ -754,7 +1124,20 @@ class DevWhatsappAnalysis(models.Model):
             pr["resolution_status"] = pr.get("resolution_status") or "proposed"
 
         if direct_wis:
-            top_wi = direct_wis[0]
+            # Honour Dify's Work Item pick when it is one of the directly
+            # linked candidates; otherwise fall back to the first direct link.
+            top_wi = None
+            if work_item_id:
+                top_wi = next(
+                    (
+                        c
+                        for c in direct_wis
+                        if int(c["work_item_id"]) == int(work_item_id)
+                    ),
+                    None,
+                )
+            if not top_wi:
+                top_wi = direct_wis[0]
             wi_id = int(top_wi["work_item_id"])
             wi_project = top_wi.get("project_id")
             # Direct message→WI link is authoritative for project on ambiguous sources
@@ -792,6 +1175,11 @@ class DevWhatsappAnalysis(models.Model):
                 )
                 wr["evidence"] = evidence
 
+        existing_grade_cands = [
+            c
+            for c in wi_cands
+            if c.get("work_item_id") and _wi_existing_grade(c["work_item_id"])
+        ]
         if (
             not legacy_wi_mode
             and decision == "none"
@@ -799,8 +1187,38 @@ class DevWhatsappAnalysis(models.Model):
             and not noise_like
             and not direct_wis
         ):
-            decision = "new" if not cand_wis else "unclear"
+            # Weak inferred title overlaps must not block a reviewable `new`.
+            decision = "unclear" if existing_grade_cands else "new"
             wr["decision"] = decision
+
+        if (
+            not legacy_wi_mode
+            and decision == "unclear"
+            and project_id
+            and seg_actionable
+            and not direct_wis
+            and not existing_grade_cands
+        ):
+            decision = "new"
+            wr["decision"] = "new"
+
+        # Conservative default: prefer unclear over none for non-noise segments
+        # that still have substantive prose (meeting notes, open questions, etc.).
+        if (
+            not legacy_wi_mode
+            and decision == "none"
+            and not noise_like
+            and not project_id
+            and not direct_wis
+            and not validated.get("should_ignore")
+        ):
+            prose_tokens = sum(
+                Cand._prose_token_count(Cand._clean_user_text(m.body or ""))
+                for m in self.batch_message_ids[:20]
+            )
+            if prose_tokens >= 8:
+                decision = "unclear"
+                wr["decision"] = "unclear"
 
         if decision == "existing" and work_item_id:
             wi = self.env["dev.work.item"].sudo().browse(work_item_id)
@@ -814,6 +1232,34 @@ class DevWhatsappAnalysis(models.Model):
                 work_item_id = None
                 wr["decision"] = "unclear"
                 wr["work_item_id"] = None
+
+        # Conservative default for possible work is 'unclear', not 'none'.
+        # An actionable segment marked 'none' by Dify should still surface for
+        # human review unless it is genuine noise / acknowledgement. An
+        # actionable classification (bug / new_task / followup) is inconsistent
+        # with a 'none' decision.
+        classification_v2 = validated.get("classification_v2")
+        actionable_class = classification_v2 in (
+            "bug",
+            "new_task",
+            "existing_work_followup",
+        )
+        if (
+            not legacy_wi_mode
+            and decision == "none"
+            and not noise_like
+            and (seg_actionable or actionable_class)
+            and not validated.get("should_ignore")
+            and not direct_wis
+        ):
+            decision = "unclear"
+            wr["decision"] = "unclear"
+
+        # 'new' work cannot be committed without a resolved project — downgrade
+        # to 'unclear' so a reviewer picks the project first.
+        if not legacy_wi_mode and decision == "new" and not project_id:
+            decision = "unclear"
+            wr["decision"] = "unclear"
 
         contains_work = decision in ("new", "existing")
         if legacy_wi_mode and validated.get("contains_work") and not validated.get(
@@ -1296,6 +1742,33 @@ class DevWhatsappAnalysis(models.Model):
             "views": [(False, "form")],
             "target": "current",
         }
+
+    def action_save_historical_review(self):
+        """Persist reviewer questionnaire answers without mutating inbox/WIs."""
+        self.ensure_one()
+        _require_manager(self.env)
+        if not self.is_evaluation_result:
+            raise UserError(
+                "Historical reviewer questionnaire is only for evaluation analyses."
+            )
+        if not self.review_final_decision or not self.review_usefulness:
+            raise UserError(
+                "Set Final review decision (Q11) and Overall usefulness (Q12) before saving."
+            )
+        self.write(
+            {
+                "review_completed_by": self.env.user.id,
+                "review_completed_at": fields.Datetime.now(),
+            }
+        )
+        self.message_post(
+            body=(
+                "Historical review saved — decision=%s usefulness=%s "
+                "(no inbox / Work Item mutations)."
+                % (self.review_final_decision, self.review_usefulness)
+            )
+        )
+        return True
 
     def action_reject_analysis(self):
         self.ensure_one()

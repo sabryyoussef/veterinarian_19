@@ -3,3 +3,6 @@ from . import test_work_inbox
 from . import test_whatsapp_ai_analysis
 from . import test_whatsapp_project_aware_ai
 from . import test_whatsapp_resolution_policy
+from . import test_whatsapp_historical_review
+from . import test_whatsapp_media_phase1
+from . import test_whatsapp_media_phase2

@@ -251,6 +251,8 @@
                     <field name="cooldown_minutes"/>
                     <field name="analysis_prompt_version"/>
                     <field name="analysis_mode"/>
+                    <field name="historical_review_enabled"/>
+                    <field name="historical_review_lane"/>
                     <button name="action_enqueue_ai_analysis" type="object"
                             string="Analyse now" class="btn-primary"
                             invisible="not ai_triage_enabled"/>

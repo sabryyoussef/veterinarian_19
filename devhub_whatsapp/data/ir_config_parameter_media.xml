@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="icp_media_max_image" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_max_bytes_image</field>
+        <field name="value">15728640</field>
+    </record>
+    <record id="icp_media_max_audio" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_max_bytes_audio</field>
+        <field name="value">26214400</field>
+    </record>
+    <record id="icp_media_max_video" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_max_bytes_video</field>
+        <field name="value">104857600</field>
+    </record>
+    <record id="icp_media_max_document" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_max_bytes_document</field>
+        <field name="value">26214400</field>
+    </record>
+    <record id="icp_media_enrichment_enabled" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_enrichment_enabled</field>
+        <field name="value">False</field>
+    </record>
+    <record id="icp_media_audio_max_seconds" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_audio_max_seconds</field>
+        <field name="value">600</field>
+    </record>
+    <record id="icp_media_video_max_seconds" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_video_max_seconds</field>
+        <field name="value">180</field>
+    </record>
+    <record id="icp_media_video_max_keyframes" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_video_max_keyframes</field>
+        <field name="value">10</field>
+    </record>
+    <record id="icp_media_softwait_image_audio_sec" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_softwait_image_audio_sec</field>
+        <field name="value">300</field>
+    </record>
+    <record id="icp_media_softwait_video_sec" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_softwait_video_sec</field>
+        <field name="value">900</field>
+    </record>
+</odoo>

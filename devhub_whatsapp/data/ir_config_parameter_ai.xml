@@ -16,4 +16,12 @@
         <field name="key">devhub_whatsapp.candidate_score_margin</field>
         <field name="value">0.20</field>
     </record>
+    <record id="icp_project_relevance_min_confidence" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.project_relevance_min_confidence</field>
+        <field name="value">0.50</field>
+    </record>
+    <record id="icp_media_dominant_ratio" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.media_dominant_ratio</field>
+        <field name="value">0.40</field>
+    </record>
 </odoo>

@@ -4,12 +4,15 @@ from __future__ import annotations
 
 from datetime import timedelta
 import json
+import logging
 import uuid
 
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
 
-from .dev_whatsapp_analysis_utils import validate_ai_response
+from .dev_whatsapp_analysis_utils import safe_json_dumps, validate_ai_response
+
+_logger = logging.getLogger(__name__)
 
 
 def _uuid(*_a):
@@ -164,6 +167,26 @@ class DevWhatsappAnalysisJob(models.Model):
         )
         leased = []
         for record in candidates:
+            # Phase 2I — soft-wait for media enrichment before Dify analysis.
+            gate = record._media_softwait_gate(now)
+            if gate == "wait":
+                record.with_context(dev_wa_analysis_action=True).write(
+                    {"next_attempt_at": now + timedelta(seconds=60)}
+                )
+                continue
+            if gate == "refresh":
+                try:
+                    record.with_context(dev_wa_analysis_action=True).write(
+                        {
+                            "payload_json": safe_json_dumps(
+                                record.analysis_id._job_payload()
+                            )
+                        }
+                    )
+                except Exception:
+                    _logger.exception(
+                        "Media payload refresh failed for analysis job %s", record.id
+                    )
             token = _uuid()
             record.with_context(dev_wa_analysis_action=True).write(
                 {
@@ -193,6 +216,51 @@ class DevWhatsappAnalysisJob(models.Model):
                 }
             )
         return {"jobs": leased}
+
+    def _media_softwait_gate(self, now):
+        """Soft-wait for media enrichment (Phase 2I).
+
+        Returns:
+          - "wait": downloaded media enrichment still running and within the
+            configured soft-wait window — postpone leasing.
+          - "refresh": media exists and is terminal (or window elapsed) —
+            rebuild payload_json so enrichment is included.
+          - "proceed": no media involved.
+        """
+        self.ensure_one()
+        analysis = self.analysis_id
+        msgs = analysis.batch_message_ids
+        if not msgs:
+            return "proceed"
+        Media = self.env["dev.whatsapp.media"].sudo()
+        medias = Media.search([("whatsapp_message_id", "in", msgs.ids)])
+        if not medias:
+            return "proceed"
+        Job = self.env["dev.whatsapp.media.job"].sudo()
+        pending = medias.browse()
+        for media in medias:
+            if media.retrieval_state != "downloaded":
+                continue
+            if media.enrichment_state in ("pending", "processing"):
+                Job._enqueue_enrichment(media)
+                if media.enrichment_state in ("pending", "processing"):
+                    pending |= media
+        if not pending:
+            return "refresh"
+        get_param = self.env["ir.config_parameter"].sudo().get_param
+        has_video = any(m.media_type == "video" for m in pending)
+        window = int(
+            get_param(
+                "devhub_whatsapp.media_softwait_video_sec"
+                if has_video
+                else "devhub_whatsapp.media_softwait_image_audio_sec",
+                "900" if has_video else "300",
+            )
+        )
+        age = (now - (self.requested_at or now)).total_seconds()
+        if age < window:
+            return "wait"
+        return "refresh"
 
     def _service_record(self, job_id, correlation_id, lease_token):
         record = self.browse(int(job_id)).exists()

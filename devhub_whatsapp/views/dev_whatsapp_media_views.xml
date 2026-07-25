@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_whatsapp_media_list" model="ir.ui.view">
+        <field name="name">dev.whatsapp.media.list</field>
+        <field name="model">dev.whatsapp.media</field>
+        <field name="arch" type="xml">
+            <list string="WhatsApp Media">
+                <field name="whatsapp_message_id"/>
+                <field name="media_type"/>
+                <field name="filename"/>
+                <field name="mime_type"/>
+                <field name="file_size"/>
+                <field name="retrieval_state"/>
+                <field name="enrichment_state"/>
+                <field name="source_provider"/>
+                <field name="retrieved_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_whatsapp_media_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.media.form</field>
+        <field name="model">dev.whatsapp.media</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Media">
+                <header>
+                    <button name="action_queue_download" type="object" string="Queue Media Download"
+                            class="btn-primary"
+                            invisible="retrieval_state == 'downloaded'"/>
+                    <button name="action_retry_download" type="object" string="Retry Download"
+                            invisible="retrieval_state == 'downloaded'"/>
+                    <button name="action_open_attachment" type="object" string="Open Attachment"
+                            invisible="not attachment_id"/>
+                    <button name="action_queue_enrichment" type="object" string="Queue Enrichment"
+                            invisible="retrieval_state != 'downloaded'"/>
+                    <field name="retrieval_state" widget="statusbar"
+                            statusbar_visible="pending,downloading,downloaded,expired,unavailable,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Source">
+                            <field name="whatsapp_message_id"/>
+                            <field name="media_type"/>
+                            <field name="source_provider"/>
+                            <field name="source_instance"/>
+                            <field name="source_media_id"/>
+                            <field name="checksum"/>
+                            <field name="is_historical_review"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="File">
+                            <field name="filename"/>
+                            <field name="mime_type"/>
+                            <field name="file_size"/>
+                            <field name="duration_seconds"/>
+                            <field name="attachment_id"/>
+                            <field name="thumbnail_attachment_id"/>
+                            <field name="retrieved_at"/>
+                            <field name="retrieval_attempts"/>
+                            <field name="retrieval_error_code"/>
+                            <field name="retrieval_error_message"/>
+                        </group>
+                    </group>
+                    <group string="Enrichment">
+                        <group>
+                            <field name="enrichment_state"/>
+                            <field name="enrichment_provider"/>
+                            <field name="enrichment_model"/>
+                            <field name="enrichment_prompt_version"/>
+                            <field name="enrichment_confidence"/>
+                            <field name="needs_manual_review"/>
+                        </group>
+                        <group>
+                            <field name="enrichment_started_at"/>
+                            <field name="enrichment_completed_at"/>
+                            <field name="enrichment_attempts"/>
+                            <field name="enrichment_error_code"/>
+                            <field name="enrichment_error_message"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Image OCR" name="image_enrichment"
+                              invisible="media_type != 'image'">
+                            <group>
+                                <field name="image_ocr_language"/>
+                                <field name="image_ocr_confidence"/>
+                                <field name="image_ui_context"/>
+                            </group>
+                            <group string="OCR-derived description (untrusted content)">
+                                <field name="image_description" nolabel="1"/>
+                            </group>
+                            <group string="Extracted text (untrusted content)">
+                                <field name="image_extracted_text" nolabel="1"/>
+                            </group>
+                            <group string="Visible error">
+                                <field name="image_visible_error" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Audio Transcript" name="audio_enrichment"
+                              invisible="media_type != 'audio'">
+                            <group>
+                                <field name="audio_language"/>
+                                <field name="audio_duration_seconds"/>
+                                <field name="audio_confidence"/>
+                            </group>
+                            <group string="Transcript (untrusted content)">
+                                <field name="audio_transcript" nolabel="1"/>
+                            </group>
+                            <group string="Unclear segments">
+                                <field name="audio_unclear_segments_json" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Video Enrichment" name="video_enrichment"
+                              invisible="media_type != 'video'">
+                            <group>
+                                <field name="video_language"/>
+                                <field name="video_duration_seconds"/>
+                                <field name="video_confidence"/>
+                            </group>
+                            <group string="Transcript (untrusted content)">
+                                <field name="video_transcript" nolabel="1"/>
+                            </group>
+                            <group string="Timeline (frame OCR + audio transcript)">
+                                <field name="video_timeline_json" nolabel="1"/>
+                            </group>
+                            <group string="Visible errors">
+                                <field name="video_visible_errors_json" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Media Review" name="media_review">
+                            <group string="Image questions" invisible="media_type != 'image'">
+                                <field name="review_image_description_ok"/>
+                                <field name="review_image_text_ok"/>
+                                <field name="review_image_related"/>
+                                <field name="review_image_error_visible"/>
+                                <field name="review_image_sufficient"/>
+                                <field name="corrected_image_description"/>
+                                <field name="corrected_image_text"/>
+                            </group>
+                            <group string="Audio questions" invisible="media_type != 'audio'">
+                                <field name="review_audio_transcript_ok"/>
+                                <field name="review_audio_unclear_words"/>
+                                <field name="review_audio_summary_ok"/>
+                                <field name="review_audio_needs_listen"/>
+                                <field name="review_audio_terms_ok"/>
+                                <field name="corrected_audio_transcript"/>
+                            </group>
+                            <group string="Video questions" invisible="media_type != 'video'">
+                                <field name="review_video_transcript_ok"/>
+                                <field name="review_video_timeline_ok"/>
+                                <field name="review_video_screen_ok"/>
+                                <field name="review_video_steps_ok"/>
+                                <field name="review_video_multiple_issues"/>
+                                <field name="review_video_missed_moment"/>
+                                <field name="corrected_video_transcript"/>
+                                <field name="corrected_video_timeline_json"/>
+                            </group>
+                            <group string="Common">
+                                <field name="media_usefulness_score"/>
+                                <field name="media_final_status"/>
+                                <field name="media_reprocess_requested"/>
+                                <field name="media_reviewer_notes"/>
+                                <field name="media_review_completed_by"/>
+                                <field name="media_review_completed_at"/>
+                            </group>
+                            <button name="action_save_media_review" type="object"
+                                    string="Save Media Review (non-mutating)"
+                                    class="btn-primary"/>
+                        </page>
+                        <page string="Raw enrichment" name="raw_enrichment"
+                              groups="devhub_core.group_dev_hub_manager">
+                            <field name="raw_enrichment_json" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Source key" name="source_key">
+                            <field name="source_key_json" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_whatsapp_message_form_media" model="ir.ui.view">
+        <field name="name">whatsapp.message.form.media</field>
+        <field name="model">whatsapp.message</field>
+        <field name="inherit_id" ref="whatsapp_hub.view_whatsapp_message_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_queue_media_download" type="object"
+                        string="Queue Media Download" class="btn-secondary"
+                        invisible="media_kind == 'none'"/>
+                <button name="action_retry_media_download" type="object"
+                        string="Retry Download"
+                        invisible="media_kind == 'none'"/>
+            </xpath>
+            <xpath expr="//group[@name='attachments_refs']" position="after">
+                <group string="Media" name="dev_media_section" col="1">
+                    <field name="media_asset_count" invisible="1"/>
+                    <field name="media_asset_ids" nolabel="1">
+                        <list>
+                            <field name="media_type"/>
+                            <field name="filename"/>
+                            <field name="mime_type"/>
+                            <field name="file_size"/>
+                            <field name="retrieval_state"/>
+                            <field name="retrieval_error_code"/>
+                            <field name="checksum"/>
+                            <field name="source_provider"/>
+                            <field name="retrieved_at"/>
+                            <field name="attachment_id" column_invisible="1"/>
+                            <button name="action_open_attachment" type="object"
+                                    string="Open" icon="fa-external-link"
+                                    invisible="not attachment_id"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_media" model="ir.actions.act_window">
+        <field name="name">WhatsApp Media</field>
+        <field name="res_model">dev.whatsapp.media</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_dev_whatsapp_media_job" model="ir.actions.act_window">
+        <field name="name">WhatsApp Media Jobs</field>
+        <field name="res_model">dev.whatsapp.media.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

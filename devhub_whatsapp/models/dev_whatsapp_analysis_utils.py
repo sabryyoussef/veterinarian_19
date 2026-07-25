@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 
 SCHEMA_VERSION = "2"
 SCHEMA_VERSION_V1 = "1"
-DEFAULT_PROMPT_VERSION = "wa_project_aware_v2.1"
+DEFAULT_PROMPT_VERSION = "wa_project_aware_v2.3"
 
 CLASSIFICATIONS_V1 = frozenset(
     {
@@ -89,11 +89,13 @@ COARSE_TO_V2_CLASS = {
 }
 
 
-def normalize_classification_v2(label):
+def normalize_classification_v2(label, wi_decision=None, is_actionable=False):
     """Map coarse/legacy/v1/v2 labels onto CLASSIFICATIONS_V2."""
     if not label:
         return "unclear"
     key = str(label).strip().lower()
+    if key == "none":
+        return "noise" if wi_decision == "none" and not is_actionable else "unclear"
     mapped = COARSE_TO_V2_CLASS.get(key)
     if mapped in CLASSIFICATIONS_V2:
         return mapped
@@ -268,7 +270,24 @@ def _validate_v2(data, batch_ids, project_candidate_ids=None, work_item_candidat
     if not isinstance(mu, dict) or not isinstance(pr, dict) or not isinstance(wr, dict):
         raise ValidationError("v2 sections must be objects.")
 
-    classification = mu.get("classification")
+    decision = wr.get("decision") or "unclear"
+    if decision not in WI_DECISIONS:
+        raise ValidationError("Unsupported work_item decision: %s" % decision)
+
+    actionability = data.get("actionability") or {}
+    raw_classification = mu.get("classification")
+    classification = normalize_classification_v2(
+        raw_classification,
+        wi_decision=decision,
+        is_actionable=bool(actionability.get("is_actionable")),
+    )
+    if (
+        classification == "unclear"
+        and str(raw_classification or "").strip().lower()
+        not in COARSE_TO_V2_CLASS
+        and str(raw_classification or "").strip().lower() not in ("none", "")
+    ):
+        classification = raw_classification
     if classification not in CLASSIFICATIONS_V2:
         raise ValidationError("Unsupported v2 classification: %s" % classification)
     language = mu.get("language") or "mixed"
@@ -283,10 +302,6 @@ def _validate_v2(data, batch_ids, project_candidate_ids=None, work_item_candidat
             summary = "(no actionable content)"
         else:
             raise ValidationError("message_understanding.summary is required.")
-
-    decision = wr.get("decision") or "unclear"
-    if decision not in WI_DECISIONS:
-        raise ValidationError("Unsupported work_item decision: %s" % decision)
 
     project_id = _opt_int(pr.get("project_id"), "project_resolution.project_id")
     work_item_id = _opt_int(wr.get("work_item_id"), "work_item_resolution.work_item_id")

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Products / Brands mode switch + enhanced search chrome -->
+    <template id="petspot_search_chrome" name="PetSpot Search Chrome" inherit_id="website_sale.products" priority="22">
+        <xpath expr="//div[hasclass('o_wsale_products_main_row')]" position="before">
+            <div class="o_petspot_search_chrome container mb-3">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <div class="btn-group" role="group" aria-label="Search mode">
+                        <a t-att-href="'/shop?mode=products' + ('&amp;search=' + search if search else '')"
+                           t-att-class="'btn btn-sm ' + ('btn-primary' if (petspot_mode or 'products') == 'products' else 'btn-outline-primary')">
+                            Products
+                        </a>
+                        <a t-att-href="'/shop?mode=brands'"
+                           t-att-class="'btn btn-sm ' + ('btn-primary' if petspot_mode == 'brands' else 'btn-outline-primary')">
+                            Brands
+                        </a>
+                    </div>
+                    <label for="o_petspot_live_search" class="visually-hidden">Search products</label>
+                    <input id="o_petspot_live_search"
+                           type="search"
+                           class="form-control o_petspot_live_search"
+                           placeholder="Search products, brands, ingredients, species…"
+                           autocomplete="off"
+                           t-att-value="search or ''"
+                           aria-label="Search PetSpot shop"/>
+                </div>
+                <div id="o_petspot_suggest" class="o_petspot_suggest" hidden="hidden" role="listbox" aria-label="Search suggestions"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

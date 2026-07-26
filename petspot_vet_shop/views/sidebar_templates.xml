@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Guided PetSpot sidebar injected into the shop filters column -->
+    <template id="petspot_sidebar" name="PetSpot Guided Sidebar" inherit_id="website_sale.products" priority="30">
+        <xpath expr="//div[contains(@t-attf-class, 'products_attributes_filters')]" position="inside">
+            <nav class="o_petspot_sidebar" aria-label="Shop filters">
+                <button type="button"
+                        class="btn btn-outline-primary d-lg-none w-100 mb-3 o_petspot_filter_toggle"
+                        aria-expanded="false"
+                        aria-controls="o_petspot_filter_drawer">
+                    Filters
+                </button>
+                <div id="o_petspot_filter_drawer" class="o_petspot_filter_drawer">
+                    <div class="o_petspot_sidebar_section">
+                        <h2 class="o_petspot_sidebar_title">Quick Shop</h2>
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="/shop" class="o_petspot_nav_link">All products</a>
+                            </li>
+                            <li>
+                                <a href="/shop?availability=available" class="o_petspot_nav_link">Available now</a>
+                            </li>
+                            <li>
+                                <a href="/shop?include_request=1" class="o_petspot_nav_link">Available on request</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="o_petspot_sidebar_section" t-if="petspot_species">
+                        <h2 class="o_petspot_sidebar_title">Species</h2>
+                        <ul class="list-unstyled mb-0">
+                            <li t-foreach="petspot_species" t-as="sp">
+                                <a t-att-href="'/shop?species=%s' % sp.id"
+                                   t-att-class="'o_petspot_nav_link' + (' is-active' if str(petspot_active_species) == str(sp.id) else '')"
+                                   t-out="sp.name"/>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="o_petspot_sidebar_section" t-if="categories">
+                        <h2 class="o_petspot_sidebar_title">Categories</h2>
+                        <ul class="list-unstyled mb-0">
+                            <t t-foreach="categories" t-as="c">
+                                <li t-if="not c.parent_id">
+                                    <a t-att-href="'/shop/category/%s' % slug(c)"
+                                       class="o_petspot_nav_link"
+                                       t-out="c.name"/>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+
+                    <div class="o_petspot_sidebar_section" t-if="petspot_brands">
+                        <h2 class="o_petspot_sidebar_title">Brands</h2>
+                        <ul class="list-unstyled mb-0 o_petspot_brand_list">
+                            <li t-foreach="petspot_brands" t-as="b">
+                                <a t-att-href="'/shop?brand=%s' % b.id"
+                                   t-att-class="'o_petspot_nav_link' + (' is-active' if str(petspot_active_brand) == str(b.id) else '')"
+                                   t-out="b.name"/>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="o_petspot_sidebar_section">
+                        <h2 class="o_petspot_sidebar_title">Availability</h2>
+                        <ul class="list-unstyled mb-0">
+                            <li><a href="/shop?availability=available" class="o_petspot_nav_link">Available</a></li>
+                            <li><a href="/shop?availability=limited" class="o_petspot_nav_link">Limited</a></li>
+                            <li><a href="/shop?include_request=1" class="o_petspot_nav_link">On request</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </xpath>
+    </template>
+
+    <!-- Hide native attribute accordion; guided nav replaces it -->
+    <template id="petspot_hide_native_attrs" name="Hide native attribute filters" inherit_id="website_sale.products_attributes" priority="40">
+        <xpath expr="//div[@id='wsale_products_attributes_collapse']" position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
+        </xpath>
+    </template>
+</odoo>

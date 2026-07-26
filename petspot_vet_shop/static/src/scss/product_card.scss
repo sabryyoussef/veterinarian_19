@@ -1,0 +1,99 @@
+/* Horizontal product card */
+.o_petspot_card.oe_product_cart {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 0.85rem;
+    border: 1px solid var(--petspot-border);
+    border-radius: 0.75rem;
+    background: #fff;
+}
+.o_petspot_card .oe_product_image {
+    width: 120px;
+    min-width: 120px;
+    height: 120px;
+}
+.o_petspot_card .oe_product_image_img {
+    object-fit: contain;
+}
+.o_petspot_card_body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    width: 100%;
+}
+.o_petspot_card_brand {
+    color: var(--petspot-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.o_petspot_card_chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+.o_petspot_chip {
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+.o_petspot_chip_species { background: #e7f1fb; color: var(--petspot-sky); }
+.o_petspot_chip_ingredient { background: #e8f6f0; color: #1f7a5c; }
+.o_petspot_chip_tag { background: #f1f3f6; color: var(--petspot-muted); }
+.o_petspot_chip_more { background: #eef1f5; color: var(--petspot-ink); }
+
+.o_petspot_variant_selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.o_petspot_pack_btn {
+    border: 1px solid var(--petspot-border);
+    background: #fff;
+    color: var(--petspot-ink);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    min-height: 2rem;
+}
+.o_petspot_pack_btn.is-selected {
+    background: var(--petspot-navy);
+    border-color: var(--petspot-navy);
+    color: #fff;
+}
+.o_petspot_pack_btn.is-blocked {
+    opacity: 0.55;
+    text-decoration: line-through;
+}
+.o_petspot_card_commerce {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1rem;
+    align-items: end;
+}
+.o_petspot_price {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--petspot-navy);
+}
+.o_petspot_avail {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.o_petspot_expiry {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--petspot-muted);
+}
+.o_petspot_cta_block .btn {
+    min-height: 2.4rem;
+    white-space: nowrap;
+}
+
+/* Soften native tile chrome under list layout */
+#products_grid.o_wsale_products_opt_layout_list .o_wsale_products_item_title {
+    font-size: 1rem;
+    font-weight: 700;
+}

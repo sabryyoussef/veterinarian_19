@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- PDP: PetSpot product info (supersedes vetution_import presentation) -->
+    <template id="petspot_product_title_info" name="PetSpot PDP Info" inherit_id="website_sale.product_title" priority="25">
+        <xpath expr="//h1[@t-field='product.name']" position="after">
+            <div t-if="product.vetution_id" class="o_petspot_pdp_info mb-2">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <span t-if="product.vetution_brand_id" class="text-muted">
+                        by
+                        <a t-att-href="'/shop?search=' + (product.vetution_brand_id.name or '')"
+                           class="fw-bold text-decoration-none"
+                           t-out="product.vetution_brand_id.name"/>
+                    </span>
+                    <span t-if="product.vetution_cold_chain" class="badge o_petspot_badge_cold">Cold chain</span>
+                </div>
+                <div t-if="product.vetution_species_ids" class="d-flex flex-wrap gap-1 mb-1">
+                    <span t-foreach="product.vetution_species_ids" t-as="sp" class="badge o_petspot_chip o_petspot_chip_species" t-out="sp.name"/>
+                </div>
+                <div t-if="product.vetution_ingredient_ids" class="d-flex flex-wrap gap-1 mb-1">
+                    <span t-foreach="product.vetution_ingredient_ids[:8]" t-as="ing" class="badge o_petspot_chip o_petspot_chip_ingredient" t-out="ing.name"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- PDP accordion from clinical content blocks -->
+    <template id="petspot_product_accordion" name="PetSpot PDP Accordion" inherit_id="website_sale.product" priority="25">
+        <xpath expr="//div[@id='product_full_description']" position="before">
+            <div t-if="product.vetution_content_ids" class="o_petspot_accordion accordion mb-3" id="o_petspot_pdp_accordion">
+                <t t-foreach="product.vetution_content_ids" t-as="block">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    t-att-data-bs-target="'#o_petspot_block_%s' % block.id"
+                                    t-out="block.label"/>
+                        </h2>
+                        <div t-att-id="'o_petspot_block_%s' % block.id" class="accordion-collapse collapse"
+                             data-bs-parent="#o_petspot_pdp_accordion">
+                            <div class="accordion-body" t-out="block.body_html"/>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='product_full_description']" position="attributes">
+            <attribute name="t-attf-class" add="#{'d-none' if product.vetution_content_ids else ''}" separator=" "/>
+        </xpath>
+    </template>
+
+    <!-- Hide placeholder prices on PDP -->
+    <template id="petspot_product_price_guard" name="PetSpot PDP Price Guard" inherit_id="website_sale.product_price" priority="30">
+        <xpath expr="//div[@name='product_price']" position="attributes">
+            <attribute name="t-att-data-petspot-pending">
+                '1' if (product.vetution_id and not product.vetution_price_activated) else None
+            </attribute>
+        </xpath>
+        <xpath expr="//div[@name='product_price']" position="after">
+            <div t-if="product.vetution_id and not product.vetution_price_activated"
+                 class="o_petspot_price_pending alert alert-light border">
+                Price pending — contact us for availability.
+            </div>
+        </xpath>
+    </template>
+</odoo>

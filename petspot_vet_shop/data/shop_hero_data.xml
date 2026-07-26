@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Editable hero copy via ir.config_parameter so it can be changed without code. -->
+    <record id="petspot_shop_hero_title" model="ir.config_parameter">
+        <field name="key">petspot_vet_shop.hero_title</field>
+        <field name="value">Veterinary supplies you can trust</field>
+    </record>
+    <record id="petspot_shop_hero_subtitle" model="ir.config_parameter">
+        <field name="key">petspot_vet_shop.hero_subtitle</field>
+        <field name="value">Clinical products with supplier-backed availability. Delivery after confirmation.</field>
+    </record>
+</odoo>

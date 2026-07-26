@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Rich horizontal product card using safe serializer payload -->
+    <template id="petspot_products_item" name="PetSpot Product Card" inherit_id="website_sale.products_item" priority="25">
+        <xpath expr="//form[contains(@t-attf-class, 'oe_product_cart')]" position="attributes">
+            <attribute name="t-attf-class" add="o_petspot_card" separator=" "/>
+            <attribute name="t-att-data-template-id">product.id</attribute>
+        </xpath>
+
+        <xpath expr="//div[hasclass('o_wsale_product_information')]" position="inside">
+            <t t-set="payload" t-value="(petspot_payloads or {}).get(product.id)"/>
+            <div t-if="payload" class="o_petspot_card_body"
+                 t-att-data-payload="(petspot_payload_json or {}).get(product.id)"
+                 t-att-data-template-id="product.id">
+
+                <div class="o_petspot_card_meta">
+                    <div class="o_petspot_card_brand" t-if="payload.get('brand')" t-out="payload['brand']"/>
+                    <div class="o_petspot_card_chips" t-if="payload.get('chips')">
+                        <span t-foreach="payload['chips']" t-as="chip"
+                              t-attf-class="o_petspot_chip o_petspot_chip_#{chip['type']}"
+                              t-out="chip['name']"/>
+                        <span t-if="payload.get('chips_overflow')" class="o_petspot_chip o_petspot_chip_more"
+                              t-out="'+%s' % payload['chips_overflow']"/>
+                    </div>
+                    <div class="o_petspot_card_badges">
+                        <span t-if="payload.get('cold_chain')" class="badge o_petspot_badge_cold">Cold chain</span>
+                    </div>
+                </div>
+
+                <div class="o_petspot_variant_selector" role="group" aria-label="Pack size">
+                    <t t-foreach="payload.get('variants') or []" t-as="v">
+                        <button type="button"
+                                t-attf-class="o_petspot_pack_btn#{' is-selected' if v.get('is_default') else ''}#{' is-blocked' if not v.get('add_to_cart_allowed') else ''}"
+                                t-att-data-variant-id="v['id']"
+                                t-att-aria-pressed="'true' if v.get('is_default') else 'false'"
+                                t-out="v.get('pack_size_label')"/>
+                    </t>
+                </div>
+
+                <t t-set="dv_list" t-value="[x for x in (payload.get('variants') or []) if x.get('is_default')]"/>
+                <t t-set="dv" t-value="dv_list[0] if dv_list else ((payload.get('variants') or [None])[0])"/>
+
+                <div class="o_petspot_card_commerce">
+                    <div class="o_petspot_price_block">
+                        <span class="o_petspot_price" data-role="price"
+                              t-out="(dv and dv.get('formatted_price')) or 'Price pending'"/>
+                        <span class="o_petspot_tax small text-muted" t-out="payload.get('tax_label') or ''"/>
+                    </div>
+                    <div class="o_petspot_state_block">
+                        <span class="o_petspot_avail" data-role="availability"
+                              t-out="(dv and dv.get('availability_label')) or 'Contact us'"/>
+                        <span class="o_petspot_expiry" data-role="expiry"
+                              t-out="(dv and dv.get('expiry_display')) or ''"/>
+                        <span t-if="dv and dv.get('near_expiry')" class="badge text-bg-warning o_petspot_near_exp">Near expiry</span>
+                        <span t-if="dv and dv.get('is_express')" class="badge o_petspot_badge_express">Express</span>
+                    </div>
+                    <div class="o_petspot_cta_block" data-role="cta">
+                        <button t-if="dv and dv.get('add_to_cart_allowed')"
+                                type="button"
+                                class="btn btn-primary o_petspot_add_cart"
+                                t-att-data-product-id="dv['id']">
+                            Add to Cart
+                        </button>
+                        <button t-elif="dv and dv.get('notify_me_allowed')"
+                                type="button"
+                                class="btn btn-outline-secondary o_petspot_notify"
+                                t-att-data-product-id="dv['id']"
+                                data-request-type="notify">
+                            Notify Me
+                        </button>
+                        <button t-elif="dv and dv.get('available_on_request')"
+                                type="button"
+                                class="btn btn-outline-secondary o_petspot_request"
+                                t-att-data-product-id="dv['id']"
+                                data-request-type="request">
+                            Available on Request
+                        </button>
+                        <span t-else="" class="text-muted small">Unavailable</span>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,41 @@
+@media (max-width: 1199.98px) {
+    .o_petspot_card.oe_product_cart {
+        flex-wrap: wrap;
+    }
+    .o_petspot_card_commerce {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .o_petspot_card .oe_product_image {
+        width: 96px;
+        min-width: 96px;
+        height: 96px;
+    }
+    .o_petspot_filter_drawer {
+        display: none;
+    }
+    .o_petspot_filter_drawer.is-open {
+        display: block;
+        background: #fff;
+        border: 1px solid var(--petspot-border);
+        border-radius: 0.75rem;
+        padding: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    .o_petspot_variant_selector {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 0.25rem;
+    }
+    .o_petspot_live_search {
+        min-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .o_petspot_filter_drawer {
+        display: block !important;
+    }
+}

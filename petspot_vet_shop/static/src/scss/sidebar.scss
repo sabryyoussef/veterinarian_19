@@ -1,0 +1,36 @@
+.o_petspot_sidebar {
+    padding: 0.25rem 0 1rem;
+}
+.o_petspot_sidebar_title {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--petspot-muted);
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+}
+.o_petspot_sidebar_section {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--petspot-border);
+}
+.o_petspot_nav_link {
+    display: block;
+    padding: 0.35rem 0.15rem;
+    color: var(--petspot-ink);
+    text-decoration: none;
+    border-radius: 0.35rem;
+}
+.o_petspot_nav_link:hover,
+.o_petspot_nav_link:focus {
+    background: var(--petspot-sand);
+    color: var(--petspot-navy);
+}
+.o_petspot_nav_link.is-active {
+    color: var(--petspot-sky);
+    font-weight: 700;
+}
+.o_petspot_brand_list {
+    max-height: 16rem;
+    overflow: auto;
+}

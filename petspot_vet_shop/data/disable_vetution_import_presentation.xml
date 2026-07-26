@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Supersede vetution_import presentation views while petspot_vet_shop is installed.
+         Uninstalling this module reactivates them (noupdate=0 so uninstall removes these overrides). -->
+    <record id="vetution_import.vetution_product_title_info" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="vetution_import.vetution_product_accordion" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="vetution_import.vetution_product_related" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="vetution_import.vetution_products_item_info" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

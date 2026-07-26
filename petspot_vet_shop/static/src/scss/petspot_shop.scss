@@ -1,0 +1,93 @@
+/* PetSpot shop shell — original PetSpot branding (dark blue, clinical) */
+:root {
+    --petspot-navy: #0b2c4d;
+    --petspot-navy-deep: #071e36;
+    --petspot-sky: #1a6fa8;
+    --petspot-mint: #2a9d8f;
+    --petspot-sand: #f3f6f9;
+    --petspot-ink: #14233a;
+    --petspot-muted: #5b6b7c;
+    --petspot-border: #d7e0ea;
+    --petspot-focus: #0b6bcb;
+}
+
+.o_petspot_hero {
+    background:
+        radial-gradient(1200px 400px at 10% -20%, rgba(26, 111, 168, 0.35), transparent 60%),
+        linear-gradient(135deg, var(--petspot-navy-deep), var(--petspot-navy) 55%, #123a63);
+    color: #f5f8fc;
+}
+.o_petspot_hero_brand {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #9ec9ea;
+}
+.o_petspot_hero_title {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    line-height: 1.2;
+}
+.o_petspot_hero_sub {
+    color: #d5e6f5;
+    max-width: 40rem;
+}
+
+.o_petspot_search_chrome {
+    position: relative;
+}
+.o_petspot_live_search {
+    width: 100%;
+    max-width: 28rem;
+    border-color: var(--petspot-border);
+}
+.o_petspot_suggest {
+    position: absolute;
+    z-index: 20;
+    left: 0.75rem;
+    right: 0.75rem;
+    top: 100%;
+    background: #fff;
+    border: 1px solid var(--petspot-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 24px rgba(11, 44, 77, 0.12);
+    max-height: 20rem;
+    overflow: auto;
+}
+.o_petspot_suggest_item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.6rem 0.85rem;
+    color: var(--petspot-ink);
+    text-decoration: none;
+}
+.o_petspot_suggest_item:hover,
+.o_petspot_suggest_item:focus {
+    background: var(--petspot-sand);
+    outline: none;
+}
+
+.o_petspot_badge_cold {
+    background: #e8f6f4;
+    color: var(--petspot-mint);
+}
+.o_petspot_badge_express {
+    background: #eef5fb;
+    color: var(--petspot-sky);
+}
+
+.o_petspot_cart_warnings {
+    border-left: 4px solid #c47b16;
+}
+
+.product_price[data-petspot-pending="1"] {
+    display: none !important;
+}
+
+:focus-visible {
+    outline: 2px solid var(--petspot-focus);
+    outline-offset: 2px;
+}

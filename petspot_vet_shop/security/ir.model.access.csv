@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_petspot_shop_notify_public,petspot.shop.notify public,model_petspot_shop_notify,base.group_public,1,0,1,0
+access_petspot_shop_notify_portal,petspot.shop.notify portal,model_petspot_shop_notify,base.group_portal,1,0,1,0
+access_petspot_shop_notify_user,petspot.shop.notify user,model_petspot_shop_notify,base.group_user,1,1,1,1
+access_petspot_shop_notify_system,petspot.shop.notify system,model_petspot_shop_notify,base.group_system,1,1,1,1

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Force list layout for rich horizontal cards -->
+    <record id="petspot_products_list_view" model="ir.ui.view">
+        <field name="name">PetSpot products list layout</field>
+        <field name="inherit_id" ref="website_sale.products_list_view"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Hero + search chrome on /shop -->
+    <template id="petspot_shop_hero" name="PetSpot Shop Hero" inherit_id="website_sale.products" priority="20">
+        <xpath expr="//div[@id='wrap']" position="before">
+            <section class="o_petspot_hero" aria-label="PetSpot shop introduction">
+                <div class="container py-4 py-md-5">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <p class="o_petspot_hero_brand mb-1">PetSpot</p>
+                            <h1 class="o_petspot_hero_title mb-2"
+                                t-out="request.env['ir.config_parameter'].sudo().get_param('petspot_vet_shop.hero_title', 'Veterinary supplies you can trust')"/>
+                            <p class="o_petspot_hero_sub mb-0"
+                               t-out="request.env['ir.config_parameter'].sudo().get_param('petspot_vet_shop.hero_subtitle', 'Clinical products with supplier-backed availability. Delivery after confirmation.')"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+
+    <!-- Cart commercial warnings -->
+    <template id="petspot_cart_warnings" name="PetSpot Cart Warnings" inherit_id="website_sale.cart" priority="25">
+        <xpath expr="//div[@id='shop_cart']" position="before">
+            <div t-if="petspot_cart_warnings" class="alert alert-warning o_petspot_cart_warnings col-12" role="alert">
+                <strong>Some items need attention</strong>
+                <ul class="mb-0 mt-2">
+                    <li t-foreach="petspot_cart_warnings" t-as="w">
+                        <t t-out="w['product_name']"/> — <t t-out="w['message']"/>
+                    </li>
+                </ul>
+                <p class="mb-0 mt-2 small">Remove or update these items before checkout. Nothing was removed automatically.</p>
+            </div>
+        </xpath>
+    </template>
+</odoo>

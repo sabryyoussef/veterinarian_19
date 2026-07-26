@@ -32,4 +32,18 @@
               action="action_vetution_commercial_sync_wizard"
               sequence="40"
               groups="base.group_system"/>
+
+    <menuitem id="menu_vetution_pricing_activation_wizard"
+              name="Pricing Activation Pilot"
+              parent="menu_vetution_supplier_root"
+              action="action_vetution_pricing_activation_wizard"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_vetution_price_change_log"
+              name="Price Change Logs"
+              parent="menu_vetution_supplier_root"
+              action="action_vetution_price_change_log"
+              sequence="55"
+              groups="base.group_system,purchase.group_purchase_manager"/>
 </odoo>

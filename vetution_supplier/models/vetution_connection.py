@@ -112,13 +112,13 @@ class VetutionConnection(models.Model):
     offer_count = fields.Integer(compute="_compute_offer_count")
     sync_log_count = fields.Integer(compute="_compute_sync_log_count")
 
-    # Pricing engine shell (preview only in Phase 1 — never writes list_price)
-    default_markup_percent = fields.Float(default=0.0)
+    # Pricing engine (Phase 3 activation writes list_price only via controlled pilot)
+    default_markup_percent = fields.Float(default=20.0)
     fixed_markup_amount = fields.Float(default=0.0)
-    min_gross_margin_percent = fields.Float(default=0.0)
-    min_gross_profit_amount = fields.Float(default=0.0)
-    price_rounding = fields.Float(default=1.0)
-    max_auto_price_change_percent = fields.Float(default=20.0)
+    min_gross_margin_percent = fields.Float(default=15.0)
+    min_gross_profit_amount = fields.Float(default=50.0)
+    price_rounding = fields.Float(default=5.0)
+    max_auto_price_change_percent = fields.Float(default=5000.0)
     supplier_cost_review_percent = fields.Float(default=15.0)
 
     _sql_constraints = [
@@ -283,23 +283,61 @@ class VetutionConnection(models.Model):
         return conn
 
     def preview_sale_price(self, effective_cost):
-        """Pricing engine shell — preview only; never writes list_price."""
-        self.ensure_one()
-        cost = float(effective_cost or 0.0)
-        if cost <= 0:
-            return 0.0
-        markup = self.default_markup_percent or 0.0
-        candidate = cost * (1.0 + markup / 100.0) + (self.fixed_markup_amount or 0.0)
-        min_margin = self.min_gross_margin_percent or 0.0
-        min_profit = self.min_gross_profit_amount or 0.0
-        candidate = max(
-            candidate,
-            cost * (1.0 + min_margin / 100.0),
-            cost + min_profit,
-        )
-        rounding = self.price_rounding or 1.0
-        if rounding > 0:
-            import math
+        """Compute candidate selling price from supplier cost (Phase 3 formula).
 
-            candidate = math.ceil(candidate / rounding) * rounding
-        return candidate
+        Does not write list_price by itself — activation methods do that.
+        Formula:
+          markup_price = cost × (1 + markup%/100) + fixed
+          minimum_margin_price = cost / (1 - margin%/100)   # when margin% < 100
+          minimum_profit_price = cost + min_profit
+          candidate = max(...)
+          selling_price = round_up(candidate, rounding)
+        """
+        self.ensure_one()
+        return self.compute_sale_price(effective_cost)["selling_price"]
+
+    def compute_sale_price(self, effective_cost):
+        """Return a breakdown dict for audit / activation."""
+        self.ensure_one()
+        import math
+
+        cost = float(effective_cost or 0.0)
+        result = {
+            "supplier_cost": cost,
+            "markup_price": 0.0,
+            "minimum_margin_price": 0.0,
+            "minimum_profit_price": 0.0,
+            "candidate": 0.0,
+            "selling_price": 0.0,
+            "markup_percent": self.default_markup_percent or 0.0,
+            "min_margin_percent": self.min_gross_margin_percent or 0.0,
+            "min_profit_amount": self.min_gross_profit_amount or 0.0,
+            "rounding": self.price_rounding or 1.0,
+        }
+        if cost <= 0:
+            return result
+        markup = result["markup_percent"]
+        fixed = self.fixed_markup_amount or 0.0
+        markup_price = cost * (1.0 + markup / 100.0) + fixed
+        min_margin = result["min_margin_percent"]
+        if min_margin >= 100:
+            margin_price = cost
+        else:
+            margin_price = cost / (1.0 - min_margin / 100.0)
+        profit_price = cost + (result["min_profit_amount"] or 0.0)
+        candidate = max(markup_price, margin_price, profit_price)
+        rounding = result["rounding"] or 1.0
+        if rounding > 0:
+            selling = math.ceil(candidate / rounding - 1e-9) * rounding
+        else:
+            selling = candidate
+        result.update(
+            {
+                "markup_price": markup_price,
+                "minimum_margin_price": margin_price,
+                "minimum_profit_price": profit_price,
+                "candidate": candidate,
+                "selling_price": selling,
+            }
+        )
+        return result

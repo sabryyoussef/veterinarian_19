@@ -6,3 +6,6 @@ access_vetution_offer_purchase_manager,access.vetution.offer.purchase.manager,mo
 access_vetution_sync_log_system,access.vetution.sync.log.system,model_vetution_sync_log,base.group_system,1,1,1,1
 access_vetution_sync_log_purchase_manager,access.vetution.sync.log.purchase.manager,model_vetution_sync_log,purchase.group_purchase_manager,1,0,0,0
 access_vetution_commercial_sync_wizard_system,access.vetution.commercial.sync.wizard.system,model_vetution_commercial_sync_wizard,base.group_system,1,1,1,1
+access_vetution_price_change_log_system,access.vetution.price.change.log.system,model_vetution_price_change_log,base.group_system,1,1,1,1
+access_vetution_price_change_log_purchase_manager,access.vetution.price.change.log.purchase.manager,model_vetution_price_change_log,purchase.group_purchase_manager,1,0,0,0
+access_vetution_pricing_activation_wizard_system,access.vetution.pricing.activation.wizard.system,model_vetution_pricing_activation_wizard,base.group_system,1,1,1,1

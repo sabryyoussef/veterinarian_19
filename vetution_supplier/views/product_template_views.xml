@@ -12,6 +12,10 @@
                         <field name="vetution_preview_sale_price"/>
                         <field name="vetution_offer_count"/>
                         <field name="vetution_primary_availability"/>
+                        <field name="vetution_price_activated"/>
+                        <field name="vetution_last_activated_cost"/>
+                        <field name="vetution_last_sale_price"/>
+                        <field name="vetution_last_price_activation_at"/>
                     </group>
                 </page>
             </xpath>

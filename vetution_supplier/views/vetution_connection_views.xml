@@ -65,7 +65,7 @@
                             <field name="low_stock_threshold"/>
                         </group>
                     </group>
-                    <group string="Pricing Engine Shell (preview only — Phase 1 does not write list_price)">
+                    <group string="Pricing Engine (Phase 3 — activation writes list_price only via pilot wizard)">
                         <group>
                             <field name="default_markup_percent"/>
                             <field name="fixed_markup_amount"/>

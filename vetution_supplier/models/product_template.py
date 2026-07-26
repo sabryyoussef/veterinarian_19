@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Pricing-engine shell fields on product.template (preview only)."""
+"""Pricing-engine fields on product.template."""
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class ProductTemplate(models.Model):
@@ -9,18 +9,26 @@ class ProductTemplate(models.Model):
 
     vetution_sale_price_locked = fields.Boolean(
         string="Lock Sale Price",
-        help="When set, future pricing engine must not change list_price.",
+        help="When set, pricing activation must not change list_price.",
         copy=False,
     )
     vetution_preview_sale_price = fields.Float(
         string="Vetution Preview Sale Price",
         compute="_compute_vetution_preview_sale_price",
-        help="Computed preview from supplier cost × markup. Phase 1 never writes list_price.",
+        help="Computed preview from supplier cost using connection pricing policy.",
     )
     vetution_offer_count = fields.Integer(compute="_compute_vetution_offer_count")
     vetution_primary_availability = fields.Char(
         compute="_compute_vetution_primary_availability",
     )
+    vetution_price_activated = fields.Boolean(
+        string="Vetution Price Activated",
+        copy=False,
+        help="True after a controlled pricing activation wrote list_price.",
+    )
+    vetution_last_activated_cost = fields.Float(copy=False)
+    vetution_last_sale_price = fields.Float(copy=False)
+    vetution_last_price_activation_at = fields.Datetime(copy=False)
 
     def _compute_vetution_offer_count(self):
         Offer = self.env["vetution.supplier.offer"]
@@ -54,6 +62,7 @@ class ProductTemplate(models.Model):
                     ("product_tmpl_id", "=", tmpl.id),
                     ("offer_type", "=", "vetution"),
                     ("effective_cost", ">", 0),
+                    ("active_for_procurement", "=", True),
                 ],
                 limit=1,
                 order="effective_cost asc",

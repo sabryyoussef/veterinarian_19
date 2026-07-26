@@ -7,11 +7,16 @@
             <list>
                 <field name="name"/>
                 <field name="product_tmpl_id"/>
+                <field name="change_kind"/>
+                <field name="is_multi_variant"/>
+                <field name="is_base_anchor"/>
                 <field name="dry_run"/>
                 <field name="skipped"/>
                 <field name="placeholder_replacement"/>
+                <field name="variant_archived"/>
                 <field name="old_list_price"/>
                 <field name="new_list_price"/>
+                <field name="new_price_extra"/>
                 <field name="supplier_cost"/>
                 <field name="gross_margin_percent"/>
                 <field name="skip_reason"/>
@@ -35,6 +40,17 @@
                         <field name="skipped"/>
                         <field name="skip_reason"/>
                         <field name="placeholder_replacement"/>
+                    </group>
+                    <group string="Multi-variant (Phase 4)">
+                        <field name="change_kind"/>
+                        <field name="is_multi_variant"/>
+                        <field name="is_base_anchor"/>
+                        <field name="ptav_id"/>
+                        <field name="old_price_extra"/>
+                        <field name="new_price_extra"/>
+                        <field name="variant_archived"/>
+                        <field name="variant_active_old"/>
+                        <field name="eligibility_flags"/>
                     </group>
                     <group string="Prices">
                         <field name="old_list_price"/>

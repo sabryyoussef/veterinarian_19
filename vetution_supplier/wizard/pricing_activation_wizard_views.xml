@@ -7,9 +7,11 @@
             <form string="Pricing Activation Pilot">
                 <group>
                     <field name="connection_id"/>
+                    <field name="scope"/>
                     <field name="dry_run"/>
                     <field name="confirm_write"/>
                     <field name="limit"/>
+                    <field name="max_variants" invisible="scope != 'multi'"/>
                     <field name="template_ids" widget="many2many_tags"/>
                 </group>
                 <group>

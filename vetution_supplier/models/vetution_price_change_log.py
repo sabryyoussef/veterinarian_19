@@ -22,6 +22,38 @@ class VetutionPriceChangeLog(models.Model):
     skip_reason = fields.Char()
     old_list_price = fields.Float()
     new_list_price = fields.Float()
+
+    # --- Phase 4: multi-variant pricing audit ---
+    change_kind = fields.Selection(
+        [
+            ("template_single", "Single-variant template base price"),
+            ("template_base", "Multi-variant template base (anchor)"),
+            ("variant_extra", "Variant price_extra"),
+            ("variant_archived", "Ineligible variant archived"),
+        ],
+        default="template_single",
+        index=True,
+    )
+    is_multi_variant = fields.Boolean(index=True)
+    is_base_anchor = fields.Boolean(
+        help="True for the variant chosen as the template base-price anchor.",
+    )
+    ptav_id = fields.Many2one(
+        "product.template.attribute.value",
+        string="Pack Size Attribute Value",
+        ondelete="set null",
+    )
+    old_price_extra = fields.Float()
+    new_price_extra = fields.Float()
+    variant_archived = fields.Boolean(
+        help="True when an ineligible variant was archived to prevent sale.",
+    )
+    variant_active_old = fields.Boolean(
+        help="product.product.active state before this change (for rollback).",
+    )
+    eligibility_flags = fields.Char(
+        help="Non-blocking flags recorded at activation (e.g. expiry_unknown).",
+    )
     supplier_cost = fields.Float()
     markup_price = fields.Float()
     minimum_margin_price = fields.Float()

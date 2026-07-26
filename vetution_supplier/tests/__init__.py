@@ -8,3 +8,4 @@ from . import test_supplierinfo
 from . import test_security
 from . import test_reconciliation
 from . import test_pricing
+from . import test_pricing_multi

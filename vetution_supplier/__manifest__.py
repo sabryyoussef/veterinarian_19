@@ -2,7 +2,7 @@
 {
     "name": "Vetution Supplier",
     "summary": "Authenticated Vetution commercial offers, supplierinfo mirror, and sync (no website/sale dependency)",
-    "version": "19.0.1.2.0",
+    "version": "19.0.1.3.0",
     "category": "Inventory/Purchase",
     "author": "Sabry Youssef",
     "license": "LGPL-3",

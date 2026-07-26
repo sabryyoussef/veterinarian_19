@@ -8,4 +8,5 @@ from . import vetution_price_change_log
 from . import vetution_pricing
 from . import product_supplierinfo
 from . import product_template
+from . import product_product
 from . import res_config_settings

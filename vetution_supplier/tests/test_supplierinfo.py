@@ -20,17 +20,13 @@ class TestSupplierinfo(VetutionSupplierCommon):
         self.assertEqual(len(infos), 1)
         self.assertAlmostEqual(infos.price, 1959)
         self.assertEqual(infos.partner_id, self.partner)
-        # Marketplace must not create supplierinfo
-        vendor_infos = self.env["product.supplierinfo"].search(
-            [("product_code", "=", "75"), ("vetution_origin", "=", "vetution_supplier")]
-        )
-        # vendor_drug_size_id 75 should not be used as product_code for marketplace
-        # Primary uses vetution_size_id 585
+        self.assertEqual(infos.product_code, "900585")
+        # Marketplace vendor_drug_size_id must never become supplierinfo product_code
         self.assertFalse(
             self.env["product.supplierinfo"].search(
                 [
                     ("vetution_origin", "=", "vetution_supplier"),
-                    ("product_code", "=", "75"),
+                    ("product_code", "=", "900075"),
                 ]
             )
         )

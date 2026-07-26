@@ -62,6 +62,19 @@ class ProductSupplierinfo(models.Model):
             and offer.availability_state
             not in ("expired", "price_hidden", "authentication_error")
         )
+        # Quarantined / expiry-blocked offers keep cost metadata off supplierinfo
+        # until cleared (Phase 2 invariant B for blocked cases; OOS still allowed).
+        reason = offer.review_reason or ""
+        if "duplicate_size_id_in_payload" in reason:
+            valid = False
+        min_days = offer.connection_id.minimum_expiry_days or 90
+        if (
+            offer.expiry_is_exact
+            and offer.days_to_expiry is not False
+            and offer.days_to_expiry is not None
+            and offer.days_to_expiry < min_days
+        ):
+            valid = False
 
         if not valid:
             # Deactivate only our rows
@@ -95,12 +108,22 @@ class ProductSupplierinfo(models.Model):
 
         ours = existing.filtered(lambda r: r.vetution_origin == VETUTION_ORIGIN)
         if ours:
-            ours[0].write(vals)
+            row = ours[0]
+            same = (
+                row.partner_id.id == vals["partner_id"]
+                and (row.product_id.id if row.product_id else False) == vals["product_id"]
+                and abs(float(row.price or 0) - float(vals["price"])) < 0.009
+                and (row.product_code or "") == (vals["product_code"] or "")
+                and row.vetution_offer_id.id == vals["vetution_offer_id"]
+                and int(row.delay or 0) == int(vals["delay"] or 0)
+            )
+            if not same:
+                row.write(vals)
+                metrics["supplierinfo_updated"] = 1
             extras = ours[1:]
             if extras:
                 extras.unlink()
                 metrics["supplierinfo_deactivated"] = len(extras)
-            metrics["supplierinfo_updated"] = 1
         else:
             self.create(vals)
             metrics["supplierinfo_created"] = 1

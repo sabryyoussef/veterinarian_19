@@ -6,3 +6,4 @@ from . import test_offer_sync
 from . import test_availability
 from . import test_supplierinfo
 from . import test_security
+from . import test_reconciliation

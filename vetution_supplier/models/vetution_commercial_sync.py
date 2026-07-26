@@ -254,19 +254,23 @@ class VetutionCommercialSync(models.AbstractModel):
 
         # Optional catalog degradation probe
         if sample_drugs is not None:
+            n = len(sample_drugs)
             priced = sum(
                 1
                 for d in sample_drugs
                 if d.get("show_price")
                 or self._drug_has_positive_vetution_price(d)
             )
-            if sample_drugs and priced == 0:
+            # Zero priced on any non-empty sample ⇒ silent degradation.
+            # Also require a credible authenticated signature on larger pages.
+            degraded = (n > 0 and priced == 0) or (n >= 10 and priced / n < 0.2)
+            if degraded:
                 connection.write(
                     {
                         "state": "authentication_error",
                         "last_error": (
-                            "Silent auth degradation detected: catalog rows have "
-                            "show_price=false and zero prices despite HTTP 200."
+                            "Silent auth degradation detected: catalog rows lack "
+                            f"credible authenticated prices (priced={priced}/{n})."
                         ),
                         "last_auth_check_at": fields.Datetime.now(),
                     }
@@ -777,9 +781,17 @@ class VetutionCommercialSync(models.AbstractModel):
     def sync_full_commercial(self, connection, dry_run=False, max_pages=None):
         """Full paginated commercial list sync. Auth assertion mandatory."""
         connection.ensure_one()
-        metrics = {}
+        metrics = {
+            "auth_refreshes": 0,
+            "failed_pages": [],
+            "run_started_at": fields.Datetime.to_string(fields.Datetime.now()),
+        }
         quarantine = []
+        seen_primary_size_ids = set()
+        seen_vendor_dsids = set()
+        run_duplicates = []
         log = self._new_log(connection, "full_commercial", dry_run=dry_run)
+        run_started = fields.Datetime.now()
 
         try:
             token = self.assert_authentication(connection)
@@ -799,14 +811,47 @@ class VetutionCommercialSync(models.AbstractModel):
             items = data.get("data") or []
             meta = data.get("meta") or {}
             last_page = int(meta.get("last_page") or 1)
+            metrics["upstream_last_page"] = last_page
+            metrics["upstream_meta_total"] = meta.get("total")
             if max_pages:
                 last_page = min(last_page, max_pages)
 
             # Degradation guard on first page
             self.assert_authentication(connection, sample_drugs=items)
 
+            def _track_ids(drug):
+                for entry in drug.get("prices") or []:
+                    if not isinstance(entry, dict):
+                        continue
+                    for _sz, blocks in entry.items():
+                        vet = (blocks or {}).get("vetution") or {}
+                        sid = vet.get("drug_size_id")
+                        if sid is not None:
+                            if sid in seen_primary_size_ids:
+                                run_duplicates.append(
+                                    {
+                                        "type": "primary_size_id_across_run",
+                                        "vetution_size_id": sid,
+                                        "slug": drug.get("slug"),
+                                    }
+                                )
+                            seen_primary_size_ids.add(sid)
+                        for vendor in (blocks or {}).get("vendors") or []:
+                            vds = vendor.get("vendor_drug_size_id")
+                            if vds is not None:
+                                if vds in seen_vendor_dsids:
+                                    run_duplicates.append(
+                                        {
+                                            "type": "vendor_drug_size_id_across_run",
+                                            "vendor_drug_size_id": vds,
+                                            "slug": drug.get("slug"),
+                                        }
+                                    )
+                                seen_vendor_dsids.add(vds)
+
             def _handle_page(page_items):
                 for drug in page_items:
+                    _track_ids(drug)
                     if dry_run:
                         self.process_drug(
                             connection, drug, metrics, dry_run=True, quarantine_bucket=quarantine
@@ -830,16 +875,17 @@ class VetutionCommercialSync(models.AbstractModel):
                 )
                 metrics["pages_requested"] = metrics.get("pages_requested", 0) + 1
                 if status == 401:
+                    metrics["auth_refreshes"] = metrics.get("auth_refreshes", 0) + 1
                     token = self.login(connection, force=True)
                     status, payload = self._http(
                         connection, "GET", f"/drugs?page={page}", token=token
                     )
                 if status != 200:
                     metrics["pages_failed"] = metrics.get("pages_failed", 0) + 1
+                    metrics["failed_pages"].append({"page": page, "status": status})
                     continue
                 data = payload.get("data", {})
                 page_items = data.get("data") or []
-                # Quick degradation: if whole page zeroed, abort
                 priced = sum(
                     1
                     for d in page_items
@@ -860,7 +906,7 @@ class VetutionCommercialSync(models.AbstractModel):
                         metrics,
                         state="aborted_auth",
                         error=f"Silent degradation on page {page}",
-                        detail={"quarantine": quarantine},
+                        detail={"quarantine": quarantine, "run_duplicates": run_duplicates},
                     )
                     raise UserError(
                         f"Silent authentication degradation on page {page}. "
@@ -868,15 +914,34 @@ class VetutionCommercialSync(models.AbstractModel):
                     )
                 _handle_page(page_items)
                 metrics["pages_successful"] = metrics.get("pages_successful", 0) + 1
-                # Checkpoint commit
                 if not dry_run:
                     from odoo.tools import config as odoo_config
 
                     if not odoo_config.get("test_enable"):
                         self.env.cr.commit()  # noqa: intentional mid-sync checkpoint
 
+            metrics["seen_primary_size_ids"] = len(seen_primary_size_ids)
+            metrics["seen_vendor_drug_size_ids"] = len(seen_vendor_dsids)
+            metrics["cross_run_duplicate_events"] = len(run_duplicates)
+            metrics["run_started_at"] = fields.Datetime.to_string(run_started)
+            metrics["run_finished_at"] = fields.Datetime.to_string(fields.Datetime.now())
+
             self._finish_log(
-                log, metrics, state="done", detail={"quarantine": quarantine}
+                log,
+                metrics,
+                state="done",
+                detail={
+                    "quarantine": quarantine,
+                    "run_duplicates": run_duplicates[:200],
+                    "failed_pages": metrics.get("failed_pages"),
+                    "auth_refreshes": metrics.get("auth_refreshes", 0),
+                    "seen_primary_size_ids": metrics.get("seen_primary_size_ids"),
+                    "seen_vendor_drug_size_ids": metrics.get("seen_vendor_drug_size_ids"),
+                    "upstream_last_page": metrics.get("upstream_last_page"),
+                    "upstream_meta_total": metrics.get("upstream_meta_total"),
+                    "run_started_at": metrics.get("run_started_at"),
+                    "run_finished_at": metrics.get("run_finished_at"),
+                },
             )
             return log
         except UserError:
@@ -887,9 +952,254 @@ class VetutionCommercialSync(models.AbstractModel):
                 metrics,
                 state="failed",
                 error=_sanitize_for_log(err),
-                detail={"quarantine": quarantine},
+                detail={"quarantine": quarantine, "run_duplicates": run_duplicates[:200]},
             )
             raise
+
+    @api.model
+    def reconcile_commercial(self, connection, since_dt=None, apply_stale=False):
+        """Dry-review reconciliation after a full commercial sync.
+
+        Does not delete records. When apply_stale=True, marks not-seen offers as stale
+        and needs_review without zeroing prices or changing publication.
+        """
+        connection.ensure_one()
+        Offer = self.env["vetution.supplier.offer"]
+        Product = self.env["product.product"]
+        Template = self.env["product.template"]
+        SI = self.env["product.supplierinfo"]
+        since = since_dt or (
+            self.env["vetution.sync.log"]
+            .search(
+                [
+                    ("connection_id", "=", connection.id),
+                    ("sync_type", "=", "full_commercial"),
+                    ("state", "=", "done"),
+                ],
+                order="id desc",
+                limit=1,
+            )
+            .started_at
+        )
+        report = {
+            "since": fields.Datetime.to_string(since) if since else None,
+            "apply_stale": bool(apply_stale),
+        }
+
+        primary = Offer.search(
+            [("connection_id", "=", connection.id), ("offer_type", "=", "vetution")]
+        )
+        vendors = Offer.search(
+            [
+                ("connection_id", "=", connection.id),
+                ("offer_type", "=", "marketplace_vendor"),
+            ]
+        )
+
+        not_seen = primary.filtered(
+            lambda o: not since
+            or not o.last_commercial_sync_at
+            or o.last_commercial_sync_at < since
+        )
+        vendor_not_seen = vendors.filtered(
+            lambda o: not since
+            or not o.last_commercial_sync_at
+            or o.last_commercial_sync_at < since
+        )
+
+        if apply_stale and not_seen:
+            for o in not_seen:
+                reasons = [r for r in (o.review_reason or "").split("|") if r]
+                if "not_seen_in_full_sync" not in reasons:
+                    reasons.append("not_seen_in_full_sync")
+                o.write(
+                    {
+                        "is_stale": True,
+                        "needs_review": True,
+                        "review_reason": "|".join(reasons),
+                        "active_for_procurement": False,
+                    }
+                )
+        if apply_stale and vendor_not_seen:
+            vendor_not_seen.write({"is_stale": True})
+
+        # Mapping audit
+        mapped = primary.filtered("product_id")
+        unmapped = primary - mapped
+        # Duplicate Odoo variant mapping: same product_id on >1 primary offer
+        by_product = {}
+        for o in mapped:
+            by_product.setdefault(o.product_id.id, []).append(o.id)
+        dup_variant_maps = {k: v for k, v in by_product.items() if len(v) > 1}
+
+        # Wrong template: product.tmpl vetution_id != offer.vetution_drug_id
+        wrong_tmpl = []
+        for o in mapped:
+            tmpl_vid = o.product_tmpl_id.vetution_id
+            if tmpl_vid and o.vetution_drug_id and tmpl_vid != o.vetution_drug_id:
+                wrong_tmpl.append(
+                    {
+                        "offer_id": o.id,
+                        "product_id": o.product_id.id,
+                        "tmpl_vetution_id": tmpl_vid,
+                        "offer_drug_id": o.vetution_drug_id,
+                        "slug": o.drug_slug,
+                    }
+                )
+
+        local_size_ids = set(
+            Product.search([("vetution_size_id", "!=", False)]).mapped("vetution_size_id")
+        )
+        upstream_size_ids = set(primary.mapped("vetution_size_id"))
+        orphan_local_variants = sorted(local_size_ids - upstream_size_ids)
+        upstream_without_local = sorted(
+            {
+                o.vetution_size_id
+                for o in unmapped
+                if o.vetution_size_id
+            }
+        )
+
+        local_tmpl_ids = set(
+            Template.search([("vetution_id", "!=", False)]).mapped("vetution_id")
+        )
+        upstream_drug_ids = set(filter(None, primary.mapped("vetution_drug_id")))
+        orphan_templates = sorted(local_tmpl_ids - upstream_drug_ids)
+
+        # Duplicate external IDs among local offers
+        size_counts = {}
+        for o in primary:
+            if o.vetution_size_id:
+                size_counts.setdefault(o.vetution_size_id, []).append(o.id)
+        dup_sizes = {k: v for k, v in size_counts.items() if len(v) > 1}
+
+        vendor_counts = {}
+        for o in vendors:
+            if o.vendor_drug_size_id:
+                vendor_counts.setdefault(o.vendor_drug_size_id, []).append(o.id)
+        dup_vendors = {k: v for k, v in vendor_counts.items() if len(v) > 1}
+
+        vendor_proc_active = vendors.filtered("active_for_procurement")
+        primary_eligible_inactive = primary.filtered(
+            lambda o: (
+                o.product_id
+                and o.effective_cost > 0
+                and o.availability_state in ("available", "limited")
+                and not o.is_expired
+                and not o.needs_review
+                and not o.active_for_procurement
+                and o.show
+                and o.show_price
+            )
+        )
+
+        # Supplierinfo audit
+        si = SI.search([("vetution_origin", "=", "vetution_supplier")])
+        si_by_offer = {}
+        for row in si:
+            if row.vetution_offer_id:
+                si_by_offer.setdefault(row.vetution_offer_id.id, []).append(row.id)
+
+        offers_with_si = primary.filtered(lambda o: o.id in si_by_offer)
+        # Expected SI per Phase 2 invariant (cost+mapping, not hidden/expired/quarantine/min-expiry)
+        def _should_have_si(o):
+            if not o.product_id or o.effective_cost <= 0 or not o.active:
+                return False
+            if o.availability_state in ("expired", "price_hidden", "authentication_error"):
+                return False
+            if "duplicate_size_id_in_payload" in (o.review_reason or ""):
+                return False
+            min_days = connection.minimum_expiry_days or 90
+            if (
+                o.expiry_is_exact
+                and o.days_to_expiry is not False
+                and o.days_to_expiry is not None
+                and o.days_to_expiry < min_days
+            ):
+                return False
+            return True
+
+        expected = primary.filtered(_should_have_si)
+        missing_si = expected - offers_with_si
+        unexpected_si = offers_with_si - expected
+        si_no_offer = si.filtered(lambda r: not r.vetution_offer_id)
+        si_dupes = {k: v for k, v in si_by_offer.items() if len(v) > 1}
+        price_mismatch = []
+        variant_mismatch = []
+        for o in offers_with_si:
+            for sid in si_by_offer.get(o.id, []):
+                row = SI.browse(sid)
+                if abs(float(row.price or 0) - float(o.effective_cost or 0)) > 0.009:
+                    price_mismatch.append(
+                        {"offer_id": o.id, "si_id": row.id, "si_price": row.price, "cost": o.effective_cost}
+                    )
+                if row.product_id and o.product_id and row.product_id != o.product_id:
+                    variant_mismatch.append(
+                        {"offer_id": o.id, "si_id": row.id, "si_product": row.product_id.id, "offer_product": o.product_id.id}
+                    )
+
+        report.update(
+            {
+                "primary_total": len(primary),
+                "vendor_total": len(vendors),
+                "primary_not_seen": len(not_seen),
+                "vendor_not_seen": len(vendor_not_seen),
+                "primary_not_seen_ids": not_seen.ids[:100],
+                "mapped": len(mapped),
+                "unmapped": len(unmapped),
+                "duplicate_variant_mappings": len(dup_variant_maps),
+                "duplicate_variant_mapping_samples": list(dup_variant_maps.items())[:20],
+                "wrong_template_count": len(wrong_tmpl),
+                "wrong_template_samples": wrong_tmpl[:20],
+                "orphan_local_variant_count": len(orphan_local_variants),
+                "orphan_local_variant_size_ids": orphan_local_variants[:50],
+                "upstream_without_local_count": len(upstream_without_local),
+                "upstream_without_local_size_ids": upstream_without_local[:50],
+                "orphan_template_count": len(orphan_templates),
+                "orphan_template_vetution_ids": orphan_templates[:50],
+                "duplicate_primary_size_ids": len(dup_sizes),
+                "duplicate_primary_samples": list(dup_sizes.items())[:20],
+                "duplicate_vendor_ids": len(dup_vendors),
+                "vendor_procurement_active": len(vendor_proc_active),
+                "primary_eligible_but_inactive": len(primary_eligible_inactive),
+                "stale_primary": len(primary.filtered("is_stale")),
+                "needs_review": len(primary.filtered("needs_review")),
+                "supplierinfo": {
+                    "total": len(si),
+                    "offers_with_si": len(offers_with_si),
+                    "expected_si": len(expected),
+                    "missing_si": len(missing_si),
+                    "unexpected_si": len(unexpected_si),
+                    "si_without_offer": len(si_no_offer),
+                    "duplicate_si_offers": len(si_dupes),
+                    "price_mismatch": len(price_mismatch),
+                    "variant_mismatch": len(variant_mismatch),
+                    "missing_si_offer_ids": missing_si.ids[:50],
+                    "unexpected_si_offer_ids": unexpected_si.ids[:50],
+                    "price_mismatch_samples": price_mismatch[:20],
+                },
+            }
+        )
+
+        log = self._new_log(
+            connection,
+            "reconciliation",
+            dry_run=not apply_stale,
+            note="Phase 2 reconciliation",
+        )
+        self._finish_log(
+            log,
+            {
+                "products_processed": report["primary_total"],
+                "offers_unchanged": report["primary_not_seen"],
+                "conflicts": report["duplicate_primary_size_ids"]
+                + report["duplicate_variant_mappings"],
+                "missing_variant_mappings": report["unmapped"],
+            },
+            state="done",
+            detail=report,
+        )
+        return report, log
 
     # Cron stubs (disabled via XML active=False)
     @api.model
@@ -905,23 +1215,38 @@ class VetutionCommercialSync(models.AbstractModel):
         connection = self.env["vetution.connection"].get_default_connection()
         if not connection.commercial_sync_enabled:
             return
-        Offer = self.env["vetution.supplier.offer"]
-        stale_before = fields.Datetime.now() - timedelta(
-            hours=connection.stale_after_hours or 12
-        )
-        stale = Offer.search(
-            [
-                ("connection_id", "=", connection.id),
-                ("last_commercial_sync_at", "<", stale_before),
-                ("is_stale", "=", False),
-            ]
-        )
-        stale.write({"is_stale": True})
+        # Mark stale relative to last successful full sync start (no API calls).
+        self.reconcile_commercial(connection, apply_stale=True)
 
     @api.model
     def cron_retry_failed(self):
         connection = self.env["vetution.connection"].get_default_connection()
         if not connection.commercial_sync_enabled:
             return
-        # Phase 1: no persistent retry queue yet — no-op when disabled.
+        # Retry pages recorded on the latest failed/partial full sync log.
+        log = self.env["vetution.sync.log"].search(
+            [
+                ("connection_id", "=", connection.id),
+                ("sync_type", "=", "full_commercial"),
+                ("failed_pages", "!=", False),
+            ],
+            order="id desc",
+            limit=1,
+        )
+        # Phase 2: failed pages live in detail_json; no separate field.
+        if not log or not log.detail_json:
+            return
+        try:
+            detail = json.loads(log.detail_json)
+        except Exception:  # noqa: BLE001
+            return
+        failed = detail.get("failed_pages") or []
+        if not failed:
+            return
+        # Re-run full sync is safer than partial page repair when pages failed mid-run.
+        _logger.info(
+            "Retry cron found %s failed pages on log %s — invoke manual re-sync",
+            len(failed),
+            log.id,
+        )
         return

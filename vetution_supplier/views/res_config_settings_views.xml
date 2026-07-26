@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lightweight settings hook; primary config lives on vetution.connection -->
+    <record id="view_res_config_settings_vetution_supplier" model="ir.ui.view">
+        <field name="name">res.config.settings.view.vetution.supplier</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Vetution Supplier" name="vetution_supplier" groups="base.group_system">
+                    <block title="Connection">
+                        <setting string="Default Vetution connection">
+                            <field name="vetution_default_connection_id"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

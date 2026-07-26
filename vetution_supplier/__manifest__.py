@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    "name": "Vetution Supplier",
+    "summary": "Authenticated Vetution commercial offers, supplierinfo mirror, and sync (no website/sale dependency)",
+    "version": "19.0.1.0.0",
+    "category": "Inventory/Purchase",
+    "author": "Sabry Youssef",
+    "license": "LGPL-3",
+    "depends": [
+        "vetution_import",
+        "purchase",
+        "product",
+        "stock",
+    ],
+    "data": [
+        "security/vetution_security.xml",
+        "security/ir.model.access.csv",
+        "data/res_partner_data.xml",
+        "data/ir_cron.xml",
+        "views/vetution_connection_views.xml",
+        "views/vetution_supplier_offer_views.xml",
+        "views/vetution_sync_log_views.xml",
+        "views/product_template_views.xml",
+        "views/res_config_settings_views.xml",
+        "wizard/commercial_sync_wizard_views.xml",
+        "views/menus.xml",
+    ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

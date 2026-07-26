@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vetution_connection_list" model="ir.ui.view">
+        <field name="name">vetution.connection.list</field>
+        <field name="model">vetution.connection</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="account_is_accepted"/>
+                <field name="last_successful_login_at"/>
+                <field name="commercial_sync_enabled"/>
+                <field name="offer_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vetution_connection_form" model="ir.ui.view">
+        <field name="name">vetution.connection.form</field>
+        <field name="model">vetution.connection</field>
+        <field name="arch" type="xml">
+            <form string="Vetution Connection">
+                <header>
+                    <button name="action_test_connection" type="object" string="Test Connection" class="btn-primary"/>
+                    <button name="action_login_refresh_token" type="object" string="Login / Refresh Token"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_offers" type="object" class="oe_stat_button" icon="fa-tags">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                        <button name="action_open_sync_logs" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="sync_log_count" widget="statinfo" string="Logs"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                            <field name="base_url"/>
+                            <field name="supplier_partner_id"/>
+                        </group>
+                        <group>
+                            <field name="phone" password="False"/>
+                            <field name="password_source"/>
+                            <field name="password_env_key"/>
+                            <field name="access_token"/>
+                            <field name="token_issued_at"/>
+                            <field name="token_expires_at"/>
+                            <field name="user_id_external"/>
+                            <field name="account_is_accepted"/>
+                        </group>
+                    </group>
+                    <group string="Sync Policy">
+                        <group>
+                            <field name="commercial_sync_enabled"/>
+                            <field name="commercial_sync_interval"/>
+                            <field name="stale_after_hours"/>
+                            <field name="supplier_lead_time_days"/>
+                        </group>
+                        <group>
+                            <field name="minimum_expiry_days"/>
+                            <field name="near_expiry_days"/>
+                            <field name="low_stock_threshold"/>
+                        </group>
+                    </group>
+                    <group string="Pricing Engine Shell (preview only — Phase 1 does not write list_price)">
+                        <group>
+                            <field name="default_markup_percent"/>
+                            <field name="fixed_markup_amount"/>
+                            <field name="min_gross_margin_percent"/>
+                            <field name="min_gross_profit_amount"/>
+                        </group>
+                        <group>
+                            <field name="price_rounding"/>
+                            <field name="max_auto_price_change_percent"/>
+                            <field name="supplier_cost_review_percent"/>
+                        </group>
+                    </group>
+                    <group string="Status">
+                        <field name="last_auth_check_at"/>
+                        <field name="last_successful_login_at"/>
+                        <field name="last_error"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vetution_connection" model="ir.actions.act_window">
+        <field name="name">Vetution Connections</field>
+        <field name="res_model">vetution.connection</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

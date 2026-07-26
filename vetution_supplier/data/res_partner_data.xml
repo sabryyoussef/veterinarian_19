@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="res_partner_vetution" model="res.partner">
+        <field name="name">Vetution</field>
+        <field name="company_type">company</field>
+        <field name="supplier_rank">1</field>
+        <field name="customer_rank">0</field>
+        <field name="comment">Supplier partner for Vetution commercial sync (vetution_supplier). No credentials stored here.</field>
+    </record>
+
+    <record id="vetution_connection_default" model="vetution.connection">
+        <field name="name">Vetution</field>
+        <field name="base_url">https://dashboard.vetution.site/api</field>
+        <field name="phone">01000059085</field>
+        <field name="password_source">env</field>
+        <field name="password_env_key">VETUTION_PASSWORD</field>
+        <field name="supplier_partner_id" ref="res_partner_vetution"/>
+        <field name="minimum_expiry_days">90</field>
+        <field name="near_expiry_days">180</field>
+        <field name="stale_after_hours">12</field>
+        <field name="commercial_sync_enabled" eval="False"/>
+        <field name="state">disconnected</field>
+    </record>
+</odoo>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vetution_supplier_offer_list" model="ir.ui.view">
+        <field name="name">vetution.supplier.offer.list</field>
+        <field name="model">vetution.supplier.offer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="drug_name"/>
+                <field name="size_name"/>
+                <field name="offer_type"/>
+                <field name="vetution_size_id"/>
+                <field name="effective_cost"/>
+                <field name="supplier_qty"/>
+                <field name="supplier_out_of_stock"/>
+                <field name="availability_state"/>
+                <field name="expiry_date"/>
+                <field name="is_expired"/>
+                <field name="is_near_expiry"/>
+                <field name="active_for_procurement"/>
+                <field name="needs_review"/>
+                <field name="product_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vetution_supplier_offer_form" model="ir.ui.view">
+        <field name="name">vetution.supplier.offer.form</field>
+        <field name="model">vetution.supplier.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="connection_id"/>
+                            <field name="offer_type"/>
+                            <field name="drug_name"/>
+                            <field name="drug_slug"/>
+                            <field name="size_name"/>
+                            <field name="product_id"/>
+                            <field name="product_tmpl_id"/>
+                        </group>
+                        <group>
+                            <field name="vetution_drug_id"/>
+                            <field name="vetution_size_id"/>
+                            <field name="vendor_drug_size_id"/>
+                            <field name="external_vendor_id"/>
+                            <field name="external_vendor_name"/>
+                            <field name="active"/>
+                            <field name="active_for_procurement"/>
+                            <field name="needs_review"/>
+                            <field name="review_reason"/>
+                        </group>
+                    </group>
+                    <group string="Price">
+                        <group>
+                            <field name="supplier_price"/>
+                            <field name="supplier_user_price"/>
+                            <field name="effective_cost"/>
+                            <field name="strike_price"/>
+                            <field name="preview_sale_price"/>
+                        </group>
+                        <group>
+                            <field name="is_promo"/>
+                            <field name="promo_discount_raw"/>
+                            <field name="is_express"/>
+                            <field name="show"/>
+                            <field name="show_price"/>
+                        </group>
+                    </group>
+                    <group string="Availability">
+                        <field name="supplier_qty_raw"/>
+                        <field name="supplier_qty"/>
+                        <field name="supplier_out_of_stock"/>
+                        <field name="availability_state"/>
+                    </group>
+                    <group string="Expiry">
+                        <field name="expiry_text"/>
+                        <field name="expiry_date"/>
+                        <field name="expiry_is_exact"/>
+                        <field name="expiry_source"/>
+                        <field name="days_to_expiry"/>
+                        <field name="is_expired"/>
+                        <field name="is_near_expiry"/>
+                    </group>
+                    <group string="Sync">
+                        <field name="last_seen_at"/>
+                        <field name="last_commercial_sync_at"/>
+                        <field name="is_stale"/>
+                        <field name="data_hash"/>
+                    </group>
+                    <group string="Raw (sanitized)">
+                        <field name="raw_json" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vetution_supplier_offer_search" model="ir.ui.view">
+        <field name="name">vetution.supplier.offer.search</field>
+        <field name="model">vetution.supplier.offer</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="drug_name"/>
+                <field name="drug_slug"/>
+                <field name="vetution_size_id"/>
+                <filter name="primary" string="Primary Vetution" domain="[('offer_type', '=', 'vetution')]"/>
+                <filter name="marketplace" string="Marketplace" domain="[('offer_type', '=', 'marketplace_vendor')]"/>
+                <filter name="needs_review" string="Needs Review" domain="[('needs_review', '=', True)]"/>
+                <filter name="procurement" string="Active for Procurement" domain="[('active_for_procurement', '=', True)]"/>
+                <filter name="expired" string="Expired" domain="[('is_expired', '=', True)]"/>
+                <group>
+                    <filter name="group_state" string="Availability" context="{'group_by': 'availability_state'}"/>
+                    <filter name="group_type" string="Offer Type" context="{'group_by': 'offer_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vetution_supplier_offer" model="ir.actions.act_window">
+        <field name="name">Supplier Offers</field>
+        <field name="res_model">vetution.supplier.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

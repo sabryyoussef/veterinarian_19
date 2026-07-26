@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vetution_connection_system,access.vetution.connection.system,model_vetution_connection,base.group_system,1,1,1,1
+access_vetution_offer_system,access.vetution.offer.system,model_vetution_supplier_offer,base.group_system,1,1,1,1
+access_vetution_offer_purchase,access.vetution.offer.purchase,model_vetution_supplier_offer,purchase.group_purchase_user,1,0,0,0
+access_vetution_offer_purchase_manager,access.vetution.offer.purchase.manager,model_vetution_supplier_offer,purchase.group_purchase_manager,1,1,1,0
+access_vetution_sync_log_system,access.vetution.sync.log.system,model_vetution_sync_log,base.group_system,1,1,1,1
+access_vetution_sync_log_purchase_manager,access.vetution.sync.log.purchase.manager,model_vetution_sync_log,purchase.group_purchase_manager,1,0,0,0
+access_vetution_commercial_sync_wizard_system,access.vetution.commercial.sync.wizard.system,model_vetution_commercial_sync_wizard,base.group_system,1,1,1,1

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_vetution_supplier_root"
+              name="Vetution Supplier"
+              parent="purchase.menu_purchase_root"
+              sequence="90"
+              groups="base.group_system,purchase.group_purchase_manager"/>
+
+    <menuitem id="menu_vetution_connection"
+              name="Connections"
+              parent="menu_vetution_supplier_root"
+              action="action_vetution_connection"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_vetution_offers"
+              name="Supplier Offers"
+              parent="menu_vetution_supplier_root"
+              action="action_vetution_supplier_offer"
+              sequence="20"/>
+
+    <menuitem id="menu_vetution_sync_logs"
+              name="Sync Logs"
+              parent="menu_vetution_supplier_root"
+              action="action_vetution_sync_log"
+              sequence="30"
+              groups="base.group_system,purchase.group_purchase_manager"/>
+
+    <menuitem id="menu_vetution_commercial_sync_wizard"
+              name="Run Commercial Sync"
+              parent="menu_vetution_supplier_root"
+              action="action_vetution_commercial_sync_wizard"
+              sequence="40"
+              groups="base.group_system"/>
+</odoo>

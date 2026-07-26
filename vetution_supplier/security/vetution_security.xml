@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_vetution_supplier" model="ir.module.category">
+        <field name="name">Vetution Supplier</field>
+        <field name="sequence">40</field>
+    </record>
+</odoo>

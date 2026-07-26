@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_vetution_supplier" model="ir.ui.view">
+        <field name="name">product.template.form.vetution.supplier</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Vetution Supplier" name="vetution_supplier" groups="purchase.group_purchase_user,base.group_system">
+                    <group>
+                        <field name="vetution_sale_price_locked"/>
+                        <field name="vetution_preview_sale_price"/>
+                        <field name="vetution_offer_count"/>
+                        <field name="vetution_primary_availability"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

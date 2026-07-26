@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vetution_commercial_sync_wizard_form" model="ir.ui.view">
+        <field name="name">vetution.commercial.sync.wizard.form</field>
+        <field name="model">vetution.commercial.sync.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Vetution Commercial Sync">
+                <group>
+                    <field name="connection_id"/>
+                    <field name="dry_run"/>
+                    <field name="confirm_full_sync"/>
+                    <field name="slug_text" placeholder="one-slug-per-line"/>
+                </group>
+                <group>
+                    <field name="result_message" readonly="1"/>
+                    <field name="last_log_id"/>
+                </group>
+                <footer>
+                    <button name="action_test_connection" type="object" string="Test Connection" class="btn-secondary"/>
+                    <button name="action_login_refresh" type="object" string="Login / Refresh Token" class="btn-secondary"/>
+                    <button name="action_sync_pilot" type="object" string="Sync Pilot Sample (24)" class="btn-primary"/>
+                    <button name="action_sync_selected" type="object" string="Sync Selected Slugs"/>
+                    <button name="action_sync_full" type="object" string="Full Commercial Sync" class="btn-danger"
+                            confirm="Full commercial sync will process ~1980 products / ~62 pages. Continue?"/>
+                    <button name="action_open_log" type="object" string="Open Last Log" invisible="not last_log_id"/>
+                    <button string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vetution_commercial_sync_wizard" model="ir.actions.act_window">
+        <field name="name">Commercial Sync</field>
+        <field name="res_model">vetution.commercial.sync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

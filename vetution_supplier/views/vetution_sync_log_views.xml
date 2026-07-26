@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vetution_sync_log_list" model="ir.ui.view">
+        <field name="name">vetution.sync.log.list</field>
+        <field name="model">vetution.sync.log</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="sync_type"/>
+                <field name="state"/>
+                <field name="started_at"/>
+                <field name="duration_seconds"/>
+                <field name="products_processed"/>
+                <field name="offers_created"/>
+                <field name="offers_updated"/>
+                <field name="authentication_failures"/>
+                <field name="dry_run"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vetution_sync_log_form" model="ir.ui.view">
+        <field name="name">vetution.sync.log.form</field>
+        <field name="model">vetution.sync.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="connection_id"/>
+                        <field name="sync_type"/>
+                        <field name="state"/>
+                        <field name="dry_run"/>
+                        <field name="started_at"/>
+                        <field name="ended_at"/>
+                        <field name="duration_seconds"/>
+                    </group>
+                    <group string="Metrics">
+                        <group>
+                            <field name="pages_requested"/>
+                            <field name="pages_successful"/>
+                            <field name="pages_failed"/>
+                            <field name="products_processed"/>
+                            <field name="offers_created"/>
+                            <field name="offers_updated"/>
+                            <field name="offers_unchanged"/>
+                        </group>
+                        <group>
+                            <field name="vendor_offers_created"/>
+                            <field name="vendor_offers_updated"/>
+                            <field name="missing_variant_mappings"/>
+                            <field name="duplicate_ids"/>
+                            <field name="invalid_prices"/>
+                            <field name="invalid_expiry"/>
+                            <field name="conflicts"/>
+                            <field name="authentication_failures"/>
+                            <field name="supplierinfo_created"/>
+                            <field name="supplierinfo_updated"/>
+                            <field name="supplierinfo_deactivated"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="error_summary"/>
+                        <field name="note"/>
+                        <field name="detail_json"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vetution_sync_log" model="ir.actions.act_window">
+        <field name="name">Commercial Sync Logs</field>
+        <field name="res_model">vetution.sync.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

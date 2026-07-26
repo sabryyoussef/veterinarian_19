@@ -70,10 +70,38 @@ class ProductTemplate(models.Model):
         ready = variants.filtered("petspot_shop_pricing_ready")
         return ready[:1] or variants[:1]
 
-    def _get_petspot_shop_payload(self, wishlist_product_ids=None):
+    @api.model
+    def _petspot_bulk_offer_map(self, variant_ids):
+        """One-query map {product_id: primary active vetution offer} for a set of variants.
+
+        Lets controllers prefetch offers for a whole listing page so per-card
+        serialization does not issue a per-variant (N+1) supplier-offer query.
+        """
+        offer_map = {}
+        if not variant_ids:
+            return offer_map
+        # sudo: supplier offers are ACL-restricted to purchase users, but the
+        # payload serializer only ever exposes safe fields (availability,
+        # expiry display). Website visitors need the offer rows to price cards.
+        offers = self.env["vetution.supplier.offer"].sudo().search(
+            [
+                ("product_id", "in", list(variant_ids)),
+                ("offer_type", "=", "vetution"),
+                ("active", "=", True),
+            ],
+            order="id",
+        )
+        for o in offers:
+            offer_map.setdefault(o.product_id.id, o)
+        return offer_map
+
+    def _get_petspot_shop_payload(self, wishlist_product_ids=None, offer_map=None):
         """Canonical safe frontend serializer for listing cards and PDP helpers.
 
         Never includes supplier costs, tokens, credentials, or raw JSON.
+        ``offer_map`` (optional) is a prefetched {product_id: offer} dict; when not
+        supplied it is built once for this template's variants (avoids per-variant
+        offer searches / N+1).
         """
         self.ensure_one()
         wishlist_product_ids = set(wishlist_product_ids or [])
@@ -95,9 +123,12 @@ class ProductTemplate(models.Model):
             chip_labels.append({"type": "tag", "name": tag.name})
         overflow = max(0, len(ingredients) + len(species) + len(tags) - len(chip_labels))
 
+        if offer_map is None:
+            offer_map = self._petspot_bulk_offer_map(variants.ids)
+
         variant_payloads = []
         for v in variants:
-            offer = v._petspot_primary_offer()
+            offer = offer_map.get(v.id) or v._petspot_primary_offer()
             expiry = v._petspot_expiry_display(offer)
             avail = v.petspot_shop_availability or "unknown"
             display_price = v.petspot_shop_display_price if v.petspot_shop_pricing_ready else 0.0

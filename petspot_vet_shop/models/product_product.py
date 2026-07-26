@@ -76,7 +76,9 @@ class ProductProduct(models.Model):
 
     def _petspot_primary_offer(self):
         self.ensure_one()
-        return self.env["vetution.supplier.offer"].search(
+        # sudo: see _petspot_bulk_offer_map — offers are read-restricted but the
+        # shop serializers only expose safe, non-cost fields to the frontend.
+        return self.env["vetution.supplier.offer"].sudo().search(
             [
                 ("product_id", "=", self.id),
                 ("offer_type", "=", "vetution"),
@@ -150,9 +152,13 @@ class ProductProduct(models.Model):
         result["availability"] = avail
         price = float(self.lst_price or 0.0)
         single = len(tmpl.with_context(active_test=False).product_variant_ids) <= 1
+        # Per-variant gating: for multi-variant templates a variant is only
+        # priced when its OWN price was activated. This prevents an ineligible
+        # sibling (price_extra=0) from inheriting and leaking the anchor
+        # list_price. Single-variant templates rely on template activation.
         price_activated = bool(
             tmpl.vetution_price_activated
-            and (single or self.vetution_variant_price_activated or price > PLACEHOLDER_MAX)
+            and (single or self.vetution_variant_price_activated)
         )
         if price <= PLACEHOLDER_MAX or not price_activated:
             result.update(

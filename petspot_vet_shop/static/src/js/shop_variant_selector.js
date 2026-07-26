@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import publicWidget from "@web/legacy/js/public/public_widget";
+import { rpc } from "@web/core/network/rpc";
 
 publicWidget.registry.PetspotVariantSelector = publicWidget.Widget.extend({
     selector: ".o_petspot_card_body",
@@ -17,6 +18,9 @@ publicWidget.registry.PetspotVariantSelector = publicWidget.Widget.extend({
         } catch (_e) {
             this.payload = {};
         }
+        // Deterministic marker for UI tests: the card only reacts to clicks
+        // once this widget is bound (lazy frontend bundle loaded).
+        this.el.classList.add("o_petspot_js_ready");
         return this._super(...arguments);
     },
 
@@ -71,7 +75,7 @@ publicWidget.registry.PetspotVariantSelector = publicWidget.Widget.extend({
             return;
         }
         try {
-            await this.rpc("/shop/cart/add", {
+            await rpc("/shop/cart/add", {
                 product_id: productId,
                 product_template_id: this.payload.id,
                 quantity: 1,
@@ -90,7 +94,7 @@ publicWidget.registry.PetspotVariantSelector = publicWidget.Widget.extend({
         if (!email) {
             return;
         }
-        const result = await this.rpc("/petspot/shop/notify", {
+        const result = await rpc("/petspot/shop/notify", {
             product_id: productId,
             email,
             request_type: requestType,

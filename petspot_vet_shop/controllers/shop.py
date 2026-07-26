@@ -91,32 +91,42 @@ class PetspotWebsiteSale(WebsiteSale):
         return fuzzy_search_term, product_count, search_result
 
     def _get_additional_shop_values(self, values, **kwargs):
-        values = super()._get_additional_shop_values(values, **kwargs)
+        # NB: the base hook returns a dict of *additional* values (merged into
+        # the render context by shop()); the full render values arrive in the
+        # ``values`` parameter. Read products from the parameter, never from
+        # the returned additional dict.
+        vals = super()._get_additional_shop_values(values, **kwargs)
         # Guided sidebar data (safe, no costs)
         Brand = request.env["vetution.brand"].sudo()
         Species = request.env["vetution.species"].sudo()
-        values["petspot_brands"] = Brand.search([], order="name", limit=80)
-        values["petspot_species"] = Species.search([], order="name", limit=40)
-        values["petspot_mode"] = request.params.get("mode") or "products"
-        values["petspot_active_species"] = request.params.get("species")
-        values["petspot_active_brand"] = request.params.get("brand")
-        values["petspot_active_availability"] = request.params.get("availability")
-        values["petspot_include_request"] = request.params.get("include_request") == "1"
+        vals["petspot_brands"] = Brand.search([], order="name", limit=80)
+        vals["petspot_species"] = Species.search([], order="name", limit=40)
+        vals["petspot_mode"] = request.params.get("mode") or "products"
+        vals["petspot_active_species"] = request.params.get("species")
+        vals["petspot_active_brand"] = request.params.get("brand")
+        vals["petspot_active_availability"] = request.params.get("availability")
+        vals["petspot_include_request"] = request.params.get("include_request") == "1"
         products = values.get("products") or request.env["product.template"]
         wishlist_ids = set()
         payloads = {}
         payload_json = {}
         import json as _json
+        # Page-level offer prefetch: one query for every variant on the page so
+        # per-card serialization never issues a per-variant (N+1) offer lookup.
+        all_variant_ids = products.with_context(active_test=False).product_variant_ids.ids
+        offer_map = request.env["product.template"]._petspot_bulk_offer_map(all_variant_ids)
         for tmpl in products:
             try:
-                p = tmpl._get_petspot_shop_payload(wishlist_product_ids=wishlist_ids)
+                p = tmpl._get_petspot_shop_payload(
+                    wishlist_product_ids=wishlist_ids, offer_map=offer_map
+                )
                 payloads[tmpl.id] = p
                 payload_json[tmpl.id] = _json.dumps(p)
             except Exception:  # noqa: BLE001
                 _logger.exception("petspot shop payload failed for template %s", tmpl.id)
-        values["petspot_payloads"] = payloads
-        values["petspot_payload_json"] = payload_json
-        return values
+        vals["petspot_payloads"] = payloads
+        vals["petspot_payload_json"] = payload_json
+        return vals
 
     @http.route()
     def cart(self, **post):

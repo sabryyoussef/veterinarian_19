@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Guided PetSpot sidebar injected into the shop filters column -->
+    <!-- Reusable guided-nav sections (called from desktop sidebar + mobile offcanvas) -->
+    <template id="petspot_sidebar_sections" name="PetSpot Sidebar Sections">
+        <div class="o_petspot_sidebar_section">
+            <h2 class="o_petspot_sidebar_title">Quick Shop</h2>
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <a href="/shop" class="o_petspot_nav_link">All products</a>
+                </li>
+                <li>
+                    <a href="/shop?availability=available" class="o_petspot_nav_link">Available now</a>
+                </li>
+                <li>
+                    <a href="/shop?include_request=1" class="o_petspot_nav_link">Available on request</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="o_petspot_sidebar_section" t-if="petspot_species">
+            <h2 class="o_petspot_sidebar_title">Species</h2>
+            <ul class="list-unstyled mb-0">
+                <li t-foreach="petspot_species" t-as="sp">
+                    <a t-att-href="'/shop?species=%s' % sp.id"
+                       t-att-class="'o_petspot_nav_link' + (' is-active' if str(petspot_active_species) == str(sp.id) else '')"
+                       t-out="sp.name"/>
+                </li>
+            </ul>
+        </div>
+
+        <div class="o_petspot_sidebar_section" t-if="categories">
+            <h2 class="o_petspot_sidebar_title">Categories</h2>
+            <ul class="list-unstyled mb-0">
+                <t t-foreach="categories" t-as="c">
+                    <li t-if="not c.parent_id">
+                        <a t-att-href="'/shop/category/%s' % slug(c)"
+                           class="o_petspot_nav_link"
+                           t-out="c.name"/>
+                    </li>
+                </t>
+            </ul>
+        </div>
+
+        <div class="o_petspot_sidebar_section" t-if="petspot_brands">
+            <h2 class="o_petspot_sidebar_title">Brands</h2>
+            <ul class="list-unstyled mb-0 o_petspot_brand_list">
+                <li t-foreach="petspot_brands" t-as="b">
+                    <a t-att-href="'/shop?brand=%s' % b.id"
+                       t-att-class="'o_petspot_nav_link' + (' is-active' if str(petspot_active_brand) == str(b.id) else '')"
+                       t-out="b.name"/>
+                </li>
+            </ul>
+        </div>
+
+        <div class="o_petspot_sidebar_section">
+            <h2 class="o_petspot_sidebar_title">Availability</h2>
+            <ul class="list-unstyled mb-0">
+                <li><a href="/shop?availability=available" class="o_petspot_nav_link">Available</a></li>
+                <li><a href="/shop?availability=limited" class="o_petspot_nav_link">Limited</a></li>
+                <li><a href="/shop?include_request=1" class="o_petspot_nav_link">On request</a></li>
+            </ul>
+        </div>
+    </template>
+
+    <!-- Guided PetSpot sidebar injected into the shop filters column (desktop) -->
     <template id="petspot_sidebar" name="PetSpot Guided Sidebar" inherit_id="website_sale.products" priority="30">
         <xpath expr="//div[contains(@t-attf-class, 'products_attributes_filters')]" position="inside">
             <nav class="o_petspot_sidebar" aria-label="Shop filters">
@@ -11,65 +73,18 @@
                     Filters
                 </button>
                 <div id="o_petspot_filter_drawer" class="o_petspot_filter_drawer">
-                    <div class="o_petspot_sidebar_section">
-                        <h2 class="o_petspot_sidebar_title">Quick Shop</h2>
-                        <ul class="list-unstyled mb-0">
-                            <li>
-                                <a href="/shop" class="o_petspot_nav_link">All products</a>
-                            </li>
-                            <li>
-                                <a href="/shop?availability=available" class="o_petspot_nav_link">Available now</a>
-                            </li>
-                            <li>
-                                <a href="/shop?include_request=1" class="o_petspot_nav_link">Available on request</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="o_petspot_sidebar_section" t-if="petspot_species">
-                        <h2 class="o_petspot_sidebar_title">Species</h2>
-                        <ul class="list-unstyled mb-0">
-                            <li t-foreach="petspot_species" t-as="sp">
-                                <a t-att-href="'/shop?species=%s' % sp.id"
-                                   t-att-class="'o_petspot_nav_link' + (' is-active' if str(petspot_active_species) == str(sp.id) else '')"
-                                   t-out="sp.name"/>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="o_petspot_sidebar_section" t-if="categories">
-                        <h2 class="o_petspot_sidebar_title">Categories</h2>
-                        <ul class="list-unstyled mb-0">
-                            <t t-foreach="categories" t-as="c">
-                                <li t-if="not c.parent_id">
-                                    <a t-att-href="'/shop/category/%s' % slug(c)"
-                                       class="o_petspot_nav_link"
-                                       t-out="c.name"/>
-                                </li>
-                            </t>
-                        </ul>
-                    </div>
-
-                    <div class="o_petspot_sidebar_section" t-if="petspot_brands">
-                        <h2 class="o_petspot_sidebar_title">Brands</h2>
-                        <ul class="list-unstyled mb-0 o_petspot_brand_list">
-                            <li t-foreach="petspot_brands" t-as="b">
-                                <a t-att-href="'/shop?brand=%s' % b.id"
-                                   t-att-class="'o_petspot_nav_link' + (' is-active' if str(petspot_active_brand) == str(b.id) else '')"
-                                   t-out="b.name"/>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="o_petspot_sidebar_section">
-                        <h2 class="o_petspot_sidebar_title">Availability</h2>
-                        <ul class="list-unstyled mb-0">
-                            <li><a href="/shop?availability=available" class="o_petspot_nav_link">Available</a></li>
-                            <li><a href="/shop?availability=limited" class="o_petspot_nav_link">Limited</a></li>
-                            <li><a href="/shop?include_request=1" class="o_petspot_nav_link">On request</a></li>
-                        </ul>
-                    </div>
+                    <t t-call="petspot_vet_shop.petspot_sidebar_sections"/>
                 </div>
+            </nav>
+        </xpath>
+    </template>
+
+    <!-- Mobile: the sidebar column is d-none below lg, so also expose the guided
+         nav inside website_sale's native filters offcanvas. -->
+    <template id="petspot_offcanvas_sidebar" name="PetSpot Offcanvas Guided Nav" inherit_id="website_sale.o_wsale_offcanvas" priority="30">
+        <xpath expr="//div[@id='o_wsale_offcanvas_content']" position="inside">
+            <nav class="o_petspot_sidebar o_petspot_offcanvas_nav p-3" aria-label="Shop filters">
+                <t t-call="petspot_vet_shop.petspot_sidebar_sections"/>
             </nav>
         </xpath>
     </template>

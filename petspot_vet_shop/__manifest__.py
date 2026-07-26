@@ -2,7 +2,7 @@
 {
     "name": "PetSpot Vet Shop",
     "summary": "PetSpot Vetution-style shop UX — original PetSpot branding, native Odoo pricing/cart",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.0",
     "category": "Website/Website",
     "author": "Sabry Youssef",
     "license": "LGPL-3",
@@ -35,7 +35,6 @@
             "petspot_vet_shop/static/src/js/shop_variant_selector.js",
             "petspot_vet_shop/static/src/js/shop_search.js",
             "petspot_vet_shop/static/src/js/shop_filters.js",
-            "petspot_vet_shop/static/src/js/shop_cart.js",
         ],
     },
     "installable": True,

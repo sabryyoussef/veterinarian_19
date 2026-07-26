@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_execution_workspace_git_form" model="ir.ui.view">
+        <field name="name">dev.execution.workspace.git.form</field>
+        <field name="model">dev.execution.workspace</field>
+        <field name="inherit_id" ref="devhub_execution.view_dev_execution_workspace_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_mark_review_required']" position="after">
+                    <button name="action_review_changes" type="object" string="Review Changes" groups="devhub_core.group_dev_hub_manager" invisible="state not in ('review_required', 'commit_approved')"/>
+                    <button name="action_open_commit_approval" type="object" string="Approve Git Commit" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state != 'review_required'"/>
+                    <button name="action_open_commit_execution" type="object" string="Create Approved Commit" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state != 'commit_approved'"/>
+                    <button name="action_reject_commit_changes" type="object" string="Reject / Return to Implementation" groups="devhub_core.group_dev_hub_manager" invisible="state not in ('review_required', 'commit_approved')" confirm="Invalidate any commit approval and return this workspace to implementation?"/>
+                    <button name="action_review_push_target" type="object" string="Review Push Target" groups="devhub_core.group_dev_hub_manager" invisible="state != 'committed_reviewed'"/>
+                    <button name="action_open_push_approval" type="object" string="Approve Git Push" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state != 'committed_reviewed'"/>
+                    <button name="action_open_push_execution" type="object" string="Push Approved Commit" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state != 'push_approved'"/>
+                    <button name="action_review_failed_push" type="object" string="Review Failed Push State" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state not in ('push_failed_review', 'uncertain_remote_state')"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="page_review_commit" string="Review Changes / Commit">
+                            <group>
+                                <group>
+                                    <field name="work_item_id"/>
+                                    <field name="execution_branch"/>
+                                    <field name="base_head"/>
+                                    <field name="current_head"/>
+                                    <field name="dirty_digest"/>
+                                    <field name="changed_files_digest"/>
+                                    <field name="last_checkpoint_id"/>
+                                </group>
+                                <group>
+                                    <field name="commit_approval_id"/>
+                                    <field name="commit_record_id"/>
+                                    <field name="committed_sha"/>
+                                    <field name="committed_parent_sha"/>
+                                    <field name="committed_at"/>
+                                </group>
+                            </group>
+                            <separator string="Reviewed Files and Status"/>
+                            <field name="changed_files_summary" readonly="1"/>
+                            <field name="git_status_summary" readonly="1"/>
+                            <field name="review_diff_summary" readonly="1"/>
+                            <separator string="Tests and Worker Handoff"/>
+                            <field name="review_tests_summary" readonly="1"/>
+                            <field name="review_handoff" readonly="1"/>
+                        </page>
+                <page name="page_review_push" string="Review Git Push">
+                            <group>
+                                <group>
+                                    <field name="work_item_id"/>
+                                    <field name="execution_branch"/>
+                                    <field name="current_head"/>
+                                    <field name="committed_sha"/>
+                                    <field name="commit_record_id"/>
+                                </group>
+                                <group>
+                                    <field name="push_remote_id"/>
+                                    <field name="push_remote_branch"/>
+                                    <field name="push_remote_head"/>
+                                    <field name="push_ahead_count"/>
+                                    <field name="push_behind_count"/>
+                                    <field name="last_remote_check_at"/>
+                                </group>
+                            </group>
+                            <separator string="Immutable Approval and Verified Result"/>
+                            <group>
+                                <group>
+                                    <field name="push_approval_id"/>
+                                    <field name="push_record_id"/>
+                                </group>
+                                <group>
+                                    <field name="pushed_at"/>
+                                </group>
+                            </group>
+                        </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

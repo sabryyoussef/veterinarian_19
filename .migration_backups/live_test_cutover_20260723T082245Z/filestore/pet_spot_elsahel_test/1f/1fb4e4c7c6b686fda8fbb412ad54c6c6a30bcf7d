@@ -1,0 +1,124 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 5333
+- Customer: Dev Needed
+- Provider: openai / gpt-4o-mini
+- Analyzed at: 2026-07-02 08:19:17 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** high
+**الثقة:** 0.00
+
+**الملخص:**
+RPC_ERROR occurred on model res.partner, indicating a potential issue with field computation.
+
+**الإجراء المطلوب:**
+Investigate the compute method for the fields in res.partner and ensure all dependencies are correctly defined. Retest after applying fixes.
+
+## Original Message
+
+```
+RPC_ERROR
+
+Odoo Server Error
+
+Occured on asasat.odoo.com.se on model res.partner on 2026-07-02 08:19:05 GMT
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 2266, in _serve_db
+    return service_model.retrying(serve_func, env=self.env)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/service/model.py", line 184, in retrying
+    result = func()
+             ^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 2313, in _serve_ir_http
+    response = self.dispatcher.dispatch(rule.endpoint, args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 2528, in dispatch
+    result = self.request.registry['ir.http']._dispatch(endpoint)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_http.py", line 357, in _dispatch
+    result = endpoint(**request.params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 788, in route_wrapper
+    result = endpoint(self, *args, **params_ok)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/controllers/dataset.py", line 32, in call_kw
+    return call_kw(request.env[model], method, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/service/model.py", line 93, in call_kw
+    result = method(recs, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/models/models.py", line 2111, in onchange
+    snapshot1 = RecordSnapshot(record, fields_spec)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/models/models.py", line 2197, in __init__
+    self.fetch(name)
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/models/models.py", line 2212, in fetch
+    self[field_name] = self.record[field_name]
+                       ~~~~~~~~~~~^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/models.py", line 6680, in __getitem__
+    return self._fields[key].__get__(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/fields.py", line 1739, in __get__
+    self.compute_value(recs)
+  File "/usr/lib/python3/dist-packages/odoo/orm/fields.py", line 1910, in compute_value
+    records._compute_field_value(self)
+  File "/usr/lib/python3/dist-packages/odoo/addons/mail/models/mail_thread.py", line 476, in _compute_field_value
+    return super()._compute_field_value(field)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/models.py", line 4949, in _compute_field_value
+    determine(field.compute, self)
+  File "/usr/lib/python3/dist-packages/odoo/orm/fields.py", line 81, in determine
+    return needle(*args)
+           ^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/mail/models/mail_thread_blacklist.py", line 86, in _compute_is_blacklisted
+    blacklist = set(self.env['mail.blacklist'].sudo().search([
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/models.py", line 1378, in search
+    return self.search_fetch(domain, [], offset=offset, limit=limit, order=order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/models.py", line 1418, in search_fetch
+    return self._fetch_query(query, fields_to_fetch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/models.py", line 3932, in _fetch_query
+    fetched = self.browse(query)
+              ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/models.py", line 5884, in browse
+    if not ids:
+           ^^^
+  File "/usr/lib/python3/dist-packages/odoo/tools/query.py", line 263, in __bool__
+    return bool(self.get_result_ids())
+                ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/tools/query.py", line 227, in get_result_ids
+    self._ids = tuple(id_ for id_, in self._env.execute_query(self.select()))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/orm/environments.py", line 534, in execute_query
+    self.cr.execute(query)
+  File "/usr/lib/python3/dist-packages/odoo/sql_db.py", line 426, in execute
+    self._obj.execute(query, params)
+psycopg2.errors.UndefinedFile: could not load library "/usr/lib/postgresql/16/lib/pg_trgm.so": /usr/lib/postgresql/16/lib/pg_trgm.so: undefined symbol: pg_mblen_unbounded
+
+
+The above server error caused the following client error:
+OwlError: The following error occurred in onWillStart: "Odoo Server Error"
+    Error
+        at wrapError (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:892:139)
+        at onWillStart (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:897:117)
+        at useModel (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:6012:104)
+        at FormController.setup (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:9210:99)
+        at FormController.setup (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:17705:717)
+        at new ComponentNode (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:850:202)
+        at https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:1418:6
+        at View.slot1 (eval at compile (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:1375:421), <anonymous>:15:36)
+        at callSlot (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:956:25)
+        at WithSearch.template (eval at compile (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:1375:421), <anonymous>:8:12)
+
+Caused by: RPC_ERROR: Odoo Server Error
+    RPC_ERROR
+        at makeErrorFromResponse (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:3185:163)
+        at XMLHttpRequest.<anonymous> (https://asasat.odoo.com.se/web/assets/ada5559/web.assets_web.min.js:3191:13)
+```

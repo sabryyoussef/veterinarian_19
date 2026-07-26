@@ -1,0 +1,114 @@
+{
+  "marker": "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z",
+  "resumed_from": "approved",
+  "work_item": {
+    "id": 3320
+  },
+  "analysis": {
+    "id": 2691
+  },
+  "plan": {
+    "id": 2475,
+    "status": "approved",
+    "content_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219",
+    "revision": 1
+  },
+  "approval": {
+    "id": 2273,
+    "decision": "approved",
+    "plan_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219",
+    "plan_id": [
+      2475,
+      "dev.work.plan,2475"
+    ],
+    "plan_revision": 1,
+    "exact_plan_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219"
+  },
+  "errors": [],
+  "non_blockers": [
+    "session start: <Fault 2: 'The working directory is outside the machine allowlist.'>",
+    "session: <Fault 1: 'Traceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3848, in _determine_fields_to_fetch\\n    field = self._fields[field_name]\\n            ~~~~~~~~~~~~^^^^^^^^^^^^\\nKeyError: \\'branch\\'\\n\\nThe above exception was the direct cause of the following exception:\\n\\nTraceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rpc/controllers/xmlrpc.py\", line 162, in xmlrpc_2\\n    response = self._xmlrpc(service)\\n               ^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rpc/controllers/xmlrpc.py\", line 134, in _xmlrpc\\n    result = dispatch_rpc(service, method, params)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/http.py\", line 439, in dispatch_rpc\\n    return dispatch(method, params)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 129, in dispatch\\n    res = execute_cr(cr, uid, model, method_, args, kw)\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 146, in execute_cr\\n    result = retrying(partial(call_kw, recs, method, args, kw), env)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 184, in retrying\\n    result = func()\\n             ^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 93, in call_kw\\n    result = method(recs, *args, **kwargs)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3486, in read\\n    self._origin.fetch(fields)\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3789, in fetch\\n    fields_to_fetch = self._determine_fields_to_fetch(field_names, ignore_when_in_cache=True)\\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3850, in _determine_fields_to_fetch\\n    raise ValueError(f\"Invalid field {field_name!r} on {self._name!r}\") from e\\nValueError: Invalid field \\'branch\\' on \\'dev.session\\'\\n'>"
+  ],
+  "screenshots": [
+    {
+      "file": "01_work_created.png",
+      "proves": "Work Item 3320",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3320"
+    },
+    {
+      "file": "02_analysis.png",
+      "proves": "Analysis 2691",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.analysis/2691"
+    },
+    {
+      "file": "03_plan.png",
+      "proves": "Plan 2475",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.plan/2475"
+    },
+    {
+      "file": "04_approval.png",
+      "proves": "Approval 2273 exact-hash",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3320"
+    },
+    {
+      "file": "05_workflow_pre_execution.png",
+      "proves": "Workflow before execution",
+      "url": "http://127.0.0.1:8028/odoo/action-1391/new"
+    },
+    {
+      "file": "06_session_workspace.png",
+      "proves": "Isolated workspace / session linkage",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1847"
+    },
+    {
+      "file": "07_execution.png",
+      "proves": "After worker implementation",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1847"
+    },
+    {
+      "file": "08_checkpoint.png",
+      "proves": "Checkpoint evidence",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.checkpoint/2140"
+    }
+  ],
+  "workspace_proposal": {
+    "id": 1847,
+    "state": "ready",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3320",
+    "base_branch": "staging",
+    "base_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "worker_identity": "devworker"
+  },
+  "workspace_ready": {
+    "id": 1847,
+    "state": "ready",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3320",
+    "base_branch": "staging",
+    "base_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "current_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "dirty_summary": "changed=0"
+  },
+  "implement": {
+    "changed_file": "docs/devhub_modularity/uat/DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z.md",
+    "checkpoint_id": 2140,
+    "current_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "dirty_summary": "changed=1",
+    "effective_uid": 1100,
+    "effective_user": "devworker",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "ok": true,
+    "stage": "implement",
+    "state": "review_required",
+    "workspace_id": 1847,
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3320"
+  },
+  "checkpoint": {
+    "id": 2140,
+    "trigger": "milestone",
+    "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "git_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "files_touched_summary": "docs/devhub_modularity/uat/DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z.md"
+  }
+}

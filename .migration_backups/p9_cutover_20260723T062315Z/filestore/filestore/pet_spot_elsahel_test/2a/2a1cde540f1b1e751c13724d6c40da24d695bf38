@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/64
+- Message ID: 6886
+- Customer: Egyptian pet veterinarians community
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-06 11:35:06 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.10
+
+**الملخص:**
+Message contains veterinary treatment advice unrelated to Odoo.
+
+**الإجراء المطلوب:**
+none
+
+## Original Message
+
+```
+This is a case of vaginal prolapse  due to oestrogen vaginal hyperplasia 
+Treatment : 
+Give long acting progesterone and try push it back under gen. Anesthesia , stitch the two labra using matters stitch 
+Spaying after healing to stop recurrence
+```

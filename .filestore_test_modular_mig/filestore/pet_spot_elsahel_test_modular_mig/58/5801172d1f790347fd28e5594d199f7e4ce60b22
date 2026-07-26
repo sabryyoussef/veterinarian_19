@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 6819
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-06 08:35:40 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+User is unable to locate the inspection with ID 165837629583434 in Odoo.
+
+**الإجراء المطلوب:**
+Investigate the inspection record in the database and verify its existence or check for any filtering issues in the UI.
+
+## Original Message
+
+```
+Can't find the inspection @165837629583434
+```

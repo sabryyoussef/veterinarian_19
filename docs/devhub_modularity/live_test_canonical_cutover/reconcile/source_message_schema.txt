@@ -1,0 +1,22 @@
+id|integer||not null|nextval('dev_work_source_message_id_seq'::regclass)
+extracted_item_index|integer||not null|
+chatwoot_account_id|integer|||
+chatwoot_inbox_id|integer|||
+chatwoot_conversation_id|integer|||
+chatwoot_message_id|integer|||
+create_uid|integer|||
+write_uid|integer|||
+provider|character varying||not null|
+instance_reference|character varying|||
+provider_message_id|character varying|||
+dedupe_key|character varying||not null|
+evolution_message_id|character varying|||
+group_jid|character varying|||
+sender_jid|character varying|||
+text_hash|character varying||not null|
+source_url|character varying|||
+text_snapshot|text||not null|
+attachment_references|text|||
+message_timestamp|timestamp without time zone||not null|
+create_date|timestamp without time zone|||
+write_date|timestamp without time zone|||

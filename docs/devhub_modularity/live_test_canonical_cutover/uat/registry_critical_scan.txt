@@ -1,0 +1,2 @@
+Jul 23 11:29:33 master python3[2837553]: Traceback (most recent call last):
+1 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/live_test_canonical_cutover/uat/registry_critical_scan.txt

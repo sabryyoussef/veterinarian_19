@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_item_generation_form" model="ir.ui.view">
+        <field name="name">dev.work.item.generation.form</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_start_analysis']" position="before">
+                <button name="action_request_analysis_generation" type="object" string="Generate Analysis Draft" class="btn-primary" invisible="lifecycle_phase != 'registered'"/>
+                <button name="action_request_plan_generation" type="object" string="Generate Plan Draft" class="btn-primary" invisible="lifecycle_phase != 'analyzing' or not current_accepted_analysis_id"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Generation">
+                    <field name="generation_request_ids" readonly="1">
+                        <list>
+                            <field name="kind"/>
+                            <field name="state"/>
+                            <field name="requested_at"/>
+                            <field name="correlation_id"/>
+                            <field name="idempotency_key"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_dev_work_analysis_generation_form" model="ir.ui.view">
+        <field name="name">dev.work.analysis.generation.form</field>
+        <field name="model">dev.work.analysis</field>
+        <field name="inherit_id" ref="devhub_analysis.view_dev_work_analysis_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_merge_and_improve_analysis" type="object" string="Merge &amp; Improve Analysis" class="btn-secondary" invisible="status not in ('draft', 'generated', 'reviewed', 'accepted') or not user_analysis_notes" confirm="Queue a semantic merge of this analysis with your 'My Analysis' notes? A new consolidated revision will be produced by the generation worker."/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

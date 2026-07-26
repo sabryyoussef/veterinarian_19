@@ -1,0 +1,1 @@
+{"app_id": 4341059, "credential_type": "github_app_installation", "expires_at": "2026-07-23T13:09:58Z", "installation_id": 147666583, "permissions": {"checks": "read", "contents": "write", "metadata": "read", "pull_requests": "read", "statuses": "read"}, "repositories": ["sabryyoussef/veterinarian_19"]}

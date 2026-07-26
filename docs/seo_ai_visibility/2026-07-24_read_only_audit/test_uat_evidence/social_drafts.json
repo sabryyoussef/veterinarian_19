@@ -1,0 +1,89 @@
+{
+  "note": "Test-only drafts; no Facebook account on Test; not published",
+  "posts": [
+    {
+      "id": 2,
+      "week": 1,
+      "title": "Emergency readiness — North Coast",
+      "scheduled_date_planning_only": "2026-08-03T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 3,
+      "week": 1,
+      "title": "24/7 veterinarian near Amwaj",
+      "scheduled_date_planning_only": "2026-08-05T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 4,
+      "week": 1,
+      "title": "Directions — Amwaj 2",
+      "scheduled_date_planning_only": "2026-08-07T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 5,
+      "week": 2,
+      "title": "Heatstroke signs — Sahel summer",
+      "scheduled_date_planning_only": "2026-08-10T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 6,
+      "week": 2,
+      "title": "Travel safely with pets to North Coast",
+      "scheduled_date_planning_only": "2026-08-12T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 7,
+      "week": 2,
+      "title": "Never leave pets in hot cars",
+      "scheduled_date_planning_only": "2026-08-14T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 8,
+      "week": 3,
+      "title": "Vaccination prep before Coast travel",
+      "scheduled_date_planning_only": "2026-08-17T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 9,
+      "week": 3,
+      "title": "Digestive issues on summer trips",
+      "scheduled_date_planning_only": "2026-08-19T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 10,
+      "week": 3,
+      "title": "Phone hierarchy reminder",
+      "scheduled_date_planning_only": "2026-08-21T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 11,
+      "week": 4,
+      "title": "Clinic visit vs home visit",
+      "scheduled_date_planning_only": "2026-08-24T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 12,
+      "week": 4,
+      "title": "Grooming and parasite prevention",
+      "scheduled_date_planning_only": "2026-08-26T10:00:00+00:00",
+      "state": "draft"
+    },
+    {
+      "id": 13,
+      "week": 4,
+      "title": "Recap — PetSpot El Sahel NAP",
+      "scheduled_date_planning_only": "2026-08-28T10:00:00+00:00",
+      "state": "draft"
+    }
+  ]
+}

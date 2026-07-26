@@ -1,0 +1,6 @@
+=== 8029 cmdline ===
+/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/resume.conf -d resume 
+=== 8041 cmdline ===
+./venv19/bin/python3 ./odoo19/odoo19/odoo-bin -c ./config/projects/pet_spot_elsahel_test_modular_mig.conf -d pet_spot_elsahel_test_modular_mig --http-interface=127.0.0.1 --http-port=8041 
+=== postgres DBs like pet/devhub ===
+psql listing unavailable

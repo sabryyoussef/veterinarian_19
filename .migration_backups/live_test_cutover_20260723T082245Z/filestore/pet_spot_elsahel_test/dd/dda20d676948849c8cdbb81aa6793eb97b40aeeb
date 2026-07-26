@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"/>
+<title>دليل Batch Intake — عربي</title>
+<style>body{font-family:Tahoma,Arial,sans-serif;max-width:900px;margin:2rem auto;padding:0 1rem;line-height:1.7}
+table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:right}
+code{background:#f4f4f4;padding:0 .25rem}h1,h2,h3{border-bottom:1px solid #eee;padding-bottom:.3rem}
+blockquote{border-right:4px solid #c45c26;margin:1rem 0;padding:.75rem 1rem;background:#fff8f0}</style></head><body>
+<h1>دليل المستخدم (عربي) — استيراد المتدربين عبر Batch Intake</h1>
+<p><b>الوحدات:</b> <code>batch_intake</code> + <code>edafaa_batch_intake</code>   <b>القوائم:</b> طلاب (Students) → عام / General → <b>Batch Intakes</b>   <b>المستهدفون:</b> مسؤولو القبول والتسجيل ومديرو النظام   <b>قاعدة التجربة:</b> <code>sabry-test</code></p>
+<p>اللقطات في المجلد <code>screenshots/</code> (يُشار لأسماء الملفات أدناه).</p>
+<hr/>
+<h2>توضيح تشغيلي هام (تحذير)</h2>
+<blockquote><b>الدليل يشرح للمستخدم الإداري كيف يستورد مجموعة متدربين دفعة واحدة داخل Odoo/SIS بدل إنشاء كل متدرب يدوياً.</b></blockquote>
+<h3>الفكرة ببساطة</h3>
+<p>عندك 3 أشياء مختلفة يجب عدم الخلط بينها:</p>
+<p><b>Batch Intake</b>   هو عملية الاستيراد نفسها. ترفع ملف CSV يحتوي على بيانات المتدربين، ثم تعمل Validate وProcess.</p>
+<p><b>Batch / <code>op.batch</code></b>   هي الدفعة الدراسية الفعلية المرتبطة بمقرر، مثل:   <code>Python Course - Batch July 2026</code></p>
+<p><b>Assign to Batch</b>   أداة لربط متدربين موجودين بالفعل في النظام بمقرر ودفعة.</p>
+<h3>سير العمل الكامل</h3>
+<p>المسار الطبيعي هو:</p>
+<p><code>إنشاء Batch Intake</code> → <code>رفع CSV</code> → <code>Validate</code> → <code>اختيار Course</code> → <code>اختيار Schedule Batch</code> → <code>Process</code> → <code>إنشاء/تحديث Students</code></p>
+<p>مثال:</p>
+<p>لديك ملف فيه 100 متدرب يريدون دراسة دورة <b>Odoo Development</b>.</p>
+<p>تدخل:</p>
+<p><b>SIS → Students → General → Batch Intakes</b></p>
+<p>ثم تنشئ Intake جديد باسم مثلاً:</p>
+<p><code>Odoo Development - July 2026 Intake</code></p>
+<p>ترفع ملف CSV يحتوي على:</p>
+<p><code>Name, Email, Phone, National ID, City, Specialization</code></p>
+<p>بعد ذلك تضغط <b>Validate</b>.</p>
+<p>وظيفة Validate هي التأكد أن الملف قابل للقراءة ويحتوي على بيانات صحيحة مبدئياً. هذه المرحلة لا تعني بالضرورة أن المتدربين تم إنشاؤهم بعد.</p>
+<p>بعد نجاح التحقق تختار:</p>
+<p><b>Course:</b> Odoo Development   <b>Schedule Batch:</b> July 2026 Batch</p>
+<p>ثم تضغط <b>Process</b>.</p>
+<p>هنا النظام يبدأ فعلياً في إنشاء أو تحديث سجلات <code>op.student</code> وربط البيانات القادمة من الملف بها.</p>
+<h3>لماذا يوجد <code>edafaa_batch_intake</code>؟</h3>
+<p>الوحدة الأساسية <code>batch_intake</code> مسؤولة أساساً عن عملية رفع ومعالجة الملف.</p>
+<p>أما <code>edafaa_batch_intake</code> فهي جسر التخصيص الخاص بإضافة، وتضيف منطقاً إضافياً مثل:</p>
+<p>ربط المتدربين بـ OpenEduCat Course وBatch، ونقل حقول إضافية مثل الهوية والهاتف والعنوان والتخصص، بالإضافة إلى Wizard الخاص بـ <b>Assign to Batch</b>.</p>
+<h3>أهم نقطة تشغيلية</h3>
+<p>حالياً يجب استخدام <b>CSV فقط</b>.</p>
+<p>حتى لو واجهة رفع الملف تسمح باختيار <code>.xlsx</code> أو <code>.xls</code>، الكود نفسه لا يدعم تحليل Excel حالياً، ولذلك ستظهر رسالة خطأ عند المعالجة.</p>
+<p>إذن للمستخدم النهائي:</p>
+<p><b>Excel → Save As CSV UTF-8 → Upload</b></p>
+<h3>الفرق بين Validate وProcess</h3>
+<p><b>Validate:</b>   يتأكد أن الملف يمكن قراءته وأن البيانات موجودة.</p>
+<p><b>Process:</b>   ينفذ العملية الفعلية ويُنشئ أو يُحدّث المتدربين في SIS.</p>
+<p>لذلك يمكن اعتبارها:</p>
+<p><code>Validate = فحص</code>   <code>Process = تنفيذ</code></p>
+<h3>لماذا يجب اختيار Schedule Batch؟</h3>
+<p>لأن اختيار <b>Course</b> وحده يحدد المقرر فقط، لكنه لا يحدد في أي دفعة أو جدول زمني سيلتحق المتدرب.</p>
+<p>مثلاً:</p>
+<p>Course: <code>English Level 1</code></p>
+<p>قد يكون له:</p>
+<p><code>Batch Morning - July</code>   <code>Batch Evening - July</code>   <code>Batch August</code></p>
+<p>لذلك عند تحديد Course يجب أيضاً تحديد <b>Schedule Batch</b> قبل Process.</p>
+<h3>Assign to Batch متى نستخدمه؟</h3>
+<p>هذا السيناريو مختلف قليلاً.</p>
+<p>لو المتدربون موجودون بالفعل داخل Students ولا تحتاج إلى استيرادهم من ملف، تختارهم ثم تستخدم <b>Assign to Batch</b> لتربطهم مباشرة بـ:</p>
+<p><code>Course + Batch</code></p>
+<p>إذن:</p>
+<p><b>Batch Intake</b> = إدخال متدربين من ملف.   <b>Assign to Batch</b> = ربط متدربين موجودين بالفعل بدفعة دراسية.</p>
+<h3>الخلاصة العملية للمستخدم</h3>
+<p>أفضل Workflow هو:</p>
+<p><b>CSV جاهز → Batch Intake جديد → Upload → Validate → Course → Schedule Batch → Process → مراجعة Students</b></p>
+<p>وأهم تحذيرين هما: <b>لا تستخدم XLSX حالياً</b>، و<b>لا تضغط Process بعد اختيار Course بدون اختيار Schedule Batch</b>.</p>
+<hr/>
+<h2>1. ما هو الـ Batch؟</h2>
+<p><b>Batch Intake</b> هو مسار لاستيراد مجموعة متدربين دفعة واحدة من ملف، ثم ربطهم بمقرر (Course) ودفعة مجدولة (Schedule Batch) في نظام SIS، وإنشاء سجلات المتدربين (<code>op.student</code>) تلقائياً بعد المعالجة.</p>
+<p>يوجد أيضاً سجل <b>Batches</b> تحت إعدادات المقررات في SIS (جدولة الدفعات الأكاديمية)، وهو مختلف عن شاشة <b>Batch Intakes</b> المستخدمة للاستيراد.</p>
+<table>
+<tr><th>المفهوم</th><th>الاستخدام</th></tr>
+<tr><td>Batch Intake</td><td>استيراد ملف متدربين ومعالجته</td></tr>
+<tr><td>op.batch (Batches)</td><td>دفعة المقرر الأكاديمية / الجدولة</td></tr>
+<tr><td>Assign to Batch (معالج)</td><td>ربط متدربين موجودين بمقرر + دفعة</td></tr>
+</table>
+<hr/>
+<h2>2. إنشاء Intake Batch</h2>
+<p><b>الهدف:</b> فتح سجل استيراد جديد.</p>
+<p><b>الخطوات:</b></p>
+<p>1. من تطبيق <b>SIS</b> افتح قائمة <b>Students</b>.   2. تحت <b>General</b> اختر <b>Batch Intakes</b>.   3. اضغط <b>New</b>.   4. أدخل <b>Batch Name</b> (اسم دفعة الاستيراد).   5. احفظ.</p>
+<p><b>النتيجة المتوقعة:</b> يظهر سجل بحالة <b>Draft</b>.</p>
+<p><b>الدليل:</b> <code>batch_01_intakes_list.png</code> · <code>batch_02_intake_form_draft.png</code></p>
+<hr/>
+<h2>3. رفع ملف CSV</h2>
+<p><b>تنبيه مهم — Excel غير مدعوم حالياً</b></p>
+<li>النظام يقبل ظاهرياً ملفات <code>.csv</code> و <code>.xlsx</code> / <code>.xls</code> في الحقل.</li>
+<li>عند التحليل، <b>ملفات Excel ترفض</b> برسالة تعني أن التحليل غير مطبّق بعد.</li>
+<li><b>استخدم CSV فقط</b> حتى يتوفر تطوير منفصل لدعم Excel.</li>
+<p><b>الخطوات:</b></p>
+<p>1. في سجل Intake، ارفع الملف في حقل <b>File</b>.   2. يفضّل استخدام القالب إن وُجد زر/إجراء لتصدير <code>Batch_Intake_Template.csv</code>.   3. احفظ ثم نفّذ إجراء الرفع / Upload حسب الأزرار الظاهرة.</p>
+<p><b>أعمدة شائعة مفيدة (أسماء مرنة):</b></p>
+<table>
+<tr><th>عمود</th><th>الغرض</th></tr>
+<tr><td>name / Name</td><td>الاسم</td></tr>
+<tr><td>email / Email</td><td>البريد (مهم للمطابقة)</td></tr>
+<tr><td>phone</td><td>الهاتف</td></tr>
+<tr><td>id_number / National ID</td><td>رقم الهوية</td></tr>
+<tr><td>street / address</td><td>الشارع</td></tr>
+<tr><td>city</td><td>المدينة</td></tr>
+<tr><td>country</td><td>الدولة</td></tr>
+<tr><td>specialization / program</td><td>التخصص</td></tr>
+</table>
+<hr/>
+<h2>4. التحقق (Validate)</h2>
+<p><b>الهدف:</b> التأكد أن الملف يُقرأ وأن السجلات ليست فارغة.</p>
+<p><b>الخطوات:</b></p>
+<p>1. بعد الرفع الناجح، اضغط <b>Validate</b> (أو الإجراء المكافئ).   2. راجع الرسائل / عدد السجلات / حالة <b>Validated</b>.</p>
+<p><b>عند الفشل:</b> تأكد من ترميز UTF-8، ووجود صف رأس، وأن الملف CSV وليس XLSX.</p>
+<hr/>
+<h2>5. ربط Course / Schedule Batch</h2>
+<p>قبل <b>Process</b> (بعد تثبيت جسر <code>edafaa_batch_intake</code>):</p>
+<p>1. عيّن <b>Course</b> في قسم OpenEduCat Enrollment.   2. عيّن <b>Schedule Batch</b> (<code>batch_id</code>) — <b>مطلوب</b> عند وجود مقرر؛ وإلا تظهر رسالة خطأ تطلب اختيار الدفعة.   3. احفظ.</p>
+<p>مرجع دفعات SIS: <code>batch_03_op_batches_list.png</code>.</p>
+<hr/>
+<h2>6. Process وإنشاء المتدربين</h2>
+<p><b>الخطوات:</b></p>
+<p>1. اضغط <b>Process</b>.   2. ينتقل السجل إلى حالة <b>Processed</b> عند النجاح.   3. يُنشأ/يُحدَّث متدربون في SIS وترتبط بياناتهم (الهوية، الهاتف، العنوان، التخصص…) عبر جسر Edafaa عند توفر الأعمدة.</p>
+<p><b>النتيجة المتوقعة:</b> ظهور المتدربين في قائمة Students.</p>
+<hr/>
+<h2>7. تعيين متدربين على دفعة (Assign to Batch)</h2>
+<p>بعد وجود متدربين في النظام، يمكن استخدام معالج التعيين (إن ظهر في قائمة الإجراءات / الخيارات على الطلاب أو عبر قائمة Batch):</p>
+<p>1. اختر متدرباً أو أكثر من قائمة Students.   2. افتح معالج <b>Assign to Batch</b> / تعيين على دفعة.   3. اختر <b>Course</b> و <b>Batch</b>.   4. أكّد.</p>
+<p><b>الدليل السياقي:</b> <code>batch_04_students_for_assign.png</code></p>
+<hr/>
+<h2>8. أخطاء شائعة</h2>
+<table>
+<tr><th>المشكلة</th><th>السبب المحتمل</th><th>الحل</th></tr>
+<tr><td>رفض الملف</td><td>امتداد `.xlsx`</td><td>حوّل إلى CSV</td></tr>
+<tr><td>لا سجلات</td><td>ملف فارغ أو فاصل أعمدة خاطئ</td><td>تحقق من DictReader / UTF-8</td></tr>
+<tr><td>Process يطلب Batch</td><td>مقرر محدد بلا Schedule Batch</td><td>عيّن الدفعة المجدولة</td></tr>
+<tr><td>لا يظهر القائمة</td><td>صلاحيات</td><td>صلاحية مستخدم Batch Intake</td></tr>
+<tr><td>اختلاف Batches vs Intake</td><td>قائمتان مختلفتان</td><td>Intake للاستيراد؛ Batches للجدولة</td></tr>
+</table>
+<hr/>
+<h2>خارج النطاق (للتطوير لاحقاً)</h2>
+<p>تنفيذ تحليل ملفات <b>Excel (.xlsx)</b> داخل <code>batch.intake</code> — يُفتح كعمل منفصل عند طلب العميل.</p>
+<hr/>
+<h2>مرجع تقني سريع</h2>
+<table>
+<tr><th>مكوّن</th><th>مسار</th></tr>
+<tr><td>النموذج الأساسي</td><td>`batch_intake/models/batch_intake.py`</td></tr>
+<tr><td>رفض Excel</td><td>`_parse_file` → UserError</td></tr>
+<tr><td>جسر Edafaa</td><td>`edafaa_batch_intake/`</td></tr>
+<tr><td>معالج التعيين</td><td>`edafaa_batch_intake/wizard/batch_trainee_assignment_wizard.py`</td></tr>
+</table>
+</body></html>

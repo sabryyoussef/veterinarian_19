@@ -1,0 +1,40 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 6397
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-05 08:54:27 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** medium
+**الثقة:** 0.88
+
+**الملخص:**
+Issues with data mapping for phone, specialization, and address fields not saving correctly.
+
+**الإجراء المطلوب:**
+Review and fix the data mapping logic for phone, specialization, and address fields in the relevant model.
+
+## Original Message
+
+```
+السلام عليكم،
+
+بعد إعادة تنفيذ الـ UAT على آخر نسخة، نتائج المراجعة كالتالي:
+
+2. **Field Labels & Data Mapping**
+
+   * ❌ ما زالت توجد ملاحظات على ربط البيانات.
+   * حقول **الهاتف** و**التخصص** و**العنوان** ما زالت لا تقرأ وتحفظ البيانات من الحقول المعتمدة الصحيحة.
+   * ✅ تم إضافة **عمود رقم الهوية** في قائمة المتدربين.
+
+5. **Family Tab**
+
+   * ✅ تم إخفاء تبويب **Family** من **Student Profile** كما هو مطلوب.
+
+المتبقي حالياً هو مراجعة وإصلاح ربط بيانات حقول **الهاتف والتخصص والعنوان** بحيث تعتمد على الحقول الصحيحة في جميع مسارات الإدخال.
+@165837629583434
+```

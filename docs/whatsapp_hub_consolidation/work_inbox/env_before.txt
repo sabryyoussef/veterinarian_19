@@ -1,0 +1,23 @@
+=== BEFORE 2026-07-24T14:57:01+03:00 ===
+TEST modules:
+devhub_analysis|installed|19.0.9.1.1
+devhub_whatsapp|installed|19.0.9.1.9
+devhub_work|installed|19.0.9.1.1
+whatsapp_hub|installed|19.0.1.12.0
+PROD modules:
+devhub_analysis|installed|19.0.9.1.1
+devhub_whatsapp|installed|19.0.9.1.9
+devhub_work|installed|19.0.9.1.1
+whatsapp_hub|installed|19.0.1.12.0
+services:
+active
+active
+ports:
+LISTEN 0      16                         0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=3701242,fd=5),("python3",pid=3701241,fd=5),("python3",pid=3700925,fd=5))
+LISTEN 0      128                        0.0.0.0:8028       0.0.0.0:*    users:(("python3",pid=3698670,fd=3))                                                          
+PROD pid:
+3700925
+branch:
+feature/wa-work-inbox
+sha:
+4c1fc00555a3ede2ccf7582fdb87af6082a29195

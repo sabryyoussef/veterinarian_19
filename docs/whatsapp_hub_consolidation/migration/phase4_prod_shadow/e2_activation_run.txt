@@ -1,0 +1,22 @@
+SNAP {"label": "before_allowlist", "ch5": "shadow", "ch10": "hub", "allowlist": "10", "allow_parsed": [10], "hub_ids": [10], "jobs5": 0, "jobs10": 13, "pending": 0, "global_u": "True", "global_d": "True", "inst_u": true, "inst_d": true, "purposes": "discuss"}
+ALLOWLIST_EXPANDED [10, 5] True True
+CH5_PREREQ_NOW True 
+SNAP {"label": "after_allowlist_still_shadow", "ch5": "shadow", "ch10": "hub", "allowlist": "10,5", "allow_parsed": [10, 5], "hub_ids": [10], "jobs5": 0, "jobs10": 13, "pending": 0, "global_u": "True", "global_d": "True", "inst_u": true, "inst_d": true, "purposes": "discuss"}
+PROBE {"mail_message_id": 11344, "legacy": 1, "hub_tx": 0, "jobs5": 0, "mode": "shadow"}
+PROBE_OK
+FLIP {"ch5": "hub", "ch10": "hub", "hub_ids": [5, 10], "allow": [10, 5]}
+SNAP {"label": "after_flip", "ch5": "hub", "ch10": "hub", "allowlist": "10,5", "allow_parsed": [10, 5], "hub_ids": [5, 10], "jobs5": 0, "jobs10": 13, "pending": 0, "global_u": "True", "global_d": "True", "inst_u": true, "inst_d": true, "purposes": "discuss"}
+ACTIVATION_COMMITTED
+PILOT {"seq": 1, "body": "Bridge Hub Pilot 01", "mail_message_id": 11345, "business_key": "discuss:5:11345", "hub_count": 1, "hub_id": 44, "hub_conv": 7, "hub_purpose": "discuss", "hub_remote": "201000059085@s.whatsapp.net", "hub_inst": "sabry min", "hub_channel": 5, "hub_related": ["mail.message", 11345], "hub_walog_id": 41, "out_count": 1, "out_id": 15, "out_state": "sent", "out_mode": "unified_bridge", "out_retry": 0, "out_channel": 5, "provider_id": "3EB002722711287688137D", "log_id": 41, "log_origin": "hub_unified", "log_hub_message_id": 44, "walog_dup_count": 0, "legacy_calls": 0, "hub_transport_calls": 1, "queue_delta": 0, "outside_jobs": 0, "jobs10_delta": 0, "ch5": "hub", "ch10": "hub", "allow": [10, 5]}
+PILOT_OK 1 True
+PILOT {"seq": 2, "body": "Bridge Hub Pilot 02", "mail_message_id": 11346, "business_key": "discuss:5:11346", "hub_count": 1, "hub_id": 45, "hub_conv": 7, "hub_purpose": "discuss", "hub_remote": "201000059085@s.whatsapp.net", "hub_inst": "sabry min", "hub_channel": 5, "hub_related": ["mail.message", 11346], "hub_walog_id": 42, "out_count": 1, "out_id": 16, "out_state": "sent", "out_mode": "unified_bridge", "out_retry": 0, "out_channel": 5, "provider_id": "3EB0C20D278D0C940860F2", "log_id": 42, "log_origin": "hub_unified", "log_hub_message_id": 45, "walog_dup_count": 0, "legacy_calls": 0, "hub_transport_calls": 1, "queue_delta": 0, "outside_jobs": 0, "jobs10_delta": 0, "ch5": "hub", "ch10": "hub", "allow": [10, 5]}
+PILOT_OK 2 True
+PILOT {"seq": 3, "body": "Bridge Hub Pilot 03", "mail_message_id": 11347, "business_key": "discuss:5:11347", "hub_count": 1, "hub_id": 46, "hub_conv": 7, "hub_purpose": "discuss", "hub_remote": "201000059085@s.whatsapp.net", "hub_inst": "sabry min", "hub_channel": 5, "hub_related": ["mail.message", 11347], "hub_walog_id": 43, "out_count": 1, "out_id": 17, "out_state": "sent", "out_mode": "unified_bridge", "out_retry": 0, "out_channel": 5, "provider_id": "3EB0E5205626796D709791", "log_id": 43, "log_origin": "hub_unified", "log_hub_message_id": 46, "walog_dup_count": 0, "legacy_calls": 0, "hub_transport_calls": 1, "queue_delta": 0, "outside_jobs": 0, "jobs10_delta": 0, "ch5": "hub", "ch10": "hub", "allow": [10, 5]}
+PILOT_OK 3 True
+AGG {"attempted": 3, "successful": 3, "legacy_total": 0, "hub_tx_total": 3, "provider_ids": ["3EB002722711287688137D", "3EB0C20D278D0C940860F2", "3EB0E5205626796D709791"], "unique_providers": 3, "hub_ids": [44, 45, 46], "unique_hub": 3, "convs": [7], "jobs5_total": 3, "pilot_jobs": 3, "outside": 0, "jobs10_delta": 0, "ch5": "hub", "ch10": "hub", "allow": [10, 5], "hub_mode_ids": [5, 10]}
+ISOLATION_OK True
+NAMESPACE {"discuss5_count": 3, "discuss10_count": 13, "conv8_still": 24}
+SNAP {"label": "final", "ch5": "hub", "ch10": "hub", "allowlist": "10,5", "allow_parsed": [10, 5], "hub_ids": [5, 10], "jobs5": 3, "jobs10": 13, "pending": 0, "global_u": "True", "global_d": "True", "inst_u": true, "inst_d": true, "purposes": "discuss"}
+DECISION E2 SECOND-CHANNEL HUB PILOT PASSED
+SOAK TWO-CHANNEL HUB SOAK ACTIVE
+FINAL {"ch10": "hub", "ch5": "hub", "allowlist": "10,5", "allow_parsed": [10, 5], "hub_ids": [5, 10], "global_u": "True", "global_d": "True", "inst_u": true, "inst_d": true, "purposes": "discuss", "pending": 0}

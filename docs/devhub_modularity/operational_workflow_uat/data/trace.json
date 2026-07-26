@@ -1,0 +1,216 @@
+{
+  "work_item": {
+    "id": 3318,
+    "name": "DEVHUB-MODULAR-E2E-UAT-20260723T111508Z: harmless Test-only modular workflow documentation artifact",
+    "current_phase": "completed",
+    "uuid": "f874476e-3f42-49d7-aff0-7826762d40c0",
+    "dev_project_id": [
+      1,
+      "PetSpot"
+    ],
+    "preferred_environment_id": [
+      1,
+      "PetSpot Test"
+    ],
+    "preferred_repository_id": [
+      1,
+      "PetSpot Odoo 19"
+    ]
+  },
+  "analysis": {
+    "id": 2690,
+    "status": "accepted",
+    "revision": 1,
+    "content_hash": "5293fc46091b55afb716f37d88d7347ed2705bb9a097579f2e91af799547433e"
+  },
+  "plan": {
+    "id": 2474,
+    "status": "approved",
+    "revision": 1,
+    "content_hash": "8792c2b9eb8ee10bf3b2e018f113f5a521662606ef52e6b053624583f2caaf50"
+  },
+  "plan_steps": [
+    3006,
+    3007,
+    3008,
+    3009,
+    3010,
+    3011,
+    3012
+  ],
+  "approval": {
+    "id": 2272,
+    "decision": "approved",
+    "plan_hash": "8792c2b9eb8ee10bf3b2e018f113f5a521662606ef52e6b053624583f2caaf50",
+    "approver_id": [
+      2,
+      "Administrator"
+    ],
+    "decided_at": "2026-07-23 11:16:10",
+    "plan_id": [
+      2474,
+      "dev.work.plan,2474"
+    ],
+    "comment": "resume approve"
+  },
+  "session": {
+    "id": 947,
+    "state": "draft",
+    "name": "E2E UAT Session DEVHUB-MODULAR-E2E-UAT-20260723T111508Z"
+  },
+  "checkpoint": {
+    "id": 2139,
+    "trigger": "client_review",
+    "lifecycle_phase": "testing",
+    "session_id": [
+      947,
+      "E2E UAT Session DEVHUB-MODULAR-E2E-UAT-20260723T111508Z"
+    ]
+  },
+  "completion_report": {
+    "id": 1708,
+    "status": "approved",
+    "uat_status": "passed",
+    "deployment_status": "not_deployed",
+    "content_hash": "cb9f733e0d5346307debf2adaa7098338a29072c5dce6f8f4deb8d0ff3bfd127"
+  },
+  "final_work_item": {
+    "id": 3318,
+    "name": "DEVHUB-MODULAR-E2E-UAT-20260723T111508Z: harmless Test-only modular workflow documentation artifact",
+    "current_phase": "completed",
+    "uuid": "f874476e-3f42-49d7-aff0-7826762d40c0",
+    "dev_project_id": [
+      1,
+      "PetSpot"
+    ],
+    "preferred_environment_id": [
+      1,
+      "PetSpot Test"
+    ],
+    "preferred_repository_id": [
+      1,
+      "PetSpot Odoo 19"
+    ]
+  },
+  "git": {
+    "branch": "feature/devhub-modularization-whatsapp",
+    "head": "5d627a7e4b6ec4a29928dfd3c57f3fcf000f66cc",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel"
+  },
+  "github": {
+    "status": "skipped",
+    "reason": "No safe Test Draft PR without remote push"
+  },
+  "deploy": {
+    "mode": "deployment_ready_only",
+    "production_deploy": false
+  },
+  "ownership": {
+    "dev.work.item": {
+      "modules": [
+        "devhub_analysis",
+        "devhub_code_analysis",
+        "devhub_execution",
+        "devhub_generation",
+        "devhub_openproject",
+        "devhub_plan",
+        "devhub_session",
+        "devhub_whatsapp",
+        "devhub_work"
+      ],
+      "expects_primary": "devhub_work",
+      "ok": true
+    },
+    "dev.work.analysis": {
+      "modules": [
+        "devhub_analysis",
+        "devhub_code_analysis",
+        "devhub_generation"
+      ],
+      "expects_primary": "devhub_analysis",
+      "ok": true
+    },
+    "dev.work.plan": {
+      "modules": [
+        "devhub_analysis",
+        "devhub_approval",
+        "devhub_plan"
+      ],
+      "expects_primary": "devhub_plan",
+      "ok": true
+    },
+    "dev.work.approval": {
+      "modules": [
+        "devhub_approval"
+      ],
+      "expects_primary": "devhub_approval",
+      "ok": true
+    },
+    "dev.work.checkpoint": {
+      "modules": [
+        "devhub_execution"
+      ],
+      "expects_primary": "devhub_execution",
+      "ok": true
+    }
+  },
+  "manifest": {
+    "devhub_work_depends": [
+      "devhub_core",
+      "project"
+    ],
+    "work_has_openproject_sync": false,
+    "devhub_whatsapp_depends": [
+      "devhub_work",
+      "whatsapp_hub"
+    ],
+    "whatsapp_consumes_hub": true,
+    "plan_depends": [
+      "devhub_work"
+    ],
+    "plan_hard_depends_analysis": false
+  },
+  "relationship": {
+    "work_item_id": 3318,
+    "analysis_id": 2690,
+    "plan_id": 2474,
+    "plan_step_ids": [
+      3006,
+      3007,
+      3008,
+      3009,
+      3010,
+      3011,
+      3012
+    ],
+    "approval_id": 2272,
+    "session_id": 947,
+    "checkpoint_id": 2139,
+    "completion_report_id": 1708,
+    "git": {
+      "branch": "feature/devhub-modularization-whatsapp",
+      "head": "5d627a7e4b6ec4a29928dfd3c57f3fcf000f66cc",
+      "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel"
+    },
+    "orphan_checks": {
+      "all_linked": true
+    }
+  },
+  "safety": {
+    "cmdline": "/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf -d pet_spot_elsahel_test ",
+    "overlay_in_cmdline": false,
+    "overlay_in_conf": false,
+    "production_devhub": [
+      "devhub_core|uninstalled",
+      "devhub_work|uninstalled",
+      "dev_session_hub|uninstalled"
+    ]
+  },
+  "code_fix": "Imported DevWorkPlan in devhub_approval to fix NameError on action_approve_exact",
+  "non_blockers": [
+    "Isolated execution workspace prepare blocked: repository not safe_for_isolated_worktree",
+    "Session start blocked: Git origin does not match registered remote",
+    "GitHub Draft PR skipped",
+    "Real Test deploy skipped (deploy_permission=False)"
+  ]
+}

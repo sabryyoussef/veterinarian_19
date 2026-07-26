@@ -1,0 +1,15 @@
+devhub_code_analysis|19.0.9.0.0|installed
+devhub_core|19.0.9.0.1|installed
+devhub_deploy|19.0.9.0.0|installed
+devhub_execution|19.0.9.0.0|installed
+devhub_generation|19.0.9.0.0|installed
+devhub_git|19.0.9.0.0|installed
+devhub_github|19.0.9.0.0|installed
+devhub_infrastructure|19.0.9.0.0|installed
+devhub_odoo_runtime|19.0.9.0.0|installed
+devhub_openproject|19.0.9.0.0|installed
+devhub_outbox|19.0.9.0.0|installed
+devhub_session|19.0.9.0.0|installed
+devhub_whatsapp|19.0.9.0.2|installed
+devhub_work|19.0.9.0.0|installed
+dev_session_hub|19.0.9.0.0|installed

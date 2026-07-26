@@ -1,0 +1,128 @@
+[
+  {
+    "file": "01_login_backend.png",
+    "page": "http://127.0.0.1:8028/odoo",
+    "proves": "Odoo backend after Live Test login",
+    "result": "PASS",
+    "bytes": 197460
+  },
+  {
+    "file": "02_devhub_main_menu.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1377",
+    "proves": "Dev Hub navigation / Recent Work surface",
+    "result": "PASS",
+    "bytes": 253077
+  },
+  {
+    "file": "03_workflow_board.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1391/new",
+    "proves": "Workflow Board stages + KPIs",
+    "result": "PASS",
+    "bytes": 105459
+  },
+  {
+    "file": "04_work_item_3324.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1377/3324",
+    "proves": "Work Item 3324 completed operational UAT",
+    "result": "PASS",
+    "bytes": 290211
+  },
+  {
+    "file": "05_analysis_2695.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1389/2695",
+    "proves": "Analysis 2695 linked to WI 3324",
+    "result": "PASS",
+    "bytes": 163172
+  },
+  {
+    "file": "06_plan_2478.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1388/2478",
+    "proves": "Plan 2478 approved",
+    "result": "PASS",
+    "bytes": 135065
+  },
+  {
+    "file": "07_plan_steps.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1388/2478",
+    "proves": "Plan 2478 steps visible",
+    "result": "PASS",
+    "bytes": 133793
+  },
+  {
+    "file": "08_approval_2276.png",
+    "page": "http://127.0.0.1:8028/odoo/dev.work.approval/2276",
+    "proves": "Exact-hash Approval 2276 approved",
+    "result": "PASS",
+    "bytes": 110472
+  },
+  {
+    "file": "09_session_950.png",
+    "page": "http://127.0.0.1:8028/odoo/dev.session/950",
+    "proves": "Session 950 paused isolated execution",
+    "result": "PASS",
+    "bytes": 178146
+  },
+  {
+    "file": "10_workspace_1849.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1396/1849",
+    "proves": "Workspace 1849 deployed_staging_reviewed",
+    "result": "PASS",
+    "bytes": 271363
+  },
+  {
+    "file": "11_execution_state.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1396/1849",
+    "proves": "Workspace execution/deployed state for DW-3324",
+    "result": "PASS",
+    "bytes": 271363
+  },
+  {
+    "file": "12_checkpoint_evidence.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1397/2144",
+    "proves": "Checkpoint 2144 for WI 3324",
+    "result": "PASS",
+    "bytes": 186775
+  },
+  {
+    "file": "13_git_commit_push.png",
+    "page": "http://127.0.0.1:8028/odoo/dev.git.commit.record/1102",
+    "proves": "Commit record 1102 SHA 22c3cdc0\u2026",
+    "result": "PASS",
+    "bytes": 139799
+  },
+  {
+    "file": "14_github_pr_16.png",
+    "page": "http://127.0.0.1:8028/odoo/dev.git.pr.record/200",
+    "proves": "Dev Hub GitHub App PR record #16",
+    "result": "PASS",
+    "bytes": 180425
+  },
+  {
+    "file": "15_merge_approval_57.png",
+    "page": "http://127.0.0.1:8028/odoo/dev.git.merge.approval/57",
+    "proves": "Merge Approval 57 requester\u2260approver",
+    "result": "PASS",
+    "bytes": 159086
+  },
+  {
+    "file": "16_merge_record_35.png",
+    "page": "http://127.0.0.1:8028/odoo/dev.git.merge.record/35",
+    "proves": "Governed Merge Record 35 SHA 0b516d5a\u2026",
+    "result": "PASS",
+    "bytes": 157401
+  },
+  {
+    "file": "17_test_deployment_success.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1406/1",
+    "proves": "Test Deploy record 1 \u2192 target 4 succeeded",
+    "result": "PASS",
+    "bytes": 115963
+  },
+  {
+    "file": "18_workflow_board_final.png",
+    "page": "http://127.0.0.1:8028/odoo/action-1391/new",
+    "proves": "Workflow Board final after full navigation",
+    "result": "PASS",
+    "bytes": 105459
+  }
+]

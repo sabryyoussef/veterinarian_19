@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/308
+- Message ID: 10344
+- Customer: مهمات مفتوحة لاستكمال فرع الساحل petspot
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-14 12:07:33 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+User reports an issue with WhatsApp not working properly.
+
+**الإجراء المطلوب:**
+No action required as the issue is unrelated to Odoo.
+
+## Original Message
+
+```
+الواتس مش راضي يتضبط
+```

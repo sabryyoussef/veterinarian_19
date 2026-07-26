@@ -1,0 +1,82 @@
+# Development Plan — OP#351 / Odoo #42
+
+**Title:** Search trainees by national ID  
+**Sprint:** S1 — Day 1 (morning)  
+**Effort:** 0.5 day  
+**Module:** `edafaa_student_profile`
+
+---
+
+## Steps & time
+
+| Step | Hours | Action |
+|------|-------|--------|
+| 1 | 0.5 | Add `id_number` to search view |
+| 2 | 0.5 | Optional: `_rec_names_search` for autocomplete |
+| 3 | 1 | Unit / shell test |
+| 4 | 1 | Upgrade sabry-test + UAT screenshots |
+| 5 | 0.5 | Comment on OP#351 + Odoo #42 |
+
+---
+
+## Code changes
+
+### 1. Search view
+
+**File:** `custom_addons/edafaa_student_profile/views/student_search_views.xml`
+
+```xml
+<field name="name" position="after">
+    <field name="id_number" string="رقم الهوية"/>
+</field>
+```
+
+(Or inherit base search and insert after `name` — verify xpath against `openeducat_core.view_op_student_search`.)
+
+### 2. Autocomplete (optional)
+
+**File:** `custom_addons/edafaa_student_profile/models/student.py`
+
+```python
+_rec_names_search = ['name', 'id_number', 'name_arabic', 'name_english']
+```
+
+If Odoo 19 needs `_name_search` instead, override:
+
+```python
+@api.model
+def _name_search(self, name='', domain=None, operator='ilike', limit=100, order=None):
+    domain = list(domain or [])
+    if name:
+        domain = ['|', ('id_number', operator, name)] + domain
+    return super()._name_search(name, domain, operator, limit, order)
+```
+
+### 3. Manifest bump
+
+Bump `version` in `__manifest__.py` (e.g. patch +1).
+
+---
+
+## Tests
+
+```python
+# odoo shell -d sabry-test
+Student = env['op.student']
+s = Student.search([('id_number', 'ilike', '1')], limit=5)
+assert s, 'search by id_number failed'
+```
+
+Playwright (optional): open Students → search box → type known ID → expect row.
+
+---
+
+## Acceptance
+
+- [ ] Filter/search by رقم الهوية works  
+- [ ] Existing data found  
+- [ ] No regression on certificate / current course filters  
+
+## Done when
+
+OP#351 + Odoo #42 marked In Progress → Resolved with note + screenshots.

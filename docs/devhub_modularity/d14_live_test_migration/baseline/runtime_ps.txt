@@ -1,0 +1,5 @@
+root        9291  0.0  0.0 1235616 8028 ?        Sl   Jul20   1:18 /usr/bin/containerd-shim-runc-v2 -namespace moby -id d2c99b458add7533cb47c13f59fe3066949700b7e0071fd03e1e82d3f00b3dd1 -address /run/containerd/containerd.sock
+sabry     299149  0.2  1.6 1751524 516936 ?      Ssl  00:56   1:44 /home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_staging.conf -d pet_spot_elsahel_test
+postgres  299190  0.0  0.4 277644 152612 ?       Ss   00:56   0:11 postgres: 18/main: odoo pet_spot_elsahel_test 127.0.0.1(39054) idle
+postgres  301439  0.0  0.5 288364 173288 ?       Ss   00:56   0:14 postgres: 18/main: odoo pet_spot_elsahel_test 127.0.0.1(37374) idle
+postgres  302864  0.0  0.3 268896 112268 ?       Ss   00:57   0:01 postgres: 18/main: odoo pet_spot_elsahel_test 127.0.0.1(52364) idle

@@ -1,0 +1,41 @@
+PASS module:devhub_core 19.0.9.0.1
+PASS module:devhub_work 19.0.9.1.0
+PASS module:devhub_analysis 19.0.9.1.0
+PASS module:devhub_plan 19.0.9.1.0
+PASS module:devhub_approval 19.0.9.1.0
+PASS module:devhub_generation 19.0.9.1.0
+PASS module:devhub_session 19.0.9.0.0
+PASS module:devhub_execution 19.0.9.1.0
+PASS module:devhub_git 19.0.9.0.0
+PASS module:devhub_github 19.0.9.0.0
+PASS module:devhub_deploy 19.0.9.0.0
+PASS module:devhub_outbox 19.0.9.0.0
+PASS module:devhub_openproject 19.0.9.1.0
+PASS module:devhub_whatsapp 19.0.9.0.2
+PASS module:devhub_workflow 19.0.9.1.0
+PASS module:devhub_code_analysis 19.0.9.1.0
+PASS module:devhub_odoo_runtime 19.0.9.0.0
+PASS module:devhub_infrastructure 19.0.9.0.0
+PASS module:dev_session_hub 19.0.9.1.0
+PASS work_independent_of_openproject work model exists
+PASS work_deps_no_openproject ['devhub_core', 'project']
+PASS whatsapp_depends_hub ['devhub_work', 'whatsapp_hub']
+PASS workflow_board_model 
+PASS workflow_no_work_create_fields 
+PASS workflow_caps_present count=7
+PASS session_start_helper 
+PASS session_safe_directory 
+SKIP ready_gate no pending fixture
+PASS deploy_ls_remote 
+PASS deploy_runner 
+PASS deploy_test_db_only 
+PASS pr_url_reference 
+PASS merge_result_sha 
+PASS wi3324 
+PASS ws1849_deployed deployed_staging_reviewed
+PASS merge_record_35 
+PASS deploy_record_1 
+PASS target4_nonprod 
+PASS policy_prod_denied id=1 deploy=False
+SUMMARY failed= 0
+RESULT 0 failed 0 errors

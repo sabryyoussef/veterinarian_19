@@ -1,0 +1,127 @@
+﻿# CycleX Postman / Newman run report
+
+- **When:** 2026-07-04T04:53:38.306066+00:00
+- **Base URL:** `http://127.0.0.1:8071`
+- **Auth:** Bearer (login as `+201092015998`)
+- **Executed:** 86 requests
+- **Skipped (destructive/setup):** 10
+
+## Summary
+
+| Category | Count |
+|----------|------:|
+| **2xx pass** | **51** |
+| 400 bad request (payload/business) | 5 |
+| 403 forbidden (role/permission) | 21 |
+| 404 not found (missing id/data) | 7 |
+| 401 auth fail | 0 |
+| 5xx server error | 2 |
+
+## HTTP status counts
+
+- `200`: 51
+- `403`: 21
+- `404`: 7
+- `400`: 5
+- `500`: 2
+
+## Passed (2xx)
+
+- `200` **Login** — Login successful
+- `200` **Get Profile** — 
+- `200` **Update Profile** — Profile updated successfully
+- `200` **Save Customer Address** — Address saved successfully [SUCCESS]
+- `200` **Get Customer Addresses** — 
+- `200` **Delete Customer Address** — Address deleted successfully [SUCCESS]
+- `200` **Get Governorates** — 
+- `200` **Get Governorate Details** — 
+- `200` **Get Working Areas** — 
+- `200` **Get Vehicle Types** — Vehicle types retrieved successfully
+- `200` **Get Vehicle Types (POST)** — Vehicle types retrieved successfully
+- `200` **Get Limit Categories (Home Screen)** — 
+- `200` **Get Limit Categories (POST)** — 
+- `200` **Get Categories (Public)** — 
+- `200` **Get Products (Public)** — 
+- `200` **Get Product Details** — 
+- `200` **Get Popular Picks (Public)** — 
+- `200` **Get Popular Picks (POST)** — 
+- `200` **Get Categories (Authenticated)** — 
+- `200` **Get Products (Authenticated)** — 
+- `200` **Get Limit Categories (Authenticated)** — 
+- `200` **Get Limit Categories (Authenticated POST)** — 
+- `200` **Get Popular Picks (Authenticated)** — 
+- `200` **Get Popular Picks (Authenticated POST)** — 
+- `200` **Add to Favorites** — Product added to favorites successfully
+- `200` **Remove from Favorites** — Product removed from favorites successfully
+- `200` **Get Favorites** — 
+- `200` **Get Favorites (POST)** — 
+- `200` **Check if Favorite** — 
+- `200` **Request New Product** — Product request submitted successfully. It will be reviewed by an administrator. [SUCCESS]
+- `200` **Search Product Requests** — 
+- `200` **Get Requests List** — 
+- `200` **Get Assigned Orders** — 
+- `200` **Get Wallet Balance** — 
+- `200` **Get Wallet Transactions** — 
+- `200` **Get Bank Transfers** — 
+- `200` **Get App Version (iOS)** — No app version found
+- `200` **Get App Version (Android)** — No app version found
+- `200` **Get Terms and Conditions** — Terms and conditions retrieved successfully
+- `200` **Create Notification Log** — Notification log created successfully
+- `200` **Get Notification Logs** — Notification logs retrieved successfully
+- `200` **Send Notification to All Users** — Notification sent to 0 users
+- `200` **Send Notification to Clients** — Notification sent to 0 clients
+- `200` **Send Notification to Collectors** — Notification sent to 0 collectors
+- `200` **Add Product to Cart** — Product added to cart successfully
+- `200` **Get Cart** — Cart retrieved successfully
+- `200` **Get Cart Items (Product Format)** — Cart items retrieved successfully
+- `200` **Increment Cart Item** — Cart item quantity increased successfully
+- `200` **Decrement Cart Item** — Cart item quantity decreased successfully
+- `200` **Remove from Cart** — Item removed from cart successfully
+- `200` **Clear Cart** — Cart cleared successfully
+
+## 400 Bad request (expected with sample Postman payloads)
+
+- `400` **Create Request** — Either product_id or item_name must be provided [MISSING_PARAMS]
+- `400` **Request Withdrawal** — Minimum withdrawal amount is 1000.0 [BELOW_THRESHOLD]
+- `400` **Request Bank Transfer** — Insufficient balance. Available: 0.0 [INSUFFICIENT_BALANCE]
+- `400` **Create Request from Cart** — Cart is empty [EMPTY_CART]
+- `400` **Create Multiple Requests from Cart** — Pickup date cannot be in the past [INVALID_PICKUP_DATE]
+
+## 403 Forbidden (customer token on collector routes)
+
+- `403` **Approve Product Request** — Only administrators can approve product requests [UNAUTHORIZED]
+- `403` **Reject Product Request** — Only administrators can reject product requests [UNAUTHORIZED]
+- `403` **Get Collector Profile** — Only collectors can access this endpoint [INVALID_USER_TYPE]
+- `403` **Get Collector Profile (POST)** — Only collectors can access this endpoint [INVALID_USER_TYPE]
+- `403` **Get Available Orders** — Only collectors can view available orders [INVALID_USER_TYPE]
+- `403` **Get Active Orders** — Only collectors can view active orders [INVALID_USER_TYPE]
+- `403` **Reject Available Order** — Only collectors can reject orders [INVALID_USER_TYPE]
+- `403` **Accept Order** — Only collectors can accept orders [INVALID_USER_TYPE]
+- `403` **Reject Order** — Only collectors can reject orders [INVALID_USER_TYPE]
+- `403` **Complete Order** — Only collectors can complete orders [INVALID_USER_TYPE]
+- `403` **Scan QR Code** — Only collectors can scan QR codes [INVALID_USER_TYPE]
+- `403` **Update Order Items** — Only collectors can update order items [INVALID_USER_TYPE]
+- `403` **Request Area Change** — Only collectors can request area changes [INVALID_USER_TYPE]
+- `403` **Get Area Change Requests** — Only collectors can view area change requests [INVALID_USER_TYPE]
+- `403` **Get Available Orders Grouped** — Only collectors can view available orders [INVALID_USER_TYPE]
+- `403` **Accept Order Group** — Only collectors can accept orders [INVALID_USER_TYPE]
+- `403` **Reject Order Group** — Only collectors can reject orders [INVALID_USER_TYPE]
+- `403` **Complete Order Group** — Only collectors can complete orders [INVALID_USER_TYPE]
+- `403` **Scan QR Group** — Only collectors can scan QR codes [INVALID_USER_TYPE]
+- `403` **Get Collector Pending Commissions** — Only collectors can view commissions [INVALID_USER_TYPE]
+- `403` **Transfer Commissions to Wallet** — Only collectors can transfer commissions [INVALID_USER_TYPE]
+
+## 404 Not found (sample IDs)
+
+- `404` **Get Order QR Code** — Order not found [NOT_FOUND]
+- `404` **Get Request Details** — Request not found [NOT_FOUND]
+- `404` **Get Request Details (Timeline)** — Request not found [NOT_FOUND]
+- `404` **Reject Request** — Request not found [NOT_FOUND]
+- `404` **Upload Receipt** — Request not found [NOT_FOUND]
+- `404` **Get Order Receipt** — Request not found [NOT_FOUND]
+- `404` **Rate Order** — Request not found [NOT_FOUND]
+
+## 5xx Server errors (bugs)
+
+- `500` **Get Collector Orders** — Object of type _Response is not JSON serializable [SERVER_ERROR]
+- `500` **Update Cart Item** — Internal server error [SERVER_ERROR]

@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/64
+- Message ID: 7011
+- Customer: Egyptian pet veterinarians community
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-06 16:18:39 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Inquiry about the best type of test for FIV/FELV.
+
+**الإجراء المطلوب:**
+No action required, informational request.
+
+## Original Message
+
+```
+مساء الخير يا دكاترة... ايه افضل نوع test لل
+ fiv/felv
+```

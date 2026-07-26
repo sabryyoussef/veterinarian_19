@@ -1,0 +1,52 @@
+worker_user=devworker
+worker_uid=1100
+total 40
+drwxr-xr-x 10 root      sabry 4096 Jul 23 14:52 .
+drwxr-xr-x  5 root      root  4096 Jul 20 06:58 ..
+drwxr-x---  3 root      sabry 4096 Jul 20 06:58 credentials
+drwxr-xr-x  3 root      root  4096 Jul 23 14:38 home
+drwxrwx---  2 root      sabry 4096 Jul 23 14:37 logs
+drwxr-xr-x  3 devworker sabry 4096 Jul 23 14:52 main-snapshots
+drwxrwsr-x  3 devworker sabry 4096 Jul 23 14:39 repos
+drwxr-x---  2 root      sabry 4096 Jul 20 06:58 runners
+drwxrwxr-x  3 devworker sabry 4096 Jul 23 14:44 uat
+drwxrwsr-x  3 devworker sabry 4096 Jul 23 14:53 worktrees
+---creds (no secrets)---
+total 60
+drwxr-x--- 4 root      sabry 4096 Jul 23 15:09 .
+drwxr-x--- 3 root      sabry 4096 Jul 20 06:58 ..
+-rw------- 1 devworker sabry 1679 Jul 23 15:09 app-4340040.pem
+-rw------- 1 devworker sabry  399 Jul 23 14:41 devhub_push_key
+-rw-r--r-- 1 root      sabry   95 Jul 23 14:41 devhub_push_key.pub
+drwx------ 2 devworker sabry 4096 Jul 23 15:25 gh-profile
+-rw------- 1 devworker sabry  828 Jul 23 15:09 github_known_hosts
+-rw-r--r-- 1 root      sabry  124 Jul 23 14:42 known_hosts
+-rw------- 1 devworker sabry 1679 Jul 23 15:09 merge-app-4341059.pem
+drwx------ 2 devworker sabry 4096 Jul 23 15:29 merge-gh-profile
+-rwx------ 1 devworker sabry 5146 Jul 23 15:09 mint-devhub-merge-token
+-rwx------ 1 devworker sabry 5305 Jul 23 15:09 mint-devhub-pr-token
+-rw------- 1 devworker sabry  224 Jul 23 14:41 push_ssh_config
+---runners---
+total 24
+drwxr-x---  2 root sabry 4096 Jul 20 06:58 .
+drwxr-xr-x 10 root sabry 4096 Jul 23 14:52 ..
+-rwxr-x---  1 root sabry 4237 Jul 20 06:58 backup
+-rwxr-x---  1 root sabry 4237 Jul 20 06:58 staging
+---repos---
+total 12
+drwxrwsr-x  3 devworker sabry 4096 Jul 23 14:39 .
+drwxr-xr-x 10 root      sabry 4096 Jul 23 14:52 ..
+drwxrwsr-x  8 devworker sabry 4096 Jul 23 15:24 petspot.git
+---worktrees---
+total 12
+drwxrwsr-x  3 devworker sabry 4096 Jul 23 14:53 .
+drwxr-xr-x 10 root      sabry 4096 Jul 23 14:52 ..
+drwxrws---  5 devworker sabry 4096 Jul 23 15:23 petspot
+---main-snapshots---
+total 12
+drwxr-xr-x  3 devworker sabry 4096 Jul 23 14:52 .
+drwxr-xr-x 10 root      sabry 4096 Jul 23 14:52 ..
+drwxr-xr-x 30 devworker sabry 4096 Jul 23 14:52 petspot
+791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8
+origin	git@github.com:sabryyoussef/veterinarian_19.git (fetch)
+origin	git@github.com:sabryyoussef/veterinarian_19.git (push)

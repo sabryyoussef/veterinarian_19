@@ -1,0 +1,89 @@
+2026-07-23 16:17:27,150 649800 INFO ? odoo: Odoo version 19.0 
+2026-07-23 16:17:27,151 649800 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf 
+2026-07-23 16:17:27,151 649800 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-07-23 16:17:27,151 649800 INFO ? odoo: database: odoo@localhost:5432 
+2026-07-23 16:17:27,529 649800 INFO ? odoo.service.server: HTTP service (werkzeug) running on 0.0.0.0:8129 
+2026-07-23 16:17:27,530 649800 INFO ? odoo.service.server: Stopping workers gracefully 
+2026-07-23 16:17:27,566 649800 INFO pet_spot_elsahel odoo.modules.loading: loading 1 modules... 
+2026-07-23 16:17:27,574 649800 INFO pet_spot_elsahel odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-07-23 16:17:27,720 649800 INFO pet_spot_elsahel odoo.modules.loading: loading 341 modules... 
+2026-07-23 16:17:27,729 649800 WARNING pet_spot_elsahel odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-07-23 16:17:28,235 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,009 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,668 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,669 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,669 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,669 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,669 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,669 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,671 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,671 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,672 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,672 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,672 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,793 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,794 649800 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 16:17:29,794 649800 INFO pet_spot_elsahel odoo.modules.loading: 341 modules loaded in 2.07s, 0 queries (+0 extra) 
+2026-07-23 16:17:30,522 649800 WARNING pet_spot_elsahel odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-07-23 16:17:30,783 649800 INFO pet_spot_elsahel odoo.modules.loading: Modules loaded. 
+2026-07-23 16:17:30,971 649800 INFO pet_spot_elsahel odoo.registry: Registry loaded in 3.441s 
+2026-07-23 16:17:31,272 649800 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 53, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/whatsapp_hub/models/whatsapp_campaign_hub_health.py", line 709, in service_run_health_check
+    singleton.write(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 390, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 16:17:31,273 649800 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 53, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/whatsapp_hub/models/whatsapp_campaign_hub_health.py", line 709, in service_run_health_check
+    singleton.write(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 390, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 16:17:31,279 649800 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.whatsapp_campaign_hub_health: whatsapp campaign hub health: status=healthy critical=0 warning=0 fingerprint=- 
+2026-07-23 16:17:31,335 649800 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.whatsapp_discuss_hub_health: whatsapp discuss hub health status=healthy issues=0 critical=0 warning=0 hub=[5, 10] allowlist=[10, 5] 

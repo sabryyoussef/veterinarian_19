@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/47
+- Message ID: 11084
+- Customer: Asta development
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-15 08:53:59 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+User reports performance issues in CRM when processing data, leading to long wait times.
+
+**الإجراء المطلوب:**
+Investigate CRM performance issues, optimize data processing methods, and retest.
+
+**نص مرفق مستخرج:**
+السلام عليكم ورحمة الله وبركاته اخوك طمنا عنك بقولك عنداسة بالله عليك دلوقتي أنا عندي مشكلة في الCRM لما بنيجي نعمل نقصي إنه أحد علشان خطر ياخد اليد وكلام من ده في الديتا بس بتاخد وقت طويل جدا مع عمل ما بتتعمل خلاص بعد كده هو لما بجي اكونفرتها لليد وكلام من ده بجي اكونفرتها للبرتنكي برضو بتاخد وقت كبير خلاص فبالله عليك كده وده من الURL بتعددها بس على طول ديرجت فعايزين نعرف إيه القصة دي عايزين كده تشيك بسيط كده من الزاعة
+
+## Original Message
+
+```
+Voice message: AC23E90B4E7BE188201D552C8CC7090D.oga
+```

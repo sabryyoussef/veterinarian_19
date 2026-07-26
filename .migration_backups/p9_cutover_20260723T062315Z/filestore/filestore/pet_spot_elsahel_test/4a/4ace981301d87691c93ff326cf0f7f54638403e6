@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 6331
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-05 06:53:28 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Internal communication from Torz Trading - Qatar client.
+
+**الإجراء المطلوب:**
+No action required, internal message only.
+
+## Original Message
+
+```
+Mohammed.Selim@erpbright.com
+```

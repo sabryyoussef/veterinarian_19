@@ -1,0 +1,42 @@
+=== FINAL STATE ===
+whatsapp_hub.discuss_cutover_enabled|True
+whatsapp_hub.discuss_hub_allowed_channel_ids|10
+whatsapp_hub.unified_outbound_enabled|True
+whatsapp_hub.unified_outbound_purposes|discuss
+ id | instance_name | unified_outbound_enabled | discuss_cutover_enabled 
+----+---------------+--------------------------+-------------------------
+  1 | sabry min     | t                        | t
+(1 row)
+
+ id |                 left                 | wa_outbound_mode 
+----+--------------------------------------+------------------
+ 10 | WA Group: Testopenclow (openlowtest) | hub
+  5 | WA: كريم ايهاب  الساحل 2022          | shadow
+(2 rows)
+
+hub_mode_count=1
+pending=0
+=== E1 SOAK JOBS (post-pilot) ===
+ id | state |   business_key   |  evolution_message_id  | retry_count 
+----+-------+------------------+------------------------+-------------
+  5 | sent  | discuss:10:11325 | 3EB0A279C304A9D0929044 |           0
+  6 | sent  | discuss:10:11326 | 3EB0590A4C9EE48064D9D1 |           0
+  7 | sent  | discuss:10:11327 | 3EB09F5EF5F266A3A07D16 |           0
+  8 | sent  | discuss:10:11328 | 3EB0A70F68599108CA1A8F |           0
+  9 | sent  | discuss:10:11329 | 3EB0B6E9B558C4C24F2495 |           0
+ 10 | sent  | discuss:10:11330 | 3EB0070288D9B14B65B2B1 |           0
+ 11 | sent  | discuss:10:11331 | 3EB0C15BE49980FF7FFA99 |           0
+ 12 | sent  | discuss:10:11332 | 3EB0815263ED014A6E3AA8 |           0
+ 13 | sent  | discuss:10:11333 | 3EB06B15B0EE71A4C1CCF7 |           0
+ 14 | sent  | discuss:10:11334 | 3EB0DF76F5AEE1C5330D0C |           0
+(10 rows)
+
+=== SHADOW #5 ===
+ classification | count 
+----------------+-------
+ matched        |     2
+(1 row)
+
+=== CAMPAIGN PATH ===
+403:        from .discuss_channel import _send_via_evolution, _create_wa_log
+428:                success, resp, wa_msg_id = _send_via_evolution(

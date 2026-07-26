@@ -1,0 +1,22 @@
+{
+  "workspace_id": 11,
+  "branch": "devhub/DW-7-add-human-approved-push-contract-test",
+  "commit_sha": "876b55ba6f1f934b079bedc1829aa1683d6230b1",
+  "remote": "devhub-uat",
+  "remote_branch": "devhub/DW-7-add-human-approved-push-contract-test",
+  "approval_id": 1,
+  "approver": "Administrator",
+  "approved_at": "2026-07-19 14:07:03 UTC",
+  "approval_binding_hash": "ccb6694aeedd82bef1daf9f582bbc37c8c405cd6e21fbab14f7044ec905d6fdc",
+  "push_mode": "normal",
+  "pre_push_remote_head": null,
+  "post_push_remote_head": "876b55ba6f1f934b079bedc1829aa1683d6230b1",
+  "pushed_at": "2026-07-19 14:07:12 UTC",
+  "push_record_id": 1,
+  "push_record_audit_hash": "994fb343cf35de828e60b03baf18d3435e882dd5d4495476b3756f7d0d9a63f4",
+  "result": "success",
+  "verification": "exact branch updated; other heads/tags unchanged",
+  "pr_created": false,
+  "merged": false,
+  "deployed": false
+}

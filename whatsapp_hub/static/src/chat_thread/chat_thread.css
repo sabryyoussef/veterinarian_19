@@ -1,0 +1,75 @@
+/* WhatsApp Hub conversation chat thread */
+
+.o_wa_chat_root {
+    background: #e5ddd5;
+    background-image:
+        linear-gradient(rgba(229, 221, 213, 0.92), rgba(229, 221, 213, 0.92));
+    min-height: calc(100vh - 120px);
+}
+
+.o_wa_chat_header {
+    background: #f0f2f5;
+}
+
+.o_wa_chat_thread {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.o_wa_chat_bubble {
+    max-width: min(72%, 42rem);
+    padding: 0.45rem 0.65rem 0.35rem;
+    border-radius: 0.55rem;
+    box-shadow: 0 1px 0.15rem rgba(0, 0, 0, 0.08);
+    background: #fff;
+    align-self: flex-start;
+}
+
+.o_wa_chat_bubble.o_wa_out {
+    align-self: flex-end;
+    background: #d9fdd3;
+}
+
+.o_wa_chat_bubble.o_wa_grouped {
+    margin-top: 0.05rem;
+}
+
+.o_wa_chat_bubble.o_wa_focus {
+    outline: 2px solid #25d366;
+    outline-offset: 2px;
+}
+
+.o_wa_sender {
+    color: #027eb5;
+}
+
+.o_wa_media_chip {
+    background: rgba(37, 211, 102, 0.12);
+    color: #0b6b36;
+    border: 1px solid rgba(37, 211, 102, 0.35);
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.o_wa_media_img {
+    max-width: 100%;
+    max-height: 280px;
+    border-radius: 0.4rem;
+    display: block;
+}
+
+.o_wa_media_audio,
+.o_wa_media_video {
+    max-width: 100%;
+}
+
+.o_wa_text {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.o_wa_meta .btn-link {
+    font-size: 0.75rem;
+    text-decoration: none;
+}

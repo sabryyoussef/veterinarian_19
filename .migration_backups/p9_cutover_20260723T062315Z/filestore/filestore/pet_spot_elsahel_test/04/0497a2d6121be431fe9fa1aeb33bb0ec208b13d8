@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 5746
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-02 16:26:38 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.00
+
+**الملخص:**
+Request for estimation on tasks discussed in a meeting.
+
+**الإجراء المطلوب:**
+No action required, informational message.
+
+## Original Message
+
+```
+مساء الخير 
+دا estimation طلبات ا محمد محسن في الميتنج مع مصطفي انهارده  يا دكتور محمود @226177423782093 
+دكتور صبري يبدأ شغل عليها ولا مهندسة رنيم هتبعت حاجه الأول 
+  @123154496262291
+```

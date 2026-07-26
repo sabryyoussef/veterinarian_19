@@ -1,0 +1,49 @@
+{
+  "status": true,
+  "message": "Vehicle types retrieved successfully",
+  "results": {
+    "vehicle_types": [
+      {
+        "id": 1,
+        "code": "bicycle",
+        "name": "Bicycle",
+        "name_ar": "دراجة هوائية",
+        "name_en": "Bicycle",
+        "sequence": 10
+      },
+      {
+        "id": 2,
+        "code": "motorcycle",
+        "name": "Motorcycle",
+        "name_ar": "دراجة نارية",
+        "name_en": "Motorcycle",
+        "sequence": 20
+      },
+      {
+        "id": 3,
+        "code": "car",
+        "name": "Car",
+        "name_ar": "سيارة",
+        "name_en": "Car",
+        "sequence": 30
+      },
+      {
+        "id": 4,
+        "code": "van",
+        "name": "Van",
+        "name_ar": "فان",
+        "name_en": "Van",
+        "sequence": 40
+      },
+      {
+        "id": 5,
+        "code": "truck",
+        "name": "Truck",
+        "name_ar": "شاحنة",
+        "name_en": "Truck",
+        "sequence": 50
+      }
+    ],
+    "total": 5
+  }
+}

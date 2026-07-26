@@ -1,0 +1,13 @@
+version 19.0+e
+auth admin 2
+work_count 44
+board_ids []
+caps [{'id': 1, 'technical_name': 'work', 'installed': True, 'sequence': 10}, {'id': 2, 'technical_name': 'analysis', 'installed': True, 'sequence': 20}, {'id': 3, 'technical_name': 'plan', 'installed': True, 'sequence': 30}, {'id': 4, 'technical_name': 'approval', 'installed': True, 'sequence': 40}, {'id': 5, 'technical_name': 'execution', 'installed': True, 'sequence': 50}, {'id': 6, 'technical_name': 'git', 'installed': True, 'sequence': 60}, {'id': 7, 'technical_name': 'deploy', 'installed': True, 'sequence': 70}]
+sample_work [{'id': 1, 'name': '[Personal] Account access issues for petspot', 'current_phase': 'received', 'op_backend_id': [1, 'OpenProject Main']}]
+action_open_board {'type': 'ir.actions.act_window', 'name': 'Workflow', 'res_model': 'dev.workflow.board', 'view_mode': 'form', 'res_id': 2, 'target': 'current'}
+board [{'id': 2, 'name': 'Dev Hub Workflow', 'stage_summary': 'Work → Analysis → Plan → Approval → Execution → Git / GitHub → Deploy', 'work_item_count': 44, 'analysis_count': 47, 'plan_count': 25, 'awaiting_approval_count': 4, 'execution_count': 0}]
+menus [{'id': 918, 'name': 'Workflow', 'complete_name': 'Dev Hub/Workflow'}, {'id': 862, 'name': 'Recent Work', 'complete_name': 'Dev Hub/Recent Work'}, {'id': 874, 'name': 'Active Work', 'complete_name': 'Dev Hub/Active Work'}, {'id': 860, 'name': 'Dev Hub', 'complete_name': 'Dev Hub'}]
+gen_methods ok
+intake_count 0
+source_count 1
+PASS_UI_RPC

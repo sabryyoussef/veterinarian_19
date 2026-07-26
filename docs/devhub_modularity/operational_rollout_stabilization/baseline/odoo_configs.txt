@@ -1,0 +1,8 @@
+=== TEST CONF ===
+# Community + Enterprise + Pet Spot Elsahel veterinary addons (repo root = addons_path).
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+http_port = 8028
+=== PROD CONF ===
+# Community + Enterprise + Pet Spot Elsahel veterinary addons (repo root = addons_path).
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+http_port = 8027

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_vetution" model="ir.ui.view">
+        <field name="name">product.template.form.vetution</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Vetution" name="vetution">
+                    <group string="Identity / provenance">
+                        <group>
+                            <field name="vetution_id"/>
+                            <field name="vetution_slug"/>
+                            <field name="vetution_url" widget="url"/>
+                            <field name="vetution_synced_on"/>
+                        </group>
+                        <group>
+                            <field name="vetution_cold_chain"/>
+                            <field name="vetution_show_price"/>
+                            <field name="vetution_rate"/>
+                            <field name="vetution_rates_count"/>
+                        </group>
+                    </group>
+                    <group string="Taxonomy">
+                        <group>
+                            <field name="vetution_brand_id"/>
+                            <field name="vetution_species_ids" widget="many2many_tags"/>
+                            <field name="vetution_ingredient_ids" widget="many2many_tags"/>
+                            <field name="vetution_country_ids" widget="many2many_tags"/>
+                            <field name="product_tag_ids" widget="many2many_tags"/>
+                            <field name="public_categ_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="vetution_meta_title"/>
+                            <field name="vetution_meta_description"/>
+                            <field name="vetution_similar_ids" widget="many2many_tags"/>
+                            <field name="vetution_alternative_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group string="Canonical content">
+                        <field name="vetution_description"/>
+                        <field name="vetution_composition"/>
+                        <field name="vetution_dosage"/>
+                        <field name="vetution_indications"/>
+                        <field name="vetution_contraindications"/>
+                        <field name="vetution_side_effects"/>
+                        <field name="vetution_precautions"/>
+                        <field name="vetution_warnings"/>
+                        <field name="vetution_storage"/>
+                        <field name="vetution_features"/>
+                        <field name="vetution_feeding_guide"/>
+                        <field name="vetution_analytical_constituents"/>
+                        <field name="vetution_how_to_use"/>
+                        <field name="vetution_video_html"/>
+                    </group>
+                    <group string="Content blocks (lossless)">
+                        <field name="vetution_content_ids" nolabel="1" colspan="2">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="label"/>
+                                <field name="label_normalized" optional="show"/>
+                                <field name="is_mapped"/>
+                                <field name="body_html"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group string="Raw payload">
+                        <field name="vetution_raw_json" nolabel="1" colspan="2"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_search_vetution" model="ir.ui.view">
+        <field name="name">product.template.search.vetution</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="vetution_id"/>
+                <field name="vetution_slug"/>
+                <field name="vetution_brand_id"/>
+                <filter
+                    string="Has Vetution ID"
+                    name="filter_vetution_imported"
+                    domain="[('vetution_id', '!=', False)]"
+                />
+                <filter
+                    string="Cold Chain"
+                    name="filter_vetution_cold_chain"
+                    domain="[('vetution_cold_chain', '=', True)]"
+                />
+                <separator/>
+                <filter
+                    string="Vetution Brand"
+                    name="groupby_vetution_brand"
+                    context="{'group_by': 'vetution_brand_id'}"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_vetution_product_template" model="ir.actions.act_window">
+        <field name="name">Vetution Products</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('vetution_id', '!=', False)]</field>
+        <field name="context">{'search_default_filter_vetution': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Vetution products yet</p>
+            <p>Run <b>Configuration &gt; Sync from Vetution</b> to import the catalog.</p>
+        </field>
+    </record>
+</odoo>

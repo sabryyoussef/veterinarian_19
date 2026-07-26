@@ -1,0 +1,8 @@
+master_hostname=master
+prod_active=active
+prod_pid=3429925
+test_active=active
+test_pid=424403
+unrelated=367
+dirty_branch=feature/resume-portability-candidates
+dirty_HEAD=22e8b54

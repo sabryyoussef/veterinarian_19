@@ -1,0 +1,2 @@
+9:addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_staging,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+target_conf_no_overlay

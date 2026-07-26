@@ -1,0 +1,5 @@
+{
+  "prod_service": "inactive",
+  "test_service": "active",
+  "prod_check_error": "[Errno 111] Connection refused"
+}

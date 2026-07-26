@@ -1,0 +1,74 @@
+# Development Plan — OP#356 / Odoo #47
+
+**Title:** Investigate limited courses visibility  
+**Sprint:** S1 — Day 1–2  
+**Effort:** 0.5–1 day (investigation first; code only if proven bug)  
+**Module:** N/A until root cause known (`edafaa_kafaat_sis` / data)
+
+---
+
+## Steps & time
+
+| Step | Hours | Action |
+|------|-------|--------|
+| 1 | 0.5 | Get client screenshot + menu path + user login |
+| 2 | 1 | SQL inventory on TR_K19 / sabry-test |
+| 3 | 1 | Check user groups vs Courses menu ACL |
+| 4 | 1 | Reproduce Program → Linked Courses domain |
+| 5 | 1 | Write findings MD + remediation |
+| 6 | 0–4 | **Only if bug:** fix domain / menu / data |
+| 7 | 0.5 | OP/Odoo comment + client explain |
+
+---
+
+## Investigation commands
+
+```sql
+SELECT id, name, code, program_id, active FROM op_course ORDER BY id;
+SELECT active, COUNT(*) FROM op_course GROUP BY active;
+SELECT p.id, p.name, COUNT(c.id) AS courses
+FROM op_program p
+LEFT JOIN op_course c ON c.program_id = p.id AND COALESCE(c.active, true)
+GROUP BY p.id, p.name;
+```
+
+```python
+# odoo shell
+env.ref('openeducat_core.menu_op_course_sub').group_ids.mapped('name')
+env.user.groups_id.mapped('full_name')
+```
+
+---
+
+## Likely outcomes → action
+
+| Finding | Action | Extra effort |
+|---------|--------|--------------|
+| Program has only 2 linked courses | Data: link/create courses | Hours |
+| User not SIS admin | Train: use Program tab OR grant admin | None |
+| Courses archived | Unarchive | Minutes |
+| `program_id` NULL orphans | Assign program | Hours |
+| Admin global list still wrong | Code bug fix | 0.5–1 d |
+
+### Code evidence (already known)
+
+- Menu ACL: `edafaa_kafaat_sis/views/menu_views.xml`  
+- Domain: `edafaa_training_crm/models/op_program.py` → `action_view_linked_courses`
+
+---
+
+## Deliverable
+
+`docs/op_meeting_nabil/analysis/WP356_FINDINGS.md` with root cause + fix.
+
+---
+
+## Acceptance
+
+- [ ] Root cause documented  
+- [ ] Client re-verified  
+- [ ] Findings on OP#356 / Odoo #47  
+
+## Do not
+
+Change menu ACL or domains before confirming the user’s exact screen.

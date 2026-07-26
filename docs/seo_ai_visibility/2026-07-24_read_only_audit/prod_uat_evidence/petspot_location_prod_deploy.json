@@ -1,0 +1,188 @@
+{
+  "timestamp": "2026-07-24T16:43:53.084449+00:00",
+  "phase": "petspot_location_prod_deploy",
+  "target": {
+    "url": "http://127.0.0.1:8027",
+    "db": "pet_spot_elsahel",
+    "public": "https://drpaws.ai",
+    "website_id": 1
+  },
+  "canonical": {
+    "name": "pet.spot",
+    "lat": 30.9909056,
+    "lng": 28.6842417,
+    "maps": "https://www.google.com/maps?q=30.9909056,28.6842417",
+    "address_en": "Main Road, beside Amwaj Gate 1, Sidi Abdel Rahman, North Coast, Egypt"
+  },
+  "pages": [
+    {
+      "url": "/emergency-vet-north-coast",
+      "id": 7,
+      "action": "updated"
+    },
+    {
+      "url": "/veterinary-clinic-near-amwaj",
+      "id": 8,
+      "action": "updated"
+    },
+    {
+      "url": "/veterinary-home-visits-sahel",
+      "id": 9,
+      "action": "updated"
+    },
+    {
+      "url": "/pet-vaccinations-north-coast",
+      "id": 10,
+      "action": "updated"
+    },
+    {
+      "url": "/grooming-boarding-sahel",
+      "id": 11,
+      "action": "updated"
+    },
+    {
+      "url": "/contact-directions-booking",
+      "id": 12,
+      "action": "updated"
+    }
+  ],
+  "blog": {
+    "blog_id": 2,
+    "tags": {
+      "Emergency Care": 1,
+      "North Coast Pet Care": 2,
+      "Dogs": 3,
+      "Cats": 4,
+      "Vaccinations": 5,
+      "Travel and Summer Safety": 6
+    }
+  },
+  "articles": [
+    {
+      "id": 1,
+      "name": "What to do during a pet emergency in North Coast",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1"
+    },
+    {
+      "id": 2,
+      "name": "Heatstroke signs in dogs and cats during Sahel summer",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2"
+    },
+    {
+      "id": 3,
+      "name": "How to travel safely with your pet to North Coast",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/how-to-travel-safely-with-your-pet-to-north-coast-3"
+    },
+    {
+      "id": 4,
+      "name": "Finding a 24/7 veterinarian near Amwaj",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/finding-a-247-veterinarian-near-amwaj-4"
+    },
+    {
+      "id": 5,
+      "name": "Pet vaccination preparation before travelling",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/pet-vaccination-preparation-before-travelling-5"
+    },
+    {
+      "id": 6,
+      "name": "Common digestive problems during summer trips",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/common-digestive-problems-during-summer-trips-6"
+    },
+    {
+      "id": 7,
+      "name": "When a pet needs a clinic visit versus a home visit",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/when-a-pet-needs-a-clinic-visit-versus-a-home-visit-7"
+    },
+    {
+      "id": 8,
+      "name": "Pet grooming and parasite prevention during summer",
+      "action": "updated_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/pet-grooming-and-parasite-prevention-during-summer-8"
+    }
+  ],
+  "blog_posts_patched": [],
+  "whatsapp_templates_updated": [],
+  "facebook_posts": {
+    "before": [
+      {
+        "id": 3,
+        "state": "draft",
+        "scheduled_date": false,
+        "live_post_ids": [],
+        "image_ids": [
+          1412
+        ]
+      },
+      {
+        "id": 2,
+        "state": "scheduled",
+        "scheduled_date": "2026-08-05 07:00:00",
+        "live_post_ids": [],
+        "image_ids": [
+          1408
+        ]
+      },
+      {
+        "id": 1,
+        "state": "draft",
+        "scheduled_date": false,
+        "live_post_ids": [],
+        "image_ids": [
+          1407
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": 3,
+        "state": "draft",
+        "scheduled_date": false,
+        "live_post_ids": [],
+        "image_ids": [
+          1412
+        ]
+      },
+      {
+        "id": 2,
+        "state": "scheduled",
+        "scheduled_date": "2026-08-05 07:00:00",
+        "live_post_ids": [],
+        "image_ids": [
+          1408
+        ]
+      },
+      {
+        "id": 1,
+        "state": "draft",
+        "scheduled_date": false,
+        "live_post_ids": [],
+        "image_ids": [
+          1407
+        ]
+      }
+    ]
+  },
+  "untouched": [
+    "GBP profiles",
+    "Facebook scheduling (post #2 left scheduled; #1/#3 draft)",
+    "External listings",
+    "DNS / Cloudflare",
+    "Ownership dispute public disclosure"
+  ],
+  "signage_gbp_blocker": "Permanent sign reads PET SPOT; profile name pet.spot — no verification submit until Sabry chooses A) add visible dot PET.SPOT or B) rename profile to match sign. Do not edit disputed legacy listing."
+}

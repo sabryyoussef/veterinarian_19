@@ -1,0 +1,8 @@
+{
+  "status": "DEPLOYMENT READY",
+  "reason": "Test deploy target id=4 exists, but Dev Hub deploy requires merged_reviewed + merge record. UAT keeps Draft PR unmerged.",
+  "target_id": 4,
+  "commit_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+  "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+  "production_deploy": false
+}

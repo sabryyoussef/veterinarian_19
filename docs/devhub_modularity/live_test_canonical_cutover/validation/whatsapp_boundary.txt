@@ -1,0 +1,7 @@
+whatsapp_hub|installed|19.0.1.1.0
+devhub_whatsapp|installed|19.0.9.0.2
+model_intake|1
+model_source|1
+hub_message_model|11
+intake_count|1
+source_count|1

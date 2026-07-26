@@ -1,0 +1,4 @@
+GATES {"G1_http": true, "G2_evo_active": true, "G2_recent_hub10_sent": true, "G3_ch10_hub": true, "G4_ch5_shadow": true, "G5_shadow_evidence": true, "G6_jid_conv": true, "G7_pending0": true, "G8_allowlist": true, "G9_hub_set": true, "G10_quarantine": true, "G11_campaign": true}
+T0 {"ch10_mode": "hub", "ch5_mode": "shadow", "allowlist": "10", "allow_parsed": [10], "hub_mode_ids": [10], "pending": [], "jobs5": 0, "jobs10": 13, "conv7_msgs": 10, "conv8_msgs": 24, "wa_log_count": 36, "wa_msg_count": 38, "matched5": 10, "mismatch5": 0, "global_u": "True", "global_d": "True", "purposes": "discuss", "inst_u": true, "inst_d": true, "last10": [[14, "sent", 0, "discuss:10:11334"], [13, "sent", 0, "discuss:10:11333"], [12, "sent", 0, "discuss:10:11332"]]}
+HARD_GATE PASS
+PREFLIGHT_OK

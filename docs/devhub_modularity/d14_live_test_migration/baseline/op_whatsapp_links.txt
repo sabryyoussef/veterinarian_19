@@ -1,0 +1,17 @@
+work_with_op_backend|45
+work_with_op_url|45
+project_op_map_rel|1
+whatsapp_bulk_line
+whatsapp_bulk_wizard
+whatsapp_bulk_wizard_attachment_rel
+whatsapp_contact
+whatsapp_conversation
+whatsapp_group
+whatsapp_instance
+whatsapp_message
+whatsapp_message_event
+whatsapp_outbound_message
+whatsapp_send_wizard
+whatsapp_wizard_attachment_rel
+work_with_op_wp|45
+op_backend_col_type|integer

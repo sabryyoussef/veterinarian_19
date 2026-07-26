@@ -1,0 +1,33 @@
+POST cutover False
+POST allowlist False
+POST purposes discuss
+hub_ver 19.0.1.8.0
+chat_ver 19.0.1.17.0
+ch 5 hub
+ch 10 hub
+health_fields ['activity_state', 'last_status']
+discuss_health {}
+any_inst_camp_cutover False
+LEGACY_SENDS 10
+HUB_TRANSPORT 0
+REPLAY_SENDS 0
+CAMPAIGN_ID 16
+CAMPAIGN_NAME P5C Controlled Campaign Shadow (PROD)
+RECIPIENTS 10
+SEND_MODE immediate
+MODE shadow
+OBSERVATIONS 20
+MATCHED 10
+MISMATCH 0
+REPLAY_SKIPPED 10
+OUT_DELTA 0
+CAMPAIGN_KEY_DELTA 0
+FINAL_TEST_CAMPAIGN_MODE shadow
+NON_LEGACY_OTHERS []
+FINAL cutover False
+FINAL allowlist False
+FINAL purposes discuss
+FINAL camp_jobs 0
+FINAL ch 5 hub
+FINAL ch 10 hub
+PROD_SHADOW_OK

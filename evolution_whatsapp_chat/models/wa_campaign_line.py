@@ -2,10 +2,18 @@
 """
 Campaign Line - Individual recipient tracking
 """
+import hashlib
 import logging
+
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
+
+
+def campaign_line_body_hash(text):
+    """Canonical SHA256 of the exact outbound text (no semantic rewriting)."""
+    return hashlib.sha256((text or "").encode("utf-8")).hexdigest()
 
 
 class WhatsAppCampaignLine(models.Model):
@@ -42,6 +50,28 @@ class WhatsAppCampaignLine(models.Model):
         help='Final message sent to this contact (after personalisation)'
     )
 
+    # P5E: immutable render snapshot (authoring = campaign.message → freeze once)
+    rendered_body = fields.Text(
+        string='Frozen Rendered Body',
+        help='Immutable snapshot used for Hub/shadow admit and send. '
+             'Authoring source remains campaign.message; freeze once before send.',
+    )
+    rendered_body_hash = fields.Char(
+        string='Rendered Body Hash',
+        index=True,
+        help='SHA256 of rendered_body',
+    )
+    rendered_at = fields.Datetime(
+        string='Rendered At',
+        readonly=True,
+    )
+    rendered_locked = fields.Boolean(
+        string='Rendered Locked',
+        default=False,
+        index=True,
+        help='When True, processor must not re-render from campaign.message',
+    )
+
     # ── Status Tracking ───────────────────────────────────────────────────────
 
     status = fields.Selection([
@@ -70,6 +100,18 @@ class WhatsAppCampaignLine(models.Model):
         help='Link to outbound queue entry'
     )
 
+    # Phase 5A: soft Hub refs (projection; no hard FK to avoid module coupling)
+    hub_message_id = fields.Integer(
+        string='Hub Message ID',
+        index=True,
+        help='whatsapp.message id when sent via Hub unified outbound',
+    )
+    hub_outbound_id = fields.Integer(
+        string='Hub Outbound Job ID',
+        index=True,
+        help='whatsapp.outbound.message id for Hub Campaign path',
+    )
+
     # ── Timestamps ────────────────────────────────────────────────────────────
 
     sent_date = fields.Datetime(
@@ -83,6 +125,81 @@ class WhatsAppCampaignLine(models.Model):
     read_date = fields.Datetime(
         string='Read At', readonly=True
     )
+
+    def service_freeze_rendered_body(self):
+        """
+        Freeze Campaign template render into an immutable line snapshot (P5E).
+
+        Authoring source: campaign.message (+ personalise placeholders).
+        If already locked with a valid snapshot, return it unchanged (idempotent).
+        """
+        self.ensure_one()
+        if (
+            self.rendered_locked
+            and self.rendered_body is not False
+            and self.rendered_body is not None
+            and self.rendered_body_hash
+        ):
+            return self.rendered_body
+
+        campaign = self.campaign_id
+        if not campaign:
+            raise ValueError("Campaign line has no campaign")
+        body = campaign._render_message_for_line(self)
+        body_hash = campaign_line_body_hash(body)
+        self.write(
+            {
+                "rendered_body": body,
+                "rendered_body_hash": body_hash,
+                "rendered_at": fields.Datetime.now(),
+                "rendered_locked": True,
+                "message": body,
+            }
+        )
+        return body
+
+    def get_frozen_or_freeze_body(self):
+        """Return frozen body, freezing once if needed."""
+        self.ensure_one()
+        return self.service_freeze_rendered_body()
+
+    def action_admin_rerender_for_hub(self):
+        """
+        Admin: unlock+re-freeze from campaign.message only before Hub admission.
+
+        Blocked when hub_message_id / hub_outbound_id exist (immutable logical payload).
+        """
+        for line in self:
+            if line.hub_message_id or line.hub_outbound_id:
+                raise UserError(
+                    "Cannot re-render line %s: Hub message/job already exists "
+                    "(immutable after Hub admission)."
+                    % line.id
+                )
+            if line.wa_message_id:
+                raise UserError(
+                    "Cannot re-render line %s: provider ID already set."
+                    % line.id
+                )
+            line.write(
+                {
+                    "rendered_locked": False,
+                    "rendered_body": False,
+                    "rendered_body_hash": False,
+                    "rendered_at": False,
+                }
+            )
+            line.service_freeze_rendered_body()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "Re-render for Hub",
+                "message": f"Re-froze {len(self)} line(s) from campaign.message",
+                "type": "success",
+                "sticky": False,
+            },
+        }
 
     # ── Display ───────────────────────────────────────────────────────────────
 
@@ -122,13 +239,50 @@ class WhatsAppCampaignLine(models.Model):
     # ── Actions ───────────────────────────────────────────────────────────────
 
     def action_retry(self):
-        """Retry sending this message."""
+        """Retry sending this message (Hub-safe: no new business_key)."""
         for line in self:
-            if line.status == 'failed':
+            if line.status == 'failed' and line._hub_retry_allowed():
                 line.write({
                     'status': 'pending',
                     'error_msg': False,
                 })
+        return True
+
+    def _hub_retry_allowed(self):
+        """
+        True if this failed line may be reset to pending.
+
+        Provider-accepted Hub jobs must not be resent under a new identity.
+        Pending/processing Hub jobs should not be force-reset to create duplicates.
+        """
+        self.ensure_one()
+        if not self.hub_outbound_id and not self.hub_message_id:
+            return True  # legacy line
+        if "whatsapp.outbound.message" not in self.env:
+            return True
+        Out = self.env["whatsapp.outbound.message"].sudo()
+        job = Out.browse(self.hub_outbound_id) if self.hub_outbound_id else Out.browse()
+        if not job and self.hub_message_id:
+            job = Out.search(
+                [("message_id", "=", self.hub_message_id)], limit=1
+            )
+        if not job:
+            return True
+        evo = (job.evolution_message_id or "").strip()
+        if job.state == "sent" or evo:
+            return False
+        if job.state in ("pending", "processing"):
+            return False
+        # failed/cancelled without provider id → reuse same business_key on re-admit
+        if job.state == "failed":
+            job.write(
+                {
+                    "state": "pending",
+                    "next_retry_at": False,
+                    "error_message": False,
+                    "retry_count": 0,
+                }
+            )
         return True
 
     def action_mark_sent(self):

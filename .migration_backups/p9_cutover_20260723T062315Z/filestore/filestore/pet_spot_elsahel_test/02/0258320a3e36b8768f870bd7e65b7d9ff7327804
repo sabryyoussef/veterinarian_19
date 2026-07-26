@@ -1,0 +1,27 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 6327
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-05 06:48:26 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Inquiry about project status from client.
+
+**الإجراء المطلوب:**
+No action required, just follow up with the client.
+
+## Original Message
+
+```
+Good morning @all 
+What’s the status of the project ? 
+@71760380710931 @17146180563019 please share project plan and status
+```

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_public_category_form_vetution" model="ir.ui.view">
+        <field name="name">product.public.category.form.vetution</field>
+        <field name="model">product.public.category</field>
+        <field name="inherit_id" ref="website_sale.product_public_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Vetution">
+                    <field name="vetution_id"/>
+                    <field name="vetution_slug"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

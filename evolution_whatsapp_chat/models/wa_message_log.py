@@ -27,6 +27,33 @@ class WaMessageLog(models.Model):
     queue_id   = fields.Many2one(
         'integration.outbound.queue', string='Queue Record', ondelete='set null'
     )
+    # Soft provenance for Hub mirror (Phase 2) — optional, no hard Hub dependency
+    campaign_id = fields.Many2one(
+        'wa.campaign', string='Campaign', index=True, ondelete='set null'
+    )
+    campaign_line_id = fields.Many2one(
+        'wa.campaign.line', string='Campaign Line', index=True, ondelete='set null'
+    )
+
+    # Phase 4: Discuss / Hub provenance (compatibility projection)
+    mail_message_id = fields.Integer(
+        string='Mail Message ID', index=True,
+        help='Source discuss mail.message id for Hub discuss:{channel}:{mm} identity.',
+    )
+    hub_message_id = fields.Many2one(
+        'whatsapp.message', string='Hub Message', index=True, ondelete='set null',
+        help='Canonical Hub message when send_origin=hub_unified (or after mirror).',
+    )
+    send_origin = fields.Selection(
+        [
+            ('legacy', 'Legacy Evolution send'),
+            ('hub_unified', 'Hub unified outbound'),
+        ],
+        string='Send Origin',
+        default='legacy',
+        index=True,
+        help='whatsapp.message is canonical; this log is a compatibility projection.',
+    )
 
     # ── Message content ───────────────────────────────────────────────────────
 

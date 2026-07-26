@@ -1,0 +1,6 @@
+# T1 Permanent SSH pin
+Date: 2026-07-20T05:43:17Z
+alias: sabry3-precision-5540-ts
+fingerprint: SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU MATCH
+BatchMode: PASS
+StrictHostKeyChecking: accept-new

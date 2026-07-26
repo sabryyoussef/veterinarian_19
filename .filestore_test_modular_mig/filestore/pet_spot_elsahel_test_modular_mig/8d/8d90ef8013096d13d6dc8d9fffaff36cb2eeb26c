@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/47
+- Message ID: 12219
+- Customer: Asta development
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-18 18:08:38 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+User is inquiring about production visibility and null values without clear context.
+
+**الإجراء المطلوب:**
+Clarify the issue with the user regarding production visibility and null values.
+
+## Original Message
+
+```
+طيب ال production مش هتظه. الا لما تعمل رحله تعليميه كامله 
+جبتهم ازاي كده وازاي بيجيلك null
+```

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_odoo_runtime_list" model="ir.ui.view">
+        <field name="name">dev.odoo.runtime.list</field>
+        <field name="model">dev.odoo.runtime</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="odoo_major"/>
+                <field name="machine_id"/>
+                <field name="baseline_database_identifier"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_odoo_runtime_form" model="ir.ui.view">
+        <field name="name">dev.odoo.runtime.form</field>
+        <field name="model">dev.odoo.runtime</field>
+        <field name="arch" type="xml">
+            <form string="Odoo Runtime">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="odoo_major"/>
+                            <field name="machine_id"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="odoo_bin_path"/>
+                            <field name="venv_path"/>
+                            <field name="community_addons_path"/>
+                            <field name="enterprise_addons_path"/>
+                            <field name="baseline_database_identifier"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Addon Sources">
+                            <field name="addon_source_ids">
+                                <list editable="bottom">
+                                    <field name="project_id"/>
+                                    <field name="repository_id"/>
+                                    <field name="addons_subdirectory"/>
+                                    <field name="absolute_addons_root"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Environments">
+                            <field name="environment_ids" readonly="1">
+                                <list>
+                                    <field name="project_id"/>
+                                    <field name="name"/>
+                                    <field name="database_identifier"/>
+                                    <field name="port"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_odoo_runtime" model="ir.actions.act_window">
+        <field name="name">Odoo Runtimes</field>
+        <field name="res_model">dev.odoo.runtime</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_dev_environment_runtime_form" model="ir.ui.view">
+        <field name="name">dev.environment.runtime.form</field>
+        <field name="model">dev.environment</field>
+        <field name="inherit_id" ref="devhub_core.view_dev_environment_form"/>
+        <field name="arch" type="xml">
+            <field name="environment_type" position="after">
+                <field name="environment_role"/>
+                <field name="runtime_id"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_dev_environment_runtime_list" model="ir.ui.view">
+        <field name="name">dev.environment.runtime.list</field>
+        <field name="model">dev.environment</field>
+        <field name="inherit_id" ref="devhub_core.view_dev_environment_list"/>
+        <field name="arch" type="xml">
+            <field name="environment_type" position="after">
+                <field name="environment_role"/>
+                <field name="runtime_id"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_dev_project_runtime_form" model="ir.ui.view">
+        <field name="name">dev.project.runtime.form</field>
+        <field name="model">dev.project</field>
+        <field name="inherit_id" ref="devhub_core.view_dev_project_form"/>
+        <field name="arch" type="xml">
+            <field name="default_environment_id" position="after">
+                <field name="analysis_runtime_id"/>
+            </field>
+        </field>
+    </record>
+</odoo>

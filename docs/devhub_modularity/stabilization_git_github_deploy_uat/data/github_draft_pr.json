@@ -1,0 +1,11 @@
+{
+  "baseRefName": "staging",
+  "headRefName": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+  "isDraft": true,
+  "mergeable": "UNKNOWN",
+  "number": 15,
+  "state": "OPEN",
+  "url": "https://github.com/sabryyoussef/veterinarian_19/pull/15",
+  "creation_path": "gh_cli_draft_after_devhub_push",
+  "devhub_github_app": "NO-GO (empty App broker under /srv/devhub/credentials/github)"
+}

@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/64
+- Message ID: 11749
+- Customer: Egyptian pet veterinarians community
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-17 14:27:13 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Message from the Egyptian pet veterinarians community regarding a statement from the Ministry of Agriculture.
+
+**الإجراء المطلوب:**
+none
+
+## Original Message
+
+```
+مساء الخير 
+بيان وزارة الزراعه اليوم على ملف الكلاب الشارع بعد تدخل رئاسى وتولى الأمر الأكاديمية العسكرية
+```

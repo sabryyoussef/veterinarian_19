@@ -1,0 +1,12 @@
+channel_id 8 wa_phone 201008881111
+send1 True UATEVO1 http_calls 1
+send2 True UATEVO2 http_calls 2
+logs [(4, 'UATEVO1', 'sent', 8), (5, 'UATEVO2', 'sent', 8)]
+hub_msgs [(4, 4, 4, 8, 'UATEVO1', 5560), (5, 5, 4, 8, 'UATEVO2', 5560)]
+unique_conversations 1 [4]
+outbound_delta 0
+after_status 4 delivered 1
+campaign_hub 6 15 3004 campaign campaign
+LEGACY_HTTP_CALLS 2
+HUB_OUTBOUND_UNCHANGED True
+UAT_OK True

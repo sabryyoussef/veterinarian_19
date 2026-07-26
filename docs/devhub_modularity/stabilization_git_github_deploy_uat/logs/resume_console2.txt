@@ -1,0 +1,44 @@
+[2026-07-23T14:53:36] exact-hash ok plan=ecc773ad6a86de8f...
+[2026-07-23T14:53:45] screenshot 01_work_created.png :: Work Item 3320
+[2026-07-23T14:53:48] screenshot 02_analysis.png :: Analysis 2691
+[2026-07-23T14:53:50] screenshot 03_plan.png :: Plan 2475
+[2026-07-23T14:53:54] screenshot 04_approval.png :: Approval 2273 exact-hash
+[2026-07-23T14:53:57] screenshot 05_workflow_pre_execution.png :: Workflow before execution
+[2026-07-23T14:53:57] reusing workspace 1847 state=ready
+[2026-07-23T14:53:57] skip confirm; state=ready
+[2026-07-23T14:53:57] workspace ready state=ready branch=devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only
+[2026-07-23T14:53:59] session non-blocker: <Fault 1: 'Traceback (most recent call last):\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3848, in _determine_fields_to_fetch\n    field = self._fields[field_name]\n            ~~~~~~~~~~~~^^^^^^^^^^^^\nKeyError: \'branch\'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rpc/controllers/xmlrpc.py", line 162, in xmlrpc_2\n    response = self._xmlrpc(service)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rpc/controllers/xmlrpc.py", line 134, in _xmlrpc\n    result = dispatch_rpc(service, method, params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/http.py", line 439, in dispatch_rpc\n    return dispatch(method, params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py", line 129, in dispatch\n    res = execute_cr(cr, uid, model, method_, args, kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py", line 146, in execute_cr\n    result = retrying(partial(call_kw, recs, method, args, kw), env)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py", line 184, in retrying\n    result = func()\n             ^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py", line 93, in call_kw\n    result = method(recs, *args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3486, in read\n    self._origin.fetch(fields)\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3789, in fetch\n    fields_to_fetch = self._determine_fields_to_fetch(field_names, ignore_when_in_cache=True)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3850, in _determine_fields_to_fetch\n    raise ValueError(f"Invalid field {field_name!r} on {self._name!r}") from e\nValueError: Invalid field \'branch\' on \'dev.session\'\n'>
+[2026-07-23T14:54:02] screenshot 06_session_workspace.png :: Isolated workspace / session linkage
+[2026-07-23T14:54:02] worker stage=implement workspace=1847
+[2026-07-23T14:54:23] screenshot 07_execution.png :: After worker implementation
+[2026-07-23T14:54:25] screenshot 08_checkpoint.png :: Checkpoint evidence
+[2026-07-23T14:54:25] worker stage=commit_approve workspace=1847
+[2026-07-23T14:54:31] Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/resume_stabilization_uat.py", line 560, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/resume_stabilization_uat.py", line 373, in main
+    ca = run_worker("commit_approve", ws_id, MARKER, commit_msg)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/resume_stabilization_uat.py", line 104, in run_worker
+    raise RuntimeError(
+RuntimeError: worker stage commit_approve failed rc=1 payload={'effective_uid': 1100, 'effective_user': 'devworker', 'error': 'Only a Dev Hub manager may authorize a Git commit.', 'error_type': 'AccessError', 'ok': False, 'stage': 'commit_approve'} tail=[launcher] stage=commit_approve workspace=1847
+/bin/bash: /root/.bash_profile: Permission denied
+{"effective_uid": 1100, "effective_user": "devworker", "error": "Only a Dev Hub manager may authorize a Git commit.", "error_type": "AccessError", "ok": false, "stage": "commit_approve"}
+profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+
+
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/resume_stabilization_uat.py", line 560, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/resume_stabilization_uat.py", line 373, in main
+    ca = run_worker("commit_approve", ws_id, MARKER, commit_msg)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/resume_stabilization_uat.py", line 104, in run_worker
+    raise RuntimeError(
+RuntimeError: worker stage commit_approve failed rc=1 payload={'effective_uid': 1100, 'effective_user': 'devworker', 'error': 'Only a Dev Hub manager may authorize a Git commit.', 'error_type': 'AccessError', 'ok': False, 'stage': 'commit_approve'} tail=[launcher] stage=commit_approve workspace=1847
+/bin/bash: /root/.bash_profile: Permission denied
+{"effective_uid": 1100, "effective_user": "devworker", "error": "Only a Dev Hub manager may authorize a Git commit.", "error_type": "AccessError", "ok": false, "stage": "commit_approve"}
+profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+

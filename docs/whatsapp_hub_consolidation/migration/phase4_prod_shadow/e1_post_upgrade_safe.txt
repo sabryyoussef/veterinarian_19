@@ -1,0 +1,17 @@
+=== POST UPGRADE SAFE ===
+whatsapp_hub.discuss_cutover_enabled|False
+whatsapp_hub.discuss_hub_allowed_channel_ids|
+whatsapp_hub.unified_outbound_enabled|False
+whatsapp_hub.unified_outbound_purposes|discuss
+ id | instance_name | unified_outbound_enabled | discuss_cutover_enabled 
+----+---------------+--------------------------+-------------------------
+  1 | sabry min     | f                        | f
+(1 row)
+
+ id |                 left                 | wa_outbound_mode 
+----+--------------------------------------+------------------
+  5 | WA: كريم ايهاب  الساحل 2022          | shadow
+ 10 | WA Group: Testopenclow (openlowtest) | shadow
+(2 rows)
+
+0

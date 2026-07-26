@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_devhub_deploy_root"
+              name="DH Deploy"
+              sequence="94"
+              web_icon="devhub_deploy,static/description/icon.png"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_deploy_targets"
+              name="Targets"
+              parent="menu_devhub_deploy_root"
+              action="action_dev_deploy_target"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_deploy_records"
+              name="Deploy Records"
+              parent="menu_devhub_deploy_root"
+              action="action_dev_deploy_record"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_deploy_rollbacks"
+              name="Rollbacks"
+              parent="menu_devhub_deploy_root"
+              action="action_dev_deploy_rollback_record"
+              sequence="30"
+              groups="devhub_core.group_dev_hub_user"/>
+</odoo>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Integration Bridge Core',
-    'version': '19.0.1.1.1',
+    'version': '19.0.1.1.3',
     'category': 'Tools',
     'summary': 'Universal integration layer for Evolution WhatsApp, Chatwoot, n8n, Dify → Odoo 19',
     'description': """
@@ -53,6 +53,6 @@ Author: Sabry Youssef
     ],
     'post_init_hook': 'post_init_hook',
     'installable': True,
-    'application': True,
+    'application': False,
     'auto_install': False,
 }

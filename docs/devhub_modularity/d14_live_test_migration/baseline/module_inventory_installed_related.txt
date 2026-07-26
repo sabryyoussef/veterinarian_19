@@ -1,0 +1,5 @@
+developer_hub|19.0.1.1.0|installed
+dev_session_hub|19.0.8.5.5|installed
+evolution_whatsapp_chat|19.0.1.10.1|installed
+openproject_sync|19.0.1.6.0|installed
+whatsapp_hub|19.0.1.0.0|installed

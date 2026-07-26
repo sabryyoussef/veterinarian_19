@@ -1,0 +1,6 @@
+backup_path=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/backups/pet_spot_elsahel_pre_p5d_20260723T151355Z.dump
+backup_exit=0
+backup_size=17897440
+prod_http=200
+service=active
+ts=20260723T151355Z

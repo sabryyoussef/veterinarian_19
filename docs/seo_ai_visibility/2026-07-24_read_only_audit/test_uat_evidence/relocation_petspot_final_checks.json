@@ -1,0 +1,13 @@
+{
+  "ts": "2026-07-24T16:35:27.632827+00:00",
+  "checks": {
+    "pet.spot": true,
+    "Amwaj Gate 1": true,
+    "new_coords": true,
+    "Amwaj2": false,
+    "old_maps": false,
+    "Pet Spot Clinic": false,
+    "move": false,
+    "legacy_kg": false
+  }
+}

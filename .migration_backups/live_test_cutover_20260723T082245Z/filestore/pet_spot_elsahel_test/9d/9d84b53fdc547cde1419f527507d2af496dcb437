@@ -1,0 +1,98 @@
+﻿# WP #116 — Torz Trading: fleet.vehicle RPC_ERROR Fix
+
+**OpenProject:** [#116](https://master.tailcf9988.ts.net:10081/projects/wa-120363408076611149/work_packages/116)  
+**Chatwoot:** [Conversation #48](http://100.76.217.35:3000/app/accounts/2/conversations/48) · Message **#4402**  
+**Customer:** Torz Trading - Qatar (internal)  
+**Odoo instance:** `tours-trading-staging-34053176.dev.odoo.com`  
+**Status:** Fix deployed to `staging` — pending UI retest
+
+---
+
+## Original bug report
+
+```
+RPC_ERROR — Odoo Server Error
+Model: fleet.vehicle
+Timestamp: 2026-06-30 10:26:59 GMT
+```
+
+### Root cause
+
+```text
+AttributeError: module 'odoo.fields' has no attribute 'first'
+```
+
+| Field | Value |
+|-------|-------|
+| Module | `torz/fleet_vehicle_inspection` |
+| File | `models/fleet_vehicle.py` |
+| Method | `action_view_inspection` (line 44) |
+| Broken code | `fields.first(self.inspection_ids).id if self.inspection_ids else False` |
+
+`fields.first()` does not exist in the Odoo API. This is a custom-module defect, not Odoo core.
+
+---
+
+## Fix applied
+
+### Code change
+
+```diff
+- fields.first(self.inspection_ids).id if self.inspection_ids else False
++ self.inspection_ids[:1].id if self.inspection_ids else False
+```
+
+Uses standard Odoo recordset slicing — returns the first record's id or `False`.
+
+### Repository
+
+| Item | Value |
+|------|-------|
+| Repo | `tours-trading` |
+| Branch | `staging` |
+| Commit | `19d9e56` |
+| Message | `fix(fleet_vehicle_inspection): replace invalid fields.first usage` |
+| Push | `origin/staging` (successful) |
+
+### Repo-wide scan
+
+```bash
+grep -RIn "fields\.first(" torz
+```
+
+**Result:** No other `fields.first(` usages in `torz/` after the fix.
+
+---
+
+## Deployment & verification checklist
+
+- [x] Identify affected file and line
+- [x] Replace invalid `fields.first()` with `self.inspection_ids[:1].id`
+- [x] Scan all Torz modules for same anti-pattern
+- [x] Commit and push to `origin/staging`
+- [ ] **Retest on staging:** open `fleet.vehicle` and run the inspection action that previously raised `RPC_ERROR`
+- [ ] Confirm no client-side `RPC_ERROR` in browser console
+- [ ] Close WP #116 after customer/internal confirmation
+
+---
+
+## Odoo developer notes
+
+1. **Never use** `fields.first(recordset)` — it is not part of `odoo.fields`.
+2. **Prefer** `recordset[:1]` for "first record or empty recordset" semantics.
+3. **Alternative:** `recordset[0]` only when you know the recordset is non-empty (or wrap in `if recordset:`).
+4. This pattern is now documented in repo memory: `odoo-notes.md` (Codespace).
+
+---
+
+## Related pipeline artifacts
+
+| Artifact | Location |
+|----------|----------|
+| Initial triage attachment | `chatwoot-msg-4402-analysis.md` on WP #116 |
+| Fix status attachment | `chatwoot-msg-4402-fix-deployed.md` on WP #116 |
+| Chatwoot AI private note | `<!-- cw-ai-analysis:4402 -->` on conv #48 |
+
+---
+
+*Generated: 2026-07-02 · Chatwoot AI Analysis Pipeline · Odoo developer triage*

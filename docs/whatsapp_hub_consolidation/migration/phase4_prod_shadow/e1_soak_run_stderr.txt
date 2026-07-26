@@ -1,0 +1,86 @@
+2026-07-23 12:43:36,981 3910290 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 54, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/evolution_whatsapp_chat/models/discuss_channel.py", line 566, in message_post
+    msg = super().message_post(message_type=message_type, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/website_livechat/models/discuss_channel.py", line 97, in message_post
+    message = super().message_post(**kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/discuss_channel.py", line 1007, in message_post
+    self.sudo().last_interest_dt = fields.Datetime.now()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 1836, in __set__
+    records.write({self.name: write_value})
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/im_livechat/models/discuss_channel.py", line 199, in write
+    return super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rating/models/rating_mixin.py", line 102, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/hr/models/discuss_channel.py", line 32, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/discuss_channel.py", line 486, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 390, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 12:43:36,982 3910290 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 54, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/evolution_whatsapp_chat/models/discuss_channel.py", line 566, in message_post
+    msg = super().message_post(message_type=message_type, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/website_livechat/models/discuss_channel.py", line 97, in message_post
+    message = super().message_post(**kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/discuss_channel.py", line 1007, in message_post
+    self.sudo().last_interest_dt = fields.Datetime.now()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 1836, in __set__
+    records.write({self.name: write_value})
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/im_livechat/models/discuss_channel.py", line 199, in write
+    return super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rating/models/rating_mixin.py", line 102, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/hr/models/discuss_channel.py", line 32, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/discuss_channel.py", line 486, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 390, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 

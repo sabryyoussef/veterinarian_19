@@ -1,0 +1,356 @@
+/* Interactive Dev Hub walkthrough — teal/slate, not purple-default AI chrome */
+
+.o_action:has(> .o_devhub_workflow_guide),
+.o_action:has(.o_devhub_workflow_guide) {
+    background: #0f1c24;
+}
+
+.o_devhub_workflow_guide {
+    --dwg-bg: #0f1c24;
+    --dwg-panel: #162832;
+    --dwg-line: #2a4452;
+    --dwg-text: #e8f1f4;
+    --dwg-muted: #8eacb8;
+    --dwg-accent: #2f8f8a;
+    --dwg-accent-2: #d4a15a;
+    --dwg-danger: #c45c4a;
+    --dwg-ok: #3d9a6a;
+    min-height: 100%;
+    padding: 1.5rem 1.75rem 2.5rem;
+    color: var(--dwg-text);
+    background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(47, 143, 138, 0.22), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(212, 161, 90, 0.12), transparent 50%),
+        var(--dwg-bg);
+    font-family: "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+.o_dwg_header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 0.75rem;
+}
+
+.o_dwg_kicker {
+    display: block;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--dwg-accent);
+    font-weight: 700;
+}
+
+.o_dwg_title {
+    margin: 0.2rem 0 0.35rem;
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-family: "Fraunces", "Source Serif 4", Georgia, serif;
+}
+
+.o_dwg_sub {
+    margin: 0;
+    color: var(--dwg-muted);
+    font-size: 0.92rem;
+    max-width: 42rem;
+    line-height: 1.4;
+}
+
+.o_dwg_toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-items: flex-end;
+}
+
+.o_dwg_select_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--dwg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.o_dwg_select {
+    min-width: min(28rem, 70vw);
+    background: var(--dwg-panel);
+    color: var(--dwg-text);
+    border: 1px solid var(--dwg-line);
+    border-radius: 0.4rem;
+    padding: 0.45rem 0.65rem;
+}
+
+.o_dwg_hint {
+    color: var(--dwg-muted);
+    margin: 0 0 1.1rem;
+    font-size: 0.95rem;
+}
+
+.o_dwg_loading,
+.o_dwg_error {
+    padding: 1rem 1.1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.o_dwg_loading {
+    background: rgba(47, 143, 138, 0.15);
+    border: 1px solid var(--dwg-line);
+}
+
+.o_dwg_error {
+    background: rgba(196, 92, 74, 0.18);
+    border: 1px solid rgba(196, 92, 74, 0.45);
+    color: #ffc9bf;
+}
+
+.o_dwg_progress {
+    margin-bottom: 1.25rem;
+}
+
+.o_dwg_progress_meta {
+    font-size: 0.8rem;
+    color: var(--dwg-muted);
+    margin-bottom: 0.35rem;
+}
+
+.o_dwg_progress_bar {
+    height: 0.35rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.o_dwg_progress_fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--dwg-accent), #5bb8a8);
+    border-radius: 999px;
+    transition: width 0.35s ease;
+}
+
+.o_dwg_layout {
+    display: grid;
+    grid-template-columns: minmax(14rem, 18rem) 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.o_dwg_rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    max-height: calc(100vh - 14rem);
+    overflow: auto;
+    padding-right: 0.2rem;
+}
+
+.o_dwg_rail_item {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    border: 1px solid transparent;
+    background: transparent;
+    color: inherit;
+    border-radius: 0.55rem;
+    padding: 0.55rem 0.6rem;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.o_dwg_rail_item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.o_dwg_rail_item.is-active {
+    background: var(--dwg-panel);
+    border-color: var(--dwg-line);
+}
+
+.o_dwg_rail_seq {
+    flex: 0 0 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--dwg-muted);
+}
+
+.o_dwg_rail_item.is-done .o_dwg_rail_seq {
+    background: rgba(61, 154, 106, 0.35);
+    color: #b8f0d0;
+}
+
+.o_dwg_rail_item.is-current .o_dwg_rail_seq {
+    background: var(--dwg-accent);
+    color: #041414;
+}
+
+.o_dwg_rail_item.is-blocked .o_dwg_rail_seq {
+    background: rgba(196, 92, 74, 0.35);
+    color: #ffd0c7;
+}
+
+.o_dwg_rail_body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.o_dwg_rail_title {
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.o_dwg_rail_status {
+    font-size: 0.72rem;
+    color: var(--dwg-muted);
+}
+
+.o_dwg_panel {
+    background: var(--dwg-panel);
+    border: 1px solid var(--dwg-line);
+    border-radius: 0.85rem;
+    padding: 1.25rem 1.35rem 1.4rem;
+    min-height: 18rem;
+}
+
+.o_dwg_panel_head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.85rem;
+}
+
+.o_dwg_app {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dwg-accent-2);
+    font-weight: 700;
+}
+
+.o_dwg_panel_title {
+    margin: 0.15rem 0 0;
+    font-size: 1.45rem;
+    font-family: "Fraunces", Georgia, serif;
+}
+
+.o_dwg_badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.55rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.o_dwg_badge_done { background: rgba(61, 154, 106, 0.25); color: #b8f0d0; }
+.o_dwg_badge_current { background: rgba(47, 143, 138, 0.35); color: #c8fff6; }
+.o_dwg_badge_blocked { background: rgba(196, 92, 74, 0.3); color: #ffd0c7; }
+.o_dwg_badge_pending { background: rgba(212, 161, 90, 0.2); color: #f5dfb8; }
+.o_dwg_badge_skipped { color: var(--dwg-muted); }
+
+.o_dwg_explain {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    margin: 0 0 0.75rem;
+}
+
+.o_dwg_detail {
+    color: var(--dwg-muted);
+    margin: 0 0 1rem;
+    line-height: 1.45;
+}
+
+.o_dwg_missing {
+    background: rgba(196, 92, 74, 0.14);
+    border: 1px solid rgba(196, 92, 74, 0.35);
+    border-radius: 0.55rem;
+    padding: 0.75rem 0.9rem;
+    margin-bottom: 1.1rem;
+}
+
+.o_dwg_missing strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #ffd0c7;
+}
+
+.o_dwg_missing ul {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.o_dwg_panel_actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.o_dwg_btn {
+    border-radius: 0.45rem;
+    border: 1px solid transparent;
+    padding: 0.5rem 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.o_dwg_btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.o_dwg_btn_primary {
+    background: var(--dwg-accent);
+    color: #041414;
+}
+
+.o_dwg_btn_primary:hover:not(:disabled) {
+    filter: brightness(1.08);
+}
+
+.o_dwg_btn_ghost {
+    background: transparent;
+    border-color: var(--dwg-line);
+    color: var(--dwg-text);
+}
+
+.o_dwg_btn_ghost:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 900px) {
+    .o_dwg_layout {
+        grid-template-columns: 1fr;
+    }
+
+    .o_dwg_rail {
+        flex-direction: row;
+        overflow-x: auto;
+        max-height: none;
+        padding-bottom: 0.35rem;
+    }
+
+    .o_dwg_rail_item {
+        min-width: 11rem;
+    }
+
+    .o_dwg_title {
+        font-size: 1.45rem;
+    }
+}

@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 11868
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-18 07:24:52 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+The system is not calculating specific days of the month correctly, only counting the remaining days.
+
+**الإجراء المطلوب:**
+Investigate the date calculation logic in the relevant model and implement a fix to ensure all specified days are counted correctly.
+
+## Original Message
+
+```
+مش بيحسب كل الشهر ايام معينه بس الي بتتحسب باقي الشهر لا
+```

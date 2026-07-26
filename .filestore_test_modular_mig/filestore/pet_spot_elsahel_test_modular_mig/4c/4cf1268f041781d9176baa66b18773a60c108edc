@@ -1,0 +1,27 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 6874
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-06 11:07:24 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+User login information shared for internal use.
+
+**الإجراء المطلوب:**
+No action required, just note the login details.
+
+## Original Message
+
+```
+You can login with the user:
+mohammed.selim@erpbright.com
+123
+```

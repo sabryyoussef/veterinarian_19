@@ -1,0 +1,47 @@
+# إغلاق نهائي — مشاريع الخليج الصناعى (WP #135)
+
+**التاريخ:** 2026-07-03  
+**الحالة:** ✅ **مغلق — اكتمل التنفيذ**
+
+---
+
+## قرارات نهائية (بالنيابة عن العميل — لم يرد صراحة)
+
+| # | القرار | القرار المعتمد | التنفيذ |
+|---|--------|----------------|---------|
+| 3 | VAT على مبلغ التعاقد | **قبل ضريبة القيمة المضافة** | `contract_amount` ↔ `project_valuebvat` |
+| 5 | HR | **Payslip Rules فقط** | `gpc_gulf_hr_payroll_ext` / GULF_STANDARD |
+| 8 | قاعدة الاختبار | **`trgulf_Mrp`** | Phase 1 + Phase 2 UAT |
+
+---
+
+## ملخص التسليم
+
+| WP | البند | التسليم |
+|----|-------|---------|
+| [#136](https://master.tailcf9988.ts.net:10081/work_packages/136) | وصف المشروع | `gpc_gulf_project_ext` |
+| [#137](https://master.tailcf9988.ts.net:10081/work_packages/137) | مبلغ التعاقد | `contract_amount` |
+| [#138](https://master.tailcf9988.ts.net:10081/work_packages/138) | Quotation | Length/Width/Area + PDF |
+| [#139](https://master.tailcf9988.ts.net:10081/work_packages/139) | HR | Payslip Rules |
+| [#145](https://master.tailcf9988.ts.net:10081/work_packages/145) | Legacy | **لا توسيع** — مغلق |
+
+**Delivery WPs:** [#150](https://master.tailcf9988.ts.net:10081/work_packages/150) Phase 1 · [#156](https://master.tailcf9988.ts.net:10081/work_packages/156) Phase 2
+
+---
+
+## UAT
+
+| Scenario | Result |
+|----------|--------|
+| Quotation 180×305×24×490 | **64,562.40** ✅ |
+| Invoice same line | **64,562.40** ✅ |
+| Payroll NET | **12,900.00** ✅ |
+
+---
+
+## الموديولات
+
+- `/opt/localaddons/gpc_gulf_project_ext/`
+- `/opt/localaddons/gpc_gulf_hr_payroll_ext/`
+
+**Legacy (`trgcc`):** بدون تغيير — قرار العميل: لا توسيع.

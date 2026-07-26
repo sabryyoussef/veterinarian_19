@@ -7,8 +7,11 @@ from . import dev_whatsapp_analysis_utils
 from . import dev_whatsapp_analysis_segment
 from . import dev_whatsapp_analysis_candidates
 from . import dev_whatsapp_analysis_context
+from . import dev_whatsapp_technical_extract
 from . import dev_whatsapp_analysis
 from . import dev_whatsapp_analysis_job
+from . import dev_whatsapp_work_orchestration
+from . import dev_whatsapp_analysis_eval
 from . import dev_whatsapp_media_utils
 from . import dev_whatsapp_media
 from . import dev_whatsapp_media_job

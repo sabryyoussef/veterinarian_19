@@ -1,0 +1,104 @@
+# Delivery Report (EN) — Kafaat Leave Form WP #339 / #340
+
+**Date:** 2026-07-15  
+**Client:** Kafaat  
+**Module:** `kafaat_hr_templates` **v19.0.1.1.1**  
+**Databases:** `sabry-test` (UAT) · `TR_K19` (production smoke)  
+**Related OP:** [#339](https://master.tailcf9988.ts.net:10081/work_packages/339) · [#340](https://master.tailcf9988.ts.net:10081/work_packages/340) · Parent #87
+
+---
+
+## 1. Executive summary
+
+Delivered an extended **Arabic leave request print form** and a **leave CSV import** pipeline into Odoo 19 for Kafaat:
+
+| WP | Scope | Status |
+|----|--------|--------|
+| **#339** | Print form: شؤون الموظفين (HR affairs), القائم بالأعمال (acting employee), finance notes, print-only signatures | **Delivered + UAT PASS** |
+| **#340** | Company leave-type mapping (no hardcoded type IDs), persistent `kafaat_*` leave fields, computed/editable resume date, import wizard + reject CSV | **Delivered + UAT PASS** |
+
+Playwright UAT: **10/10 passed**. Production smoke on `TR_K19` (read-only): **PASS**.
+
+---
+
+## 2. What was delivered
+
+### 2.1 Print form (#339)
+
+- QWeb PDF sections in DOCX order:
+  1. بيانات طالب الإجازة  
+  2. بيانات الإجازة  
+  3. القائم بالأعمال  
+  4. ملاحظات شؤون الموظفين  
+  5. ملاحظات قسم المالية (إن وجد)  
+  6. اعتماد وموافقة الإدارة  
+- Acting employee linked to `hr.employee` (job title + emp_no derived; self-as-acting rejected).
+- Resume date computed after leave end; user-editable with validation.
+- Signature lines remain blank (print-only).
+
+**Evidence:** `evidence/screenshots/06`–`09`, `evidence/pdfs/leave-form-filled.pdf`
+
+### 2.2 Mapping & import (#340)
+
+- Settings → Employees → **Kafaat Leave Form Mapping**  
+  Many2one fields: Annual / Sick / Unpaid (names shown; logic uses config, not hardcoded IDs).
+- Import: **Kafaat HR Templates → Import Leave Form**  
+  Template: `evidence/leave_import_template.csv`  
+  Output: created leaves + reject CSV for failed rows.
+- Persistent fields on Time Off (`hr.leave`): resume date, acting employee, HR/finance notes, request date, etc.
+
+**Evidence:** `evidence/screenshots/05`, `17`–`25`; `evidence/rejected-rows.csv`
+
+### 2.3 Standard Odoo Time Off workflow
+
+- No custom approval engine.
+- Submit / Approve / Refuse use standard `hr.leave` states.
+- Import maps leave kinds to company-configured leave types.
+
+**Evidence:** `evidence/screenshots/26`–`29`
+
+---
+
+## 3. How to operate (quick)
+
+1. Confirm mapping: **Settings → Employees → Kafaat Leave Form Mapping**
+2. Print: **Kafaat HR Templates → Print Template** → template **Leave Request Form**
+3. Import: **Kafaat HR Templates → Import Leave Form** → upload CSV → Preview → Import
+4. Time Off: open created leave under **Time Off** and approve via standard buttons
+
+Full scenarios: [`guides/USER_GUIDE_EN.md`](guides/USER_GUIDE_EN.md)
+
+---
+
+## 4. UAT summary
+
+| Area | Result |
+|------|--------|
+| Module version 19.0.1.1.1 | PASS |
+| Mapping UI | PASS |
+| Print PDF (filled / blank / long Arabic) | PASS |
+| Resume + acting validation | PASS |
+| Annual / sick / unpaid import | PASS |
+| Reject CSV | PASS |
+| Workflow stages reachable | PASS (single-admin limitation noted) |
+| TR_K19 smoke (no create) | PASS |
+
+Details: [`evidence/PLAYWRIGHT_UAT_REPORT.md`](evidence/PLAYWRIGHT_UAT_REPORT.md)
+
+---
+
+## 5. Limitations / follow-ups
+
+1. Dual manager+HR persona approval not fully exercised (single admin on UAT).
+2. Kind **أخرى / other** needs a company leave-type mapping if clients import that kind.
+3. Rotate temporary production smoke credentials if used.
+4. OpenProject closure comments: paste from `op_comments/` when approved.
+
+---
+
+## 6. Closure recommendation
+
+```text
+WP #339: READY TO CLOSE
+WP #340: READY TO CLOSE
+```

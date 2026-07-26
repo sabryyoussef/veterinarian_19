@@ -1,0 +1,236 @@
+{
+  "marker": "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z",
+  "resumed_from": "approved",
+  "work_item": {
+    "id": 3320
+  },
+  "analysis": {
+    "id": 2691
+  },
+  "plan": {
+    "id": 2475,
+    "status": "approved",
+    "content_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219",
+    "revision": 1
+  },
+  "approval": {
+    "id": 2273,
+    "decision": "approved",
+    "plan_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219",
+    "plan_id": [
+      2475,
+      "dev.work.plan,2475"
+    ],
+    "plan_revision": 1,
+    "exact_plan_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219"
+  },
+  "errors": [],
+  "non_blockers": [
+    "session start: <Fault 2: 'The isolated workspace is not Ready.'>",
+    "session: <Fault 1: 'Traceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3848, in _determine_fields_to_fetch\\n    field = self._fields[field_name]\\n            ~~~~~~~~~~~~^^^^^^^^^^^^\\nKeyError: \\'branch\\'\\n\\nThe above exception was the direct cause of the following exception:\\n\\nTraceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rpc/controllers/xmlrpc.py\", line 162, in xmlrpc_2\\n    response = self._xmlrpc(service)\\n               ^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/rpc/controllers/xmlrpc.py\", line 134, in _xmlrpc\\n    result = dispatch_rpc(service, method, params)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/http.py\", line 439, in dispatch_rpc\\n    return dispatch(method, params)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 129, in dispatch\\n    res = execute_cr(cr, uid, model, method_, args, kw)\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 146, in execute_cr\\n    result = retrying(partial(call_kw, recs, method, args, kw), env)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 184, in retrying\\n    result = func()\\n             ^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py\", line 93, in call_kw\\n    result = method(recs, *args, **kwargs)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3486, in read\\n    self._origin.fetch(fields)\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3789, in fetch\\n    fields_to_fetch = self._determine_fields_to_fetch(field_names, ignore_when_in_cache=True)\\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3850, in _determine_fields_to_fetch\\n    raise ValueError(f\"Invalid field {field_name!r} on {self._name!r}\") from e\\nValueError: Invalid field \\'branch\\' on \\'dev.session\\'\\n'>",
+    "completion approve: <Fault 2: 'Report approval requires passed or not-applicable UAT.'>",
+    "complete: <Fault 2: 'Completion requires an approved completion report.'>"
+  ],
+  "screenshots": [
+    {
+      "file": "01_work_created.png",
+      "proves": "Work Item 3320",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3320"
+    },
+    {
+      "file": "02_analysis.png",
+      "proves": "Analysis 2691",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.analysis/2691"
+    },
+    {
+      "file": "03_plan.png",
+      "proves": "Plan 2475",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.plan/2475"
+    },
+    {
+      "file": "04_approval.png",
+      "proves": "Approval 2273 exact-hash",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3320"
+    },
+    {
+      "file": "05_workflow_pre_execution.png",
+      "proves": "Workflow before execution",
+      "url": "http://127.0.0.1:8028/odoo/action-1391/new"
+    },
+    {
+      "file": "06_session_workspace.png",
+      "proves": "Isolated workspace / session linkage",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1847"
+    },
+    {
+      "file": "07_execution.png",
+      "proves": "After worker implementation",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1847"
+    },
+    {
+      "file": "08_checkpoint.png",
+      "proves": "Checkpoint evidence",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.checkpoint/2141"
+    },
+    {
+      "file": "09_git_branch.png",
+      "proves": "Git branch evidence",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1847"
+    },
+    {
+      "file": "10_git_commit.png",
+      "proves": "Git commit evidence",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1847"
+    },
+    {
+      "file": "11_github_draft_pr.png",
+      "proves": "Draft PR evidence #15",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1847"
+    },
+    {
+      "file": "12_deploy_gate.png",
+      "proves": "Deploy gate context",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3320"
+    },
+    {
+      "file": "13_deployment_ready.png",
+      "proves": "Deployment-Ready (no merge/deploy)",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3320"
+    },
+    {
+      "file": "14_completion.png",
+      "proves": "Final phase=ready_for_review",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3320"
+    },
+    {
+      "file": "15_workflow_final.png",
+      "proves": "Workflow Board final",
+      "url": "http://127.0.0.1:8028/odoo/action-1391/new"
+    }
+  ],
+  "workspace_proposal": {
+    "id": 1847,
+    "state": "review_required",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3320",
+    "base_branch": "staging",
+    "base_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "worker_identity": "devworker"
+  },
+  "workspace_ready": {
+    "id": 1847,
+    "state": "review_required",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3320",
+    "base_branch": "staging",
+    "base_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "current_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "dirty_summary": "changed=1"
+  },
+  "checkpoint": {
+    "id": 2141,
+    "trigger": "agent_handoff",
+    "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "git_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "files_touched_summary": "docs/devhub_modularity/uat/DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z.md"
+  },
+  "commit_approve": {
+    "binding_hash": "740bff10294294425b81caceb7c6bfd0aefb2f86ef5567fe658b954be648514b",
+    "changed_files_summary": "docs/devhub_modularity/uat/DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z.md",
+    "commit_approval_id": 1404,
+    "commit_message": "test(devhub): end-to-end GitHub deploy UAT DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z\n",
+    "current_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "effective_uid": 1100,
+    "effective_user": "devworker",
+    "ok": true,
+    "stage": "commit_approve",
+    "state": "commit_approved",
+    "workspace_id": 1847
+  },
+  "commit_execute": {
+    "commit_record_id": 1101,
+    "committed_parent_sha": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "committed_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "effective_uid": 1100,
+    "effective_user": "devworker",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "ok": true,
+    "stage": "commit_execute",
+    "state": "committed_reviewed",
+    "workspace_id": 1847
+  },
+  "push_review": {
+    "current_head": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "effective_uid": 1100,
+    "effective_user": "devworker",
+    "ok": true,
+    "push_ahead_count": 1,
+    "push_remote_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "push_remote_head": false,
+    "push_remote_id": 2129,
+    "stage": "push_review",
+    "state": "committed_reviewed",
+    "workspace_id": 1847
+  },
+  "push_approve": {
+    "effective_uid": 1100,
+    "effective_user": "devworker",
+    "ok": true,
+    "push_approval_id": 889,
+    "remote_id": 2129,
+    "stage": "push_approve",
+    "state": "push_approved",
+    "workspace_id": 1847
+  },
+  "push_execute": {
+    "committed_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "current_head": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "effective_uid": 1100,
+    "effective_user": "devworker",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "ok": true,
+    "push_record_id": 656,
+    "stage": "push_execute",
+    "state": "pushed_reviewed",
+    "workspace_id": 1847
+  },
+  "git": {
+    "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74"
+  },
+  "github_pr": {
+    "baseRefName": "staging",
+    "headRefName": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "isDraft": true,
+    "mergeable": "UNKNOWN",
+    "number": 15,
+    "state": "OPEN",
+    "url": "https://github.com/sabryyoussef/veterinarian_19/pull/15",
+    "creation_path": "gh_cli_draft_after_devhub_push",
+    "devhub_github_app": "NO-GO (empty App broker under /srv/devhub/credentials/github)"
+  },
+  "deploy": {
+    "status": "DEPLOYMENT READY",
+    "reason": "Test deploy target id=4 exists, but Dev Hub deploy requires merged_reviewed + merge record. UAT keeps Draft PR unmerged.",
+    "target_id": 4,
+    "commit_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "production_deploy": false
+  },
+  "work_item_final": {
+    "id": 3320,
+    "name": "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z: harmless Test-only documentation artifact for Git/GitHub/Deploy UAT",
+    "current_phase": "ready_for_review",
+    "uuid": "40c16d4a-a6c4-4969-b2c3-b96326348ae8"
+  },
+  "production_safety": {
+    "test_db": "pet_spot_elsahel_test",
+    "test_port": 8028,
+    "production_service": "active",
+    "pr_draft": true,
+    "pr_state": "OPEN",
+    "no_production_deploy": true,
+    "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74"
+  }
+}

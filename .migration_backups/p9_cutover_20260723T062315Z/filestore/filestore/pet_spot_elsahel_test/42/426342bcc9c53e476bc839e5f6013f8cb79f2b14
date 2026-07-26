@@ -1,0 +1,30 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PYVOBJECT//NONSGML Version 1//EN
+BEGIN:VEVENT
+UID:20260715T181503Z - 93060@master
+DTSTART:20270131T082400Z
+DTEND:20270131T085400Z
+ATTENDEE:MAILTO:GateC-1784139262944-owner@example.test
+CREATED:20260715T181503Z
+DESCRIPTION:Pet: GateC-1784139262944 Pet\nOwner: GateC-1784139262944 Clinic
+  Owner\nRoom: (none)\nType: Regular Exam\nNotes:\n*Organized by*\nAdminist
+ rator\n*Contact Details*\nGateC-1784139262944 Clinic Owner\nGateC-17841392
+ 62944-owner@example.test [1]\n01039281977 [2]\nNeed to reschedule? Click h
+ ere [3]\n\n[1] mailto:GateC-1784139262944-owner@example.test\n[2] tel:0103
+ 9281977\n[3] https://test.drpaws.ai/calendar/view/d206c978-6367-4369-b931-
+ a952fd3b2cb1
+DTSTAMP:20260715T181503Z
+SUMMARY:Consultation - Checkup with Administrator
+BEGIN:VALARM
+ACTION:AUDIO
+DESCRIPTION:Email - 3 Hours
+TRIGGER;related=START:PT3H
+END:VALARM
+BEGIN:VALARM
+ACTION:AUDIO
+DESCRIPTION:SMS Text Message - 1 Hours
+TRIGGER;related=START:PT1H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

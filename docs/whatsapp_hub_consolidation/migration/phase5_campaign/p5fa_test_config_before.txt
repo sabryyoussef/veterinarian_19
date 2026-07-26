@@ -1,0 +1,8 @@
+whatsapp_hub.campaign_admit_batch_size|25
+whatsapp_hub.campaign_cutover_enabled|False
+whatsapp_hub.campaign_health_pending_warn|15
+whatsapp_hub.campaign_health_stale_minutes|30
+whatsapp_hub.campaign_health_stuck_processing_minutes|15
+whatsapp_hub.campaign_hub_allowed_campaign_ids|
+whatsapp_hub.unified_outbound_enabled|True
+whatsapp_hub.unified_outbound_purposes|discuss

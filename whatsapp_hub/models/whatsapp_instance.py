@@ -42,6 +42,26 @@ class WhatsappInstance(models.Model):
     )
     is_default = fields.Boolean(string="Default Instance")
     web_url = fields.Char(string="Manager URL")
+    unified_outbound_enabled = fields.Boolean(
+        string="Unified Hub Outbound Enabled",
+        default=False,
+        help="Phase 3: allow whatsapp.outbound.message.service_send_message "
+        "for this instance. Global ICP whatsapp_hub.unified_outbound_enabled "
+        "must also be True. Default OFF.",
+    )
+    discuss_cutover_enabled = fields.Boolean(
+        string="Discuss Cutover Enabled",
+        default=False,
+        help="Phase 4: allow Discuss channel mode=hub on this instance. "
+        "Requires global unified + discuss cutover ICPs. Default OFF.",
+    )
+    campaign_cutover_enabled = fields.Boolean(
+        string="Campaign Cutover Enabled",
+        default=False,
+        help="Phase 5: allow wa.campaign mode=hub on this instance. "
+        "Requires global unified + campaign cutover ICPs and Campaign "
+        "allowlist. Independent of Discuss cutover. Default OFF.",
+    )
     # Link to legacy bridge model when present
     evolution_instance_id = fields.Integer(
         string="Legacy evolution.instance ID",

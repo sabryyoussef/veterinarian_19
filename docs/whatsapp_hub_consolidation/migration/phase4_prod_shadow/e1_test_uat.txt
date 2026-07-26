@@ -1,0 +1,8 @@
+UAT_CHANNEL 5 WA: كريم ايهاب  الساحل 2022 legacy
+EMPTY_ALLOWLIST False Hub Discuss cutover blocked: whatsapp_hub.discuss_hub_allowed_channel_ids is emp
+PARSE [5]
+ALLOWLISTED True 
+NOT_ALLOWLISTED False Hub Discuss cutover blocked: channel 5 is not in discuss_hub_allowed_channel_ids=[999999].
+QUARANTINE {'ok': True, 'channel_id': 910099, 'jobs_found': 1, 'cancelled': 1, 'already_sent': 0, 'failed': 0, 'uncertain': 0}
+JOB_STATE cancelled False
+TEST_UAT_SAFE_RESTORE_OK

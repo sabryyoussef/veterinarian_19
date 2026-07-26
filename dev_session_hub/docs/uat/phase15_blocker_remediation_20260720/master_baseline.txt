@@ -1,0 +1,4 @@
+master_roadmap_rc=1
+/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/phase15_blocker_remediation_20260720/master_roadmap_20260720T080547Z.log:0 failed, 1 error(s) of 0 tests
+289:2026-07-20 08:05:58,627 1000467 ERROR pet_spot_elsahel_test odoo.tests.suite: ERROR: setUpClass (odoo.addons.dev_session_hub.tests.test_completion_roadmap.TestCompletionRoadmap)
+314:2026-07-20 08:05:58,668 1000467 ERROR pet_spot_elsahel_test odoo.tests.result: 0 failed, 1 error(s) of 0 tests when loading database 'pet_spot_elsahel_test' 

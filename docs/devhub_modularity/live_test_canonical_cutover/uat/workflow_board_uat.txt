@@ -1,0 +1,6 @@
+board {'id': 1, 'name': 'Dev Hub Workflow', 'stage_summary': 'Work → Analysis → Plan → Approval → Execution → Git / GitHub → Deploy', 'capability_ids': [1, 2, 3, 4, 5, 6, 7], 'work_item_count': 44, 'analysis_count': 47, 'plan_count': 25, 'awaiting_approval_count': 4, 'execution_count': 0}
+capability_ids_raw [1, 2, 3, 4, 5, 6, 7]
+stage_menus [('Workflow', 'Dev Hub')]
+kpis {'work_item_count': 44, 'analysis_count': 47, 'plan_count': 25, 'awaiting_approval_count': 4, 'execution_count': 0}
+stage_summary Work → Analysis → Plan → Approval → Execution → Git / GitHub → Deploy
+WORKFLOW_BOARD_OK

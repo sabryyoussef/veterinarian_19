@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_devhub_execution_root"
+              name="DH Execution"
+              sequence="91"
+              web_icon="devhub_execution,static/description/icon.png"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_execution_workspaces"
+              name="Workspaces"
+              parent="menu_devhub_execution_root"
+              action="action_dev_execution_workspace"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_execution_checkpoints"
+              name="Checkpoints"
+              parent="menu_devhub_execution_root"
+              action="action_dev_work_checkpoint"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_user"/>
+</odoo>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_item_form_plan" model="ir.ui.view">
+        <field name="name">dev.work.item.form.plan</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="priority" eval="30"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_source_request']" position="after">
+                        <page string="Plan">
+                            <group>
+                                <field name="plan_progress" readonly="1"/>
+                            </group>
+                            <field name="plan_ids">
+                                <list decoration-success="status == 'approved'" decoration-info="status == 'awaiting_approval'" decoration-muted="status in ('rejected', 'superseded')">
+                                    <field name="revision"/>
+                                    <field name="parent_revision_id"/>
+                                    <field name="goal"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="progress" string="Progress"/>
+                                    <field name="content_hash" optional="hide"/>
+                                </list>
+                                <form string="Plan Revision">
+                                    <header>
+                                        <button name="action_submit_for_approval" type="object" string="Request Approval" class="btn-primary" invisible="status != 'draft'"/>
+                                        <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('approved', 'rejected', 'superseded')"/>
+                                        <field name="status" widget="statusbar" statusbar_visible="draft,awaiting_approval,approved,rejected,superseded"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="revision"/>
+                                                <field name="parent_revision_id"/>
+                                                <field name="content_hash" readonly="1"/>
+                                                <field name="progress" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="generated_by"/>
+                                                <field name="run_reference"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Plan">
+                                                <field name="goal"/>
+                                                <field name="scope"/>
+                                                <field name="out_of_scope"/>
+                                                <field name="proposed_changes"/>
+                                                <field name="affected_modules_files"/>
+                                                <field name="migration_impact"/>
+                                                <field name="security_impact"/>
+                                            </page>
+                                            <page string="Validation">
+                                                <field name="test_plan"/>
+                                                <field name="rollback_plan"/>
+                                                <field name="dependencies"/>
+                                                <field name="risks"/>
+                                                <field name="acceptance_criteria"/>
+                                            </page>
+                                            <page string="My Plan">
+                                                <field name="user_plan_notes"
+                                                         placeholder="Write your own plan notes, decisions, and adjustments here…"/>
+                                            </page>
+                                            <page string="Steps">
+                                                <field name="step_ids">
+                                                    <list editable="bottom" decoration-success="status == 'done'" decoration-danger="status == 'blocked'" decoration-muted="status == 'skipped'">
+                                                        <field name="sequence" widget="handle"/>
+                                                        <field name="step_key"/>
+                                                        <field name="title"/>
+                                                        <field name="status" widget="badge"/>
+                                                        <field name="assignee_id"/>
+                                                        <field name="started_at" optional="hide"/>
+                                                        <field name="completed_at" optional="hide"/>
+                                                        <field name="blocker" optional="show"/>
+                                                    </list>
+                                                    <form string="Plan Step">
+                                                        <group>
+                                                            <group>
+                                                                <field name="plan_id"/>
+                                                                <field name="step_key"/>
+                                                                <field name="sequence"/>
+                                                                <field name="title"/>
+                                                                <field name="status"/>
+                                                                <field name="assignee_id"/>
+                                                                <field name="run_reference"/>
+                                                            </group>
+                                                            <group>
+                                                                <field name="started_at"/>
+                                                                <field name="completed_at"/>
+                                                                <field name="dependencies"/>
+                                                                <field name="blocker"/>
+                                                            </group>
+                                                        </group>
+                                                        <field name="description"/>
+                                                        <field name="acceptance_evidence"/>
+                                                        <field name="result_summary"/>
+                                                        <field name="evidence_references"/>
+                                                    </form>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_plan_list" model="ir.ui.view">
+        <field name="name">dev.work.plan.list</field>
+        <field name="model">dev.work.plan</field>
+        <field name="arch" type="xml">
+            <list default_order="work_item_id, revision desc" decoration-info="status == 'awaiting_approval'" decoration-success="status == 'approved'" decoration-muted="status in ('rejected', 'superseded')">
+                <field name="work_item_id"/>
+                <field name="revision"/>
+                <field name="parent_revision_id"/>
+                <field name="goal"/>
+                <field name="progress"/>
+                <field name="status" widget="badge"/>
+                <field name="content_hash"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_work_plan_form" model="ir.ui.view">
+        <field name="name">dev.work.plan.form</field>
+        <field name="model">dev.work.plan</field>
+        <field name="arch" type="xml">
+            <form string="Plan Revision">
+                <header>
+                    <button name="action_submit_for_approval" type="object" string="Request Approval" class="btn-primary" invisible="status != 'draft'"/>
+                    <button name="action_new_revision" type="object" string="New Revision" invisible="status not in ('approved', 'rejected', 'superseded')"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,awaiting_approval,approved,rejected,superseded"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-danger" role="alert" invisible="step_guide_state != 'blocked'">
+                        <strong><field name="step_guide_title" readonly="1" class="oe_inline"/></strong>
+                        <field name="step_guide_message" readonly="1" nolabel="1"/>
+                    </div>
+                    <div class="alert alert-success" role="alert" invisible="step_guide_state != 'ready'">
+                        <strong><field name="step_guide_title" readonly="1" class="oe_inline"/></strong>
+                        <field name="step_guide_message" readonly="1" nolabel="1"/>
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="step_guide_state not in ('done', 'info')">
+                        <strong><field name="step_guide_title" readonly="1" class="oe_inline"/></strong>
+                        <field name="step_guide_message" readonly="1" nolabel="1"/>
+                    </div>
+                    <field name="step_guide_state" invisible="1"/>
+                    <field name="step_guide_blocked" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="revision"/>
+                            <field name="parent_revision_id"/>
+                            <field name="content_hash" readonly="1"/>
+                            <field name="progress" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="generated_by"/>
+                            <field name="run_reference"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Plan">
+                            <field name="goal"/>
+                            <field name="scope"/>
+                            <field name="out_of_scope"/>
+                            <field name="proposed_changes"/>
+                            <field name="affected_modules_files"/>
+                            <field name="migration_impact"/>
+                            <field name="security_impact"/>
+                        </page>
+                        <page string="Validation">
+                            <field name="test_plan"/>
+                            <field name="rollback_plan"/>
+                            <field name="dependencies"/>
+                            <field name="risks"/>
+                            <field name="acceptance_criteria"/>
+                        </page>
+                        <page string="My Plan">
+                            <field name="user_plan_notes"
+                                     placeholder="Write your own plan notes, decisions, and adjustments here…"/>
+                        </page>
+                        <page string="Steps">
+                            <field name="step_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="step_key"/>
+                                    <field name="title"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_work_plan" model="ir.actions.act_window">
+        <field name="name">Plan Revisions</field>
+        <field name="res_model">dev.work.plan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <record id="view_dev_work_item_form_plan_summary" model="ir.ui.view">
+        <field name="name">dev.work.item.form.plan.summary</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="priority" eval="31"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='completion_report_id']" position="before">
+                <field name="current_approved_plan_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='completion_report_ids']/list/field[@name='status']" position="after">
+                <field name="plan_id"/>
+                <field name="repository_id"/>
+            </xpath>
+            <xpath expr="//field[@name='completion_report_ids']/form//field[@name='parent_revision_id']" position="after">
+                <field name="plan_id"/>
+            </xpath>
+            <xpath expr="//field[@name='completion_report_ids']/form//field[@name='branch']" position="before">
+                <field name="repository_id"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_dev_completion_report_list_plan" model="ir.ui.view">
+        <field name="name">dev.completion.report.list.plan</field>
+        <field name="model">dev.completion.report</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_completion_report_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='revision']" position="after">
+                <field name="plan_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

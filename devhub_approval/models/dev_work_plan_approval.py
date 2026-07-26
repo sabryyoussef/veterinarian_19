@@ -19,12 +19,23 @@ class DevWorkPlanApproval(models.Model):
     def action_approve_exact(self, expected_hash=None, comment=None, policy_version="manual"):
         self.ensure_one()
         _require_approver(self.env)
+        missing = []
         if self.work_item_id.current_phase != "awaiting_plan_approval":
-            raise UserError("Plan approval requires the Work Item approval gate.")
+            missing.append(
+                "Submit the plan first so the Work Item is Awaiting Plan Approval "
+                "(current: %s)" % self.work_item_id.current_phase
+            )
+        if self.status != "awaiting_approval":
+            missing.append(
+                "Plan must be Awaiting Approval (current: %s)" % self.status
+            )
+        self._raise_complete_first(missing)
         expected_hash = expected_hash or self.content_hash
         self._refresh_hash()
-        if self.status != "awaiting_approval" or expected_hash != self.content_hash:
-            raise UserError("Plan approval hash is stale or does not match exactly.")
+        if expected_hash != self.content_hash:
+            self._raise_complete_first(
+                ["Re-open and re-submit the plan — approval hash is stale or does not match"]
+            )
         approval = self.env["dev.work.approval"].with_context(
             dev_internal_approval=True
         ).sudo().create(

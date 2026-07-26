@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="whatsapp_hub.GeneralDashboard">
+        <div class="o_wa_hub_dashboard o_wa_hub_dashboard_general">
+            <header class="o_wa_dash_header">
+                <div class="o_wa_dash_brand">
+                    <span class="o_wa_dash_kicker">WhatsApp Hub</span>
+                    <h1 class="o_wa_dash_title" t-esc="state.data and state.data.title or 'WhatsApp Platform'"/>
+                    <p class="o_wa_dash_sub" t-esc="state.data and state.data.subtitle or ''"/>
+                </div>
+                <div class="o_wa_dash_toolbar">
+                    <button type="button" class="o_wa_btn o_wa_btn_ghost" t-on-click="load" t-att-disabled="state.loading">
+                        Refresh
+                    </button>
+                    <button type="button" class="o_wa_btn o_wa_btn_primary" t-on-click="openWhatsappDashboard">
+                        WhatsApp Dashboard
+                    </button>
+                </div>
+            </header>
+
+            <div t-if="state.loading" class="o_wa_dash_loading">Loading platform overview…</div>
+            <div t-if="state.error" class="o_wa_dash_error" t-esc="state.error"/>
+
+            <t t-if="state.data and !state.loading">
+                <section class="o_wa_dash_section">
+                    <div class="o_wa_kpi_grid">
+                        <t t-foreach="state.data.kpis" t-as="kpi" t-key="kpi.key">
+                            <div class="o_wa_kpi" t-att-class="toneClass(kpi.tone)">
+                                <span class="o_wa_kpi_label" t-esc="kpi.label"/>
+                                <div class="o_wa_kpi_value" t-esc="kpi.value"/>
+                                <span class="o_wa_kpi_hint" t-esc="kpi.hint"/>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+
+                <section class="o_wa_dash_section">
+                    <button type="button" class="o_wa_hero_cta" t-on-click="openWhatsappDashboard">
+                        <div class="o_wa_hero_cta_body">
+                            <span class="o_wa_hero_cta_kicker">Primary workspace</span>
+                            <h2 class="o_wa_hero_cta_title" t-esc="state.data.primary_action.label"/>
+                            <p class="o_wa_hero_cta_desc" t-esc="state.data.primary_action.description"/>
+                        </div>
+                        <span class="o_wa_hero_cta_arrow" aria-hidden="true">→</span>
+                    </button>
+                </section>
+
+                <section class="o_wa_dash_section">
+                    <div class="o_wa_section_head">
+                        <h2 class="o_wa_section_title">Platform areas</h2>
+                    </div>
+                    <div class="o_wa_module_grid">
+                        <t t-foreach="state.data.modules" t-as="mod" t-key="mod.key">
+                            <button type="button"
+                                    class="o_wa_module_tile"
+                                    t-att-class="{
+                                        'is-featured': mod.featured,
+                                        'is-disabled': !mod.available,
+                                    }"
+                                    t-att-data-action-xmlid="mod.action_xmlid"
+                                    t-att-data-available="mod.available ? '1' : '0'"
+                                    t-att-disabled="!mod.available"
+                                    t-on-click="onTileClick">
+                                <span class="o_wa_module_title" t-esc="mod.title"/>
+                                <span class="o_wa_module_desc" t-esc="mod.description"/>
+                                <span t-if="!mod.available" class="o_wa_module_badge">Not installed</span>
+                            </button>
+                        </t>
+                    </div>
+                </section>
+
+                <section class="o_wa_dash_section">
+                    <div class="o_wa_section_head">
+                        <h2 class="o_wa_section_title">Quick links</h2>
+                    </div>
+                    <div class="o_wa_quick_row">
+                        <t t-foreach="state.data.quick_links" t-as="link" t-key="link.action_xmlid">
+                            <button type="button"
+                                    class="o_wa_btn o_wa_btn_ghost"
+                                    t-att-data-action-xmlid="link.action_xmlid"
+                                    t-on-click="onQuickClick"
+                                    t-esc="link.label"/>
+                        </t>
+                    </div>
+                </section>
+            </t>
+        </div>
+    </t>
+</templates>

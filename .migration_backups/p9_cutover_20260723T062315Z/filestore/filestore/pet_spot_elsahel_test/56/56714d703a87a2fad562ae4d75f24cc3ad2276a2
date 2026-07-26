@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 9626
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 10:31:00 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** configuration
+**الأولوية:** medium
+**الثقة:** 0.85
+
+**الملخص:**
+Request to remove the inspection smart button from the Fleet App as it starts from the Field Service App.
+
+**الإجراء المطلوب:**
+Update the Fleet App view to remove the inspection smart button.
+
+## Original Message
+
+```
+3-We need to remove the inspection smart button from the Fleet App, as the inspection starts from the Field Service App
+```

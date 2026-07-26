@@ -1,0 +1,29 @@
+# S3 UAT Checklist — OP#355
+
+**Date:** 2026-07-15  
+**DB:** sabry-test  
+**Branch:** `feature/meeting-s3-355`  
+**Module:** `edafaa_student_profile` `19.0.2.6.0`
+
+## Field
+
+- [ ] Form shows `موظف المبيعات المسؤول` (`assigned_user_id`)
+- [ ] List optional column + search/group-by
+
+## Wizard
+
+- [ ] Menu: Students → General → Excel assign to sales (or equivalent)
+- [ ] Download template `.xlsx`
+- [ ] Import valid rows → student.assigned_user_id set
+- [ ] Unknown id_number / staff → reject CSV with reason
+- [ ] Overwrite existing assignment works
+
+## Automated
+
+- [ ] Unit `TestMeetingS3SalesAssign`
+- [ ] Playwright `meeting_s3` screenshots
+
+## Delivery
+
+- [ ] OP delivery under #87; #355 Closed
+- [ ] Odoo delivery under #41; #46 Done

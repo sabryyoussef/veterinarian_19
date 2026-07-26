@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Single home-screen WhatsApp app tile (Campaign + Bridge nest under this). -->
     <menuitem id="menu_whatsapp_hub_root"
-              name="WhatsApp Hub"
-              sequence="45"/>
+              name="WhatsApp"
+              sequence="45"
+              web_icon="whatsapp_hub,static/description/icon.png"
+              action="action_whatsapp_hub_general_dashboard"/>
+
+    <menuitem id="menu_whatsapp_hub_general_dashboard"
+              name="General Dashboard"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_hub_general_dashboard"
+              sequence="1"/>
+
+    <menuitem id="menu_whatsapp_hub_whatsapp_dashboard"
+              name="WhatsApp Dashboard"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_hub_whatsapp_dashboard"
+              sequence="5"/>
 
     <menuitem id="menu_whatsapp_hub_messages"
               name="Messages"
@@ -15,6 +30,12 @@
               parent="menu_whatsapp_hub_root"
               action="action_whatsapp_conversation"
               sequence="20"/>
+
+    <menuitem id="menu_whatsapp_hub_chat"
+              name="Open Chat"
+              parent="menu_whatsapp_hub_root"
+              action="action_whatsapp_conversation"
+              sequence="15"/>
 
     <menuitem id="menu_whatsapp_hub_groups"
               name="Groups"
@@ -33,6 +54,48 @@
               parent="menu_whatsapp_hub_root"
               action="action_whatsapp_outbound"
               sequence="50"/>
+
+    <!-- Ops/migration tools nested — keep WhatsApp root clean. -->
+    <menuitem id="menu_whatsapp_hub_ops"
+              name="Hub Ops"
+              parent="menu_whatsapp_hub_root"
+              sequence="80"
+              groups="whatsapp_hub.group_whatsapp_manager"/>
+
+    <menuitem id="menu_whatsapp_hub_discuss_shadow"
+              name="Discuss Shadow Reports"
+              parent="menu_whatsapp_hub_ops"
+              action="action_whatsapp_discuss_shadow"
+              sequence="10"
+              groups="whatsapp_hub.group_whatsapp_manager"/>
+
+    <menuitem id="menu_whatsapp_hub_discuss_health"
+              name="Discuss Hub Health"
+              parent="menu_whatsapp_hub_ops"
+              action="action_whatsapp_discuss_hub_health"
+              sequence="20"
+              groups="whatsapp_hub.group_whatsapp_manager"/>
+
+    <menuitem id="menu_whatsapp_hub_campaign_shadow"
+              name="Campaign Shadow Reports"
+              parent="menu_whatsapp_hub_ops"
+              action="action_whatsapp_campaign_shadow"
+              sequence="30"
+              groups="whatsapp_hub.group_whatsapp_manager"/>
+
+    <menuitem id="menu_whatsapp_hub_campaign_health"
+              name="Campaign Hub Health"
+              parent="menu_whatsapp_hub_ops"
+              action="action_whatsapp_campaign_hub_health"
+              sequence="40"
+              groups="whatsapp_hub.group_whatsapp_manager"/>
+
+    <menuitem id="menu_whatsapp_hub_ingestion_health"
+              name="Ingestion Health"
+              parent="menu_whatsapp_hub_ops"
+              action="action_whatsapp_ingestion_health"
+              sequence="50"
+              groups="whatsapp_hub.group_whatsapp_manager"/>
 
     <menuitem id="menu_whatsapp_hub_config"
               name="Configuration"

@@ -1,0 +1,137 @@
+{
+  "generated_at": "2026-07-24T16:02:30.928685+00:00",
+  "account": {
+    "id": 16,
+    "name": "بيت الدواء البيطري -pet spot",
+    "social_account_handle": "animalcarecenterpetspots",
+    "media_type": "facebook",
+    "is_media_disconnected": false,
+    "active": true,
+    "facebook_account_id": "1378190768902001"
+  },
+  "posts": [
+    {
+      "social_post_id": 1,
+      "state": "draft",
+      "scheduled_date": null,
+      "facebook_account_id": 16,
+      "facebook_page": "https://www.facebook.com/animalcarecenterpetspots",
+      "facebook_handle": "animalcarecenterpetspots",
+      "proposed_schedule": {
+        "weekday": "Monday",
+        "date": "2026-08-03",
+        "time": "10:00",
+        "timezone": "Africa/Cairo",
+        "iso_local": "2026-08-03T10:00:00+03:00"
+      },
+      "title": "Emergency readiness — North Coast",
+      "copy_en": "Pet emergency on the North Coast? Stay calm: secure your pet, note symptoms, call PetSpot.\n24/7 clinic near Amwaj 2.\nClinic: 01280833332 · WhatsApp: 01000059085\nDirections: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nRead more: https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=emergency",
+      "copy_ar": "طوارئ حيوانك الأليف على الساحل؟ حافظ على هدوئك، راقب الأعراض، واتصل ببيت سبوت.\nعيادة 24/7 أمام أمواج 2.\nالعيادة: 01280833332 · واتساب: 01000059085\nالاتجاهات: https://maps.app.goo.gl/AaHup6NEFodZEs7S7",
+      "article_url": "https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1",
+      "tracked_utm_url": "https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=emergency",
+      "image_file": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/fb_media/final/01_emergency.jpg",
+      "image_attachment_id": 1407,
+      "image_source": "Official Pet Spot Facebook library collage (gallery-137819…128287523) — reception / clinic interior with IV stand & doorway to treatment area",
+      "html_preview": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/fb_schedule_previews/post1_preview.html",
+      "nap_image_check": "No Amwaj 1 / km / outdated clinic primary phone on selected crop (Post1 wall shows current WA 01000059085 + Sky Court/Amwaj without gate number)"
+    },
+    {
+      "social_post_id": 2,
+      "state": "draft",
+      "scheduled_date": null,
+      "facebook_account_id": 16,
+      "facebook_page": "https://www.facebook.com/animalcarecenterpetspots",
+      "facebook_handle": "animalcarecenterpetspots",
+      "proposed_schedule": {
+        "weekday": "Wednesday",
+        "date": "2026-08-05",
+        "time": "10:00",
+        "timezone": "Africa/Cairo",
+        "iso_local": "2026-08-05T10:00:00+03:00"
+      },
+      "title": "Heatstroke signs — Sahel summer",
+      "copy_en": "Sahel summer tip: heavy panting, weakness, bright red gums — possible heatstroke.\nMove to shade, offer cool (not ice-cold) water if your pet can drink, and contact a vet urgently.\nPetSpot 24/7: 01280833332 · WhatsApp 01000059085\nRead more: https://drpaws.ai/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=heatstroke",
+      "copy_ar": "صيف الساحل: لهث شديد، ضعف، لثة حمراء — قد تكون ضربة شمس.\nانقل أليفك للظل وقدّم ماءً فاترًا إن أمكن، واتصل بالعيادة فوراً.\nبيت سبوت 24/7: 01280833332 · واتساب 01000059085",
+      "article_url": "https://drpaws.ai/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2",
+      "tracked_utm_url": "https://drpaws.ai/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=heatstroke",
+      "image_file": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/fb_media/final/02_heatstroke.jpg",
+      "image_attachment_id": 1408,
+      "image_source": "Official Pet Spot Facebook library collage (1285094360069656) — veterinarian examining a pet (no NAP text on image)",
+      "html_preview": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/fb_schedule_previews/post2_preview.html",
+      "nap_image_check": "No Amwaj 1 / km / outdated clinic primary phone on selected crop (Post1 wall shows current WA 01000059085 + Sky Court/Amwaj without gate number)"
+    },
+    {
+      "social_post_id": 3,
+      "state": "draft",
+      "scheduled_date": null,
+      "facebook_account_id": 16,
+      "facebook_page": "https://www.facebook.com/animalcarecenterpetspots",
+      "facebook_handle": "animalcarecenterpetspots",
+      "proposed_schedule": {
+        "weekday": "Friday",
+        "date": "2026-08-07",
+        "time": "10:00",
+        "timezone": "Africa/Cairo",
+        "iso_local": "2026-08-07T10:00:00+03:00"
+      },
+      "title": "Directions — Amwaj 2",
+      "copy_en": "Find us: North Coast, beside Wahat Khattab, in front of Amwaj 2, El Alamein.\nOfficial Maps: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nClinic: 01280833332 · WhatsApp: 01000059085\nEmergency guide: https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=directions",
+      "copy_ar": "موقعنا: الساحل الشمالي، بجوار واحة خطاب، أمام أمواج 2، العلمين.\nخرائط جوجل الرسمية: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nالعيادة: 01280833332 · واتساب: 01000059085",
+      "article_url": "https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1",
+      "tracked_utm_url": "https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=directions",
+      "image_file": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/fb_media/final/03_directions.jpg",
+      "image_attachment_id": 1409,
+      "image_source": "Official Pet Spot Facebook library exterior (1277241224188303) — PET SPOT signage cropped to remove outdated window phone & footer",
+      "html_preview": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/fb_schedule_previews/post3_preview.html",
+      "nap_image_check": "No Amwaj 1 / km / outdated clinic primary phone on selected crop (Post1 wall shows current WA 01000059085 + Sky Court/Amwaj without gate number)"
+    }
+  ],
+  "remaining_drafts": [
+    {
+      "id": 12,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 11,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 10,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 9,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 8,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 7,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 6,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 5,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 4,
+      "state": "draft",
+      "scheduled_date": false
+    }
+  ],
+  "scheduling_status": "NONE — all posts remain draft; no scheduled_date set"
+}

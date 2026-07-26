@@ -1,0 +1,77 @@
+{
+  "marker": "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T123409Z",
+  "errors": [],
+  "non_blockers": [],
+  "screenshots": [
+    {
+      "file": "12_merged_reviewed.png",
+      "proves": "merged_reviewed before deploy",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    },
+    {
+      "file": "13_deploy_request.png",
+      "proves": "Deploy request / approval",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    },
+    {
+      "file": "14_test_deploy_success.png",
+      "proves": "Test deploy success",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    },
+    {
+      "file": "15_workflow_final.png",
+      "proves": "Final work item",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3324"
+    },
+    {
+      "file": "15_workflow_final.png",
+      "proves": "Workflow board final",
+      "url": "http://127.0.0.1:8028/odoo/action-1391/new"
+    }
+  ],
+  "work_item_id": 3324,
+  "workspace": {
+    "id": 1849,
+    "state": "merged_reviewed",
+    "merge_result_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+    "merge_record_id": [
+      35,
+      "dev.git.merge.record,35"
+    ],
+    "pr_number": 16,
+    "pr_url_reference": "https://github.com/sabryyoussef/veterinarian_19/pull/16"
+  },
+  "resumed_from_merge": true,
+  "deploy": {
+    "ok": true,
+    "state": "deployed_staging_reviewed",
+    "deploy_record_id": 1,
+    "approval_id": 1,
+    "target_id": 4,
+    "target_name": "PetSpot Test Staging Deploy",
+    "non_production": true,
+    "database": "pet_spot_elsahel_test",
+    "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+    "result_state": "succeeded",
+    "backup_ref": "runner://staging/5d81cdc6f57b"
+  },
+  "production_safety": {
+    "prod_service": "active",
+    "test_service": "active",
+    "deploy": {
+      "ok": true,
+      "state": "deployed_staging_reviewed",
+      "deploy_record_id": 1,
+      "approval_id": 1,
+      "target_id": 4,
+      "target_name": "PetSpot Test Staging Deploy",
+      "non_production": true,
+      "database": "pet_spot_elsahel_test",
+      "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+      "result_state": "succeeded",
+      "backup_ref": "runner://staging/5d81cdc6f57b"
+    },
+    "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+    "runner_log_tail": "2026-07-20T03:58:54Z simulate ok verb=preflight sha=879acffe9d627841ef44e849eee166c71acaae52 db=pet_spot_elsahel_test modules=dev_session_hub lease=e-test\n2026-07-20T03:58:54Z REFUSE live without --confirm-live\n2026-07-20T03:58:54Z REFUSE production-like database=pet_spot_elsahel_prod\n2026-07-20T03:59:18Z live preflight ok sha=879acffe9d627841ef44e849eee166c71acaae52 db=pet_spot_elsahel_test\n2026-07-20T03:59:18Z live upgrade_modules start\n2026-07-20T03:59:42Z live upgrade_modules rc=0\n2026-07-20T03:59:47Z live healthcheck http=200\n2026-07-20T03:59:47Z live smoke acknowledged sha=879acffe9d627841ef44e849eee166c71acaae52\n2026-07-20T03:59:47Z REFUSE live database not allowlisted database=pet_spot_elsahel\n2026-07-20T04:25:57Z simulate ok verb=preflight sha=ff53a8d96ed1d63de38e2cd05230a3a0c432b64e db=pet_spot_elsahel_test modules=dev_session_hub lease=phase12-sim\n2026-07-23T12:34:27Z live preflight ok sha=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439 db=pet_spot_elsahel_test\n2026-07-23T12:34:27Z live deploy_code acknowledged sha=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439\n2026-07-23T12:34:27Z live healthcheck http=200\n2026-07-23T12:34:28Z live smoke acknowledged sha=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439\n"
+  }
+}

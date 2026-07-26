@@ -1,0 +1,107 @@
+# Development Plan — OP#352 / Odoo #43
+
+**Title:** Student application status (`حالة الطالب`)  
+**Sprint:** S2 — Days 3–5  
+**Effort:** 2–3 days  
+**Module:** `edafaa_student_profile` (+ portal bridge if sync)
+
+---
+
+## Precondition (Day 0 — 1h)
+
+Client confirm:
+1. Field lives on `op.student` (recommended)  
+2. Manual edit allowed after enroll?  
+3. ملغي → set `active=False`?
+
+---
+
+## Steps & time
+
+| Step | Hours | Action |
+|------|-------|--------|
+| 1 | 2 | Add `application_status` Selection + Arabic labels |
+| 2 | 2 | Form + list + search/group-by |
+| 3 | 3 | Sync from `student.registration` finalize / reject |
+| 4 | 2 | Migration defaults for existing students |
+| 5 | 2 | Tests + UAT |
+| 6 | 1 | Docs mapping table + OP/Odoo comment |
+
+---
+
+## Code changes
+
+### 1. Model
+
+**File:** `edafaa_student_profile/models/student.py`
+
+```python
+application_status = fields.Selection(
+    selection=[
+        ('accepted', 'مقبول'),
+        ('rejected', 'مرفوض'),
+        ('under_review', 'تحت المراجعة'),
+        ('cancelled', 'ملغي'),
+    ],
+    string='حالة الطالب',
+    default='under_review',
+    tracking=True,
+    index=True,
+)
+```
+
+Do **not** reuse `training_status` (new/active/completed).
+
+### 2. Views
+
+**File:** `edafaa_student_profile/views/student_views.xml`
+
+- Place near header / Training Summary  
+- List column optional  
+- Search filter + group_by in `student_search_views.xml`
+
+### 3. Sync (portal)
+
+**File:** `edafaa_student_profile_portal/models/student_registration.py`
+
+Map roughly:
+
+| registration.state | application_status |
+|-------------------|--------------------|
+| approved / enrolled | accepted |
+| rejected | rejected |
+| eligibility_review / document_review / submitted | under_review |
+| (new) cancelled | cancelled |
+
+Add `cancelled` to registration only if client requires — else set cancelled only on `op.student`.
+
+### 4. Data migration
+
+```python
+# post_init or migration script
+env['op.student'].search([('application_status', '=', False)]).write({
+    'application_status': 'under_review',
+})
+```
+
+---
+
+## Tests
+
+- Create student → default `under_review`  
+- Finalize registration approved → `accepted`  
+- Reject registration → `rejected`  
+- Form shows Arabic labels  
+
+---
+
+## Acceptance
+
+- [ ] Four statuses on profile  
+- [ ] Form + list visible  
+- [ ] Mapping documented  
+- [ ] UAT on sabry-test  
+
+## Blockers
+
+Do not start Step 3 until client confirms ownership model.

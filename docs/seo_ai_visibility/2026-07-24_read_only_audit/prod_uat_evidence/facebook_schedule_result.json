@@ -1,0 +1,106 @@
+{
+  "account_16": {
+    "id": 16,
+    "social_account_handle": "animalcarecenterpetspots",
+    "media_type": "facebook",
+    "is_media_disconnected": false,
+    "active": true
+  },
+  "timezone": "Africa/Cairo",
+  "scheduled_posts": [
+    {
+      "id": 1,
+      "weekday": "Monday",
+      "local_africa_cairo": "2026-08-03T10:00:00+03:00",
+      "scheduled_date_odoo_utc": "2026-08-03 07:00:00",
+      "state": "scheduled",
+      "post_method": "scheduled",
+      "account_ids": [
+        16
+      ],
+      "image_ids": [
+        1407
+      ],
+      "live_post_ids": []
+    },
+    {
+      "id": 2,
+      "weekday": "Wednesday",
+      "local_africa_cairo": "2026-08-05T10:00:00+03:00",
+      "scheduled_date_odoo_utc": "2026-08-05 07:00:00",
+      "state": "scheduled",
+      "post_method": "scheduled",
+      "account_ids": [
+        16
+      ],
+      "image_ids": [
+        1408
+      ],
+      "live_post_ids": []
+    },
+    {
+      "id": 3,
+      "weekday": "Friday",
+      "local_africa_cairo": "2026-08-07T10:00:00+03:00",
+      "scheduled_date_odoo_utc": "2026-08-07 07:00:00",
+      "state": "scheduled",
+      "post_method": "scheduled",
+      "account_ids": [
+        16
+      ],
+      "image_ids": [
+        1409
+      ],
+      "live_post_ids": []
+    }
+  ],
+  "remaining_drafts_unscheduled": [
+    {
+      "id": 12,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 11,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 10,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 9,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 8,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 7,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 6,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 5,
+      "state": "draft",
+      "scheduled_date": false
+    },
+    {
+      "id": 4,
+      "state": "draft",
+      "scheduled_date": false
+    }
+  ],
+  "article_urls_http_200": true,
+  "published_immediately": false
+}

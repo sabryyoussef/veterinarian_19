@@ -103,7 +103,9 @@ class TestWhatsappResolutionPolicy(TransactionCase):
         self.assertEqual(normalize_classification_v2("bug_report"), "bug")
         self.assertEqual(normalize_classification_v2("follow_up"), "existing_work_followup")
         self.assertEqual(normalize_classification_v2("context"), "context_update")
-        self.assertEqual(normalize_classification_v2("info"), "unclear")
+        self.assertEqual(normalize_classification_v2("info"), "information")
+        self.assertEqual(normalize_classification_v2("information"), "information")
+        self.assertEqual(normalize_classification_v2("unclear"), "unclear")
         self.assertEqual(normalize_classification_v2("new_task"), "new_task")
         self.assertEqual(
             normalize_classification_v2(

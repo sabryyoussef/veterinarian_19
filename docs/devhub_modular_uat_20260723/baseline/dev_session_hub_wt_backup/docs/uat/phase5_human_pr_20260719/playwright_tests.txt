@@ -1,0 +1,23 @@
+Scenario:
+tests/playwright/phase5_human_pr.spec.ts
+
+Command:
+npx playwright test phase5_human_pr.spec.ts --project=chromium --reporter=list
+
+Result:
+1 test discovered, 1 passed in 1.1 minutes.
+
+The scenario is designed to capture:
+01 pushed_reviewed
+02 PR Review
+03 source/target details
+04 title/body preview
+05 approval
+06 final confirmation
+07 creation success
+08 PR number/link
+09 pr_created_reviewed
+10 final credential-safe display
+
+All ten screenshots were captured. The scenario used workspace 14 and the
+repository-only GitHub App identity. No credential value appears in UI evidence.

@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1398,
+    "name": "dev_session_hub",
+    "state": "installed",
+    "latest_version": "19.0.9.1.0"
+  },
+  {
+    "id": 1414,
+    "name": "devhub_analysis",
+    "state": "installed",
+    "latest_version": "19.0.9.1.0"
+  },
+  {
+    "id": 1415,
+    "name": "devhub_approval",
+    "state": "installed",
+    "latest_version": "19.0.9.1.0"
+  },
+  {
+    "id": 1401,
+    "name": "devhub_deploy",
+    "state": "installed",
+    "latest_version": "19.0.9.0.0"
+  },
+  {
+    "id": 1402,
+    "name": "devhub_execution",
+    "state": "installed",
+    "latest_version": "19.0.9.1.0"
+  },
+  {
+    "id": 1404,
+    "name": "devhub_git",
+    "state": "installed",
+    "latest_version": "19.0.9.0.0"
+  },
+  {
+    "id": 1405,
+    "name": "devhub_github",
+    "state": "installed",
+    "latest_version": "19.0.9.0.0"
+  },
+  {
+    "id": 1416,
+    "name": "devhub_plan",
+    "state": "installed",
+    "latest_version": "19.0.9.1.0"
+  },
+  {
+    "id": 1410,
+    "name": "devhub_session",
+    "state": "installed",
+    "latest_version": "19.0.9.0.0"
+  },
+  {
+    "id": 1411,
+    "name": "devhub_work",
+    "state": "installed",
+    "latest_version": "19.0.9.1.0"
+  },
+  {
+    "id": 1417,
+    "name": "devhub_workflow",
+    "state": "installed",
+    "latest_version": "19.0.9.1.0"
+  }
+]

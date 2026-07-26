@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 10181
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-14 06:24:16 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Inquiry about a client group.
+
+**الإجراء المطلوب:**
+No action required, just a clarification needed.
+
+## Original Message
+
+```
+صباح الخير م. صبرى 
+الرساله دى المقصود منها جروب العميل؟
+```

@@ -1,0 +1,17 @@
+[2026-07-23T15:28:59] resume WS 1849 PR #16 state=pr_created_reviewed
+[2026-07-23T15:29:09] shot 10_github_app_pr.png :: Dev Hub GitHub App PR #16
+[2026-07-23T15:29:09] poll 0 mergeable=MERGEABLE gg=[{'__typename': 'CheckRun', 'completedAt': '2026-07-23T12:25:29Z', 'conclusion': 'SUCCESS', 'detailsUrl': 'https://dashboard.gitguardian.com', 'name': 'GitGuardian Security Checks', 'startedAt': '2026-07-23T12:25:29Z', 'status': 'COMPLETED', 'workflowName': ''}]
+[2026-07-23T15:29:10] merge review requested by dedicated requester
+[2026-07-23T15:29:13] shot 11_merge_approval.png :: READY FOR / performing human merge approval
+[2026-07-23T15:29:39] merged state=merged_reviewed sha=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439
+[2026-07-23T15:29:42] shot 12_merged_reviewed.png :: merged_reviewed
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/continue_from_pr.py", line 286, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/continue_from_pr.py", line 217, in main
+    deploy_payload = odoo_shell(
+                     ^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/run_governed_uat.py", line 158, in odoo_shell
+    raise RuntimeError(f"odoo shell failed: {payload}")
+RuntimeError: odoo shell failed: {'ok': False, 'raw': '\nTraceback (most recent call last):\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>\n    odoo.cli.main()\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main\n    command().run(args)\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run\n    self.shell(dbnames[0])\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell\n    self.console(local_vars)\n  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console\n    exec(sys.stdin.read(), local_vars)\n  File "<string>", line 6, in <module>\n  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_deploy/models/dev_deploy.py", line 567, in create_deploy_approval\n    self._verify_sha_on_branch(merge_record.merge_sha, target.required_protected_branch)\n  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_deploy/models/dev_deploy.py", line 539, in _verify_sha_on_branch\n    raise UserError(\nodoo.exceptions.UserError: Remote SHA verification requires an allowlisted runner preflight (set test context dev_deploy_skip_remote for simulated flows).\n'}

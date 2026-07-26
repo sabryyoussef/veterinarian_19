@@ -1,0 +1,182 @@
+﻿# CycleX Final Delivery — API endpoints & Postman results
+
+## Delivery summary
+
+| Item | Value |
+|------|-------|
+| **Live API** | `http://127.0.0.1:8071` (also `https://192.168.100.66:8171`) |
+| **Database** | `cycle_x` |
+| **Module version** | `18.0.1.5.0` |
+| **Git** | `sabryyoussef/wa-120363404024033208` @ `fix/manifest-menu-load-order` (`69f0d2a`) |
+| **Cursor PR (source)** | https://github.com/sabryyoussef/cyclex_odoo18/pull/1 |
+| **Auth delivered** | Bearer token **+** session cookie (dual-auth) |
+| **Postman run** | 2026-07-04T04:53:38.306066+00:00 |
+| **Collection** | `CycleX API Collection.postman_collection.json` via Newman |
+
+## Headline results
+
+| Metric | Count |
+|--------|------:|
+| Executed | 86 |
+| Skipped (destructive/setup) | 10 |
+| **2xx pass** | **51** |
+| 400 business/payload | 5 |
+| 403 role (customer on collector routes) | 21 |
+| 404 missing sample IDs | 7 |
+| **401 auth fail** | **0** |
+| 5xx bugs | 2 |
+
+**Bearer auth is production-ready for customer mobile flows** (0× 401 after login).
+
+## What was delivered
+
+1. Ported `cyclex.api.token` + Bearer binding from Cursor Mobile PR #1 into live track-repo.
+2. Login/verify return `token` + `token_expiry`; logout revokes tokens.
+3. Session cookies still work (backward compatible).
+4. Fixed `customer_rank` guard and wallet currency ACL.
+5. Full Postman/Newman regression on live `:8071`.
+
+## Auth usage (mobile)
+
+```http
+POST /api/cyclex/login
+Content-Type: application/json
+
+{"phone":"+20…","password":"…"}
+```
+
+Response includes `results.token`. Then:
+
+```http
+Authorization: Bearer <token>
+```
+
+## Endpoint results (Postman)
+
+| Result | HTTP | Method | Endpoint | Postman name | Message |
+|--------|-----:|--------|----------|--------------|---------|
+| PASS | 200 | `POST` | `/api/cyclex/login` | Login | Login successful |
+| PASS | 200 | `POST` | `/api/cyclex/profile` | Get Profile |  |
+| PASS | 200 | `POST` | `/api/cyclex/update-profile` | Update Profile | Profile updated successfully |
+| PASS | 200 | `POST` | `/api/cyclex/customer/save-address` | Save Customer Address | Address saved successfully [SUCCESS] |
+| PASS | 200 | `GET` | `/api/cyclex/customer/get-addresses` | Get Customer Addresses |  |
+| PASS | 200 | `POST` | `/api/cyclex/customer/delete-address` | Delete Customer Address | Address deleted successfully [SUCCESS] |
+| PASS | 200 | `POST` | `/api/cyclex/governorates` | Get Governorates |  |
+| PASS | 200 | `POST` | `/api/cyclex/governorate/1` | Get Governorate Details |  |
+| PASS | 200 | `POST` | `/api/cyclex/working-areas` | Get Working Areas |  |
+| PASS | 200 | `GET` | `/api/cyclex/vehicle-types?language=en` | Get Vehicle Types | Vehicle types retrieved successfully |
+| PASS | 200 | `POST` | `/api/cyclex/vehicle-types` | Get Vehicle Types (POST) | Vehicle types retrieved successfully |
+| PASS | 200 | `GET` | `/api/cyclex/limit_categories?language=en&category_limit=6&popular_limit=4` | Get Limit Categories (Home Screen) |  |
+| PASS | 200 | `POST` | `/api/cyclex/limit_categories` | Get Limit Categories (POST) |  |
+| PASS | 200 | `GET` | `/api/cyclex/categories` | Get Categories (Public) |  |
+| PASS | 200 | `GET` | `/api/cyclex/products` | Get Products (Public) |  |
+| PASS | 200 | `POST` | `/api/cyclex/product/3` | Get Product Details |  |
+| PASS | 200 | `GET` | `/api/cyclex/popular_picks?language=en` | Get Popular Picks (Public) |  |
+| PASS | 200 | `POST` | `/api/cyclex/popular_picks` | Get Popular Picks (POST) |  |
+| PASS | 200 | `POST` | `/api/cyclex/auth/categories` | Get Categories (Authenticated) |  |
+| PASS | 200 | `POST` | `/api/cyclex/products` | Get Products (Authenticated) |  |
+| PASS | 200 | `GET` | `/api/cyclex/auth/limit_categories?language=en&category_limit=6&popular_limit=4` | Get Limit Categories (Authenticated) |  |
+| PASS | 200 | `POST` | `/api/cyclex/auth/limit_categories` | Get Limit Categories (Authenticated POST) |  |
+| PASS | 200 | `GET` | `/api/cyclex/auth/popular_picks?language=en` | Get Popular Picks (Authenticated) |  |
+| PASS | 200 | `POST` | `/api/cyclex/auth/popular_picks` | Get Popular Picks (Authenticated POST) |  |
+| PASS | 200 | `POST` | `/api/cyclex/favorites/add` | Add to Favorites | Product added to favorites successfully |
+| PASS | 200 | `POST` | `/api/cyclex/favorites/remove` | Remove from Favorites | Product removed from favorites successfully |
+| PASS | 200 | `GET` | `/api/cyclex/favorites?limit=50&offset=0` | Get Favorites |  |
+| PASS | 200 | `POST` | `/api/cyclex/favorites` | Get Favorites (POST) |  |
+| PASS | 200 | `GET` | `/api/cyclex/favorites/check/1` | Check if Favorite |  |
+| PASS | 200 | `POST` | `/api/cyclex/product/request` | Request New Product | Product request submitted successfully. It will be reviewed by an administrator. |
+| PASS | 200 | `POST` | `/api/cyclex/product/request/list` | Search Product Requests |  |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/product/request/approve/1` | Approve Product Request | Only administrators can approve product requests [UNAUTHORIZED] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/product/request/reject/1` | Reject Product Request | Only administrators can reject product requests [UNAUTHORIZED] |
+| EXPECTED (400) | 400 | `POST` | `/api/cyclex/request/create` | Create Request | Either product_id or item_name must be provided [MISSING_PARAMS] |
+| PASS | 200 | `POST` | `/api/cyclex/request/list` | Get Requests List |  |
+| PASS | 200 | `POST` | `/api/cyclex/request/assigned-orders` | Get Assigned Orders |  |
+| EXPECTED (404) | 404 | `POST` | `/api/cyclex/request/qr-code` | Get Order QR Code | Order not found [NOT_FOUND] |
+| EXPECTED (404) | 404 | `POST` | `/api/cyclex/request/details/1` | Get Request Details | Request not found [NOT_FOUND] |
+| EXPECTED (404) | 404 | `POST` | `/api/cyclex/request/details-timeline/1` | Get Request Details (Timeline) | Request not found [NOT_FOUND] |
+| EXPECTED (404) | 404 | `POST` | `/api/cyclex/request/reject/1` | Reject Request | Request not found [NOT_FOUND] |
+| EXPECTED (404) | 404 | `POST` | `/api/cyclex/request/upload-receipt/1` | Upload Receipt | Request not found [NOT_FOUND] |
+| EXPECTED (403) | 403 | `GET` | `/api/cyclex/collector/profile` | Get Collector Profile | Only collectors can access this endpoint [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/profile` | Get Collector Profile (POST) | Only collectors can access this endpoint [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/available-orders` | Get Available Orders | Only collectors can view available orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/active-orders` | Get Active Orders | Only collectors can view active orders [INVALID_USER_TYPE] |
+| BUG (500) | 500 | `POST` | `/api/cyclex/collector/orders` | Get Collector Orders | Object of type _Response is not JSON serializable [SERVER_ERROR] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/reject-available-order/1` | Reject Available Order | Only collectors can reject orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/accept-order/1` | Accept Order | Only collectors can accept orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/reject-order/1` | Reject Order | Only collectors can reject orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/complete-order/1` | Complete Order | Only collectors can complete orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/scan-qr` | Scan QR Code | Only collectors can scan QR codes [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/update-order-items/1` | Update Order Items | Only collectors can update order items [INVALID_USER_TYPE] |
+| EXPECTED (404) | 404 | `POST` | `/api/cyclex/collector/order-receipt/1` | Get Order Receipt | Request not found [NOT_FOUND] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/request-area-change` | Request Area Change | Only collectors can request area changes [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/area-change-requests` | Get Area Change Requests | Only collectors can view area change requests [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/available-orders-grouped` | Get Available Orders Grouped | Only collectors can view available orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/accept-order-group` | Accept Order Group | Only collectors can accept orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/reject-order-group` | Reject Order Group | Only collectors can reject orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/complete-order-group` | Complete Order Group | Only collectors can complete orders [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/collector/scan-qr-group` | Scan QR Group | Only collectors can scan QR codes [INVALID_USER_TYPE] |
+| EXPECTED (404) | 404 | `POST` | `/api/cyclex/order/rate/1` | Rate Order | Request not found [NOT_FOUND] |
+| PASS | 200 | `POST` | `/api/cyclex/wallet/balance` | Get Wallet Balance |  |
+| PASS | 200 | `POST` | `/api/cyclex/wallet/transactions` | Get Wallet Transactions |  |
+| EXPECTED (400) | 400 | `POST` | `/api/cyclex/wallet/withdraw` | Request Withdrawal | Minimum withdrawal amount is 1000.0 [BELOW_THRESHOLD] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/wallet/collector/pending-commissions` | Get Collector Pending Commissions | Only collectors can view commissions [INVALID_USER_TYPE] |
+| EXPECTED (403) | 403 | `POST` | `/api/cyclex/wallet/collector/transfer-commissions` | Transfer Commissions to Wallet | Only collectors can transfer commissions [INVALID_USER_TYPE] |
+| EXPECTED (400) | 400 | `POST` | `/api/cyclex/wallet/request-bank-transfer` | Request Bank Transfer | Insufficient balance. Available: 0.0 [INSUFFICIENT_BALANCE] |
+| PASS | 200 | `POST` | `/api/cyclex/wallet/bank-transfers` | Get Bank Transfers |  |
+| PASS | 200 | `GET` | `/api/cyclex/app_version` | Get App Version (iOS) | No app version found |
+| PASS | 200 | `GET` | `/api/cyclex/app_version_android` | Get App Version (Android) | No app version found |
+| PASS | 200 | `GET` | `/api/cyclex/terms_conditions` | Get Terms and Conditions | Terms and conditions retrieved successfully |
+| PASS | 200 | `POST` | `/api/cyclex/notification_log` | Create Notification Log | Notification log created successfully |
+| PASS | 200 | `GET` | `/api/cyclex/notification_log?limit=50&offset=0` | Get Notification Logs | Notification logs retrieved successfully |
+| PASS | 200 | `POST` | `/api/cyclex/send_notification/all` | Send Notification to All Users | Notification sent to 0 users |
+| PASS | 200 | `POST` | `/api/cyclex/send_notification/clients` | Send Notification to Clients | Notification sent to 0 clients |
+| PASS | 200 | `POST` | `/api/cyclex/send_notification/collectors` | Send Notification to Collectors | Notification sent to 0 collectors |
+| PASS | 200 | `POST` | `/api/cyclex/cart/add` | Add Product to Cart | Product added to cart successfully |
+| PASS | 200 | `GET` | `/api/cyclex/cart` | Get Cart | Cart retrieved successfully |
+| PASS | 200 | `GET` | `/api/cyclex/cart/items` | Get Cart Items (Product Format) | Cart items retrieved successfully |
+| BUG (500) | 500 | `POST` | `/api/cyclex/cart/update/1` | Update Cart Item | Internal server error [SERVER_ERROR] |
+| PASS | 200 | `POST` | `/api/cyclex/cart/increment/1` | Increment Cart Item | Cart item quantity increased successfully |
+| PASS | 200 | `POST` | `/api/cyclex/cart/decrement/1` | Decrement Cart Item | Cart item quantity decreased successfully |
+| PASS | 200 | `POST` | `/api/cyclex/cart/remove/1` | Remove from Cart | Item removed from cart successfully |
+| PASS | 200 | `POST` | `/api/cyclex/cart/clear` | Clear Cart | Cart cleared successfully |
+| EXPECTED (400) | 400 | `POST` | `/api/cyclex/cart/create_request` | Create Request from Cart | Cart is empty [EMPTY_CART] |
+| EXPECTED (400) | 400 | `POST` | `/api/cyclex/cart/create_requests` | Create Multiple Requests from Cart | Pickup date cannot be in the past [INVALID_PICKUP_DATE] |
+
+## Skipped (not run — destructive / setup)
+
+- Delete Account
+- Delete Account Simple
+- Change Phone
+- Change Password
+- Reset Password
+- Register
+- Register Collector
+- Verify Phone
+- Resend Verification Code
+- Forget Password
+
+## Known bugs (500)
+
+| Endpoint | Postman name | Issue |
+|----------|--------------|-------|
+| `POST /api/cyclex/collector/orders` | Get Collector Orders | Object of type _Response is not JSON serializable [SERVER_ERROR] |
+| `POST /api/cyclex/cart/update/1` | Update Cart Item | Internal server error [SERVER_ERROR] |
+
+## Artifacts
+
+| File | Path |
+|------|------|
+| Summary MD | `server setup/cycle-x-odoo18/postman-run/reports/SUMMARY.md` |
+| Summary JSON | `server setup/cycle-x-odoo18/postman-run/reports/summary.json` |
+| Newman JSON | `server setup/cycle-x-odoo18/postman-run/reports/newman-report.json` |
+| Bearer collection | `server setup/cycle-x-odoo18/postman-run/CycleX.bearer.collection.json` |
+| Environment | `server setup/cycle-x-odoo18/postman-run/CycleX.local.8071.bearer.postman_environment.json` |
+
+## Related work packages
+
+- #174 Cursor Mobile PR #1 summary
+- #175 UAT notes
+- #176 Bugs (customer_rank, currency ACL — fixed on live)
+- #177 Live vs PR analysis
+
+_Generated 2026-07-04 04:56 UTC_

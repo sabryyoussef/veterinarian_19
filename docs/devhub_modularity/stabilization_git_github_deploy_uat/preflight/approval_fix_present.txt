@@ -1,0 +1,5 @@
+11:from odoo.addons.devhub_plan.models.dev_work_plan import DevWorkPlan
+14:class DevWorkPlanApproval(models.Model):
+47:            super(DevWorkPlan, old).write({"status": "superseded"})
+48:        super(DevWorkPlan, self).write({"status": "approved"})
+76:        super(DevWorkPlan, self).write({"status": "rejected"})

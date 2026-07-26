@@ -1,0 +1,33 @@
+hub_instance 1 sabry min u False d False
+BEFORE 5 WA: كريم ايهاب  الساحل 2022 legacy 201000059085 Sabry Bridge Test
+AFTER shadow
+flags False False
+channels_hub 0
+mail_message_id 11308
+hub_transport_calls 0
+unified_delta 0
+shadow_delta 1
+msg_delta 1
+log_delta 1
+log 5 origin legacy status sent wa_id 3EB08FFFE4C53F413CAF8A
+hub_msg 8 purpose discuss biz walog:5 remote 201000059085@s.whatsapp.net inst_ref sabry min
+shadow 1
+classification matched
+eligible True
+cand_key discuss:5:11308
+actual_key walog:5
+cand_dest 201000059085
+actual_remote 201000059085@s.whatsapp.net
+cand_purpose discuss
+actual_purpose discuss
+cand_inst sabry min
+actual_inst sabry min
+exp_conv 2e5bf8c70f9d6ff1af7146fb2b816593a1dd79b3f022e12b2544ef61d13b2e09
+act_conv 2e5bf8c70f9d6ff1af7146fb2b816593a1dd79b3f022e12b2544ef61d13b2e09
+mismatch False
+mirrored_id 8
+FINAL_flags False False
+FINAL_channel_mode shadow
+FINAL_hub_channels 0
+FINAL_inst_flags 0 0
+COMMITTED_shadow_pilot

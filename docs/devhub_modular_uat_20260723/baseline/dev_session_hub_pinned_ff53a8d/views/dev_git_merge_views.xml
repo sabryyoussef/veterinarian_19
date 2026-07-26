@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_merge_target_form" model="ir.ui.view">
+        <field name="name">dev.git.merge.target.form</field>
+        <field name="model">dev.git.merge.target</field>
+        <field name="arch" type="xml">
+            <form string="Registered Human Merge Target">
+                <sheet>
+                    <div class="alert alert-warning" role="alert">
+                        This registration permits only a human-approved squash merge to staging. It does not permit deployment, branch deletion, auto-merge, or service operations.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="repository_id"/>
+                            <field name="pr_target_id"/>
+                            <field name="github_repository"/>
+                            <field name="base_branch"/>
+                            <field name="merge_method"/>
+                            <field name="requester_user_id"/>
+                        </group>
+                        <group>
+                            <field name="required_check_name"/>
+                            <field name="required_check_app_id"/>
+                            <field name="approved"/>
+                            <field name="non_production"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <separator string="Separate Repository-Only Merge GitHub App"/>
+                    <group>
+                        <group>
+                            <field name="github_app_slug"/>
+                            <field name="github_app_id"/>
+                            <field name="github_installation_id"/>
+                            <field name="credential_repository_restriction"/>
+                            <field name="credential_permission_summary"/>
+                        </group>
+                        <group>
+                            <field name="credential_profile_reference" password="True"/>
+                            <field name="credential_broker_reference" password="True"/>
+                            <field name="credential_validated_at"/>
+                            <field name="credential_expires_at"/>
+                            <field name="credential_validation_digest"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_merge_approval_form" model="ir.ui.view">
+        <field name="name">dev.git.merge.approval.form</field>
+        <field name="model">dev.git.merge.approval</field>
+        <field name="arch" type="xml">
+            <form string="Immutable Dedicated Merge Approval" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="merge_request_work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="github_repository"/>
+                            <field name="pr_number"/>
+                            <field name="pr_url_reference" widget="url"/>
+                            <field name="requester_id"/>
+                            <field name="approver_id"/>
+                            <field name="requested_at"/>
+                        </group>
+                        <group>
+                            <field name="head_branch"/>
+                            <field name="head_sha"/>
+                            <field name="base_branch"/>
+                            <field name="base_sha"/>
+                            <field name="merge_method"/>
+                            <field name="approved_at"/>
+                            <field name="idempotency_key"/>
+                            <field name="binding_hash"/>
+                        </group>
+                    </group>
+                    <field name="checks_summary"/>
+                    <field name="event_ids">
+                        <list create="0" edit="0" delete="0">
+                            <field name="occurred_at"/>
+                            <field name="event_type"/>
+                            <field name="actor_id"/>
+                            <field name="summary"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_merge_record_form" model="ir.ui.view">
+        <field name="name">dev.git.merge.record.form</field>
+        <field name="model">dev.git.merge.record</field>
+        <field name="arch" type="xml">
+            <form string="Terminal Human Merge Audit Record" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="merge_request_work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="approval_id"/>
+                            <field name="github_repository"/>
+                            <field name="pr_number"/>
+                            <field name="pr_url_reference" widget="url"/>
+                            <field name="requester_id"/>
+                            <field name="approver_id"/>
+                        </group>
+                        <group>
+                            <field name="approved_head_sha"/>
+                            <field name="base_branch"/>
+                            <field name="approved_base_sha"/>
+                            <field name="merge_method"/>
+                            <field name="result_state"/>
+                            <field name="merge_sha"/>
+                            <field name="merged_at"/>
+                            <field name="idempotency_key"/>
+                            <field name="api_correlation_reference"/>
+                            <field name="audit_hash"/>
+                        </group>
+                    </group>
+                    <field name="remote_result"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+active
+active
+LISTEN 0      128                      127.0.0.1:8041       0.0.0.0:*    users:(("python3",pid=2758920,fd=5))                                                          
+LISTEN 0      511                      127.0.0.1:8026       0.0.0.0:*    users:(("node",pid=2658,fd=21))                                                               
+LISTEN 0      16                         0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=3900080,fd=5),("python3",pid=3900079,fd=5),("python3",pid=3899813,fd=5))
+LISTEN 0      128                        0.0.0.0:8028       0.0.0.0:*    users:(("python3",pid=3944265,fd=3))                                                          
+LISTEN 0      128                        0.0.0.0:8029       0.0.0.0:*    users:(("python3",pid=7382,fd=4))                                                             
+test_http=200

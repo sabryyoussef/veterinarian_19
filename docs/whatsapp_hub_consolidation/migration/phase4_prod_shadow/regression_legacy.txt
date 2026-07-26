@@ -1,0 +1,19 @@
+=== FLAGS ===
+unified False
+discuss_cutover False
+instances_u 0
+instances_d 0
+channels_non_legacy 0
+channels_hub 0
+msg_count 4 log_count 2 unified_jobs 0
+channel 5 legacy 201000059085 Sabry Bridge Test
+campaign_uses_send_via_evolution True
+has_service_queue_outbound True
+reg_legacy_calls 1
+reg_hub_transport 0
+reg_log True 4 origin legacy
+reg_hub 1 purpose discuss
+reg_unified_delta 0
+reg_shadow_delta 0
+REGRESSION_OK True
+rolled_back

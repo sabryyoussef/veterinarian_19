@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_work_generation_user,dev.work.generation user,model_dev_work_generation,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_work_generation_manager,dev.work.generation manager,model_dev_work_generation,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_work_generation_integration,dev.work.generation scoped integration,model_dev_work_generation,devhub_core.group_dev_hub_generation,1,0,0,0

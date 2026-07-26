@@ -1,0 +1,12 @@
+Test: tests/playwright/phase5_human_push_hardening.spec.ts
+SHA-256: 11d0698e8c869537de3f9c2c4919c3a47718b4ccfd1e852b4d6cf3308a7c908e
+Result: 1/1 passed (48.5 seconds)
+
+Screenshots:
+- 01_safe_push_review.png
+- 02_safe_push_confirmation.png
+- 03_safe_push_success.png
+- 04_failure_push_approved.png
+- 05_push_failed_review.png
+- 06_failed_reconciliation_record.png
+- 07_human_reconciliation_complete.png

@@ -265,6 +265,137 @@ class TestWhatsappWorkInbox(TransactionCase):
         self.assertTrue(msg.has_media)
         self.assertEqual(msg.inbox_state, "untriaged")
 
+    def test_context_media_preview_downloaded_and_pending(self):
+        import base64
+
+        img_msg = self._msg(
+            self.conv_a,
+            "",
+            media_kind="image",
+            has_media=True,
+            attachment_references="media_type=image",
+        )
+        audio_msg = self._msg(
+            self.conv_a,
+            "",
+            media_kind="audio",
+            has_media=True,
+            attachment_references="media_type=audio",
+        )
+        pending_msg = self._msg(
+            self.conv_a,
+            "",
+            media_kind="image",
+            has_media=True,
+            attachment_references="media_type=image",
+        )
+        png_1x1 = base64.b64decode(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+        )
+        Att = self.env["ir.attachment"].sudo()
+        img_att = Att.create(
+            {
+                "name": "preview.png",
+                "type": "binary",
+                "datas": base64.b64encode(png_1x1),
+                "res_model": "whatsapp.message",
+                "res_id": img_msg.id,
+                "mimetype": "image/png",
+            }
+        )
+        audio_att = Att.create(
+            {
+                "name": "preview.ogg",
+                "type": "binary",
+                "datas": base64.b64encode(b"OggSfake"),
+                "res_model": "whatsapp.message",
+                "res_id": audio_msg.id,
+                "mimetype": "audio/ogg",
+            }
+        )
+        Media = self.env["dev.whatsapp.media"].sudo()
+        Media.create(
+            {
+                "whatsapp_message_id": img_msg.id,
+                "source_media_id": "wi-img-%s" % img_msg.id,
+                "media_type": "image",
+                "mime_type": "image/png",
+                "filename": "preview.png",
+                "file_size": len(png_1x1),
+                "attachment_id": img_att.id,
+                "retrieval_state": "downloaded",
+                "enrichment_state": "succeeded",
+                "image_extracted_text": "ocr sample",
+                "company_id": self.env.company.id,
+            }
+        )
+        Media.create(
+            {
+                "whatsapp_message_id": audio_msg.id,
+                "source_media_id": "wi-aud-%s" % audio_msg.id,
+                "media_type": "audio",
+                "mime_type": "audio/ogg",
+                "filename": "preview.ogg",
+                "file_size": 8,
+                "attachment_id": audio_att.id,
+                "retrieval_state": "downloaded",
+                "enrichment_state": "succeeded",
+                "audio_transcript": "transcript sample",
+                "company_id": self.env.company.id,
+            }
+        )
+        Media.create(
+            {
+                "whatsapp_message_id": pending_msg.id,
+                "source_media_id": "wi-pending-%s" % pending_msg.id,
+                "media_type": "image",
+                "retrieval_state": "pending",
+                "enrichment_state": "pending",
+                "company_id": self.env.company.id,
+            }
+        )
+        Message = self.env["whatsapp.message"].with_user(self.triage)
+        img_ctx = Message.get_inbox_context(img_msg.id, before=0, after=0)
+        self.assertEqual(len(img_ctx["messages"]), 1)
+        img_bubble = img_ctx["messages"][0]
+        self.assertEqual(img_bubble["id"], img_msg.id)
+        self.assertEqual(len(img_bubble["media_assets"]), 1)
+        self.assertEqual(img_bubble["media_assets"][0]["preview_kind"], "image")
+        self.assertTrue(img_bubble["media_assets"][0]["content_url"])
+        self.assertIn("/web/image/", img_bubble["media_assets"][0]["content_url"])
+        self.assertEqual(img_bubble["media_assets"][0]["enrichment_text"], "ocr sample")
+        self.assertFalse(img_bubble["media_assets"][0]["status_label"])
+
+        audio_ctx = Message.get_inbox_context(audio_msg.id, before=0, after=0)
+        self.assertEqual(len(audio_ctx["messages"]), 1)
+        audio_bubble = audio_ctx["messages"][0]
+        self.assertEqual(audio_bubble["id"], audio_msg.id)
+        self.assertEqual(audio_bubble["media_assets"][0]["preview_kind"], "audio")
+        self.assertIn("/web/content/", audio_bubble["media_assets"][0]["content_url"])
+        self.assertEqual(
+            audio_bubble["media_assets"][0]["enrichment_text"], "transcript sample"
+        )
+
+        pending_ctx = Message.get_inbox_context(pending_msg.id, before=0, after=0)
+        pending_bubble = pending_ctx["messages"][0]
+        self.assertEqual(pending_bubble["id"], pending_msg.id)
+        self.assertEqual(pending_bubble["media_assets"][0]["preview_kind"], "none")
+        self.assertFalse(pending_bubble["media_assets"][0]["content_url"])
+        self.assertIn("pending", pending_bubble["media_assets"][0]["status_label"].lower())
+
+        bare = self._msg(
+            self.conv_a,
+            "",
+            media_kind="audio",
+            has_media=True,
+            attachment_references="media_type=audio",
+        )
+        bare_ctx = Message.get_inbox_context(bare.id, before=0, after=0)
+        bare_bubble = bare_ctx["messages"][0]
+        self.assertEqual(bare_bubble["id"], bare.id)
+        self.assertEqual(bare_bubble["media_assets"][0]["retrieval_state"], "not_retrieved")
+        self.assertIn("not downloaded", bare_bubble["media_assets"][0]["status_label"].lower())
+
 
 def fields_now(case):
     from odoo import fields

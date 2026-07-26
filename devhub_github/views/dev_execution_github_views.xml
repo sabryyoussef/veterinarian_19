@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_execution_workspace_github_form" model="ir.ui.view">
+        <field name="name">dev.execution.workspace.github.form</field>
+        <field name="model">dev.execution.workspace</field>
+        <field name="inherit_id" ref="devhub_execution.view_dev_execution_workspace_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_release']" position="before">
+                    <button name="action_review_pr_proposal" type="object" string="Review PR Proposal" groups="devhub_core.group_dev_hub_manager" invisible="state != 'pushed_reviewed'"/>
+                    <button name="action_open_pr_approval" type="object" string="Approve PR Creation" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state != 'pushed_reviewed'"/>
+                    <button name="action_open_pr_execution" type="object" string="Create Approved PR" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state != 'pr_approved'"/>
+                    <button name="action_reject_pr_proposal" type="object" string="Reject / Return for Changes" groups="devhub_core.group_dev_hub_manager" invisible="state not in ('pushed_reviewed', 'pr_approved')" confirm="Reject this PR proposal and invalidate any approval? No branch or worktree will be deleted."/>
+                    <button name="action_request_merge_review" type="object" string="Request Merge Review" groups="devhub_core.group_dev_hub_user" invisible="state != 'pr_created_reviewed' or merge_requested_at"/>
+                    <button name="action_review_merge_eligibility" type="object" string="Review Merge Eligibility" groups="devhub_core.group_dev_hub_manager" invisible="state != 'pr_created_reviewed'"/>
+                    <button name="action_open_merge_approval" type="object" string="Approve Exact Squash Merge" class="btn-primary" groups="devhub_core.group_dev_hub_manager" invisible="state != 'pr_created_reviewed'"/>
+                    <button name="action_open_merge_execution" type="object" string="Final Merge Confirmation" class="btn-danger" groups="devhub_core.group_dev_hub_manager" invisible="state != 'merge_approved'"/>
+                    <button name="action_reject_merge" type="object" string="Reject Merge" groups="devhub_core.group_dev_hub_manager" invisible="state not in ('pr_created_reviewed', 'merge_approved')" confirm="Reject this exact merge proposal and invalidate any approval?"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="page_review_pr" string="Review Pull Request">
+                            <group>
+                                <group>
+                                    <field name="work_item_id"/>
+                                    <field name="repository_id" string="Source Repository"/>
+                                    <field name="pr_source_branch"/>
+                                    <field name="pr_source_sha"/>
+                                    <field name="pr_commit_list"/>
+                                </group>
+                                <group>
+                                    <field name="pr_target_id"/>
+                                    <field name="pr_target_branch"/>
+                                    <field name="pr_last_checked_at"/>
+                                    <field name="pr_approval_id"/>
+                                    <field name="pr_record_id"/>
+                                </group>
+                            </group>
+                            <separator string="Changed Files and Test Evidence"/>
+                            <field name="changed_files_summary" readonly="1"/>
+                            <field name="review_tests_summary" readonly="1"/>
+                            <field name="review_handoff" readonly="1"/>
+                            <separator string="Exact Proposed Metadata"/>
+                            <field name="pr_title_preview" readonly="1"/>
+                            <field name="pr_body_preview" readonly="1"/>
+                            <field name="pr_body_digest" readonly="1"/>
+                            <separator string="Verified Open Pull Request"/>
+                            <group>
+                                <field name="pr_number"/>
+                                <field name="pr_url_reference" widget="url"/>
+                                <field name="pr_created_at"/>
+                            </group>
+                        </page>
+                <page name="page_review_merge" string="Review Human Merge">
+                            <group>
+                                <group>
+                                    <field name="merge_request_work_item_id"/>
+                                    <field name="merge_target_id"/>
+                                    <field name="merge_requester_id"/>
+                                    <field name="merge_requested_at"/>
+                                    <field name="merge_pr_number"/>
+                                    <field name="merge_pr_url" widget="url"/>
+                                </group>
+                                <group>
+                                    <field name="merge_head_branch"/>
+                                    <field name="merge_head_sha"/>
+                                    <field name="merge_base_branch"/>
+                                    <field name="merge_base_sha"/>
+                                    <field name="merge_method"/>
+                                    <field name="merge_last_checked_at"/>
+                                </group>
+                            </group>
+                            <separator string="Required Checks and Immutable Digests"/>
+                            <field name="merge_checks_summary" readonly="1"/>
+                            <group>
+                                <field name="merge_checks_digest"/>
+                                <field name="merge_pr_metadata_digest"/>
+                            </group>
+                            <separator string="Dedicated Approval and Terminal Audit"/>
+                            <group>
+                                <field name="merge_approval_id"/>
+                                <field name="merge_record_id"/>
+                                <field name="merge_result_sha"/>
+                                <field name="merged_at"/>
+                            </group>
+                        </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

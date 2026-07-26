@@ -1,0 +1,38 @@
+PASS 01_busy_conversation conv=417 type=group n=80
+PASS 01b_dm_available id=406
+PASS 06_add_historical_to_inbox was=untriaged now=new
+PASS 06b_state_after_add new
+PASS 02_group_sender_identity sample=120363422104853335@g.us
+PASS 03_context_before_after n=41
+PASS 04_load_older n=20 has_older=True
+PASS 05_load_newer n=20 has_newer=True
+PASS 07_ignore_new 
+PASS 08_restore_to_new 
+PASS 09_ignore_pending 
+PASS 10_restore_to_pending 
+PASS 11_bulk_ignore 
+PASS 12_mark_pending 
+PASS 13_mark_actioned 
+PASS 14_select_multi_same_conv 
+PASS 15_reject_mixed 
+PASS 16_open_wizard UAT: Work Inbox multi-message create
+PASS 17_editable_title 
+PASS 18_create_work_multi work=3331 sources=3
+PASS 19_chronological_snapshots 
+PASS 20_open_work_from_wa 
+PASS 21_return_context 
+PASS 22_highlight_linked {'focus_message_id': 4099, 'highlight_message_ids': [4099, 4098, 4097], 'conversation_id': 417}
+PASS 23_duplicate_blocked 
+PASS 24_additional_work_manager 3332
+PASS 27_text_only 
+PASS 28_image_chip 
+PASS 29_audio_video_chip 
+PASS 30_page_cap 
+PASS 31_ingest_new id=4260
+PASS 32_reingest_preserves 
+PASS 33_historical_untriaged 3726
+PASS 33b_not_flooded 1
+PASS 34_campaign 
+PASS 35_discuss 
+PASS 36_outbound 
+SUMMARY passed=37 failed=0 total=37

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-    <record id="group_dev_hub_manager" model="res.groups">
+    <record id="devhub_core.group_dev_hub_manager" model="res.groups">
         <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
     </record>
 
@@ -14,6 +14,7 @@
         <field name="tailscale_verified_at">2026-07-18 16:20:00</field>
         <field name="pinned_host_key_fingerprint">SHA256:p/lGDKGwvUxeoO0c7NhcDwekltbxEh4Mb9qFqBG554o</field>
         <field name="ssh_alias">master-ts</field>
+        <field name="verification_ssh_user">sabry</field>
         <field name="os_name">Ubuntu 26.04 LTS</field>
         <field name="architecture">x86_64</field>
         <field name="role">Initial canonical development target</field>
@@ -72,12 +73,22 @@
         <field name="current_branch_cache">feature/resume-portability-candidates</field>
         <field name="head_cache">efe1ba2f31aae160e8d43f81f45d24ff144d9ed2</field>
         <field name="last_git_snapshot_at">2026-07-18 16:20:00</field>
+        <field name="execution_classification">production_coupled</field>
+        <field name="agent_execution_allowed" eval="False"/>
+        <field name="worker_identity">devworker</field>
+        <field name="worker_git_common_dir">/srv/devhub/repos/petspot.git</field>
+        <field name="worker_worktree_root">/srv/devhub/worktrees</field>
+        <field name="production_runtime_coupled" eval="True"/>
+        <field name="test_runtime_coupled" eval="True"/>
+        <field name="execution_audit_summary">Production, Test, proxy, and backup paths reference the main worktree directly. The main worktree is heavily dirty and its .git metadata must never be shared with a worker. Agent execution remains denied pending a separate non-production machine and worker-owned bare repository.</field>
+        <field name="execution_audited_at">2026-07-19 08:00:00</field>
     </record>
 
     <record id="dev_environment_petspot_test" model="dev.environment">
         <field name="name">PetSpot Test</field>
         <field name="project_id" ref="dev_project_petspot"/>
         <field name="environment_type">test</field>
+        <field name="environment_role">legacy_isolated</field>
         <field name="machine_id" ref="dev_machine_master"/>
         <field name="odoo_version">19.0 Enterprise</field>
         <field name="database_identifier">pet_spot_elsahel_test</field>
@@ -87,6 +98,34 @@
         <field name="service_container_reference">pet_spot_elsahel_test.service</field>
         <field name="data_sensitivity">internal_test</field>
         <field name="production_guard_policy">Non-production only. Production launch, deployment, service control, Docker control, and automatic Git mutation are denied.</field>
+    </record>
+
+    <record id="dev_odoo_runtime_master_19" model="dev.odoo.runtime">
+        <field name="name">Master Odoo 19 Runtime</field>
+        <field name="code">master-odoo19</field>
+        <field name="odoo_major">19.0</field>
+        <field name="machine_id" ref="dev_machine_master"/>
+        <field name="odoo_bin_path">/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin</field>
+        <field name="venv_path">/home/sabry/odoo_base/base_odoo_19/venv19</field>
+        <field name="community_addons_path">/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons</field>
+        <field name="baseline_database_identifier">devhub_modular_fresh</field>
+    </record>
+
+    <record id="dev_environment_modular_fresh" model="dev.environment">
+        <field name="name">Dev Hub Modular Fresh</field>
+        <field name="project_id" ref="dev_project_petspot"/>
+        <field name="environment_type">test</field>
+        <field name="environment_role">dedicated_test</field>
+        <field name="runtime_id" ref="dev_odoo_runtime_master_19"/>
+        <field name="machine_id" ref="dev_machine_master"/>
+        <field name="odoo_version">19.0 Enterprise</field>
+        <field name="database_identifier">devhub_modular_fresh</field>
+        <field name="url">http://127.0.0.1:8032</field>
+        <field name="port">8032</field>
+        <field name="config_reference">/home/sabry/odoo_base/base_odoo_19/config/projects/devhub_modular_fresh.conf</field>
+        <field name="service_container_reference">devhub_modular_fresh (manual)</field>
+        <field name="data_sensitivity">internal_test</field>
+        <field name="production_guard_policy">Acceptance-only modular Dev Hub database. Production mutations denied.</field>
     </record>
 
     <record id="dev_project_petspot" model="dev.project">
@@ -120,7 +159,39 @@
         <field name="launch_allowed" eval="True"/>
     </record>
 
-    <record id="dev_dashboard_main" model="dev.dashboard">
-        <field name="name">Development Hub</field>
+    <record id="dev_policy_modular_fresh" model="dev.policy">
+        <field name="name">Modular Fresh MVP</field>
+        <field name="project_id" ref="dev_project_petspot"/>
+        <field name="environment_id" ref="dev_environment_modular_fresh"/>
+        <field name="production_access_policy">denied</field>
+        <field name="allowed_operations">Read Git branch, HEAD, and aggregate dirty-state summary; generate sanitized manifest; present explicit Cursor Remote SSH command/workspace; run user-approved tests.</field>
+        <field name="required_confirmation" eval="True"/>
+        <field name="branch_rules">Never create, switch, reset, clean, commit, or push branches automatically.</field>
+        <field name="development_allowed" eval="True"/>
+        <field name="agent_write_permission" eval="True"/>
+        <field name="test_permission" eval="True"/>
+        <field name="deploy_permission" eval="False"/>
+        <field name="launch_allowed" eval="True"/>
     </record>
+
+
+    <record id="dev_whatsapp_source_testopenclow" model="dev.whatsapp.source">
+        <field name="name">Testopenclow (pilot)</field>
+        <field name="group_jid">120363411424964076@g.us</field>
+        <field name="chatwoot_label">testopenclow</field>
+        <field name="chatwoot_conversation_id">69</field>
+        <field name="chatwoot_inbox_id">2</field>
+        <field name="dev_project_id" ref="dev_project_petspot"/>
+        <field name="default_environment_id" ref="dev_environment_petspot_test"/>
+        <field name="default_repository_id" ref="dev_repository_petspot"/>
+        <field name="intake_mode">devhub</field>
+        <field name="sender_policy">any_member</field>
+        <field name="require_human_confirm" eval="True"/>
+        <field name="auto_create_candidate" eval="True"/>
+        <field name="min_confidence" eval="0.75"/>
+        <field name="grouping_window_minutes" eval="30"/>
+        <field name="map_sync_key">120363411424964076@g.us</field>
+        <field name="active" eval="True"/>
+    </record>
+
 </odoo>

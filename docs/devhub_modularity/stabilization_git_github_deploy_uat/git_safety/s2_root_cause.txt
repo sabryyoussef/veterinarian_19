@@ -1,0 +1,9 @@
+=== S2 Git Safety Root Cause ===
+1. execution_classification=requires_review + agent_execution_allowed unset → CORRECT SAFETY BLOCK / MISCONFIGURATION
+2. worker_git_common_dir/worktree_root empty → MISCONFIGURATION
+3. default_branch=unresolved + missing/invalid head_cache → MISCONFIGURATION
+4. git_remote=https://... but origin=git@github.com:... → MISCONFIGURATION (session start)
+5. no OS user 'devworker' (now provisioned uid=1100) → MISCONFIGURATION/STALE STATE
+6. /srv/devhub/repos missing (now created + bare mirror) → MISCONFIGURATION
+7. GitHub App credential broker files empty → CORRECT SAFETY BLOCK for PR path
+8. working_directory pointed at dirty developer tree → main snapshot drift (STALE STATE / MISCONFIGURATION). Remapped to clean /srv/devhub/main-snapshots/petspot

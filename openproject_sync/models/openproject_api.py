@@ -197,6 +197,51 @@ class OpenProjectClient:
     def update_work_package(self, wp_id: int, body: dict) -> dict:
         return self.patch(f"/api/v3/work_packages/{int(wp_id)}", body)
 
+    def list_work_package_attachments(self, wp_id: int) -> list[dict]:
+        """Return attachment elements for a work package."""
+        payload = self.get(f"/api/v3/work_packages/{int(wp_id)}/attachments")
+        return list((payload.get("_embedded") or {}).get("elements") or [])
+
+    def download_attachment_content(self, attachment_id: int) -> tuple[bytes, str | None]:
+        """Download raw attachment bytes. Returns (content, content_type)."""
+        path = f"/api/v3/attachments/{int(attachment_id)}/content"
+        url = f"{self.base}{path}"
+        headers = {
+            "Authorization": f"Basic {self.auth}",
+            "Accept": "*/*",
+        }
+        if self.host:
+            headers["Host"] = self.host
+        req = urllib.request.Request(url, method="GET", headers=headers)
+        try:
+            with self.opener.open(req, timeout=self.timeout) as resp:
+                content_type = resp.headers.get("Content-Type")
+                return resp.read(), content_type
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode(errors="replace")[:2000]
+            raise OpenProjectAPIError(
+                f"GET {path} -> {e.code}: {err_body[:800]}",
+                status_code=e.code,
+                body=err_body,
+            ) from e
+        except urllib.error.URLError as e:
+            raise OpenProjectAPIError(f"GET {path} -> URL error: {e}") from e
+
+    @staticmethod
+    def attachment_download_href(att: dict, base_url: str = "") -> str | None:
+        """Prefer static/public download link from OP payload."""
+        links = att.get("_links") or {}
+        for key in ("staticDownloadLocation", "downloadLocation", "self"):
+            href = (links.get(key) or {}).get("href")
+            if not href:
+                continue
+            if href.startswith("http"):
+                return href
+            if base_url:
+                return f"{base_url.rstrip('/')}{href}"
+            return href
+        return None
+
     @staticmethod
     def href_id(href: str | None) -> int | None:
         if not href:

@@ -1,0 +1,41 @@
+timestamp_utc=2026-07-23T08:22:29Z
+pid=
+cmdline:
+
+=== staging conf ===
+[options]
+admin_passwd = pet_spot_elsahel_admin
+db_host = localhost
+db_port = 5432
+db_user = odoo
+db_password = 65b56f3782b16677a5c5724e86a5f212
+dbfilter = ^pet_spot_elsahel_test$
+# Community + Enterprise + Pet Spot Elsahel veterinary addons (repo root = addons_path).
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_staging,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+http_port = 8028
+http_interface = 0.0.0.0
+proxy_mode = True
+log_level = info
+data_dir = /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore
+limit_time_real = 600
+limit_time_cpu = 120
+db_maxconn = 64
+
+=== target conf ===
+[options]
+admin_passwd = pet_spot_elsahel_admin
+db_host = localhost
+db_port = 5432
+db_user = odoo
+db_password = 65b56f3782b16677a5c5724e86a5f212
+dbfilter = ^pet_spot_elsahel_test$
+# Community + Enterprise + Pet Spot Elsahel veterinary addons (repo root = addons_path).
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+http_port = 8028
+http_interface = 0.0.0.0
+proxy_mode = True
+log_level = info
+data_dir = /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore
+limit_time_real = 600
+limit_time_cpu = 120
+db_maxconn = 64

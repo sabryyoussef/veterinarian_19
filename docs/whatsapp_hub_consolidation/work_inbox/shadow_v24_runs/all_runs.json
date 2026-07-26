@@ -1,0 +1,1202 @@
+[
+  {
+    "source_analysis_id": 336,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "3b6e4b81-7055-4a16-ba69-13251b1171a5",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 7.34,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The messages discuss uploading to a test database and request for modifications if needed, but lack clear actionable requests or project context.",
+        "classification": "unclear",
+        "language": "ar",
+        "technical_terms": [],
+        "missing_information": [
+          "No clear project context or actionable requests.",
+          "No existing work item candidates."
+        ],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.6,
+        "signals": [
+          "يا ريت"
+        ],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "Request to upload to a test database and notify for any modifications.",
+        "current_state": "Messages indicate actions taken but lack clarity on specific requests.",
+        "existing_relevant_functionality": "No specific functionality mentioned.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": "Test database mentioned.",
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Clarify the specific requests and project context.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The messages discuss uploading to a test database and request for modifications if needed, but lack clear actionable requests or project context.\",\n    \"classification\": \"unclear\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [\n      \"No clear project context or actionable requests.\",\n      \"No existing work item candidates.\"\n    ],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": true,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": true,\n    \"score\": 0.6,\n    \"signals\": [\n      \"يا ريت\"\n    ],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"Request to upload to a test database and notify for any modifications.\",\n    \"current_state\": \"Messages indicate actions taken but lack clarity on specific requests.\",\n    \"existing_relevant_functionality\": \"No specific functionality mentioned.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": \"Test database mentioned.\",\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Clarify the specific requests and project context.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 337,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "3406f4b5-d7fd-493e-9eb3-052079403e93",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 4.88,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The messages contain images with OCR-derived text, but there are no actionable requests or specific project-related topics.",
+        "classification": "noise",
+        "language": "mixed",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "No actionable business request identified.",
+        "current_state": "The messages contain images with OCR-derived text but lack actionable content.",
+        "existing_relevant_functionality": "No existing functionality is referenced.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": "No database considerations are applicable.",
+        "integration_considerations": "No integration considerations are applicable.",
+        "risks": "No risks identified.",
+        "recommended_approach": "No approach recommended due to lack of actionable content.",
+        "acceptance_criteria": "No acceptance criteria applicable.",
+        "questions_before_implementation": []
+      },
+      "evidence_used": [],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [
+          783,
+          750
+        ],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": true
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The messages contain images with OCR-derived text, but there are no actionable requests or specific project-related topics.\",\n    \"classification\": \"noise\",\n    \"language\": \"mixed\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"No actionable business request identified.\",\n    \"current_state\": \"The messages contain images with OCR-derived text but lack actionable content.\",\n    \"existing_relevant_functionality\": \"No existing functionality is referenced.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": \"No database considerations are applicable.\",\n    \"integration_considerations\": \"No integration considerations are applicable.\",\n    \"risks\": \"No risks identified.\",\n    \"recommended_approach\": \"No approach recommended due to lack of actionable content.\",\n    \"acceptance_criteria\": \"No acceptance criteria applicable.\",\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [783, 750],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": true\n  }\n}"
+  },
+  {
+    "source_analysis_id": 338,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "97fdda9c-eda3-4a7b-8bed-1df0ad1b9834",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 5.49,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The message contains an image with OCR-derived text, but there are no actionable requests or specific project-related topics.",
+        "classification": "noise",
+        "language": "mixed",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": [],
+        "current_state": [],
+        "existing_relevant_functionality": [],
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": [],
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [
+          853
+        ],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": true
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The message contains an image with OCR-derived text, but there are no actionable requests or specific project-related topics.\",\n    \"classification\": \"noise\",\n    \"language\": \"mixed\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": [],\n    \"current_state\": [],\n    \"existing_relevant_functionality\": [],\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": [],\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [853],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": true\n  }\n}"
+  },
+  {
+    "source_analysis_id": 339,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "4f11c645-ce51-40f1-8c31-e2e984b00890",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 5.29,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The audio message discusses various issues related to a project but does not contain actionable requests.",
+        "classification": "information",
+        "language": "ar",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": [],
+        "current_state": [],
+        "existing_relevant_functionality": [],
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": [],
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:6180",
+          "summary": "The audio message discusses various issues related to a project but does not contain actionable requests.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses various issues related to a project but does not contain actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": [],\n    \"current_state\": [],\n    \"existing_relevant_functionality\": [],\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": [],\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:6180\",\n      \"summary\": \"The audio message discusses various issues related to a project but does not contain actionable requests.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 340,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "903a80de-673f-45e9-95c4-3d0128f37dbb",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 6.82,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The audio message discusses an issue with internet connectivity and data entry errors, but lacks clear actionable requests.",
+        "classification": "information",
+        "language": "ar",
+        "technical_terms": [
+          "internet",
+          "data entry",
+          "employee name",
+          "partner"
+        ],
+        "missing_information": [
+          "No clear actionable requests or specific project-related topics identified."
+        ],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "The audio message indicates a problem with data entry and internet connectivity.",
+        "current_state": "The audio content is partially enriched but lacks clear actionable requests.",
+        "existing_relevant_functionality": "No specific functionality mentioned.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Manual review of the audio content is recommended due to low confidence in the transcript.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:766",
+          "summary": "Audio message discussing internet and data entry issues.",
+          "evidence_status": "inferred"
+        },
+        {
+          "source_type": "media:644",
+          "reference": "media:644:transcript",
+          "summary": "The stored transcript indicates issues with data entry and internet connectivity.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses an issue with internet connectivity and data entry errors, but lacks clear actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"ar\",\n    \"technical_terms\": [\"internet\", \"data entry\", \"employee name\", \"partner\"],\n    \"missing_information\": [\"No clear actionable requests or specific project-related topics identified.\"],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"The audio message indicates a problem with data entry and internet connectivity.\",\n    \"current_state\": \"The audio content is partially enriched but lacks clear actionable requests.\",\n    \"existing_relevant_functionality\": \"No specific functionality mentioned.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Manual review of the audio content is recommended due to low confidence in the transcript.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:766\",\n      \"summary\": \"Audio message discussing internet and data entry issues.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"media:644\",\n      \"reference\": \"media:644:transcript\",\n      \"summary\": \"The stored transcript indicates issues with data entry and internet connectivity.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 341,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "1ff547be-c58e-46e5-b65b-f1b7dbe499b1",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 6.47,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The audio message discusses various topics but lacks clear actionable requests or project-related context.",
+        "classification": "noise",
+        "language": "ar",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": [],
+        "current_state": [],
+        "existing_relevant_functionality": [],
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": [],
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [
+          825
+        ],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": true
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses various topics but lacks clear actionable requests or project-related context.\",\n    \"classification\": \"noise\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": [],\n    \"current_state\": [],\n    \"existing_relevant_functionality\": [],\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": [],\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [825],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": true\n  }\n}"
+  },
+  {
+    "source_analysis_id": 348,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "e20592ec-20d4-41be-83bd-200ed93e77bb",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 5.8,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The messages contain images with OCR-derived text related to commits and a brief Arabic message, but lack clear actionable requests.",
+        "classification": "information",
+        "language": "mixed",
+        "technical_terms": [
+          "commits",
+          "Odoo",
+          "sync hooks"
+        ],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "No clear business request identified.",
+        "current_state": "The messages contain images with OCR text but no actionable requests.",
+        "existing_relevant_functionality": "No existing functionality referenced.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Review the images for any actionable insights.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:6163",
+          "summary": "Image containing OCR-derived text about commits.",
+          "evidence_status": "inferred"
+        },
+        {
+          "source_type": "message",
+          "reference": "message:6164",
+          "summary": "Short Arabic message with no clear context.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The messages contain images with OCR-derived text related to commits and a brief Arabic message, but lack clear actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"mixed\",\n    \"technical_terms\": [\n      \"commits\",\n      \"Odoo\",\n      \"sync hooks\"\n    ],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"No clear business request identified.\",\n    \"current_state\": \"The messages contain images with OCR text but no actionable requests.\",\n    \"existing_relevant_functionality\": \"No existing functionality referenced.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Review the images for any actionable insights.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:6163\",\n      \"summary\": \"Image containing OCR-derived text about commits.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:6164\",\n      \"summary\": \"Short Arabic message with no clear context.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 349,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "59a2b3c8-7e81-47e3-9d3a-416d0efb8770",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 6.13,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The segment contains two images with OCR-derived text but lacks clear actionable requests or project relevance.",
+        "classification": "information",
+        "language": "en",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "No clear business request identified.",
+        "current_state": "The segment contains images with OCR text but lacks actionable content.",
+        "existing_relevant_functionality": "No existing functionality referenced.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Human review may be necessary to determine relevance.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:748",
+          "summary": "Image with OCR-derived text.",
+          "evidence_status": "inferred"
+        },
+        {
+          "source_type": "message",
+          "reference": "message:746",
+          "summary": "Image with OCR-derived text.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The segment contains two images with OCR-derived text but lacks clear actionable requests or project relevance.\",\n    \"classification\": \"information\",\n    \"language\": \"en\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"No clear business request identified.\",\n    \"current_state\": \"The segment contains images with OCR text but lacks actionable content.\",\n    \"existing_relevant_functionality\": \"No existing functionality referenced.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Human review may be necessary to determine relevance.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:748\",\n      \"summary\": \"Image with OCR-derived text.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:746\",\n      \"summary\": \"Image with OCR-derived text.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 350,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "c600fea1-4ecb-4fc3-a911-d00def281099",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 5.41,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The segment contains two images with OCR-derived text but lacks actionable requests or clear project relevance.",
+        "classification": "information",
+        "language": "en",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "No clear business request is present.",
+        "current_state": "The segment consists of images with OCR text but lacks actionable content.",
+        "existing_relevant_functionality": "None identified.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Human review is recommended to determine if any actionable items can be derived from the images.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:744",
+          "summary": "Image with OCR-derived text.",
+          "evidence_status": "inferred"
+        },
+        {
+          "source_type": "message",
+          "reference": "message:740",
+          "summary": "Image with OCR-derived text.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The segment contains two images with OCR-derived text but lacks actionable requests or clear project relevance.\",\n    \"classification\": \"information\",\n    \"language\": \"en\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"No clear business request is present.\",\n    \"current_state\": \"The segment consists of images with OCR text but lacks actionable content.\",\n    \"existing_relevant_functionality\": \"None identified.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Human review is recommended to determine if any actionable items can be derived from the images.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:744\",\n      \"summary\": \"Image with OCR-derived text.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:740\",\n      \"summary\": \"Image with OCR-derived text.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 351,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "ee5f516e-1706-4865-b4c2-498be0ca12c2",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 6.29,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The segment contains two images with OCR-derived text but lacks clear actionable requests or specific project-related topics.",
+        "classification": "information",
+        "language": "en",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "No clear business request is identified.",
+        "current_state": "The segment contains images with OCR text but lacks actionable content.",
+        "existing_relevant_functionality": "No existing functionality is referenced.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Human review is recommended to determine if any actionable items can be derived from the images.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:835",
+          "summary": "Image with OCR-derived text.",
+          "evidence_status": "inferred"
+        },
+        {
+          "source_type": "message",
+          "reference": "message:827",
+          "summary": "Image with OCR-derived text.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The segment contains two images with OCR-derived text but lacks clear actionable requests or specific project-related topics.\",\n    \"classification\": \"information\",\n    \"language\": \"en\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"No clear business request is identified.\",\n    \"current_state\": \"The segment contains images with OCR text but lacks actionable content.\",\n    \"existing_relevant_functionality\": \"No existing functionality is referenced.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Human review is recommended to determine if any actionable items can be derived from the images.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:835\",\n      \"summary\": \"Image with OCR-derived text.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:827\",\n      \"summary\": \"Image with OCR-derived text.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 352,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "d36b7e41-2758-4f18-a060-b77b5d6d69c5",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 5.74,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The audio message discusses various topics related to the PetSpot project but lacks clear actionable requests.",
+        "classification": "information",
+        "language": "ar",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "The audio message lacks clear actionable requests.",
+        "current_state": "The audio discusses various topics but does not specify any tasks.",
+        "existing_relevant_functionality": "No specific functionality is mentioned.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Human review is recommended to clarify any actionable items.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "6186",
+          "summary": "The audio message discusses various topics but lacks clear actionable requests.",
+          "evidence_status": "inferred"
+        },
+        {
+          "source_type": "media:693:transcript",
+          "reference": "693",
+          "summary": "The stored transcript says: 'تم موضوع تستينا عملت سريعا نفس الموديولين على الـ TR Gulf اللي هو على البرودكشن هيشغلوا بنفس الطريقة ان شاء الله'.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses various topics related to the PetSpot project but lacks clear actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"The audio message lacks clear actionable requests.\",\n    \"current_state\": \"The audio discusses various topics but does not specify any tasks.\",\n    \"existing_relevant_functionality\": \"No specific functionality is mentioned.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Human review is recommended to clarify any actionable items.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"6186\",\n      \"summary\": \"The audio message discusses various topics but lacks clear actionable requests.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"media:693:transcript\",\n      \"reference\": \"693\",\n      \"summary\": \"The stored transcript says: 'تم موضوع تستينا عملت سريعا نفس الموديولين على الـ TR Gulf اللي هو على البرودكشن هيشغلوا بنفس الطريقة ان شاء الله'.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 353,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "7232facc-5bb4-4463-a4d7-6e4abdd47176",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 5.1,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The audio message discusses the client's need to see their work on their database or training, but lacks clear actionable requests.",
+        "classification": "information",
+        "language": "ar",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "The client needs visibility of their work on the database.",
+        "current_state": "The audio message indicates a lack of actionable requests.",
+        "existing_relevant_functionality": "No specific functionality is mentioned.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": "No specific database considerations are mentioned.",
+        "integration_considerations": "No integration considerations are mentioned.",
+        "risks": "No risks are identified.",
+        "recommended_approach": "Further clarification from the client is needed.",
+        "acceptance_criteria": "Clear actionable requests from the client.",
+        "questions_before_implementation": "What specific actions does the client want to see on their database?"
+      },
+      "evidence_used": [],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses the client's need to see their work on their database or training, but lacks clear actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"The client needs visibility of their work on the database.\",\n    \"current_state\": \"The audio message indicates a lack of actionable requests.\",\n    \"existing_relevant_functionality\": \"No specific functionality is mentioned.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": \"No specific database considerations are mentioned.\",\n    \"integration_considerations\": \"No integration considerations are mentioned.\",\n    \"risks\": \"No risks are identified.\",\n    \"recommended_approach\": \"Further clarification from the client is needed.\",\n    \"acceptance_criteria\": \"Clear actionable requests from the client.\",\n    \"questions_before_implementation\": \"What specific actions does the client want to see on their database?\"\n  },\n  \"evidence_used\": [],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 354,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "ca7d95f4-1ef3-4355-bd3e-e3ead2219d33",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 6.65,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The audio message discusses various topics related to training modules and project details but lacks clear actionable requests.",
+        "classification": "information",
+        "language": "ar",
+        "technical_terms": [
+          "الموديولات",
+          "تدريب",
+          "الاستا",
+          "دورة السايكل",
+          "فيديوهات"
+        ],
+        "missing_information": [
+          "No clear actionable requests or specific project-related topics."
+        ],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "The audio message indicates a need for training and module development discussions.",
+        "current_state": "The message lacks specific actionable items.",
+        "existing_relevant_functionality": "No existing functionality is referenced.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Review the audio content for potential actionable items.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:763",
+          "summary": "The audio message discusses various topics but lacks clear actionable requests.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses various topics related to training modules and project details but lacks clear actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"ar\",\n    \"technical_terms\": [\n      \"الموديولات\",\n      \"تدريب\",\n      \"الاستا\",\n      \"دورة السايكل\",\n      \"فيديوهات\"\n    ],\n    \"missing_information\": [\n      \"No clear actionable requests or specific project-related topics.\"\n    ],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"The audio message indicates a need for training and module development discussions.\",\n    \"current_state\": \"The message lacks specific actionable items.\",\n    \"existing_relevant_functionality\": \"No existing functionality is referenced.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Review the audio content for potential actionable items.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:763\",\n      \"summary\": \"The audio message discusses various topics but lacks clear actionable requests.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  },
+  {
+    "source_analysis_id": 355,
+    "shadow_prompt_version": "wa_project_aware_v2.4",
+    "shadow_run_id": "e569dc68-b4a1-42c9-8a21-27c02a0e9a51",
+    "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+    "elapsed_sec": 5.87,
+    "dify_status": "succeeded",
+    "shadow_output_json": {
+      "schema_version": "2",
+      "message_understanding": {
+        "summary": "The audio message discusses various topics related to the PetSpot project but lacks clear actionable requests.",
+        "classification": "information",
+        "language": "ar",
+        "technical_terms": [],
+        "missing_information": [],
+        "contains_multiple_tasks": false
+      },
+      "project_resolution": {
+        "project_id": null,
+        "project_name": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false,
+        "resolution_status": "unresolved"
+      },
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      },
+      "work_item_resolution": {
+        "decision": "none",
+        "work_item_id": null,
+        "work_item_title": null,
+        "confidence": 0.0,
+        "evidence": [],
+        "candidate_ids": [],
+        "requires_confirmation": false
+      },
+      "analysis": {
+        "business_request": "The audio message lacks a clear business request.",
+        "current_state": "The audio discusses various topics but does not provide actionable items.",
+        "existing_relevant_functionality": "No specific functionality is referenced.",
+        "likely_affected_modules": [],
+        "likely_affected_models": [],
+        "likely_affected_views": [],
+        "database_considerations": [],
+        "integration_considerations": [],
+        "risks": [],
+        "recommended_approach": "Human review is recommended to clarify any actionable items.",
+        "acceptance_criteria": [],
+        "questions_before_implementation": []
+      },
+      "evidence_used": [
+        {
+          "source_type": "message",
+          "reference": "message:836",
+          "summary": "The audio message discusses various topics but lacks clear actionable requests.",
+          "evidence_status": "inferred"
+        },
+        {
+          "source_type": "document",
+          "reference": "dev.whatsapp.analysis:341",
+          "summary": "The audio message discusses various topics but lacks clear actionable requests or specific project-related topics.",
+          "evidence_status": "inferred"
+        }
+      ],
+      "confidence": 0.0,
+      "safe_to_create_work": false,
+      "safe_to_attach_to_existing_work": false,
+      "legacy_v1_bridge": {
+        "source_message_ids": [],
+        "noise_message_ids": [],
+        "work_message_ids": [],
+        "work_title": null,
+        "work_description": null,
+        "priority": "0",
+        "should_ignore": false
+      }
+    },
+    "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses various topics related to the PetSpot project but lacks clear actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"The audio message lacks a clear business request.\",\n    \"current_state\": \"The audio discusses various topics but does not provide actionable items.\",\n    \"existing_relevant_functionality\": \"No specific functionality is referenced.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Human review is recommended to clarify any actionable items.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"message:836\",\n      \"summary\": \"The audio message discusses various topics but lacks clear actionable requests.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"document\",\n      \"reference\": \"dev.whatsapp.analysis:341\",\n      \"summary\": \"The audio message discusses various topics but lacks clear actionable requests or specific project-related topics.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}"
+  }
+]

@@ -1,0 +1,11 @@
+pid=2837553
+/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf -d pet_spot_elsahel_test 
+conf_from_cmdline=/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf
+conf=/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf
+# Community + Enterprise + Pet Spot Elsahel veterinary addons (repo root = addons_path).
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+NO_OVERLAY_IN_RUNTIME_CONF
+addons_path=/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+NO_OVERLAY_IN_ADDONS_PATH
+resolves|dev_session_hub|/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/dev_session_hub
+resolves|devhub_core|/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_core

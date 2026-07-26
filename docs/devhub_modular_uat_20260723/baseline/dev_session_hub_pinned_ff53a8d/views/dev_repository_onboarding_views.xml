@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_repository_discovery_tree" model="ir.ui.view">
+        <field name="name">dev.repository.discovery.tree</field>
+        <field name="model">dev.repository.discovery</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="local_path"/>
+                <field name="state"/>
+                <field name="owner"/>
+                <field name="repo_name"/>
+                <field name="requires_bootstrap"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_dev_repository_discovery_form" model="ir.ui.view">
+        <field name="name">dev.repository.discovery.form</field>
+        <field name="model">dev.repository.discovery</field>
+        <field name="arch" type="xml">
+            <form string="Repository Discovery">
+                <header>
+                    <button name="action_scan" type="object" string="Scan" class="btn-primary"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="project_id"/>
+                        <field name="local_path"/>
+                        <field name="selected_remote_name"/>
+                    </group>
+                    <group>
+                        <field name="provider"/>
+                        <field name="owner"/>
+                        <field name="repo_name"/>
+                        <field name="remote_name"/>
+                        <field name="remote_count"/>
+                        <field name="requires_bootstrap"/>
+                        <field name="history_compatible"/>
+                    </group>
+                    <group>
+                        <field name="current_branch"/>
+                        <field name="default_branch"/>
+                        <field name="staging_branch"/>
+                        <field name="production_branch"/>
+                        <field name="scan_digest"/>
+                    </group>
+                    <group>
+                        <field name="remotes_json"/>
+                        <field name="secret_scan_summary"/>
+                        <field name="restricted_paths_summary"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_repository_bind_record_tree" model="ir.ui.view">
+        <field name="name">dev.repository.bind.record.tree</field>
+        <field name="model">dev.repository.bind.record</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0">
+                <field name="github_repository"/>
+                <field name="local_path"/>
+                <field name="result_state"/>
+                <field name="bound_at"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_dev_repository_discovery" model="ir.actions.act_window">
+        <field name="name">Repository Discoveries</field>
+        <field name="res_model">dev.repository.discovery</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_dev_repository_bind_record" model="ir.actions.act_window">
+        <field name="name">Repository Bind Records</field>
+        <field name="res_model">dev.repository.bind.record</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_dev_repository_bootstrap_record" model="ir.actions.act_window">
+        <field name="name">Bootstrap Records</field>
+        <field name="res_model">dev.repository.bootstrap.record</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,178 @@
+﻿# Task Analysis Result
+
+## Child Work Package
+
+- ID: OP#86
+- Subject: kafaat_request
+- Status: Ready for Analysis
+
+## Corrected Task Description
+
+> Original Arabic description (repaired from OpenProject, UTF-8 clean):
+
+Created from Chatwoot conversation #49
+
+ملخص اجتماع متطلبات شركة كفاءات
+
+    بيانات المتدرب
+
+المطلوب
+
+مراجعة الحقول التالية والتأكد من أنها تسحب البيانات الصحيحة:
+
+    الجنسية ✅ تعمل بشكل صحيح.
+    العنوان ❌ يتم سحبه من حقل غير صحيح.
+    التخصص ❌ يتم سحبه من حقل غير صحيح.
+    رقم الهاتف ❌ يحتاج إلى ربط بالحقل الصحيح.
+    رقم بطاقة الهوية ❌ مربوط بحقل غير صحيح ويجب ربطه بحقل الهوية المناسب.
+
+    إزالة حقول غير مهمة
+
+يوجد بعض المسميات والحقول التي لا يحتاجها العميل داخل شاشة الطلب، مثل:
+
+    رقم الشهادة.
+    بعض بيانات ملف الطلب.
+    أي حقول أخرى لا تضيف قيمة للمستخدم.
+
+المطلوب إزالة أو إخفاء هذه الحقول.
+
+    تصحيح عرض بيانات الهوية
+
+يوجد خطأ في عرض بيانات الهوية.
+
+المطلوب:
+
+    التأكد من أن رقم الهوية يتم قراءته من الحقل الصحيح.
+    عدم الاعتماد على الحقول الحالية لأنها غير صحيحة.
+
+    فلترة المتدربين بالشهادة
+
+المطلوب إضافة إمكانية فلترة المتدربين حسب الشهادة.
+
+تمت مراجعة النظام ولم يتم العثور على Group أو Filter جاهز لهذا الغرض، لذلك يلزم إضافته.
+
+    تبسيط توزيع المتدربين
+
+العميل يرى أن آلية التوزيع الحالية معقدة.
+
+المطلوب:
+
+    السماح باختيار أكثر من متدرب بسهولة.
+    تنفيذ التوزيع الجماعي (Batch Assignment).
+    جعل العملية أبسط بعدة ضغطات فقط.
+    فتح شاشة اختيار بسيطة ثم تنفيذ العملية مباشرة.
+
+الأولويات
+
+عالية
+
+    تصحيح ربط:
+        العنوان
+        التخصص
+        رقم الهاتف
+        رقم الهوية
+
+    إزالة الحقول غير الضرورية.
+
+    إصلاح عرض بيانات الهوية.
+
+متوسطة
+
+    إضافة فلتر حسب الشهادة.
+
+    تبسيط واجهة التوزيع الجماعي للمتدربين
+
+## Requirement Breakdown
+
+| Field | Status | Note |
+|-------|--------|------|
+| الجنسية | ✅ | تعمل بشكل صحيح. |
+| العنوان | ❌ | يتم سحبه من حقل غير صحيح. |
+| التخصص | ❌ | يتم سحبه من حقل غير صحيح. |
+| رقم الهاتف | ❌ | يحتاج إلى ربط بالحقل الصحيح. |
+| رقم بطاقة الهوية | ❌ | مربوط بحقل غير صحيح ويجب ربطه بحقل الهوية المناسب. |
+
+## Priority Groups
+
+| Priority | Fields | Reason |
+|----------|--------|--------|
+| P1 — Fix broken fields | `العنوان`, `التخصص`, `رقم الهاتف`, `رقم بطاقة الهوية` | Data displayed to user is incorrect |
+| P2 — Verify working fields | `الجنسية` | Confirmed working — no change needed |
+| P3 — Cleanup / UX | _(remove unnecessary fields, improve display)_ | UX improvement |
+
+## Likely Affected Modules
+
+- `custom_addons/` — Custom Odoo addons directory (primary target)
+- Modules containing trainee / applicant / hr models
+- Views inheriting `hr.applicant` or `hr.employee` forms
+- `__manifest__.py` in relevant addons
+
+### Available Custom Addons
+
+  - `batch_intake_processor`
+  - `documentation`
+  - `grants_training_suite_v19`
+  - `student_documents_portal`
+  - `student_enrollment_portal`
+
+## Repository State
+
+Repository found at `/home/sabry/projects/new_kafaat`
+
+- Branch: `master`
+- Latest commit: `f9e1639 Fix demo test route to use request.make_response`
+- Working tree: `(clean)`
+
+
+## Implementation Plan (per broken requirement)
+
+### 1. Fix `العنوان` — يتم سحبه من حقل غير صحيح.
+
+- **Action**: Identify the correct source field/relation and update the mapping.
+- **Likely files**: `custom_addons/batch_intake_processor/models/batch_intake.py`, `custom_addons/grants_training_suite_v19/tests/test_column_mapping.py`, `custom_addons/grants_training_suite_v19/models/intake_batch.py`, `custom_addons/grants_training_suite_v19/models/crm_lead.py`, `custom_addons/grants_training_suite_v19/models/course_review.py`
+- **Test**: Verify the field displays the correct value on the trainee form after fix.
+### 2. Fix `التخصص` — يتم سحبه من حقل غير صحيح.
+
+- **Action**: Identify the correct source field/relation and update the mapping.
+- **Likely files**: `custom_addons/batch_intake_processor/__manifest__.py`, `custom_addons/grants_training_suite_v19/__manifest__.py`, `custom_addons/grants_training_suite_v19/models/__init__.py`, `custom_addons/grants_training_suite_v19/models/course_category.py`, `custom_addons/grants_training_suite_v19/models/training_dashboard.py`
+- **Test**: Verify the field displays the correct value on the trainee form after fix.
+### 3. Fix `رقم الهاتف` — يحتاج إلى ربط بالحقل الصحيح.
+
+- **Action**: Identify the correct source field/relation and update the mapping.
+- **Likely files**: `custom_addons/batch_intake_processor/wizard/export_results_wizard.py`, `custom_addons/batch_intake_processor/models/intake_applicant.py`, `custom_addons/batch_intake_processor/models/batch_intake.py`, `custom_addons/batch_intake_processor/views/applicant_views.xml`, `custom_addons/grants_training_suite_v19/tests/test_student_name_fields.py`
+- **Test**: Verify the field displays the correct value on the trainee form after fix.
+### 4. Fix `رقم بطاقة الهوية` — مربوط بحقل غير صحيح ويجب ربطه بحقل الهوية المناسب.
+
+- **Action**: Identify the correct source field/relation and update the mapping.
+- **Likely files**: `custom_addons/grants_training_suite_v19/demo/document_request_demo.xml`, `custom_addons/student_documents_portal/models/registration_document.py`, `custom_addons/student_documents_portal/models/student_registration_extension.py`
+- **Test**: Verify the field displays the correct value on the trainee form after fix.
+
+
+## Suggested Tests
+
+- **العنوان**: After fix, open trainee form → confirm field shows correct data.
+- **التخصص**: After fix, open trainee form → confirm field shows correct data.
+- **رقم الهاتف**: After fix, open trainee form → confirm field shows correct data.
+- **رقم بطاقة الهوية**: After fix, open trainee form → confirm field shows correct data.
+
+## Execution Readiness
+
+Ready
+
+## Missing Information
+
+- Exact name of the Odoo model/table containing the trainee record
+- Whether changes are in a custom addon or a core override
+- Odoo development database name for testing
+- Target deployment environment (staging vs production)
+- Acceptance criteria — what "correct" value looks like per field
+
+## Next Step
+
+Manual approval required before Cursor implementation mode.
+Review `analysis.md`, then activate Cursor Agent with `cursor_plan.md`.
+
+---
+Generated: 2026-07-01T13:08:59.808044+00:00
+Workflow: OP Child Task Analysis v2
+Script: op_task_plan.py --openproject-id 86 --repo-path /home/sabry/projects/new_kafaat --github-repo sabryyoussef/new_kafaat --mode plan-only

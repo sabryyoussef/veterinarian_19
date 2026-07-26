@@ -1,0 +1,30 @@
+=== releases overlays ===
+none
+=== systemd user units mentioning petspot/devhub ===
+  UNIT                          LOAD   ACTIVE SUB     DESCRIPTION
+  pet_spot_elsahel.service      loaded active running Odoo 19 — PetSpot El Sahel (port 8027)
+  pet_spot_elsahel_test.service loaded active running Odoo 19 — PetSpot El Sahel TEST (port 8028)
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+        ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+        SUB    → The low-level unit activation state, values depend on unit type.
+
+2 loaded units listed.
+To show all installed unit files use 'systemctl list-unit-files'.
+=== ports map ===
+port 8027: LISTEN 0      16                         0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=3900080,fd=5),("python3",pid=3900079,fd=5),("python3",pid=3899813,fd=5))
+port 8028: LISTEN 0      128                        0.0.0.0:8028       0.0.0.0:*    users:(("python3",pid=3944265,fd=3))                                                          
+port 8029: LISTEN 0      128                        0.0.0.0:8029       0.0.0.0:*    users:(("python3",pid=7382,fd=4))                                                             
+port 8041: LISTEN 0      128                      127.0.0.1:8041       0.0.0.0:*    users:(("python3",pid=2758920,fd=5))                                                          
+=== worktrees ===
+total 20
+drwxrws---  5 devworker sabry 4096 Jul 23 15:23 .
+drwxrwsr-x  3 devworker sabry 4096 Jul 23 14:53 ..
+drwxrws--- 30 devworker sabry 4096 Jul 23 14:53 DW-3320
+drwxrws--- 30 devworker sabry 4096 Jul 23 15:20 DW-3323
+drwxrws--- 30 devworker sabry 4096 Jul 23 15:23 DW-3324
+=== historical confs ===
+/home/sabry/odoo_base/base_odoo_19/config/projects/devhub_func_matrix.conf
+/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_mig_rehearsal.conf
+/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_modular_mig.conf
+/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_modular_mig.conf

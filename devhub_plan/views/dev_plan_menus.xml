@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_devhub_plan_root"
+              name="DH Plan"
+              sequence="88"
+              web_icon="devhub_plan,static/description/icon.png"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_plan_revisions"
+              name="Plan Revisions"
+              parent="menu_devhub_plan_root"
+              action="action_dev_work_plan"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+</odoo>

@@ -1,0 +1,33 @@
+SANITIZED FILESYSTEM / IDENTITY VERIFICATION — 2026-07-19
+
+Execution host: sabry3-precision-5540.tailcf9988.ts.net
+Host key pin: SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU
+Environment classification: trusted_dev, non-production
+
+Worker identity: devworker
+Worker UID:GID: 1001:1001
+Supplementary groups: none
+sudo: denied
+Docker socket: denied
+Write access to Actor A manual root: denied
+
+Worker Git common directory:
+  /srv/devhub-uat/repos/petspot-uat.git
+Execution root:
+  /srv/devhub-uat/worktrees
+Resolved execution worktree:
+  /srv/devhub-uat/worktrees/petspot-uat/DW-3
+Worktree owner: devworker:devworker
+Worktree UID:GID: 1001:1001
+Worktree mode: 0770
+Path remains under registered execution root: PASS
+Symlink/path escape: NONE
+Production path used: NONE
+
+Test-only marker:
+  execution worktree: present
+  manual worktree: absent
+  Git state: untracked
+
+No secret, token, environment file, private key, file content diff, or
+production payload was captured.

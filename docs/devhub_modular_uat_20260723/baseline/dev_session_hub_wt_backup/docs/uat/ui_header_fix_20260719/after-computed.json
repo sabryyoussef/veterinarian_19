@@ -1,0 +1,49 @@
+{
+  "url": "http://127.0.0.1:8028/odoo/action-1286/1",
+  "selector": ".o_main_navbar .o_menu_sections a.o_nav_entry (Recent Work)",
+  "normal": {
+    "color": "rgb(255, 255, 255)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "opacity": "1",
+    "borderColor": "rgba(0, 0, 0, 0)",
+    "variables": {
+      "entryColor": "#fff",
+      "entryHoverColor": "#fff",
+      "entryActiveColor": "#fff",
+      "entryBackground": "transparent",
+      "entryHoverBackground": "rgba(0, 0, 0, 0.08)",
+      "entryFocusBackground": "rgba(0, 0, 0, 0.08)",
+      "entryActiveBackground": "rgba(0, 0, 0, 0.08)"
+    }
+  },
+  "hover": {
+    "color": "rgb(255, 255, 255)",
+    "backgroundColor": "rgba(0, 0, 0, 0.08)",
+    "opacity": "1",
+    "borderColor": "rgba(0, 0, 0, 0)",
+    "variables": {
+      "entryColor": "#fff",
+      "entryHoverColor": "#fff",
+      "entryActiveColor": "#fff",
+      "entryBackground": "transparent",
+      "entryHoverBackground": "rgba(0, 0, 0, 0.08)",
+      "entryFocusBackground": "rgba(0, 0, 0, 0.08)",
+      "entryActiveBackground": "rgba(0, 0, 0, 0.08)"
+    }
+  },
+  "active": {
+    "color": "rgb(255, 255, 255)",
+    "backgroundColor": "rgba(0, 0, 0, 0.08)",
+    "opacity": "1",
+    "borderColor": "rgba(0, 0, 0, 0)",
+    "variables": {
+      "entryColor": "#fff",
+      "entryHoverColor": "#fff",
+      "entryActiveColor": "#fff",
+      "entryBackground": "transparent",
+      "entryHoverBackground": "rgba(0, 0, 0, 0.08)",
+      "entryFocusBackground": "rgba(0, 0, 0, 0.08)",
+      "entryActiveBackground": "rgba(0, 0, 0, 0.08)"
+    }
+  }
+}

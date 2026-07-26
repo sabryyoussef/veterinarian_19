@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wa_campaign_hub_ops_list" model="ir.ui.view">
+        <field name="name">wa.campaign.hub.ops.list</field>
+        <field name="model">wa.campaign</field>
+        <field name="priority">25</field>
+        <field name="arch" type="xml">
+            <list string="Campaign Hub Ops"
+                  decoration-danger="(wa_outbound_mode == 'hub' and state not in ('completed','cancelled') and not wa_hub_allowlisted) or (wa_hub_allowlisted and not wa_hub_eligible and state not in ('completed','cancelled')) or (wa_hub_legacy_leakage_count &gt; 0 and wa_outbound_mode == 'hub') or (wa_hub_render_warning and 'hash' in (wa_hub_render_warning or ''))"
+                  decoration-warning="wa_hub_requires_allowlist_cleanup or wa_hub_scheduled_warning or (wa_hub_allowlisted and wa_outbound_mode != 'hub') or wa_hub_pending_count &gt; 0 or wa_hub_failed_count &gt; 0 or (wa_hub_unlocked_line_count &gt; 0 and wa_outbound_mode == 'hub')">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="wa_outbound_mode"/>
+                <field name="send_mode"/>
+                <field name="wa_hub_eligible"/>
+                <field name="wa_hub_eligibility_reason"/>
+                <field name="wa_hub_allowlisted"/>
+                <field name="wa_hub_active_authorization"/>
+                <field name="wa_hub_requires_allowlist_cleanup"/>
+                <field name="wa_hub_historical"/>
+                <field name="wa_hub_render_ready"/>
+                <field name="wa_hub_locked_line_count"/>
+                <field name="wa_hub_unlocked_line_count"/>
+                <field name="wa_hub_instance_name" optional="hide"/>
+                <field name="total_count" optional="hide"/>
+                <field name="sent_count" optional="hide"/>
+                <field name="failed_count" optional="hide"/>
+                <field name="wa_hub_job_count"/>
+                <field name="wa_hub_pending_count"/>
+                <field name="wa_hub_failed_count"/>
+                <field name="wa_hub_last_outbound_at" optional="hide"/>
+                <field name="wa_hub_max_retry_count" optional="hide"/>
+                <field name="wa_hub_legacy_leakage_count" optional="hide"/>
+                <field name="wa_hub_render_warning" optional="hide"/>
+                <field name="wa_hub_scheduled_warning" optional="hide"/>
+                <field name="wa_hub_health_warning" optional="show"/>
+                <button name="action_hub_approve_for_allowlist"
+                        type="object"
+                        string="Approve Hub"
+                        groups="base.group_system"
+                        confirm="Add this Campaign to the Hub allowlist? Mode will NOT flip to hub."/>
+                <button name="action_hub_revoke_allowlist"
+                        type="object"
+                        string="Revoke"
+                        groups="base.group_system"
+                        confirm="Remove this Campaign from Hub allowlist? History is preserved."/>
+                <button name="action_hub_cleanup_completed_allowlist"
+                        type="object"
+                        string="Cleanup Allowlist"
+                        groups="base.group_system"
+                        invisible="state not in ('completed', 'cancelled')"/>
+                <button name="action_freeze_campaign_lines_for_hub"
+                        type="object"
+                        string="Freeze Lines"
+                        groups="base.group_system"/>
+                <button name="action_open_hub_outbound_jobs" type="object" string="Hub Jobs"/>
+                <button name="action_open_hub_messages" type="object" string="Messages"/>
+                <button name="action_open_campaign_shadow" type="object" string="Shadow"/>
+                <button name="action_quarantine_campaign_hub"
+                        type="object"
+                        string="Quarantine"
+                        groups="base.group_system"
+                        confirm="Cancel incomplete Hub Campaign jobs for this campaign?"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_wa_campaign_hub_ops" model="ir.actions.act_window">
+        <field name="name">Campaign Hub Ops</field>
+        <field name="res_model">wa.campaign</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Campaigns</p>
+            <p>
+                Ops surface for Campaign Hub allowlist lifecycle, freeze, eligibility,
+                and quarantine. Approval does not flip mode — flip to hub last.
+                Campaign line Sent means provider accepted (not necessarily delivered/read).
+            </p>
+        </field>
+    </record>
+
+    <record id="action_wa_campaign_hub_ops_view_list" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_wa_campaign_hub_ops_list"/>
+        <field name="act_window_id" ref="action_wa_campaign_hub_ops"/>
+    </record>
+
+    <menuitem id="menu_wa_campaign_hub_ops"
+              name="Campaign Hub Ops"
+              parent="whatsapp_hub.menu_whatsapp_hub_ops"
+              action="action_wa_campaign_hub_ops"
+              sequence="60"
+              groups="base.group_system"/>
+</odoo>

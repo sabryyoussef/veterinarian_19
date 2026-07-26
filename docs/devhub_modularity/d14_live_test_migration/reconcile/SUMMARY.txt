@@ -1,0 +1,6 @@
+BUSINESS_ZERO_LOSS=PASS
+ID_STABILITY=PASS
+FK_ORPHANS=0
+OP_LINKS_PRESERVED=PASS
+SEED_DELTAS=environment+1,policy+1,odoo_runtime+1 (explained; meta seed)
+ADMIN_VISIBLE_WORK=44/45 (record rules; expected)

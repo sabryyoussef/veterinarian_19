@@ -1,0 +1,5 @@
+devhub_work|depends=['devhub_core', 'project']|version=19.0.9.1.0
+HARD_OP_DEP_IN_WORK=PASS
+devhub_whatsapp|depends=['devhub_work', 'whatsapp_hub']|version=19.0.9.0.2
+devhub_openproject|depends=['devhub_work', 'openproject_sync']|version=19.0.9.1.0
+dev_session_hub|depends=['devhub_core', 'devhub_work', 'devhub_analysis', 'devhub_plan', 'devhub_approval', 'devhub_session', 'devhub_execution', 'devhub_outbox', 'devhub_generation', 'devhub_git', 'devhub_github', 'devhub_deploy', 'devhub_odoo_runtime', 'devhub_infrastructure', 'devhub_openproject', 'devhub_code_analysis', 'devhub_whatsapp', 'devhub_workflow']|version=19.0.9.1.0

@@ -1,0 +1,9 @@
+      k      | count 
+-------------+-------
+ evo_id_dups |     0
+ walog_dups  |     0
+ msg_count   |     2
+ conv_count  |     2
+ log_count   |     2
+(5 rows)
+

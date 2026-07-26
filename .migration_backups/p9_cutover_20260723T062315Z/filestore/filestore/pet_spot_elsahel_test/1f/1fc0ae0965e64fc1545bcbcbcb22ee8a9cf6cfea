@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 10838
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-14 20:16:48 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** configuration
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+The user is unable to upload an asset sheet due to missing fields for matching with the system.
+
+**الإجراء المطلوب:**
+Review the asset model fields and ensure all required fields are available for import.
+
+## Original Message
+
+```
+كنا بنحاول نرفع شيت بالأصول 
+بس الفلدات مش موجوده عشان اعملها ماتش مع السيستم بالشيت الاكسل
+```

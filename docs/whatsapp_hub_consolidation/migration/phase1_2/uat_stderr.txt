@@ -1,0 +1,84 @@
+2026-07-23 08:22:56,193 2804126 INFO ? odoo: Odoo version 19.0 
+2026-07-23 08:22:56,193 2804126 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf 
+2026-07-23 08:22:56,193 2804126 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-07-23 08:22:56,193 2804126 INFO ? odoo: database: odoo@localhost:5432 
+2026-07-23 08:22:56,613 2804126 INFO ? odoo.service.server: Initiating shutdown 
+2026-07-23 08:22:56,614 2804126 INFO ? odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-07-23 08:22:56,693 2804126 INFO pet_spot_elsahel_test odoo.modules.loading: loading 1 modules... 
+2026-07-23 08:22:56,701 2804126 INFO pet_spot_elsahel_test odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-07-23 08:22:56,829 2804126 INFO pet_spot_elsahel_test odoo.modules.module_graph: module dev_session_hub: some depends are not loaded, skipped 
+2026-07-23 08:22:56,835 2804126 INFO pet_spot_elsahel_test odoo.modules.loading: loading 320 modules... 
+2026-07-23 08:22:56,847 2804126 WARNING pet_spot_elsahel_test odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-07-23 08:22:57,393 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,197 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,517 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,518 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,828 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,828 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,828 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,829 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,829 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,829 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,831 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,831 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,831 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,831 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,831 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,950 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,951 2804126 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:22:58,951 2804126 INFO pet_spot_elsahel_test odoo.modules.loading: 320 modules loaded in 2.12s, 0 queries (+0 extra) 
+2026-07-23 08:22:59,653 2804126 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-07-23 08:22:59,923 2804126 ERROR pet_spot_elsahel_test odoo.modules.loading: Some modules are not loaded, some dependencies or manifest may be missing: ['dev_session_hub'] 
+2026-07-23 08:22:59,924 2804126 INFO pet_spot_elsahel_test odoo.modules.loading: Modules loaded. 
+2026-07-23 08:22:59,996 2804126 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.attachment_id 
+2026-07-23 08:22:59,997 2804126 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.content 
+2026-07-23 08:22:59,997 2804126 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.embedding_model 
+2026-07-23 08:23:00,251 2804126 INFO pet_spot_elsahel_test odoo.registry: Registry loaded in 3.600s 
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 10, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/account/models/partner.py", line 772, in create
+    return super().create(vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/res_partner.py", line 921, in create
+    partners = super().create(vals_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/properties_base_definition_mixin.py", line 47, in create
+    return super().create(vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 327, in create
+    threads = super(MailThread, self).create(vals_list)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/website/models/mixins.py", line 240, in create
+    records = super().create(vals_list)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4651, in create
+    raise ValueError(f"Invalid field {field_name!r} in {self._name!r}")
+ValueError: Invalid field 'mobile' in 'res.partner'

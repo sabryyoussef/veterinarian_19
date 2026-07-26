@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_workflow_board_form" model="ir.ui.view">
+        <field name="name">dev.workflow.board.form</field>
+        <field name="model">dev.workflow.board</field>
+        <field name="arch" type="xml">
+            <form string="Dev Hub Workflow" create="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        <field name="how_to_use" readonly="1" nolabel="1"/>
+                    </div>
+                    <group string="What needs attention">
+                        <field name="next_actions" readonly="1" nolabel="1"/>
+                    </group>
+                    <group>
+                        <field name="stage_summary" readonly="1" string="Installed path"/>
+                    </group>
+                    <group string="Counts">
+                        <group>
+                            <field name="work_item_count" string="Work items"/>
+                            <field name="analysis_count" string="Analyses"/>
+                            <field name="plan_count" string="Plans"/>
+                        </group>
+                        <group>
+                            <field name="awaiting_approval_count" string="Awaiting approval"/>
+                            <field name="execution_count" string="Execution workspaces"/>
+                        </group>
+                    </group>
+                    <group string="Step apps installed">
+                        <field name="capability_ids" nolabel="1">
+                            <list create="0" delete="0" edit="0">
+                                <field name="sequence"/>
+                                <field name="name"/>
+                                <field name="technical_name"/>
+                                <field name="installed"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_dev_workflow_board" model="ir.actions.server">
+        <field name="name">Workflow Board</field>
+        <field name="model_id" ref="model_dev_workflow_board"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_board()</field>
+    </record>
+
+    <record id="action_devhub_workflow_guide" model="ir.actions.client">
+        <field name="name">Interactive Workflow</field>
+        <field name="tag">devhub_workflow_guide</field>
+        <field name="target">current</field>
+    </record>
+</odoo>

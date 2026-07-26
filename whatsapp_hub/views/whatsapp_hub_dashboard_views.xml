@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_whatsapp_hub_general_dashboard" model="ir.actions.client">
+        <field name="name">General Dashboard</field>
+        <field name="tag">whatsapp_hub_general_dashboard</field>
+        <field name="path">whatsapp-general</field>
+    </record>
+
+    <record id="action_whatsapp_hub_whatsapp_dashboard" model="ir.actions.client">
+        <field name="name">WhatsApp Dashboard</field>
+        <field name="tag">whatsapp_hub_whatsapp_dashboard</field>
+        <field name="path">whatsapp-ops</field>
+    </record>
+</odoo>

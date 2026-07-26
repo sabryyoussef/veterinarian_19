@@ -3,7 +3,10 @@
 **Status:** Active reference for future WhatsApp development  
 **Date:** 2026-07-23  
 **Canonical Odoo tree:** `/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel`  
-**Canonical Odoo module:** `whatsapp_hub`
+**Canonical Odoo module:** `whatsapp_hub`  
+**Platform evolution plan:** [`HUB_PLATFORM_EVOLUTION_PLAN.md`](./HUB_PLATFORM_EVOLUTION_PLAN.md)  
+**Phase 1–2 completion:** [`migration/phase1_2/PHASE1_2_COMPLETION_REPORT.md`](./migration/phase1_2/PHASE1_2_COMPLETION_REPORT.md)  
+**Phase 3 completion (unified outbound API, flags OFF):** [`migration/phase3/PHASE3_COMPLETION_REPORT.md`](./migration/phase3/PHASE3_COMPLETION_REPORT.md)
 
 ---
 

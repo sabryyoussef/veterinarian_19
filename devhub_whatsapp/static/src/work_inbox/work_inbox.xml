@@ -180,7 +180,66 @@
                                                 <span class="o_wi_state" t-esc="msg.inbox_state"/>
                                                 <span t-if="msg.media_kind !== 'none'" class="o_wi_media" t-esc="msg.media_kind"/>
                                             </div>
-                                            <div class="o_wi_bubble_text" t-esc="msg.body or ('[' + msg.media_kind + ' — file unavailable]')"/>
+                                            <div t-if="msg.body" class="o_wi_bubble_text" t-esc="msg.body"/>
+                                            <div t-if="msg.media_assets and msg.media_assets.length" class="o_wi_media_block">
+                                                <t t-foreach="msg.media_assets" t-as="asset" t-key="asset.media_id or (msg.id + '-' + asset.media_type)">
+                                                    <div class="o_wi_media_item">
+                                                        <t t-if="asset.preview_kind === 'image' and asset.content_url">
+                                                            <a class="o_wi_media_link"
+                                                               t-att-href="asset.download_url or asset.content_url"
+                                                               target="_blank"
+                                                               rel="noopener noreferrer">
+                                                                <img class="o_wi_media_img"
+                                                                     t-att-src="asset.content_url"
+                                                                     t-att-alt="asset.filename or 'WhatsApp image'"/>
+                                                            </a>
+                                                        </t>
+                                                        <t t-elif="asset.preview_kind === 'audio' and asset.content_url">
+                                                            <audio class="o_wi_media_audio"
+                                                                   controls="controls"
+                                                                   preload="metadata"
+                                                                   t-att-src="asset.content_url"/>
+                                                            <a t-if="asset.download_url"
+                                                               class="o_wi_link"
+                                                               t-att-href="asset.download_url"
+                                                               target="_blank"
+                                                               rel="noopener noreferrer">
+                                                                Download audio
+                                                            </a>
+                                                        </t>
+                                                        <t t-elif="asset.preview_kind === 'video' and asset.content_url">
+                                                            <video class="o_wi_media_video"
+                                                                   controls="controls"
+                                                                   preload="metadata"
+                                                                   t-att-src="asset.content_url"/>
+                                                            <a t-if="asset.download_url"
+                                                               class="o_wi_link"
+                                                               t-att-href="asset.download_url"
+                                                               target="_blank"
+                                                               rel="noopener noreferrer">
+                                                                Download video
+                                                            </a>
+                                                        </t>
+                                                        <t t-elif="asset.preview_kind === 'file' and asset.content_url">
+                                                            <a class="o_wi_btn"
+                                                               t-att-href="asset.download_url or asset.content_url"
+                                                               target="_blank"
+                                                               rel="noopener noreferrer">
+                                                                Open <t t-esc="asset.filename or asset.media_type or 'file'"/>
+                                                            </a>
+                                                        </t>
+                                                        <div t-if="asset.status_label"
+                                                             class="o_wi_media_status"
+                                                             t-esc="asset.status_label"/>
+                                                        <div t-if="asset.enrichment_text"
+                                                             class="o_wi_media_enrichment"
+                                                             t-esc="asset.enrichment_text"/>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            <div t-elif="!msg.body and msg.media_kind !== 'none'"
+                                                 class="o_wi_bubble_text"
+                                                 t-esc="'[' + msg.media_kind + ' — file unavailable]'"/>
                                             <div t-if="msg.attachment_references" class="o_wi_att" t-esc="msg.attachment_references"/>
                                             <button t-if="msg.primary_work_item_id"
                                                     type="button"

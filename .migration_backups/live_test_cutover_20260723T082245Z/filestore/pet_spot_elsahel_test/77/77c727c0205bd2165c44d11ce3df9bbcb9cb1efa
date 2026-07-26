@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/46
+- Message ID: 9736
+- Customer: Bright&I zone ( Odoo ERP )
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 11:24:13 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+The message contains a voice transcription that does not relate to Odoo issues.
+
+**الإجراء المطلوب:**
+No action required as the message is unrelated to Odoo.
+
+**نص مرفق مستخرج:**
+الاحترام مالوش دعوة بالسنة يا أستاذ صبري وانا مش اسألك سنك كام سنة ولا اي حاجة انا احترم كل واحد بتعامل معاه من غير معرف سنه السن مالوش دعوة وأولادي دي لا أولادك حارك ممكن تتعامل مع أولادك بالطريقة دي هما يسمحوا لك تتعامل معهم بالطريقة دي بس لما تكون بتعامل مع ناس في شغل مع ناس محترمة مع ناس اي ان كان سنها ايه مفيش حاجة اسمها سن في الموضوع تمام ولو أولادك يسمحوا لك بحاجة زي كده يسمحوا لك دي حاجة تخصهم وهم أولادك في النهاية تمام شكراً والموضوع انت على حد انا
+
+## Original Message
+
+```
+Voice message: 3A47CA119EE49D4114CC.oga
+```

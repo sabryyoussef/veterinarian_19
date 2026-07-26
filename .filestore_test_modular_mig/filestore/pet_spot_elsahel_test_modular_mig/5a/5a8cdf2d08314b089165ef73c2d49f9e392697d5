@@ -1,0 +1,35 @@
+$ /home/sabry/server setup/cycle-x-odoo18/scripts/cyclex-mock-integration-test.sh
+
+exit=0
+
+--- stdout ---
+CycleX mock integration tests
+  Mock: http://127.0.0.1:18888
+  Odoo: https://192.168.100.66:8171
+
+OK   mock WAAPI create-message
+INSERT 0 6
+OK   Odoo WAAPI params → http://127.0.0.1:18888
+OK   Odoo register → mock WAAPI (phone=+201095453654)
+     mock message: Your CycleX verification code is: 239941
+
+All mock integration tests passed.
+
+--- stderr ---
+Traceback (most recent call last):
+  File "/home/sabry/server setup/cycle-x-odoo18/scripts/cyclex-mock-api-server.py", line 167, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/home/sabry/server setup/cycle-x-odoo18/scripts/cyclex-mock-api-server.py", line 153, in main
+    server = ThreadingHTTPServer((args.host, args.port), MockHandler)
+  File "/usr/lib/python3.14/socketserver.py", line 457, in __init__
+    self.server_bind()
+    ~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/http/server.py", line 148, in server_bind
+    socketserver.TCPServer.server_bind(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.14/socketserver.py", line 478, in server_bind
+    self.socket.bind(self.server_address)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 98] Address already in use
+

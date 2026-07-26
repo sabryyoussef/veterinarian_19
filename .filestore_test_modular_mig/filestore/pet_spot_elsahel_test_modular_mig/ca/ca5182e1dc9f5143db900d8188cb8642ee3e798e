@@ -1,0 +1,215 @@
+# User Guide (EN) — Kafaat Leave Form Print & Import
+
+**Module:** `kafaat_hr_templates` 19.0.1.1.1  
+**Menus:** Settings → Employees → Kafaat Leave Form Mapping · Kafaat HR Templates → Print Template / Import Leave Form  
+**Audience:** HR officers, administrators
+
+Screenshots live under `../evidence/screenshots/` (filenames referenced below).
+
+---
+
+## Prerequisites
+
+| Requirement | Why |
+|-------------|-----|
+| Module installed at **19.0.1.1.1** | Features in this guide |
+| HR / Time Off user rights | Import + leave create |
+| Leave types mapped (annual / sick / unpaid) | Import kind → Odoo type |
+| Employees have unique **emp_no** when importing | Matching key |
+
+Confirm version: screenshot `01-module-version.png`.
+
+---
+
+## Use Case A — Configure leave-type mapping (one-time)
+
+**Goal:** Map Arabic leave kinds on the form/CSV to company Time Off types.
+
+**Actor:** Administrator  
+
+**Steps:**
+
+1. Open **Settings → Employees**.  
+2. Find block **Kafaat Leave Form Mapping**.  
+3. Set:
+   - Annual (اعتيادية) → e.g. Paid Time Off  
+   - Sick (مرضي) → e.g. Sick Time Off  
+   - Unpaid (بدون راتب) → e.g. Unpaid  
+4. Save.
+
+**Expected:** Fields show leave **type names**, not raw numeric IDs.
+
+**Evidence:** `05-leave-type-mapping.png`
+
+---
+
+## Use Case B — Print a complete leave request PDF
+
+**Goal:** Generate the Arabic leave form PDF with HR + finance notes and acting employee.
+
+**Actor:** HR officer  
+
+**Steps:**
+
+1. Open **Kafaat HR Templates → Print Template** (`03-print-template-menu.png`).  
+2. Select template **Leave Request Form (نموذج طلب إجازة)**.  
+3. Select **Employee** (requester).  
+4. Fill:
+   - Leave kind (اعتيادية / مرضي / بدون راتب / أخرى)  
+   - Start / end dates  
+   - Resume date (auto-suggested after end date; editable)  
+   - Reason  
+   - Acting employee (must be a *different* employee)  
+   - Employee Affairs notes · Finance notes  
+   - Management decision if required  
+5. Click **Print**.
+
+**Expected PDF contains:**
+
+- بيانات طالب الإجازة · بيانات الإجازة · القائم بالأعمال  
+- ملاحظات شؤون الموظفين · ملاحظات قسم المالية · اعتماد وموافقة الإدارة  
+- No literal `False` / technical field names  
+- Blank signature lines  
+
+**Evidence:** `06`–`09`, sample PDF `../evidence/pdfs/leave-form-filled.pdf`
+
+---
+
+## Use Case C — Print with blank optional notes
+
+**Goal:** Ensure empty optional fields do not print placeholders.
+
+**Steps:** Same as B, leave HR/finance notes empty → Print.
+
+**Expected:** Clean layout; no `False`/`None`.
+
+**Evidence:** `10`–`11`, `leave-form-blank.pdf`
+
+---
+
+## Use Case D — Resume date behaviour
+
+**Goal:** Confirm computed + editable resume date.
+
+**Steps:**
+
+1. Set end date → observe resume date auto-fills to next day (or next work day per config).  
+2. Try resume **≤ end date** → validation error on print/save.  
+3. Set a later valid date → accepted.
+
+**Evidence:** `12`–`14`
+
+---
+
+## Use Case E — Acting employee rules
+
+**Goal:** Prevent self-acting and derive identity fields.
+
+**Steps:**
+
+1. Select requester as acting → rejected.  
+2. Select another employee → emp_no (and job title when set) populate read-only.
+
+**Evidence:** `15`–`16`
+
+---
+
+## Use Case F — Import annual leave (happy path)
+
+**Goal:** Create one Time Off from CSV.
+
+**Actor:** HR Time Off user  
+
+**Steps:**
+
+1. Copy `../evidence/leave_import_template.csv`.  
+2. Fill one row with real `emp_no`, kind `اعتيادية`, safe non-overlapping dates, optional acting emp_no and notes.  
+3. **Kafaat HR Templates → Import Leave Form** (`04-import-menu.png`).  
+4. Upload file → **Preview** → **Import**.  
+5. Open the created leave under Time Off.
+
+**Expected:**
+
+- Leave type = company annual mapping  
+- Dates / resume / acting / notes correct  
+- Description/notes carry import reason  
+
+**Evidence:** `17`–`19`
+
+---
+
+## Use Case G — Import sick and unpaid
+
+**Goal:** Confirm kind → mapping for مرضي and بدون راتب.
+
+**Steps:** Same as F with those kinds.
+
+**Evidence:** `20`–`21`
+
+---
+
+## Use Case H — Rejected rows CSV
+
+**Goal:** Invalid rows must not create leaves; errors must be exportable.
+
+**Examples of failures:**
+
+| Case | Typical message |
+|------|-----------------|
+| Unknown emp_no | Unknown employee number |
+| Empty emp_no | Missing employee number |
+| Unknown kind | Unknown leave kind |
+| أخرى without mapping/explanation | Configured leave type missing / needs explanation |
+| End before start | Start date must be on or before end date |
+| Resume ≤ end | Resume date must be after end date |
+| Acting = requester | Acting employee cannot be the requester |
+| Unknown acting emp_no | Unknown acting employee number |
+
+**Evidence:** `22`–`25`, `../evidence/rejected-rows.csv`
+
+---
+
+## Use Case I — Approve imported leave (standard workflow)
+
+**Goal:** Use native Odoo Time Off approvals.
+
+**Steps:**
+
+1. Open imported leave.  
+2. Confirm state (e.g. To Approve / confirm).  
+3. **Approve** / **Refuse** with standard buttons.  
+4. No custom “Kafaat approval engine” UI.
+
+**Evidence:** `26`–`29`  
+**Note:** Full dual-role (manager then HR) needs two users with Tim Off rights.
+
+---
+
+## Use Case J — Long Arabic text / multi-page PDF
+
+**Goal:** Verify wrapping and section order under heavy Arabic text.
+
+**Expected section order at bottom:** شؤون الموظفين → المالية → اعتماد الإدارة.
+
+**Evidence:** `30`–`32`, `leave-form-long-ar.pdf`
+
+---
+
+## Troubleshooting
+
+| Symptom | Check |
+|---------|--------|
+| Import maps wrong type | Settings mapping for that kind |
+| “Unknown employee” | emp_no unique and matches CSV |
+| Resume validation | Must be **after** end date |
+| Acting = self | Pick a different employee |
+| PDF missing HR/finance | Use Leave Request Form template key; fill notes on wizard |
+| Empty optional notes look wrong | Upgrade to 19.0.1.1.1; blank must not show `False` |
+
+---
+
+## Support artifacts
+
+- Import template: `../evidence/leave_import_template.csv`  
+- Field classification: `/opt/localaddons/kafaat_hr_templates/docs/FIELD_CLASSIFICATION.md`  
+- UAT report: `../evidence/PLAYWRIGHT_UAT_REPORT.md`

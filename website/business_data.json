@@ -1,73 +1,84 @@
 {
   "brand": {
-    "name_en": "PetSpot El Sahel",
-    "name_ar": "بيت سبوت الساحل",
-    "legal_name": "Pet Spot Veterinary Clinic",
-    "tagline_en": "Trusted Pet Care in El Sahel",
-    "tagline_ar": "رعاية بيطرية موثوقة لحيوانك الأليف في الساحل",
-    "subheadline_en": "Veterinary care, grooming, boarding & vaccinations — Amwaj 1, North Coast.",
-    "subheadline_ar": "كشف بيطري، تطعيمات، جروومينج وبوردينج — أمواج 1، الساحل الشمالي.",
-    "positioning_en": "Your pet's trusted summer care destination on Egypt's North Coast — clinic, grooming, boarding, and pet care in one place.",
-    "positioning_ar": "وجهتكم الموثوقة لرعاية أليفكم في الساحل — عيادة، جروومينج، بوردينج، وخدمات رعاية في مكان واحد."
+    "name_en": "pet.spot",
+    "name_ar": "pet.spot",
+    "legal_name": "PetSpot El Sahel Veterinary Clinic",
+    "marketing_name_en": "PetSpot El Sahel Veterinary Clinic",
+    "marketing_name_ar": "عيادة بيت سبوت الساحل البيطرية",
+    "gbp_name": "pet.spot",
+    "tagline_en": "24/7 veterinary care on Egypt's North Coast",
+    "tagline_ar": "رعاية بيطرية على مدار الساعة في الساحل الشمالي",
+    "subheadline_en": "Veterinary care, grooming, boarding, vaccinations and home visits — beside Amwaj Gate 1 on the Main Road, Sidi Abdel Rahman.",
+    "subheadline_ar": "كشف بيطري، تطعيمات، جروومينج، بوردينج وزيارات منزلية — بجوار بوابة أمواج 1 على الطريق الرئيسي، سيدي عبد الرحمن.",
+    "positioning_en": "pet.spot serves pet owners around Amwaj, Sidi Abdel Rahman and the North Coast with clinic care and 24/7 emergency support.",
+    "positioning_ar": "pet.spot يخدم أصحاب الحيوانات حول أمواج وسيدي عبد الرحمن والساحل الشمالي برعاية عيادية ودعم طوارئ على مدار الساعة.",
+    "location_banner_en": "Pet.spot is beside Amwaj Gate 1 on the Main Road — veterinary care and emergency service available 24/7.",
+    "location_banner_ar": "Pet.spot بجوار بوابة أمواج 1 على الطريق الرئيسي — رعاية بيطرية وطوارئ على مدار 24 ساعة."
   },
   "contact": {
+    "phone_primary": "+201280833332",
+    "phone_primary_display": "012 80833332",
     "phone_call_center": "+201201568888",
     "phone_call_center_display": "012 01568888",
-    "phone_primary": "+201280833332",
-    "phone_alternate": "+201000059085",
-    "whatsapp": "201201568888",
-    "email": "vetdrughouse@gmail.com",
-    "email_alternate": "animalcarecenterpetspots@gmail.com",
-    "facebook": "https://www.facebook.com/profile.php?id=61591968621292",
-    "facebook_sister": "https://www.facebook.com/animalcarecenterpetspots/",
+    "whatsapp": "201000059085",
+    "email": "vetelsahel@gmail.com",
+    "facebook": "https://www.facebook.com/animalcarecenterpetspots",
     "instagram": "https://www.instagram.com/pet_spot_clinic/",
-    "google_maps": "https://maps.app.goo.gl/AaHup6NEFodZEs7S7"
-  },
-  "branches": [
-    {
-      "id": "amwaj",
-      "name_en": "Branch 1 — Amwaj 1 (North Coast)",
-      "name_ar": "الفرع 1 — أمواج 1 (الساحل الشمالي)",
-      "phone": "+201280833332",
-      "phone_display": "012 80833332",
-      "whatsapp": "201280833332",
-      "address_en": "Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman, North Coast",
-      "address_ar": "بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن، الساحل الشمالي",
-      "google_maps": "https://maps.app.goo.gl/AaHup6NEFodZEs7S7"
-    },
-    {
-      "id": "haram",
-      "name_en": "Branch 2 — Haram",
-      "name_ar": "الفرع 2 — الهرم",
-      "phone": "+201000059085",
-      "phone_display": "010 00059085",
-      "whatsapp": "201000059085",
-      "address_en": "Haram, Giza, Egypt",
-      "address_ar": "الهرم، الجيزة، مصر",
-      "google_maps": "https://maps.app.goo.gl/aC7CBQkFyzz6fVt68",
-      "facebook": "https://www.facebook.com/profile.php?id=61591968621292"
+    "google_maps": "https://www.google.com/maps?q=30.9909056,28.6842417",
+    "location_policy": {
+      "public_location_name": "pet.spot",
+      "public_pin_only": true,
+      "two_branches_public_claim": false,
+      "create_new_gbp": false,
+      "legacy_google_listing": {
+        "internal_label": "Legacy Google listing — disputed primary ownership — no action authorized",
+        "public_reference": false,
+        "include_in_json_ld": false,
+        "include_in_sameAs": false,
+        "close_merge_delete_rename_relocate": false,
+        "ownership_transfer_request": false,
+        "publish_through_listing": false,
+        "ids_internal_only": {
+          "legacy_gbp_name": "Pet Spot Clinic",
+          "legacy_kg_id": "/g/11w2cv6pz0",
+          "legacy_shop_kg_id": "/g/11w2b6j71t",
+          "legacy_maps_shortlink": "https://maps.app.goo.gl/AaHup6NEFodZEs7S7",
+          "legacy_coords": {"latitude": 30.9909989, "longitude": 28.6840834}
+        }
+      }
     }
-  ],
-  "location": {
-    "area_en": "Amwaj 1, North Coast — Sidi Abdel Rahman",
-    "area_ar": "أمواج 1، الساحل الشمالي — سيدي عبد الرحمن",
-    "address_en": "Beside Amwaj 1 gate, Main Road, Sidi Abdel Rahman, North Coast",
-    "address_ar": "بجوار بوابة أمواج 1، الطريق الرئيسي، سيدي عبد الرحمن، الساحل الشمالي",
-    "address_note": "Confirmed — Google Maps pin beside Amwaj 1 gate on the main road",
-    "hours_en": "Summer season · Open daily",
-    "hours_ar": "موسم الصيف · مفتوح يومياً"
+  },
+  "geo": {
+    "latitude": 30.9909056,
+    "longitude": 28.6842417,
+    "address_en": "Main Road, beside Amwaj Gate 1, Sidi Abdel Rahman, North Coast, Egypt",
+    "address_ar": "الطريق الرئيسي، بجوار بوابة أمواج 1، سيدي عبد الرحمن، الساحل الشمالي، مصر",
+    "area_en": "Amwaj Gate 1 · Sidi Abdel Rahman · North Coast",
+    "area_ar": "بوابة أمواج 1 · سيدي عبد الرحمن · الساحل الشمالي",
+    "city_en": "Sidi Abdel Rahman",
+    "city_ar": "سيدي عبد الرحمن",
+    "region_en": "Matrouh",
+    "country_en": "Egypt",
+    "country_code": "EG"
+  },
+  "hours": {
+    "hours_en": "Open 24 hours, 7 days a week",
+    "hours_ar": "مفتوح 24 ساعة طوال أيام الأسبوع",
+    "emergency_en": "Emergency veterinary service available 24/7",
+    "emergency_ar": "خدمة الطوارئ البيطرية متاحة على مدار الساعة",
+    "opening_hours_spec": ["Mo-Su 00:00-23:59"]
   },
   "seo": {
-    "title": "PetSpot El Sahel | Veterinary Clinic, Grooming & Boarding",
-    "description": "PetSpot El Sahel provides veterinary consultations, vaccinations, grooming, boarding, and home visits for pets in the North Coast."
+    "title": "pet.spot | 24/7 Vet beside Amwaj Gate 1, North Coast",
+    "description": "pet.spot — 24/7 veterinary care, vaccinations, grooming, boarding and home visits beside Amwaj Gate 1 on the Main Road, Sidi Abdel Rahman, North Coast, Egypt."
   },
   "services": [
     {
       "id": "consultation",
       "title_en": "Veterinary Consultation",
       "title_ar": "كشف بيطري",
-      "desc_en": "Expert exams for cats, dogs, and exotic pets.",
-      "desc_ar": "كشف متخصص للقطط والكلاب والحيوانات الأليفة.",
+      "desc_en": "Clinic exams for dogs, cats and companion pets.",
+      "desc_ar": "كشف عيادي للكلاب والقطط والحيوانات الأليفة.",
       "cta_en": "Book on WhatsApp",
       "cta_ar": "احجز على واتساب",
       "icon": "fa-stethoscope",
@@ -75,11 +86,23 @@
       "gallery_slot": "veterinary"
     },
     {
+      "id": "emergency",
+      "title_en": "24/7 Emergency Care",
+      "title_ar": "طوارئ على مدار الساعة",
+      "desc_en": "Urgent veterinary help when your pet needs it on the North Coast.",
+      "desc_ar": "مساعدة بيطرية عاجلة عندما يحتاج أليفك ذلك في الساحل.",
+      "cta_en": "Call / WhatsApp now",
+      "cta_ar": "اتصل أو واتساب الآن",
+      "icon": "fa-ambulance",
+      "color": "#b33a3a",
+      "gallery_slot": "clinic_front"
+    },
+    {
       "id": "vaccination",
       "title_en": "Vaccination",
       "title_ar": "تطعيمات",
-      "desc_en": "Keep your pet protected before and during vacation.",
-      "desc_ar": "حماية أليفك قبل وأثناء الإجازة.",
+      "desc_en": "Protect your pet before and during North Coast stays.",
+      "desc_ar": "حماية أليفك قبل وأثناء الإقامة في الساحل.",
       "cta_en": "Book on WhatsApp",
       "cta_ar": "احجز على واتساب",
       "icon": "fa-medkit",
@@ -90,8 +113,8 @@
       "id": "grooming",
       "title_en": "Grooming",
       "title_ar": "جروومينج",
-      "desc_en": "Professional grooming for a fresh summer look.",
-      "desc_ar": "جرومينج احترافي لمظهر صيفي أنيق.",
+      "desc_en": "Professional grooming for comfort in the summer heat.",
+      "desc_ar": "جرومينج احترافي لراحة أليفك في حر الصيف.",
       "cta_en": "Book on WhatsApp",
       "cta_ar": "احجز على واتساب",
       "icon": "fa-scissors",
@@ -102,8 +125,8 @@
       "id": "boarding",
       "title_en": "Boarding",
       "title_ar": "بوردينج",
-      "desc_en": "Safe supervised stay while you enjoy the coast.",
-      "desc_ar": "إقامة آمنة تحت الإشراف أثناء استمتاعكم بالساحل.",
+      "desc_en": "Supervised boarding while you enjoy the coast.",
+      "desc_ar": "إقامة تحت الإشراف أثناء استمتاعكم بالساحل.",
       "cta_en": "Book on WhatsApp",
       "cta_ar": "احجز على واتساب",
       "icon": "fa-home",
@@ -114,35 +137,24 @@
       "id": "home_visit",
       "title_en": "Home Visit",
       "title_ar": "زيارة منزلية",
-      "desc_en": "Mobile vet care for North Coast compounds.",
-      "desc_ar": "رعاية بيطرية متنقلة لكمبوندات الساحل.",
+      "desc_en": "Mobile veterinary visits for North Coast compounds when suitable.",
+      "desc_ar": "زيارات بيطرية منزلية لكمبوندات الساحل عند الحاجة.",
       "cta_en": "Book on WhatsApp",
       "cta_ar": "احجز على واتساب",
-      "icon": "fa-ambulance",
+      "icon": "fa-car",
       "color": "#5c4d7d"
-    },
-    {
-      "id": "pet_supplies",
-      "title_en": "Pet Supplies",
-      "title_ar": "مستلزمات الحيوانات",
-      "desc_en": "Pet shop essentials when available on site.",
-      "desc_ar": "مستلزمات الحيوانات الأليفة في المكان.",
-      "cta_en": "Call us",
-      "cta_ar": "اتصل بنا",
-      "icon": "fa-shopping-basket",
-      "color": "#b8860b"
     }
   ],
   "gallery_slots": [
-    {"id": "clinic_front", "alt": "PetSpot El Sahel clinic front", "file": "clinic-front.jpg"},
-    {"id": "grooming", "alt": "PetSpot grooming area", "file": "grooming-area.jpg"},
-    {"id": "boarding", "alt": "PetSpot boarding area", "file": "boarding-area.jpg"},
-    {"id": "veterinary", "alt": "PetSpot veterinary care", "file": "veterinary-care.jpg"}
+    {"id": "clinic_front", "alt": "pet.spot clinic exterior beside Amwaj Gate 1", "file": "clinic-front.jpg"},
+    {"id": "grooming", "alt": "pet.spot grooming area", "file": "grooming-area.jpg"},
+    {"id": "boarding", "alt": "pet.spot boarding area", "file": "boarding-area.jpg"},
+    {"id": "veterinary", "alt": "pet.spot veterinary care", "file": "veterinary-care.jpg"}
   ],
   "gallery_extra_count": 12,
   "logo": {
     "path": "assets/logo/petspot-logo.png",
     "source": "assets/logo/logo.svg",
-    "note": "Edit logo.svg then run deploy.py — PNG is auto-generated for Odoo"
+    "note": "Edit logo.svg then run deploy — PNG is auto-generated for Odoo"
   }
 }

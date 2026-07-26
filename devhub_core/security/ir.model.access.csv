@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_machine_user,dev.machine user,model_dev_machine,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_machine_manager,dev.machine manager,model_dev_machine,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_client_user,dev.client user,model_dev_client,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_client_manager,dev.client manager,model_dev_client,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_project_user,dev.project user,model_dev_project,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_project_manager,dev.project manager,model_dev_project,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_repository_user,dev.repository user,model_dev_repository,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_repository_manager,dev.repository manager,model_dev_repository,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_environment_user,dev.environment user,model_dev_environment,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_environment_manager,dev.environment manager,model_dev_environment,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_task_link_user,dev.task.link user,model_dev_task_link,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_task_link_manager,dev.task.link manager,model_dev_task_link,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_policy_user,dev.policy user,model_dev_policy,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_policy_manager,dev.policy manager,model_dev_policy,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_dashboard_user,dev.dashboard user,model_dev_dashboard,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_dashboard_manager,dev.dashboard manager,model_dev_dashboard,devhub_core.group_dev_hub_manager,1,1,1,1

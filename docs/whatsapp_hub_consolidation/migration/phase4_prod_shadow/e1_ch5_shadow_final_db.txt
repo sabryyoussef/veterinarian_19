@@ -1,0 +1,24 @@
+ id | wa_outbound_mode 
+----+------------------
+  5 | shadow
+ 10 | hub
+(2 rows)
+
+                     key                      |  value  
+----------------------------------------------+---------
+ whatsapp_hub.discuss_cutover_enabled         | True
+ whatsapp_hub.discuss_hub_allowed_channel_ids | 10
+ whatsapp_hub.unified_outbound_enabled        | True
+ whatsapp_hub.unified_outbound_purposes       | discuss
+(4 rows)
+
+ unified_ch5 
+-------------
+           0
+(1 row)
+
+ classification | count 
+----------------+-------
+ matched        |    10
+(1 row)
+

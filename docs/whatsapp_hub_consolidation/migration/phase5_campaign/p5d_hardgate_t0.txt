@@ -1,0 +1,28 @@
+GATES {
+  "ch5_mode": "hub",
+  "ch10_mode": "hub",
+  "discuss_allowlist": "10,5",
+  "discuss_health": "healthy",
+  "campaign_cutover": "False",
+  "campaign_allowlist": "False",
+  "purposes": "discuss",
+  "batch_size": "25",
+  "inst1_name": "sabry min",
+  "inst1_camp_cutover": false,
+  "inst1_unified": true,
+  "camp_pending_processing": 0,
+  "quarantine_available": true,
+  "hub_campaign_ids": [],
+  "camp16_mode": "shadow",
+  "legacy_count": 14,
+  "shadow_count": 1,
+  "partner469_phone": "201000059085",
+  "partner469_ok": true,
+  "evo_instance": "sabry min",
+  "evo_url": "http://127.0.0.1:8080",
+  "evo_http": 200,
+  "evo_body": "{\"instance\":{\"instanceName\":\"sabry min\",\"state\":\"open\"}}",
+  "evo_open": true
+}
+FAIL []
+HARD_GATE PASS

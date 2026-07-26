@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>دليل المستخدم — نموذج إجازات كفاءات</title>
+
+<style>
+  @page { size: A4; margin: 18mm 14mm; }
+  body {
+    font-family: "Noto Naskh Arabic", "Amiri", "DejaVu Sans", Tahoma, Arial, sans-serif;
+    direction: rtl; text-align: right;
+    line-height: 1.75; color: #1a1a1a; font-size: 15px;
+    max-width: 900px; margin: 24px auto; padding: 0 20px;
+  }
+  h1,h2,h3 { color: #0b3d5c; margin-top: 1.4em; }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #0b3d5c; padding-bottom: .35em; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th, td { border: 1px solid #c9d4de; padding: 8px 10px; vertical-align: top; }
+  th { background: #eef5fa; }
+  code, pre { font-family: Consolas, "DejaVu Sans Mono", monospace; direction: ltr; text-align: left; }
+  code { background: #f3f6f8; padding: 1px 5px; border-radius: 3px; font-size: .92em; }
+  pre { background: #f3f6f8; padding: 12px; border-radius: 6px; overflow-x: auto; }
+  a { color: #0b5cad; }
+  ul, ol { padding-right: 1.4em; padding-left: 0; }
+  hr { border: none; border-top: 1px solid #d5dde5; margin: 1.5em 0; }
+  .meta { color: #444; margin-bottom: 1em; }
+</style>
+
+</head>
+<body>
+<h1>دليل المستخدم (عربي) — طباعة واستيراد نموذج طلب الإجازة</h1>
+<p><strong>الوحدة:</strong> <code>kafaat_hr_templates</code> الإصدار 19.0.1.1.1<br />
+<strong>القوائم:</strong> الإعدادات → الموظفون → Kafaat Leave Form Mapping · قوالب كفاءات للموارد البشرية → Print Template / Import Leave Form<br />
+<strong>المستهدفون:</strong> مسؤولو شؤون الموظفين ومديرو النظام</p>
+<p>اللقطات في المجلد <code>../evidence/screenshots/</code> (يُشار لأسماء الملفات أدناه).</p>
+<hr />
+<h2>المتطلبات</h2>
+<table>
+<thead>
+<tr>
+<th>المتطلب</th>
+<th>السبب</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تثبيت الوحدة بالإصدار <strong>19.0.1.1.1</strong></td>
+<td>توفر الميزات</td>
+</tr>
+<tr>
+<td>صلاحيات إجازات / موارد بشرية</td>
+<td>الاستيراد وإنشاء الإجازة</td>
+</tr>
+<tr>
+<td>ربط الأنواع الثلاثة في الإعدادات</td>
+<td>تحويل نوع النموذج إلى نوع أودو</td>
+</tr>
+<tr>
+<td>رقم وظيفي فريد (<code>emp_no</code>) عند الاستيراد</td>
+<td>مفتاح المطابقة</td>
+</tr>
+</tbody>
+</table>
+<p>تأكيد الإصدار: اللقطة <code>01-module-version.png</code>.</p>
+<hr />
+<h2>سيناريو أ — ضبط ربط أنواع الإجازة (مرة واحدة)</h2>
+<p><strong>الهدف:</strong> ربط أنواع النموذج/ملف CSV بأنواع الإجازة في الشركة.</p>
+<p><strong>الفاعل:</strong> مدير النظام  </p>
+<p><strong>الخطوات:</strong></p>
+<ol>
+<li>افتح <strong>الإعدادات → الموظفون</strong>.  </li>
+<li>ابحث عن <strong>Kafaat Leave Form Mapping</strong>.  </li>
+<li>عيّن:</li>
+<li>اعتيادية → مثل Paid Time Off  </li>
+<li>مرضي → مثل Sick Time Off  </li>
+<li>بدون راتب → مثل Unpaid  </li>
+<li>احفظ.</li>
+</ol>
+<p><strong>النتيجة المتوقعة:</strong> تظهر أسماء أنواع الإجازة وليس أرقاماً ثابتة فقط.</p>
+<p><strong>الدليل:</strong> <code>05-leave-type-mapping.png</code></p>
+<hr />
+<h2>سيناريو ب — طباعة نموذج طلب إجازة مكتمل</h2>
+<p><strong>الهدف:</strong> إنشاء PDF عربي يتضمن ملاحظات شؤون الموظفين والمالية والقائم بالأعمال.</p>
+<p><strong>الفاعل:</strong> مسؤول موارد بشرية  </p>
+<p><strong>الخطوات:</strong></p>
+<ol>
+<li>افتح <strong>قوالب كفاءات → Print Template</strong>.  </li>
+<li>اختر <strong>Leave Request Form / نموذج طلب إجازة</strong>.  </li>
+<li>اختر الموظف طالب الإجازة.  </li>
+<li>عبّئ النوع، التواريخ، تاريخ المباشرة، السبب، القائم بالأعمال، ملاحظات شؤون الموظفين والمالية، واعتماد الإدارة إن لزم.  </li>
+<li>اضغط <strong>Print</strong>.</li>
+</ol>
+<p><strong>يجب أن يظهر في الـ PDF:</strong></p>
+<ul>
+<li>بيانات طالب الإجازة وبيانات الإجازة والقائم بالأعمال  </li>
+<li>ملاحظات شؤون الموظفين ثم ملاحظات المالية ثم اعتماد الإدارة  </li>
+<li>بدون ظهور <code>False</code> أو أسماء حقول تقنية  </li>
+<li>خطوط توقيع فارغة للطباعة  </li>
+</ul>
+<p><strong>الدليل:</strong> <code>06</code>–<code>09</code> و<code>../evidence/pdfs/leave-form-filled.pdf</code></p>
+<hr />
+<h2>سيناريو ج — طباعة مع حقول اختيارية فارغة</h2>
+<p><strong>الهدف:</strong> التأكد من عدم طباعة قيم وهمية عند ترك الملاحظات فارغة.</p>
+<p><strong>الدليل:</strong> <code>10</code>–<code>11</code></p>
+<hr />
+<h2>سيناريو د — سلوك تاريخ مباشرة العمل</h2>
+<p><strong>الهدف:</strong> التحقق من الحساب التلقائي وقابلية التعديل والتحقق من الصحة.</p>
+<ol>
+<li>بعد تحديد تاريخ النهاية يُقترح تاريخ مباشرة لاحق.  </li>
+<li>قيمة مساوية أو سابقة لنهاية الإجازة تُرفض.  </li>
+<li>قيمة لاحقة صحيحة تُقبل.</li>
+</ol>
+<p><strong>الدليل:</strong> <code>12</code>–<code>14</code></p>
+<hr />
+<h2>سيناريو هـ — قواعد القائم بالأعمال</h2>
+<ol>
+<li>اختيار طالب الإجازة نفسه قائماً بالأعمال → رفض.  </li>
+<li>اختيار موظف آخر → يظهر الرقم الوظيفي (والمسمى إن وُجد).</li>
+</ol>
+<p><strong>الدليل:</strong> <code>15</code>–<code>16</code></p>
+<hr />
+<h2>سيناريو و — استيراد إجازة اعتيادية ناجح</h2>
+<p><strong>الهدف:</strong> إنشاء سجل Time Off من ملف CSV.</p>
+<p><strong>الخطوات:</strong></p>
+<ol>
+<li>انسخ <code>../evidence/leave_import_template.csv</code>.  </li>
+<li>صف واحد برقم وظيفي صحيح ونوع <code>اعتيادية</code> وتواريخ لا تتداخل مع إجازات موجودة.  </li>
+<li><strong>Import Leave Form</strong> → رفع الملف → معاينة → استيراد.  </li>
+<li>افتح الإجازة من تطبيق الإجازات.</li>
+</ol>
+<p><strong>النتيجة:</strong> نوع الإجازة يطابق ربط الشركة؛ التواريخ والملاحظات والقائم بالأعمال صحيحة.</p>
+<p><strong>الدليل:</strong> <code>17</code>–<code>19</code></p>
+<hr />
+<h2>سيناريو ز — استيراد مرضي وبدون راتب</h2>
+<p>نفس خطوات (و) مع النوعين <code>مرضي</code> و<code>بدون راتب</code>.</p>
+<p><strong>الدليل:</strong> <code>20</code>–<code>21</code></p>
+<hr />
+<h2>سيناريو ح — ملف الصفوف المرفوضة</h2>
+<p>الصفوف غير الصالحة لا تُنشئ إجازات، ويُتاح CSV رفض يتضمن الصف والسبب.</p>
+<p>أمثلة: رقم مجهول، رقم فارغ، نوع مجهول، أخرى بلا إعداد/توضيح، نهاية قبل البداية، مباشرة غير صالحة، قائم = طالب الإجازة، قائم مجهول.</p>
+<p><strong>الدليل:</strong> <code>22</code>–<code>25</code> و<code>../evidence/rejected-rows.csv</code></p>
+<hr />
+<h2>سيناريو ط — اعتماد الإجازة (سير أودو القياسي)</h2>
+<p>افتح الإجازة المستوردة واستخدم أزرار <strong>Approve / Refuse</strong> القياسية — دون محرك موافقات مخصص.</p>
+<p><strong>الدليل:</strong> <code>26</code>–<code>29</code><br />
+<strong>ملاحظة:</strong> اعتماد مزدوج (مدير ثم HR) يحتاج مستخدمين بصلاحيات مناسبة.</p>
+<hr />
+<h2>سيناريو ي — نص عربي طويل وصفحات متعددة</h2>
+<p>التحقق من التفاف النص وترتيب الأقسام: شؤون الموظفين ثم المالية ثم اعتماد الإدارة.</p>
+<p><strong>الدليل:</strong> <code>30</code>–<code>32</code></p>
+<hr />
+<h2>استكشاف الأخطاء</h2>
+<table>
+<thead>
+<tr>
+<th>العرض</th>
+<th>افحص</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>نوع إجازة خاطئ بعد الاستيراد</td>
+<td>ربط الأنواع في الإعدادات</td>
+</tr>
+<tr>
+<td>موظف غير معروف</td>
+<td>تطابق <code>emp_no</code></td>
+</tr>
+<tr>
+<td>خطأ تاريخ المباشرة</td>
+<td>يجب أن يكون <strong>بعد</strong> نهاية الإجازة</td>
+</tr>
+<tr>
+<td>القائم = الطالب</td>
+<td>اختر موظفاً آخر</td>
+</tr>
+<tr>
+<td>غياب أقسام HR/المالية في PDF</td>
+<td>قالب Leave Request Form + تعبئة الملاحظات</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>مراجع</h2>
+<ul>
+<li>قالب الاستيراد: <code>../evidence/leave_import_template.csv</code>  </li>
+<li>تصنيف الحقول: <code>/opt/localaddons/kafaat_hr_templates/docs/FIELD_CLASSIFICATION.md</code>  </li>
+<li>تقرير UAT: <code>../evidence/PLAYWRIGHT_UAT_REPORT.md</code></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_work_plan_user,dev.work.plan user,model_dev_work_plan,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_work_plan_manager,dev.work.plan manager,model_dev_work_plan,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_work_plan_step_user,dev.work.plan.step user,model_dev_work_plan_step,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_work_plan_step_manager,dev.work.plan.step manager,model_dev_work_plan_step,devhub_core.group_dev_hub_manager,1,1,1,0

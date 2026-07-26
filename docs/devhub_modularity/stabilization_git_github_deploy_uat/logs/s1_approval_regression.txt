@@ -1,0 +1,3 @@
+/bin/bash: /root/.bash_profile: Permission denied
+REGRESSION_MODULE odoo.addons.devhub_approval.tests.test_approval_import_regression
+{"approval_id": 2273, "exact_hash_match": true, "import_DevWorkPlan": true, "plan_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219", "plan_id": 2475, "s1": "PASS"}

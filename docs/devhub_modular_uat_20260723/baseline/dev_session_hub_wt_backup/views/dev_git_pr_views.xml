@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_pr_target_form" model="ir.ui.view">
+        <field name="name">dev.git.pr.target.form</field>
+        <field name="model">dev.git.pr.target</field>
+        <field name="arch" type="xml">
+            <form string="Registered Pull Request Target">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="repository_id"/>
+                            <field name="source_remote_id" domain="[('repository_id', '=', repository_id)]"/>
+                            <field name="target_repository_id"/>
+                            <field name="github_repository"/>
+                        </group>
+                        <group>
+                            <field name="target_branch"/>
+                            <field name="approved"/>
+                            <field name="non_production"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <field name="allowed_target_branches"/>
+                    <separator string="Protected GitHub App Identity"/>
+                    <group>
+                        <group>
+                            <field name="credential_type"/>
+                            <field name="github_app_slug" invisible="credential_type != 'github_app'"/>
+                            <field name="github_app_id" invisible="credential_type != 'github_app'"/>
+                            <field name="github_installation_id" invisible="credential_type != 'github_app'"/>
+                            <field name="credential_owner_reference"/>
+                        </group>
+                        <group>
+                            <field name="credential_repository_restriction"/>
+                            <field name="credential_permission_summary"/>
+                            <field name="credential_validated_at"/>
+                            <field name="credential_expires_at"/>
+                            <field name="credential_validation_digest"/>
+                        </group>
+                    </group>
+                    <field name="credential_profile_reference" password="True"/>
+                    <field name="credential_broker_reference" password="True"/>
+                    <div class="alert alert-info" role="alert">
+                        Store only a protected GitHub CLI profile directory reference. Never paste a token or credential-bearing URL.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_pr_approval_form" model="ir.ui.view">
+        <field name="name">dev.git.pr.approval.form</field>
+        <field name="model">dev.git.pr.approval</field>
+        <field name="arch" type="xml">
+            <form string="Immutable Pull Request Approval" create="0" edit="0" delete="0">
+                <sheet>
+                    <div class="oe_title"><h1><field name="approval_state"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="repository_id"/>
+                            <field name="source_remote_id"/>
+                            <field name="source_branch"/>
+                            <field name="source_commit_sha"/>
+                        </group>
+                        <group>
+                            <field name="target_repository_id"/>
+                            <field name="target_id"/>
+                            <field name="github_repository"/>
+                            <field name="target_branch"/>
+                            <field name="approver_id"/>
+                            <field name="approved_at"/>
+                            <field name="credential_type"/>
+                            <field name="credential_owner_reference"/>
+                            <field name="github_app_id"/>
+                            <field name="github_installation_id"/>
+                            <field name="credential_validation_digest"/>
+                        </group>
+                    </group>
+                    <field name="pr_title"/>
+                    <field name="pr_body"/>
+                    <group>
+                        <group>
+                            <field name="pr_title_hash"/>
+                            <field name="pr_body_digest"/>
+                            <field name="idempotency_key"/>
+                            <field name="binding_hash"/>
+                        </group>
+                        <group>
+                            <field name="plan_id"/>
+                            <field name="plan_hash"/>
+                            <field name="policy_hash"/>
+                            <field name="execution_contract_hash"/>
+                        </group>
+                    </group>
+                    <field name="event_ids">
+                        <list create="0" edit="0" delete="0">
+                            <field name="occurred_at"/>
+                            <field name="event_type"/>
+                            <field name="actor_id"/>
+                            <field name="summary"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_pr_record_form" model="ir.ui.view">
+        <field name="name">dev.git.pr.record.form</field>
+        <field name="model">dev.git.pr.record</field>
+        <field name="arch" type="xml">
+            <form string="Verified Pull Request Record" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="workspace_id"/>
+                            <field name="approval_id"/>
+                            <field name="target_id"/>
+                            <field name="github_repository"/>
+                            <field name="source_branch"/>
+                            <field name="source_sha"/>
+                            <field name="target_branch"/>
+                        </group>
+                        <group>
+                            <field name="pr_number"/>
+                            <field name="pr_url_reference" widget="url"/>
+                            <field name="approver_id"/>
+                            <field name="created_at"/>
+                            <field name="result_state"/>
+                            <field name="credential_type"/>
+                            <field name="credential_owner_reference"/>
+                            <field name="github_app_id"/>
+                            <field name="github_installation_id"/>
+                            <field name="credential_validation_digest"/>
+                            <field name="idempotency_key"/>
+                            <field name="api_correlation_reference"/>
+                            <field name="audit_hash"/>
+                        </group>
+                    </group>
+                    <field name="pr_title"/>
+                    <field name="pr_body_digest"/>
+                    <field name="verification_result"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

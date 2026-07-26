@@ -1,0 +1,24 @@
+{
+  "phase1_fb": [
+    {
+      "id": 3,
+      "state": "draft",
+      "scheduled_date": false,
+      "live_post_ids": []
+    },
+    {
+      "id": 2,
+      "state": "scheduled",
+      "scheduled_date": "2026-08-05 07:00:00",
+      "live_post_ids": []
+    },
+    {
+      "id": 1,
+      "state": "draft",
+      "scheduled_date": false,
+      "live_post_ids": []
+    }
+  ],
+  "directions_draft_preview": "[PetSpot SEO] Directions — pet.spot\n\nموقع Pet.spot بجوار بوابة أمواج 1 على الطريق الرئيسي. اضغط للوصول مباشرة عبر Google Maps.\nhttps://www.google.com/maps?q=30.9909056,28.6842417\nعيادة: 01280833332 · واتساب: 01000059085 · 24/7\n\nPet.spot is beside Amwaj Gate 1 on the Main Road — veterinary care and emergency service available 24/7.\nDirections: https://www.google.com/maps?q=30.9909056,28.6842417\nClinic: 01280833332 · WhatsApp: 01000059085",
+  "image_candidate": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/wa_clinic_photos/shortlist/candidates/S1_exterior_night_entrance.jpg"
+}

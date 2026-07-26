@@ -1,0 +1,181 @@
+{
+  "devhub_core": {
+    "exists": true,
+    "version": "19.0.9.0.1",
+    "name": "Dev Hub Core",
+    "depends": [
+      "base",
+      "mail",
+      "web"
+    ]
+  },
+  "devhub_work": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Work",
+    "depends": [
+      "devhub_core",
+      "project"
+    ]
+  },
+  "devhub_analysis": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Analysis",
+    "depends": [
+      "devhub_work",
+      "devhub_plan"
+    ]
+  },
+  "devhub_plan": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Plan",
+    "depends": [
+      "devhub_work"
+    ]
+  },
+  "devhub_approval": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Approval",
+    "depends": [
+      "devhub_plan"
+    ]
+  },
+  "devhub_generation": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Generation",
+    "depends": [
+      "devhub_work",
+      "devhub_analysis",
+      "devhub_plan"
+    ]
+  },
+  "devhub_session": {
+    "exists": true,
+    "version": "19.0.9.0.0",
+    "name": "Dev Hub Sessions",
+    "depends": [
+      "devhub_work"
+    ]
+  },
+  "devhub_execution": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Execution",
+    "depends": [
+      "devhub_session",
+      "devhub_plan"
+    ]
+  },
+  "devhub_git": {
+    "exists": true,
+    "version": "19.0.9.0.0",
+    "name": "Dev Hub Git",
+    "depends": [
+      "devhub_execution"
+    ]
+  },
+  "devhub_github": {
+    "exists": true,
+    "version": "19.0.9.0.0",
+    "name": "Dev Hub GitHub",
+    "depends": [
+      "devhub_git"
+    ]
+  },
+  "devhub_deploy": {
+    "exists": true,
+    "version": "19.0.9.0.0",
+    "name": "Dev Hub Deploy",
+    "depends": [
+      "devhub_github"
+    ]
+  },
+  "devhub_outbox": {
+    "exists": true,
+    "version": "19.0.9.0.0",
+    "name": "Dev Hub Outbox",
+    "depends": [
+      "devhub_work"
+    ]
+  },
+  "devhub_openproject": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub OpenProject",
+    "depends": [
+      "devhub_work",
+      "openproject_sync"
+    ]
+  },
+  "devhub_whatsapp": {
+    "exists": true,
+    "version": "19.0.9.0.2",
+    "name": "Dev Hub WhatsApp Intake",
+    "depends": [
+      "devhub_work",
+      "whatsapp_hub"
+    ]
+  },
+  "devhub_workflow": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Workflow",
+    "depends": [
+      "devhub_work"
+    ]
+  },
+  "devhub_code_analysis": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Dev Hub Code Analysis",
+    "depends": [
+      "devhub_analysis",
+      "devhub_odoo_runtime"
+    ]
+  },
+  "devhub_odoo_runtime": {
+    "exists": true,
+    "version": "19.0.9.0.0",
+    "name": "Dev Hub Odoo Runtime",
+    "depends": [
+      "devhub_core"
+    ]
+  },
+  "devhub_infrastructure": {
+    "exists": true,
+    "version": "19.0.9.0.0",
+    "name": "Dev Hub Infrastructure",
+    "depends": [
+      "devhub_core"
+    ]
+  },
+  "dev_session_hub": {
+    "exists": true,
+    "version": "19.0.9.1.0",
+    "name": "Development Session Hub",
+    "depends": [
+      "devhub_core",
+      "devhub_work",
+      "devhub_analysis",
+      "devhub_plan",
+      "devhub_approval",
+      "devhub_session",
+      "devhub_execution",
+      "devhub_outbox",
+      "devhub_generation",
+      "devhub_git",
+      "devhub_github",
+      "devhub_deploy",
+      "devhub_odoo_runtime",
+      "devhub_infrastructure",
+      "devhub_openproject",
+      "devhub_code_analysis",
+      "devhub_whatsapp",
+      "devhub_workflow"
+    ]
+  }
+}

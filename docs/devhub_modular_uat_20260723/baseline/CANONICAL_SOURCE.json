@@ -1,0 +1,30 @@
+{
+  "pinned_at": "2026-07-22T21:40:46.572231Z",
+  "canonical_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/dev_session_hub",
+  "source_overlay": "releases/addons_overlay_ff53a8d/dev_session_hub",
+  "source_worktree_commit": "43a2a7f693557b55fbb7818adf5f5517061caa6d",
+  "working_branch": "feature/devhub-modularization-whatsapp",
+  "working_tree_head_at_start": "22e8b5414613da1e286b280c4884abd0cb3061d2",
+  "module_version": "19.0.8.8.0",
+  "models_sha256": "3525372d7f12b277372b5f9521bd2c194fac777e4398974c2807614742fa7c5d",
+  "model_files": [
+    "__init__.py",
+    "dev_deploy.py",
+    "dev_execution.py",
+    "dev_git_commit.py",
+    "dev_git_merge.py",
+    "dev_git_pr.py",
+    "dev_git_push.py",
+    "dev_github_credentials.py",
+    "dev_integration.py",
+    "dev_machine_verification.py",
+    "dev_odoo_runtime.py",
+    "dev_project_op_links.py",
+    "dev_registry.py",
+    "dev_repository_onboarding.py",
+    "dev_session.py",
+    "dev_work.py",
+    "dev_work_code_analysis.py"
+  ],
+  "decision": "Canonical baseline is ff53a8d 19.0.8.8.0 (superset). Lease fencing already present. Promoted into projects/pet_spot_elsahel/dev_session_hub for modularization."
+}

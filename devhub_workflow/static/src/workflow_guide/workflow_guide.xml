@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="devhub_workflow.WorkflowGuide">
+        <div class="o_devhub_workflow_guide">
+            <header class="o_dwg_header">
+                <div class="o_dwg_brand">
+                    <span class="o_dwg_kicker">Dev Hub</span>
+                    <h1 class="o_dwg_title">Interactive Workflow</h1>
+                    <p class="o_dwg_sub" t-esc="state.data and state.data.path_label or 'WhatsApp → … → Complete'"/>
+                </div>
+                <div class="o_dwg_toolbar">
+                    <label class="o_dwg_select_wrap">
+                        <span>Work item</span>
+                        <select class="o_dwg_select" t-on-change="onSelectWork" t-att-disabled="state.loading">
+                            <option value="">— pick one —</option>
+                            <t t-foreach="state.data and state.data.work_items or []" t-as="wi" t-key="wi.id">
+                                <option t-att-value="wi.id"
+                                        t-att-selected="state.selectedId === wi.id"
+                                        t-esc="wi.name + ' · ' + wi.phase_label"/>
+                            </t>
+                        </select>
+                    </label>
+                    <button type="button" class="o_dwg_btn o_dwg_btn_ghost" t-on-click="refresh" t-att-disabled="state.loading">
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <p class="o_dwg_hint" t-if="state.data" t-esc="state.data.hint"/>
+
+            <div t-if="state.loading" class="o_dwg_loading">Loading walkthrough…</div>
+            <div t-if="state.error" class="o_dwg_error" t-esc="state.error"/>
+
+            <t t-if="state.data and !state.loading">
+                <div class="o_dwg_progress">
+                    <div class="o_dwg_progress_meta">
+                        <span t-esc="progressDone"/> / <span t-esc="progressTotal"/> steps ready
+                    </div>
+                    <div class="o_dwg_progress_bar">
+                        <div class="o_dwg_progress_fill"
+                             t-att-style="'width:' + (progressTotal ? Math.round(100 * progressDone / progressTotal) : 0) + '%'"/>
+                    </div>
+                </div>
+
+                <div class="o_dwg_layout">
+                    <nav class="o_dwg_rail" aria-label="Workflow steps">
+                        <t t-foreach="steps" t-as="step" t-key="step.key">
+                            <button type="button"
+                                    class="o_dwg_rail_item"
+                                    t-att-data-step-key="step.key"
+                                    t-att-class="{
+                                        'is-active': activeStep and activeStep.key === step.key,
+                                        'is-done': step.status === 'done',
+                                        'is-current': step.status === 'current',
+                                        'is-blocked': step.status === 'blocked',
+                                        'is-skipped': step.status === 'skipped',
+                                    }"
+                                    t-on-click="selectStep">
+                                <span class="o_dwg_rail_seq" t-esc="step_index + 1"/>
+                                <span class="o_dwg_rail_body">
+                                    <span class="o_dwg_rail_title" t-esc="step.title"/>
+                                    <span class="o_dwg_rail_status" t-esc="statusLabel(step.status)"/>
+                                </span>
+                            </button>
+                        </t>
+                    </nav>
+
+                    <section class="o_dwg_panel" t-if="activeStep">
+                        <div class="o_dwg_panel_head">
+                            <div>
+                                <span class="o_dwg_app" t-esc="activeStep.app"/>
+                                <h2 class="o_dwg_panel_title" t-esc="activeStep.title"/>
+                            </div>
+                            <span class="o_dwg_badge"
+                                  t-att-class="'o_dwg_badge_' + activeStep.status"
+                                  t-esc="statusLabel(activeStep.status)"/>
+                        </div>
+
+                        <p class="o_dwg_explain" t-esc="activeStep.explain"/>
+                        <p class="o_dwg_detail" t-esc="activeStep.detail"/>
+
+                        <div class="o_dwg_missing" t-if="activeStep.missing and activeStep.missing.length">
+                            <strong>Complete these first</strong>
+                            <ul>
+                                <t t-foreach="activeStep.missing" t-as="m" t-key="m_index">
+                                    <li t-esc="m"/>
+                                </t>
+                            </ul>
+                        </div>
+
+                        <div class="o_dwg_panel_actions">
+                            <button type="button"
+                                    class="o_dwg_btn o_dwg_btn_primary"
+                                    t-on-click="openActive"
+                                    t-att-disabled="!activeStep.action">
+                                Open this step
+                            </button>
+                            <button type="button"
+                                    class="o_dwg_btn o_dwg_btn_ghost"
+                                    t-on-click="refresh">
+                                Re-check status
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

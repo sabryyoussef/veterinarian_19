@@ -6,6 +6,7 @@ from . import openproject_backend
 from . import openproject_project_map
 from . import openproject_status_map
 from . import openproject_user_map
+from . import ir_attachment
 from . import project_task
 from . import project_project
 from . import openproject_task_realign

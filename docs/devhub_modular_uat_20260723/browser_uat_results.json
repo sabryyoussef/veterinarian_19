@@ -1,0 +1,247 @@
+[
+  {
+    "name": "01_home_after_login",
+    "desc": "Home after admin login on fresh DB",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/01_home_after_login.png",
+    "url": "http://127.0.0.1:8032/odoo",
+    "ok": true
+  },
+  {
+    "name": "03_devhub_dashboard",
+    "desc": "Dev Hub dashboard",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/03_devhub_dashboard.png",
+    "url": "http://127.0.0.1:8032/odoo/action-157/1",
+    "ok": true
+  },
+  {
+    "name": "04_projects_list",
+    "desc": "Projects list",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/04_projects_list.png",
+    "url": "http://127.0.0.1:8032/odoo/action-160",
+    "ok": true
+  },
+  {
+    "name": "05_project_form",
+    "desc": "Dev Hub Project form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/05_project_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-160/1",
+    "ok": true
+  },
+  {
+    "name": "05_project_tab_environments",
+    "desc": "Dev Hub Project - Environments tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/05_project_tab_environments.png",
+    "url": "http://127.0.0.1:8032/odoo/action-160/1",
+    "ok": true
+  },
+  {
+    "name": "05_project_tab_repositories",
+    "desc": "Dev Hub Project - Repositories tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/05_project_tab_repositories.png",
+    "url": "http://127.0.0.1:8032/odoo/action-160/1",
+    "ok": true
+  },
+  {
+    "name": "05_project_tab_guardrails",
+    "desc": "Dev Hub Project - Guardrails tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/05_project_tab_guardrails.png",
+    "url": "http://127.0.0.1:8032/odoo/action-160/1",
+    "ok": true
+  },
+  {
+    "name": "05_project_tab_odoo_project_and_tasks",
+    "desc": "Dev Hub Project - Odoo Project & Tasks tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/05_project_tab_odoo_project_and_tasks.png",
+    "url": "http://127.0.0.1:8032/odoo/action-160/1",
+    "ok": true
+  },
+  {
+    "name": "05_project_tab_openproject_work_packages",
+    "desc": "Dev Hub Project - OpenProject Work Packages tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/05_project_tab_openproject_work_packages.png",
+    "url": "http://127.0.0.1:8032/odoo/action-160/1",
+    "ok": true
+  },
+  {
+    "name": "06_environments",
+    "desc": "Environments",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/06_environments.png",
+    "url": "http://127.0.0.1:8032/odoo/action-162",
+    "ok": true
+  },
+  {
+    "name": "06b_environment_form",
+    "desc": "Environment form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/06b_environment_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-162/2",
+    "ok": true
+  },
+  {
+    "name": "07_repositories",
+    "desc": "Repositories",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/07_repositories.png",
+    "url": "http://127.0.0.1:8032/odoo/action-161",
+    "ok": true
+  },
+  {
+    "name": "07b_repository_form",
+    "desc": "Repository form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/07b_repository_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-161/1",
+    "ok": true
+  },
+  {
+    "name": "08_machines",
+    "desc": "Machines",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/08_machines.png",
+    "url": "http://127.0.0.1:8032/odoo/action-158",
+    "ok": true
+  },
+  {
+    "name": "08b_machine_form",
+    "desc": "Machine form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/08b_machine_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-158/1",
+    "ok": true
+  },
+  {
+    "name": "09_odoo_runtime",
+    "desc": "Odoo Runtime",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/09_odoo_runtime.png",
+    "url": "http://127.0.0.1:8032/odoo/action-175",
+    "ok": true
+  },
+  {
+    "name": "09b_runtime_form",
+    "desc": "Odoo Runtime form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/09b_runtime_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-175/1",
+    "ok": true
+  },
+  {
+    "name": "10_work_items",
+    "desc": "Work Items",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/10_work_items.png",
+    "url": "http://127.0.0.1:8032/odoo/action-248",
+    "ok": true
+  },
+  {
+    "name": "11_work_item_form",
+    "desc": "Work Item form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/11_work_item_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-248/8",
+    "ok": true
+  },
+  {
+    "name": "11_work_item_tab_analysis",
+    "desc": "Work Item - Analysis tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/11_work_item_tab_analysis.png",
+    "url": "http://127.0.0.1:8032/odoo/action-248/8",
+    "ok": true
+  },
+  {
+    "name": "11_work_item_tab_plan",
+    "desc": "Work Item - Plan tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/11_work_item_tab_plan.png",
+    "url": "http://127.0.0.1:8032/odoo/action-248/8",
+    "ok": true
+  },
+  {
+    "name": "14_sessions",
+    "desc": "Sessions",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/14_sessions.png",
+    "url": "http://127.0.0.1:8032/odoo/action-263",
+    "ok": true
+  },
+  {
+    "name": "14b_session_form",
+    "desc": "Session form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/14b_session_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-263/1",
+    "ok": true
+  },
+  {
+    "name": "15_execution_workspace",
+    "desc": "Execution Workspaces",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/15_execution_workspace.png",
+    "url": "http://127.0.0.1:8032/odoo/action-268",
+    "ok": true
+  },
+  {
+    "name": "18_whatsapp_sources",
+    "desc": "WhatsApp Sources",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/18_whatsapp_sources.png",
+    "url": "http://127.0.0.1:8032/odoo/action-266",
+    "ok": true
+  },
+  {
+    "name": "18b_whatsapp_source_form",
+    "desc": "WhatsApp Source form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/18b_whatsapp_source_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-266/2",
+    "ok": true
+  },
+  {
+    "name": "19_whatsapp_intake",
+    "desc": "WhatsApp Intake",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/19_whatsapp_intake.png",
+    "url": "http://127.0.0.1:8032/odoo/action-267",
+    "ok": true
+  },
+  {
+    "name": "20_whatsapp_intake_form",
+    "desc": "WhatsApp Intake candidate form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/20_whatsapp_intake_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-267/8",
+    "ok": true
+  },
+  {
+    "name": "20_whatsapp_intake_tab_source_messages",
+    "desc": "WhatsApp Intake candidate - Source Messages tab",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/20_whatsapp_intake_tab_source_messages.png",
+    "url": "http://127.0.0.1:8032/odoo/action-267/8",
+    "ok": true
+  },
+  {
+    "name": "21_source_messages",
+    "desc": "Source Messages",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/21_source_messages.png",
+    "url": "http://127.0.0.1:8032/odoo/action-254",
+    "ok": true
+  },
+  {
+    "name": "21b_source_message_form",
+    "desc": "Source Message form",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/21b_source_message_form.png",
+    "url": "http://127.0.0.1:8032/odoo/action-254/15",
+    "ok": true
+  },
+  {
+    "name": "23_generation",
+    "desc": "Generation",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/23_generation.png",
+    "url": "http://127.0.0.1:8032/odoo/action-262",
+    "ok": true
+  },
+  {
+    "name": "24_outbox",
+    "desc": "Outbox",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/24_outbox.png",
+    "url": "http://127.0.0.1:8032/odoo/action-261",
+    "ok": true
+  },
+  {
+    "name": "25_analysis_revisions",
+    "desc": "Analysis Revisions",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/25_analysis_revisions.png",
+    "url": "http://127.0.0.1:8032/odoo/action-255",
+    "ok": true
+  },
+  {
+    "name": "26_plan_revisions",
+    "desc": "Plan Revisions",
+    "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/screenshots/26_plan_revisions.png",
+    "url": "http://127.0.0.1:8032/odoo/action-256",
+    "ok": true
+  }
+]

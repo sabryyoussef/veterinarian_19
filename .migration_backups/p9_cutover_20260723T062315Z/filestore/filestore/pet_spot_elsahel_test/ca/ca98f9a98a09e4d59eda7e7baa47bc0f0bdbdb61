@@ -1,0 +1,36 @@
+# S2 UAT Checklist — OP#352 / #354
+
+**Date:** 2026-07-15  
+**DB:** sabry-test  
+**Branch:** `feature/meeting-s2-352-354`  
+**Module:** `edafaa_student_profile` `19.0.2.5.0` (+ portal sync)
+
+## #352 application_status
+
+### Automated
+
+- [ ] Unit tests `TestMeetingS2StudentProfile`
+- [ ] Default create → `under_review`
+- [ ] Manual write to accepted / rejected / cancelled
+- [ ] Form/list/search arch contain `application_status` + `حالة الطالب`
+- [ ] Registration state map helper covered
+
+### Manual / Playwright
+
+- [ ] Form shows `حالة الطالب` badge/widget (distinct from Training Status)
+- [ ] List optional column visible
+- [ ] Search filter / group by application_status
+- [ ] ملغي does **not** archive (`active` stays True)
+
+## #354 Batch Arabic guide
+
+- [ ] `USER_GUIDE_BATCH_AR.md` + `.html` present
+- [ ] Screenshots under `guides/screenshots/`
+- [ ] CSV-only / Excel unsupported note present
+- [ ] Attached to delivery packages
+
+## Delivery
+
+- [ ] OP delivery child under #87 with attachments
+- [ ] Odoo delivery child under #41 Done with attachments
+- [ ] OP #352/#354 Closed; Odoo #43/#45 Done

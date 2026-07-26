@@ -1,0 +1,25 @@
+{
+  "completed": [
+    "P1"
+  ],
+  "effective_uid": 1001,
+  "effective_user": "devworker",
+  "lease_version": 1,
+  "stage": "start",
+  "state": "active",
+  "workspace_id": 8
+}
+{
+  "stage": "implement",
+  "result": "blocked_fail_closed",
+  "failure": "Post-write allowlist comparison rejected the changed-file representation.",
+  "actual_files": [
+    "tests/__init__.py",
+    "tests/test_fixture_readme.py"
+  ],
+  "tests_run": 0,
+  "checkpoint_id": 5,
+  "lease_revoked": true,
+  "workspace_state": "blocked",
+  "work_item_phase": "blocked"
+}

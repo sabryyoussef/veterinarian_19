@@ -1,0 +1,169 @@
+{
+  "source_analysis_id": 352,
+  "shadow_prompt_version": "wa_project_aware_v2.4",
+  "shadow_run_id": "d36b7e41-2758-4f18-a060-b77b5d6d69c5",
+  "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+  "elapsed_sec": 5.74,
+  "dify_status": "succeeded",
+  "shadow_output_json": {
+    "schema_version": "2",
+    "message_understanding": {
+      "summary": "The audio message discusses various topics related to the PetSpot project but lacks clear actionable requests.",
+      "classification": "information",
+      "language": "ar",
+      "technical_terms": [],
+      "missing_information": [],
+      "contains_multiple_tasks": false
+    },
+    "project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": false,
+      "resolution_status": "unresolved"
+    },
+    "project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "work_item_resolution": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": false
+    },
+    "analysis": {
+      "business_request": "The audio message lacks clear actionable requests.",
+      "current_state": "The audio discusses various topics but does not specify any tasks.",
+      "existing_relevant_functionality": "No specific functionality is mentioned.",
+      "likely_affected_modules": [],
+      "likely_affected_models": [],
+      "likely_affected_views": [],
+      "database_considerations": [],
+      "integration_considerations": [],
+      "risks": [],
+      "recommended_approach": "Human review is recommended to clarify any actionable items.",
+      "acceptance_criteria": [],
+      "questions_before_implementation": []
+    },
+    "evidence_used": [
+      {
+        "source_type": "message",
+        "reference": "6186",
+        "summary": "The audio message discusses various topics but lacks clear actionable requests.",
+        "evidence_status": "inferred"
+      },
+      {
+        "source_type": "media:693:transcript",
+        "reference": "693",
+        "summary": "The stored transcript says: 'تم موضوع تستينا عملت سريعا نفس الموديولين على الـ TR Gulf اللي هو على البرودكشن هيشغلوا بنفس الطريقة ان شاء الله'.",
+        "evidence_status": "inferred"
+      }
+    ],
+    "confidence": 0.0,
+    "safe_to_create_work": false,
+    "safe_to_attach_to_existing_work": false,
+    "legacy_v1_bridge": {
+      "source_message_ids": [
+        6186
+      ],
+      "noise_message_ids": [],
+      "work_message_ids": [],
+      "work_title": null,
+      "work_description": null,
+      "priority": "0",
+      "should_ignore": false
+    }
+  },
+  "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The audio message discusses various topics related to the PetSpot project but lacks clear actionable requests.\",\n    \"classification\": \"information\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": false,\n    \"score\": 0.0,\n    \"signals\": [],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"The audio message lacks clear actionable requests.\",\n    \"current_state\": \"The audio discusses various topics but does not specify any tasks.\",\n    \"existing_relevant_functionality\": \"No specific functionality is mentioned.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": [],\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Human review is recommended to clarify any actionable items.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [\n    {\n      \"source_type\": \"message\",\n      \"reference\": \"6186\",\n      \"summary\": \"The audio message discusses various topics but lacks clear actionable requests.\",\n      \"evidence_status\": \"inferred\"\n    },\n    {\n      \"source_type\": \"media:693:transcript\",\n      \"reference\": \"693\",\n      \"summary\": \"The stored transcript says: 'تم موضوع تستينا عملت سريعا نفس الموديولين على الـ TR Gulf اللي هو على البرودكشن هيشغلوا بنفس الطريقة ان شاء الله'.\",\n      \"evidence_status\": \"inferred\"\n    }\n  ],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}",
+  "shadow_schema_valid": true,
+  "shadow_validated": {
+    "schema_version": "2",
+    "summary": "The audio message discusses various topics related to the PetSpot project but lacks clear actionable requests.",
+    "classification": "information",
+    "classification_v2": "information",
+    "should_ignore": false,
+    "ignore_reason": null,
+    "contains_work": false,
+    "work_title": "The audio message lacks clear actionable requests.",
+    "work_description": "{\"business_request\": \"The audio message lacks clear actionable requests.\", \"recommended_approach\": \"Human review is recommended to clarify any actionable items.\", \"questions\": []}",
+    "priority": "0",
+    "project_reference": null,
+    "participants": [],
+    "source_message_ids": [
+      6186
+    ],
+    "noise_message_ids": [],
+    "work_message_ids": [],
+    "confidence": 0.0,
+    "requires_human_review": true,
+    "recommended_action": "request_context",
+    "missing_information": [],
+    "project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": false,
+      "resolution_status": "unresolved"
+    },
+    "work_item_resolution": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": false
+    },
+    "analysis_detail": {
+      "business_request": "The audio message lacks clear actionable requests.",
+      "current_state": "The audio discusses various topics but does not specify any tasks.",
+      "existing_relevant_functionality": "No specific functionality is mentioned.",
+      "likely_affected_modules": [],
+      "likely_affected_models": [],
+      "likely_affected_views": [],
+      "database_considerations": [],
+      "integration_considerations": [],
+      "risks": [],
+      "recommended_approach": "Human review is recommended to clarify any actionable items.",
+      "acceptance_criteria": [],
+      "questions_before_implementation": []
+    },
+    "evidence_used": [
+      {
+        "source_type": "message",
+        "reference": "6186",
+        "summary": "The audio message discusses various topics but lacks clear actionable requests.",
+        "evidence_status": "inferred"
+      },
+      {
+        "source_type": "media:693:transcript",
+        "reference": "693",
+        "summary": "The stored transcript says: 'تم موضوع تستينا عملت سريعا نفس الموديولين على الـ TR Gulf اللي هو على البرودكشن هيشغلوا بنفس الطريقة ان شاء الله'.",
+        "evidence_status": "inferred"
+      }
+    ],
+    "safe_to_create_work": false,
+    "safe_to_attach_to_existing_work": false,
+    "resolved_project_id": null,
+    "resolved_work_item_id": null,
+    "requires_project_confirmation": false,
+    "contains_multiple_tasks": false,
+    "language": "ar",
+    "technical_terms": []
+  }
+}

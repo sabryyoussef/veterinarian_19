@@ -1,0 +1,9 @@
+dev.work.analysis yes
+dev.work.plan yes
+dev.work.approval yes
+dev.work.checkpoint yes
+dev.workflow.board yes
+work_op True
+wi_count 1
+analysis_count 1
+plan_count 1

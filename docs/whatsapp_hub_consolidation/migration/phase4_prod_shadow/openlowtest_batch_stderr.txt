@@ -1,0 +1,109 @@
+2026-07-23 11:49:57,437 3667784 INFO ? odoo: Odoo version 19.0 
+2026-07-23 11:49:57,437 3667784 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf 
+2026-07-23 11:49:57,438 3667784 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-07-23 11:49:57,438 3667784 INFO ? odoo: database: odoo@localhost:5432 
+2026-07-23 11:49:57,837 3667784 INFO ? odoo.service.server: HTTP service (werkzeug) running on 0.0.0.0:8127 
+2026-07-23 11:49:57,837 3667784 INFO ? odoo.service.server: Stopping workers gracefully 
+2026-07-23 11:49:57,877 3667784 INFO pet_spot_elsahel odoo.modules.loading: loading 1 modules... 
+2026-07-23 11:49:57,884 3667784 INFO pet_spot_elsahel odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-07-23 11:49:58,037 3667784 INFO pet_spot_elsahel odoo.modules.loading: loading 341 modules... 
+2026-07-23 11:49:58,051 3667784 WARNING pet_spot_elsahel odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-07-23 11:49:58,566 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,391 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,965 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,966 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,966 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,966 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,966 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,966 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,968 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,968 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,969 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,969 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:49:59,969 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:50:00,134 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:50:00,134 3667784 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:50:00,134 3667784 INFO pet_spot_elsahel odoo.modules.loading: 341 modules loaded in 2.10s, 0 queries (+0 extra) 
+2026-07-23 11:50:00,806 3667784 WARNING pet_spot_elsahel odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-07-23 11:50:01,100 3667784 INFO pet_spot_elsahel odoo.modules.loading: Modules loaded. 
+2026-07-23 11:50:01,336 3667784 INFO pet_spot_elsahel odoo.registry: Registry loaded in 3.498s 
+2026-07-23 11:50:01,471 3667784 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 17, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 11:50:01,472 3667784 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 17, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 11:50:02,285 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:02,333 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=6 → message id=9 
+2026-07-23 11:50:02,341 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB0921AB7BA930E95F586) 
+2026-07-23 11:50:02,968 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:02,982 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=7 → message id=10 
+2026-07-23 11:50:02,986 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB09826D2397214ED8856) 
+2026-07-23 11:50:03,611 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:03,624 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=8 → message id=11 
+2026-07-23 11:50:03,628 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB05A29A82EC1CBBB8126) 
+2026-07-23 11:50:04,249 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:04,265 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=9 → message id=12 
+2026-07-23 11:50:04,271 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB0B3AA3C4CE66158F7FF) 
+2026-07-23 11:50:04,875 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:04,894 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=10 → message id=13 
+2026-07-23 11:50:04,901 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB0B1309D5EF97B04DE90) 
+2026-07-23 11:50:05,532 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:05,559 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=11 → message id=14 
+2026-07-23 11:50:05,566 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB01DF8B989626521ED11) 
+2026-07-23 11:50:06,172 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:06,185 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=12 → message id=15 
+2026-07-23 11:50:06,190 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB0DEDEE31A5576A084B0) 
+2026-07-23 11:50:06,782 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:06,809 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=13 → message id=16 
+2026-07-23 11:50:06,817 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB0525248B7C74F1636AE) 
+2026-07-23 11:50:07,441 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:07,452 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=14 → message id=17 
+2026-07-23 11:50:07,456 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB0FE7FC4FB0D84BB0D95) 
+2026-07-23 11:50:08,045 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 120363411424964076@g.us: HTTP 201 
+2026-07-23 11:50:08,060 3667784 INFO pet_spot_elsahel odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=15 → message id=18 
+2026-07-23 11:50:08,065 3667784 INFO pet_spot_elsahel odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 120363411424964076@g.us (msg_id=3EB06243F94EF7B7E32549) 

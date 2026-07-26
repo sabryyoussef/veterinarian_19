@@ -1,0 +1,43 @@
+=== service ===
+active
+3465862
+=== http ===
+login=200
+=== cmdline/addons ===
+/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf -d pet_spot_elsahel_test 
+conf=/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf
+# Community + Enterprise + Pet Spot Elsahel veterinary addons (repo root = addons_path).
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+CANONICAL_CONF
+NO_OVERLAY
+=== git ===
+branch=feature/devhub-modularization-whatsapp
+head=5d627a7e4b6ec4a29928dfd3c57f3fcf000f66cc
+=== modules ===
+devhub_analysis|installed|19.0.9.1.0
+devhub_approval|installed|19.0.9.1.0
+devhub_code_analysis|installed|19.0.9.1.0
+devhub_core|installed|19.0.9.0.1
+devhub_deploy|installed|19.0.9.0.0
+devhub_execution|installed|19.0.9.1.0
+devhub_generation|installed|19.0.9.1.0
+devhub_git|installed|19.0.9.0.0
+devhub_github|installed|19.0.9.0.0
+devhub_infrastructure|installed|19.0.9.0.0
+devhub_odoo_runtime|installed|19.0.9.0.0
+devhub_openproject|installed|19.0.9.1.0
+devhub_outbox|installed|19.0.9.0.0
+devhub_plan|installed|19.0.9.1.0
+devhub_session|installed|19.0.9.0.0
+devhub_whatsapp|installed|19.0.9.0.2
+devhub_work|installed|19.0.9.1.0
+devhub_workflow|installed|19.0.9.1.0
+dev_session_hub|installed|19.0.9.1.0
+openproject_sync|installed|19.0.1.6.0
+whatsapp_hub|installed|19.0.1.2.0
+=== transitional ===
+0
+=== production ===
+devhub_core|uninstalled
+devhub_work|uninstalled
+dev_session_hub|uninstalled

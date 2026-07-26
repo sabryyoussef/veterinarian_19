@@ -1,0 +1,76 @@
+[
+  {
+    "id": 57,
+    "display_name": "dev.git.merge.approval,57",
+    "work_item_id": [
+      3324,
+      "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+    ],
+    "merge_request_work_item_id": [
+      3324,
+      "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+    ],
+    "workspace_id": [
+      1849,
+      "DW-3324"
+    ],
+    "pr_record_id": [
+      200,
+      "dev.git.pr.record,200"
+    ],
+    "target_id": [
+      105,
+      "PetSpot staging via sabry-uat-merge-agent"
+    ],
+    "repository_id": [
+      1,
+      "PetSpot Odoo 19"
+    ],
+    "github_repository": "sabryyoussef/veterinarian_19",
+    "pr_number": 16,
+    "pr_url_reference": "https://github.com/sabryyoussef/veterinarian_19/pull/16",
+    "requester_id": [
+      714,
+      "Dev Hub Merge Requester"
+    ],
+    "approver_id": [
+      2,
+      "Administrator"
+    ],
+    "requested_at": "2026-07-23 12:29:10",
+    "head_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+    "head_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+    "base_branch": "staging",
+    "base_sha": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "merge_method": "squash",
+    "pr_metadata_digest": "33e9f75808566f7f5544bdabfe16e7a167a08c84dc7fad9e2095c0f9665885d3",
+    "checks_digest": "48c2fcb7f1ebd9ec272cd3769d48a8a88f606370150f582d4a53e1a8c79df840",
+    "checks_summary": "[{\"app_id\": 46505, \"conclusion\": \"success\", \"name\": \"GitGuardian Security Checks\", \"status\": \"completed\"}]",
+    "github_app_id": 4341059,
+    "github_installation_id": 147666583,
+    "credential_validation_digest": "1fa5629f968320fe86af18a019a86e6cc4f7d4a961125563c3d1c821ef644048",
+    "plan_id": [
+      2478,
+      "dev.work.plan,2478"
+    ],
+    "plan_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01",
+    "policy_hash": "1a37657c150be7cec73dc347fb9bfb125b9d82bed76ee9cd2c44d2994c87a146",
+    "execution_contract_hash": "f5ddc674d5b5c811a7be51f5d269bf13bff37d707582800ad6829bf2b94b99b0",
+    "approved_at": "2026-07-23 12:29:29",
+    "idempotency_key": "0fa7b3984c1d5c042c5b4de249c040401d4b1423d21f839f304a1bf90d270e72",
+    "binding_hash": "e5ac5f6a82a514ae71d6760a7b26b1c86c2d8532cb41b055bbd8c4f72d2c54d3",
+    "event_ids": [
+      35
+    ],
+    "create_uid": [
+      2,
+      "Administrator"
+    ],
+    "create_date": "2026-07-23 12:29:18",
+    "write_uid": [
+      1,
+      "OdooBot"
+    ],
+    "write_date": "2026-07-23 12:29:18"
+  }
+]

@@ -1,0 +1,2686 @@
+{
+  "createdAt": "2026-07-20T19:27:00.716Z",
+  "updatedAt": "2026-07-22T22:18:25.666Z",
+  "id": "gKMYWKVT5FtUAFwB",
+  "name": "chatwoot-ai-analysis",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "cw_webhook",
+      "name": "Chatwoot Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chatwoot-ai-analysis",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "chatwoot-ai-analysis"
+    },
+    {
+      "id": "cw_filter",
+      "name": "Filter Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const payload = ($input.first().json.body) || $input.first().json;\nconst event = payload.event;\n\nif (event !== 'message_created') {\n  console.log('[cw-ai] skip event=' + event);\n  return [{ json: { skipped: true, skip_reason: 'not_message_created', event } }];\n}\n\nconst msgType = payload.message_type;\nif (msgType === 1 || msgType === 'outgoing') {\n  console.log('[cw-ai] skip outgoing id=' + payload.id);\n  return [{ json: { skipped: true, skip_reason: 'outgoing', message_id: payload.id } }];\n}\n\nif (payload.private === true) {\n  console.log('[cw-ai] skip private_note id=' + payload.id);\n  return [{ json: { skipped: true, skip_reason: 'private_note', message_id: payload.id } }];\n}\n\nconst senderType = (payload.sender && payload.sender.type) ? payload.sender.type : '';\nif (senderType === 'agent_bot' || senderType === 'bot') {\n  console.log('[cw-ai] skip bot_message id=' + payload.id);\n  return [{ json: { skipped: true, skip_reason: 'bot_message', message_id: payload.id } }];\n}\n\nconst attachments = Array.isArray(payload.attachments) ? payload.attachments : [];\nconst hasAttachments = attachments.length > 0;\nconst contentType = payload.content_type || 'text';\nconst rawContent = (payload.content || '').trim();\nconst lowerContent = rawContent.toLowerCase();\nconst isVoicePlaceholder = lowerContent.startsWith('voice message:') || lowerContent.startsWith('audio message:');\nconst isImagePlaceholder = lowerContent.startsWith('image message:') || lowerContent.startsWith('photo message:') || lowerContent.startsWith('picture message:') || lowerContent.startsWith('photo:');\nconst isPlaceholder = !rawContent || lowerContent === '(no text content)' || isVoicePlaceholder || isImagePlaceholder;\n\nif (contentType && contentType !== 'text' && contentType !== 'input_select' && !hasAttachments) {\n  console.log('[cw-ai] skip non_text=' + contentType + ' id=' + payload.id);\n  return [{ json: { skipped: true, skip_reason: 'non_text:' + contentType, message_id: payload.id } }];\n}\n\nif (!rawContent && !hasAttachments) {\n  console.log('[cw-ai] skip empty_content id=' + payload.id);\n  return [{ json: { skipped: true, skip_reason: 'empty_content', message_id: payload.id } }];\n}\n\nconst content = rawContent || (hasAttachments ? '(no text content)' : '');\n\nconst convId  = payload.conversation && payload.conversation.id;\nconst accountId = (payload.account && payload.account.id) || 2;\nif (!convId) {\n  return [{ json: { skipped: true, skip_reason: 'no_conversation_id', message_id: payload.id } }];\n}\n\nconst messageId = parseInt(String(payload.id), 10);\nconst convIdInt = parseInt(String(convId), 10);\n\n// Build the atomic PG lock query (injecting safe integer values)\nconst pgLockQuery = [\n  \"WITH ins AS (\",\n  \"  INSERT INTO cw_ai_idempotency\",\n  \"    (chatwoot_message_id, conversation_id, status, created_at, updated_at)\",\n  \"  VALUES (\" + messageId + \"::BIGINT, \" + convIdInt + \"::BIGINT, 'processing', NOW(), NOW())\",\n  \"  ON CONFLICT (chatwoot_message_id) DO UPDATE\",\n  \"    SET status = 'processing', updated_at = NOW()\",\n  \"    WHERE cw_ai_idempotency.status = 'processing'\",\n  \"      AND cw_ai_idempotency.updated_at < NOW() - INTERVAL '10 minutes'\",\n  \"  RETURNING true AS action_taken\",\n  \")\",\n  \"SELECT\",\n  \"  t.chatwoot_message_id,\",\n  \"  t.status,\",\n  \"  EXTRACT(EPOCH FROM (NOW() - t.updated_at))/60.0 AS minutes_ago,\",\n  \"  COALESCE(t.error_message, '') AS error_message,\",\n  \"  COALESCE((SELECT action_taken FROM ins LIMIT 1), false) AS action_taken\",\n  \"FROM cw_ai_idempotency t\",\n  \"WHERE t.chatwoot_message_id = \" + messageId + \"::BIGINT\"\n].join('\\n');\n\nreturn [{\n  json: {\n    skipped: false,\n    message_id: messageId,\n    conversation_id: convIdInt,\n    account_id: parseInt(String(accountId), 10) || 2,\n    content: content,\n    raw_content: rawContent,\n    attachments: attachments,\n    has_attachments: hasAttachments,\n    is_attachment_only: isPlaceholder && hasAttachments,\n    sender_name: (payload.sender && payload.sender.name) || 'Customer',\n    sender_type: senderType,\n    content_type: contentType,\n    pg_lock_query: pgLockQuery\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_if_skip",
+      "name": "IF: Skipped",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        520,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "skip_check",
+              "leftValue": "={{ $json.skipped }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_log_skip",
+      "name": "Log Skip",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        100
+      ],
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconsole.log('[cw-ai] SKIP reason=' + item.skip_reason + ' msg=' + (item.message_id || 'n/a') + ' event=' + (item.event || ''));\nreturn [{ json: { result: 'skipped', ...item } }];"
+      }
+    },
+    {
+      "id": "cw_pg_lock",
+      "name": "PG: Lock Message",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        780,
+        500
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.pg_lock_query }}",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "CWsJ4nzSemghjBfv",
+          "name": "Chatwoot Postgres"
+        }
+      }
+    },
+    {
+      "id": "cw_eval_lock",
+      "name": "Evaluate Lock",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        500
+      ],
+      "parameters": {
+        "jsCode": "const rows = $input.all();\nconst filterData = $('Filter Events').first().json;\nconst messageId = filterData.message_id;\n\n// n8n Postgres node returns {success: true} (no row data) when INSERT succeeded\n// (no conflict). When there IS a conflict, it returns the actual SELECT row.\n// This is the reliable way to detect if WE just inserted vs. found existing record.\nconst firstItem = rows[0] ? rows[0].json : {};\n\nconst insertSucceeded = (\n  firstItem.success === true && !firstItem.chatwoot_message_id\n) || (\n  // Also handle case where row returned but action_taken explicitly true\n  firstItem.action_taken === true || firstItem.action_taken === 't' || firstItem.action_taken === 'true'\n);\n\nif (insertSucceeded) {\n  console.log('[cw-ai] idem LOCKED (new insert or stale-reset) message_id=' + messageId);\n  return [{ json: { ...filterData, should_process: true, lock_reason: 'acquired' } }];\n}\n\n// We have the existing row data \u2014 conflict detected\nconst row = firstItem;\nconst st = row.status;\nconst mins = parseFloat(row.minutes_ago) || 0;\n\nif (!st) {\n  // No status data at all \u2014 proceed cautiously (shouldn't happen)\n  console.log('[cw-ai] idem no_status message_id=' + messageId + ' \u2014 proceeding cautiously');\n  return [{ json: { ...filterData, should_process: true, lock_reason: 'no_status_fallback' } }];\n}\n\nif (st === 'done') {\n  console.log('[cw-ai] idem SKIP already_done message_id=' + messageId);\n  return [{ json: { ...filterData, should_process: false, skip_reason: 'already_done' } }];\n}\n\nif (st === 'processing' && mins < 10) {\n  console.log('[cw-ai] idem SKIP in_progress message_id=' + messageId + ' age=' + mins.toFixed(1) + 'min');\n  return [{ json: { ...filterData, should_process: false, skip_reason: 'in_progress_' + Math.round(mins) + 'min' } }];\n}\n\nif (st === 'error') {\n  const errSnip = String(row.error_message || '').substring(0, 80);\n  console.log('[cw-ai] idem SKIP previous_error message_id=' + messageId + ' err=' + errSnip);\n  return [{ json: { ...filterData, should_process: false, skip_reason: 'previous_error:' + errSnip } }];\n}\n\n// Stale processing lock (>= 10 min) that the DO UPDATE WHERE condition should have reset;\n// if we somehow still land here, allow processing\nconsole.log('[cw-ai] idem stale_fallback message_id=' + messageId + ' state=' + st + ' age=' + mins.toFixed(1) + 'min \u2014 proceeding');\nreturn [{ json: { ...filterData, should_process: true, lock_reason: 'stale_fallback' } }];"
+      }
+    },
+    {
+      "id": "cw_if_proc",
+      "name": "IF: Should Process",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        500
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "proc_check",
+              "leftValue": "={{ $json.should_process }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_log_skip_pg",
+      "name": "Log Skip PG",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        340
+      ],
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconsole.log('[cw-ai] IDEM_SKIP reason=' + item.skip_reason + ' message_id=' + item.message_id);\nreturn [{ json: { result: 'idem_skipped', message_id: item.message_id, skip_reason: item.skip_reason } }];"
+      }
+    },
+    {
+      "id": "cw_get_conv",
+      "name": "Get Conversation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1560,
+        660
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_extract_group",
+      "name": "Extract Group Jid",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1690,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const conv = $input.first().json;\nconst ctx = $('Evaluate Lock').first().json;\n\nconst sender = (conv.meta && conv.meta.sender) || {};\nconst senderCustom = (sender.custom_attributes && typeof sender.custom_attributes === 'object')\n  ? sender.custom_attributes\n  : {};\nlet groupJid = String(senderCustom.group_jid || senderCustom.whatsapp_jid || sender.identifier || '').trim();\nconst managedKey = String(senderCustom.managed_group_key || '').trim();\nif (!groupJid && managedKey.startsWith('wa-')) {\n  groupJid = managedKey.replace(/^wa-/, '') + '@g.us';\n}\n\nreturn [{\n  json: {\n    ...ctx,\n    group_jid: groupJid || null,\n    conversation: conv,\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_resolve_group",
+      "name": "Resolve Group Project",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1755,
+        660
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=http://chatwoot_evolution_bridge:3010/ops/group-project/lookup",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "group_jid",
+              "value": "={{ $json.group_jid }}"
+            },
+            {
+              "name": "secret",
+              "value": "={{ $env.BRIDGE_SHARED_SECRET }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_build_ctx",
+      "name": "Build Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1820,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const lookup = $input.first().json;\nconst wrap = $('Extract Group Jid').first().json;\nconst conv = wrap.conversation || {};\nconst ctx = wrap;\n\nconst customAttrs = conv.custom_attributes || {};\nlet stickyWpId = customAttrs.openproject_wp_id;\nif (stickyWpId !== undefined && stickyWpId !== null && stickyWpId !== '') {\n  const parsed = parseInt(String(stickyWpId), 10);\n  stickyWpId = isNaN(parsed) ? null : parsed;\n} else {\n  stickyWpId = null;\n}\nlet lastWpId = customAttrs.last_openproject_wp_id;\nif (lastWpId !== undefined && lastWpId !== null && lastWpId !== '') {\n  const parsedLast = parseInt(String(lastWpId), 10);\n  lastWpId = isNaN(parsedLast) ? null : parsedLast;\n} else {\n  lastWpId = null;\n}\n\n// Active request window (attachment + text + clarification \u2192 one WP)\nlet activeRequestWpId = customAttrs.cw_ai_active_request_wp_id;\nif (activeRequestWpId !== undefined && activeRequestWpId !== null && activeRequestWpId !== '') {\n  const parsedActive = parseInt(String(activeRequestWpId), 10);\n  activeRequestWpId = isNaN(parsedActive) ? null : parsedActive;\n} else {\n  activeRequestWpId = null;\n}\nconst activeUntilRaw = customAttrs.cw_ai_active_request_until;\nconst activeUntil = activeUntilRaw ? Date.parse(String(activeUntilRaw)) : NaN;\nconst activeRequestValid = Boolean(\n  activeRequestWpId && !isNaN(activeUntil) && activeUntil >= Date.now()\n);\nconst requestWindowMinutes = parseInt(String($env.CHATWOOT_AI_REQUEST_WINDOW_MINUTES || '15'), 10) || 15;\n\nconst senderName = (conv.meta && conv.meta.sender && conv.meta.sender.name)\n  ? conv.meta.sender.name\n  : ctx.sender_name;\n\nconst labels = Array.isArray(conv.labels) ? conv.labels : [];\nconst groupJid = wrap.group_jid || null;\nconst groupEntry = (lookup && lookup.ok) ? (lookup.entry || lookup) : null;\nconst opProjectIdRaw = groupEntry && groupEntry.project_id != null ? parseInt(String(groupEntry.project_id), 10) : null;\nconst opProjectId = (opProjectIdRaw && !isNaN(opProjectIdRaw)) ? opProjectIdRaw : null;\nconst opProjectIdentifier = groupEntry ? String(groupEntry.project_identifier || '') : '';\nconst managedChatwootLabel = groupEntry ? String(groupEntry.chatwoot_label || '') : '';\nconst managedGroup = Boolean(groupEntry && groupEntry.managed);\nconst company = groupEntry ? String(groupEntry.company || '').trim().toLowerCase() : '';\n\n// Explicit OP# / WP# in message body (e.g. UAT on OP#86)\nconst msgText = String(ctx.raw_content || ctx.content || '');\nconst opRefMatch = msgText.match(/\\bOP\\s*#\\s*(\\d+)\\b/i) || msgText.match(/\\bWP\\s*#\\s*(\\d+)\\b/i);\nconst referencedOpWpId = opRefMatch ? parseInt(opRefMatch[1], 10) : null;\n\n// Dev Needed (and similar multi-client inboxes) must NOT pin all messages to one sticky WP.\n// Sticky openproject_wp_id previously forced every message onto WP#117 and blocked auto-create.\nconst isMultiClientInbox = managedChatwootLabel === 'dev-needed'\n  || labels.includes('dev-needed')\n  || String($env.CHATWOOT_MULTI_CLIENT_LABELS || 'dev-needed').split(',').map(s => s.trim()).filter(Boolean)\n      .some(l => labels.includes(l) || managedChatwootLabel === l);\n\n// Parent bucket routing for new WPs (Dev Needed children under company parents)\nconst PARENT_BY_WP = {\n  86: 87, 87: 87, 206: 87,\n  88: 88, 135: 88, 168: 88, 205: 88,\n  89: 89,\n  90: 90,\n  91: 91,\n  92: 92,\n  93: 93,\n  94: 94,\n  95: 96, 96: 96\n};\nconst PARENT_BY_KEYWORD = [\n  { re: /\u0643\u0641\u0627\u0621\u0627\u062a|kafaat|openeducat|student\\s*registration|blood\\s*group|trainee/i, parent: 87 },\n  { re: /\u062e\u0644\u064a\u062c|gpc\\.odoo|legacy_mixed|trgulf|trgcc|projects\\s*analysis/i, parent: 88 },\n  { re: /\u0634\u0645\u0648\u062e|asasat|alshmoukh/i, parent: 96 },\n  { re: /\u0632\u0644\u064a\u0642|zaleq|alzoliq/i, parent: 93 },\n  { re: /\\bnadco\\b|\u0646\u0627\u062f\u0643\u0648/i, parent: 91 },\n  { re: /\u0627\u062c\u0627\u0632\u0629|\u0625\u062c\u0627\u0632\u0629|leave\\s*request|\u0634\u0624\u0648\u0646 \u0627\u0644\u0645\u0648\u0638\u0641\u064a\u0646|\u0634\u0648\u0654\u0648\u0646 \u0627\u0644\u0645\u0648\u0638\u0641\u064a\u0646|\u0646\u0645\u0648\u0630\u062c \u0637\u0644\u0628/i, parent: 91 },\n  { re: /edafa|\u0625\u062f\u0627\u0641\u0629|\\[edafa\\]/i, parent: parseInt(String($env.OPENPROJECT_EDAFA_PARENT_ID || ''), 10) || null },\n  { re: /\\basta\\b/i, parent: 89 },\n  { re: /\u0627\u0628\u062f\u0627\u0639|ebdaa/i, parent: 90 }\n];\nlet routedParentId = null;\nif (referencedOpWpId && PARENT_BY_WP[referencedOpWpId]) {\n  routedParentId = PARENT_BY_WP[referencedOpWpId];\n} else {\n  for (const row of PARENT_BY_KEYWORD) {\n    if (row.parent && row.re.test(msgText)) { routedParentId = row.parent; break; }\n  }\n}\n\nconst hasAttachments = Boolean(ctx.has_attachments);\nconst isShortFollowUp = Boolean(ctx.is_attachment_only) || msgText.trim().length < 30;\nconst attNames = (Array.isArray(ctx.attachments) ? ctx.attachments : [])\n  .map(a => String(a.file_name || a.filename || '').trim()).join(' ');\nconst attLabel = (msgText + ' ' + attNames).trim();\nconst isHrLeave = /\u0627\u062c\u0627\u0632\u0629|\u0625\u062c\u0627\u0632\u0629|leave|\u0634\u0624\u0648\u0646 \u0627\u0644\u0645\u0648\u0638\u0641\u064a\u0646|\u0634\u0648\u0654\u0648\u0646 \u0627\u0644\u0645\u0648\u0638\u0641\u064a\u0646|\u0646\u0645\u0648\u0630\u062c \u0637\u0644\u0628/i.test(attLabel);\nconst isAssetFollowUp = /asset|\u0623\u0635\u0648\u0644|\u0627\u0643\u0633\u0644|xlsx|account\\.asset|revenue/i.test(attLabel);\n\n// Sticky is a CANDIDATE only. Blind reuse of closed/unrelated sticky WPs is forbidden.\n// Validation (status/project/follow-up) runs in \"Decide Sticky WP\" after AI analysis.\nlet wpId = null;\nlet stickyCandidateWpId = null;\nif (isMultiClientInbox) {\n  if (hasAttachments && lastWpId && isShortFollowUp && !referencedOpWpId && !isHrLeave && isAssetFollowUp) {\n    wpId = lastWpId;\n  } else {\n    wpId = null;\n  }\n} else if (referencedOpWpId) {\n  wpId = referencedOpWpId;\n} else if (activeRequestValid) {\n  wpId = activeRequestWpId;\n} else {\n  stickyCandidateWpId = stickyWpId;\n  wpId = null;\n}\n\n// Re-run parent routing with attachment filenames (WhatsApp often puts filename in body)\nif (!routedParentId) {\n  for (const row of PARENT_BY_KEYWORD) {\n    if (row.parent && row.re.test(attLabel)) { routedParentId = row.parent; break; }\n  }\n}\n\nconsole.log('[cw-ai] ctx msg=' + ctx.message_id + ' conv=' + ctx.conversation_id\n  + ' wp=' + wpId + ' sticky=' + stickyWpId + ' sticky_candidate=' + stickyCandidateWpId\n  + ' active_req=' + (activeRequestValid ? activeRequestWpId : null)\n  + ' last_wp=' + lastWpId + ' ref_op=' + referencedOpWpId\n  + ' parent_route=' + routedParentId + ' multi_client=' + isMultiClientInbox\n  + ' has_att=' + hasAttachments + ' asset_follow=' + isAssetFollowUp + ' hr_leave=' + isHrLeave\n  + ' labels=' + labels.join(',') + ' group=' + (groupJid || 'none')\n  + ' op_project=' + (opProjectId || 'default'));\nreturn [{\n  json: {\n    message_id: ctx.message_id,\n    conversation_id: ctx.conversation_id,\n    account_id: ctx.account_id,\n    content: ctx.content,\n    raw_content: ctx.raw_content || ctx.content,\n    attachments: ctx.attachments || [],\n    has_attachments: hasAttachments,\n    is_attachment_only: Boolean(ctx.is_attachment_only),\n    sender_name: senderName,\n    openproject_wp_id: wpId,\n    referenced_op_wp_id: referencedOpWpId,\n    routed_op_parent_id: routedParentId,\n    sticky_openproject_wp_id: stickyWpId,\n    sticky_candidate_wp_id: stickyCandidateWpId,\n    last_openproject_wp_id: lastWpId,\n    active_request_wp_id: activeRequestValid ? activeRequestWpId : null,\n    request_window_minutes: requestWindowMinutes,\n    multi_client_inbox: isMultiClientInbox,\n    conversation_labels: labels,\n    content_length: (ctx.content || '').trim().length,\n    conversation_status: conv.status,\n    conversation_inbox_id: conv.inbox_id,\n    group_jid: groupJid || null,\n    op_project_id: opProjectId,\n    op_project_identifier: opProjectIdentifier || null,\n    managed_chatwoot_label: managedChatwootLabel || null,\n    managed_group: managedGroup,\n    company: company || null\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_get_full_msg",
+      "name": "Get Full Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1885,
+        660
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $('Build Context').first().json.account_id }}/conversations/{{ $('Build Context').first().json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_merge_full_msg",
+      "name": "Merge Message Into Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1950,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const ctx = $('Build Context').first().json;\nconst resp = $input.first().json;\nconst list = Array.isArray(resp.payload) ? resp.payload : [];\n\nlet msg = null;\nfor (const item of list) {\n  if (parseInt(String(item.id), 10) === parseInt(String(ctx.message_id), 10)) {\n    msg = item;\n    break;\n  }\n}\n\nlet content = ctx.content;\nlet rawContent = ctx.raw_content || ctx.content;\nlet attachments = Array.isArray(ctx.attachments) ? ctx.attachments : [];\nlet contentLength = ctx.content_length || (content || '').length;\n\nif (msg) {\n  const apiContent = String(msg.content || '').trim();\n  if (apiContent) {\n    rawContent = apiContent;\n    content = apiContent;\n    contentLength = apiContent.length;\n  }\n  if (Array.isArray(msg.attachments) && msg.attachments.length) {\n    attachments = msg.attachments;\n  }\n}\n\nconsole.log('[cw-ai] merged msg=' + ctx.message_id + ' content_len=' + contentLength + ' atts=' + attachments.length + ' fetched=' + Boolean(msg));\n\nreturn [{\n  json: {\n    ...ctx,\n    content,\n    raw_content: rawContent,\n    attachments,\n    has_attachments: attachments.length > 0,\n    content_length: contentLength,\n    message_fetch_ok: Boolean(msg)\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_preprocess",
+      "name": "Preprocess Attachments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1950,
+        660
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.CHATWOOT_ATTACHMENT_PREPROCESS_URL || 'http://chatwoot-attachment-preprocessor:8791') + '/preprocess' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message_id: $json.message_id, conversation_id: $json.conversation_id, account_id: $json.account_id, content: $json.content, attachments: $json.attachments || [] }) }}",
+        "options": {
+          "timeout": 65000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_merge_preprocess",
+      "name": "Merge Preprocess Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const ctx = $('Merge Message Into Context').first().json;\nconst raw = $input.first().json;\nconst pre = (raw && raw.ok !== undefined) ? raw : {};\n\nconst attachmentContext = pre.attachment_context || {\n  has_attachment: Boolean(ctx.has_attachments),\n  attachment_type: ctx.has_attachments ? 'unknown' : 'none',\n  preprocess_status: pre.error ? 'failed' : 'skipped',\n  extracted_text: '',\n  description: '',\n  error: pre.error || null\n};\n\nlet normalizedContent = (\n  pre.normalized_content ||\n  attachmentContext.extracted_text ||\n  attachmentContext.description ||\n  ctx.content ||\n  ''\n).trim();\n\nif (!normalizedContent && ctx.is_attachment_only) {\n  normalizedContent = 'Attachment received with no extractable text.';\n}\n\nconst analyzerInput = normalizedContent || ctx.content || 'Attachment received with no extractable text.';\nconst skipAi = Boolean(pre.skip_ai);\n\nconsole.log(\n  '[cw-ai] preprocess msg=' + ctx.message_id +\n  ' status=' + (attachmentContext.preprocess_status || 'none') +\n  ' type=' + (attachmentContext.attachment_type || 'none') +\n  ' chars=' + analyzerInput.length\n);\n\nreturn [{\n  json: {\n    ...ctx,\n    normalized_content: analyzerInput,\n    attachment_context: attachmentContext,\n    attachments: pre.attachments || ctx.attachments || [],\n    needs_preprocessing: Boolean(pre.needs_preprocessing || ctx.is_attachment_only),\n    skip_ai: skipAi,\n    preprocess_ok: pre.ok !== false && !pre.error,\n    default_category: pre.default_category || 'support',\n    content_length: analyzerInput.length\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_build_req",
+      "name": "Build AI Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2210,
+        660
+      ],
+      "parameters": {
+        "jsCode": "\nconst ctx = $input.first().json;\n\nfunction capText(text, maxChars) {\n  const s = String(text || '').trim();\n  if (s.length <= maxChars) return s;\n  return s.substring(0, maxChars) + '... [truncated]';\n}\n\nconst attCtx = ctx.attachment_context || {};\nconst attType = attCtx.attachment_type || 'none';\nlet contentCap = 3000;\nif (attType === 'image') contentCap = 2000;\n\nconst systemPrompt = \"You are an Odoo developer triage assistant. The team builds and supports Odoo ERP for customers. Treat incoming issues as Odoo bugs, RPC errors, custom module defects, or Odoo configuration work unless clearly unrelated.\\nWhen the message contains Odoo traceback or RPC_ERROR, extract model, custom module path, method name, exception type, and a concrete developer fix in action_required.\\nRespond with JSON only. No markdown, no code fences, no extra text.\\n\\nConfidence rules:\\n* confidence must be a number from 0.0 to 1.0.\\n* Use 0.85-0.95 for clear actionable bug/task/feature requests.\\n* Use 0.75-0.84 for actionable but incomplete requests.\\n* Use 0.50-0.74 for ambiguous requests needing review.\\n* Use below 0.50 for non-actionable chatter or unclear messages.\\n* Do not return 0.0 unless the message is completely unrelated or impossible to classify.\\n* If category is bug, support, or configuration and the summary is clear, confidence should normally be >= 0.75.\\n\\nSchema:\\n{\\\"category\\\":\\\"support|sales|configuration|bug|accounting|other\\\",\\\"priority\\\":\\\"low|medium|high|urgent\\\",\\\"summary\\\":\\\"1-2 sentences for Odoo developers\\\",\\\"action_required\\\":\\\"concrete next step: file/method, code fix, deploy, retest\\\",\\\"project_hint\\\":\\\"Odoo WP subject max 80 chars (model + issue)\\\",\\\"language\\\":\\\"ar|en|mixed\\\",\\\"confidence\\\":0.88}\";\n\nconst analyzerText = capText(ctx.normalized_content || ctx.content || '', contentCap);\nconst attachmentHint = attCtx.has_attachment\n  ? '\\n[attachment_type=' + (attCtx.attachment_type || 'unknown') +\n    ', preprocess_status=' + (attCtx.preprocess_status || 'unknown') + ']'\n  : '';\n\nconst userContent = 'Customer: ' + (ctx.sender_name || 'Customer') +\n  '\\n\\nMessage:\\n' + analyzerText + attachmentHint;\n\nconst openaiModel = $env.CHATWOOT_AI_OPENAI_MODEL || 'gpt-4o-mini';\nconst webuiModel = $env.OPENWEBUI_MODEL || 'qwen2.5:3b-instruct-q4_K_M';\nconst geminiModel = $env.CHATWOOT_AI_GEMINI_MODEL || 'gemini-2.0-flash';\n\nconst openaiBody = {\n  model: openaiModel,\n  messages: [\n    { role: 'system', content: systemPrompt },\n    { role: 'user', content: userContent }\n  ],\n  max_tokens: 250,\n  temperature: 0.2,\n  response_format: { type: 'json_object' }\n};\n\nconst openwebuiBody = {\n  model: webuiModel,\n  messages: [\n    { role: 'system', content: systemPrompt },\n    { role: 'user', content: userContent }\n  ],\n  stream: false,\n  max_tokens: 250,\n  temperature: 0.2\n};\n\nconst geminiBody = {\n  contents: [{ parts: [{ text: systemPrompt + '\\n\\n' + userContent }] }],\n  generationConfig: {\n    maxOutputTokens: 250,\n    temperature: 0.2,\n    responseMimeType: 'application/json'\n  },\n  _model: geminiModel\n};\n\nconst difyApiKey = String($env.DIFY_API_KEY_CHATWOOT_TRIAGE || $env.DIFY_API_KEY || '').trim();\nlet difyBase = String($env.DIFY_BASE_URL || '').trim().replace(/\\/$/, '');\nif (difyBase && !difyBase.endsWith('/v1')) difyBase += '/v1';\nconst difyInputs = {\n  sender_name: ctx.sender_name || 'Customer',\n  message_text: analyzerText,\n  attachment_type: attCtx.attachment_type || 'none',\n  preprocess_status: attCtx.preprocess_status || 'none',\n  conversation_id: String(ctx.conversation_id || ''),\n  message_id: String(ctx.message_id || '')\n};\nconst difyBody = {\n  inputs: difyInputs,\n  response_mode: 'blocking',\n  user: 'n8n-cw-' + (ctx.message_id || 'unknown')\n};\n\nreturn [{\n  json: {\n    ...ctx,\n    analyzer_input: analyzerText,\n    user_content: userContent,\n    request_body: openaiBody,\n    openai_request_body: openaiBody,\n    openwebui_request_body: openwebuiBody,\n    gemini_request_body: geminiBody,\n    dify_request_body: difyBody,\n    dify_base_url: difyBase,\n    dify_api_key: difyApiKey,\n    openai_model: openaiModel,\n    webui_model: webuiModel,\n    gemini_model: geminiModel,\n    dify_model: 'dify-chatwoot-triage'\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_resolve_provider",
+      "name": "Resolve Final Provider",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2340,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const ctx = $input.first().json;\nconst testMode = String($env.CHATWOOT_AI_TEST_MODE || '').toLowerCase() === 'true';\nconst validation = String($env.CHATWOOT_AI_PROVIDER_VALIDATION || '').toLowerCase() === 'true';\nconst configured = String($env.CHATWOOT_AI_FINAL_PROVIDER || 'openai').toLowerCase();\nconst webuiEnabled = String($env.CHATWOOT_AI_OPENWEBUI_ENABLED || 'false').toLowerCase() === 'true';\n\nlet finalProvider = configured;\nif (testMode && !validation) {\n  finalProvider = 'mock';\n} else if (finalProvider === 'openwebui' && !webuiEnabled) {\n  finalProvider = 'openai';\n}\nif (!['mock', 'openai', 'gemini', 'openwebui', 'dify'].includes(finalProvider)) {\n  finalProvider = 'openai';\n}\nif (finalProvider === 'dify' && !String($env.DIFY_API_KEY || $env.DIFY_API_KEY_CHATWOOT_TRIAGE || '').trim()) {\n  finalProvider = 'openai';\n}\n\nconsole.log('[cw-ai] final_provider=' + finalProvider + ' test=' + testMode + ' validation=' + validation);\n\nreturn [{ json: { ...ctx, final_provider: finalProvider } }];"
+      }
+    },
+    {
+      "id": "cw_route_provider",
+      "name": "Route Final Provider",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        2470,
+        660
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "route_mock",
+                    "leftValue": "={{ $json.final_provider }}",
+                    "rightValue": "mock",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "mock"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "route_openai",
+                    "leftValue": "={{ $json.final_provider }}",
+                    "rightValue": "openai",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "openai"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "route_gemini",
+                    "leftValue": "={{ $json.final_provider }}",
+                    "rightValue": "gemini",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "gemini"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "route_openwebui",
+                    "leftValue": "={{ $json.final_provider }}",
+                    "rightValue": "openwebui",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "openwebui"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "route_dify",
+                    "leftValue": "={{ $json.final_provider }}",
+                    "rightValue": "dify",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "dify"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_mock_ai",
+      "name": "Mock AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2600,
+        420
+      ],
+      "parameters": {
+        "jsCode": "const ctx = $('Build AI Request').first().json;\nconst scenario = String($env.CHATWOOT_AI_TEST_SCENARIO || 'actionable_high').trim();\n\nconst scenarios = {\n  actionable_high: {\n    category: 'configuration',\n    priority: 'high',\n    summary: '\u0637\u0644\u0628 \u0625\u0639\u062f\u0627\u062f \u0646\u0638\u0627\u0645 \u0641\u0648\u062a\u0631\u0629 \u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a\u0629 \u0645\u062a\u0648\u0627\u0641\u0642 \u0645\u0639 ZATCA',\n    action_required: '\u0645\u0631\u0627\u062c\u0639\u0629 \u0645\u062a\u0637\u0644\u0628\u0627\u062a \u0627\u0644\u0641\u0648\u062a\u0631\u0629 \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a\u0629',\n    project_hint: '\u0625\u0639\u062f\u0627\u062f \u0627\u0644\u0641\u0648\u062a\u0631\u0629 \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a\u0629 ZATCA \u0641\u064a Odoo',\n    language: 'ar',\n    confidence: 0.92\n  },\n  actionable_high_unique: {\n    category: 'configuration',\n    priority: 'high',\n    summary: '\u0637\u0644\u0628 \u062a\u0643\u0627\u0645\u0644 Odoo \u0645\u0639 \u0628\u0648\u0627\u0628\u0629 ZATCA \u0644\u0644\u0641\u0648\u062a\u0631\u0629 \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a\u0629',\n    action_required: '\u062a\u062d\u062f\u064a\u062f \u0646\u0637\u0627\u0642 \u0627\u0644\u062a\u0643\u0627\u0645\u0644',\n    project_hint: 'Phase2B-TEST-AUTOCREATE-UNIQUE-' + Date.now(),\n    language: 'ar',\n    confidence: 0.92\n  },\n  low_confidence: {\n    category: 'support',\n    priority: 'low',\n    summary: '\u0631\u0633\u0627\u0644\u0629 \u063a\u064a\u0631 \u0648\u0627\u0636\u062d\u0629',\n    action_required: '\u0637\u0644\u0628 \u062a\u0648\u0636\u064a\u062d \u0645\u0646 \u0627\u0644\u0639\u0645\u064a\u0644',\n    project_hint: '\u0637\u0644\u0628 \u062f\u0639\u0645 \u063a\u064a\u0631 \u0645\u062d\u062f\u062f',\n    language: 'ar',\n    confidence: 0.55\n  },\n  not_actionable: {\n    category: 'other',\n    priority: 'low',\n    summary: '\u062a\u062d\u064a\u0629 \u0641\u0642\u0637',\n    action_required: '\u0644\u0627 \u064a\u0648\u062c\u062f',\n    project_hint: '\u0631\u0633\u0627\u0644\u0629 \u0639\u0627\u0645\u0629',\n    language: 'ar',\n    confidence: 0.95\n  },\n  op_create_fail: {\n    category: 'configuration',\n    priority: 'medium',\n    summary: '\u0637\u0644\u0628 \u062a\u0643\u0627\u0645\u0644',\n    action_required: '\u0645\u0631\u0627\u062c\u0639\u0629 \u0627\u0644\u0645\u062a\u0637\u0644\u0628\u0627\u062a',\n    project_hint: '\u062a\u0643\u0627\u0645\u0644 Odoo \u0645\u0639 \u0628\u0648\u0627\u0628\u0629 \u062d\u0643\u0648\u0645\u064a\u0629',\n    language: 'ar',\n    confidence: 0.88\n  },\n  // Simulate Dify/AI unavailable \u2014 empty payload fails IF: AI OK\n  ai_fail: null,\n  // Simulate malformed / missing confidence \u2014 parseable but confidence absent \u2192 gate blocks create\n  malformed_confidence: {\n    category: 'support',\n    priority: 'high',\n    summary: '\u0637\u0644\u0628 \u062f\u0639\u0645 \u0628\u062f\u0648\u0646 \u062b\u0642\u0629',\n    action_required: '\u0645\u0631\u0627\u062c\u0639\u0629',\n    project_hint: 'Malformed confidence test',\n    language: 'en'\n  }\n};\n\nif (scenario === 'ai_fail') {\n  return [{ json: { error: 'simulated_dify_unavailable', message: 'Dify unavailable' } }];\n}\n\nconst meta = scenarios[scenario] || scenarios.actionable_high;\nconst content = JSON.stringify(meta);\n\nreturn [{ json: { choices: [{ message: { content } }] } }];"
+      }
+    },
+    {
+      "id": "cw_openai",
+      "name": "Call OpenAI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2600,
+        540
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.OPENAI_BASE_URL || 'https://api.openai.com/v1') + '/chat/completions' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.OPENAI_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.openai_request_body) }}",
+        "options": {
+          "timeout": "={{ (parseInt($env.CHATWOOT_AI_FINAL_TIMEOUT_SECONDS || '30', 10) || 30) * 1000 }}"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_gemini",
+      "name": "Call Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2600,
+        660
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://generativelanguage.googleapis.com/v1beta/models/' + ($json.gemini_model || $env.CHATWOOT_AI_GEMINI_MODEL || 'gemini-2.0-flash') + ':generateContent?key=' + $env.GEMINI_API_KEY }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify(Object.assign({}, $json.gemini_request_body, {_model: undefined})) }}",
+        "options": {
+          "timeout": "={{ (parseInt($env.CHATWOOT_AI_FINAL_TIMEOUT_SECONDS || '30', 10) || 30) * 1000 }}"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_openwebui",
+      "name": "Call OpenWebUI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2600,
+        780
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.OPENWEBUI_URL }}/api/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.OPENWEBUI_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.openwebui_request_body) }}",
+        "options": {
+          "timeout": "={{ (parseInt($env.CHATWOOT_AI_FINAL_TIMEOUT_SECONDS || '30', 10) || 30) * 1000 }}"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_dify",
+      "name": "Call Dify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2600,
+        900
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($json.dify_base_url || $env.DIFY_BASE_URL || '').replace(/\\/$/, '') + (($json.dify_base_url || $env.DIFY_BASE_URL || '').replace(/\\/$/, '').endsWith('/v1') ? '' : '/v1') + '/workflows/run' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.dify_api_key || $env.DIFY_API_KEY_CHATWOOT_TRIAGE || $env.DIFY_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.dify_request_body) }}",
+        "options": {
+          "timeout": "={{ (parseInt($env.CHATWOOT_AI_FINAL_TIMEOUT_SECONDS || '30', 10) || 30) * 1000 }}"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_normalize_dify",
+      "name": "Normalize Dify Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2730,
+        900
+      ],
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nconst data = raw.data || {};\nconst outputs = data.outputs || {};\nconst text = outputs.result || outputs.text || data.answer || '';\nreturn [{\n  json: {\n    choices: [{ message: { content: String(text) } }],\n    dify_model: $('Resolve Final Provider').first().json.dify_model || 'dify-workflow'\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_if_ai",
+      "name": "IF: AI OK",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2600,
+        660
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "ai_ok",
+              "leftValue": "={{ Boolean(($json.choices && $json.choices[0] && $json.choices[0].message && $json.choices[0].message.content) || ($json.candidates && $json.candidates[0] && $json.candidates[0].content && $json.candidates[0].content.parts && $json.candidates[0].content.parts[0] && $json.candidates[0].content.parts[0].text)) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_build_anal",
+      "name": "Build Analysis Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2860,
+        520
+      ],
+      "parameters": {
+        "jsCode": "const aiResp = $input.first().json;\nconst ctx = $('Resolve Final Provider').first().json;\n\nlet rawText = '';\ntry {\n  rawText = aiResp.choices[0].message.content;\n} catch(e) {\n  try {\n    rawText = aiResp.candidates[0].content.parts[0].text;\n  } catch(e2) {\n    rawText = '[parse error] ' + JSON.stringify(aiResp).substring(0, 300);\n  }\n}\n\nlet parsed = null;\nlet aiMeta = null;\nconst trimmed = String(rawText || '').trim();\nif (trimmed.startsWith('{')) {\n  try { parsed = JSON.parse(trimmed); } catch(pe) { parsed = { parse_error: pe.message }; }\n} else {\n  const jsonMatch = trimmed.match(/```json\\s*([\\s\\S]*?)\\s*```/i) || trimmed.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    try { parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]); } catch(pe) { parsed = { parse_error: pe.message }; }\n  }\n}\n\nif (parsed && !parsed.parse_error) {\n  const category = parsed.category || parsed.request_type || 'support';\n  const confidence = parseFloat(parsed.confidence) || 0;\n  aiMeta = {\n    summary: parsed.summary || '',\n    actionable: category !== 'other',\n    confidence: confidence,\n    priority: parsed.priority || 'medium',\n    request_type: category,\n    suggested_wp_subject: String(parsed.project_hint || parsed.summary || '').substring(0, 80),\n    affected_odoo_areas: parsed.affected_odoo_areas || [],\n    missing_information: parsed.missing_information || [],\n    action_required: parsed.action_required || '',\n    language: parsed.language || 'mixed'\n  };\n  if (confidence === 0 && category !== 'other') {\n    aiMeta.confidence_warning = 'Dify returned 0 confidence for actionable category';\n  }\n}\n\nconst now = new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC';\nconst marker = '<!-- cw-ai-analysis:' + ctx.message_id + ' -->';\nconst provider = ctx.final_provider || $env.CHATWOOT_AI_FINAL_PROVIDER || 'openai';\nconst modelUsed = ctx.openai_model || ctx.webui_model || ctx.gemini_model || ctx.dify_model || provider;\nconst attCtx = ctx.attachment_context || {};\nconst attType = attCtx.attachment_type || 'none';\nconst attStatus = attCtx.preprocess_status || 'none';\nconst extracted = attCtx.extracted_text || '';\nconst desc = attCtx.description || '';\nconst summary = (aiMeta && aiMeta.summary) || trimmed.substring(0, 300);\nconst actionReq = (aiMeta && aiMeta.action_required) || '';\nconst categoryLabel = (aiMeta && aiMeta.request_type) || ctx.default_category || 'support';\nconst priorityLabel = (aiMeta && aiMeta.priority) || 'medium';\n\nlet noteContent;\nif (attType === 'audio' && attStatus === 'transcribed' && extracted) {\n  noteContent = marker + '\\n\ud83c\udf99\ufe0f **AI Voice Analysis \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id + '**\\n\\n' +\n    '**\u0627\u0644\u0646\u0648\u0639:** \u0631\u0633\u0627\u0644\u0629 \u0635\u0648\u062a\u064a\u0629\\n**\u0627\u0644\u062d\u0627\u0644\u0629:** \u062a\u0645 \u0627\u0644\u062a\u0641\u0631\u064a\u063a\\n' +\n    '**\u0627\u0644\u062a\u0635\u0646\u064a\u0641:** ' + categoryLabel + '\\n**\u0627\u0644\u0623\u0648\u0644\u0648\u064a\u0629:** ' + priorityLabel + '\\n\\n' +\n    '**\u0627\u0644\u0645\u0644\u062e\u0635:**\\n' + summary + '\\n\\n' +\n    (actionReq ? '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**\\n' + actionReq + '\\n\\n' : '') +\n    '**\u0627\u0644\u0646\u0635 \u0627\u0644\u0645\u0633\u062a\u062e\u0631\u062c:**\\n' + extracted;\n} else if (attType === 'audio' && attStatus !== 'transcribed') {\n  noteContent = marker + '\\n\u26a0\ufe0f **AI Attachment Analysis Partial \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id + '**\\n\\n' +\n    '**\u0627\u0644\u0646\u0648\u0639:** \u0631\u0633\u0627\u0644\u0629 \u0635\u0648\u062a\u064a\u0629\\n**\u0627\u0644\u062d\u0627\u0644\u0629:** \u0644\u0645 \u064a\u062a\u0645 \u0627\u0644\u062a\u0641\u0631\u064a\u063a\\n' +\n    '**\u0627\u0644\u0633\u0628\u0628:** ' + (attCtx.error || 'transcription unavailable') + '\\n\\n' +\n    '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**\\n\u0645\u0631\u0627\u062c\u0639\u0629 \u064a\u062f\u0648\u064a\u0629 \u0644\u0644\u0631\u0633\u0627\u0644\u0629 \u0627\u0644\u0635\u0648\u062a\u064a\u0629.';\n} else if (attType === 'image' && (extracted || desc)) {\n  noteContent = marker + '\\n\ud83d\uddbc\ufe0f **AI Image Analysis \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id + '**\\n\\n' +\n    '**\u0627\u0644\u0646\u0648\u0639:** \u0635\u0648\u0631\u0629\\n**\u0627\u0644\u062d\u0627\u0644\u0629:** \u062a\u0645 \u0627\u0633\u062a\u062e\u0631\u0627\u062c \u0627\u0644\u0645\u062d\u062a\u0648\u0649\\n' +\n    '**\u0627\u0644\u062a\u0635\u0646\u064a\u0641:** ' + categoryLabel + '\\n**\u0627\u0644\u0623\u0648\u0644\u0648\u064a\u0629:** ' + priorityLabel + '\\n\\n' +\n    '**\u0627\u0644\u0645\u0644\u062e\u0635:**\\n' + summary + '\\n\\n' +\n    (actionReq ? '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**\\n' + actionReq + '\\n\\n' : '') +\n    '**\u0627\u0644\u0646\u0635/\u0627\u0644\u0648\u0635\u0641:**\\n' + (extracted || desc);\n} else if (attStatus === 'timeout') {\n  noteContent = marker + '\\n[AI] provider=preprocessor category=support priority=medium summary=Attachment received but preprocessing timed out. Manual review required.';\n} else {\n  noteContent = marker + '\\n## \ud83e\udd16 AI Analysis \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id +\n    '\\n*\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u062a\u062d\u0644\u064a\u0644: ' + now + ' | \u0627\u0644\u0645\u0632\u0648\u062f: ' + provider + ' | \u0627\u0644\u0646\u0645\u0648\u0630\u062c: ' + modelUsed + '*\\n\\n' +\n    '**\u0627\u0644\u062a\u0635\u0646\u064a\u0641:** ' + categoryLabel + '\\n**\u0627\u0644\u0623\u0648\u0644\u0648\u064a\u0629:** ' + priorityLabel + '\\n\\n' +\n    '**\u0627\u0644\u0645\u0644\u062e\u0635:**\\n' + summary + '\\n\\n' +\n    (actionReq ? '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**\\n' + actionReq : '') +\n    ((aiMeta && aiMeta.confidence_warning) ? '\\n\\n\u26a0\ufe0f **confidence_warning:** ' + aiMeta.confidence_warning : '') +\n    (ctx.openproject_wp_id ? '\\n\\n<!-- cw-ai-wp-updated:' + ctx.message_id + ' wp=' + ctx.openproject_wp_id + ' -->' : '');\n}\n\nconst analysisLines = [\n  '**\u0627\u0644\u062a\u0635\u0646\u064a\u0641:** ' + categoryLabel,\n  '**\u0627\u0644\u0623\u0648\u0644\u0648\u064a\u0629:** ' + priorityLabel,\n  '**\u0627\u0644\u062b\u0642\u0629:** ' + ((aiMeta && aiMeta.confidence !== undefined && aiMeta.confidence !== null) ? Number(aiMeta.confidence).toFixed(2) : 'n/a'),\n  '',\n  '**\u0627\u0644\u0645\u0644\u062e\u0635:**',\n  summary\n];\nif (actionReq) {\n  analysisLines.push('', '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**', actionReq);\n}\nif (extracted) {\n  analysisLines.push('', '**\u0646\u0635 \u0645\u0631\u0641\u0642 \u0645\u0633\u062a\u062e\u0631\u062c:**', extracted);\n} else if (desc) {\n  analysisLines.push('', '**\u0648\u0635\u0641 \u0627\u0644\u0645\u0631\u0641\u0642:**', desc);\n}\nconst analysisText = analysisLines.join('\\n');\nconst opWpCommentMd = '## Chatwoot AI Analysis\\n\\n' + analysisText;\nconst cwBase = String($env.CHATWOOT_URL || '').replace(/\\/$/, '');\nconst convUrl = cwBase ? cwBase + '/app/accounts/' + ctx.account_id + '/conversations/' + ctx.conversation_id : '';\nconst fullMessage = String(ctx.raw_content || ctx.content || '').trim();\nconst analysisAttachmentMd = [\n  '# Chatwoot AI Analysis',\n  '',\n  '- Conversation: ' + (convUrl || ctx.conversation_id),\n  '- Message ID: ' + ctx.message_id,\n  '- Customer: ' + (ctx.sender_name || 'Unknown'),\n  '- Provider: ' + provider + ' / ' + modelUsed,\n  '- Analyzed at: ' + now,\n  '',\n  '## Odoo Developer Triage',\n  '',\n  analysisText,\n  '',\n  '## Original Message',\n  '',\n  '```',\n  fullMessage,\n  '```'\n].join('\\n');\nconst pgMarkDoneQuery = 'UPDATE cw_ai_idempotency SET status = \\'done\\', updated_at = NOW() WHERE chatwoot_message_id = ' + ctx.message_id + '::BIGINT';\n\nreturn [{\n  json: {\n    message_id: ctx.message_id,\n    conversation_id: ctx.conversation_id,\n    account_id: ctx.account_id,\n    content: ctx.content,\n    raw_content: ctx.raw_content || ctx.content,\n    attachments: ctx.attachments || [],\n    attachment_context: attCtx,\n    sender_name: ctx.sender_name,\n    openproject_wp_id: ctx.openproject_wp_id,\n    referenced_op_wp_id: ctx.referenced_op_wp_id || null,\n    routed_op_parent_id: ctx.routed_op_parent_id || null,\n    sticky_openproject_wp_id: ctx.sticky_openproject_wp_id || null,\n    sticky_candidate_wp_id: ctx.sticky_candidate_wp_id || null,\n    request_window_minutes: ctx.request_window_minutes || 15,\n    is_attachment_only: Boolean(ctx.is_attachment_only),\n    has_attachments: Boolean(ctx.has_attachments),\n    multi_client_inbox: Boolean(ctx.multi_client_inbox),\n    conversation_labels: ctx.conversation_labels || [],\n    content_length: ctx.content_length || (ctx.content || '').length,\n    note_content: noteContent,\n    analysis_text: analysisText,\n    op_wp_comment_md: opWpCommentMd,\n    analysis_attachment_md: analysisAttachmentMd,\n    ai_meta: aiMeta,\n    model_used: modelUsed,\n    final_provider: provider,\n    pg_mark_done_query: pgMarkDoneQuery,\n    company: ctx.company || null,\n    op_project_id: ctx.op_project_id || null,\n    op_project_identifier: ctx.op_project_identifier || null,\n    managed_group: Boolean(ctx.managed_group),\n    managed_chatwoot_label: ctx.managed_chatwoot_label || null,\n    group_jid: ctx.group_jid || null\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_build_err",
+      "name": "Build Error Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2860,
+        820
+      ],
+      "parameters": {
+        "jsCode": "const err = $input.first().json;\nconst ctx = $('Resolve Final Provider').first().json;\n\n// err.error may be an object (AxiosError structure from n8n HTTP node failures)\nlet rawErr;\nif (err.error !== undefined && err.error !== null) {\n  rawErr = typeof err.error === 'string'\n    ? err.error\n    : (err.error.message || err.error.code || JSON.stringify(err.error));\n} else if (err.message !== undefined && err.message !== null) {\n  rawErr = typeof err.message === 'string' ? err.message : JSON.stringify(err.message);\n} else {\n  rawErr = JSON.stringify(err);\n}\nrawErr = String(rawErr).substring(0, 300);\n// Sanitize for PG: replace single quotes\nconst safeErr = rawErr.replace(/'/g, \"''\");\n\nconst marker = '<!-- cw-ai-analysis:' + ctx.message_id + ' -->';\nconst attCtx = ctx.attachment_context || {};\nconst attType = attCtx.attachment_type || 'none';\nconst attStatus = attCtx.preprocess_status || 'none';\nconst extracted = String(attCtx.extracted_text || '').trim();\nconst desc = String(attCtx.description || '').trim();\nconst analyzerText = String(ctx.analyzer_input || ctx.normalized_content || ctx.content || '').trim();\n\nlet noteContent;\nif (attType === 'audio' && attStatus === 'transcribed' && extracted) {\n  noteContent = marker + '\\n\ud83c\udf99\ufe0f **AI Voice Analysis Partial \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id + '**\\n\\n' +\n    '**\u0627\u0644\u062d\u0627\u0644\u0629:** \u062a\u0645 \u0627\u0644\u062a\u0641\u0631\u064a\u063a\u060c \u0644\u0643\u0646 \u062a\u062d\u0644\u064a\u0644 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a \u0627\u0644\u0646\u0647\u0627\u0626\u064a \u0641\u0634\u0644 \u0645\u0624\u0642\u062a\u064b\u0627.\\n' +\n    '**\u0627\u0644\u0633\u0628\u0628:** ' + rawErr + '\\n\\n' +\n    '**\u0627\u0644\u0646\u0635 \u0627\u0644\u0645\u0633\u062a\u062e\u0631\u062c:**\\n' + extracted + '\\n\\n' +\n    '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**\\n\u0645\u0631\u0627\u062c\u0639\u0629 \u064a\u062f\u0648\u064a\u0629 \u0623\u0648 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0644\u0627\u062d\u0642\u064b\u0627.';\n} else if (attType === 'image' && (extracted || desc)) {\n  noteContent = marker + '\\n\ud83d\uddbc\ufe0f **AI Image Analysis Partial \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id + '**\\n\\n' +\n    '**\u0627\u0644\u062d\u0627\u0644\u0629:** \u062a\u0645 \u0627\u0633\u062a\u062e\u0631\u0627\u062c \u0627\u0644\u0646\u0635/\u0627\u0644\u0648\u0635\u0641\u060c \u0644\u0643\u0646 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0627\u0644\u0646\u0647\u0627\u0626\u064a \u0641\u0634\u0644 \u0645\u0624\u0642\u062a\u064b\u0627.\\n' +\n    '**\u0627\u0644\u0633\u0628\u0628:** ' + rawErr + '\\n\\n' +\n    '**\u0627\u0644\u0646\u0635 \u0627\u0644\u0645\u0633\u062a\u062e\u0631\u062c:**\\n' + (extracted || desc) + '\\n\\n' +\n    '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**\\n\u0645\u0631\u0627\u062c\u0639\u0629 \u064a\u062f\u0648\u064a\u0629 \u0623\u0648 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0644\u0627\u062d\u0642\u064b\u0627.';\n} else if (analyzerText) {\n  noteContent = marker + '\\n\u26a0\ufe0f **AI Analysis Partial \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id + '**\\n\\n' +\n    '**\u0627\u0644\u062d\u0627\u0644\u0629:** \u062a\u0639\u0630\u0631 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0627\u0644\u0646\u0647\u0627\u0626\u064a \u0645\u0624\u0642\u062a\u064b\u0627\u060c \u0644\u0643\u0646 \u0646\u0635 \u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0645\u062d\u0641\u0648\u0638 \u0644\u0644\u0645\u0631\u0627\u062c\u0639\u0629.\\n' +\n    '**\u0627\u0644\u0633\u0628\u0628:** ' + rawErr + '\\n\\n' +\n    '**\u0627\u0644\u0646\u0635:**\\n' + analyzerText.substring(0, 1500) + '\\n\\n' +\n    '**\u0627\u0644\u0625\u062c\u0631\u0627\u0621 \u0627\u0644\u0645\u0637\u0644\u0648\u0628:**\\n\u0645\u0631\u0627\u062c\u0639\u0629 \u064a\u062f\u0648\u064a\u0629 \u0623\u0648 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0644\u0627\u062d\u0642\u064b\u0627.';\n} else {\n  noteContent = marker + '\\n\u26a0\ufe0f **AI Analysis Failed** \u2014 \u0631\u0633\u0627\u0644\u0629 #' + ctx.message_id +\n    '\\n\\n\u0641\u0634\u0644 \u062a\u062d\u0644\u064a\u0644 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a.\\n\u0627\u0644\u062e\u0637\u0623: ' + rawErr +\n    '\\n\\n*\u064a\u0631\u062c\u0649 \u062a\u062d\u0644\u064a\u0644 \u0647\u0630\u0647 \u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u064a\u062f\u0648\u064a\u0627\u064b \u0623\u0648 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0644\u0627\u062d\u0642\u0627\u064b.*';\n}\n\nconst pgErrorQuery = \"UPDATE cw_ai_idempotency SET status = 'error', updated_at = NOW(), error_message = '\" + safeErr.substring(0, 500) + \"' WHERE chatwoot_message_id = \" + ctx.message_id + '::BIGINT';\n\nreturn [{\n  json: {\n    message_id: ctx.message_id,\n    conversation_id: ctx.conversation_id,\n    account_id: ctx.account_id,\n    openproject_wp_id: ctx.openproject_wp_id,\n    note_content: noteContent,\n    error: rawErr,\n    pg_error_query: pgErrorQuery\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_post_anal",
+      "name": "Post Analysis Note",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3120,
+        520
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $('Decide Sticky WP').first().json.note_content || $json.note_content, message_type: 'outgoing', private: true }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_post_err",
+      "name": "Post Error Note",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3120,
+        820
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.note_content, message_type: 'outgoing', private: true }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_pg_err",
+      "name": "PG: Mark Error",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        3380,
+        820
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Build Error Note').first().json.pg_error_query }}",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "CWsJ4nzSemghjBfv",
+          "name": "Chatwoot Postgres"
+        }
+      }
+    },
+    {
+      "id": "cw_if_sticky_fetch",
+      "name": "IF: Sticky Candidate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        3340,
+        500
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sticky_cand",
+              "leftValue": "={{ Boolean($json.sticky_candidate_wp_id) && !Boolean($json.openproject_wp_id) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_fetch_sticky_wp",
+      "name": "Fetch Sticky WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3460,
+        380
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=http://openproject/api/v3/work_packages/{{ $json.sticky_candidate_wp_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic YXBpa2V5OjMyZmQ1YTM4ZTllYzdmY2VlMGIyZGEwZjYwZjE0NjQ4OTg5YWY0Njg4OThmNzBiZjllNWYyYmM3YmJhZjE4Yzc="
+            },
+            {
+              "name": "Host",
+              "value": "master.tailcf9988.ts.net:10081"
+            },
+            {
+              "name": "X-Forwarded-Proto",
+              "value": "https"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_decide_sticky",
+      "name": "Decide Sticky WP",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3580,
+        500
+      ],
+      "parameters": {
+        "jsCode": "// Mirror of infra/n8n/lib/sticky_wp.py \u2014 keep behaviors in sync.\n// Always read analysis from Build Analysis Note (Fetch Sticky WP may be $input).\nconst anal = $('Build Analysis Note').first().json;\nconst ctx = $('Build Context').first().json;\nconst fetchItem = (() => {\n  try { return $('Fetch Sticky WP').first().json; } catch (e) { return null; }\n})();\nconst incoming = $input.first().json;\n// When fetch path runs, incoming is WP payload; when not, incoming is analysis.\nconst fetchFromInput = incoming && (incoming.id || incoming._type === 'WorkPackage' || incoming.error || incoming.statusCode);\nconst effectiveFetch = fetchFromInput ? incoming : fetchItem;\n\nconst stickyCandidate = anal.sticky_candidate_wp_id || ctx.sticky_candidate_wp_id || null;\nlet wpId = anal.openproject_wp_id || null;\nlet rejectReason = null;\nlet clearSticky = false;\nlet stickyFetchStatus = null;\n\nconst NEW_TASK_RE = /(?:\\bnew\\s+(?:task|ticket|wp|work[\\s-]*package)\\b|\\bcreate\\s+(?:a\\s+)?(?:new\\s+)?(?:task|ticket|wp)\\b|\u062a\u0627\u0633\u0643\\s*\u062c\u062f\u064a\u062f|\u0645\u0647\u0645\u0629\\s*\u062c\u062f\u064a\u062f\u0629|\u0637\u0644\u0628\\s*\u062c\u062f\u064a\u062f|\\bnew\\s+request\\b)/i;\nconst REOPEN_RE = /(?:\\bre-?open\\b|\\breopen\\b|\\bcontinue\\s+(?:on|with)\\s+(?:OP|WP)\\s*#?\\s*\\d+|\u0627\u0641\u062a\u062d\\s*\u062a\u0627\u0646\u064a|\u0625\u0639\u0627\u062f\u0629\\s*\u0641\u062a\u062d)/i;\nconst FOLLOW_RE = /(?:\\bfyi\\b|\\bas\\s+above\\b|\\bsame\\s+(?:issue|task|ticket)\\b|\\bfollow[\\s-]*up\\b|\\bupdate\\b|\\bclarif|\u0646\u0641\u0633\\s*(?:\u0627\u0644\u0645\u0648\u0636\u0648\u0639|\u0627\u0644\u062a\u0627\u0633\u0643|\u0627\u0644\u0637\u0644\u0628)|\u0645\u062a\u0627\u0628\u0639\u0629|\u062a\u0648\u0636\u064a\u062d)/i;\n\nfunction isTerminal(status) {\n  const s = String(status || '').trim().toLowerCase();\n  if (!s) return false;\n  return ['closed', 'rejected', 'cancelled', 'canceled'].some(t => s === t || s.includes(t));\n}\n\nif (!wpId && stickyCandidate) {\n  const msgText = String(anal.raw_content || anal.content || '');\n  const aiMeta = anal.ai_meta || {};\n  const actionable = aiMeta.actionable === true;\n  const contentLen = anal.content_length || msgText.trim().length;\n  const isAttOnly = Boolean(anal.is_attachment_only);\n  const expectedProject = ctx.op_project_id ? parseInt(String(ctx.op_project_id), 10) : null;\n\n  let wpExists = false;\n  let wpStatus = null;\n  let wpProjectId = null;\n  const f = effectiveFetch;\n  if (f && !f.error && (f.id || (f._type === 'WorkPackage'))) {\n    wpExists = true;\n    stickyFetchStatus = 'ok';\n    wpStatus = (f._links && f._links.status && f._links.status.title)\n      ? f._links.status.title\n      : (f.status || null);\n    const projHref = f._links && f._links.project && f._links.project.href;\n    if (projHref) {\n      const m = String(projHref).match(/\\/projects\\/(\\d+)/);\n      if (m) wpProjectId = parseInt(m[1], 10);\n    }\n  } else if (f && (f.error || f.statusCode === 404 || f.httpCode === 404 || f.status === 404)) {\n    stickyFetchStatus = 'missing';\n    wpExists = false;\n  } else if (!f) {\n    // Candidate path should always fetch; refuse blind reuse.\n    stickyFetchStatus = 'no_fetch';\n    wpExists = false;\n  } else {\n    stickyFetchStatus = 'error';\n    wpExists = false;\n  }\n\n  if (anal.referenced_op_wp_id) {\n    wpId = parseInt(String(anal.referenced_op_wp_id), 10);\n  } else if (!wpExists) {\n    rejectReason = 'sticky_wp_rejected_missing';\n    // Only archive sticky when OP confirms missing (404), not on transport errors.\n    clearSticky = (stickyFetchStatus === 'missing');\n  } else if (expectedProject && wpProjectId && wpProjectId !== expectedProject) {\n    rejectReason = 'sticky_wp_rejected_wrong_project';\n    clearSticky = true;\n  } else if (isTerminal(wpStatus) && !REOPEN_RE.test(msgText)) {\n    rejectReason = 'sticky_wp_rejected_closed';\n    clearSticky = true;\n  } else if (NEW_TASK_RE.test(msgText)) {\n    rejectReason = 'sticky_wp_rejected_new_task_intent';\n    clearSticky = true;\n  } else {\n    const short = isAttOnly || msgText.trim().length < 30;\n    const followHint = FOLLOW_RE.test(msgText);\n    if (!short && !followHint && !isAttOnly && contentLen >= 40 && actionable) {\n      rejectReason = 'sticky_wp_rejected_unrelated';\n      clearSticky = true;\n    } else {\n      wpId = parseInt(String(stickyCandidate), 10);\n    }\n  }\n}\n\nlet noteContent = anal.note_content || '';\nif (wpId && noteContent && !noteContent.includes('cw-ai-wp-updated:')) {\n  noteContent = noteContent + '\\n\\n<!-- cw-ai-wp-updated:' + anal.message_id + ' wp=' + wpId + ' -->';\n}\nif (rejectReason) {\n  noteContent = noteContent + '\\n\\n<!-- cw-ai-sticky-rejected:' + anal.message_id + ' reason=' + rejectReason + ' sticky=' + stickyCandidate + ' -->';\n  console.log('[cw-ai] sticky rejected reason=' + rejectReason + ' sticky=' + stickyCandidate);\n} else if (wpId) {\n  console.log('[cw-ai] sticky reuse wp=' + wpId + ' fetch=' + stickyFetchStatus);\n}\n\nreturn [{\n  json: {\n    ...anal,\n    openproject_wp_id: wpId,\n    note_content: noteContent,\n    sticky_reject_reason: rejectReason,\n    clear_sticky: clearSticky,\n    sticky_fetch_status: stickyFetchStatus,\n    sticky_candidate_wp_id: stickyCandidate\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_if_clear_sticky",
+      "name": "IF: Clear Sticky",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        3700,
+        500
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "clear_sticky",
+              "leftValue": "={{ Boolean($json.clear_sticky) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_archive_sticky_prep",
+      "name": "Archive Sticky Attrs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3820,
+        380
+      ],
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nconst sticky = d.sticky_candidate_wp_id || d.sticky_openproject_wp_id || null;\nconst attrs = {\n  source: 'evolution',\n  openproject_wp_id: null,\n  last_openproject_wp_id: sticky,\n  openproject_wp_id_archived: sticky,\n  sticky_wp_reject_reason: d.sticky_reject_reason || 'sticky_wp_rejected',\n  sticky_wp_rejected_at: new Date().toISOString()\n};\nif (d.group_jid) {\n  attrs.whatsapp_group_jid = d.group_jid;\n  attrs.whatsapp_thread_key = d.group_jid;\n}\nreturn [{\n  json: {\n    ...d,\n    archive_custom_attributes: attrs\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_archive_sticky_patch",
+      "name": "PATCH Archive Sticky",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3940,
+        380
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/custom_attributes",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ custom_attributes: $json.archive_custom_attributes }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_if_wp",
+      "name": "IF: WP Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        3380,
+        520
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "wp_check",
+              "leftValue": "={{ Boolean($('Decide Sticky WP').first().json.openproject_wp_id) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_post_op",
+      "name": "Post to OpenProject WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3640,
+        380
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://openproject/api/v3/work_packages/{{ $('Decide Sticky WP').first().json.openproject_wp_id }}/activities",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic YXBpa2V5OjMyZmQ1YTM4ZTllYzdmY2VlMGIyZGEwZjYwZjE0NjQ4OTg5YWY0Njg4OThmNzBiZjllNWYyYmM3YmJhZjE4Yzc="
+            },
+            {
+              "name": "Host",
+              "value": "master.tailcf9988.ts.net:10081"
+            },
+            {
+              "name": "X-Forwarded-Proto",
+              "value": "https"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ comment: { format: 'markdown', raw: $('Build Analysis Note').first().json.op_wp_comment_md || ('## Chatwoot AI Analysis\\n\\n' + $('Build Analysis Note').first().json.analysis_text) } }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      }
+    },
+    {
+      "id": "cw_upload_op_att_exist",
+      "name": "Upload OP Attachments Existing WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3705,
+        380
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot_evolution_bridge:3010/ops/openproject/wp-attachments-from-message?secret={{ $env.BRIDGE_SHARED_SECRET }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ wp_id: $('Decide Sticky WP').first().json.openproject_wp_id, conversation_id: $('Build Analysis Note').first().json.conversation_id, message_id: $('Build Analysis Note').first().json.message_id, account_id: $('Build Analysis Note').first().json.account_id }) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_upload_op_analysis_exist",
+      "name": "Upload OP Analysis Existing WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3770,
+        380
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot_evolution_bridge:3010/ops/openproject/wp-analysis-attachment?secret={{ $env.BRIDGE_SHARED_SECRET }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ wp_id: $('Decide Sticky WP').first().json.openproject_wp_id, message_id: $('Build Analysis Note').first().json.message_id, analysis_md: $('Build Analysis Note').first().json.analysis_attachment_md, description: 'Chatwoot AI analysis for message ' + $('Build Analysis Note').first().json.message_id }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_pg_done_exist",
+      "name": "PG: Mark Done Existing",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        3900,
+        380
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Build Analysis Note').first().json.pg_mark_done_query }}",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "CWsJ4nzSemghjBfv",
+          "name": "Chatwoot Postgres"
+        }
+      }
+    },
+    {
+      "id": "cw_eval_gates",
+      "name": "Evaluate Auto-Create Gates",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3640,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const anal = $('Build Analysis Note').first().json;\nconst ctx = $('Merge Message Into Context').first().json;\n\nconst approvedLabels = String($env.CHATWOOT_AI_CREATE_LABELS || 'ai-create-wp')\n  .split(',').map(s => s.trim()).filter(Boolean);\nconst minConf = parseFloat($env.CHATWOOT_AI_MIN_CONFIDENCE || '0.75');\nconst minLen = parseInt($env.CHATWOOT_AI_MIN_MESSAGE_LENGTH || '20', 10);\nconst defaultProjectId = parseInt(String($env.OPENPROJECT_DEFAULT_PROJECT_ID || ''), 10);\nconst typeId = parseInt(String($env.OPENPROJECT_DEFAULT_TYPE_ID || ''), 10);\n\nconst labels = anal.conversation_labels || ctx.conversation_labels || [];\nconst hasExplicitLabel = approvedLabels.some(l => labels.includes(l));\nconst hasManagedLabel = Boolean(\n  ctx.managed_group &&\n  ctx.managed_chatwoot_label &&\n  labels.includes(ctx.managed_chatwoot_label)\n);\nconst hasLabel = hasExplicitLabel || hasManagedLabel;\n\nconst resolvedProjectId = (ctx.op_project_id && !isNaN(parseInt(String(ctx.op_project_id), 10)))\n  ? parseInt(String(ctx.op_project_id), 10)\n  : null;\nconst projectId = resolvedProjectId || defaultProjectId;\n\nconst aiMeta = anal.ai_meta || {};\nlet actionable = aiMeta.actionable === true;\nconst confidence = parseFloat(aiMeta.confidence) || 0;\nconst contentLen = anal.content_length || (anal.content || '').trim().length;\nconst hasAttachments = Boolean(anal.has_attachments || (Array.isArray(anal.attachments) && anal.attachments.length));\nconst attLabel = String(anal.raw_content || anal.content || '') + ' ' + (Array.isArray(anal.attachments) ? anal.attachments.map(a => a.file_name || a.filename || '').join(' ') : '');\nconst isHrLeave = /\u0627\u062c\u0627\u0632\u0629|\u0625\u062c\u0627\u0632\u0629|leave|\u0634\u0624\u0648\u0646 \u0627\u0644\u0645\u0648\u0638\u0641\u064a\u0646|\u0634\u0648\u0654\u0648\u0646 \u0627\u0644\u0645\u0648\u0638\u0641\u064a\u0646|\u0646\u0645\u0648\u0630\u062c \u0637\u0644\u0628/i.test(attLabel);\nconst isAssetFile = /asset|\u0623\u0635\u0648\u0644|\u0627\u0643\u0633\u0644|xlsx|account\\.asset|revenue|\\.xlsx|\\.docx/i.test(attLabel);\nconst minConfWithAtt = parseFloat($env.CHATWOOT_AI_MIN_CONFIDENCE_WITH_ATTACHMENT || '0.40');\nconst effectiveMinConf = hasAttachments ? Math.min(minConf, minConfWithAtt) : minConf;\n\n// Attachment-only / file messages should still create or route work packages.\nif (hasAttachments && (isHrLeave || isAssetFile || anal.is_attachment_only)) {\n  actionable = true;\n  if (!aiMeta.suggested_wp_subject && attLabel.trim()) {\n    aiMeta.suggested_wp_subject = attLabel.trim().substring(0, 80);\n  }\n  if (!aiMeta.request_type || aiMeta.request_type === 'other') {\n    aiMeta.request_type = isHrLeave ? 'configuration' : 'configuration';\n  }\n}\n\nconst failures = [];\n// DEVHUB_INTAKE_MODE_SKIP: Dev Hub owns intake for pilot group \u2014 skip legacy OpenProject auto-create.\nconst groupJid = String(ctx.group_jid || anal.group_jid || ctx.remote_jid || '').trim();\nconst DEVHUB_INTAKE_JIDS = new Set([\n  '120363411424964076@g.us', // testopenclow\n]);\nconst intakeModeHint = String(ctx.devhub_intake_mode || anal.devhub_intake_mode || $env.DEVHUB_INTAKE_MODE_OVERRIDE || '').trim();\nconst skipLegacyOpForDevhub = DEVHUB_INTAKE_JIDS.has(groupJid) || intakeModeHint === 'devhub';\nif (skipLegacyOpForDevhub) {\n  failures.push('devhub_intake_mode');\n}\n\nif (!hasLabel) failures.push('missing_label:' + approvedLabels.join('|'));\nif (!actionable) failures.push('not_actionable:request_type=' + (aiMeta.request_type || 'unknown'));\nif (confidence < effectiveMinConf) failures.push('low_confidence:' + confidence.toFixed(2) + '<' + effectiveMinConf);\nif (!hasAttachments && contentLen < minLen) failures.push('message_too_short:' + contentLen + '<' + minLen);\nif (ctx.managed_group && ctx.group_jid && !resolvedProjectId) {\n  failures.push('missing_group_project_mapping:' + ctx.group_jid);\n}\nif (!projectId || isNaN(projectId)) failures.push('missing_op_project_mapping');\nif (!typeId || isNaN(typeId)) failures.push('missing_op_type_mapping');\n\nconst eligible = failures.length === 0;\nconsole.log('[cw-ai] auto-create gates eligible=' + eligible + ' project=' + projectId + ' managed=' + hasManagedLabel + ' failures=' + failures.join(';'));\n\nreturn [{\n  json: {\n    ...anal,\n    auto_create_eligible: eligible,\n    gate_failures: failures,\n    gate_fail_reason: failures.join('; ') || null,\n    approved_labels: approvedLabels,\n    op_project_id: projectId,\n    op_project_identifier: ctx.op_project_identifier || null,\n    op_type_id: typeId,\n    // Prefer parent routed from OP# / keywords (e.g. OP#86 \u2192 kafaat #87); else env default.\n    op_parent_id: (anal.routed_op_parent_id || ctx.routed_op_parent_id\n      || parseInt(String($env.OPENPROJECT_DEFAULT_PARENT_ID || ''), 10) || null),\n    ai_meta: aiMeta,\n    referenced_op_wp_id: anal.referenced_op_wp_id || ctx.referenced_op_wp_id || null,\n    op_assignee_id: parseInt(String($env.OPENPROJECT_DEFAULT_ASSIGNEE_ID || ''), 10) || null,\n    op_public_url: String($env.OPENPROJECT_PUBLIC_BASE_URL || '').replace(/\\/$/, '')\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_if_autocreate",
+      "name": "IF: Auto-Create Eligible",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        3900,
+        660
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "auto_create",
+              "leftValue": "={{ $json.auto_create_eligible }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_build_gate_fail",
+      "name": "Build Gate Fail Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4160,
+        820
+      ],
+      "parameters": {
+        "jsCode": "const g = $input.first().json;\nconst reason = g.gate_fail_reason || 'unknown';\nconst marker = '<!-- cw-ai-gate-fail:' + g.message_id + ' -->';\n\nlet humanReason;\nif (reason.includes('missing_label')) {\n  humanReason = '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package \u0644\u0623\u0646 \u0627\u0644\u0645\u062d\u0627\u062f\u062b\u0629 \u0644\u0627 \u062a\u062d\u062a\u0648\u064a \u0639\u0644\u0649 \u0627\u0644\u062a\u0635\u0646\u064a\u0641 \u0627\u0644\u0645\u0637\u0644\u0648\u0628 (`ai-create-wp`) \u0623\u0648 \u062a\u0635\u0646\u064a\u0641 \u0645\u062c\u0645\u0648\u0639\u0629 WhatsApp \u0627\u0644\u0645\u064f\u062f\u0627\u0631\u0629.\n\n\u0623\u0636\u0641 \u0627\u0644\u062a\u0635\u0646\u064a\u0641 \u062b\u0645 \u0623\u0639\u062f \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0623\u0648 \u0639\u064a\u0651\u0646 `openproject_wp_id` \u064a\u062f\u0648\u064a\u0627\u064b.';\n} else if (reason.includes('low_confidence')) {\n  humanReason = '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package \u0644\u0623\u0646 \u062b\u0642\u0629 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0645\u0646\u062e\u0641\u0636\u0629.\n\n\u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644: ' + reason;\n} else if (reason.includes('not_actionable')) {\n  humanReason = '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package \u0644\u0623\u0646 \u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0644\u064a\u0633\u062a \u0637\u0644\u0628\u0627\u064b \u0642\u0627\u0628\u0644\u0627\u064b \u0644\u0644\u062a\u0646\u0641\u064a\u0630.\n\n\u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644: ' + reason;\n} else if (reason.includes('message_too_short')) {\n  humanReason = '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package \u0644\u0623\u0646 \u0646\u0635 \u0627\u0644\u0631\u0633\u0627\u0644\u0629 \u0642\u0635\u064a\u0631 \u062c\u062f\u0627\u064b.\n\n\u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644: ' + reason;\n} else if (reason.includes('missing_group_project_mapping')) {\n  humanReason = '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package \u0644\u0623\u0646 \u0645\u062c\u0645\u0648\u0639\u0629 WhatsApp \u063a\u064a\u0631 \u0645\u0631\u0628\u0648\u0637\u0629 \u0628\u0645\u0634\u0631\u0648\u0639 OpenProject.\n\n\u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644: ' + reason;\n} else if (reason.includes('missing_op')) {\n  humanReason = '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package \u0644\u0623\u0646 \u0625\u0639\u062f\u0627\u062f\u0627\u062a OpenProject \u063a\u064a\u0631 \u0645\u0643\u062a\u0645\u0644\u0629.\n\n\u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644: ' + reason;\n} else {\n  humanReason = '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package.\n\n\u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644: ' + reason;\n}\n\nconst noteContent = marker + '\n\u2139\ufe0f **\u0644\u0645 \u064a\u064f\u0646\u0634\u0623 Work Package \u0641\u064a OpenProject**\n\n' + humanReason;\nconst pgMarkDoneQuery = 'UPDATE cw_ai_idempotency SET status = \\'done\\', updated_at = NOW() WHERE chatwoot_message_id = ' + g.message_id + '::BIGINT';\n\nreturn [{\n  json: {\n    message_id: g.message_id,\n    conversation_id: g.conversation_id,\n    account_id: g.account_id,\n    note_content: noteContent,\n    pg_mark_done_query: pgMarkDoneQuery\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_post_gate_fail",
+      "name": "Post Gate Fail Note",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4420,
+        820
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.note_content, message_type: 'outgoing', private: true }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_pg_done_gate",
+      "name": "PG: Mark Done Gate",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        4680,
+        820
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Build Gate Fail Note').first().json.pg_mark_done_query }}",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "CWsJ4nzSemghjBfv",
+          "name": "Chatwoot Postgres"
+        }
+      }
+    },
+    {
+      "id": "cw_build_op_search",
+      "name": "Build OP Duplicate Search",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4160,
+        540
+      ],
+      "parameters": {
+        "jsCode": "const g = $input.first().json;\nconst projectId = g.op_project_id;\nconst parentId = g.op_parent_id;\nconst subject = String((g.ai_meta && g.ai_meta.suggested_wp_subject) || g.content || '').trim();\n\nconst filters = [{ project: { operator: '=', values: [String(projectId)] } }];\nif (parentId) filters.push({ parent: { operator: '=', values: [String(parentId)] } });\nfilters.push({ status: { operator: 'o', values: [] } });\n\nconst searchUrl = 'http://openproject/api/v3/work_packages?filters=' + encodeURIComponent(JSON.stringify(filters)) + '&pageSize=30';\n\nreturn [{ json: { ...g, op_search_url: searchUrl, op_search_subject: subject } }];"
+      }
+    },
+    {
+      "id": "cw_op_search",
+      "name": "OP: Search Duplicates",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4420,
+        540
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.op_search_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic YXBpa2V5OjMyZmQ1YTM4ZTllYzdmY2VlMGIyZGEwZjYwZjE0NjQ4OTg5YWY0Njg4OThmNzBiZjllNWYyYmM3YmJhZjE4Yzc="
+            },
+            {
+              "name": "Host",
+              "value": "master.tailcf9988.ts.net:10081"
+            },
+            {
+              "name": "X-Forwarded-Proto",
+              "value": "https"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_eval_dup",
+      "name": "Evaluate OP Duplicates",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4680,
+        540
+      ],
+      "parameters": {
+        "jsCode": "const g = $('Build OP Duplicate Search').first().json;\nlet resp = $input.first().json;\n\n// Fail-safe: if OP search errors, block create and force manual review.\nconst searchFailed = !!(\n  resp.error ||\n  resp.name === 'AxiosError' ||\n  resp.code === 'ECONNREFUSED' ||\n  resp.code === 'ETIMEDOUT' ||\n  (typeof resp.statusCode === 'number' && resp.statusCode >= 400) ||\n  (typeof resp.status === 'number' && resp.status >= 400)\n);\n\nif (searchFailed) {\n  console.log('[cw-ai] OP search failed \u2014 blocking create for manual review');\n  return [{\n    json: {\n      ...g,\n      duplicate_found: true,\n      op_search_failed: true,\n      duplicate_match: { id: 0, subject: 'OpenProject search unavailable \u2014 manual review required', score: 1 },\n      duplicate_score: 1\n    }\n  }];\n}\n\nif (resp.data && typeof resp.data === 'string') {\n  try { resp = JSON.parse(resp.data); } catch (e) { /* keep */ }\n} else if (resp.data && typeof resp.data === 'object') {\n  resp = resp.data;\n}\n\n// Unexpected payload without collection shape \u2014 fail safe.\nif (!resp || (resp._type && resp._type !== 'WorkPackageCollection' && !resp._embedded)) {\n  console.log('[cw-ai] OP search unexpected payload \u2014 blocking create');\n  return [{\n    json: {\n      ...g,\n      duplicate_found: true,\n      op_search_failed: true,\n      duplicate_match: { id: 0, subject: 'OpenProject search invalid response \u2014 manual review required', score: 1 },\n      duplicate_score: 1\n    }\n  }];\n}\n\nconst elements = (resp._embedded && resp._embedded.elements) ? resp._embedded.elements : [];\nconst searchSubject = String(g.op_search_subject || '').toLowerCase();\n\nfunction wordOverlap(a, b) {\n  const wa = new Set(a.split(/\\s+/).filter(w => w.length > 2));\n  const wb = new Set(b.split(/\\s+/).filter(w => w.length > 2));\n  if (!wa.size || !wb.size) return 0;\n  let inter = 0;\n  wa.forEach(w => { if (wb.has(w)) inter++; });\n  return inter / Math.max(wa.size, wb.size);\n}\n\nlet bestMatch = null;\nlet bestScore = 0;\nfor (const el of elements) {\n  const subj = String(el.subject || '').toLowerCase();\n  const score = wordOverlap(searchSubject, subj);\n  if (score > bestScore) {\n    bestScore = score;\n    bestMatch = { id: el.id, subject: el.subject, score };\n  }\n}\n\nconst DUPLICATE_THRESHOLD = 0.5;\nconst duplicateFound = !!(bestMatch && bestScore >= DUPLICATE_THRESHOLD);\nconsole.log('[cw-ai] duplicate check found=' + duplicateFound + ' score=' + bestScore);\n\nreturn [{\n  json: {\n    ...g,\n    duplicate_found: duplicateFound,\n    op_search_failed: false,\n    duplicate_match: bestMatch,\n    duplicate_score: bestScore\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_if_dup",
+      "name": "IF: Duplicate Found",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        4940,
+        540
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "dup_found",
+              "leftValue": "={{ $json.duplicate_found }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_build_dup_note",
+      "name": "Build Duplicate Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5200,
+        420
+      ],
+      "parameters": {
+        "jsCode": "const g = $input.first().json;\nconst match = g.duplicate_match || {};\nconst pubUrl = g.op_public_url || '';\nconst wpLink = (match.id && match.id !== 0)\n  ? ((pubUrl ? pubUrl + '/work_packages/' + match.id : 'WP#' + match.id))\n  : '';\n\nlet marker;\nlet noteContent;\nif (g.op_search_failed) {\n  marker = '<!-- cw-ai-op-search-fail:' + g.message_id + ' -->';\n  noteContent = marker + '\\n\u26a0\ufe0f **\u0645\u0631\u0627\u062c\u0639\u0629 \u064a\u062f\u0648\u064a\u0629 \u0645\u0637\u0644\u0648\u0628\u0629 \u2014 \u0641\u0634\u0644 \u0627\u0644\u0628\u062d\u062b \u0639\u0646 \u0627\u0644\u062a\u0643\u0631\u0627\u0631 \u0641\u064a OpenProject**\\n\\n'\n    + '\u062a\u0645 \u0625\u064a\u0642\u0627\u0641 \u0627\u0644\u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u062a\u0644\u0642\u0627\u0626\u064a \u0644\u062a\u062c\u0646\u0628 \u0625\u0646\u0634\u0627\u0621 \u0645\u0647\u0645\u0629 \u0645\u0643\u0631\u0631\u0629.\\n\\n'\n    + '\u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644: ' + (match.subject || 'OpenProject search failed') + '\\n\\n'\n    + '*\u064a\u0631\u062c\u0649 \u0627\u0644\u062a\u062d\u0642\u0642 \u0645\u0646 OpenProject \u0648\u062a\u0639\u064a\u064a\u0646 `openproject_wp_id` \u064a\u062f\u0648\u064a\u0627\u064b \u0625\u0646 \u0644\u0632\u0645.*';\n} else {\n  marker = '<!-- cw-ai-dup:' + g.message_id + ' -->';\n  noteContent = marker + '\\n\u26a0\ufe0f **Work Package \u0645\u062d\u062a\u0645\u0644 \u0645\u0643\u0631\u0631 \u0641\u064a OpenProject**\\n\\n'\n    + '\u0644\u0645 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 WP \u062c\u062f\u064a\u062f. \u064a\u0648\u062c\u062f WP \u0645\u0641\u062a\u0648\u062d \u0645\u0634\u0627\u0628\u0647:\\n'\n    + '- **#' + match.id + '** \u2014 ' + (match.subject || '') + '\\n'\n    + '- \u062a\u0637\u0627\u0628\u0642: ' + Math.round((g.duplicate_score || 0) * 100) + '%\\n'\n    + '- \u0627\u0644\u0631\u0627\u0628\u0637: ' + wpLink + '\\n\\n'\n    + '*\u0644\u0645 \u064a\u062a\u0645 \u062a\u0639\u064a\u064a\u0646 `openproject_wp_id` \u062a\u0644\u0642\u0627\u0626\u064a\u0627\u064b.*';\n}\n\nconst pgMarkDoneQuery = 'UPDATE cw_ai_idempotency SET status = \\'done\\', updated_at = NOW() WHERE chatwoot_message_id = ' + g.message_id + '::BIGINT';\n\nreturn [{\n  json: {\n    message_id: g.message_id,\n    conversation_id: g.conversation_id,\n    account_id: g.account_id,\n    note_content: noteContent,\n    pg_mark_done_query: pgMarkDoneQuery\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_post_dup_note",
+      "name": "Post Duplicate Note",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5460,
+        420
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.note_content, message_type: 'outgoing', private: true }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_pg_done_dup",
+      "name": "PG: Mark Done Dup",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        5720,
+        420
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Build Duplicate Note').first().json.pg_mark_done_query }}",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "CWsJ4nzSemghjBfv",
+          "name": "Chatwoot Postgres"
+        }
+      }
+    },
+    {
+      "id": "cw_build_op_create",
+      "name": "Build OP Create Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5200,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const g = $input.first().json;\nconst aiMeta = g.ai_meta || {};\nlet subject = String(aiMeta.suggested_wp_subject || aiMeta.project_hint || g.content || 'Chatwoot request').trim();\nif ((!subject || subject === '(no text content)' || subject.length < 8) && Array.isArray(g.attachments) && g.attachments.length) {\n  const attName = String(g.attachments[0].file_name || g.attachments[0].filename || g.raw_content || g.content || '').trim();\n  if (attName) subject = attName;\n}\nconst company = String(g.company || '').trim().toLowerCase();\nconst companyPrefix = company ? '[' + company.charAt(0).toUpperCase() + company.slice(1) + '] ' : '';\nif (companyPrefix && !subject.startsWith('[')) subject = companyPrefix + subject;\nif (subject.length > 80) subject = subject.substring(0, 77) + '...';\n\nconst priorityMap = {\n  low: parseInt(String($env.OPENPROJECT_PRIORITY_LOW_ID || '7'), 10),\n  medium: parseInt(String($env.OPENPROJECT_PRIORITY_NORMAL_ID || '8'), 10),\n  high: parseInt(String($env.OPENPROJECT_PRIORITY_HIGH_ID || '9'), 10),\n  urgent: parseInt(String($env.OPENPROJECT_PRIORITY_HIGH_ID || '9'), 10)\n};\nconst priKey = String(aiMeta.priority || 'medium').toLowerCase();\nconst priorityId = priorityMap[priKey] || priorityMap.medium;\n\nconst fullContent = String(g.raw_content || g.content || '').trim();\nconst cwBase = String($env.CHATWOOT_URL || '').replace(/\\/$/, '');\nconst convUrl = cwBase ? cwBase + '/app/accounts/' + g.account_id + '/conversations/' + g.conversation_id : '';\nconst attCtx = g.attachment_context || {};\n\nconst descParts = [\n  'Created by Chatwoot AI Analysis Pipeline',\n  '',\n  '## Source',\n  '- Chatwoot conversation: ' + (convUrl || g.conversation_id),\n  '- Chatwoot message ID: ' + g.message_id,\n  '- Customer: ' + (g.sender_name || 'Unknown'),\n];\nif (g.referenced_op_wp_id) {\n  descParts.push('- Related / follow-up to OP#' + g.referenced_op_wp_id);\n}\nif (g.op_parent_id) {\n  descParts.push('- Parent bucket WP: #' + g.op_parent_id);\n}\ndescParts.push(\n  '',\n  '## Original Message',\n  '```',\n  fullContent,\n  '```',\n  '',\n  '## AI Analysis (Odoo developer triage)',\n  g.analysis_text || ''\n);\n\nif (Array.isArray(g.attachments) && g.attachments.length) {\n  descParts.push('', '## Attachments (Chatwoot)');\n  for (const a of g.attachments) {\n    const name = a.file_name || a.filename || ('attachment-' + a.id);\n    const url = a.data_url || a.file_url || '';\n    descParts.push(url ? '- [' + name + '](' + url + ')' : '- ' + name);\n  }\n}\nif (attCtx.extracted_text) {\n  descParts.push('', '## Extracted Attachment Text', '```', String(attCtx.extracted_text), '```');\n} else if (attCtx.description) {\n  descParts.push('', '## Attachment Description', String(attCtx.description));\n}\n\nlet description = descParts.join('\\n');\nif (description.length > 50000) description = description.substring(0, 49997) + '...';\n\nconst links = {\n  project: { href: '/api/v3/projects/' + g.op_project_id },\n  type: { href: '/api/v3/types/' + g.op_type_id },\n  priority: { href: '/api/v3/priorities/' + priorityId }\n};\nif (g.op_parent_id) links.parent = { href: '/api/v3/work_packages/' + g.op_parent_id };\nif (g.op_assignee_id) links.assignee = { href: '/api/v3/users/' + g.op_assignee_id };\n\n// Test mode: simulate OP create failure\nif ($env.CHATWOOT_AI_TEST_MODE === 'true' && $env.CHATWOOT_AI_TEST_SCENARIO === 'op_create_fail') {\n  return [{ json: { ...g, op_create_body: null, wp_subject: subject, force_op_create_fail: true } }];\n}\n\nconst createBody = {\n  subject: subject,\n  description: { format: 'markdown', raw: description },\n  _links: links\n};\n\nreturn [{ json: { ...g, op_create_body: createBody, wp_subject: subject, op_wp_comment_md: g.op_wp_comment_md || g.analysis_text || '' } }];"
+      }
+    },
+    {
+      "id": "cw_if_force_fail",
+      "name": "IF: Force OP Fail",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        5460,
+        660
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "force_fail",
+              "leftValue": "={{ $json.force_op_create_fail === true }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_create_op_wp",
+      "name": "Create OP WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5720,
+        760
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://openproject/api/v3/work_packages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic YXBpa2V5OjMyZmQ1YTM4ZTllYzdmY2VlMGIyZGEwZjYwZjE0NjQ4OTg5YWY0Njg4OThmNzBiZjllNWYyYmM3YmJhZjE4Yzc="
+            },
+            {
+              "name": "Host",
+              "value": "master.tailcf9988.ts.net:10081"
+            },
+            {
+              "name": "X-Forwarded-Proto",
+              "value": "https"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.op_create_body) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_parse_op_create",
+      "name": "Parse OP Create Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5980,
+        660
+      ],
+      "parameters": {
+        "jsCode": "const g = $('Build OP Create Payload').first().json;\nlet resp = $input.first().json;\n\nif (g.force_op_create_fail) {\n  return [{ json: { ...g, op_create_success: false, op_create_error: 'simulated_openproject_create_failure' } }];\n}\n\n// n8n HTTP node may return body in resp.data as JSON string\nif (resp.data && typeof resp.data === 'string') {\n  try { resp = JSON.parse(resp.data); } catch (e) { /* keep resp */ }\n} else if (resp.data && typeof resp.data === 'object' && resp.data.id) {\n  resp = resp.data;\n}\n\nif (resp.error || !resp.id) {\n  const errMsg = resp.error\n    ? (typeof resp.error === 'string' ? resp.error : JSON.stringify(resp.error)).substring(0, 300)\n    : 'missing_wp_id_in_response';\n  return [{ json: { ...g, op_create_success: false, op_create_error: errMsg } }];\n}\n\nconst newWpId = parseInt(String(resp.id), 10);\nconst pubUrl = g.op_public_url || '';\nconst wpLink = pubUrl ? pubUrl + '/work_packages/' + newWpId : 'WP#' + newWpId;\n\nreturn [{\n  json: {\n    ...g,\n    op_create_success: true,\n    new_wp_id: newWpId,\n    wp_link: wpLink,\n    pg_mark_done_query: 'UPDATE cw_ai_idempotency SET status = \\'done\\', updated_at = NOW() WHERE chatwoot_message_id = ' + g.message_id + '::BIGINT'\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_if_op_ok",
+      "name": "IF: OP Create OK",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        6240,
+        660
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "op_ok",
+              "leftValue": "={{ $json.op_create_success === true }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cw_set_cw_wp",
+      "name": "Set Chatwoot WP ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6500,
+        540
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/custom_attributes",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ custom_attributes: Object.assign({ source: 'evolution', cw_ai_active_request_wp_id: $json.new_wp_id, cw_ai_active_request_until: new Date(Date.now() + (($json.request_window_minutes || 15) * 60000)).toISOString(), cw_ai_request_fingerprint: $json.request_fingerprint || null, cw_ai_source_message_ids: String($json.message_id) }, $json.group_jid ? { whatsapp_group_jid: $json.group_jid, whatsapp_thread_key: $json.group_jid } : {}, $json.multi_client_inbox ? { last_openproject_wp_id: $json.new_wp_id } : { openproject_wp_id: $json.new_wp_id }) }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_sync_recent_att",
+      "name": "Sync Recent OP Attachments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6565,
+        540
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot_evolution_bridge:3010/ops/openproject/wp-attachments-from-recent-messages?secret={{ $env.BRIDGE_SHARED_SECRET }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ wp_id: $('Parse OP Create Response').first().json.new_wp_id, conversation_id: $('Parse OP Create Response').first().json.conversation_id, anchor_message_id: $('Parse OP Create Response').first().json.message_id, window_minutes: parseInt(String($env.CHATWOOT_AI_RECENT_ATTACHMENT_MINUTES || '45'), 10), account_id: $('Parse OP Create Response').first().json.account_id }) }}",
+        "options": {
+          "timeout": 180000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_upload_op_att",
+      "name": "Upload OP Attachments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6630,
+        540
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot_evolution_bridge:3010/ops/openproject/wp-attachments-from-message?secret={{ $env.BRIDGE_SHARED_SECRET }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ wp_id: $('Parse OP Create Response').first().json.new_wp_id, conversation_id: $('Parse OP Create Response').first().json.conversation_id, message_id: $('Parse OP Create Response').first().json.message_id, account_id: $('Parse OP Create Response').first().json.account_id }) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_upload_op_analysis",
+      "name": "Upload OP Analysis Attachment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6760,
+        540
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot_evolution_bridge:3010/ops/openproject/wp-analysis-attachment?secret={{ $env.BRIDGE_SHARED_SECRET }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ wp_id: $('Parse OP Create Response').first().json.new_wp_id, message_id: $('Parse OP Create Response').first().json.message_id, analysis_md: $('Parse OP Create Response').first().json.analysis_attachment_md, description: 'Chatwoot AI analysis for message ' + $('Parse OP Create Response').first().json.message_id }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "cw_build_wp_created",
+      "name": "Build WP Created Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6760,
+        540
+      ],
+      "parameters": {
+        "jsCode": "// HTTP node output replaces context; read from Parse OP Create Response\nconst g = $('Parse OP Create Response').first().json;\nconst marker = '<!-- cw-ai-wp-created:' + g.message_id + ' -->';\nconst stickyNote = g.multi_client_inbox\n  ? '- \u0645\u062d\u0627\u062f\u062b\u0629 \u0645\u062a\u0639\u062f\u062f\u0629 \u0627\u0644\u0639\u0645\u0644\u0627\u0621 (Dev Needed): **\u0644\u0645** \u064a\u064f\u062b\u0628\u062a `openproject_wp_id` \u0639\u0644\u0649 \u0627\u0644\u0645\u062d\u0627\u062f\u062b\u0629 \u062d\u062a\u0649 \u0644\u0627 \u062a\u064f\u0631\u0628\u0637 \u0643\u0644 \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0628\u0646\u0641\u0633 \u0627\u0644\u062a\u0627\u0633\u0643.'\n  : '- \u062a\u0645 \u062a\u0639\u064a\u064a\u0646 `openproject_wp_id` \u0639\u0644\u0649 \u0627\u0644\u0645\u062d\u0627\u062f\u062b\u0629.';\nconst noteContent = marker + '\\n\u2705 **\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 Work Package \u0641\u064a OpenProject**\\n\\n'\n  + '- WP ID: **#' + g.new_wp_id + '**\\n'\n  + '- \u0627\u0644\u0639\u0646\u0648\u0627\u0646: ' + (g.wp_subject || '') + '\\n'\n  + '- \u0627\u0644\u0631\u0627\u0628\u0637: ' + (g.wp_link || '') + '\\n'\n  + (g.op_parent_id ? '- Parent: **#' + g.op_parent_id + '**\\n' : '')\n  + (g.referenced_op_wp_id ? '- Related OP: **#' + g.referenced_op_wp_id + '**\\n' : '')\n  + stickyNote;\n\nreturn [{\n  json: {\n    message_id: g.message_id,\n    conversation_id: g.conversation_id,\n    account_id: g.account_id,\n    note_content: noteContent,\n    new_wp_id: g.new_wp_id,\n    analysis_text: g.analysis_text\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_post_wp_created",
+      "name": "Post WP Created Note",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7020,
+        540
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.note_content, message_type: 'outgoing', private: true }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_post_op_new",
+      "name": "Post Analysis to New WP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7280,
+        540
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://openproject/api/v3/work_packages/{{ $('Parse OP Create Response').first().json.new_wp_id }}/activities",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Basic YXBpa2V5OjMyZmQ1YTM4ZTllYzdmY2VlMGIyZGEwZjYwZjE0NjQ4OTg5YWY0Njg4OThmNzBiZjllNWYyYmM3YmJhZjE4Yzc="
+            },
+            {
+              "name": "Host",
+              "value": "master.tailcf9988.ts.net:10081"
+            },
+            {
+              "name": "X-Forwarded-Proto",
+              "value": "https"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ comment: { format: 'markdown', raw: $('Parse OP Create Response').first().json.op_wp_comment_md || ('## Chatwoot AI Analysis\\n\\n' + ($('Parse OP Create Response').first().json.analysis_text || '')) } }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      }
+    },
+    {
+      "id": "cw_pg_done_created",
+      "name": "PG: Mark Done Created",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        7540,
+        540
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Parse OP Create Response').first().json.pg_mark_done_query }}",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "CWsJ4nzSemghjBfv",
+          "name": "Chatwoot Postgres"
+        }
+      }
+    },
+    {
+      "id": "cw_build_op_err",
+      "name": "Build OP Create Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6500,
+        820
+      ],
+      "parameters": {
+        "jsCode": "const g = $input.first().json;\nconst errMsg = String(g.op_create_error || 'unknown').substring(0, 300);\nconst safeErr = errMsg.replace(/'/g, \"''\");\nconst marker = '<!-- cw-ai-op-create-fail:' + g.message_id + ' -->';\n\nconst noteContent = marker + '\\n\u26a0\ufe0f **\u0641\u0634\u0644 \u0625\u0646\u0634\u0627\u0621 Work Package \u0641\u064a OpenProject**\\n\\n'\n  + '\u0627\u0644\u062e\u0637\u0623: ' + errMsg + '\\n\\n'\n  + '*\u064a\u0631\u062c\u0649 \u0625\u0646\u0634\u0627\u0621 WP \u064a\u062f\u0648\u064a\u0627\u064b \u0648\u062a\u0639\u064a\u064a\u0646 `openproject_wp_id`.*';\n\nreturn [{\n  json: {\n    message_id: g.message_id,\n    conversation_id: g.conversation_id,\n    account_id: g.account_id,\n    note_content: noteContent,\n    pg_error_query: \"UPDATE cw_ai_idempotency SET status = 'error', updated_at = NOW(), error_message = '\" + safeErr.substring(0, 500) + \"' WHERE chatwoot_message_id = \" + g.message_id + '::BIGINT'\n  }\n}];"
+      }
+    },
+    {
+      "id": "cw_post_op_err",
+      "name": "Post OP Create Error",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6760,
+        820
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $env.CHATWOOT_API_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $json.note_content, message_type: 'outgoing', private: true }) }}",
+        "options": {
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "cw_pg_err_op",
+      "name": "PG: Mark Error OP Create",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        7020,
+        820
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Build OP Create Error').first().json.pg_error_query }}",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "CWsJ4nzSemghjBfv",
+          "name": "Chatwoot Postgres"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Chatwoot Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Events": {
+      "main": [
+        [
+          {
+            "node": "IF: Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Skipped": {
+      "main": [
+        [
+          {
+            "node": "Log Skip",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PG: Lock Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Lock Message": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Lock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Lock": {
+      "main": [
+        [
+          {
+            "node": "IF: Should Process",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Should Process": {
+      "main": [
+        [
+          {
+            "node": "Get Conversation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Skip PG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Conversation": {
+      "main": [
+        [
+          {
+            "node": "Extract Group Jid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Group Jid": {
+      "main": [
+        [
+          {
+            "node": "Resolve Group Project",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve Group Project": {
+      "main": [
+        [
+          {
+            "node": "Build Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Context": {
+      "main": [
+        [
+          {
+            "node": "Get Full Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Full Message": {
+      "main": [
+        [
+          {
+            "node": "Merge Message Into Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Message Into Context": {
+      "main": [
+        [
+          {
+            "node": "Preprocess Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preprocess Attachments": {
+      "main": [
+        [
+          {
+            "node": "Merge Preprocess Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Preprocess Result": {
+      "main": [
+        [
+          {
+            "node": "Build AI Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build AI Request": {
+      "main": [
+        [
+          {
+            "node": "Resolve Final Provider",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve Final Provider": {
+      "main": [
+        [
+          {
+            "node": "Route Final Provider",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Final Provider": {
+      "main": [
+        [
+          {
+            "node": "Mock AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call OpenWebUI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Dify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock AI Response": {
+      "main": [
+        [
+          {
+            "node": "IF: AI OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call OpenAI": {
+      "main": [
+        [
+          {
+            "node": "IF: AI OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Gemini": {
+      "main": [
+        [
+          {
+            "node": "IF: AI OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call OpenWebUI": {
+      "main": [
+        [
+          {
+            "node": "IF: AI OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Dify": {
+      "main": [
+        [
+          {
+            "node": "Normalize Dify Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Dify Response": {
+      "main": [
+        [
+          {
+            "node": "IF: AI OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: AI OK": {
+      "main": [
+        [
+          {
+            "node": "Build Analysis Note",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Error Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Analysis Note": {
+      "main": [
+        [
+          {
+            "node": "IF: Sticky Candidate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Error Note": {
+      "main": [
+        [
+          {
+            "node": "Post Error Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Sticky Candidate": {
+      "main": [
+        [
+          {
+            "node": "Fetch Sticky WP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decide Sticky WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Sticky WP": {
+      "main": [
+        [
+          {
+            "node": "Decide Sticky WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decide Sticky WP": {
+      "main": [
+        [
+          {
+            "node": "IF: Clear Sticky",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Clear Sticky": {
+      "main": [
+        [
+          {
+            "node": "Archive Sticky Attrs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Post Analysis Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Archive Sticky Attrs": {
+      "main": [
+        [
+          {
+            "node": "PATCH Archive Sticky",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PATCH Archive Sticky": {
+      "main": [
+        [
+          {
+            "node": "Post Analysis Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Analysis Note": {
+      "main": [
+        [
+          {
+            "node": "IF: WP Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Error Note": {
+      "main": [
+        [
+          {
+            "node": "PG: Mark Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: WP Exists": {
+      "main": [
+        [
+          {
+            "node": "Post to OpenProject WP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Evaluate Auto-Create Gates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to OpenProject WP": {
+      "main": [
+        [
+          {
+            "node": "Upload OP Attachments Existing WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload OP Attachments Existing WP": {
+      "main": [
+        [
+          {
+            "node": "Upload OP Analysis Existing WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload OP Analysis Existing WP": {
+      "main": [
+        [
+          {
+            "node": "PG: Mark Done Existing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Auto-Create Gates": {
+      "main": [
+        [
+          {
+            "node": "IF: Auto-Create Eligible",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Auto-Create Eligible": {
+      "main": [
+        [
+          {
+            "node": "Build OP Duplicate Search",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Gate Fail Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Gate Fail Note": {
+      "main": [
+        [
+          {
+            "node": "Post Gate Fail Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Gate Fail Note": {
+      "main": [
+        [
+          {
+            "node": "PG: Mark Done Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build OP Duplicate Search": {
+      "main": [
+        [
+          {
+            "node": "OP: Search Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OP: Search Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Evaluate OP Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate OP Duplicates": {
+      "main": [
+        [
+          {
+            "node": "IF: Duplicate Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Duplicate Found": {
+      "main": [
+        [
+          {
+            "node": "Build Duplicate Note",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build OP Create Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Duplicate Note": {
+      "main": [
+        [
+          {
+            "node": "Post Duplicate Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Duplicate Note": {
+      "main": [
+        [
+          {
+            "node": "PG: Mark Done Dup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build OP Create Payload": {
+      "main": [
+        [
+          {
+            "node": "IF: Force OP Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Force OP Fail": {
+      "main": [
+        [
+          {
+            "node": "Parse OP Create Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create OP WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create OP WP": {
+      "main": [
+        [
+          {
+            "node": "Parse OP Create Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse OP Create Response": {
+      "main": [
+        [
+          {
+            "node": "IF: OP Create OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: OP Create OK": {
+      "main": [
+        [
+          {
+            "node": "Set Chatwoot WP ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build OP Create Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Chatwoot WP ID": {
+      "main": [
+        [
+          {
+            "node": "Sync Recent OP Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sync Recent OP Attachments": {
+      "main": [
+        [
+          {
+            "node": "Upload OP Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload OP Attachments": {
+      "main": [
+        [
+          {
+            "node": "Upload OP Analysis Attachment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload OP Analysis Attachment": {
+      "main": [
+        [
+          {
+            "node": "Build WP Created Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build WP Created Note": {
+      "main": [
+        [
+          {
+            "node": "Post WP Created Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post WP Created Note": {
+      "main": [
+        [
+          {
+            "node": "Post Analysis to New WP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Analysis to New WP": {
+      "main": [
+        [
+          {
+            "node": "PG: Mark Done Created",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build OP Create Error": {
+      "main": [
+        [
+          {
+            "node": "Post OP Create Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post OP Create Error": {
+      "main": [
+        [
+          {
+            "node": "PG: Mark Error OP Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "2900e3b7-57cd-46e7-ba1f-c8311938ab93",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "createdAt": "2026-07-20T19:27:00.722Z",
+      "updatedAt": "2026-07-20T19:27:00.722Z",
+      "role": "workflow:owner",
+      "workflowId": "gKMYWKVT5FtUAFwB",
+      "projectId": "aNJRSOqettC5Rl5a",
+      "project": {
+        "createdAt": "2026-06-26T11:53:40.801Z",
+        "updatedAt": "2026-06-26T11:59:58.820Z",
+        "id": "aNJRSOqettC5Rl5a",
+        "name": "sbry youssef <vendorah2@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "projectRelations": [
+          {
+            "createdAt": "2026-06-26T11:53:40.801Z",
+            "updatedAt": "2026-06-26T11:53:40.801Z",
+            "role": "project:personalOwner",
+            "userId": "81ac7c3c-1b44-42d1-85fc-f2727d0053e0",
+            "projectId": "aNJRSOqettC5Rl5a",
+            "user": {
+              "createdAt": "2026-06-26T11:53:39.989Z",
+              "updatedAt": "2026-07-15T09:27:36.345Z",
+              "id": "81ac7c3c-1b44-42d1-85fc-f2727d0053e0",
+              "email": "vendorah2@gmail.com",
+              "firstName": "sbry",
+              "lastName": "youssef",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "firstSuccessfulWorkflowId": "iPUrTq2cNrYB13sY",
+                "userActivatedAt": 1782475962061
+              },
+              "role": "global:owner",
+              "disabled": false,
+              "mfaEnabled": false,
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": []
+}

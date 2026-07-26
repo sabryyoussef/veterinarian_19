@@ -35,6 +35,13 @@ body.o_petspot_test_ui .o_petspot_test_ribbon {
 
 /* Navbar / menus */
 body.o_petspot_test_ui .o_main_navbar {
+    --NavBar-entry-color: #fff;
+    --NavBar-entry-color--hover: #fff;
+    --NavBar-entry-color--active: #fff;
+    --NavBar-entry-backgroundColor: transparent;
+    --NavBar-entry-backgroundColor--hover: rgba(0, 0, 0, 0.08);
+    --NavBar-entry-backgroundColor--focus: rgba(0, 0, 0, 0.08);
+    --NavBar-entry-backgroundColor--active: rgba(0, 0, 0, 0.08);
     background: var(--o-petspot-test-accent-dark) !important;
     border-bottom: 3px solid var(--o-petspot-test-warn) !important;
 }
@@ -44,11 +51,6 @@ body.o_petspot_test_ui .o_main_navbar .o_nav_entry,
 body.o_petspot_test_ui .o_main_navbar a,
 body.o_petspot_test_ui .o_main_navbar button {
     color: #fff !important;
-}
-
-body.o_petspot_test_ui .o_main_navbar .o_menu_sections .dropdown-toggle:hover,
-body.o_petspot_test_ui .o_main_navbar .o_nav_entry:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
 }
 
 /* Primary actions */

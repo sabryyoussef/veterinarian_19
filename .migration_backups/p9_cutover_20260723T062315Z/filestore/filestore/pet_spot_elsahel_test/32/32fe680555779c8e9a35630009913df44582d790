@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 5544
+- Customer: Dev Needed
+- Provider: openai / gpt-4o-mini
+- Analyzed at: 2026-07-02 11:29:30 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.00
+
+**الملخص:**
+Customer request for development assistance.
+
+**الإجراء المطلوب:**
+Contact the customer for further details on their needs.
+
+## Original Message
+
+```
+Marwah@edafa.sa
+Raneem@edafa.sa
+```

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'WA Campaign',
-    'version': '19.0.1.10.1',
+    'version': '19.0.1.20.1',
     'category': 'Productivity',
     'summary': 'Send & receive WA from CRM leads and contacts via Evolution API + Campaigns',
     'description': """
@@ -46,8 +46,12 @@ Author: Sabry Youssef
         'views/res_partner_views.xml',
         'views/crm_lead_views.xml',
         'views/whatsapp_menu.xml',
+        'views/whatsapp_ui_merge_menus.xml',
+        'views/discuss_channel_wa_views.xml',
+        'views/discuss_hub_ops_views.xml',
+        'views/campaign_hub_ops_views.xml',
     ],
     'installable': True,
-    'application': True,
+    'application': False,
     'auto_install': False,
 }

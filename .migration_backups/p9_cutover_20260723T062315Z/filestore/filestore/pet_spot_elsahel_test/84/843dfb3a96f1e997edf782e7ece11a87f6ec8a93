@@ -1,0 +1,27 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/64
+- Message ID: 8168
+- Customer: Egyptian pet veterinarians community
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-09 14:02:23 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+User is seeking recommendations for a printing service in Alexandria for small quantities of bags with clinic names.
+
+**الإجراء المطلوب:**
+No action required, this is a general inquiry.
+
+## Original Message
+
+```
+دكاترة
+مين يعرف مكان كويس لطباعة كياس باسم العيادة بس تكون كميات قليلة لان اقل مكان لقيته كان ٥٠ كيلو 
+انا بالاسكندرية
+```

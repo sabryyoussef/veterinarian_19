@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "state": "deployed_staging_reviewed",
+  "deploy_record_id": 1,
+  "approval_id": 1,
+  "target_id": 4,
+  "target_name": "PetSpot Test Staging Deploy",
+  "non_production": true,
+  "database": "pet_spot_elsahel_test",
+  "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+  "result_state": "succeeded",
+  "backup_ref": "runner://staging/5d81cdc6f57b"
+}

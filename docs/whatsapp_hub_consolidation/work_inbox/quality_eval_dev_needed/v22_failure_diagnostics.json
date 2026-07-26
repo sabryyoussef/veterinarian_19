@@ -1,0 +1,1041 @@
+[
+  {
+    "sample_id": "DN-07",
+    "analysis_id": 127,
+    "messages": [
+      {
+        "id": 3452,
+        "body": "[audio]",
+        "media_kind": "audio",
+        "timestamp": "2026-04-23 12:56:35"
+      },
+      {
+        "id": 3451,
+        "body": "شوف الوقت الي فاضي فية ندخل ميتينج نشوف المشاكل ايه ونحاول نوصل لحل حتي من الفرونت",
+        "media_kind": "none",
+        "timestamp": "2026-04-23 12:59:02"
+      },
+      {
+        "id": 3450,
+        "body": "@261928748367971 @226177423782093 @123154496262291",
+        "media_kind": "none",
+        "timestamp": "2026-04-23 13:11:06"
+      },
+      {
+        "id": 3449,
+        "body": "السلام عليكم \nمحتاجين إجتماع يا دكتور لحل المشاكل المتعطلة في كل شركة\n @35098925748370 @226177423782093",
+        "media_kind": "none",
+        "timestamp": "2026-04-23 13:19:34"
+      },
+      {
+        "id": 3447,
+        "body": "صباح الخير \nدكتور صبري \nفي داتا بيز استا عندي ايرور بيظهر لما بدخل في صفحة الموظفين تحديدا لما بضغط علي New \nRPC_ERROR\n\nOdoo Server Error\n\nOccured on erp.asta.edu.sa on model hr.employee on 2026-04-14 09:49:35 GMT\n\nTraceback (most recent call last):\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 2266, in _serve_db\n    return service_model.retrying(serve_func, env=self.env)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/service/model.py\", line 184, in retrying\n    result = func()\n             ^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 2313, in _serve_ir_http\n    response = self.dispatcher.dispatch(rule.endpoint, args)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 2528, in dispatch\n    result = self.request.registry['ir.http']._dispatch(endpoint)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_http.py\", line 357, in _dispatch\n    result = endpoint(**request.params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 788, in route_wrapper\n    result = endpoint(self, *args, **params_ok)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web/controllers/dataset.py\", line 32, in call_kw\n    return call_kw(request.env[model], method, args, kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/service/model.py\", line 93, in call_kw\n    result = method(recs, *args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web/models/models.py\", line 2097, in onchange\n    record._apply_onchange_methods(field_name, result)\n  File \"/usr/lib/python3/dist-packages/odoo/orm/models.py\", line 6973, in _apply_onchange_methods\n    res = method(self)\n          ^^^^^^^^^^^^\n  File \"/opt/localaddons/openeducat_core/models/hr.py\", line 37, in onchange_address_id\n    self.mobile_phone = self.address_id.mobile\n                        ^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'res.partner' object has no attribute 'mobile'\n\nThe above server error caused the following client error:\nOwlError: An error occured in the owl lifecycle (see this Error's \"cause\" property)\n    Error: An error occured in the owl lifecycle (see this Error's \"cause\" property)\n        at handleError (https://erp.asta.edu.sa/web/assets/0d8dc28/web.assets_web.min.js:762:101)\n        at App.handleError (https://erp.asta.edu.sa/web/assets/0d8dc28/web.assets_web.min.js:1420:29)\n        at ComponentNode.initiateRender (https://erp.asta.edu.sa/web/assets/0d8dc28/web.assets_web.min.js:854:19)\n\nCaused by: RPC_ERROR: Odoo Server Error\n    RPC_ERROR\n        at makeErrorFromResponse (https://erp.asta.edu.sa/web/assets/0d8dc28/web.assets_web.min.js:3183:163)\n        at XMLHttpRequest.<anonymous> (https://erp.asta.edu.sa/web/assets/0d8dc28/web.assets_web.min.js:3189:13)",
+        "media_kind": "none",
+        "timestamp": "2026-04-23 13:21:00"
+      },
+      {
+        "id": 3448,
+        "body": "و داتا بيز كفاءات \nعندي مشكلة برضوا لما بضغط علي new \nفي صفحة الموظف RPC_ERROR\n\nOdoo Server Error\n\nOccured on kafaaterp.odoo.com.se on model hr.employee on 2026-04-14 09:51:44 GMT\n\nTraceback (most recent call last):\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 2266, in _serve_db\n    return service_model.retrying(serve_func, env=self.env)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/service/model.py\", line 184, in retrying\n    result = func()\n             ^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 2313, in _serve_ir_http\n    response = self.dispatcher.dispatch(rule.endpoint, args)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 2528, in dispatch\n    result = self.request.registry['ir.http']._dispatch(endpoint)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_http.py\", line 357, in _dispatch\n    result = endpoint(**request.params)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 788, in route_wrapper\n    result = endpoint(self, *args, **params_ok)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web/controllers/dataset.py\", line 32, in call_kw\n    return call_kw(request.env[model], method, args, kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/service/model.py\", line 93, in call_kw\n    result = method(recs, *args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web/models/models.py\", line 2097, in onchange\n    record._apply_onchange_methods(field_name, result)\n  File \"/usr/lib/python3/dist-packages/odoo/orm/models.py\", line 6973, in _apply_onchange_methods\n    res = method(self)\n          ^^^^^^^^^^^^\n  File \"/opt/localaddons/openeducat_core/models/hr.py\", line 37, in onchange_address_id\n    self.mobile_phone = self.address_id.mobile\n                        ^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'res.partner' object has no attribute 'mobile'\n\nThe above server error caused the following client error:\nOwlError: The following error occurred in onWillStart: \"Odoo Server Error\"\n    Error\n        at wrapError (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:892:139)\n        at onWillStart (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:897:117)\n        at useModel (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:6012:104)\n        at EmployeeFormController.setup (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:9210:99)\n        at EmployeeFormController.setup (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:9257:829)\n        at EmployeeFormController.setup (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:9269:360)\n        at EmployeeFormController.setup (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:17723:717)\n        at EmployeeFormController.setup (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:20030:563)\n        at new ComponentNode (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:850:202)\n        at https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:1418:6\n\nCaused by: RPC_ERROR: Odoo Server Error\n    RPC_ERROR\n        at makeErrorFromResponse (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:3185:163)\n        at XMLHttpRequest.<anonymous> (https://kafaaterp.odoo.com.se/web/assets/d792909/web.assets_web.min.js:3191:13)",
+        "media_kind": "none",
+        "timestamp": "2026-04-23 13:21:00"
+      }
+    ],
+    "project_candidates": [
+      {
+        "aliases_matched": [
+          "أستا",
+          "Asta"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'أستا' (arabic_name)"
+          },
+          {
+            "type": "english_alias",
+            "value": "Matched alias 'Asta' (english_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "ASTA",
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "project_relevance": {
+          "confidence": 0.8,
+          "evidence": [
+            "alias in actionable statement (msg 3447)",
+            "alias in actionable statement (msg 3447)"
+          ],
+          "is_current_topic": true,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.0,
+          "current_topic_score": 0.5,
+          "direct_link_score": 0.0,
+          "final_score": 1.17
+        }
+      },
+      {
+        "aliases_matched": [
+          "Kafaat",
+          "كفاءات"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "canonical_name",
+            "value": "Matched alias 'Kafaat' (canonical)"
+          },
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'كفاءات' (arabic_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "KAFAAT",
+        "project_id": 11,
+        "project_name": "Kafaat (كفاءات)",
+        "project_relevance": {
+          "confidence": 0.8,
+          "evidence": [
+            "alias in actionable statement (msg 3448)",
+            "alias in actionable statement (msg 3448)"
+          ],
+          "is_current_topic": true,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.0,
+          "current_topic_score": 0.5,
+          "direct_link_score": 0.0,
+          "final_score": 1.17
+        }
+      }
+    ],
+    "work_item_candidates": [],
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_confidence": 0.0,
+      "proposed_project_code": null,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "requires_project_confirmation": true,
+      "resolution_status": "unresolved",
+      "selection_reason": "candidates_too_close",
+      "thresholds": {
+        "candidate_score_margin": 0.2,
+        "media_dominant_ratio": 0.4,
+        "project_relevance_min_confidence": 0.5,
+        "strong_candidate_min_score": 0.85,
+        "unique_candidate_min_score": 0.7
+      }
+    },
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "classification": "new_dev_request",
+    "work_item_decision": "new",
+    "dify_project": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 0.8,
+      "evidence": [
+        "alias in actionable statement (msg 3447)",
+        "alias in actionable statement (msg 3448)"
+      ],
+      "candidate_ids": [
+        7,
+        11
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "dify_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3447)",
+        "alias in actionable statement (msg 3448)"
+      ],
+      "confidence": 0.8
+    },
+    "dify_actionability": {
+      "is_actionable": true,
+      "score": 1.0,
+      "signals": [
+        "ايرور",
+        "محتاج",
+        "مشاكل",
+        "مشكلة"
+      ],
+      "missing_requirements": []
+    },
+    "dify_classification": "new_task",
+    "dify_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    }
+  },
+  {
+    "sample_id": "DN-08",
+    "analysis_id": 128,
+    "messages": [
+      {
+        "id": 2233,
+        "body": "كفاءات",
+        "media_kind": "none",
+        "timestamp": "2026-06-07 20:04:14"
+      },
+      {
+        "id": 2232,
+        "body": "كفاءات",
+        "media_kind": "none",
+        "timestamp": "2026-06-07 20:04:25"
+      },
+      {
+        "id": 2231,
+        "body": "كفاءات",
+        "media_kind": "none",
+        "timestamp": "2026-06-07 20:05:03"
+      },
+      {
+        "id": 2230,
+        "body": "@165837629583434",
+        "media_kind": "none",
+        "timestamp": "2026-06-07 20:06:11"
+      },
+      {
+        "id": 2229,
+        "body": "[image]",
+        "media_kind": "image",
+        "timestamp": "2026-06-07 20:08:00"
+      },
+      {
+        "id": 2228,
+        "body": "RFID Gates",
+        "media_kind": "none",
+        "timestamp": "2026-06-07 20:08:06"
+      }
+    ],
+    "project_candidates": [
+      {
+        "aliases_matched": [
+          "كفاءات"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": true,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'كفاءات' (arabic_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "KAFAAT",
+        "project_id": 11,
+        "project_name": "Kafaat (كفاءات)",
+        "project_relevance": {
+          "confidence": 0.7,
+          "evidence": [],
+          "is_current_topic": true,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.0,
+          "context_score": 0.09,
+          "current_topic_score": 0.35,
+          "direct_link_score": 0.0,
+          "final_score": 1.41
+        }
+      }
+    ],
+    "work_item_candidates": [],
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_confidence": 0.97,
+      "proposed_project_code": "KAFAAT",
+      "proposed_project_id": 11,
+      "proposed_project_name": "Kafaat (كفاءات)",
+      "requires_project_confirmation": true,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "thresholds": {
+        "candidate_score_margin": 0.2,
+        "media_dominant_ratio": 0.4,
+        "project_relevance_min_confidence": 0.5,
+        "strong_candidate_min_score": 0.85,
+        "unique_candidate_min_score": 0.7
+      }
+    },
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "classification": "noise",
+    "work_item_decision": "none",
+    "dify_project": {
+      "project_id": 11,
+      "project_name": "Kafaat (كفاءات)",
+      "confidence": 0.97,
+      "evidence": [
+        {
+          "type": "arabic_alias",
+          "value": "Matched alias 'كفاءات' (arabic_name)"
+        }
+      ],
+      "candidate_ids": [
+        11
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "dify_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.7
+    },
+    "dify_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "dify_classification": "noise",
+    "dify_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    }
+  },
+  {
+    "sample_id": "DN-14",
+    "analysis_id": 150,
+    "messages": [
+      {
+        "id": 940,
+        "body": "اوك",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 15:45:41"
+      },
+      {
+        "id": 939,
+        "body": "فين استا @165837629583434",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 15:49:59"
+      },
+      {
+        "id": 938,
+        "body": "Real ip شغال",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 15:50:19"
+      },
+      {
+        "id": 937,
+        "body": "و تم اعتماده",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 15:50:26"
+      },
+      {
+        "id": 936,
+        "body": "I am in edafa tasks and cycle x in parlel   once one finish i will test asta",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 16:06:07"
+      },
+      {
+        "id": 935,
+        "body": "I will open it as side task with this",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 16:08:06"
+      },
+      {
+        "id": 934,
+        "body": "هو السيرفر الداخلي ال ssh بتاعة اتغير كنت بعمل login من غير pass دلوقتي طالب باس ومش معايا",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 16:14:32"
+      },
+      {
+        "id": 933,
+        "body": "@226177423782093",
+        "media_kind": "none",
+        "timestamp": "2026-07-15 16:14:37"
+      }
+    ],
+    "project_candidates": [
+      {
+        "aliases_matched": [
+          "أستا",
+          "Asta"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'أستا' (arabic_name)"
+          },
+          {
+            "type": "english_alias",
+            "value": "Matched alias 'Asta' (english_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "ASTA",
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "project_relevance": {
+          "confidence": 0.7,
+          "evidence": [],
+          "is_current_topic": true,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.06,
+          "current_topic_score": 0.35,
+          "direct_link_score": 0.0,
+          "final_score": 1.08
+        }
+      },
+      {
+        "aliases_matched": [
+          "Cycle X"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "canonical_name",
+            "value": "Matched alias 'Cycle X' (canonical)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "CYCLEX",
+        "project_id": 10,
+        "project_name": "Cycle X",
+        "project_relevance": {
+          "confidence": 0.7,
+          "evidence": [],
+          "is_current_topic": true,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.03,
+          "current_topic_score": 0.35,
+          "direct_link_score": 0.0,
+          "final_score": 1.05
+        }
+      }
+    ],
+    "work_item_candidates": [
+      {
+        "deterministic_score": 0.45,
+        "direct_message_link": false,
+        "evidence": [
+          {
+            "type": "same_project",
+            "value": "Same project"
+          },
+          {
+            "type": "inferred_title_match",
+            "value": "Weak title term overlap"
+          }
+        ],
+        "matched_terms": [
+          "asta"
+        ],
+        "phase": "received",
+        "project_id": 7,
+        "relation_evidence": [
+          "Same project",
+          "Weak title term overlap"
+        ],
+        "short_description": "",
+        "title": "Implement ASTA attendance PDF export fix for July batch",
+        "work_item_id": 3344
+      }
+    ],
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_confidence": 0.0,
+      "proposed_project_code": null,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "requires_project_confirmation": true,
+      "resolution_status": "unresolved",
+      "selection_reason": "candidates_too_close",
+      "thresholds": {
+        "candidate_score_margin": 0.2,
+        "media_dominant_ratio": 0.4,
+        "project_relevance_min_confidence": 0.5,
+        "strong_candidate_min_score": 0.85,
+        "unique_candidate_min_score": 0.7
+      }
+    },
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "classification": "noise",
+    "work_item_decision": "none",
+    "dify_project": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "dify_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "dify_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "dify_classification": "none",
+    "dify_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    }
+  },
+  {
+    "sample_id": "DN-18",
+    "analysis_id": 138,
+    "messages": [
+      {
+        "id": 3107,
+        "body": "gpc_worker_timesheet_labor_accrual_bridge.tar.gz",
+        "media_kind": "none",
+        "timestamp": "2026-05-06 07:01:31"
+      },
+      {
+        "id": 3106,
+        "body": "✅ تم اختبار الوحدة البرمجية بنجاح\n\nالوحدة: gpc_worker_timesheet_labor_accrual_bridge\n\nنتيجة الاختبارات: • 8 اختبارات — 0 فشل — 0 أخطاء ✅ • زر \"Populate lines\" يعمل بشكل صحيح ✅ • السطور المؤهلة (include_in_payroll = True) تظهر في القائمة ✅ • السطور غير المؤهلة تُستبعد تلقائياً ✅ • المبلغ يُحسب من الساعات × تكلفة الموظف ✅\n\nمثال حقيقي من قاعدة البيانات: 8 ساعات × 75.00 = 600.00 ﷼\n\nالوحدات المثبتة: • mrp_timesheet ✅ • gpc_hr_timesheet_labor_accrual ✅ • gpc_worker_timesheet_labor_accrual_bridge ✅",
+        "media_kind": "none",
+        "timestamp": "2026-05-06 07:05:49"
+      },
+      {
+        "id": 3105,
+        "body": "[image]",
+        "media_kind": "image",
+        "timestamp": "2026-05-06 07:16:20"
+      },
+      {
+        "id": 3104,
+        "body": "حدث خطأ ما... إذا كنت حقاً عالقاً، قم بمشاركة التقرير مع خدمة الدعم الودودة \n\nحطأ في خادم أودو\n\nRPC_ERROR\nOdoo Server Error\n\nOccured on erp.asta.edu.sa on ٢٠٢٦-٠٥-٠٦ ٠٧:١٤:٠٣ GMT\n\nTraceback (most recent call last):\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web/controllers/report.py\", line 120, in report_download\n    response = self.report_routes(reportname, docids=docids, converter=converter, context=context)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/http.py\", line 788, in route_wrapper\n    result = endpoint(self, *args, **params_ok)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web/controllers/report.py\", line 42, in report_routes\n    pdf = report.with_context(context)._render_qweb_pdf(reportname, docids, data=data)[0]\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py\", line 1030, in _render_qweb_pdf\n    collected_streams, report_type = self._pre_render_qweb_pdf(report_ref, res_ids=res_ids, data=data)\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/account/models/ir_actions_report.py\", line 74, in _pre_render_qweb_pdf\n    return super()._pre_render_qweb_pdf(report_ref, res_ids=res_ids, data=data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py\", line 1021, in _pre_render_qweb_pdf\n    return self._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids), 'pdf'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/sale_pdf_quote_builder/models/ir_actions_report.py\", line 23, in _render_qweb_pdf_prepare_streams\n    result = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/account_followup/models/ir_actions_report.py\", line 13, in _render_qweb_pdf_prepare_streams\n    res = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/sale/models/ir_actions_report.py\", line 12, in _render_qweb_pdf_prepare_streams\n    collected_streams = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/account_edi_ubl_cii/models/ir_actions_report.py\", line 11, in _render_qweb_pdf_prepare_streams\n    collected_streams = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/account_edi/models/ir_actions_report.py\", line 14, in _render_qweb_pdf_prepare_streams\n    collected_streams = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/account/models/ir_actions_report.py\", line 21, in _render_qweb_pdf_prepare_streams\n    return super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py\", line 869, in _render_qweb_pdf_prepare_streams\n    html = self.with_context(**additional_context)._render_qweb_html(report_ref, all_res_ids_wo_stream, data=data)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web_studio/models/ir_actions_report.py\", line 24, in _render_qweb_html\n    return super(IrActionsReport, self)._render_qweb_html(report_ref, docids, data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py\", line 1109, in _render_qweb_html\n    return self._render_template(report.report_name, data), 'html'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py\", line 785, in _render_template\n    return view_obj._render_template(template, values).encode()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/website/models/ir_ui_view.py\", line 456, in _render_template\n    return super()._render_template(template, values=values)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_ui_view.py\", line 2532, in _render_template\n    return self.env['ir.qweb']._render(template, values)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/web_studio/models/ir_qweb.py\", line 14, in _render\n    return super()._render(template, values, **options)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_qweb.py\", line 721, in _render\n    return Markup(''.join(iterator))\n                  ^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_qweb.py\", line 749, in _render_iterall\n    for item in frame.iterator:\n  File \"<1002>\", line 6429, in template_l10n_sa_l10n_\n...[truncated]...",
+        "media_kind": "none",
+        "timestamp": "2026-05-06 07:16:21"
+      },
+      {
+        "id": 3103,
+        "body": "في استا",
+        "media_kind": "none",
+        "timestamp": "2026-05-06 07:16:34"
+      },
+      {
+        "id": 3102,
+        "body": "install or update sign module",
+        "media_kind": "none",
+        "timestamp": "2026-05-06 07:33:39"
+      },
+      {
+        "id": 3101,
+        "body": "Accounting\nSaudi Arabia - Accounting\naccount_accountant\nl10n_sa\nsign",
+        "media_kind": "none",
+        "timestamp": "2026-05-06 07:42:48"
+      },
+      {
+        "id": 3100,
+        "body": "[audio]",
+        "media_kind": "audio",
+        "timestamp": "2026-05-06 07:42:59"
+      }
+    ],
+    "project_candidates": [
+      {
+        "aliases_matched": [
+          "Asta",
+          "أستا"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "english_alias",
+            "value": "Matched alias 'Asta' (english_name)"
+          },
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'أستا' (arabic_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "ASTA",
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "project_relevance": {
+          "confidence": 0.2,
+          "evidence": [],
+          "is_current_topic": false,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.06,
+          "current_topic_score": 0.0,
+          "direct_link_score": 0.0,
+          "final_score": 0.73
+        }
+      }
+    ],
+    "work_item_candidates": [],
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_confidence": 0.0,
+      "proposed_project_code": null,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "requires_project_confirmation": true,
+      "resolution_status": "unresolved",
+      "selection_reason": "alias_not_current_topic",
+      "thresholds": {
+        "candidate_score_margin": 0.2,
+        "media_dominant_ratio": 0.4,
+        "project_relevance_min_confidence": 0.5,
+        "strong_candidate_min_score": 0.85,
+        "unique_candidate_min_score": 0.7
+      }
+    },
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "classification": "new_dev_request",
+    "work_item_decision": "new",
+    "dify_project": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 0.73,
+      "evidence": [
+        {
+          "evidence_status": "confirmed",
+          "summary": "Canonical project ASTA Training (ASTA)",
+          "source_type": "project_config",
+          "reference": "dev.project:7"
+        }
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "dify_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.2
+    },
+    "dify_actionability": {
+      "is_actionable": true,
+      "score": 1.0,
+      "signals": [
+        "add",
+        "install",
+        "اختبار"
+      ],
+      "missing_requirements": []
+    },
+    "dify_classification": "new_task",
+    "dify_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    }
+  },
+  {
+    "sample_id": "DN-25",
+    "analysis_id": 145,
+    "messages": [
+      {
+        "id": 3327,
+        "body": "[image]",
+        "media_kind": "image",
+        "timestamp": "2026-04-26 14:36:53"
+      },
+      {
+        "id": 3326,
+        "body": "[image]",
+        "media_kind": "image",
+        "timestamp": "2026-04-26 14:46:59"
+      },
+      {
+        "id": 3325,
+        "body": "[image]",
+        "media_kind": "image",
+        "timestamp": "2026-04-26 14:47:59"
+      },
+      {
+        "id": 3324,
+        "body": "both installed in asta test",
+        "media_kind": "none",
+        "timestamp": "2026-04-26 14:48:12"
+      },
+      {
+        "id": 3323,
+        "body": "172.20.20.61:48069",
+        "media_kind": "none",
+        "timestamp": "2026-04-26 14:49:23"
+      },
+      {
+        "id": 3322,
+        "body": "برفعها حالا",
+        "media_kind": "none",
+        "timestamp": "2026-04-26 14:49:43"
+      },
+      {
+        "id": 3321,
+        "body": "[image]",
+        "media_kind": "image",
+        "timestamp": "2026-04-26 14:50:14"
+      },
+      {
+        "id": 3320,
+        "body": "this is configuration of api just to fill it and run but i think it should be in production",
+        "media_kind": "none",
+        "timestamp": "2026-04-26 14:51:23"
+      }
+    ],
+    "project_candidates": [
+      {
+        "aliases_matched": [
+          "Asta"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "english_alias",
+            "value": "Matched alias 'Asta' (english_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "ASTA",
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "project_relevance": {
+          "confidence": 0.8,
+          "evidence": [
+            "alias in actionable statement (msg 3324)"
+          ],
+          "is_current_topic": true,
+          "media_weak": true
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.0,
+          "current_topic_score": 0.5,
+          "direct_link_score": 0.0,
+          "final_score": 1.17
+        }
+      }
+    ],
+    "work_item_candidates": [
+      {
+        "deterministic_score": 0.45,
+        "direct_message_link": false,
+        "evidence": [
+          {
+            "type": "same_project",
+            "value": "Same project"
+          },
+          {
+            "type": "inferred_title_match",
+            "value": "Weak title term overlap"
+          }
+        ],
+        "matched_terms": [
+          "asta"
+        ],
+        "phase": "received",
+        "project_id": 7,
+        "relation_evidence": [
+          "Same project",
+          "Weak title term overlap"
+        ],
+        "short_description": "",
+        "title": "Implement ASTA attendance PDF export fix for July batch",
+        "work_item_id": 3344
+      }
+    ],
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_confidence": 0.0,
+      "proposed_project_code": null,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "requires_project_confirmation": true,
+      "resolution_status": "unresolved",
+      "selection_reason": "media_incidental_reference",
+      "thresholds": {
+        "candidate_score_margin": 0.2,
+        "media_dominant_ratio": 0.4,
+        "project_relevance_min_confidence": 0.5,
+        "strong_candidate_min_score": 0.85,
+        "unique_candidate_min_score": 0.7
+      }
+    },
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "classification": "new_dev_request",
+    "work_item_decision": "new",
+    "dify_project": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 0.8,
+      "evidence": [
+        "alias in actionable statement (msg 3324)"
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "dify_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3324)"
+      ],
+      "confidence": 0.8
+    },
+    "dify_actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "install"
+      ],
+      "missing_requirements": []
+    },
+    "dify_classification": "new_task",
+    "dify_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    }
+  },
+  {
+    "sample_id": "DN-28",
+    "analysis_id": 148,
+    "messages": [
+      {
+        "id": 3742,
+        "body": "و كفاءات برضوا نفس الايرور موجود",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:18:24"
+      },
+      {
+        "id": 3741,
+        "body": "في صفحة الموظفين",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:18:31"
+      },
+      {
+        "id": 3740,
+        "body": "النقاط دي يا دكتور صبري كانت شغاله من فترة لكن هما وقعو السيستم و اتجابلهم باك اب فا غالباً دا السبب فا شوف اخر حاجه كنت شغال عليها و معمول عليها تيست بخصوص النقاط دي و إن شاء الله تشتغل من غير ما تعيد من الأول\n@165837629583434",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:20:48"
+      },
+      {
+        "id": 3739,
+        "body": "@165837629583434",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:22:52"
+      },
+      {
+        "id": 3738,
+        "body": "تمام هو موديول التصحيح نزل علي كفائات واستا ولا لا",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:29:40"
+      },
+      {
+        "id": 3737,
+        "body": "ممكن تكلمهم ندخل علي السيرفر بتاعهم حتي لو السيرفر داخلي ممكن نحاول  ندخل علية علشان اشوف ال logs",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:32:09"
+      },
+      {
+        "id": 3736,
+        "body": "كلممني لو وقتك يسمح",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:43:36"
+      },
+      {
+        "id": 3735,
+        "body": "ngrok or ssh tunnel",
+        "media_kind": "none",
+        "timestamp": "2026-04-15 09:53:14"
+      }
+    ],
+    "project_candidates": [
+      {
+        "aliases_matched": [
+          "كفاءات"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'كفاءات' (arabic_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "KAFAAT",
+        "project_id": 11,
+        "project_name": "Kafaat (كفاءات)",
+        "project_relevance": {
+          "confidence": 0.8,
+          "evidence": [
+            "alias in actionable statement (msg 3742)"
+          ],
+          "is_current_topic": true,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.0,
+          "current_topic_score": 0.5,
+          "direct_link_score": 0.0,
+          "final_score": 1.17
+        }
+      },
+      {
+        "aliases_matched": [
+          "أستا"
+        ],
+        "deterministic_score": 0.97,
+        "eligible_for_proposed_selection": false,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'أستا' (arabic_name)"
+          }
+        ],
+        "has_strong_evidence": true,
+        "project_code": "ASTA",
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "project_relevance": {
+          "confidence": 0.7,
+          "evidence": [],
+          "is_current_topic": true,
+          "media_weak": false
+        },
+        "score_breakdown": {
+          "alias_score": 0.97,
+          "conflict_penalty": 0.3,
+          "context_score": 0.03,
+          "current_topic_score": 0.35,
+          "direct_link_score": 0.0,
+          "final_score": 1.05
+        }
+      }
+    ],
+    "work_item_candidates": [],
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_confidence": 0.0,
+      "proposed_project_code": null,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "requires_project_confirmation": true,
+      "resolution_status": "unresolved",
+      "selection_reason": "candidates_too_close",
+      "thresholds": {
+        "candidate_score_margin": 0.2,
+        "media_dominant_ratio": 0.4,
+        "project_relevance_min_confidence": 0.5,
+        "strong_candidate_min_score": 0.85,
+        "unique_candidate_min_score": 0.7
+      }
+    },
+    "resolved_project_id": 11,
+    "resolved_project_name": "Kafaat (كفاءات)",
+    "classification": "new_dev_request",
+    "work_item_decision": "new",
+    "dify_project": {
+      "project_id": 11,
+      "project_name": "Kafaat (كفاءات)",
+      "confidence": 0.8,
+      "evidence": [
+        "alias in actionable statement (msg 3742)"
+      ],
+      "candidate_ids": [
+        11,
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "dify_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3742)"
+      ],
+      "confidence": 0.8
+    },
+    "dify_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "ايرور",
+        "ممكن"
+      ],
+      "missing_requirements": []
+    },
+    "dify_classification": "new_task",
+    "dify_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    }
+  }
+]

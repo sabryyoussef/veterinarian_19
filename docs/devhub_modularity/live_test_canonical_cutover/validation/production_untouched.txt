@@ -1,0 +1,15 @@
+devhub_code_analysis|uninstalled
+devhub_core|uninstalled
+devhub_deploy|uninstalled
+devhub_execution|uninstalled
+devhub_generation|uninstalled
+devhub_github|uninstalled
+devhub_git|uninstalled
+devhub_infrastructure|uninstalled
+devhub_odoo_runtime|uninstalled
+devhub_openproject|uninstalled
+devhub_outbox|uninstalled
+devhub_session|uninstalled
+devhub_whatsapp|uninstalled
+devhub_work|uninstalled
+dev_session_hub|uninstalled

@@ -1,0 +1,90 @@
+{
+  "schema_version": "3",
+  "project": {
+    "id": 11,
+    "name": "Kafaat (كفاءات)",
+    "confidence": 0.97,
+    "evidence": [
+      {
+        "type": "canonical_name",
+        "value": "Matched alias 'Kafaat' (canonical)"
+      },
+      {
+        "type": "arabic_alias",
+        "value": "Matched alias 'كفاءات' (arabic_name)"
+      }
+    ]
+  },
+  "conversation_summary": "تتعلق المحادثة بأخطاء RPC في مشروع كفاءات، بما في ذلك أخطاء تتعلق بملفات مفقودة في الموديولات، بالإضافة إلى مشكلة في عدم ظهور جميع البرامج في شاشة Batch Intake.",
+  "items": [
+    {
+      "classification": "bug",
+      "action": "create_work",
+      "title": "RPC Error بسبب ملفات مفقودة",
+      "description": "تظهر أخطاء RPC بسبب عدم وجود ملفات معينة مثل index.html في الموديولات edafaa_student_profile و batch_intake.",
+      "current_behavior": "تظهر أخطاء RPC عند محاولة الوصول إلى الموديولات.",
+      "expected_behavior": "يجب أن تعمل الموديولات بدون أخطاء RPC.",
+      "technical_evidence": [
+        "FileNotFoundError: [Errno 2] No such file or directory: '/opt/localaddons/edafaa_student_profile/static/description/index.html'",
+        "FileNotFoundError: [Errno 2] No such file or directory: '/opt/localaddons/batch_intake/static/description/index.html'"
+      ],
+      "source_message_ids": [
+        9181,
+        9182
+      ],
+      "affected_paths": [
+        "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_module.py",
+        "/usr/lib/python3/dist-packages/odoo/tools/misc.py"
+      ],
+      "affected_modules": [
+        "edafaa_student_profile",
+        "batch_intake"
+      ],
+      "acceptance_criteria": [
+        "تأكيد وجود الملفات المفقودة.",
+        "تأكيد عدم ظهور أخطاء RPC بعد إصلاح الملفات."
+      ],
+      "test_requirements": [
+        "اختبار الوصول إلى الموديولات بعد إصلاح الملفات."
+      ],
+      "questions": [],
+      "recommended_parent": null,
+      "duplicate_candidates": [],
+      "confidence": 0.9
+    },
+    {
+      "classification": "bug",
+      "action": "create_work",
+      "title": "عدم ظهور جميع البرامج في شاشة Batch Intake",
+      "description": "بعد إنشاء برامج جديدة من موديول كفاءات، لا تظهر جميع البرامج في شاشة Batch Intake.",
+      "current_behavior": "تظهر 3 برامج فقط عند اختيار البرنامج.",
+      "expected_behavior": "يجب أن تظهر جميع البرامج الموجودة في شاشة Batch Intake.",
+      "technical_evidence": [],
+      "source_message_ids": [
+        9184
+      ],
+      "affected_paths": [
+        "batch_intake.view_batch_intake_form"
+      ],
+      "affected_modules": [
+        "batch_intake"
+      ],
+      "acceptance_criteria": [
+        "مراجعة حقل اختيار البرنامج في شاشة Batch Intake.",
+        "تأكيد عرض جميع البرامج الموجودة."
+      ],
+      "test_requirements": [
+        "اختبار شاشة Batch Intake بعد التعديلات."
+      ],
+      "questions": [],
+      "recommended_parent": null,
+      "duplicate_candidates": [],
+      "confidence": 0.85
+    }
+  ],
+  "ignored_messages": [
+    9185
+  ],
+  "missing_context": [],
+  "requires_human_review": true
+}

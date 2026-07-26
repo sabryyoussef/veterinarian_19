@@ -1,0 +1,74 @@
+branch=feature/devhub-modularization-whatsapp
+head=5d627a7e4b6ec4a29928dfd3c57f3fcf000f66cc
+dirty=70 files
+## feature/devhub-modularization-whatsapp
+ M dev_session_hub/__init__.py
+ M dev_session_hub/__manifest__.py
+ M dev_session_hub/data/dev_session_hub_seed.xml
+ M dev_session_hub/models/__init__.py
+ D dev_session_hub/models/dev_integration.py
+ D dev_session_hub/models/dev_registry.py
+ D dev_session_hub/models/dev_session.py
+ D dev_session_hub/models/dev_work.py
+ D dev_session_hub/security/dev_session_hub_security.xml
+ M dev_session_hub/security/ir.model.access.csv
+ M dev_session_hub/tests/__init__.py
+ D dev_session_hub/tests/test_dev_session_hub.py
+ D dev_session_hub/tests/test_dev_work_lifecycle.py
+ D dev_session_hub/views/dev_dashboard_views.xml
+ D dev_session_hub/views/dev_integration_views.xml
+ D dev_session_hub/views/dev_launch_wizard_views.xml
+ D dev_session_hub/views/dev_registry_views.xml
+ D dev_session_hub/views/dev_resume_brief_wizard_views.xml
+ M dev_session_hub/views/dev_session_hub_menus.xml
+ D dev_session_hub/views/dev_session_views.xml
+ D dev_session_hub/views/dev_work_views.xml
+ D dev_session_hub/wizards/__init__.py
+ D dev_session_hub/wizards/dev_launch_wizard.py
+ D dev_session_hub/wizards/dev_resume_brief_wizard.py
+ M docs/whatsapp_hub_consolidation/ARCHITECTURE.md
+ M openproject_sync/__manifest__.py
+ M openproject_sync/models/__init__.py
+ M openproject_sync/models/openproject_api.py
+ M openproject_sync/models/openproject_project_map.py
+ M openproject_sync/models/project_task.py
+ M openproject_sync/views/project_task_views.xml
+ M pet_management/static/src/css/petspot_test_ui.css
+ M tests/playwright/helpers/intake.ts
+?? .filestore_func_matrix/
+?? .filestore_mig_rehearsal/
+?? .migration_backups/
+?? dev_session_hub/docs/
+?? dev_session_hub/migrations/19.0.8.2.0/
+?? dev_session_hub/scripts/
+?? dev_session_hub/security/dev_session_hub_rules.xml
+?? dev_session_hub/tests/common.py
+?? dev_session_hub/tests/test_dev_session_hub_install.py
+?? devhub_analysis/
+?? devhub_approval/
+?? devhub_code_analysis/
+?? devhub_core/
+?? devhub_deploy/
+?? devhub_execution/
+?? devhub_generation/
+?? devhub_git/
+?? devhub_github/
+?? devhub_infrastructure/
+?? devhub_odoo_runtime/
+?? devhub_openproject/
+?? devhub_outbox/
+?? devhub_plan/
+?? devhub_session/
+?? devhub_whatsapp/
+?? devhub_work/
+?? devhub_workflow/
+?? docs/devhub_modular_uat_20260723/
+?? docs/devhub_modularity/
+?? docs/whatsapp_hub_consolidation/HUB_PLATFORM_EVOLUTION_PLAN.md
+?? docs/whatsapp_hub_consolidation/migration/p3_p8_rehearsal/clone_server.pid
+?? openproject_sync/models/ir_attachment.py
+?? tests/playwright/dev_session_hub_header.spec.ts
+?? tests/playwright/phase5_human_pr.spec.ts
+?? tests/playwright/phase5_human_push.spec.ts
+?? tests/playwright/phase5_human_push_hardening.spec.ts
+?? tests/playwright/phase6_human_merge_stop_gate.spec.ts

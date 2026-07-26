@@ -137,6 +137,32 @@ class DevWhatsappSource(models.Model):
         help="Included in batch fingerprint; bump to force a new analysis version.",
     )
     analysis_mode = fields.Char(default="group_triage")
+    # Debounced auto-analysis (requires ai_triage_enabled AND auto_analysis_enabled)
+    auto_analysis_enabled = fields.Boolean(
+        default=False,
+        help="When True with ai_triage_enabled, new Hub ingest schedules debounced analysis.",
+    )
+    analysis_debounce_minutes = fields.Integer(
+        default=3,
+        help="Minutes to wait after the last inbound message before flushing analysis.",
+    )
+    analysis_min_messages = fields.Integer(
+        default=1,
+        help="Minimum eligible inbox messages required before auto-flush enqueues.",
+    )
+    analysis_review_only = fields.Boolean(
+        default=True,
+        help="Auto path stays review-safe: never auto-create OpenProject work packages.",
+    )
+    pending_analysis_after = fields.Datetime(
+        index=True,
+        copy=False,
+        help="When set and <= now, cron_flush_debounced_analyses may enqueue analysis.",
+    )
+    openproject_create_allowed = fields.Boolean(
+        default=False,
+        help="Allow OpenProject create from approved AI analyses (still never auto in review-only).",
+    )
     # Historical quality review allowlist (separate from live AI triage).
     historical_review_enabled = fields.Boolean(
         default=False,
@@ -420,6 +446,67 @@ class DevWhatsappSource(models.Model):
             "views": [(False, "form")],
             "target": "current",
         }
+
+    def schedule_debounced_analysis(self):
+        """Reset pending_analysis_after = now + debounce minutes (each call resets)."""
+        from datetime import timedelta
+
+        for rec in self:
+            if not rec.ai_triage_enabled or not rec.auto_analysis_enabled:
+                continue
+            minutes = max(0, int(rec.analysis_debounce_minutes or 3))
+            rec.sudo().write(
+                {
+                    "pending_analysis_after": fields.Datetime.now()
+                    + timedelta(minutes=minutes)
+                }
+            )
+        return True
+
+    @api.model
+    def cron_flush_debounced_analyses(self):
+        """Enqueue review-safe analyses for sources whose debounce window elapsed."""
+        now = fields.Datetime.now()
+        sources = self.sudo().search(
+            [
+                ("active", "=", True),
+                ("ai_triage_enabled", "=", True),
+                ("auto_analysis_enabled", "=", True),
+                ("pending_analysis_after", "!=", False),
+                ("pending_analysis_after", "<=", now),
+            ]
+        )
+        Analysis = self.env["dev.whatsapp.analysis"].sudo()
+        Message = self.env["whatsapp.message"].sudo()
+        flushed = 0
+        for source in sources:
+            try:
+                min_msgs = max(1, int(source.analysis_min_messages or 1))
+                eligible = Message.search_count(
+                    [
+                        ("group_jid", "=", source.group_jid),
+                        ("inbox_state", "in", ["new", "pending"]),
+                    ]
+                )
+                if eligible < min_msgs:
+                    source.write({"pending_analysis_after": False})
+                    continue
+                # Review-safe: force=False respects cooldown / mapping; never OP auto-create
+                Analysis.with_context(
+                    wa_analysis_review_safe=True,
+                    wa_analysis_auto_flush=True,
+                ).action_enqueue_analysis(source.id, force=False)
+                source.write({"pending_analysis_after": False})
+                flushed += 1
+            except Exception as err:  # noqa: BLE001 — keep cron resilient
+                _logger.warning(
+                    "Debounced analysis flush failed for source %s: %s",
+                    source.id,
+                    err,
+                )
+                # Clear pending to avoid tight failure loops; next ingest re-schedules
+                source.write({"pending_analysis_after": False})
+        return flushed
 
     def action_confirm_project_mapping(self):
         self.ensure_one()

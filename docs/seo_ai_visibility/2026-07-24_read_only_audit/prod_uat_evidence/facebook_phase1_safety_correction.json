@@ -1,0 +1,72 @@
+{
+  "phase1": [
+    {
+      "id": 1,
+      "action": "returned_to_draft",
+      "ok": true,
+      "after": {
+        "id": 1,
+        "state": "draft",
+        "scheduled_date": false,
+        "live_post_ids": []
+      },
+      "reason": "location_conflict_in_copy"
+    },
+    {
+      "id": 2,
+      "action": "left_scheduled",
+      "state": "scheduled",
+      "scheduled_date": "2026-08-05 07:00:00"
+    },
+    {
+      "id": 3,
+      "action": "returned_to_draft",
+      "ok": true,
+      "after": {
+        "id": 3,
+        "state": "draft",
+        "scheduled_date": false,
+        "live_post_ids": []
+      },
+      "reason": "directions_conflict"
+    }
+  ],
+  "posts_snapshot": [
+    {
+      "id": 3,
+      "state": "scheduled",
+      "scheduled_date": "2026-08-07 07:00:00",
+      "facebook_message": "[PetSpot SEO calendar draft][W1] Directions — Amwaj 2\n\nFind us: North Coast, beside Wahat Khattab, in front of Amwaj 2, El Alamein.\nOfficial Maps: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nClinic: 01280833332 · WhatsApp: 01000059085\nEmergency guide: https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=directions\n\nموقعنا: الساحل الشمالي، بجوار واحة خطاب، أمام أمواج 2، العلمين.\nخرائط جوجل الرسمية: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nالعيادة: 01280833332 · واتساب: 01000059085",
+      "message": "[PetSpot SEO calendar draft][W1] Directions — Amwaj 2\n\nFind us: North Coast, beside Wahat Khattab, in front of Amwaj 2, El Alamein.\nOfficial Maps: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nClinic: 01280833332 · WhatsApp: 01000059085\nEmergency guide: https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=directions\n\nموقعنا: الساحل الشمالي، بجوار واحة خطاب، أمام أمواج 2، العلمين.\nخرائط جوجل الرسمية: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nالعيادة: 01280833332 · واتساب: 01000059085",
+      "account_ids": [
+        16
+      ],
+      "live_post_ids": [],
+      "post_method": "scheduled"
+    },
+    {
+      "id": 2,
+      "state": "scheduled",
+      "scheduled_date": "2026-08-05 07:00:00",
+      "facebook_message": "[PetSpot SEO calendar draft][W1] Heatstroke signs — Sahel summer\n\nSahel summer tip: heavy panting, weakness, bright red gums — possible heatstroke.\nMove to shade, offer cool (not ice-cold) water if your pet can drink, and contact a vet urgently.\nPetSpot 24/7: 01280833332 · WhatsApp 01000059085\nRead more: https://drpaws.ai/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=heatstroke\n\nصيف الساحل: لهث شديد، ضعف، لثة حمراء — قد تكون ضربة شمس.\nانقل أليفك للظل وقدّم ماءً فاترًا إن أمكن، واتصل بالعيادة فوراً.\nبيت سبوت 24/7: 01280833332 · واتساب 01000059085",
+      "message": "[PetSpot SEO calendar draft][W1] Heatstroke signs — Sahel summer\n\nSahel summer tip: heavy panting, weakness, bright red gums — possible heatstroke.\nMove to shade, offer cool (not ice-cold) water if your pet can drink, and contact a vet urgently.\nPetSpot 24/7: 01280833332 · WhatsApp 01000059085\nRead more: https://drpaws.ai/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=heatstroke\n\nصيف الساحل: لهث شديد، ضعف، لثة حمراء — قد تكون ضربة شمس.\nانقل أليفك للظل وقدّم ماءً فاترًا إن أمكن، واتصل بالعيادة فوراً.\nبيت سبوت 24/7: 01280833332 · واتساب 01000059085",
+      "account_ids": [
+        16
+      ],
+      "live_post_ids": [],
+      "post_method": "scheduled"
+    },
+    {
+      "id": 1,
+      "state": "scheduled",
+      "scheduled_date": "2026-08-03 07:00:00",
+      "facebook_message": "[PetSpot SEO calendar draft][W1] Emergency readiness — North Coast\n\nPet emergency on the North Coast? Stay calm: secure your pet, note symptoms, call PetSpot.\n24/7 clinic near Amwaj 2.\nClinic: 01280833332 · WhatsApp: 01000059085\nDirections: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nRead more: https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=emergency\n\nطوارئ حيوانك الأليف على الساحل؟ حافظ على هدوئك، راقب الأعراض، واتصل ببيت سبوت.\nعيادة 24/7 أمام أمواج 2.\nالعيادة: 01280833332 · واتساب: 01000059085\nالاتجاهات: https://maps.app.goo.gl/AaHup6NEFodZEs7S7",
+      "message": "[PetSpot SEO calendar draft][W1] Emergency readiness — North Coast\n\nPet emergency on the North Coast? Stay calm: secure your pet, note symptoms, call PetSpot.\n24/7 clinic near Amwaj 2.\nClinic: 01280833332 · WhatsApp: 01000059085\nDirections: https://maps.app.goo.gl/AaHup6NEFodZEs7S7\nRead more: https://drpaws.ai/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1?utm_source=facebook&utm_medium=social&utm_campaign=petspot_seo_w1&utm_content=emergency\n\nطوارئ حيوانك الأليف على الساحل؟ حافظ على هدوئك، راقب الأعراض، واتصل ببيت سبوت.\nعيادة 24/7 أمام أمواج 2.\nالعيادة: 01280833332 · واتساب: 01000059085\nالاتجاهات: https://maps.app.goo.gl/AaHup6NEFodZEs7S7",
+      "account_ids": [
+        16
+      ],
+      "live_post_ids": [],
+      "post_method": "scheduled"
+    }
+  ]
+}

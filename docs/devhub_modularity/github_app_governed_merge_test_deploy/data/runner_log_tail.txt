@@ -1,0 +1,14 @@
+2026-07-20T03:58:54Z simulate ok verb=preflight sha=879acffe9d627841ef44e849eee166c71acaae52 db=pet_spot_elsahel_test modules=dev_session_hub lease=e-test
+2026-07-20T03:58:54Z REFUSE live without --confirm-live
+2026-07-20T03:58:54Z REFUSE production-like database=pet_spot_elsahel_prod
+2026-07-20T03:59:18Z live preflight ok sha=879acffe9d627841ef44e849eee166c71acaae52 db=pet_spot_elsahel_test
+2026-07-20T03:59:18Z live upgrade_modules start
+2026-07-20T03:59:42Z live upgrade_modules rc=0
+2026-07-20T03:59:47Z live healthcheck http=200
+2026-07-20T03:59:47Z live smoke acknowledged sha=879acffe9d627841ef44e849eee166c71acaae52
+2026-07-20T03:59:47Z REFUSE live database not allowlisted database=pet_spot_elsahel
+2026-07-20T04:25:57Z simulate ok verb=preflight sha=ff53a8d96ed1d63de38e2cd05230a3a0c432b64e db=pet_spot_elsahel_test modules=dev_session_hub lease=phase12-sim
+2026-07-23T12:34:27Z live preflight ok sha=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439 db=pet_spot_elsahel_test
+2026-07-23T12:34:27Z live deploy_code acknowledged sha=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439
+2026-07-23T12:34:27Z live healthcheck http=200
+2026-07-23T12:34:28Z live smoke acknowledged sha=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439

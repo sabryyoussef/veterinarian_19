@@ -37,3 +37,5 @@ access_dev_whatsapp_media_job_manager,dev.whatsapp.media.job manager,model_dev_w
 access_dev_whatsapp_media_job_service,dev.whatsapp.media.job service,model_dev_whatsapp_media_job,group_dev_hub_wa_media_service,1,1,1,0
 access_whatsapp_message_media_service,whatsapp.message media service,whatsapp_hub.model_whatsapp_message,group_dev_hub_wa_media_service,1,0,0,0
 access_ir_attachment_media_service,ir.attachment media service,base.model_ir_attachment,group_dev_hub_wa_media_service,1,1,1,0
+access_dev_whatsapp_analysis_eval_user,dev.whatsapp.analysis.eval user,model_dev_whatsapp_analysis_eval,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_whatsapp_analysis_eval_manager,dev.whatsapp.analysis.eval manager,model_dev_whatsapp_analysis_eval,devhub_core.group_dev_hub_manager,1,1,1,1

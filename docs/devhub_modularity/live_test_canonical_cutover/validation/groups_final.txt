@@ -1,0 +1,8 @@
+devhub_core.group_dev_hub_approver
+devhub_core.group_dev_hub_deploy_approver
+devhub_core.group_dev_hub_generation
+devhub_core.group_dev_hub_integration
+devhub_core.group_dev_hub_manager
+devhub_core.group_dev_hub_production_approver
+devhub_core.group_dev_hub_user
+devhub_whatsapp.group_dev_hub_whatsapp_intake

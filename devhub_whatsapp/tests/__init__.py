@@ -8,3 +8,9 @@ from . import test_whatsapp_media_phase1
 from . import test_whatsapp_media_phase2
 from . import test_whatsapp_media_backfill
 from . import test_whatsapp_media_recovery
+from . import test_whatsapp_prompt_v24_shadow
+from . import test_whatsapp_technical_extract
+from . import test_whatsapp_analysis_v3_validation
+from . import test_whatsapp_analysis_debounce
+from . import test_whatsapp_work_orchestration
+from . import test_whatsapp_eval_path_norm

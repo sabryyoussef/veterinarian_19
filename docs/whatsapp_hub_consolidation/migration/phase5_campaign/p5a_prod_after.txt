@@ -1,0 +1,11 @@
+=== Prod AFTER P5A ===
+ch5=hub
+ch10=hub
+discuss_allow=10,5
+purposes=discuss
+camp_cutover=False
+camp_allow=
+hub=19.0.1.6.0
+chat=19.0.1.15.0
+camp_modes=legacy
+inst1_camp=

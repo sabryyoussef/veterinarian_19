@@ -1,0 +1,63 @@
+@Ahmed Ragi
+
+تم تسليم إصلاحات إعادة UAT لـ OP#86 ✅
+
+━━━━━━━━━━━━━━━━━━━━
+📦 Work Package
+━━━━━━━━━━━━━━━━━━━━
+#206 — UAT retest OP#86
+(الأب: #87 edafa_kafaat_parent | مرتبط بـ #86)
+
+رابط الحزمة على GitHub (التسليم + المرفقات):
+https://github.com/sabryyoussef/new_kafaat/tree/feature/op206-uat-retest-op86
+
+مجلد التسليم (ملاحظات + Screenshots):
+https://github.com/sabryyoussef/new_kafaat/tree/feature/op206-uat-retest-op86/docs/op206/delivery
+
+حزمة ZIP للمرفقات:
+https://github.com/sabryyoussef/new_kafaat/blob/feature/op206-uat-retest-op86/docs/op206/OP206_DELIVERY_PACKAGE.zip
+
+Commit:
+ae4d641 — deliver OP#206 UAT retest fixes with evidence package
+
+━━━━━━━━━━━━━━━━━━━━
+✅ ما تم إصلاحه
+━━━━━━━━━━━━━━━━━━━━
+1) Group By → المقرر الحالي (Current Course)
+2) مسميات عربية وربط الحقول:
+   رقم الهوية / رقم الهاتف / التخصص / العنوان
+3) إخفاء Blood Group من شاشة المتدرب
+4) نقل رقم التسجيل + نوع المصدر إلى ملف المتدرب
+   (من Student Registration Portal)
+
+━━━━━━━━━━━━━━━━━━━━
+🧪 التحقق
+━━━━━━━━━━━━━━━━━━━━
+• Unit tests: 9/9 ✅
+• Playwright: 5/5 ✅
+• تم الترقية على sabry-test
+
+━━━━━━━━━━━━━━━━━━━━
+📎 المرفقات (Screenshots)
+━━━━━━━━━━━━━━━━━━━━
+أرفق مع الرسالة الصور التالية من المجلد:
+docs/op206/delivery/screenshots/
+
+1) r1_group_by_current_course.png
+   → Group By المقرر الحالي
+
+2) r2_trainee_form_labels.png
+   → المسميات والربط على ملف المتدرب
+
+3) r3_no_blood_group.png
+   → إخفاء Blood Group
+
+4) r4_registration_source_fields.png
+   → رقم التسجيل + نوع المصدر
+
+━━━━━━━━━━━━━━━━━━━━
+المطلوب
+━━━━━━━━━━━━━━━━━━━━
+إعادة تنفيذ UAT على Staging بعد الترقية، والتأكيد على النقاط الأربع أعلاه.
+
+أي ملاحظة نكملها فورًا.

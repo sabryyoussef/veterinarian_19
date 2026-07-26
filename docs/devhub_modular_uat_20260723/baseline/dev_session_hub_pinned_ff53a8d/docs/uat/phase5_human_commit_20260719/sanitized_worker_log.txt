@@ -1,0 +1,18 @@
+{
+  "concurrent_writer": "rejected",
+  "effective_uid": 1001,
+  "lease_versions": [
+    1,
+    2
+  ],
+  "normalized_paths": [
+    "tests/__init__.py",
+    "tests/test_human_commit_contract.py"
+  ],
+  "pause_checkpoint_id": 15,
+  "regression_tests": 2,
+  "state": "review_required",
+  "targeted_tests": 2,
+  "work_phase": "ready_for_review",
+  "workspace_id": 10
+}

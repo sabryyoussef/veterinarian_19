@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-level app (shows in Apps / app switcher) -->
+    <menuitem
+        id="menu_vetution_config"
+        name="Vetution"
+        sequence="45"
+        web_icon="vetution_import,static/description/icon.png"
+        groups="sales_team.group_sale_manager"
+    />
+    <!-- Landing page: a real list view, so the app opens with the full menu bar.
+         A target="new" wizard as first child would open as a bare dialog. -->
+    <menuitem
+        id="menu_vetution_products"
+        name="Products"
+        parent="menu_vetution_config"
+        action="action_vetution_product_template"
+        sequence="5"
+    />
+    <menuitem
+        id="menu_vetution_brand"
+        name="Brands"
+        parent="menu_vetution_config"
+        action="action_vetution_brand"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_vetution_species"
+        name="Species"
+        parent="menu_vetution_config"
+        action="action_vetution_species"
+        sequence="20"
+    />
+    <menuitem
+        id="menu_vetution_ingredient"
+        name="Ingredients"
+        parent="menu_vetution_config"
+        action="action_vetution_ingredient"
+        sequence="30"
+    />
+    <menuitem
+        id="menu_vetution_settings"
+        name="Configuration"
+        parent="menu_vetution_config"
+        sequence="90"
+    />
+    <menuitem
+        id="menu_vetution_sync"
+        name="Sync from Vetution"
+        parent="menu_vetution_settings"
+        action="action_vetution_sync_wizard"
+        sequence="10"
+    />
+</odoo>

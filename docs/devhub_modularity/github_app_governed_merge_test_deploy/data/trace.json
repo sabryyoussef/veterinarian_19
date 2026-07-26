@@ -1,0 +1,38 @@
+{
+  "marker": "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122639Z",
+  "errors": [
+    "merge: odoo shell failed: {'ok': False, 'raw': '\\nTraceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github/models/dev_git_merge.py\", line 426, in _prepare_merge_credential\\n    result = subprocess.run(\\n             ^^^^^^^^^^^^^^^\\n  File \"/usr/lib/python3.12/subprocess.py\", line 548, in run\\n    with Popen(*popenargs, **kwargs) as process:\\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/usr/lib/python3.12/subprocess.py\", line 1026, in __init__\\n    self._execute_child(args, executable, preexec_fn, close_fds,\\n  File \"/usr/lib/python3.12/subprocess.py\", line 1955, in _execute_child\\n    raise child_exception_type(errno_num, err_msg, err_filename)\\nPermissionError: [Errno 13] Permission denied: \\'/srv/devhub/credentials/github/mint-devhub-merge-token\\'\\n\\nDuring handling of the above exception, another exception occurred:\\n\\nTraceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin\", line 6, in <module>\\n    odoo.cli.main()\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py\", line 133, in main\\n    command().run(args)\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py\", line 162, in run\\n    self.shell(dbnames[0])\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py\", line 148, in shell\\n    self.console(local_vars)\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py\", line 82, in console\\n    exec(sys.stdin.read(), local_vars)\\n  File \"<string>\", line 5, in <module>\\n  File \"/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github/models/dev_git_merge.py\", line 772, in action_review_merge_eligibility\\n    snapshot = self._merge_preflight(target)\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github/models/dev_git_merge.py\", line 612, in _merge_preflight\\n    self._assert_merge_identity(target)\\n  File \"/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github/models/dev_git_merge.py\", line 541, in _assert_merge_identity\\n    expires_at = self._prepare_merge_credential(target)\\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_github/models/dev_git_merge.py\", line 446, in _prepare_merge_credential\\n    raise UserError(\"Protected Merge App broker is unavailable.\")\\nodoo.exceptions.UserError: Protected Merge App broker is unavailable.\\n'}"
+  ],
+  "non_blockers": [],
+  "screenshots": [
+    {
+      "file": "10_github_app_pr.png",
+      "proves": "Dev Hub GitHub App PR #16",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    },
+    {
+      "file": "11_merge_approval.png",
+      "proves": "READY FOR / performing human merge approval",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    }
+  ],
+  "work_item_id": 3324,
+  "workspace": {
+    "id": 1849,
+    "state": "pr_created_reviewed"
+  },
+  "github_app_pr": {
+    "ok": true,
+    "pr_number": 16,
+    "pr_url": "https://github.com/sabryyoussef/veterinarian_19/pull/16",
+    "state": "pr_created_reviewed",
+    "source_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+    "app_id": 4340040,
+    "installation_id": 147639376,
+    "pr_record_id": 200,
+    "draft_note": "Product path creates open (non-draft) PR; merge gate requires draft=false",
+    "head_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+    "base_branch": "staging"
+  },
+  "resumed_from_pr": true
+}

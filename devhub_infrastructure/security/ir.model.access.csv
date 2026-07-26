@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_machine_verification_event_user,dev.machine.verification.event user,model_dev_machine_verification_event,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_machine_verification_event_manager,dev.machine.verification.event manager,model_dev_machine_verification_event,devhub_core.group_dev_hub_manager,1,0,0,0

@@ -1,0 +1,550 @@
+{
+  "tested_at": "2026-07-04T04:53:38.306066+00:00",
+  "base_url": "http://127.0.0.1:8071",
+  "auth": "Bearer token (pre-seeded from login +201092015998)",
+  "collection": "CycleX API Collection (destructive requests skipped)",
+  "skipped": [
+    "Delete Account",
+    "Delete Account Simple",
+    "Change Phone",
+    "Change Password",
+    "Reset Password",
+    "Register",
+    "Register Collector",
+    "Verify Phone",
+    "Resend Verification Code",
+    "Forget Password"
+  ],
+  "total_executed": 86,
+  "http_status_counts": {
+    "200": 51,
+    "403": 21,
+    "404": 7,
+    "400": 5,
+    "500": 2
+  },
+  "pass_2xx": 51,
+  "auth_fail_401": 0,
+  "forbidden_403": 21,
+  "bad_request_400": 5,
+  "not_found_404": 7,
+  "server_error_5xx": 2,
+  "results": [
+    {
+      "name": "Login",
+      "code": 200,
+      "cat": "pass",
+      "message": "Login successful"
+    },
+    {
+      "name": "Get Profile",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Update Profile",
+      "code": 200,
+      "cat": "pass",
+      "message": "Profile updated successfully"
+    },
+    {
+      "name": "Save Customer Address",
+      "code": 200,
+      "cat": "pass",
+      "message": "Address saved successfully [SUCCESS]"
+    },
+    {
+      "name": "Get Customer Addresses",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Delete Customer Address",
+      "code": 200,
+      "cat": "pass",
+      "message": "Address deleted successfully [SUCCESS]"
+    },
+    {
+      "name": "Get Governorates",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Governorate Details",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Working Areas",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Vehicle Types",
+      "code": 200,
+      "cat": "pass",
+      "message": "Vehicle types retrieved successfully"
+    },
+    {
+      "name": "Get Vehicle Types (POST)",
+      "code": 200,
+      "cat": "pass",
+      "message": "Vehicle types retrieved successfully"
+    },
+    {
+      "name": "Get Limit Categories (Home Screen)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Limit Categories (POST)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Categories (Public)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Products (Public)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Product Details",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Popular Picks (Public)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Popular Picks (POST)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Categories (Authenticated)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Products (Authenticated)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Limit Categories (Authenticated)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Limit Categories (Authenticated POST)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Popular Picks (Authenticated)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Popular Picks (Authenticated POST)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Add to Favorites",
+      "code": 200,
+      "cat": "pass",
+      "message": "Product added to favorites successfully"
+    },
+    {
+      "name": "Remove from Favorites",
+      "code": 200,
+      "cat": "pass",
+      "message": "Product removed from favorites successfully"
+    },
+    {
+      "name": "Get Favorites",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Favorites (POST)",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Check if Favorite",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Request New Product",
+      "code": 200,
+      "cat": "pass",
+      "message": "Product request submitted successfully. It will be reviewed by an administrator. [SUCCESS]"
+    },
+    {
+      "name": "Search Product Requests",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Approve Product Request",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only administrators can approve product requests [UNAUTHORIZED]"
+    },
+    {
+      "name": "Reject Product Request",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only administrators can reject product requests [UNAUTHORIZED]"
+    },
+    {
+      "name": "Create Request",
+      "code": 400,
+      "cat": "bad_request",
+      "message": "Either product_id or item_name must be provided [MISSING_PARAMS]"
+    },
+    {
+      "name": "Get Requests List",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Assigned Orders",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Order QR Code",
+      "code": 404,
+      "cat": "not_found",
+      "message": "Order not found [NOT_FOUND]"
+    },
+    {
+      "name": "Get Request Details",
+      "code": 404,
+      "cat": "not_found",
+      "message": "Request not found [NOT_FOUND]"
+    },
+    {
+      "name": "Get Request Details (Timeline)",
+      "code": 404,
+      "cat": "not_found",
+      "message": "Request not found [NOT_FOUND]"
+    },
+    {
+      "name": "Reject Request",
+      "code": 404,
+      "cat": "not_found",
+      "message": "Request not found [NOT_FOUND]"
+    },
+    {
+      "name": "Upload Receipt",
+      "code": 404,
+      "cat": "not_found",
+      "message": "Request not found [NOT_FOUND]"
+    },
+    {
+      "name": "Get Collector Profile",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can access this endpoint [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Get Collector Profile (POST)",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can access this endpoint [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Get Available Orders",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can view available orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Get Active Orders",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can view active orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Get Collector Orders",
+      "code": 500,
+      "cat": "server_error",
+      "message": "Object of type _Response is not JSON serializable [SERVER_ERROR]"
+    },
+    {
+      "name": "Reject Available Order",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can reject orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Accept Order",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can accept orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Reject Order",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can reject orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Complete Order",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can complete orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Scan QR Code",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can scan QR codes [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Update Order Items",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can update order items [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Get Order Receipt",
+      "code": 404,
+      "cat": "not_found",
+      "message": "Request not found [NOT_FOUND]"
+    },
+    {
+      "name": "Request Area Change",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can request area changes [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Get Area Change Requests",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can view area change requests [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Get Available Orders Grouped",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can view available orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Accept Order Group",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can accept orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Reject Order Group",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can reject orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Complete Order Group",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can complete orders [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Scan QR Group",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can scan QR codes [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Rate Order",
+      "code": 404,
+      "cat": "not_found",
+      "message": "Request not found [NOT_FOUND]"
+    },
+    {
+      "name": "Get Wallet Balance",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get Wallet Transactions",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Request Withdrawal",
+      "code": 400,
+      "cat": "bad_request",
+      "message": "Minimum withdrawal amount is 1000.0 [BELOW_THRESHOLD]"
+    },
+    {
+      "name": "Get Collector Pending Commissions",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can view commissions [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Transfer Commissions to Wallet",
+      "code": 403,
+      "cat": "forbidden",
+      "message": "Only collectors can transfer commissions [INVALID_USER_TYPE]"
+    },
+    {
+      "name": "Request Bank Transfer",
+      "code": 400,
+      "cat": "bad_request",
+      "message": "Insufficient balance. Available: 0.0 [INSUFFICIENT_BALANCE]"
+    },
+    {
+      "name": "Get Bank Transfers",
+      "code": 200,
+      "cat": "pass",
+      "message": ""
+    },
+    {
+      "name": "Get App Version (iOS)",
+      "code": 200,
+      "cat": "pass",
+      "message": "No app version found"
+    },
+    {
+      "name": "Get App Version (Android)",
+      "code": 200,
+      "cat": "pass",
+      "message": "No app version found"
+    },
+    {
+      "name": "Get Terms and Conditions",
+      "code": 200,
+      "cat": "pass",
+      "message": "Terms and conditions retrieved successfully"
+    },
+    {
+      "name": "Create Notification Log",
+      "code": 200,
+      "cat": "pass",
+      "message": "Notification log created successfully"
+    },
+    {
+      "name": "Get Notification Logs",
+      "code": 200,
+      "cat": "pass",
+      "message": "Notification logs retrieved successfully"
+    },
+    {
+      "name": "Send Notification to All Users",
+      "code": 200,
+      "cat": "pass",
+      "message": "Notification sent to 0 users"
+    },
+    {
+      "name": "Send Notification to Clients",
+      "code": 200,
+      "cat": "pass",
+      "message": "Notification sent to 0 clients"
+    },
+    {
+      "name": "Send Notification to Collectors",
+      "code": 200,
+      "cat": "pass",
+      "message": "Notification sent to 0 collectors"
+    },
+    {
+      "name": "Add Product to Cart",
+      "code": 200,
+      "cat": "pass",
+      "message": "Product added to cart successfully"
+    },
+    {
+      "name": "Get Cart",
+      "code": 200,
+      "cat": "pass",
+      "message": "Cart retrieved successfully"
+    },
+    {
+      "name": "Get Cart Items (Product Format)",
+      "code": 200,
+      "cat": "pass",
+      "message": "Cart items retrieved successfully"
+    },
+    {
+      "name": "Update Cart Item",
+      "code": 500,
+      "cat": "server_error",
+      "message": "Internal server error [SERVER_ERROR]"
+    },
+    {
+      "name": "Increment Cart Item",
+      "code": 200,
+      "cat": "pass",
+      "message": "Cart item quantity increased successfully"
+    },
+    {
+      "name": "Decrement Cart Item",
+      "code": 200,
+      "cat": "pass",
+      "message": "Cart item quantity decreased successfully"
+    },
+    {
+      "name": "Remove from Cart",
+      "code": 200,
+      "cat": "pass",
+      "message": "Item removed from cart successfully"
+    },
+    {
+      "name": "Clear Cart",
+      "code": 200,
+      "cat": "pass",
+      "message": "Cart cleared successfully"
+    },
+    {
+      "name": "Create Request from Cart",
+      "code": 400,
+      "cat": "bad_request",
+      "message": "Cart is empty [EMPTY_CART]"
+    },
+    {
+      "name": "Create Multiple Requests from Cart",
+      "code": 400,
+      "cat": "bad_request",
+      "message": "Pickup date cannot be in the past [INVALID_PICKUP_DATE]"
+    }
+  ]
+}

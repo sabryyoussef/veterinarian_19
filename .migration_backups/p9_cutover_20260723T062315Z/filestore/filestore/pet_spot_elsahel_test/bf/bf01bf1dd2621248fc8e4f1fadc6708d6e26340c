@@ -1,0 +1,46 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 9101
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-12 12:22:12 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Received an image attachment related to Shopify dashboard configuration but lacks specific Odoo error or issue details.
+
+**الإجراء المطلوب:**
+Review the image attachment for relevant information regarding the Shopify integration.
+
+**نص مرفق مستخرج:**
+'@ shopify dashboard Configuration Products Customers Orders Inventory Shipping Synchronization Queues Sync Logs | Reports se ©? X MyCompary (AS Eee
+
+Syne Log API Logs
+New 177 Eb
+Shopify Sync Log Sync Logs
+Error Logs
+Created’ Jul 12, 2:40PM
+Date? Jul 12, 2:40 PM
+Store? iZone EG
+
+Operation? Order
+
+Status ? Success
+
+‘Orders enqueued from manual sync.
+
+Payload *
+
+‘API Response ?
+
+## Original Message
+
+```
+Photo: 3EB034B9F1618ABBC60963.jpeg
+```

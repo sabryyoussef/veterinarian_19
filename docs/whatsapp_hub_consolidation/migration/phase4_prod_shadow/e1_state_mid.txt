@@ -1,0 +1,32 @@
+=== CURRENT STATE ===
+whatsapp_hub.discuss_cutover_enabled|True
+whatsapp_hub.discuss_hub_allowed_channel_ids|10
+whatsapp_hub.unified_outbound_enabled|True
+whatsapp_hub.unified_outbound_purposes|discuss
+ id | instance_name | unified_outbound_enabled | discuss_cutover_enabled 
+----+---------------+--------------------------+-------------------------
+  1 | sabry min     | t                        | t
+(1 row)
+
+ id | wa_outbound_mode 
+----+------------------
+ 10 | hub
+  5 | shadow
+(2 rows)
+
+=== UNIFIED JOBS ===
+ id | state | discuss_channel_id |   business_key   |  evolution_message_id  | retry_count 
+----+-------+--------------------+------------------+------------------------+-------------
+  1 | sent  |                 10 | discuss:10:11320 | 3EB06D68816DC7D6CFD6CC |           0
+  2 | sent  |                 10 | discuss:10:11321 | 3EB07360E4226E6C40D8F0 |           0
+  3 | sent  |                 10 | discuss:10:11322 | 3EB0896A630B01ACB59256 |           0
+(3 rows)
+
+=== RECENT HUB MSGS discuss:10 ===
+ id |   business_key   | conversation_id |  evolution_message_id  | wa_message_log_id 
+----+------------------+-----------------+------------------------+-------------------
+ 19 | discuss:10:11320 |               8 | 3EB06D68816DC7D6CFD6CC |                16
+ 20 | discuss:10:11321 |               8 | 3EB07360E4226E6C40D8F0 |                17
+ 21 | discuss:10:11322 |               8 | 3EB0896A630B01ACB59256 |                18
+(3 rows)
+

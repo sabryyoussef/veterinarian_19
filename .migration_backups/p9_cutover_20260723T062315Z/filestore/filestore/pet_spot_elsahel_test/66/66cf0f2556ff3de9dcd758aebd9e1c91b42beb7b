@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 6329
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-05 06:51:44 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** medium
+**الثقة:** 0.55
+
+**الملخص:**
+Client is testing customization and encountered issues previously.
+
+**الإجراء المطلوب:**
+Follow up with the client to gather specific details about the issues faced during testing.
+
+## Original Message
+
+```
+Good morning. We are testing the customization, as we faced a couple of issues last time we tested
+```

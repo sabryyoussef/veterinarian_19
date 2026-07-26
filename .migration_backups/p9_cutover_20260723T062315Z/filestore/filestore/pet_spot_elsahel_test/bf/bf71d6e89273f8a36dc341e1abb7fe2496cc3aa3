@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/308
+- Message ID: 10931
+- Customer: مهمات مفتوحة لاستكمال فرع الساحل petspot
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-14 21:34:13 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Unclear message regarding open tasks for a branch.
+
+**الإجراء المطلوب:**
+No action required, message is unclear.
+
+## Original Message
+
+```
+ده احنا ولا مين
+```

@@ -1,0 +1,27 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PYVOBJECT//NONSGML Version 1//EN
+BEGIN:VEVENT
+UID:20260715T181139Z - 57759@master
+DTSTART:20261018T222800Z
+DTEND:20261018T225800Z
+ATTENDEE:MAILTO:demo.calendar@example.com
+CREATED:20260715T181139Z
+DESCRIPTION:Pet: Demo Pet — Calendar Link\nOwner: Demo Owner — Calendar
+  Link\nRoom: (none)\nType: Emergency Exam\nNotes: Created for you to open 
+ in Odoo Appointment / Calendar.\nNeed to reschedule? Click here [1]\n\n[1]
+  https://test.drpaws.ai/calendar/view/b12a1925-3ea0-4003-a8b4-c8c0213b89b1
+DTSTAMP:20260715T181139Z
+SUMMARY:Clinic Emergency with Administrator
+BEGIN:VALARM
+ACTION:AUDIO
+DESCRIPTION:Email - 3 Hours
+TRIGGER;related=START:PT3H
+END:VALARM
+BEGIN:VALARM
+ACTION:AUDIO
+DESCRIPTION:SMS Text Message - 1 Hours
+TRIGGER;related=START:PT1H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

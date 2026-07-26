@@ -25,6 +25,33 @@
                             <field name="op_last_error"/>
                         </group>
                     </group>
+                    <group string="Attachments from OpenProject">
+                        <group>
+                            <field name="op_attachment_count"/>
+                            <field name="op_attachments_synced_at"/>
+                            <field name="op_primary_attachment_url" widget="url"
+                                      invisible="not op_primary_attachment_url"/>
+                            <button name="action_open_op_primary_attachment"
+                                    type="object"
+                                    string="Open Attachment"
+                                    class="btn-primary"
+                                    invisible="op_attachment_count == 0"/>
+                            <button name="action_sync_op_attachments"
+                                    type="object"
+                                    string="Sync Attachments from OpenProject"
+                                    class="btn-secondary"
+                                    invisible="not op_work_package_id"/>
+                        </group>
+                    </group>
+                    <field name="op_attachment_ids" readonly="1" nolabel="1">
+                        <list create="0" delete="0" edit="0">
+                            <field name="name"/>
+                            <field name="mimetype"/>
+                            <field name="file_size"/>
+                            <field name="op_attachment_id" optional="show"/>
+                            <field name="op_attachment_url" widget="url" string="Open / Download"/>
+                        </list>
+                    </field>
                     <group string="Logical OpenProject Parent">
                         <group>
                             <field name="op_parent_work_package_id"/>

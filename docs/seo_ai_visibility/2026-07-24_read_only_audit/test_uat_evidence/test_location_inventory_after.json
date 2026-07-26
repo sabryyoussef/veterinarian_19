@@ -1,0 +1,75 @@
+{
+  "ts": "2026-07-24T16:39:05.612793+00:00",
+  "rows": [
+    {
+      "/": {
+        "Amwaj2": false,
+        "Wahat": false,
+        "OldMaps": false,
+        "OldCoords": false,
+        "LegacyKG": false,
+        "PetSpotClinic": false,
+        "Move": false,
+        "NewCoords": true,
+        "Gate1": true,
+        "petspot": true
+      }
+    },
+    {
+      "/contactus": {
+        "Amwaj2": false,
+        "Wahat": false,
+        "OldMaps": false,
+        "OldCoords": false,
+        "LegacyKG": false,
+        "PetSpotClinic": false,
+        "Move": false,
+        "NewCoords": true,
+        "Gate1": true,
+        "petspot": true
+      }
+    },
+    {
+      "/contact-directions-booking": {
+        "Amwaj2": false,
+        "Wahat": false,
+        "OldMaps": false,
+        "OldCoords": false,
+        "LegacyKG": false,
+        "PetSpotClinic": false,
+        "Move": false,
+        "NewCoords": true,
+        "Gate1": true,
+        "petspot": true
+      }
+    },
+    {
+      "/veterinary-clinic-near-amwaj": {
+        "Amwaj2": false,
+        "Wahat": false,
+        "OldMaps": false,
+        "OldCoords": false,
+        "LegacyKG": false,
+        "PetSpotClinic": false,
+        "Move": false,
+        "NewCoords": true,
+        "Gate1": true,
+        "petspot": true
+      }
+    },
+    {
+      "/emergency-vet-north-coast": {
+        "Amwaj2": false,
+        "Wahat": false,
+        "OldMaps": false,
+        "OldCoords": false,
+        "LegacyKG": false,
+        "PetSpotClinic": false,
+        "Move": false,
+        "NewCoords": true,
+        "Gate1": true,
+        "petspot": true
+      }
+    }
+  ]
+}

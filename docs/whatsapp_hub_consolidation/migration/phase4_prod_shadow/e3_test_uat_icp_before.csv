@@ -1,0 +1,4 @@
+whatsapp_hub.discuss_cutover_enabled,False
+whatsapp_hub.discuss_hub_allowed_channel_ids,""
+whatsapp_hub.unified_outbound_enabled,False
+whatsapp_hub.unified_outbound_purposes,""

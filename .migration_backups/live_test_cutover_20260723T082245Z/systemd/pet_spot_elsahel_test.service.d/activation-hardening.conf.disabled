@@ -1,0 +1,7 @@
+[Service]
+# Test-only activation repin to feature/dev-hub-ops-hardening (dev_session_hub 19.0.8.3.0)
+# SECRET_PATTERN precision fix + idempotent Test-posture provisioning.
+ExecStart=
+ExecStart=/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin \
+    -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_hardening.conf \
+    -d pet_spot_elsahel_test

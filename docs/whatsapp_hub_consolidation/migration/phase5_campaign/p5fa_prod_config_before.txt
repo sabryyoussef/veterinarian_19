@@ -1,0 +1,6 @@
+whatsapp_hub.campaign_admit_batch_size|5
+whatsapp_hub.campaign_cutover_enabled|False
+whatsapp_hub.campaign_hub_allowed_campaign_ids|
+whatsapp_hub.discuss_cutover_enabled|True
+whatsapp_hub.discuss_hub_allowed_channel_ids|10,5
+whatsapp_hub.unified_outbound_purposes|discuss

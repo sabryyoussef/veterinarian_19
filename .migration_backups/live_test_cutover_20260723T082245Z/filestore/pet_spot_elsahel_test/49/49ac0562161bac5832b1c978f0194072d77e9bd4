@@ -1,0 +1,75 @@
+# Chatwoot conversation 46 — client feedback (2026-06-29)
+
+
+## Message 2792 — Bright&I zone ( Odoo ERP ) — 1782762014
+
+انا عندي بعض الملاحظات
+
+لا يكفي اختبار COD وPaymob فقط، بل يجب تغطية الحالات التالية:
+طلب بدون خصم.
+طلب بخصم Coupon.
+طلب بخصم تلقائي.
+أكثر من منتج.
+أكثر من شحنة.
+شحن مجاني.
+Partial Payment.
+Partial Refund.
+Full Refund.
+Exchange.
+Cancel قبل الشحن.
+Cancel بعد الفاتورة.
+Order Edit من Shopify.
+
+
+## Message 2793 — Bright&I zone ( Odoo ERP ) — 1782762014
+
+ماذا يحدث لو Shopify أرسل نفس الـ Webhook مرتين
+
+
+## Message 2794 — Bright&I zone ( Odoo ERP ) — 1782762015
+
+لو فشل Order اليوم...
+هل بعد إعادة المحاولة:
+سيكمل؟
+أم ينشئ Order جديد؟
+
+
+## Message 2795 — Bright&I zone ( Odoo ERP ) — 1782762015
+
+هل يوجد شاشة log
+
+
+## Message 2796 — Bright&I zone ( Odoo ERP ) — 1782762016
+
+لو المنتج غير موجود فى Odoo...
+هل:
+يتم إنشاؤه تلقائياً؟
+أم يفشل الطلب؟
+أم يستخدم Mapping؟
+
+
+## Message 2797 — Bright&I zone ( Odoo ERP ) — 1782762016
+
+طريقة احتساب Paymob Fees
+
+
+## Message 2798 — Bright&I zone ( Odoo ERP ) — 1782762016
+
+طريقة المرتجعات
+إعادة المخزون؟
+فقط Credit Note؟
+الاثنين؟
+
+
+## Message 2799 — Bright&I zone ( Odoo ERP ) — 1782762017
+
+بالنسبة للاستبدال
+ما الذى يحدث إذا:
+المنتج الجديد أغلى؟
+أو أرخص؟
+
+
+## Message 2800 — Bright&I zone ( Odoo ERP ) — 1782762017
+
+في النهايةنحتاج
+User Manual

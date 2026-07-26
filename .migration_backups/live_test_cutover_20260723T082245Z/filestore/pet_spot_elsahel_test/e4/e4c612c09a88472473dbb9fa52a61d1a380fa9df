@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 9519
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 07:53:47 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.65
+
+**الملخص:**
+The user is unable to access the password that matches the data from Shopify.
+
+**الإجراء المطلوب:**
+Investigate the password synchronization between Odoo and Shopify, ensure correct configuration and data mapping.
+
+## Original Message
+
+```
+انا الباسورد مش متاح مؤمن يطابق هوا الداتا من على شوبيفاي
+```

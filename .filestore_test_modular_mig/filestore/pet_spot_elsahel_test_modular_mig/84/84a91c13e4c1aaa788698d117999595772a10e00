@@ -1,0 +1,40 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 8893
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-12 08:51:05 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.30
+
+**الملخص:**
+User is inquiring about Shopify login and help options.
+
+**الإجراء المطلوب:**
+No action required, user needs assistance with Shopify, not Odoo.
+
+**نص مرفق مستخرج:**
+Login
+
+Continue to Shopify
+
+Email
+
+&@ Signin with passkey
+
+G
+
+w to Shopify?
+
+Need Help?
+
+## Original Message
+
+```
+Photo: 3EB0A18A14B6FB42F0A677.jpeg
+```

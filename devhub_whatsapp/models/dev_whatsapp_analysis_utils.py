@@ -7,9 +7,11 @@ import json
 
 from odoo.exceptions import ValidationError
 
-SCHEMA_VERSION = "2"
+SCHEMA_VERSION = "3"
 SCHEMA_VERSION_V1 = "1"
-DEFAULT_PROMPT_VERSION = "wa_project_aware_v2.3"
+SCHEMA_VERSION_V2 = "2"
+SCHEMA_VERSION_V3 = "3"
+DEFAULT_PROMPT_VERSION = "wa_project_aware_v3.0"
 
 CLASSIFICATIONS_V1 = frozenset(
     {
@@ -34,6 +36,7 @@ CLASSIFICATIONS_V2 = frozenset(
         "context_update",
         "decision",
         "noise",
+        "information",
         "unclear",
     }
 )
@@ -41,6 +44,51 @@ NOISE_CLASSIFICATIONS = frozenset({"noise", "unrelated", "information", "unclear
 RECOMMENDED_ACTIONS = frozenset(
     {"ignore", "review", "reply", "create_work", "request_context", "attach_existing"}
 )
+CLASSIFICATIONS_V3 = frozenset(
+    {
+        "bug",
+        "enhancement",
+        "investigation",
+        "support",
+        "documentation",
+        "deployment",
+        "configuration",
+        "data_issue",
+        "unknown",
+    }
+)
+ACTIONS_V3 = frozenset(
+    {
+        "ignore",
+        "request_information",
+        "update_existing_work",
+        "create_work",
+        "create_multiple_work_items",
+        "escalate",
+        "review_only",
+    }
+)
+NON_ACTIONABLE_V3 = frozenset({"ignore", "review_only"})
+V3_TO_V2_CLASS = {
+    "bug": "bug",
+    "enhancement": "new_task",
+    "investigation": "unclear",
+    "support": "question",
+    "documentation": "information",
+    "deployment": "new_task",
+    "configuration": "new_task",
+    "data_issue": "bug",
+    "unknown": "unclear",
+}
+V3_TO_V1_ACTION = {
+    "ignore": "ignore",
+    "request_information": "request_context",
+    "update_existing_work": "attach_existing",
+    "create_work": "create_work",
+    "create_multiple_work_items": "create_work",
+    "escalate": "review",
+    "review_only": "review",
+}
 PRIORITIES = frozenset({"0", "1", "2", "3"})
 WI_DECISIONS = frozenset({"new", "existing", "none", "unclear"})
 LANGUAGES = frozenset({"ar", "en", "mixed"})
@@ -63,6 +111,7 @@ V2_TO_V1_CLASS = {
     "context_update": "context_addition",
     "decision": "decision",
     "noise": "noise",
+    "information": "information",
     "unclear": "information",
 }
 
@@ -79,8 +128,8 @@ COARSE_TO_V2_CLASS = {
     "context": "context_update",
     "context_addition": "context_update",
     "context_update": "context_update",
-    "info": "unclear",
-    "information": "unclear",
+    "info": "information",
+    "information": "information",
     "noise": "noise",
     "unrelated": "noise",
     "question": "question",
@@ -307,14 +356,39 @@ def _validate_v2(data, batch_ids, project_candidate_ids=None, work_item_candidat
     work_item_id = _opt_int(wr.get("work_item_id"), "work_item_resolution.work_item_id")
     cand_projects = {int(i) for i in (project_candidate_ids or [])}
     cand_wis = {int(i) for i in (work_item_candidate_ids or [])}
+    pr = dict(pr)
+    wr = dict(wr)
     if project_id is not None and cand_projects and project_id not in cand_projects:
         raise ValidationError(
             "project_id %s is not in Odoo-supplied candidates." % project_id
         )
+    if project_id is not None and not cand_projects:
+        # Empty candidate list: strip baseline/dev_project leakage rather than accept.
+        project_id = None
+        pr["project_id"] = None
+        pr["project_name"] = None
+        pr["confidence"] = 0.0
+        pr["resolution_status"] = "unresolved"
     if work_item_id is not None and cand_wis and work_item_id not in cand_wis:
         raise ValidationError(
             "work_item_id %s is not in Odoo-supplied candidates." % work_item_id
         )
+    if work_item_id is not None and not cand_wis:
+        work_item_id = None
+        wr["work_item_id"] = None
+        wr["work_item_title"] = None
+        if decision == "existing":
+            decision = "unclear"
+            wr["decision"] = decision
+    # Overconfidence guard for non-actionable labels without a resolved project.
+    conf = _confidence(pr.get("confidence", 0.0))
+    if (
+        classification in ("noise", "information", "unclear")
+        or not bool(data.get("safe_to_create_work"))
+    ) and conf >= 0.8 and project_id is None:
+        pr["confidence"] = 0.0
+        if classification in ("noise", "information"):
+            pr["project_name"] = None
     if decision == "existing" and not work_item_id:
         raise ValidationError("decision=existing requires work_item_id from candidates.")
     if decision == "existing" and work_item_id and cand_wis and work_item_id not in cand_wis:
@@ -372,7 +446,7 @@ def _validate_v2(data, batch_ids, project_candidate_ids=None, work_item_candidat
         raise ValidationError("evidence_used must be a list.")
 
     return {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": SCHEMA_VERSION_V2,
         "summary": summary[:2000],
         "classification": V2_TO_V1_CLASS.get(classification, "issue"),
         "classification_v2": classification,
@@ -412,6 +486,321 @@ def _validate_v2(data, batch_ids, project_candidate_ids=None, work_item_candidat
     }
 
 
+def _nonempty_str(value, field_name, required=True):
+    text = str(value or "").strip()
+    if required and not text:
+        raise ValidationError("%s is required and must be non-empty." % field_name)
+    return text
+
+
+def _as_str_list(value, field_name, allow_empty=True, required_nonempty_items=False):
+    if value is None:
+        value = []
+    if not isinstance(value, list):
+        raise ValidationError("%s must be a list." % field_name)
+    out = [str(x).strip() for x in value if str(x).strip()]
+    if not allow_empty and not out:
+        raise ValidationError("%s must be a non-empty list." % field_name)
+    if required_nonempty_items and not out:
+        raise ValidationError("%s must contain at least one non-empty item." % field_name)
+    return out[:40]
+
+
+def _validate_v3_item(item, index, batch_ids):
+    if not isinstance(item, dict):
+        raise ValidationError("items[%s] must be an object." % index)
+    action = str(item.get("action") or "").strip()
+    if action not in ACTIONS_V3:
+        raise ValidationError(
+            "items[%s].action unsupported: %s" % (index, action or "(empty)")
+        )
+    classification = str(item.get("classification") or "").strip()
+    if classification not in CLASSIFICATIONS_V3:
+        raise ValidationError(
+            "items[%s].classification unsupported: %s"
+            % (index, classification or "(empty)")
+        )
+    actionable = action not in NON_ACTIONABLE_V3
+    title = str(item.get("title") or "").strip()
+    description = str(item.get("description") or "").strip()
+    current_behavior = str(
+        item.get("current_behavior") or item.get("description") or ""
+    ).strip()
+    expected_behavior = str(
+        item.get("expected_behavior") or item.get("outcome") or ""
+    ).strip()
+    acceptance = item.get("acceptance_criteria")
+    test_requirements = item.get("test_requirements")
+    source_ids = _as_int_list(
+        item.get("source_message_ids") or [],
+        "items[%s].source_message_ids" % index,
+        batch_ids,
+    )
+    errors = []
+    if actionable:
+        if not title:
+            errors.append("items[%s].title is required for actionable items" % index)
+        if not description and not current_behavior:
+            errors.append(
+                "items[%s] needs description or current_behavior" % index
+            )
+        if not expected_behavior:
+            errors.append(
+                "items[%s] needs expected_behavior or outcome" % index
+            )
+        if not source_ids:
+            errors.append(
+                "items[%s].source_message_ids is required for actionable items" % index
+            )
+        try:
+            ac_list = _as_str_list(
+                acceptance,
+                "items[%s].acceptance_criteria" % index,
+                allow_empty=False,
+                required_nonempty_items=True,
+            )
+        except ValidationError as err:
+            errors.append(str(err))
+            ac_list = []
+        try:
+            tr_list = _as_str_list(
+                test_requirements if test_requirements is not None else [],
+                "items[%s].test_requirements" % index,
+                allow_empty=True,
+            )
+        except ValidationError as err:
+            errors.append(str(err))
+            tr_list = []
+        try:
+            conf = _confidence(item.get("confidence", 0.0))
+        except ValidationError as err:
+            errors.append(str(err))
+            conf = 0.0
+    else:
+        ac_list = _as_str_list(
+            acceptance if acceptance is not None else [],
+            "items[%s].acceptance_criteria" % index,
+            allow_empty=True,
+        )
+        tr_list = _as_str_list(
+            test_requirements if test_requirements is not None else [],
+            "items[%s].test_requirements" % index,
+            allow_empty=True,
+        )
+        conf = (
+            _confidence(item.get("confidence", 0.0))
+            if item.get("confidence") is not None
+            else 0.0
+        )
+
+    if errors:
+        raise ValidationError("; ".join(errors))
+
+    return {
+        "title": title[:300] if title else None,
+        "classification": classification,
+        "action": action,
+        "description": description[:8000] if description else None,
+        "current_behavior": current_behavior[:4000] if current_behavior else None,
+        "expected_behavior": expected_behavior[:4000] if expected_behavior else None,
+        "acceptance_criteria": ac_list,
+        "test_requirements": tr_list,
+        "source_message_ids": source_ids,
+        "confidence": conf,
+        "outcome": str(item.get("outcome") or "").strip()[:4000] or None,
+    }
+
+
+def normalize_v3_to_legacy_fields(validated):
+    """Map primary v3 item onto existing work_title / classification fields for UI."""
+    items = list(validated.get("items") or validated.get("analysis_items") or [])
+    primary = items[0] if items else {}
+    action = primary.get("action") or "review_only"
+    classification = primary.get("classification") or "unknown"
+    class_v2 = V3_TO_V2_CLASS.get(classification, "unclear")
+    recommended = V3_TO_V1_ACTION.get(action, "review")
+    should_ignore = action == "ignore"
+    contains_work = action in (
+        "create_work",
+        "create_multiple_work_items",
+        "update_existing_work",
+    )
+    title = primary.get("title") or validated.get("conversation_summary")
+    description_parts = []
+    if primary.get("description"):
+        description_parts.append(primary["description"])
+    if primary.get("current_behavior"):
+        description_parts.append("Current: %s" % primary["current_behavior"])
+    if primary.get("expected_behavior"):
+        description_parts.append("Expected: %s" % primary["expected_behavior"])
+    if primary.get("acceptance_criteria"):
+        description_parts.append(
+            "Acceptance:\n- %s" % "\n- ".join(primary["acceptance_criteria"])
+        )
+    work_description = "\n\n".join(description_parts) if description_parts else None
+    if action == "update_existing_work":
+        decision = "existing"
+    elif action in ("create_work", "create_multiple_work_items"):
+        decision = "new"
+    elif should_ignore:
+        decision = "none"
+    else:
+        decision = "unclear"
+
+    all_source = []
+    for item in items:
+        all_source.extend(item.get("source_message_ids") or [])
+    seen = set()
+    source_ids = []
+    for mid in all_source:
+        if mid not in seen:
+            seen.add(mid)
+            source_ids.append(mid)
+
+    return {
+        "schema_version": SCHEMA_VERSION_V3,
+        "summary": str(validated.get("conversation_summary") or "")[:2000],
+        "classification": V2_TO_V1_CLASS.get(class_v2, "issue"),
+        "classification_v2": class_v2,
+        "classification_v3": classification,
+        "should_ignore": should_ignore,
+        "ignore_reason": ("Classified as ignore" if should_ignore else None),
+        "contains_work": contains_work and not should_ignore,
+        "work_title": (str(title).strip()[:300] if title else None),
+        "work_description": (
+            str(work_description).strip()[:8000] if work_description else None
+        ),
+        "priority": "2",
+        "project_reference": None,
+        "participants": [],
+        "source_message_ids": source_ids,
+        "noise_message_ids": source_ids if should_ignore else [],
+        "work_message_ids": source_ids if contains_work else [],
+        "confidence": float(primary.get("confidence") or 0.0),
+        "requires_human_review": bool(validated.get("requires_human_review", True)),
+        "recommended_action": recommended,
+        "missing_information": [],
+        "project_resolution": {},
+        "work_item_resolution": {"decision": decision},
+        "analysis_detail": {
+            "acceptance_criteria": primary.get("acceptance_criteria") or [],
+            "test_requirements": primary.get("test_requirements") or [],
+            "current_behavior": primary.get("current_behavior"),
+            "expected_behavior": primary.get("expected_behavior"),
+        },
+        "evidence_used": [],
+        "safe_to_create_work": action in ("create_work", "create_multiple_work_items"),
+        "safe_to_attach_to_existing_work": action == "update_existing_work",
+        "resolved_project_id": validated.get("resolved_project_id"),
+        "resolved_work_item_id": validated.get("resolved_work_item_id"),
+        "requires_project_confirmation": bool(
+            validated.get("requires_project_confirmation", True)
+        ),
+        "contains_multiple_tasks": bool(
+            validated.get("contains_multiple_tasks") or len(items) > 1
+        ),
+        "language": validated.get("language") or "mixed",
+        "analysis_items": items,
+        "action_v3": action,
+    }
+
+
+def _validate_v3(data, batch_ids, project_candidate_ids=None, work_item_candidate_ids=None):
+    required = {"project", "conversation_summary", "items", "requires_human_review"}
+    missing = required - set(data)
+    if missing:
+        raise ValidationError(
+            "AI v3 response missing keys: %s" % ", ".join(sorted(missing))
+        )
+    items_raw = data.get("items")
+    if not isinstance(items_raw, list):
+        raise ValidationError("items must be a list.")
+    if not items_raw:
+        raise ValidationError("items must contain at least one item.")
+
+    validated_items = [
+        _validate_v3_item(item, idx, batch_ids) for idx, item in enumerate(items_raw)
+    ]
+    contains_multiple_tasks = len(validated_items) > 1
+
+    project = data.get("project")
+    if isinstance(project, dict):
+        project_name = str(
+            project.get("name") or project.get("code") or project.get("id") or ""
+        ).strip()
+        project_id = _opt_int(project.get("id") or project.get("project_id"), "project.id")
+    else:
+        project_name = str(project or "").strip()
+        project_id = None
+    cand_projects = {int(i) for i in (project_candidate_ids or [])}
+    if project_id is not None and cand_projects and project_id not in cand_projects:
+        raise ValidationError(
+            "project.id %s is not in Odoo-supplied candidates." % project_id
+        )
+
+    summary = _nonempty_str(data.get("conversation_summary"), "conversation_summary")
+    primary = normalize_v3_to_legacy_fields(
+        {
+            "schema_version": SCHEMA_VERSION_V3,
+            "project": project,
+            "conversation_summary": summary,
+            "items": validated_items,
+            "requires_human_review": bool(data.get("requires_human_review", True)),
+            "contains_multiple_tasks": contains_multiple_tasks,
+            "resolved_project_id": project_id,
+        }
+    )
+    cand_wis = {int(i) for i in (work_item_candidate_ids or [])}
+    wi_id = primary.get("resolved_work_item_id")
+    if wi_id is not None and cand_wis and wi_id not in cand_wis:
+        raise ValidationError(
+            "work_item_id %s is not in Odoo-supplied candidates." % wi_id
+        )
+
+    primary["schema_version"] = SCHEMA_VERSION_V3
+    primary["analysis_items"] = validated_items
+    primary["contains_multiple_tasks"] = contains_multiple_tasks
+    primary["requires_human_review"] = bool(data.get("requires_human_review", True))
+    primary["project_name"] = project_name or None
+    primary["resolved_project_id"] = project_id
+    primary["validation_state"] = "valid"
+    return primary
+
+
+def validate_actionable_acceptance(validated):
+    """Reject empty acceptance_criteria before approve_create_work (schema v3)."""
+    if not isinstance(validated, dict):
+        raise ValidationError("Validated analysis payload is required.")
+    items = validated.get("analysis_items") or validated.get("items") or []
+    schema = str(validated.get("schema_version") or "")
+    if not items and schema != SCHEMA_VERSION_V3:
+        # Legacy v1/v2 create path — do not block historical / fixture approvals
+        return True
+    if items:
+        errors = []
+        for idx, item in enumerate(items):
+            action = item.get("action")
+            if action in NON_ACTIONABLE_V3:
+                continue
+            ac = item.get("acceptance_criteria") or []
+            if not isinstance(ac, list) or not [x for x in ac if str(x).strip()]:
+                errors.append(
+                    "items[%s] actionable action %s requires non-empty acceptance_criteria"
+                    % (idx, action)
+                )
+        if errors:
+            raise ValidationError("; ".join(errors))
+        return True
+    detail = validated.get("analysis_detail") or {}
+    ac = detail.get("acceptance_criteria") or []
+    if validated.get("contains_work") and validated.get("recommended_action") == "create_work":
+        if not isinstance(ac, list) or not [x for x in ac if str(x).strip()]:
+            raise ValidationError(
+                "acceptance_criteria must be a non-empty list before creating work."
+            )
+    return True
+
+
 def validate_ai_response(
     raw_text,
     batch_message_ids,
@@ -432,16 +821,23 @@ def validate_ai_response(
     version = str(data.get("schema_version") or "")
     if version == SCHEMA_VERSION_V1:
         return _validate_v1(data, batch_ids)
-    if version == SCHEMA_VERSION:
+    if version == SCHEMA_VERSION_V2:
         return _validate_v2(
             data,
             batch_ids,
             project_candidate_ids=project_candidate_ids,
             work_item_candidate_ids=work_item_candidate_ids,
         )
+    if version == SCHEMA_VERSION_V3 or version == SCHEMA_VERSION:
+        return _validate_v3(
+            data,
+            batch_ids,
+            project_candidate_ids=project_candidate_ids,
+            work_item_candidate_ids=work_item_candidate_ids,
+        )
     raise ValidationError(
-        "Unsupported schema_version %r (expected %s or %s)."
-        % (version, SCHEMA_VERSION, SCHEMA_VERSION_V1)
+        "Unsupported schema_version %r (expected %s, %s, or %s)."
+        % (version, SCHEMA_VERSION_V1, SCHEMA_VERSION_V2, SCHEMA_VERSION_V3)
     )
 
 

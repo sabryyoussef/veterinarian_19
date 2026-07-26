@@ -1,0 +1,12 @@
+cutover False
+allowlist False
+purposes discuss
+discuss_allow 10,5
+hub_ver 19.0.1.7.0
+chat_ver 19.0.1.16.0
+ch 5 mode hub
+ch 10 mode hub
+campaign_modes [{'wa_outbound_mode': 'legacy', 'wa_outbound_mode_count': 14, '__domain': [('wa_outbound_mode', '=', 'legacy')]}]
+camp_jobs 0
+inst 1 sabry min camp_cutover False
+test_partner 469 201000059085

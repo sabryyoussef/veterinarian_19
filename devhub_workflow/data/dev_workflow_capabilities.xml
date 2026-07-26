@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cap_work" model="dev.workflow.capability">
+        <field name="name">Work</field>
+        <field name="technical_name">work</field>
+        <field name="sequence">10</field>
+        <field name="model_hint">dev.work.item</field>
+    </record>
+    <record id="cap_analysis" model="dev.workflow.capability">
+        <field name="name">Analysis</field>
+        <field name="technical_name">analysis</field>
+        <field name="sequence">20</field>
+        <field name="model_hint">dev.work.analysis</field>
+    </record>
+    <record id="cap_plan" model="dev.workflow.capability">
+        <field name="name">Plan</field>
+        <field name="technical_name">plan</field>
+        <field name="sequence">30</field>
+        <field name="model_hint">dev.work.plan</field>
+    </record>
+    <record id="cap_approval" model="dev.workflow.capability">
+        <field name="name">Approval</field>
+        <field name="technical_name">approval</field>
+        <field name="sequence">40</field>
+        <field name="model_hint">dev.work.approval</field>
+    </record>
+    <record id="cap_execution" model="dev.workflow.capability">
+        <field name="name">Execution</field>
+        <field name="technical_name">execution</field>
+        <field name="sequence">50</field>
+        <field name="model_hint">dev.execution.workspace</field>
+    </record>
+    <record id="cap_git" model="dev.workflow.capability">
+        <field name="name">Git / GitHub</field>
+        <field name="technical_name">git</field>
+        <field name="sequence">60</field>
+        <field name="model_hint">dev.git.commit.record</field>
+    </record>
+    <record id="cap_deploy" model="dev.workflow.capability">
+        <field name="name">Deploy</field>
+        <field name="technical_name">deploy</field>
+        <field name="sequence">70</field>
+        <field name="model_hint">dev.deploy.record</field>
+    </record>
+</odoo>

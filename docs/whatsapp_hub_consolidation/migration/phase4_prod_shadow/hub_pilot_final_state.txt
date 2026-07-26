@@ -1,0 +1,32 @@
+=== FINAL SAFETY ===
+whatsapp_hub.discuss_cutover_enabled|False
+whatsapp_hub.unified_outbound_enabled|False
+whatsapp_hub.unified_outbound_purposes|discuss
+ id | instance_name | unified_outbound_enabled | discuss_cutover_enabled 
+----+---------------+--------------------------+-------------------------
+  1 | sabry min     | f                        | f
+(1 row)
+
+ id |                 left                 |        wa_phone         | wa_outbound_mode 
+----+--------------------------------------+-------------------------+------------------
+  5 | WA: كريم ايهاب  الساحل 2022          | 201000059085            | shadow
+ 10 | WA Group: Testopenclow (openlowtest) | 120363411424964076@g.us | shadow
+(2 rows)
+
+0
+=== PILOT JOBS ===
+ id | state | transport_mode | discuss_channel_id |   business_key   |  evolution_message_id  | retry_count 
+----+-------+----------------+--------------------+------------------+------------------------+-------------
+  1 | sent  | unified_bridge |                 10 | discuss:10:11320 | 3EB06D68816DC7D6CFD6CC |           0
+  2 | sent  | unified_bridge |                 10 | discuss:10:11321 | 3EB07360E4226E6C40D8F0 |           0
+  3 | sent  | unified_bridge |                 10 | discuss:10:11322 | 3EB0896A630B01ACB59256 |           0
+(3 rows)
+
+=== PILOT HUB MSGS ===
+ id |   business_key   | conversation_id | wa_message_log_id |  evolution_message_id  | purpose 
+----+------------------+-----------------+-------------------+------------------------+---------
+ 19 | discuss:10:11320 |               8 |                16 | 3EB06D68816DC7D6CFD6CC | discuss
+ 20 | discuss:10:11321 |               8 |                17 | 3EB07360E4226E6C40D8F0 | discuss
+ 21 | discuss:10:11322 |               8 |                18 | 3EB0896A630B01ACB59256 | discuss
+(3 rows)
+

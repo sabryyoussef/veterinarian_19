@@ -1,0 +1,30 @@
+Phase 6 Human-Approved Merge — live UAT sanitized remote verification
+Date: 2026-07-19 (UTC)
+
+Preflight (exact match before execution)
+- repository: sabryyoussef/veterinarian_19
+- app_id / installation_id: 4341059 / 147666583
+- pr: 2 open, draft=false, merged=false, mergeable_state=clean, auto_merge=null
+- head_sha: 24c7eef5e169016a94794f8e30b6934e2aabd3b8
+- base: staging @ 66344b2e09e2049c39942114029253e919bc6709
+- required_check: GitGuardian Security Checks app 46505 completed/success
+- legacy_statuses: []
+- approval_current: OK (requester != approver, credential digests match, no events)
+
+Execution
+- method: squash
+- workspace: 14 -> merged_reviewed
+- merge_record_id: 1
+- result_state: merged
+- merge_sha: 2360b72691112263dceabc1fdd456f25073db623
+
+Post-verify
+- pr_2: closed, merged=true, merge_commit_sha=2360b72691112263dceabc1fdd456f25073db623
+- staging_sha: 2360b72691112263dceabc1fdd456f25073db623
+- staging_equals_merge_sha: true
+- auto_merge: null
+- merge_record_count: 1
+- replay_denial: AccessError (current immutable Merge approval required)
+- idempotent_record_count: 1
+- deployment_actions: none / models absent
+- token_revoked_after_postverify: 1

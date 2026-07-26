@@ -1,0 +1,9 @@
+xmlids|devhub_core.group_dev_hub_approver,devhub_core.group_dev_hub_deploy_approver,devhub_core.group_dev_hub_generation,devhub_core.group_dev_hub_integration,devhub_core.group_dev_hub_manager,devhub_core.group_dev_hub_production_approver,devhub_core.group_dev_hub_user
+dup_names|0
+group_dev_hub_approver|gid=154|users=1|module=devhub_core
+group_dev_hub_deploy_approver|gid=156|users=0|module=devhub_core
+group_dev_hub_generation|gid=155|users=1|module=devhub_core
+group_dev_hub_integration|gid=153|users=2|module=devhub_core
+group_dev_hub_manager|gid=152|users=2|module=devhub_core
+group_dev_hub_production_approver|gid=157|users=0|module=devhub_core
+group_dev_hub_user|gid=151|users=1|module=devhub_core

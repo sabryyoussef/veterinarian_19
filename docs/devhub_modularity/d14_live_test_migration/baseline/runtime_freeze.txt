@@ -1,0 +1,40 @@
+pid=299149
+config=/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_staging.conf
+database=pet_spot_elsahel_test
+port=8028
+cmdline:
+/home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_staging.conf -d pet_spot_elsahel_test 
+
+=== conf ===
+[options]
+admin_passwd = pet_spot_elsahel_admin
+db_host = localhost
+db_port = 5432
+db_user = odoo
+db_password = 65b56f3782b16677a5c5724e86a5f212
+dbfilter = ^pet_spot_elsahel_test$
+# Community + Enterprise + Pet Spot Elsahel veterinary addons (repo root = addons_path).
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/releases/addons_overlay_staging,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+http_port = 8028
+http_interface = 0.0.0.0
+proxy_mode = True
+log_level = info
+data_dir = /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore
+limit_time_real = 600
+limit_time_cpu = 120
+db_maxconn = 64
+
+=== overlay listing ===
+total 12
+drwxrwxr-x  2 sabry sabry 4096 Jul 21 22:39 .
+drwxrwxr-x 14 sabry sabry 4096 Jul 21 22:39 ..
+lrwxrwxrwx  1 sabry sabry   91 Jul 21 22:39 dev_session_hub -> /home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_staging_791cd1b/dev_session_hub
+
+overlay_dev_session_hub_manifest:
+    "name": "Development Session Hub",
+    "version": "19.0.8.5.6",
+development work. The module stores sanitized source references, versioned
+
+canonical_dev_session_hub_manifest:
+    "name": "Development Session Hub",
+    "version": "19.0.9.1.0",

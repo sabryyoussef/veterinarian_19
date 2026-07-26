@@ -1,0 +1,18 @@
+Human-Approved Git Push Playwright evidence
+
+Test file:
+tests/playwright/phase5_human_push.spec.ts
+SHA-256:
+ab7b48716e1fccf86936a218e24860f203ea7411b5527a4e998148fb2d701d9b
+
+Result:
+1 passed (1.2m)
+
+Screenshots:
+01_committed_reviewed.png
+02_push_review.png
+03_push_approval.png
+04_push_confirmation.png
+05_push_success.png
+06_remote_verification.png
+07_pushed_reviewed_final.png

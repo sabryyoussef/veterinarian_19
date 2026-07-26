@@ -1,0 +1,79 @@
+{
+  "analysis_detail": {
+    "acceptance_criteria": [],
+    "business_request": "",
+    "current_state": "",
+    "database_considerations": [],
+    "existing_relevant_functionality": [],
+    "integration_considerations": [],
+    "likely_affected_models": [],
+    "likely_affected_modules": [],
+    "likely_affected_views": [],
+    "questions_before_implementation": [],
+    "recommended_approach": [],
+    "risks": []
+  },
+  "classification": "noise",
+  "classification_v2": "noise",
+  "confidence": 0.0,
+  "contains_multiple_tasks": false,
+  "contains_work": false,
+  "evidence_used": [
+    {
+      "evidence_status": "inferred",
+      "reference": "media:691:ocr",
+      "source_type": "message",
+      "summary": "Stored OCR text shows a likely screenshot with readable text, but lacks actionable content."
+    },
+    {
+      "evidence_status": "inferred",
+      "reference": "media:692:ocr",
+      "source_type": "message",
+      "summary": "Stored OCR text shows another screenshot with readable text, but lacks actionable content."
+    }
+  ],
+  "ignore_reason": "Classified as noise/unclear",
+  "language": "en",
+  "missing_information": [],
+  "noise_message_ids": [],
+  "participants": [],
+  "priority": "2",
+  "project_reference": null,
+  "project_resolution": {
+    "candidate_ids": [],
+    "confidence": 0.0,
+    "evidence": [],
+    "project_id": null,
+    "project_name": null,
+    "requires_confirmation": true,
+    "resolution_status": "unresolved"
+  },
+  "project_resolution_status": "unresolved",
+  "recommended_action": "ignore",
+  "requires_human_review": true,
+  "requires_project_confirmation": true,
+  "resolved_project_id": null,
+  "resolved_work_item_id": null,
+  "safe_to_attach_to_existing_work": false,
+  "safe_to_create_work": false,
+  "schema_version": "2",
+  "should_ignore": true,
+  "source_message_ids": [
+    827,
+    835
+  ],
+  "summary": "The messages contain images with OCR-derived text, but there are no clear actionable requests or project-related topics identified.",
+  "technical_terms": [],
+  "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+  "work_item_resolution": {
+    "candidate_ids": [],
+    "confidence": 0.0,
+    "decision": "none",
+    "evidence": [],
+    "requires_confirmation": true,
+    "work_item_id": null,
+    "work_item_title": null
+  },
+  "work_message_ids": [],
+  "work_title": "The messages contain images with OCR-derived text, but there are no clear actionable requests or project-related topics identified."
+}

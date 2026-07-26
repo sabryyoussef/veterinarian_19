@@ -463,7 +463,9 @@ export async function loginUi(page: Page): Promise<void> {
     waitUntil: "domcontentloaded",
     timeout: 60_000,
   });
-  if (await page.locator(".o_main_navbar, .o_home_menu, .o_web_client").count()) {
+  // Do not treat body.o_web_client as logged-in: the login/boot shell uses it
+  // while still hidden, which makes a visible wait hang forever.
+  if (await page.locator(".o_main_navbar, .o_home_menu, .o_action_manager").count()) {
     return;
   }
   const dbSelect = page.locator('select[name="db"], #db');
@@ -473,10 +475,9 @@ export async function loginUi(page: Page): Promise<void> {
   await page.locator('input[name="login"]').first().fill(ODOO_LOGIN);
   await page.locator('input[name="password"]').first().fill(ODOO_PASSWORD);
   await page.getByRole("button", { name: /log ?in/i }).click();
-  await page.waitForSelector(
-    ".o_action_manager, .o_home_menu, .o_main_navbar, .o_web_client",
-    { timeout: 90_000 },
-  );
+  await page.waitForSelector(".o_action_manager, .o_home_menu, .o_main_navbar", {
+    timeout: 120_000,
+  });
 }
 
 export async function actionId(api: APIRequestContext, xmlId: string): Promise<number> {

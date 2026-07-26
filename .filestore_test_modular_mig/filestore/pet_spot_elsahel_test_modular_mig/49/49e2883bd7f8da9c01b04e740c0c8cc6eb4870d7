@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/64
+- Message ID: 11833
+- Customer: Egyptian pet veterinarians community
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-17 20:51:05 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Inquiry about a product alternative, not related to Odoo issues.
+
+**الإجراء المطلوب:**
+none
+
+## Original Message
+
+```
+مساء الخير يا دكاترة 
+حدب جرب المنتج دا بديل الاورنببورال
+```

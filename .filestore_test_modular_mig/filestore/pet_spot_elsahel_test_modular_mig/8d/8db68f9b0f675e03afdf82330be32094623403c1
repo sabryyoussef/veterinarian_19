@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 11222
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-15 11:08:44 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+Orders updated on Shopify not reflecting in Odoo, and issues with invoicing and delivery status.
+
+**الإجراء المطلوب:**
+Investigate the integration between Shopify and Odoo for order synchronization issues.
+
+## Original Message
+
+```
+1-The order is updated on Shopify but not on Odoo, example order 21573 and 21000
+2- The order is fully invoiced, but not delivered and not paid
+3-Integration between Amazon and Noon
+4-Payment methods have not configured yet
+```

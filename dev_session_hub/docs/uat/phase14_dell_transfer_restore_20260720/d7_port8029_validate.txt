@@ -1,0 +1,17 @@
+conf_http_port= http_port = 8029
+UPDATE 1
+UPDATE 1
+listen_8029_at=2
+MainPID=551129
+ActiveState=active
+SubState=running
+LISTEN 0      511                      127.0.0.1:8028       0.0.0.0:*          
+LISTEN 0      128                        0.0.0.0:8029       0.0.0.0:*          
+LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*          
+LISTEN 0      511                          [::1]:8028          [::]:*          
+http_try=1 code=000000
+http_try=2 code=200
+http_final=200
+module=dev_session_hub|installed|19.0.8.0.0
+repo_porcelain=0
+socket_hostname sabry3-Precision-5540

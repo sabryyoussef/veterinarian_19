@@ -14,6 +14,37 @@
         </field>
     </record>
 
+    <record id="view_dev_work_approval_form" model="ir.ui.view">
+        <field name="name">dev.work.approval.form</field>
+        <field name="model">dev.work.approval</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        Approvals are immutable. To approve a plan, open DH Plan (or a plan
+                        awaiting approval) and use Approve Exact Hash. If the work item is
+                        not in Awaiting Plan Approval, complete Plan submission first.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="work_item_id"/>
+                            <field name="plan_id"/>
+                            <field name="plan_revision"/>
+                            <field name="plan_hash"/>
+                        </group>
+                        <group>
+                            <field name="decision"/>
+                            <field name="approver_id"/>
+                            <field name="decided_at"/>
+                            <field name="policy_version"/>
+                        </group>
+                    </group>
+                    <field name="comment"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="view_dev_work_plan_form_approval" model="ir.ui.view">
         <field name="name">dev.work.plan.form.approval</field>
         <field name="model">dev.work.plan</field>
@@ -58,4 +89,31 @@
         </field>
     </record>
 
+    <record id="action_dev_work_approval" model="ir.actions.act_window">
+        <field name="name">Plan Approvals</field>
+        <field name="res_model">dev.work.approval</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_devhub_approval_root"
+              name="DH Approval"
+              sequence="89"
+              web_icon="devhub_approval,static/description/icon.png"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_approval_records"
+              name="Plan Approvals"
+              parent="menu_devhub_approval_root"
+              action="action_dev_work_approval"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_approval_plans"
+              name="Plans Awaiting Approval"
+              parent="menu_devhub_approval_root"
+              action="devhub_plan.action_dev_work_plan"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_approver"/>
+
 </odoo>
+

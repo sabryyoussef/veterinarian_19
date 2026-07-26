@@ -189,6 +189,21 @@
                             <field name="raw_response_json"/>
                             <field name="participants_json"/>
                         </page>
+                        <page string="Hardening / orchestration" groups="devhub_core.group_dev_hub_manager">
+                            <group>
+                                <field name="validation_state"/>
+                                <field name="conversation_fingerprint"/>
+                                <field name="op_recommended_parent_id"/>
+                                <field name="contains_multiple_tasks"/>
+                            </group>
+                            <field name="technical_evidence_json"/>
+                            <field name="analysis_items_json"/>
+                            <field name="validation_errors_json"/>
+                            <field name="work_orchestration_json"/>
+                            <field name="op_duplicate_candidates_json"/>
+                            <field name="odoo_task_candidates_json"/>
+                            <field name="dify_request_json"/>
+                        </page>
                     </notebook>
                 </sheet>
                 <chatter/>
@@ -228,6 +243,61 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="view_dev_whatsapp_analysis_eval_list" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.eval.list</field>
+        <field name="model">dev.whatsapp.analysis.eval</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="name"/>
+                <field name="baseline_analysis_id"/>
+                <field name="after_analysis_id"/>
+                <field name="prompt_version"/>
+                <field name="total_score"/>
+                <field name="score_project"/>
+                <field name="score_multitask"/>
+                <field name="score_paths"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_whatsapp_analysis_eval_form" model="ir.ui.view">
+        <field name="name">dev.whatsapp.analysis.eval.form</field>
+        <field name="model">dev.whatsapp.analysis.eval</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="baseline_analysis_id"/>
+                        <field name="after_analysis_id"/>
+                        <field name="prompt_version"/>
+                        <field name="total_score"/>
+                    </group>
+                    <group string="Scores">
+                        <field name="score_project"/>
+                        <field name="score_multitask"/>
+                        <field name="score_classification"/>
+                        <field name="score_paths"/>
+                        <field name="score_acceptance"/>
+                        <field name="score_questions"/>
+                        <field name="score_op_link"/>
+                    </group>
+                    <group string="Payloads" groups="devhub_core.group_dev_hub_manager">
+                        <field name="cursor_reference"/>
+                        <field name="notes"/>
+                        <field name="normalized_output"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_whatsapp_analysis_eval" model="ir.actions.act_window">
+        <field name="name">WhatsApp AI Evals</field>
+        <field name="res_model">dev.whatsapp.analysis.eval</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="view_dev_whatsapp_source_ai_form" model="ir.ui.view">
         <field name="name">dev.whatsapp.source.ai.form</field>
         <field name="model">dev.whatsapp.source</field>
@@ -236,6 +306,12 @@
             <xpath expr="//sheet" position="inside">
                 <group string="AI triage (Hub)" groups="devhub_core.group_dev_hub_manager">
                     <field name="ai_triage_enabled"/>
+                    <field name="auto_analysis_enabled"/>
+                    <field name="analysis_debounce_minutes"/>
+                    <field name="analysis_min_messages"/>
+                    <field name="analysis_review_only"/>
+                    <field name="pending_analysis_after" readonly="1"/>
+                    <field name="openproject_create_allowed"/>
                     <field name="project_mapping_state"/>
                     <field name="project_mapping_confidence"/>
                     <field name="project_mapping_evidence"/>

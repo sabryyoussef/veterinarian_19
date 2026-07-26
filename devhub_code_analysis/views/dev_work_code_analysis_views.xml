@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_item_code_analysis_form" model="ir.ui.view">
+        <field name="name">dev.work.item.code.analysis.form</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_analysis.view_dev_work_item_form_analysis"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_register']" position="after">
+                <button name="action_analyze_against_code_database"
+                        type="object"
+                        string="Analyze Against Code &amp; Database"
+                        class="btn-primary"
+                        invisible="not preferred_repository_id or not preferred_environment_id"/>
+            </xpath>
+            <xpath expr="//field[@name='analysis_ids']/list/field[@name='revision']" position="after">
+                <field name="analysis_kind"/>
+                <field name="execution_state" widget="badge"/>
+            </xpath>
+            <xpath expr="//field[@name='analysis_ids']/list/field[@name='repository_id']" position="after">
+                <field name="environment_id" optional="show"/>
+                <field name="database_identifier" optional="show"/>
+                <field name="analysis_fingerprint" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='analysis_ids']/form/header" position="inside">
+                <field name="execution_state" widget="statusbar" statusbar_visible="queued,running,completed,failed"/>
+                <button name="action_open_form" type="object" string="Open" icon="fa-external-link"/>
+            </xpath>
+            <xpath expr="//field[@name='analysis_ids']/form//field[@name='content_hash']" position="after">
+                <field name="analysis_kind"/>
+                <field name="analysis_fingerprint" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='analysis_ids']/form//field[@name='repository_id']" position="after">
+                <field name="environment_id"/>
+                <field name="database_identifier"/>
+                <field name="runtime_label"/>
+            </xpath>
+            <xpath expr="//field[@name='analysis_ids']/form//group[@name='group_merge_provenance']" position="before">
+                <group string="Failure" invisible="execution_state != 'failed'">
+                    <field name="error_details"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_analysis_code_list" model="ir.ui.view">
+        <field name="name">dev.work.analysis.code.list</field>
+        <field name="model">dev.work.analysis</field>
+        <field name="inherit_id" ref="devhub_analysis.view_dev_work_analysis_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='revision']" position="after">
+                <field name="analysis_kind"/>
+                <field name="execution_state" widget="badge"/>
+            </xpath>
+            <xpath expr="//field[@name='repository_id']" position="after">
+                <field name="environment_id" optional="show"/>
+                <field name="database_identifier" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_analysis_code_form" model="ir.ui.view">
+        <field name="name">dev.work.analysis.code.form</field>
+        <field name="model">dev.work.analysis</field>
+        <field name="inherit_id" ref="devhub_analysis.view_dev_work_analysis_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="execution_state" widget="statusbar" statusbar_visible="queued,running,completed,failed"/>
+                <button name="action_open_form" type="object" string="Open" icon="fa-external-link"/>
+            </xpath>
+            <xpath expr="//field[@name='content_hash']" position="after">
+                <field name="analysis_kind"/>
+                <field name="analysis_fingerprint" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='repository_id']" position="after">
+                <field name="environment_id"/>
+                <field name="database_identifier"/>
+                <field name="runtime_label"/>
+            </xpath>
+            <xpath expr="//group[@name='group_merge_provenance']" position="before">
+                <group string="Failure" invisible="execution_state != 'failed'">
+                    <field name="error_details"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

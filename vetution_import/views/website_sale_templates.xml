@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================================================================
+         PDP: brand / rating / cold-chain / species / ingredients
+         Injected inside the product title section, Vetution-online style.
+         =================================================================== -->
+    <template
+        id="vetution_product_title_info"
+        name="Vetution Product Info (brand, rating, chips)"
+        inherit_id="website_sale.product_title"
+    >
+        <xpath expr="//h1[@t-field='product.name']" position="after">
+            <div t-if="product.vetution_id" class="o_vetution_pdp_info mb-2">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <span
+                        t-if="product.vetution_brand_id"
+                        class="o_vetution_brand text-muted"
+                    >
+                        by
+                        <a
+                            t-att-href="'/shop?search=' + (product.vetution_brand_id.name or '')"
+                            class="fw-bold text-decoration-none"
+                            t-out="product.vetution_brand_id.name"
+                        />
+                    </span>
+                    <span
+                        t-if="product.vetution_cold_chain"
+                        class="badge o_vetution_badge_cold"
+                        title="Requires cold-chain storage and delivery"
+                    >
+                        <i class="fa fa-snowflake-o me-1"/>Cold chain
+                    </span>
+                    <span
+                        t-if="product_variant and product_variant.vetution_out_of_stock"
+                        class="badge text-bg-warning"
+                    >
+                        Out of stock at supplier
+                    </span>
+                    <span
+                        t-if="product_variant and product_variant.vetution_old_price"
+                        class="small text-muted"
+                    >
+                        was
+                        <del
+                            t-out="product_variant.vetution_old_price"
+                            t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"
+                        />
+                    </span>
+                    <span
+                        t-if="product.vetution_rates_count"
+                        class="o_vetution_rating small text-muted"
+                    >
+                        <t t-set="v_full_stars" t-value="int(round(product.vetution_rate or 0))"/>
+                        <t t-foreach="range(5)" t-as="v_star">
+                            <i t-att-class="'fa fa-star' + ('' if v_star &lt; v_full_stars else '-o') + ' o_vetution_star'"/>
+                        </t>
+                        <t t-out="product.vetution_rates_count"/> reviews)
+                    </span>
+                </div>
+                <div
+                    t-if="product.vetution_species_ids"
+                    class="d-flex flex-wrap align-items-center gap-1 mb-1"
+                >
+                    <span class="small text-muted me-1">Species:</span>
+                    <span
+                        t-foreach="product.vetution_species_ids"
+                        t-as="v_species"
+                        class="badge o_vetution_chip"
+                        t-out="v_species.name"
+                    />
+                </div>
+                <div
+                    t-if="product.vetution_ingredient_ids"
+                    class="d-flex flex-wrap align-items-center gap-1 mb-1"
+                >
+                    <span class="small text-muted me-1">Ingredients:</span>
+                    <span
+                        t-foreach="product.vetution_ingredient_ids"
+                        t-as="v_ingredient"
+                        class="badge o_vetution_chip o_vetution_chip_ingredient"
+                        t-out="v_ingredient.name"
+                    />
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ===================================================================
+         PDP: content accordion from vetution.content.block (other[] parity)
+         =================================================================== -->
+    <template
+        id="vetution_product_accordion"
+        name="Vetution Content Accordion"
+        inherit_id="website_sale.product"
+    >
+        <xpath expr="//div[@id='product_full_description']" position="before">
+            <t t-set="v_blocks" t-value="product.sudo().vetution_content_ids.sorted(key=lambda b: (b.sequence, b.id))"/>
+            <section
+                t-if="product.vetution_id and v_blocks"
+                id="o_vetution_content_accordion"
+                class="container my-4"
+            >
+                <div class="accordion" id="vetutionContentAccordion">
+                    <t t-foreach="v_blocks" t-as="v_block">
+                        <div class="accordion-item">
+                            <div class="accordion-header my-0 h6">
+                                <button
+                                    t-attf-class="accordion-button fw-medium {{'collapsed' if not v_block_first else ''}}"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    t-attf-data-bs-target="#vetution_block_{{v_block.id}}"
+                                    t-att-aria-expanded="'true' if v_block_first else 'false'"
+                                    t-attf-aria-controls="vetution_block_{{v_block.id}}"
+                                >
+                                    <t t-out="(v_block.label or '').strip().rstrip(':').title()"/>
+                                </button>
+                            </div>
+                            <div
+                                t-attf-id="vetution_block_{{v_block.id}}"
+                                t-attf-class="accordion-collapse collapse {{'show' if v_block_first else ''}}"
+                                data-bs-parent="#vetutionContentAccordion"
+                            >
+                                <div class="accordion-body o_vetution_accordion_body">
+                                    <t t-out="v_block.body_html"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </section>
+        </xpath>
+        <xpath expr="//div[@id='product_full_description']" position="attributes">
+            <attribute name="class"/>
+            <attribute name="t-attf-class">oe_structure oe_empty mt16 {{'d-none' if (product.vetution_id and product.sudo().vetution_content_ids) else ''}}</attribute>
+        </xpath>
+    </template>
+
+    <!-- ===================================================================
+         PDP: Alternatives + Related carousels from Vetution cross-links
+         =================================================================== -->
+    <template
+        id="vetution_product_related"
+        name="Vetution Alternatives and Related"
+        inherit_id="website_sale.product"
+    >
+        <xpath expr="//div[@id='product_full_description']" position="after">
+            <t t-if="product.vetution_id">
+                <t t-set="v_alternatives" t-value="product.sudo().vetution_alternative_ids.filtered(lambda p: p.website_published)"/>
+                <t t-set="v_similars" t-value="product.sudo().vetution_similar_ids.filtered(lambda p: p.website_published)"/>
+                <section
+                    t-if="v_alternatives"
+                    class="container my-4 o_vetution_related_section"
+                >
+                    <h4>Alternatives</h4>
+                    <p class="lead mb-3">Other options for the same use</p>
+                    <div class="row g-3">
+                        <div
+                            t-foreach="v_alternatives[:8]"
+                            t-as="v_alt"
+                            class="col-6 col-md-3"
+                        >
+                            <a
+                                t-att-href="v_alt.website_url"
+                                class="card h-100 text-decoration-none o_vetution_related_card"
+                            >
+                                <span
+                                    t-field="v_alt.image_512"
+                                    t-options="{'widget': 'image', 'class': 'card-img-top o_vetution_related_img'}"
+                                />
+                                <span class="card-body p-2">
+                                    <span class="card-title small fw-bold d-block" t-out="v_alt.name"/>
+                                    <span
+                                        t-if="v_alt.vetution_brand_id"
+                                        class="small text-muted"
+                                        t-out="v_alt.vetution_brand_id.name"
+                                    />
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <section
+                    t-if="v_similars"
+                    class="container my-4 o_vetution_related_section"
+                >
+                    <h4>Related products</h4>
+                    <p class="lead mb-3">These other products might interest you</p>
+                    <div class="row g-3">
+                        <div
+                            t-foreach="v_similars[:8]"
+                            t-as="v_sim"
+                            class="col-6 col-md-3"
+                        >
+                            <a
+                                t-att-href="v_sim.website_url"
+                                class="card h-100 text-decoration-none o_vetution_related_card"
+                            >
+                                <span
+                                    t-field="v_sim.image_512"
+                                    t-options="{'widget': 'image', 'class': 'card-img-top o_vetution_related_img'}"
+                                />
+                                <span class="card-body p-2">
+                                    <span class="card-title small fw-bold d-block" t-out="v_sim.name"/>
+                                    <span
+                                        t-if="v_sim.vetution_brand_id"
+                                        class="small text-muted"
+                                        t-out="v_sim.vetution_brand_id.name"
+                                    />
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ===================================================================
+         Shop listing: mark Vetution tiles + brand / cold-chain / tags
+         =================================================================== -->
+    <template
+        id="vetution_products_item_info"
+        name="Vetution Tile Info (brand + cold chain + tags)"
+        inherit_id="website_sale.products_item"
+    >
+        <xpath expr="//h2[hasclass('o_wsale_products_item_title')]" position="after">
+            <div t-if="product.vetution_id" class="o_vetution_tile_info">
+                <div
+                    t-if="product.vetution_brand_id or product.vetution_cold_chain"
+                    class="d-flex flex-wrap align-items-center gap-1 mb-1"
+                >
+                    <span
+                        t-if="product.vetution_brand_id"
+                        class="o_vetution_tile_brand"
+                        t-out="product.vetution_brand_id.name"
+                    />
+                    <span
+                        t-if="product.vetution_cold_chain"
+                        class="badge o_vetution_badge_cold"
+                    >
+                        <i class="fa fa-snowflake-o me-1"/>Cold chain
+                    </span>
+                </div>
+                <t t-if="product.vetution_ingredient_ids">
+                    <div class="o_vetution_tile_tags d-flex flex-wrap gap-1">
+                        <span
+                            t-foreach="product.vetution_ingredient_ids[:4]"
+                            t-as="v_ingredient"
+                            class="badge o_vetution_chip_ingredient"
+                            t-out="v_ingredient.name"
+                        />
+                    </div>
+                </t>
+                <t t-elif="product.vetution_species_ids">
+                    <div class="o_vetution_tile_tags d-flex flex-wrap gap-1">
+                        <span
+                            t-foreach="product.vetution_species_ids[:2]"
+                            t-as="v_species"
+                            class="badge o_vetution_chip"
+                            t-out="v_species.name"
+                        />
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Prefer list layout when this module is installed (Test parity). -->
+    <record id="website_sale.products_list_view" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+
+</odoo>

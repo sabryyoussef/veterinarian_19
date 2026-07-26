@@ -1,0 +1,26 @@
+Jul 23 11:29:33 master python3[2837553]: Traceback (most recent call last):
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_autovacuum.py", line 49, in _run_vacuum_cleaner
+Jul 23 11:29:33 master python3[2837553]:     result = func(model)
+Jul 23 11:29:33 master python3[2837553]:              ^^^^^^^^^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai/models/ai_embedding.py", line 261, in _gc_embeddings
+Jul 23 11:29:33 master python3[2837553]:     unused_chunks = self.search([
+Jul 23 11:29:33 master python3[2837553]:                     ^^^^^^^^^^^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 1378, in search
+Jul 23 11:29:33 master python3[2837553]:     return self.search_fetch(domain, [], offset=offset, limit=limit, order=order)
+Jul 23 11:29:33 master python3[2837553]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 1418, in search_fetch
+Jul 23 11:29:33 master python3[2837553]:     return self._fetch_query(query, fields_to_fetch)
+Jul 23 11:29:33 master python3[2837553]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3932, in _fetch_query
+Jul 23 11:29:33 master python3[2837553]:     fetched = self.browse(query)
+Jul 23 11:29:33 master python3[2837553]:               ^^^^^^^^^^^^^^^^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 5884, in browse
+Jul 23 11:29:33 master python3[2837553]:     if not ids:
+Jul 23 11:29:33 master python3[2837553]:            ^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/query.py", line 263, in __bool__
+Jul 23 11:29:33 master python3[2837553]:     return bool(self.get_result_ids())
+Jul 23 11:29:33 master python3[2837553]:                 ^^^^^^^^^^^^^^^^^^^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/query.py", line 227, in get_result_ids
+Jul 23 11:29:33 master python3[2837553]:     self._ids = tuple(id_ for id_, in self._env.execute_query(self.select()))
+Jul 23 11:29:33 master python3[2837553]:                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Jul 23 11:29:33 master python3[2837553]:   File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/environments.py", line 534, in execute_query

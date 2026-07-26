@@ -200,7 +200,13 @@ def deploy_footer(client: OdooRPC, c: dict, website_id: int) -> None:
         print(f"Created footer view {footer_id}")
 
 
-def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False) -> None:
+def deploy_to(
+    client: OdooRPC,
+    c: dict,
+    label: str,
+    install_theme: bool = False,
+    website_id: int | None = None,
+) -> None:
     print(f"\n--- Deploying to {label} ---")
     client.authenticate()
     print("Connected")
@@ -208,11 +214,11 @@ def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False)
     logo_b64 = load_logo_b64()
     company_vals = {
         "name": c["company_name"],
-        "phone": c["phone"],
+        "phone": c.get("phone_e164") or c["phone"],
         "email": c["email"],
         "website": c["website_url"],
         "street": c["address_en"],
-        "city": "Sidi Abdel Rahman",
+        "city": c.get("city_en") or "El Alamein",
         "country_id": 65,
         "social_facebook": c["facebook"],
         "social_instagram": c["instagram"],
@@ -222,7 +228,12 @@ def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False)
     client.write("res.company", [1], company_vals)
     print("Updated res.company")
 
-    websites = client.search_read("website", [], ["id", "name"], limit=1)
+    if website_id:
+        websites = client.search_read(
+            "website", [("id", "=", website_id)], ["id", "name", "domain"], limit=1
+        )
+    else:
+        websites = client.search_read("website", [], ["id", "name", "domain"], limit=1)
     if not websites:
         print("ERROR: no website record", file=sys.stderr)
         return
@@ -230,6 +241,13 @@ def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False)
     website_vals = {"name": c["company_name"]}
     if logo_b64:
         website_vals["logo"] = logo_b64
+    # Never overwrite an existing production domain with empty; only set when provided.
+    if c.get("website_domain"):
+        website_vals["domain"] = c["website_domain"]
+    if c.get("facebook"):
+        website_vals["social_facebook"] = c["facebook"]
+    if c.get("instagram"):
+        website_vals["social_instagram"] = c["instagram"]
     client.write("website", [website_id], website_vals)
     print(f"Updated website id={website_id}" + (" (navbar logo set)" if logo_b64 else ""))
 
@@ -321,10 +339,17 @@ def deploy_to(client: OdooRPC, c: dict, label: str, install_theme: bool = False)
 
     contact_pages = client.search_read(
         "website.page",
-        [("url", "=", "/contactus")],
+        [("url", "=", "/contactus"), ("website_id", "=", website_id)],
         ["id", "view_id"],
         limit=1,
     )
+    if not contact_pages:
+        contact_pages = client.search_read(
+            "website.page",
+            [("url", "=", "/contactus")],
+            ["id", "view_id"],
+            limit=1,
+        )
     if contact_pages:
         cp = contact_pages[0]
         cv_id = cp["view_id"][0] if isinstance(cp["view_id"], list) else cp["view_id"]

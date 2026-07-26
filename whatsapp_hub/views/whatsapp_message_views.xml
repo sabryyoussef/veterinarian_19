@@ -4,57 +4,214 @@
         <field name="name">whatsapp.message.list</field>
         <field name="model">whatsapp.message</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="message_timestamp"/>
-                <field name="direction"/>
-                <field name="state"/>
-                <field name="group_jid"/>
-                <field name="sender_jid"/>
-                <field name="chatwoot_message_id"/>
-                <field name="evolution_message_id"/>
-                <field name="body"/>
+            <list string="WhatsApp Messages" default_order="message_timestamp desc">
+                <field name="message_timestamp" string="When"/>
+                <field name="direction" string="Dir" widget="badge"
+                         decoration-info="direction == 'in'"
+                         decoration-success="direction == 'out'"/>
+                <field name="conversation_id" optional="show"/>
+                <field name="group_id" string="Group" optional="show"/>
+                <field name="group_jid" optional="hide"/>
+                <field name="sender_jid" string="From" optional="show"/>
+                <field name="body" string="Message"/>
+                <field name="media_kind" optional="show" widget="badge"/>
+                <field name="has_media" optional="hide"/>
+                <field name="is_hidden" optional="hide"/>
+                <field name="state" optional="hide"/>
+                <field name="delivery_state" optional="hide"/>
+                <field name="source_app" optional="hide"/>
+                <field name="purpose" optional="hide"/>
+                <field name="partner_id" optional="hide"/>
+                <field name="remote_jid" optional="hide"/>
+                <field name="chatwoot_message_id" optional="hide"/>
+                <field name="evolution_message_id" optional="hide"/>
             </list>
         </field>
     </record>
+
+    <record id="view_whatsapp_message_search" model="ir.ui.view">
+        <field name="name">whatsapp.message.search</field>
+        <field name="model">whatsapp.message</field>
+        <field name="arch" type="xml">
+            <search string="WhatsApp Messages">
+                <field name="body" string="Message"/>
+                <field name="sender_jid" string="Sender"/>
+                <field name="group_jid" string="Group JID"/>
+                <field name="group_id" string="Group"/>
+                <field name="conversation_id"/>
+                <field name="remote_jid"/>
+                <field name="message_timestamp"/>
+                <field name="evolution_message_id"/>
+                <field name="chatwoot_message_id"/>
+                <field name="media_kind"/>
+                <separator/>
+                <filter name="filter_hide_noise" string="Hide noise"
+                        domain="[
+                            ('is_hidden', '=', False),
+                            ('media_kind', 'not in', ['reaction', 'sticker']),
+                            '|',
+                            '&amp;', ('body', '!=', False), ('body', 'not in', ['', ' ']),
+                            ('has_media', '=', True)
+                        ]"/>
+                <filter name="filter_show_hidden" string="Show hidden"
+                        domain="[('is_hidden', '=', True)]"/>
+                <filter name="filter_text_only" string="Text only"
+                        domain="[('has_media', '=', False), ('media_kind', '=', 'none')]"/>
+                <filter name="filter_has_media" string="Has media"
+                        domain="[('has_media', '=', True)]"/>
+                <filter name="filter_hide_reactions_stickers" string="Hide reactions/stickers"
+                        domain="[('media_kind', 'not in', ['reaction', 'sticker'])]"/>
+                <separator/>
+                <filter name="filter_inbound" string="Inbound"
+                        domain="[('direction', '=', 'in')]"/>
+                <filter name="filter_outbound" string="Outbound"
+                        domain="[('direction', '=', 'out')]"/>
+                <separator/>
+                <filter name="filter_to_group" string="To group"
+                        domain="[('group_jid', '!=', False)]"/>
+                <filter name="filter_dm" string="1:1 / DM"
+                        domain="['|', ('group_jid', '=', False), ('group_jid', '=', '')]"/>
+                <filter name="filter_mentions" string="Has @mention"
+                        domain="[('body', 'ilike', '%@%')]"/>
+                <filter name="filter_has_attachment_ref" string="Has attachment ref"
+                        domain="[('attachment_references', '!=', False)]"/>
+                <separator/>
+                <filter name="filter_date" string="Date" date="message_timestamp"
+                        end_month="1" end_year="1"/>
+                <separator/>
+                <group>
+                    <filter name="groupby_conversation" string="Conversation"
+                            context="{'group_by': 'conversation_id'}"/>
+                    <filter name="groupby_group" string="Group"
+                            context="{'group_by': 'group_id'}"/>
+                    <filter name="groupby_group_jid" string="Group JID"
+                            context="{'group_by': 'group_jid'}"/>
+                    <filter name="groupby_sender" string="Sender"
+                            context="{'group_by': 'sender_jid'}"/>
+                    <filter name="groupby_direction" string="Direction"
+                            context="{'group_by': 'direction'}"/>
+                    <filter name="groupby_media" string="Media kind"
+                            context="{'group_by': 'media_kind'}"/>
+                    <filter name="groupby_day" string="Day"
+                            context="{'group_by': 'message_timestamp:day'}"/>
+                    <filter name="groupby_month" string="Month"
+                            context="{'group_by': 'message_timestamp:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="view_whatsapp_message_form" model="ir.ui.view">
         <field name="name">whatsapp.message.form</field>
         <field name="model">whatsapp.message</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="WhatsApp Message">
+                <header>
+                    <button name="action_open_chat" type="object" string="Open chat"
+                            class="btn-primary"/>
+                    <button name="action_hide" type="object" string="Hide"
+                            invisible="is_hidden"/>
+                    <button name="action_unhide" type="object" string="Unhide"
+                            invisible="not is_hidden"/>
+                    <button name="action_fetch_media_preview" type="object"
+                            string="Fetch media"
+                            invisible="not has_media or media_kind in ('none', 'reaction')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="received,queued,sent,delivered,read,failed"/>
+                </header>
                 <sheet>
+                    <div class="oe_title mb-3">
+                        <label for="display_name" string="Message"/>
+                        <h1>
+                            <field name="display_name" readonly="1" class="text-break"/>
+                        </h1>
+                    </div>
                     <group>
-                        <field name="direction"/>
-                        <field name="state"/>
-                        <field name="delivery_state"/>
-                        <field name="message_timestamp"/>
-                        <field name="conversation_id"/>
-                        <field name="group_id"/>
-                        <field name="contact_id"/>
+                        <group string="Conversation">
+                            <field name="direction" widget="badge"/>
+                            <field name="message_timestamp"/>
+                            <field name="group_id"/>
+                            <field name="group_jid"/>
+                            <field name="sender_jid"/>
+                            <field name="contact_id"/>
+                            <field name="partner_id"/>
+                            <field name="conversation_id"/>
+                            <field name="is_hidden"/>
+                        </group>
+                        <group string="Delivery">
+                            <field name="delivery_state"/>
+                            <field name="sent_at"/>
+                            <field name="delivered_at"/>
+                            <field name="read_at"/>
+                            <field name="instance_id"/>
+                            <field name="source_app"/>
+                            <field name="purpose"/>
+                            <field name="media_kind"/>
+                            <field name="has_media"/>
+                        </group>
                     </group>
-                    <group string="External IDs">
-                        <field name="dedupe_key"/>
-                        <field name="provider"/>
-                        <field name="provider_message_id"/>
-                        <field name="evolution_message_id"/>
-                        <field name="chatwoot_account_id"/>
-                        <field name="chatwoot_inbox_id"/>
-                        <field name="chatwoot_conversation_id"/>
-                        <field name="chatwoot_message_id"/>
-                        <field name="group_jid"/>
-                        <field name="sender_jid"/>
+                    <group string="Message text" col="1">
+                        <field name="body" nolabel="1" widget="text"
+                                 placeholder="WhatsApp message body…"/>
                     </group>
-                    <group string="Content">
-                        <field name="body"/>
-                        <field name="attachment_references"/>
+                    <group string="Attachments / refs" name="attachments_refs" col="1">
+                        <field name="attachment_ids" widget="many2many_binary"/>
+                        <field name="attachment_references" nolabel="1"
+                                 placeholder="Attachment references (JSON / ids)"/>
                         <field name="reply_to_id"/>
                     </group>
+                    <notebook>
+                        <page string="Technical IDs" name="tech_ids">
+                            <group>
+                                <group string="Provider">
+                                    <field name="provider"/>
+                                    <field name="provider_message_id"/>
+                                    <field name="evolution_message_id"/>
+                                    <field name="instance_reference"/>
+                                    <field name="dedupe_key"/>
+                                    <field name="business_key"/>
+                                </group>
+                                <group string="Chatwoot">
+                                    <field name="chatwoot_account_id"/>
+                                    <field name="chatwoot_inbox_id"/>
+                                    <field name="chatwoot_conversation_id"/>
+                                    <field name="chatwoot_message_id"/>
+                                    <field name="remote_jid"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Provenance" name="provenance">
+                            <group>
+                                <field name="related_model"/>
+                                <field name="related_res_id"/>
+                                <field name="client_request_id"/>
+                                <field name="campaign_id"/>
+                                <field name="campaign_line_id"/>
+                                <field name="discuss_channel_id"/>
+                                <field name="queue_id"/>
+                                <field name="wa_message_log_id"/>
+                                <field name="retry_count"/>
+                                <field name="error_message"/>
+                            </group>
+                        </page>
+                        <page string="Raw payload" name="raw">
+                            <field name="raw_payload" nolabel="1" widget="text"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
+
     <record id="action_whatsapp_message" model="ir.actions.act_window">
         <field name="name">Messages</field>
         <field name="res_model">whatsapp.message</field>
         <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_whatsapp_message_search"/>
+        <field name="context">{
+            {
+                'search_default_filter_hide_noise': 1,
+                'search_default_groupby_conversation': 1,
+            }
+        }</field>
     </record>
 </odoo>

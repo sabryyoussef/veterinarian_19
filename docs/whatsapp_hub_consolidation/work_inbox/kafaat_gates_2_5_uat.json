@@ -1,0 +1,328 @@
+{
+  "gates": {
+    "gate2_config": {
+      "ai_triage_enabled": true,
+      "auto_analysis_enabled": true,
+      "analysis_review_only": true,
+      "analysis_debounce_minutes": 3,
+      "openproject_create_allowed": false,
+      "analysis_prompt_version": "wa_project_aware_v3.0"
+    },
+    "gate2_debounce": {
+      "before": "False",
+      "scheduled": "2026-07-26 05:00:23",
+      "after_reset": "2026-07-26 05:00:23",
+      "reset_moved_forward": true
+    },
+    "gate2_ingest": {
+      "message_id": 9258,
+      "duplicate": false,
+      "pending_after_ingest": "2026-07-26 05:00:23"
+    },
+    "gate2_note": "Flags enabled; debounce schedule/reset verified; pending cleared to avoid analyzing full Dev Needed backlog. Kafaat uses historical eval sample.",
+    "gate5_analysis": {
+      "analysis_id": 392,
+      "not_383": true,
+      "not_387": true,
+      "prompt_version": "wa_project_aware_v3.0",
+      "schema_version": "3",
+      "state": "awaiting_review",
+      "validation_state": "needs_review",
+      "contains_multiple_tasks": true,
+      "safe_to_create_work": false,
+      "requires_human_review": true,
+      "resolved_project_id": 11,
+      "work_title": "RPC Error بسبب ملفات مفقودة",
+      "batch_message_ids": [
+        9187,
+        9186,
+        9185,
+        9184,
+        9183,
+        9182,
+        9181
+      ],
+      "batch_fingerprint": "58b48349372f125d99e8f019138383c310b608142673d22a4edda6e249183530",
+      "items": [
+        {
+          "acceptance_criteria": [
+            "تأكيد وجود الملفات المفقودة.",
+            "تأكيد عدم ظهور أخطاء RPC بعد إصلاح الملفات."
+          ],
+          "action": "create_work",
+          "classification": "bug",
+          "confidence": 0.9,
+          "current_behavior": "تظهر أخطاء RPC عند محاولة الوصول إلى الموديولات.",
+          "description": "تظهر أخطاء RPC بسبب عدم وجود ملفات معينة مثل index.html في الموديولات edafaa_student_profile و batch_intake.",
+          "expected_behavior": "يجب أن تعمل الموديولات بدون أخطاء RPC.",
+          "outcome": null,
+          "source_message_ids": [
+            9181,
+            9182
+          ],
+          "test_requirements": [
+            "اختبار الوصول إلى الموديولات بعد إصلاح الملفات."
+          ],
+          "title": "RPC Error بسبب ملفات مفقودة"
+        },
+        {
+          "acceptance_criteria": [
+            "مراجعة حقل اختيار البرنامج في شاشة Batch Intake.",
+            "تأكيد عرض جميع البرامج الموجودة."
+          ],
+          "action": "create_work",
+          "classification": "bug",
+          "confidence": 0.85,
+          "current_behavior": "تظهر 3 برامج فقط عند اختيار البرنامج.",
+          "description": "بعد إنشاء برامج جديدة من موديول كفاءات، لا تظهر جميع البرامج في شاشة Batch Intake.",
+          "expected_behavior": "يجب أن تظهر جميع البرامج الموجودة في شاشة Batch Intake.",
+          "outcome": null,
+          "source_message_ids": [
+            9184
+          ],
+          "test_requirements": [
+            "اختبار شاشة Batch Intake بعد التعديلات."
+          ],
+          "title": "عدم ظهور جميع البرامج في شاشة Batch Intake"
+        }
+      ],
+      "native_dify_items": [
+        {
+          "classification": "bug",
+          "action": "create_work",
+          "title": "RPC Error بسبب ملفات مفقودة",
+          "description": "تظهر أخطاء RPC بسبب عدم وجود ملفات معينة مثل index.html في الموديولات edafaa_student_profile و batch_intake.",
+          "current_behavior": "تظهر أخطاء RPC عند محاولة الوصول إلى الموديولات.",
+          "expected_behavior": "يجب أن تعمل الموديولات بدون أخطاء RPC.",
+          "technical_evidence": [
+            "FileNotFoundError: [Errno 2] No such file or directory: '/opt/localaddons/edafaa_student_profile/static/description/index.html'",
+            "FileNotFoundError: [Errno 2] No such file or directory: '/opt/localaddons/batch_intake/static/description/index.html'"
+          ],
+          "source_message_ids": [
+            9181,
+            9182
+          ],
+          "affected_paths": [
+            "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_module.py",
+            "/usr/lib/python3/dist-packages/odoo/tools/misc.py"
+          ],
+          "affected_modules": [
+            "edafaa_student_profile",
+            "batch_intake"
+          ],
+          "acceptance_criteria": [
+            "تأكيد وجود الملفات المفقودة.",
+            "تأكيد عدم ظهور أخطاء RPC بعد إصلاح الملفات."
+          ],
+          "test_requirements": [
+            "اختبار الوصول إلى الموديولات بعد إصلاح الملفات."
+          ],
+          "questions": [],
+          "recommended_parent": null,
+          "duplicate_candidates": [],
+          "confidence": 0.9
+        },
+        {
+          "classification": "bug",
+          "action": "create_work",
+          "title": "عدم ظهور جميع البرامج في شاشة Batch Intake",
+          "description": "بعد إنشاء برامج جديدة من موديول كفاءات، لا تظهر جميع البرامج في شاشة Batch Intake.",
+          "current_behavior": "تظهر 3 برامج فقط عند اختيار البرنامج.",
+          "expected_behavior": "يجب أن تظهر جميع البرامج الموجودة في شاشة Batch Intake.",
+          "technical_evidence": [],
+          "source_message_ids": [
+            9184
+          ],
+          "affected_paths": [
+            "batch_intake.view_batch_intake_form"
+          ],
+          "affected_modules": [
+            "batch_intake"
+          ],
+          "acceptance_criteria": [
+            "مراجعة حقل اختيار البرنامج في شاشة Batch Intake.",
+            "تأكيد عرض جميع البرامج الموجودة."
+          ],
+          "test_requirements": [
+            "اختبار شاشة Batch Intake بعد التعديلات."
+          ],
+          "questions": [],
+          "recommended_parent": null,
+          "duplicate_candidates": [],
+          "confidence": 0.85
+        }
+      ],
+      "native_schema": "3"
+    },
+    "gate5_duplicate_enqueue": {
+      "second_id": 390,
+      "same_as_first": false
+    },
+    "gate2_invalid_rejected": true,
+    "gate2_invalid_error": "items[0].acceptance_criteria must be a non-empty list.",
+    "gate3_orchestration": {
+      "decision": "request_review",
+      "review_only": true,
+      "openproject_create_allowed": false,
+      "dev_work_item_matches": [],
+      "project_task_matches": [],
+      "openproject_matches": [],
+      "op_recommended_parent_id": "project:10 parent:#87 — edafa_kafaat_parent",
+      "reasons": [
+        "multiple_analysis_items",
+        "analysis_review_only",
+        "openproject_create_blocked"
+      ],
+      "force_allowed": false
+    },
+    "gate3_item_recommendations": [
+      {
+        "title": "RPC Error بسبب ملفات مفقودة",
+        "action": "create_work",
+        "recommended_parent": "87",
+        "duplicate_candidates": [],
+        "source_message_ids": [
+          9181,
+          9182
+        ]
+      },
+      {
+        "title": "عدم ظهور جميع البرامج في شاشة Batch Intake",
+        "action": "create_work",
+        "recommended_parent": "87",
+        "duplicate_candidates": [],
+        "source_message_ids": [
+          9184
+        ]
+      }
+    ],
+    "gate3_op_maps": [
+      {
+        "id": 28,
+        "name": "Alzaem Medical ↔ OP: Alzaem Medical",
+        "odoo_project_id": false,
+        "op_project_id": 29
+      },
+      {
+        "id": 5,
+        "name": "Assets management and RFID ↔ OP: Assets management and RFID",
+        "odoo_project_id": false,
+        "op_project_id": 25
+      },
+      {
+        "id": 14,
+        "name": "Bright ↔ OP: Bright",
+        "odoo_project_id": false,
+        "op_project_id": 15
+      },
+      {
+        "id": 16,
+        "name": "iZone A-Zone Odoo ↔ OP: iZone A-Zone Odoo",
+        "odoo_project_id": false,
+        "op_project_id": 12
+      },
+      {
+        "id": 4,
+        "name": "Qatar Property Rental ↔ OP: Qatar Property Rental",
+        "odoo_project_id": false,
+        "op_project_id": 26
+      },
+      {
+        "id": 22,
+        "name": "Torz Trading - Qatar ↔ OP: Torz Trading - Qatar",
+        "odoo_project_id": false,
+        "op_project_id": 6
+      },
+      {
+        "id": 15,
+        "name": "Asta development ↔ OP: Asta development",
+        "odoo_project_id": false,
+        "op_project_id": 13
+      },
+      {
+        "id": 21,
+        "name": "ASTA — Project closeout ↔ OP: ASTA — Project closeout",
+        "odoo_project_id": false,
+        "op_project_id": 7
+      },
+      {
+        "id": 12,
+        "name": "Cycle X ↔ OP: Cycle X",
+        "odoo_project_id": false,
+        "op_project_id": 17
+      },
+      {
+        "id": 18,
+        "name": "Dev Needed (WhatsApp) ↔ OP: Dev Needed (WhatsApp)",
+        "odoo_project_id": false,
+        "op_project_id": 10
+      }
+    ],
+    "gate3_kafaat_project": {
+      "id": 11,
+      "name": "Kafaat (كفاءات)",
+      "odoo_project_id": null
+    },
+    "gate3_create_attempt": {
+      "created": false,
+      "blocker": "assert_create_allowed unexpectedly passed under review_only",
+      "wi_delta": 0,
+      "task_delta": 0
+    },
+    "gate4_path_checks": {
+      "basename": true,
+      "same": true,
+      "different_files_same_base_diff_dir": true,
+      "html4": true,
+      "different_parent_same_basename": false
+    },
+    "gate4_scores": {
+      "baseline_383": {
+        "eval_id": 8,
+        "total": 20.0,
+        "project": 15.0,
+        "multitask": 0.0,
+        "classification": 5.0,
+        "paths": 0.0,
+        "acceptance": 0.0,
+        "questions": 0.0,
+        "op_link": 0.0
+      },
+      "hardened_387": {
+        "eval_id": 9,
+        "total": 100.0,
+        "project": 15.0,
+        "multitask": 20.0,
+        "classification": 10.0,
+        "paths": 20.0,
+        "acceptance": 15.0,
+        "questions": 10.0,
+        "op_link": 10.0
+      },
+      "native_v3": {
+        "eval_id": 10,
+        "total": 100.0,
+        "project": 15.0,
+        "multitask": 20.0,
+        "classification": 10.0,
+        "paths": 20.0,
+        "acceptance": 15.0,
+        "questions": 10.0,
+        "op_link": 10.0
+      }
+    },
+    "preserved": {
+      "383": {
+        "id": 383,
+        "multi": false,
+        "title": "Address the RPC errors and the issue with the Batch Intake screen not displaying all programs."
+      },
+      "387": {
+        "id": 387,
+        "multi": true,
+        "title": "Review the Batch Intake screen to ensure it displays all programs."
+      }
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 9622
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 10:29:53 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** configuration
+**الأولوية:** medium
+**الثقة:** 0.80
+
+**الملخص:**
+Remove the cost field from the inspection report as it is unnecessary.
+
+**الإجراء المطلوب:**
+Update the inspection report template to exclude the cost field.
+
+## Original Message
+
+```
+ال cost هنا محتاجين نشيله لان ملوش لازمة عشان ال inspection ف المجمل تقرير
+```

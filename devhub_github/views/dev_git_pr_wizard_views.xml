@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_git_pr_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.pr.approval.wizard.form</field>
+        <field name="model">dev.git.pr.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve Pull Request Creation">
+                <div class="alert alert-warning" role="alert">
+                    Review and, if needed, edit the exact title and body below. Approval creates no PR until the separate final confirmation.
+                </div>
+                <group>
+                    <group>
+                        <field name="workspace_id"/>
+                        <field name="source_branch"/>
+                        <field name="source_sha"/>
+                    </group>
+                    <group>
+                        <field name="target_id"/>
+                        <field name="github_repository"/>
+                        <field name="target_branch"/>
+                    </group>
+                </group>
+                <field name="pr_title"/>
+                <field name="pr_body"/>
+                <field name="confirm_exact_pr"/>
+                <field name="confirm_no_merge"/>
+                <footer>
+                    <button name="action_approve" type="object" string="Approve Exact PR Creation" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dev_git_pr_execution_wizard_form" model="ir.ui.view">
+        <field name="name">dev.git.pr.execution.wizard.form</field>
+        <field name="model">dev.git.pr.execution.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Final Pull Request Confirmation">
+                <field name="confirmation_text" readonly="1"/>
+                <group>
+                    <group>
+                        <field name="github_repository"/>
+                        <field name="source_branch"/>
+                        <field name="source_sha"/>
+                    </group>
+                    <group>
+                        <field name="target_branch"/>
+                        <field name="pr_title"/>
+                    </group>
+                </group>
+                <field name="pr_body" readonly="1"/>
+                <field name="confirm_create_open_pr"/>
+                <field name="confirm_stop_after_creation"/>
+                <footer>
+                    <button name="action_create_pr" type="object" string="Create One Open PR" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

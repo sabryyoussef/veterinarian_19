@@ -1,0 +1,1 @@
+dev_session_hub.module_category_dev_session_hub|ir.module.category

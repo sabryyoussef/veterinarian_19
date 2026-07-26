@@ -1,0 +1,542 @@
+{
+  "timestamp": "2026-07-24T15:34:20.187225+00:00",
+  "snapshots": {
+    "/": {
+      "url": "/",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "Answer",
+        "ContactPoint",
+        "FAQPage",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Organization",
+        "Place",
+        "PostalAddress",
+        "Question",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 49119
+    },
+    "/contactus": {
+      "url": "/contactus",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "ContactPoint",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Place",
+        "PostalAddress",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 29404
+    },
+    "/emergency-vet-north-coast": {
+      "url": "/emergency-vet-north-coast",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "Answer",
+        "ContactPoint",
+        "FAQPage",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Place",
+        "PostalAddress",
+        "Question",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 29100
+    },
+    "/veterinary-clinic-near-amwaj": {
+      "url": "/veterinary-clinic-near-amwaj",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "Answer",
+        "ContactPoint",
+        "FAQPage",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Place",
+        "PostalAddress",
+        "Question",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 28823
+    },
+    "/veterinary-home-visits-sahel": {
+      "url": "/veterinary-home-visits-sahel",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "Answer",
+        "ContactPoint",
+        "FAQPage",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Place",
+        "PostalAddress",
+        "Question",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 28699
+    },
+    "/pet-vaccinations-north-coast": {
+      "url": "/pet-vaccinations-north-coast",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "Answer",
+        "ContactPoint",
+        "FAQPage",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Place",
+        "PostalAddress",
+        "Question",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 28649
+    },
+    "/grooming-boarding-sahel": {
+      "url": "/grooming-boarding-sahel",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "Answer",
+        "ContactPoint",
+        "FAQPage",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Place",
+        "PostalAddress",
+        "Question",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 28529
+    },
+    "/contact-directions-booking": {
+      "url": "/contact-directions-booking",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": true,
+      "jsonld_types": [
+        "ContactPoint",
+        "GeoCoordinates",
+        "LocalBusiness",
+        "MedicalProcedure",
+        "OpeningHoursSpecification",
+        "Place",
+        "PostalAddress",
+        "Service",
+        "VeterinaryCare"
+      ],
+      "has_vc": true,
+      "has_lb": true,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 27953
+    },
+    "/blog": {
+      "url": "/blog",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": false,
+      "jsonld_types": [],
+      "has_vc": false,
+      "has_lb": false,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 26112
+    },
+    "/robots.txt": {
+      "url": "/robots.txt",
+      "http": 200,
+      "has_555": false,
+      "has_primary": false,
+      "has_call_center": false,
+      "has_wa": false,
+      "has_amwaj2": false,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": false,
+      "jsonld_types": [],
+      "has_vc": false,
+      "has_lb": false,
+      "has_maps": false,
+      "has_shop_kg": false,
+      "bytes": 1966
+    },
+    "/sitemap.xml": {
+      "url": "/sitemap.xml",
+      "http": 200,
+      "has_555": false,
+      "has_primary": false,
+      "has_call_center": false,
+      "has_wa": false,
+      "has_amwaj2": false,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": false,
+      "jsonld_types": [],
+      "has_vc": false,
+      "has_lb": false,
+      "has_maps": false,
+      "has_shop_kg": false,
+      "bytes": 1359
+    }
+  },
+  "workflow_smoke": {
+    "/appointment": {
+      "url": "/appointment",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": false,
+      "jsonld_types": [],
+      "has_vc": false,
+      "has_lb": false,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 23054
+    },
+    "/my": {
+      "url": "/my",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": false,
+      "jsonld_types": [],
+      "has_vc": false,
+      "has_lb": false,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 24478
+    },
+    "/web/login": {
+      "url": "/web/login",
+      "http": 200,
+      "has_555": false,
+      "has_primary": true,
+      "has_call_center": true,
+      "has_wa": true,
+      "has_amwaj2": true,
+      "has_amwaj1_gate": false,
+      "has_km": false,
+      "has_jsonld": false,
+      "jsonld_types": [],
+      "has_vc": false,
+      "has_lb": false,
+      "has_maps": true,
+      "has_shop_kg": false,
+      "bytes": 24574
+    }
+  },
+  "articles": [
+    {
+      "id": 1,
+      "name": "What to do during a pet emergency in North Coast",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1"
+    },
+    {
+      "id": 2,
+      "name": "Heatstroke signs in dogs and cats during Sahel summer",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2"
+    },
+    {
+      "id": 3,
+      "name": "How to travel safely with your pet to North Coast",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/how-to-travel-safely-with-your-pet-to-north-coast-3"
+    },
+    {
+      "id": 4,
+      "name": "Finding a 24/7 veterinarian near Amwaj",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/finding-a-247-veterinarian-near-amwaj-4"
+    },
+    {
+      "id": 5,
+      "name": "Pet vaccination preparation before travelling",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/pet-vaccination-preparation-before-travelling-5"
+    },
+    {
+      "id": 6,
+      "name": "Common digestive problems during summer trips",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/common-digestive-problems-during-summer-trips-6"
+    },
+    {
+      "id": 7,
+      "name": "When a pet needs a clinic visit versus a home visit",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/when-a-pet-needs-a-clinic-visit-versus-a-home-visit-7"
+    },
+    {
+      "id": 8,
+      "name": "Pet grooming and parasite prevention during summer",
+      "is_published": false,
+      "website_published": false,
+      "website_url": "/blog/petspot-pet-care-guide-2/pet-grooming-and-parasite-prevention-during-summer-8"
+    }
+  ],
+  "social": [
+    {
+      "id": 1,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 2,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 3,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 4,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 5,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 6,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 7,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 8,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 9,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 10,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 11,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 12,
+      "state": "draft",
+      "scheduled_date": false,
+      "account_ids": [
+        16
+      ]
+    }
+  ],
+  "account16": [
+    {
+      "id": 16,
+      "social_account_handle": "animalcarecenterpetspots",
+      "is_media_disconnected": false,
+      "active": true
+    }
+  ],
+  "company": [
+    {
+      "id": 1,
+      "name": "PetSpot El Sahel Veterinary Clinic",
+      "phone": "+201280833332",
+      "street": "North Coast, beside Wahat Khattab, in front of Amwaj 2, El Alamein, Egypt",
+      "city": "El Alamein",
+      "website": "https://drpaws.ai"
+    }
+  ],
+  "website_blog": [
+    {
+      "id": 1269,
+      "state": "installed",
+      "latest_version": "19.0.1.1"
+    }
+  ],
+  "draft_in_sitemap": false,
+  "failures": [],
+  "ok": true
+}

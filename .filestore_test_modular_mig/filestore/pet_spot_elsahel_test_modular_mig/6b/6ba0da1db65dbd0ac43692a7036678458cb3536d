@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 7569
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-08 11:31:30 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** medium
+**الثقة:** 0.85
+
+**الملخص:**
+The inspection report is showing empty despite images being present.
+
+**الإجراء المطلوب:**
+Investigate the report generation logic to ensure images are included in the output.
+
+## Original Message
+
+```
+الصور هنا ظاهرة اثناء ال inspection بس ف التقرير empty
+```

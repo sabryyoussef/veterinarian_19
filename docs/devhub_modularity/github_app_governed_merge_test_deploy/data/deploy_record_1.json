@@ -1,0 +1,33 @@
+{
+  "id": 1,
+  "display_name": "dev.deploy.record,1",
+  "approval_id": [
+    1,
+    "dev.deploy.approval,1"
+  ],
+  "workspace_id": [
+    1849,
+    "DW-3324"
+  ],
+  "target_id": [
+    4,
+    "PetSpot Test Staging Deploy"
+  ],
+  "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+  "idempotency_key": "1849:4:0b516d5af4ae24ab0d1575e3eff3b2682a5bb439:31a85e5ba96b8a68f6a1efd8eaf0a8cd72f0b934c659cdc09bd09b14144c0125",
+  "result_state": "succeeded",
+  "lease_token": "5d81cdc6f57b4760b5e5a80177eda41b",
+  "backup_checkpoint_ref": "runner://staging/5d81cdc6f57b",
+  "audit_hash": "785ff575578872e6e64a6dd14bed5f265167f97515a3cfe20e6474ef3b2c6ff0",
+  "deployed_at": "2026-07-23 12:34:28",
+  "create_uid": [
+    2,
+    "Administrator"
+  ],
+  "create_date": "2026-07-23 12:34:25",
+  "write_uid": [
+    1,
+    "OdooBot"
+  ],
+  "write_date": "2026-07-23 12:34:25"
+}

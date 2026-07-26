@@ -1,0 +1,157 @@
+2026-07-23 12:41:25,602 3902363 INFO ? odoo: Odoo version 19.0 
+2026-07-23 12:41:25,602 3902363 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf 
+2026-07-23 12:41:25,602 3902363 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-07-23 12:41:25,603 3902363 INFO ? odoo: database: odoo@localhost:5432 
+2026-07-23 12:41:25,988 3902363 INFO ? odoo.service.server: HTTP service (werkzeug) running on master:8028 
+2026-07-23 12:41:26,015 3902363 INFO pet_spot_elsahel_test odoo.tests.common: Importing test framework 
+2026-07-23 12:41:26,065 3902363 INFO pet_spot_elsahel_test odoo.modules.loading: loading 1 modules... 
+2026-07-23 12:41:26,467 3902363 INFO pet_spot_elsahel_test odoo.modules.loading: 1 modules loaded in 0.40s, 0 queries (+0 extra) 
+2026-07-23 12:41:26,613 3902363 INFO pet_spot_elsahel_test odoo.modules.loading: loading 339 modules... 
+2026-07-23 12:41:26,647 3902363 WARNING pet_spot_elsahel_test odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-07-23 12:41:27,306 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:28,439 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:28,842 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:28,842 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,537 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,537 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,537 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,538 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,538 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,538 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,540 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,540 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,540 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,541 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,541 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,776 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,776 3902363 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 12:41:29,777 3902363 INFO pet_spot_elsahel_test odoo.modules.loading: 339 modules loaded in 3.16s, 0 queries (+0 extra) 
+2026-07-23 12:41:30,497 3902363 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-07-23 12:41:30,774 3902363 INFO pet_spot_elsahel_test odoo.modules.loading: Modules loaded. 
+2026-07-23 12:41:30,825 3902363 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.attachment_id 
+2026-07-23 12:41:30,825 3902363 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.content 
+2026-07-23 12:41:30,826 3902363 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.embedding_model 
+2026-07-23 12:41:31,065 3902363 INFO pet_spot_elsahel_test odoo.registry: Registry loaded in 5.076s 
+2026-07-23 12:41:31,066 3902363 INFO pet_spot_elsahel_test odoo.service.server: Starting post tests 
+2026-07-23 12:41:31,543 3902363 INFO pet_spot_elsahel_test odoo.addons.devhub_deploy.tests.test_deploy_sha_runner_contracts: Starting TestDeployShaAndRunnerContracts.test_staging_runner_helper_exists ... 
+2026-07-23 12:41:31,546 3902363 INFO pet_spot_elsahel_test odoo.addons.devhub_deploy.tests.test_deploy_sha_runner_contracts: Starting TestDeployShaAndRunnerContracts.test_verify_sha_helper_uses_ls_remote ... 
+2026-07-23 12:41:31,554 3902363 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-07-23 12:41:31,589 3902363 INFO pet_spot_elsahel_test odoo.addons.devhub_execution.tests.test_session_lifecycle_ordering: Starting TestIsolatedSessionLifecycleOrdering.test_helper_requires_ready_state ... 
+2026-07-23 12:41:31,592 3902363 INFO pet_spot_elsahel_test odoo.addons.devhub_execution.tests.test_session_lifecycle_ordering: skipped TestIsolatedSessionLifecycleOrdering.test_helper_requires_ready_state : No pending workspace fixture in this DB 
+2026-07-23 12:41:31,592 3902363 INFO pet_spot_elsahel_test odoo.addons.devhub_execution.tests.test_session_lifecycle_ordering: Starting TestIsolatedSessionLifecycleOrdering.test_session_run_git_sets_safe_directory ... 
+2026-07-23 12:41:31,594 3902363 INFO pet_spot_elsahel_test odoo.addons.devhub_execution.tests.test_session_lifecycle_ordering: Starting TestIsolatedSessionLifecycleOrdering.test_session_start_rejects_non_ready_workspace ... 
+2026-07-23 12:41:31,601 3902363 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-07-23 12:41:31,637 3902363 INFO pet_spot_elsahel_test odoo.service.server: 5 post-tests in 0.57s, 16 queries 
+2026-07-23 12:41:31,637 3902363 INFO pet_spot_elsahel_test odoo.tests.stats: devhub_deploy: 4 tests 0.05s 6 queries 
+2026-07-23 12:41:31,637 3902363 INFO pet_spot_elsahel_test odoo.tests.stats: devhub_execution: 5 tests 0.05s 10 queries 
+2026-07-23 12:41:31,637 3902363 INFO pet_spot_elsahel_test odoo.tests.result: 0 failed, 0 error(s) of 5 tests when loading database 'pet_spot_elsahel_test' 
+2026-07-23 12:41:31,638 3902363 INFO pet_spot_elsahel_test odoo.service.server: Initiating shutdown 
+2026-07-23 12:41:31,638 3902363 INFO pet_spot_elsahel_test odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-07-23 12:41:31,642 3902363 INFO ? odoo.sql_db: Connection to the database failed 
+2026-07-23 12:41:31,642 3902363 WARNING ? odoo.registry: Failed to open a readonly cursor, falling back to read-write cursor for 20min 0sec 
+2026-07-23 12:41:31,646 3902363 INFO ? odoo.sql_db: Connection to the database failed 
+2026-07-23 12:41:31,646 3902363 WARNING ? odoo.registry: Failed to open a readonly cursor, falling back to read-write cursor for 20min 0sec 
+2026-07-23 12:41:31,648 3902363 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_http: Generating routing map for key 1 
+2026-07-23 12:41:31,698 3902363 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_http: Generating routing map for key 1 
+2026-07-23 12:41:32,275 3902363 INFO pet_spot_elsahel_test werkzeug: 154.182.144.79 - - [23/Jul/2026 12:41:32] "GET /websocket?version=19.0-2 HTTP/1.1" 101 - 9 0.032 5.361
+2026-07-23 12:41:32,344 3902363 INFO pet_spot_elsahel_test werkzeug: 154.182.144.79 - - [23/Jul/2026 12:41:32] "POST /json/2/dev.external.outbox/service_lease HTTP/1.1" 200 - 15 0.038 2.076
+2026-07-23 12:41:32,696 3902363 INFO pet_spot_elsahel_test odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 2 connections  
+2026-07-23 12:41:32,696 3902363 ERROR pet_spot_elsahel_test odoo.addons.bus.websocket: Exception occurred during websocket request handling 
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/bus/websocket.py", line 1115, in _serve_forever
+    req.serve_websocket_message(message)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/bus/websocket.py", line 911, in serve_websocket_message
+    service_model.retrying(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py", line 184, in retrying
+    result = func()
+             ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/bus/websocket.py", line 921, in _serve_ir_websocket
+    self.env["ir.websocket"]._subscribe(data)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/tools/discuss.py", line 36, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/ir_websocket.py", line 35, in _subscribe
+    super()._subscribe(og_data)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/bus/models/ir_websocket.py", line 67, in _subscribe
+    data = self._prepare_subscribe_data(og_data["channels"], og_data["last"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/ir_websocket.py", line 47, in _prepare_subscribe_data
+    data = super()._prepare_subscribe_data(channels, last)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/bus/models/ir_websocket.py", line 60, in _prepare_subscribe_data
+    return {"channels": OrderedSet(self._build_bus_channel_list(list(channels))), "last": last}
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/spreadsheet_edition/models/ir_websocket.py", line 14, in _build_bus_channel_list
+    return super()._build_bus_channel_list(channels)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/ir_websocket.py", line 32, in _build_bus_channel_list
+    all_user_channels = self.env["discuss.channel"].search(domain)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 1378, in search
+    return self.search_fetch(domain, [], offset=offset, limit=limit, order=order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 1408, in search_fetch
+    query = self._search(domain, offset=offset, limit=limit, order=order or self._order)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 5361, in _search
+    domain = domain.optimize_full(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 445, in optimize_full
+    return self._optimize(model, OptimizationLevel.FULL)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 459, in _optimize
+    previous, domain = domain, domain._optimize_step(model, next_level)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 653, in _optimize_step
+    children = self._flatten(child._optimize(model, level) for child in self.children)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 608, in _flatten
+    for child in children:
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 653, in <genexpr>
+    children = self._flatten(child._optimize(model, level) for child in self.children)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 459, in _optimize
+    previous, domain = domain, domain._optimize_step(model, next_level)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 957, in _optimize_step
+    domain = self._optimize_field_search_method(model)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 987, in _optimize_field_search_method
+    computed_domain = field.determine_domain(model, operator, value)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 1921, in determine_domain
+    return determine(self.search, records, operator, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 81, in determine
+    return needle(*args)
+           ^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/discuss_channel.py", line 295, in _search_is_member
+    current_partner, current_guest = self.env["res.partner"]._get_current_persona()
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/res_partner.py", line 343, in _get_current_persona
+    return (self.env.user.partner_id, self.env["mail.guest"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields_relational.py", line 45, in __get__
+    return super().__get__(records, owner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 1693, in __get__
+    recs._fetch_field(self)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3769, in _fetch_field
+    self.fetch(fnames)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3809, in fetch
+    fetched = self._fetch_query(query, fields_to_fetch)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 3914, in _fetch_query
+    rows = self.env.execute_query(query.select(*sql_terms))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/environments.py", line 535, in execute_query
+    return [] if self.cr.description is None else self.cr.fetchall()
+                                                  ^^^^^^^^^^^^^^^^^^
+psycopg2.InterfaceError: cursor already closed
+Exception ignored in: <module 'threading' from '/usr/lib/python3.12/threading.py'>
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/threading.py", line 1624, in _shutdown
+    lock.acquire()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 450, in signal_handler
+    raise KeyboardInterrupt()
+KeyboardInterrupt: 

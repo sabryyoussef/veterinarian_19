@@ -1,0 +1,26 @@
+{
+  "n": 14,
+  "v23_class_dist": {
+    "new_task": 1,
+    "noise": 13
+  },
+  "v24_class_dist": {
+    "unclear": 1,
+    "noise": 3,
+    "information": 10
+  },
+  "tech_media_noise_rate_v23": 0.9285714285714286,
+  "tech_media_noise_rate_v24": 0.21428571428571427,
+  "information_count_v24": 10,
+  "unclear_count_v24": 1,
+  "actionable_v23": 1,
+  "actionable_v24": 0,
+  "overconf_v23": 1,
+  "overconf_v24": 0,
+  "unsupported_proj": 0,
+  "unsupported_wi": 0,
+  "safe_true_v24": 0,
+  "schema_validity": "14/14",
+  "parse_failures": 0,
+  "decision": "ACCEPT_V2_4_FOR_TEST"
+}

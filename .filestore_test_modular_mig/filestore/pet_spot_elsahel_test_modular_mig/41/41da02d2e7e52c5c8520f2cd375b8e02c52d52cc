@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 5995
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-03 20:03:20 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Request for a document related to payroll module shortcuts in Visual Basic.
+
+**الإجراء المطلوب:**
+Provide the requested document with shortcuts for the payroll module.
+
+## Original Message
+
+```
+السلام عليكم 
+يا دكتور محتاج الورقة اللي مكتوب فيها اختصارات مديول المرتبات الفيچوال بايزك ال F1 , F2 بيعملوا ايه و هكذا @165837629583434
+```

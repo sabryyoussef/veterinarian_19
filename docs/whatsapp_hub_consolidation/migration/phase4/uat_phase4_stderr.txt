@@ -1,0 +1,262 @@
+2026-07-23 11:23:41,013 3550740 INFO ? odoo: Odoo version 19.0 
+2026-07-23 11:23:41,014 3550740 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf 
+2026-07-23 11:23:41,014 3550740 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-07-23 11:23:41,014 3550740 INFO ? odoo: database: odoo@localhost:5432 
+2026-07-23 11:23:41,433 3550740 INFO ? odoo.service.server: Initiating shutdown 
+2026-07-23 11:23:41,433 3550740 INFO ? odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-07-23 11:23:41,506 3550740 INFO pet_spot_elsahel_test odoo.modules.loading: loading 1 modules... 
+2026-07-23 11:23:41,514 3550740 INFO pet_spot_elsahel_test odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-07-23 11:23:41,654 3550740 INFO pet_spot_elsahel_test odoo.modules.loading: loading 339 modules... 
+2026-07-23 11:23:41,666 3550740 WARNING pet_spot_elsahel_test odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-07-23 11:23:42,154 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:42,912 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,294 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,294 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,637 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,637 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,637 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,637 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,637 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,638 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,640 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,640 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,640 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,640 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,640 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,780 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,780 3550740 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 11:23:43,780 3550740 INFO pet_spot_elsahel_test odoo.modules.loading: 339 modules loaded in 2.13s, 0 queries (+0 extra) 
+2026-07-23 11:23:44,522 3550740 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-07-23 11:23:44,798 3550740 INFO pet_spot_elsahel_test odoo.modules.loading: Modules loaded. 
+2026-07-23 11:23:44,859 3550740 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.attachment_id 
+2026-07-23 11:23:44,859 3550740 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.content 
+2026-07-23 11:23:44,859 3550740 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.embedding_model 
+2026-07-23 11:23:45,120 3550740 INFO pet_spot_elsahel_test odoo.registry: Registry loaded in 3.655s 
+2026-07-23 11:23:45,163 3550740 INFO pet_spot_elsahel_test odoo.tests.common: Importing test framework 
+2026-07-23 11:23:45,451 3550740 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 17, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 241, in new_test_user
+    return env['res.users'].with_context(**context).create(create_values)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/website_slides/models/res_users.py", line 13, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/project/models/res_users.py", line 12, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/knowledge/models/res_users.py", line 11, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/hr/models/res_users.py", line 165, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/digest/models/res_users.py", line 12, in create
+    users = super(ResUsers, self).create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/gamification/models/res_users.py", line 72, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/calendar/models/res_users.py", line 63, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/auth_signup/models/res_users.py", line 270, in create
+    users = super(ResUsers, self).create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/res_users.py", line 14, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/res_users.py", line 182, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/res_users.py", line 1357, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/res_users.py", line 580, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4698, in create
+    parents = self.env[model_name].create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/account/models/partner.py", line 772, in create
+    return super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/res_partner.py", line 921, in create
+    partners = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/properties_base_definition_mixin.py", line 47, in create
+    return super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 327, in create
+    threads = super(MailThread, self).create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/website/models/mixins.py", line 240, in create
+    records = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 11:23:45,451 3550740 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 17, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 241, in new_test_user
+    return env['res.users'].with_context(**context).create(create_values)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/website_slides/models/res_users.py", line 13, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/project/models/res_users.py", line 12, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/knowledge/models/res_users.py", line 11, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/hr/models/res_users.py", line 165, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/digest/models/res_users.py", line 12, in create
+    users = super(ResUsers, self).create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/gamification/models/res_users.py", line 72, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/calendar/models/res_users.py", line 63, in create
+    res = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/auth_signup/models/res_users.py", line 270, in create
+    users = super(ResUsers, self).create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/discuss/res_users.py", line 14, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/res_users.py", line 182, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/res_users.py", line 1357, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/res_users.py", line 580, in create
+    users = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4698, in create
+    parents = self.env[model_name].create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/account/models/partner.py", line 772, in create
+    return super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/res_partner.py", line 921, in create
+    partners = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/properties_base_definition_mixin.py", line 47, in create
+    return super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 327, in create
+    threads = super(MailThread, self).create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/website/models/mixins.py", line 240, in create
+    records = super().create(vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 11:23:46,599 3550740 WARNING pet_spot_elsahel_test odoo.addons.base.models.ir_mail_server: No mail server matches the from_filter, using "OdooBot" <odoobot@example.com> as fallback 
+2026-07-23 11:23:48,020 3550740 INFO pet_spot_elsahel_test odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 201007775820: HTTP 200 
+2026-07-23 11:23:48,061 3550740 INFO pet_spot_elsahel_test odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=11 → message id=16 
+2026-07-23 11:23:48,064 3550740 INFO pet_spot_elsahel_test odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=legacy to 201007775820 (msg_id=LEGA-1784805820) 
+2026-07-23 11:23:48,121 3550740 INFO pet_spot_elsahel_test odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 201007775820: HTTP 200 
+2026-07-23 11:23:48,138 3550740 INFO pet_spot_elsahel_test odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=12 → message id=17 
+2026-07-23 11:23:48,146 3550740 INFO pet_spot_elsahel_test odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=shadow to 201007775820 (msg_id=SHAD-1784805820) 
+2026-07-23 11:23:48,242 3550740 INFO pet_spot_elsahel_test odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=hub to 201007775820 (msg_id=HUBC-1784805820) 
+2026-07-23 11:23:48,320 3550740 INFO pet_spot_elsahel_test odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Outbound mode=hub to 201007775820 (msg_id=HUBE-1784805820) 
+2026-07-23 11:23:48,370 3550740 WARNING pet_spot_elsahel_test odoo.addons.whatsapp_hub.models.whatsapp_outbound: whatsapp outbound 8 failed (mode=unified_bridge): HTTP 500 
+2026-07-23 11:23:48,458 3550740 INFO pet_spot_elsahel_test odoo.addons.evolution_whatsapp_chat.models.discuss_channel: [WA Channel] Sent to 201007775820: HTTP 200 
+2026-07-23 11:23:48,477 3550740 INFO pet_spot_elsahel_test odoo.addons.whatsapp_hub.models.compat_bridge: whatsapp_hub mirrored wa.message.log id=16 → message id=21 
+2026-07-23 11:23:48,501 3550740 INFO pet_spot_elsahel_test odoo.addons.phone_validation.tools.phone_validation: The `phonenumbers` Python module is not installed, contact numbers will not be verified. Please install the `phonenumbers` Python module. 

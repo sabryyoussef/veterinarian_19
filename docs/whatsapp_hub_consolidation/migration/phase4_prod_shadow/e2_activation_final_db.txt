@@ -1,0 +1,26 @@
+ id | wa_outbound_mode 
+----+------------------
+  5 | hub
+ 10 | hub
+(2 rows)
+
+                     key                      |  value  
+----------------------------------------------+---------
+ whatsapp_hub.discuss_cutover_enabled         | True
+ whatsapp_hub.discuss_hub_allowed_channel_ids | 10,5
+ whatsapp_hub.unified_outbound_enabled        | True
+ whatsapp_hub.unified_outbound_purposes       | discuss
+(4 rows)
+
+ id | state |  business_key   |  evolution_message_id  | retry_count | discuss_channel_id 
+----+-------+-----------------+------------------------+-------------+--------------------
+ 15 | sent  | discuss:5:11345 | 3EB002722711287688137D |           0 |                  5
+ 16 | sent  | discuss:5:11346 | 3EB0C20D278D0C940860F2 |           0 |                  5
+ 17 | sent  | discuss:5:11347 | 3EB0E5205626796D709791 |           0 |                  5
+(3 rows)
+
+ outside 
+---------
+       0
+(1 row)
+

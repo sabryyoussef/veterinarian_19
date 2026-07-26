@@ -1,0 +1,94 @@
+{
+  "started_at": "2026-07-20T21:37:07.192Z",
+  "url": "http://127.0.0.1:8028",
+  "database": "pet_spot_elsahel_test",
+  "work_item_id": 3053,
+  "analysis_id": 2481,
+  "screenshots": [
+    "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/code_db_analysis_2717_20260721/screenshots/01_work_item_3053.png",
+    "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/code_db_analysis_2717_20260721/screenshots/02_analysis_tab_completed.png",
+    "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/code_db_analysis_2717_20260721/screenshots/03_full_analysis_report.png",
+    "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/code_db_analysis_2717_20260721/screenshots/04_repo_env_db_evidence.png",
+    "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/code_db_analysis_2717_20260721/screenshots/05_after_refresh.png",
+    "/home/sabry/odoo_base/base_odoo_19/releases/veterinarian_19_ff53a8d/dev_session_hub/docs/uat/code_db_analysis_2717_20260721/screenshots/06_idempotent_replay_analysis_tab.png"
+  ],
+  "console_errors": [
+    "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1453:72)\n    at async startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1446:157)\n    at async mountComponent (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1465:305)\n    at async startWebClient (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:33378:29)",
+    "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1453:72)\n    at async startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1446:157)\n    at async mountComponent (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1465:305)\n    at async startWebClient (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:33378:29)",
+    "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1453:72)\n    at async startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1446:157)\n    at async mountComponent (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1465:305)\n    at async startWebClient (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:33378:29)",
+    "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1453:72)\n    at async startServices (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1446:157)\n    at async mountComponent (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:1465:305)\n    at async startWebClient (http://127.0.0.1:8028/web/assets/1ddd706/web.assets_web.min.js:33378:29)"
+  ],
+  "results": [
+    {
+      "name": "analysis_completed_in_db",
+      "ok": true,
+      "detail": "{\"state\":\"completed\",\"db\":\"tours_trading_test\"}"
+    },
+    {
+      "name": "work_item_opened",
+      "ok": true
+    },
+    {
+      "name": "analysis_tab_shows_completed",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\nOpenProject\nOdoo Task\nSource Conversation\n1 / 1\nAnalyze Against Code & Database\nStart Planning\nBlock\nCancel\n...\nApproved\nAwaiting Plan Approval\nPlanning\nAnalyzing\nRegistered\n...\nName\nUuid\nbeea38fe-cac2-4faf-9205-018233eef6db\nActive\nCompany\nResponsible User\nPriority Cache\nDeadline Cache\nDev Project\nOdoo Projec"
+    },
+    {
+      "name": "analysis_tab_shows_tourz_db",
+      "ok": true
+    },
+    {
+      "name": "shows_tourz_or_task",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "shows_repo",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "shows_env",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "shows_db",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "shows_code_findings",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "shows_db_evidence",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "shows_recommendation",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "persists_after_refresh",
+      "ok": true,
+      "detail": "New\nRecent Work\nTorz: auto-apply warranty period when package selected as vehicle service\ndev.work.analysis,2481\n1 / 1\nAccept Analysis\nFailed\nCompleted\nRunning\nQueued\nSuperseded\nRejected\nAccepted\nReviewed\nGenerated\nDraft\nWork Item\nRevision\n7\nParent Revision\nContent Hash\n6f753f5fda2a4b0bb9bf09a75d196b930906d130bee8acf435a93c1c934cad1b\nAnalysis Kind\nAnalysis Fingerprint\n4441b87f3391b3e78322c9469b9f4"
+    },
+    {
+      "name": "idempotent_replay",
+      "ok": true,
+      "detail": "replay=2481 expected=2481"
+    },
+    {
+      "name": "no_owl_rpc_access_errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "fingerprint": "4441b87f3391b3e78322c9469b9f418e23160b911b42f2d2e178d59cf9024841",
+  "replay_analysis_id": 2481,
+  "finished_at": "2026-07-20T21:37:33.867Z"
+}

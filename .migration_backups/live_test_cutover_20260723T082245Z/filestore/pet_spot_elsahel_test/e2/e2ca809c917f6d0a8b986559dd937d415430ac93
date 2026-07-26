@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 5635
+- Customer: Dev Needed
+- Provider: openai / gpt-4o-mini
+- Analyzed at: 2026-07-02 12:46:07 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.00
+
+**الملخص:**
+Customer is expressing frustration with system performance and requests improvements.
+
+**الإجراء المطلوب:**
+Investigate system performance issues and optimize configurations if necessary.
+
+**نص مرفق مستخرج:**
+انا والله حبيت اقولش من بره في اي تصقيح حقو اتعملها بس برضو كل شوية يعني يطلب كده هو يعني فوق بيحمل وما فيش اي يديك يعني فاهمني
+
+## Original Message
+
+```
+Voice message: 3EB073B8EFEE11838070B5.oga
+```

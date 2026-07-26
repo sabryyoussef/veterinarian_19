@@ -1,0 +1,8 @@
+branch=feature/devhub-modularization-whatsapp
+head=5d627a7e4b6ec4a29928dfd3c57f3fcf000f66cc
+dirty_files=86
+## feature/devhub-modularization-whatsapp
+ M dev_session_hub/__init__.py
+ M dev_session_hub/__manifest__.py
+ M dev_session_hub/data/dev_session_hub_seed.xml
+ M dev_session_hub/models/__init__.py

@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 9513
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 07:48:25 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Internal communication regarding email and password details for M. Sabry.
+
+**الإجراء المطلوب:**
+No action required, internal communication only.
+
+## Original Message
+
+```
+ياهندسه انا كنت بعت ليه الايميل بتاعى على اساس ان م. صبرى مش معاه ايميل شركه 
+تفاصيل الباسورد والامور دى اكيد هتكون مع م. صبرى
+```

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_item_list_op" model="ir.ui.view">
+        <field name="name">dev.work.item.list.op</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lifecycle_phase']" position="after">
+                <field name="op_work_package_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_dev_work_item_form_op" model="ir.ui.view">
+        <field name="name">dev.work.item.form.op</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button name="action_open_openproject" type="object" class="oe_stat_button" icon="fa-external-link" invisible="not op_work_package_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">OpenProject</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='page_source_request']//group" position="inside">
+                <field name="op_backend_id"/>
+                <field name="op_work_package_id"/>
+                <field name="op_reference"/>
+                <field name="op_url" widget="url"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

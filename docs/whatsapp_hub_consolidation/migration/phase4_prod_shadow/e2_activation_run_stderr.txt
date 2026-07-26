@@ -1,0 +1,74 @@
+2026-07-23 12:55:46,740 3969125 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 136, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/ir_config_parameter.py", line 104, in set_param
+    return super().set_param(key, value)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_config_parameter.py", line 96, in set_param
+    param.write({'value': value})
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/sale/models/ir_config_parameter.py", line 19, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/crm/models/ir_config_parameter.py", line 12, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/analytic/models/ir_config_parameter.py", line 15, in write
+    return super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_config_parameter.py", line 116, in write
+    return super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 12:55:46,741 3969125 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/./odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 136, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/ir_config_parameter.py", line 104, in set_param
+    return super().set_param(key, value)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_config_parameter.py", line 96, in set_param
+    param.write({'value': value})
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/sale/models/ir_config_parameter.py", line 19, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/crm/models/ir_config_parameter.py", line 12, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/analytic/models/ir_config_parameter.py", line 15, in write
+    return super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_config_parameter.py", line 116, in write
+    return super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 

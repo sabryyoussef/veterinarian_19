@@ -1,0 +1,11 @@
+expected= SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU
+keyscan_file=
+3072 SHA256:HexQAaGWNYDjsKi2R11rmrcoegF4kgby9c1mPxG0mmM 100.110.211.53 (RSA)
+256 SHA256:4HSkvlBhx3LHYela0wooENq8XfVTbkmfn4P1LB3gruk 100.110.211.53 (ECDSA)
+256 SHA256:Uq8IW8zlSdAPxWkd7MF+eJwuvjQmUSyvJQBw6oNrtyU 100.110.211.53 (ED25519)
+
+fingerprint_match= True
+known_hosts[100.110.211.53]=absent
+known_hosts[sabry3-precision-5540-ts]=absent
+known_hosts_match= False
+OVERALL_PIN_OK= True

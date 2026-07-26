@@ -1,0 +1,498 @@
+id,source_id,dev_project_id,work_item_id,approved_by,rejected_by,retry_count,create_uid,write_uid,name,group_jid,correlation_id,batch_fingerprint,analysis_mode,schema_version,prompt_version,classification,ignore_reason,work_title,priority,recommended_action,state,provider,provider_model,error_code,error_message,summary,work_description,participants_json,missing_information_json,raw_response_json,validated_json,should_ignore,contains_work,requires_human_review,force_reanalyse,requested_at,started_at,completed_at,applied_at,create_date,write_date,confidence,resolved_project_id,proposed_work_item_id,provider_latency_ms,segment_index,segment_total,work_item_decision,language,dify_app_ref,dify_workflow_run_id,n8n_execution_id,analysis_detail_json,evidence_json,project_candidates_json,work_item_candidates_json,project_context_json,provider_token_usage_json,requires_project_confirmation,contains_multiple_tasks,safe_to_create_work,safe_to_attach_to_existing_work,is_demo_result,evaluation_sample_id,is_evaluation_result,project_resolution_status,project_selection_evidence,selection_policy_json,review_completed_by,historical_review_lane,review_summary_ok,review_project_ok,review_correct_project,review_classification_ok,review_correct_classification,review_actionable,review_new_or_existing,review_correct_work_item,review_proposed_wi_ok,review_technical_relevance,review_unsupported_claims,review_acceptance_useful,review_needs_more_info,review_final_decision,review_usefulness,review_summary_correction,review_required_action,review_proposed_wi_notes,review_technical_correction,review_unsupported_claims_detail,review_acceptance_corrected,review_questions_to_ask,review_final_notes,review_completed_at
+383,9,11,,,,0,2,2,EVAL · kafaat-rpc-20260725 · Dev Needed · 7 msgs,120363422104853335@g.us,2626cd97-15c8-4ffe-91f8-76f46914f74f,c0b1286a6fafced5725f86a06da70c9a891f1e88c04d4cc4fa5a52134141e0d6,historical_quality_evaluation|kafaat-rpc-20260725,2,wa_project_aware_v2.3,new_dev_request,,Address the RPC errors and the issue with the Batch Intake screen not displaying all programs.,2,create_work,awaiting_review,dify_direct_test,dify-direct-gap-test,,,"The messages report multiple RPC errors related to missing files in the Kafaat project, along with a specific issue regarding the Batch Intake screen not displaying all programs. There is also a follow-up on previous issues and testing notes.","{""business_request"": ""Address the RPC errors and the issue with the Batch Intake screen not displaying all programs."", ""recommended_approach"": [""Investigate the missing files causing the RPC errors."", ""Review the Batch Intake screen functionality to ensure all programs are displayed.""], ""questions"": []}",[],[],"{
+  ""schema_version"": ""2"",
+  ""message_understanding"": {
+    ""summary"": ""The messages report multiple RPC errors related to missing files in the Kafaat project, along with a specific issue regarding the Batch Intake screen not displaying all programs. There is also a follow-up on previous issues and testing notes."",
+    ""classification"": ""new_task"",
+    ""language"": ""mixed"",
+    ""technical_terms"": [
+      ""RPC_ERROR"",
+      ""Odoo Server Error"",
+      ""Batch Intake"",
+      ""edafaa_student_profile"",
+      ""batch_intake""
+    ],
+    ""missing_information"": [],
+    ""contains_multiple_tasks"": false
+  },
+  ""project_resolution"": {
+    ""project_id"": 11,
+    ""project_name"": ""Kafaat (كفاءات)"",
+    ""confidence"": 1.0,
+    ""evidence"": [
+      {
+        ""type"": ""canonical_name"",
+        ""value"": ""Matched alias 'Kafaat' (canonical)""
+      },
+      {
+        ""type"": ""arabic_alias"",
+        ""value"": ""Matched alias 'كفاءات' (arabic_name)""
+      }
+    ],
+    ""candidate_ids"": [
+      11
+    ],
+    ""requires_confirmation"": true,
+    ""resolution_status"": ""proposed""
+  },
+  ""project_relevance"": {
+    ""is_current_topic"": true,
+    ""evidence"": [
+      ""alias in actionable statement (msg 9183)"",
+      ""alias in actionable statement (msg 9184)"",
+      ""alias in actionable statement (msg 9187)""
+    ],
+    ""confidence"": 0.8
+  },
+  ""actionability"": {
+    ""is_actionable"": true,
+    ""score"": 1.0,
+    ""signals"": [
+      ""error"",
+      ""اختبار"",
+      ""ايرور"",
+      ""مشكلة""
+    ],
+    ""missing_requirements"": []
+  },
+  ""work_item_resolution"": {
+    ""decision"": ""new"",
+    ""work_item_id"": null,
+    ""work_item_title"": null,
+    ""confidence"": 0.0,
+    ""evidence"": [],
+    ""candidate_ids"": [],
+    ""requires_confirmation"": true
+  },
+  ""analysis"": {
+    ""business_request"": ""Address the RPC errors and the issue with the Batch Intake screen not displaying all programs."",
+    ""current_state"": ""Multiple RPC errors reported, and a specific issue with the Batch Intake screen."",
+    ""existing_relevant_functionality"": [
+      ""Batch Intake module""
+    ],
+    ""likely_affected_modules"": [
+      ""edafaa_student_profile"",
+      ""batch_intake""
+    ],
+    ""likely_affected_models"": [],
+    ""likely_affected_views"": [
+      ""batch_intake.view_batch_intake_form""
+    ],
+    ""database_considerations"": [],
+    ""integration_considerations"": [],
+    ""risks"": [],
+    ""recommended_approach"": [
+      ""Investigate the missing files causing the RPC errors."",
+      ""Review the Batch Intake screen functionality to ensure all programs are displayed.""
+    ],
+    ""acceptance_criteria"": [],
+    ""questions_before_implementation"": []
+  },
+  ""evidence_used"": [
+    {
+      ""source_type"": ""message"",
+      ""reference"": ""msg:9181"",
+      ""summary"": ""Reported RPC error related to missing file."",
+      ""evidence_status"": ""inferred""
+    },
+    {
+      ""source_type"": ""message"",
+      ""reference"": ""msg:9182"",
+      ""summary"": ""Another RPC error reported with similar context."",
+      ""evidence_status"": ""inferred""
+    },
+    {
+      ""source_type"": ""message"",
+      ""reference"": ""msg:9184"",
+      ""summary"": ""Describes the issue with the Batch Intake screen."",
+      ""evidence_status"": ""inferred""
+    }
+  ],
+  ""confidence"": 1.0,
+  ""safe_to_create_work"": true,
+  ""safe_to_attach_to_existing_work"": false,
+  ""legacy_v1_bridge"": {
+    ""source_message_ids"": [],
+    ""noise_message_ids"": [],
+    ""work_message_ids"": [],
+    ""work_title"": """",
+    ""work_description"": """",
+    ""priority"": ""2"",
+    ""should_ignore"": false
+  }
+}","{
+  ""analysis_detail"": {
+    ""acceptance_criteria"": [],
+    ""business_request"": ""Address the RPC errors and the issue with the Batch Intake screen not displaying all programs."",
+    ""current_state"": ""Multiple RPC errors reported, and a specific issue with the Batch Intake screen."",
+    ""database_considerations"": [],
+    ""existing_relevant_functionality"": [
+      ""Batch Intake module""
+    ],
+    ""integration_considerations"": [],
+    ""likely_affected_models"": [],
+    ""likely_affected_modules"": [
+      ""edafaa_student_profile"",
+      ""batch_intake""
+    ],
+    ""likely_affected_views"": [
+      ""batch_intake.view_batch_intake_form""
+    ],
+    ""questions_before_implementation"": [],
+    ""recommended_approach"": [
+      ""Investigate the missing files causing the RPC errors."",
+      ""Review the Batch Intake screen functionality to ensure all programs are displayed.""
+    ],
+    ""risks"": []
+  },
+  ""classification"": ""new_dev_request"",
+  ""classification_v2"": ""new_task"",
+  ""confidence"": 1.0,
+  ""contains_multiple_tasks"": false,
+  ""contains_work"": true,
+  ""evidence_used"": [
+    {
+      ""evidence_status"": ""inferred"",
+      ""reference"": ""msg:9181"",
+      ""source_type"": ""message"",
+      ""summary"": ""Reported RPC error related to missing file.""
+    },
+    {
+      ""evidence_status"": ""inferred"",
+      ""reference"": ""msg:9182"",
+      ""source_type"": ""message"",
+      ""summary"": ""Another RPC error reported with similar context.""
+    },
+    {
+      ""evidence_status"": ""inferred"",
+      ""reference"": ""msg:9184"",
+      ""source_type"": ""message"",
+      ""summary"": ""Describes the issue with the Batch Intake screen.""
+    }
+  ],
+  ""ignore_reason"": null,
+  ""language"": ""mixed"",
+  ""missing_information"": [],
+  ""noise_message_ids"": [],
+  ""participants"": [],
+  ""priority"": ""2"",
+  ""project_reference"": ""Kafaat (كفاءات)"",
+  ""project_resolution"": {
+    ""candidate_ids"": [
+      11
+    ],
+    ""confidence"": 1.0,
+    ""evidence"": [
+      {
+        ""type"": ""canonical_name"",
+        ""value"": ""Matched alias 'Kafaat' (canonical)""
+      },
+      {
+        ""type"": ""arabic_alias"",
+        ""value"": ""Matched alias 'كفاءات' (arabic_name)""
+      }
+    ],
+    ""project_id"": 11,
+    ""project_name"": ""Kafaat (كفاءات)"",
+    ""requires_confirmation"": true,
+    ""resolution_status"": ""proposed""
+  },
+  ""project_resolution_status"": ""proposed"",
+  ""recommended_action"": ""create_work"",
+  ""requires_human_review"": true,
+  ""requires_project_confirmation"": true,
+  ""resolved_project_id"": 11,
+  ""resolved_work_item_id"": null,
+  ""safe_to_attach_to_existing_work"": false,
+  ""safe_to_create_work"": true,
+  ""schema_version"": ""2"",
+  ""should_ignore"": false,
+  ""source_message_ids"": [
+    9181,
+    9182,
+    9183,
+    9184,
+    9185,
+    9186,
+    9187
+  ],
+  ""summary"": ""The messages report multiple RPC errors related to missing files in the Kafaat project, along with a specific issue regarding the Batch Intake screen not displaying all programs. There is also a follow-up on previous issues and testing notes."",
+  ""technical_terms"": [
+    ""RPC_ERROR"",
+    ""Odoo Server Error"",
+    ""Batch Intake"",
+    ""edafaa_student_profile"",
+    ""batch_intake""
+  ],
+  ""work_description"": ""{\""business_request\"": \""Address the RPC errors and the issue with the Batch Intake screen not displaying all programs.\"", \""recommended_approach\"": [\""Investigate the missing files causing the RPC errors.\"", \""Review the Batch Intake screen functionality to ensure all programs are displayed.\""], \""questions\"": []}"",
+  ""work_item_resolution"": {
+    ""candidate_ids"": [],
+    ""confidence"": 0.0,
+    ""decision"": ""new"",
+    ""evidence"": [],
+    ""requires_confirmation"": true,
+    ""work_item_id"": null,
+    ""work_item_title"": null
+  },
+  ""work_message_ids"": [
+    9181,
+    9182,
+    9183,
+    9184,
+    9185,
+    9186,
+    9187
+  ],
+  ""work_title"": ""Address the RPC errors and the issue with the Batch Intake screen not displaying all programs.""
+}",f,t,t,f,2026-07-26 03:59:08,2026-07-26 04:00:15,2026-07-26 04:00:15,,2026-07-26 03:59:08.386569,2026-07-26 04:00:15.538339,1,11,,0,0,1,new,mixed,devhub-wa-resolver,,,"{
+  ""acceptance_criteria"": [],
+  ""business_request"": ""Address the RPC errors and the issue with the Batch Intake screen not displaying all programs."",
+  ""current_state"": ""Multiple RPC errors reported, and a specific issue with the Batch Intake screen."",
+  ""database_considerations"": [],
+  ""existing_relevant_functionality"": [
+    ""Batch Intake module""
+  ],
+  ""integration_considerations"": [],
+  ""likely_affected_models"": [],
+  ""likely_affected_modules"": [
+    ""edafaa_student_profile"",
+    ""batch_intake""
+  ],
+  ""likely_affected_views"": [
+    ""batch_intake.view_batch_intake_form""
+  ],
+  ""questions_before_implementation"": [],
+  ""recommended_approach"": [
+    ""Investigate the missing files causing the RPC errors."",
+    ""Review the Batch Intake screen functionality to ensure all programs are displayed.""
+  ],
+  ""risks"": []
+}","[
+  {
+    ""evidence_status"": ""inferred"",
+    ""reference"": ""msg:9181"",
+    ""source_type"": ""message"",
+    ""summary"": ""Reported RPC error related to missing file.""
+  },
+  {
+    ""evidence_status"": ""inferred"",
+    ""reference"": ""msg:9182"",
+    ""source_type"": ""message"",
+    ""summary"": ""Another RPC error reported with similar context.""
+  },
+  {
+    ""evidence_status"": ""inferred"",
+    ""reference"": ""msg:9184"",
+    ""source_type"": ""message"",
+    ""summary"": ""Describes the issue with the Batch Intake screen.""
+  }
+]","[
+  {
+    ""aliases_matched"": [
+      ""Kafaat"",
+      ""كفاءات""
+    ],
+    ""deterministic_score"": 0.97,
+    ""eligible_for_proposed_selection"": true,
+    ""evidence"": [
+      {
+        ""type"": ""canonical_name"",
+        ""value"": ""Matched alias 'Kafaat' (canonical)""
+      },
+      {
+        ""type"": ""arabic_alias"",
+        ""value"": ""Matched alias 'كفاءات' (arabic_name)""
+      }
+    ],
+    ""has_strong_evidence"": true,
+    ""project_code"": ""KAFAAT"",
+    ""project_id"": 11,
+    ""project_name"": ""Kafaat (كفاءات)"",
+    ""project_relevance"": {
+      ""confidence"": 0.8,
+      ""evidence"": [
+        ""alias in actionable statement (msg 9183)"",
+        ""alias in actionable statement (msg 9184)"",
+        ""alias in actionable statement (msg 9187)"",
+        ""alias in actionable statement (msg 9187)""
+      ],
+      ""is_current_topic"": true,
+      ""media_weak"": false
+    },
+    ""score_breakdown"": {
+      ""alias_score"": 0.97,
+      ""conflict_penalty"": 0.0,
+      ""context_score"": 0.06,
+      ""current_topic_score"": 0.5,
+      ""direct_link_score"": 0.0,
+      ""final_score"": 1.53
+    }
+  }
+]",[],"{
+  ""char_count"": 6153,
+  ""evidence"": [
+    {
+      ""evidence_status"": ""confirmed"",
+      ""freshness"": ""2026-07-26 03:59:08"",
+      ""project_id"": 11,
+      ""reference"": ""dev.project:11"",
+      ""source_type"": ""project_config"",
+      ""summary"": ""Canonical project Kafaat (كفاءات) (KAFAAT)""
+    },
+    {
+      ""evidence_status"": ""confirmed"",
+      ""freshness"": ""2026-07-26 03:59:08"",
+      ""project_id"": 11,
+      ""reference"": ""dev.repository:41"",
+      ""source_type"": ""code"",
+      ""summary"": ""Default repository Kafaat new_kafaat""
+    },
+    {
+      ""evidence_status"": ""confirmed"",
+      ""freshness"": ""2026-07-26 03:59:08"",
+      ""project_id"": 11,
+      ""reference"": ""dev.environment:284"",
+      ""source_type"": ""database"",
+      ""summary"": ""Default environment Kafaat Test (test)""
+    },
+    {
+      ""evidence_status"": ""inferred"",
+      ""freshness"": ""2026-07-24 22:23:07"",
+      ""project_id"": 11,
+      ""reference"": ""dev.whatsapp.analysis:164"",
+      ""source_type"": ""document"",
+      ""summary"": ""The message discusses issues found during UAT regarding data mapping and field labels, specifically mentioning problems with the phone, specialty, and address f""
+    },
+    {
+      ""evidence_status"": ""inferred"",
+      ""freshness"": ""2026-07-24 22:23:07"",
+      ""project_id"": 11,
+      ""reference"": ""dev.whatsapp.analysis:163"",
+      ""source_type"": ""document"",
+      ""summary"": ""The messages indicate a request to enter a meeting for reviewing competencies related to the Kafaat project.""
+    },
+    {
+      ""evidence_status"": ""inferred"",
+      ""freshness"": ""2026-07-24 22:23:07"",
+      ""project_id"": 11,
+      ""reference"": ""dev.whatsapp.analysis:162"",
+      ""source_type"": ""document"",
+      ""summary"": ""(no actionable content)""
+    }
+  ],
+  ""evidence_hierarchy_note"": ""Priority: code/DB > project config > work items/analyses > docs > WhatsApp > Dify KB > general model knowledge. Do not present general knowledge as confirmed project evidence."",
+  ""message_excerpt"": [
+    {
+      ""body"": ""RPC_ERROR\n\nOdoo Server Error\n\nOccured on erp.kafaat.edu.sa on model ir.module.module on 2026-07-25 14:47:13 GMT\n\nTraceback (most recent call last):\n  File \""/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_module.py\"", line 188, in _get_desc\n    with tools.file_open(path, 'rb') as desc_file:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \""/usr/lib/python3/dist-packages/odoo/tools/misc.py\"", lin"",
+      ""id"": 9181,
+      ""sender_jid"": ""201028292475@s.whatsapp.net"",
+      ""timestamp"": ""2026-07-25 14:47:56""
+    },
+    {
+      ""body"": ""RPC_ERROR\n\nOdoo Server Error\n\nOccured on erp.kafaat.edu.sa on model ir.module.module on 2026-07-25 14:48:21 GMT\n\nTraceback (most recent call last):\n  File \""/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_module.py\"", line 188, in _get_desc\n    with tools.file_open(path, 'rb') as desc_file:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \""/usr/lib/python3/dist-packages/odoo/tools/misc.py\"", lin"",
+      ""id"": 9182,
+      ""sender_jid"": ""201028292475@s.whatsapp.net"",
+      ""timestamp"": ""2026-07-25 14:48:35""
+    },
+    {
+      ""body"": ""ال 2 ايرور دول في كفاءات @165837629583434"",
+      ""id"": 9183,
+      ""sender_jid"": ""201028292475@s.whatsapp.net"",
+      ""timestamp"": ""2026-07-25 14:48:54""
+    },
+    {
+      ""body"": ""رقم 6 عدم ظهور جميع البرامج في شاشة Batch Intake\nالمشكلة\nبعد إنشاء برامج جديدة من موديول كفاءات، لا تظهر جميع البرامج في شاشة:\nbatch_intake.view_batch_intake_form\nحاليًا تظهر 3 برامج فقط عند اختيار البرنامج، بينما توجد برامج أخرى تم إنشاؤها بالفعل.\nالمطلوب\n\nمراجعة حقل اختيار البرنامج في شاشة:\nbatch_intake.view_batch_intake_form\nوالتأكد من أنه يعرض جميع البرامج الموجودة في شاشة:\nmotakamel.view_mota"",
+      ""id"": 9184,
+      ""sender_jid"": ""201028292475@s.whatsapp.net"",
+      ""timestamp"": ""2026-07-25 14:58:11""
+    },
+    {
+      ""body"": ""رقم 3 قسيمة الاختبار voucher number \nتم الانتهاء done"",
+      ""id"": 9185,
+      ""sender_jid"": ""201028292475@s.whatsapp.net"",
+      ""timestamp"": ""2026-07-25 15:00:03""
+    },
+    {
+      ""body"": ""student_enrollment_portal.view_student_registration_form"",
+      ""id"": 9186,
+      ""sender_jid"": ""201028292475@s.whatsapp.net"",
+      ""timestamp"": ""2026-07-25 15:09:42""
+    },
+    {
+      ""body"": ""متابعة — ملخص مهني لملاحظات كفاءات (erp.kafaat.edu.sa)\n\nشكراً لمهندس أحمد على مشاركة الأخطاء وملاحظات الاختبار.\n\nتم استلام التالي ومتابعته:\n\n1) أعطال الترقية (حرجة)\n- فشل Upgrade للموديولين edafaa_student_profile و batch_intake بسبب غياب ملف static/description/index.html، مع خطأ صلاحيات إضافي مرتبط بـ html4css1.css.\n- جارٍ معالجة السبب الجذري ثم إعادة الترقية والتحقق.\n\n2) ملاحظات الاختبار\n- مكتمل:"",
+      ""id"": 9187,
+      ""sender_jid"": ""120363422104853335@g.us"",
+      ""timestamp"": ""2026-07-26 03:51:43""
+    }
+  ],
+  ""project_summary"": {
+    ""agent_instruction_summary"": ""Client: كفاءات (Kafaat). Odoo 19 Enterprise on kafaat.softether.net. Default Test DB: sabry-test @ https://erp.kafaat.edu.sa (port 8069). Production DB TR_K19 is DENIED for Dev Hub sessions. Repo: github.com/sabryyoussef/new_kafaat → /home/sabry/projects/new_kafaat (server /opt/new_kafaat). OP parent #87. Active inquiry WI #3240 / OP #384 (UAT items 1–8). Open follow-up: #357 Arabic UI. Update OP after server commits: python3 /home/sabry/infra/openproject/scripts/kafaat-update-op-package.py -m \""msg\"". Do not post to Chatwoot/WhatsApp or restart PM2 from Dev Hub without approval."",
+    ""aliases"": [
+      ""Kafaat"",
+      ""كفاءات""
+    ],
+    ""environment"": {
+      ""database_identifier"": ""sabry-test"",
+      ""environment_type"": ""test"",
+      ""id"": 284,
+      ""is_production"": false,
+      ""name"": ""Kafaat Test"",
+      ""url"": ""https://erp.kafaat.edu.sa""
+    },
+    ""github_reference"": ""https://github.com/sabryyoussef/new_kafaat"",
+    ""openproject_reference"": ""project:10 parent:#87 — edafa_kafaat_parent"",
+    ""prior_analyses"": [
+      {
+        ""analysis_id"": 164,
+        ""classification"": ""new_dev_request"",
+        ""state"": ""awaiting_review"",
+        ""summary"": ""The message discusses issues found during UAT regarding data mapping and field labels, specifically mentioning problems with the phone, specialty, and address fields. It also notes that a column for I""
+      },
+      {
+        ""analysis_id"": 163,
+        ""classification"": ""new_dev_request"",
+        ""state"": ""awaiting_review"",
+        ""summary"": ""The messages indicate a request to enter a meeting for reviewing competencies related to the Kafaat project.""
+      },
+      {
+        ""analysis_id"": 162,
+        ""classification"": ""information"",
+        ""state"": ""awaiting_review"",
+        ""summary"": ""(no actionable content)""
+      }
+    ],
+    ""project_code"": ""KAFAAT"",
+    ""project_id"": 11,
+    ""project_name"": ""Kafaat (كفاءات)"",
+    ""repositories"": [
+      {
+        ""name"": ""Kafaat new_kafaat"",
+        ""repository_id"": 41
+      }
+    ],
+    ""repository"": {
+      ""branch"": ""master"",
+      ""id"": 41,
+      ""name"": ""Kafaat new_kafaat"",
+      ""working_directory"": ""/home/sabry/projects/new_kafaat""
+    },
+    ""work_item_candidates_brief"": []
+  },
+  ""truncated"": false
+}",,t,f,t,f,f,kafaat-rpc-20260725,t,proposed,Matched alias 'Kafaat' (canonical),"{
+  ""eligible_for_proposed_selection"": true,
+  ""proposed_confidence"": 1.0,
+  ""proposed_project_code"": ""KAFAAT"",
+  ""proposed_project_id"": 11,
+  ""proposed_project_name"": ""Kafaat (كفاءات)"",
+  ""requires_project_confirmation"": true,
+  ""resolution_status"": ""proposed"",
+  ""selection_reason"": ""unique_strong_candidate"",
+  ""thresholds"": {
+    ""candidate_score_margin"": 0.2,
+    ""media_dominant_ratio"": 0.4,
+    ""project_relevance_min_confidence"": 0.5,
+    ""strong_candidate_min_score"": 0.85,
+    ""unique_candidate_min_score"": 0.7
+  }
+}",,multi_project,,,,,,,,,,,,,,,,,,,,,,,,

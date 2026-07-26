@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- E3: Discuss Hub Ops list -->
+    <record id="view_discuss_channel_hub_ops_list" model="ir.ui.view">
+        <field name="name">discuss.channel.hub.ops.list</field>
+        <field name="model">discuss.channel</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list string="Discuss Hub Ops"
+                  decoration-danger="wa_outbound_mode == 'hub' and not wa_hub_allowlisted"
+                  decoration-warning="(wa_hub_allowlisted and wa_outbound_mode != 'hub') or wa_hub_pending_count &gt; 0 or wa_shadow_mismatch_count &gt; 0 or wa_hub_health_warning">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="wa_partner_id"/>
+                <field name="wa_phone"/>
+                <field name="wa_outbound_mode"/>
+                <field name="wa_hub_allowlisted"/>
+                <field name="wa_hub_instance_name"/>
+                <field name="wa_hub_conversation_id"/>
+                <field name="wa_hub_pending_count"/>
+                <field name="wa_hub_last_job_state"/>
+                <field name="wa_hub_last_outbound_at"/>
+                <field name="wa_shadow_matched_count"/>
+                <field name="wa_shadow_mismatch_count"/>
+                <field name="wa_hub_health_warning"/>
+                <button name="action_quarantine_hub_outbound"
+                        type="object"
+                        string="Quarantine"
+                        groups="base.group_system"
+                        confirm="Cancel incomplete Hub unified_bridge jobs for this channel?"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_discuss_hub_ops" model="ir.actions.act_window">
+        <field name="name">Discuss Hub Ops</field>
+        <field name="res_model">discuss.channel</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('wa_phone','!=',False),('wa_phone','!=','')]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No WhatsApp Discuss channels</p>
+            <p>Ops surface for Hub allowlist, pending jobs, and shadow evidence.</p>
+        </field>
+    </record>
+
+    <record id="action_discuss_hub_ops_view_list" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_discuss_channel_hub_ops_list"/>
+        <field name="act_window_id" ref="action_discuss_hub_ops"/>
+    </record>
+
+    <menuitem id="menu_discuss_hub_ops"
+              name="Discuss Hub Ops"
+              parent="whatsapp_hub.menu_whatsapp_hub_ops"
+              action="action_discuss_hub_ops"
+              sequence="50"
+              groups="base.group_system"/>
+</odoo>

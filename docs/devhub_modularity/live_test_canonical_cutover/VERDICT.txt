@@ -1,0 +1,9 @@
+LIVE TEST CANONICAL CUTOVER PASS WITH NON-BLOCKERS
+Date: 2026-07-23
+DB: pet_spot_elsahel_test
+Port: 8028
+Meta: dev_session_hub 19.0.9.1.0
+OP links: 45/45
+Parity vs modular_fresh: 19/19
+Active overlay shadow: NO
+Production Dev Hub: untouched (uninstalled)

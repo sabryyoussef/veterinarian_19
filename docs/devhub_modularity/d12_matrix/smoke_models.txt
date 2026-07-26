@@ -1,0 +1,17 @@
+dev.work.item|yes
+dev.work.analysis|yes
+dev.work.plan|yes
+dev.work.plan.step|yes
+dev.work.approval|yes
+dev.work.checkpoint|yes
+dev.workflow.board|yes
+dev.workflow.capability|yes
+dev.execution.workspace|yes
+dev.session|yes
+dev.completion.report|yes
+capabilities 7 ['work', 'analysis', 'plan', 'approval', 'execution', 'git', 'deploy']
+board_action dev.workflow.board 1
+has_op_backend True
+has_analysis_ids True
+has_plan_ids True
+has_checkpoint_ids True

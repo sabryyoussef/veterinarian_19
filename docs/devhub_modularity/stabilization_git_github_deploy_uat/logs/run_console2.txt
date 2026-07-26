@@ -1,0 +1,64 @@
+[2026-07-23T14:49:21] authenticated uid=2
+[2026-07-23T14:49:22] Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 700, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 233, in main
+    task_id = odoo.create(
+              ^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 70, in create
+    return self.kw(model, "create", vals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 67, in kw
+    return self.models.execute_kw(DB, self.uid, PASSWORD, model, method, list(args), kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1122, in __call__
+    return self.__send(self.__name, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1461, in __request
+    response = self.__transport.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1166, in request
+    return self.single_request(host, handler, request_body, verbose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1182, in single_request
+    return self.parse_response(resp)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1351, in parse_response
+    return u.close()
+           ^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 668, in close
+    raise Fault(**self._stack[0])
+xmlrpc.client.Fault: <Fault 2: 'The operation cannot be completed: duplicate key value violates unique constraint "openproject_sync_task_backend_wp_uniq"\nDETAIL:  Key (op_backend_id, op_work_package_id)=(1, 992414308) already exists.\n'>
+
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 700, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 233, in main
+    task_id = odoo.create(
+              ^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 70, in create
+    return self.kw(model, "create", vals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 67, in kw
+    return self.models.execute_kw(DB, self.uid, PASSWORD, model, method, list(args), kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1122, in __call__
+    return self.__send(self.__name, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1461, in __request
+    response = self.__transport.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1166, in request
+    return self.single_request(host, handler, request_body, verbose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1182, in single_request
+    return self.parse_response(resp)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1351, in parse_response
+    return u.close()
+           ^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 668, in close
+    raise Fault(**self._stack[0])
+xmlrpc.client.Fault: <Fault 2: 'The operation cannot be completed: duplicate key value violates unique constraint "openproject_sync_task_backend_wp_uniq"\nDETAIL:  Key (op_backend_id, op_work_package_id)=(1, 992414308) already exists.\n'>

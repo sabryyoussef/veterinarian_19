@@ -265,6 +265,75 @@ class BridgeUnifiedController(BridgeControllerBase):
                     if phone and 'wa.message.log' in request.env:
                         request.env['wa.message.log'].sudo().mark_replied(phone, reply_text=text)
 
+                    # Optional Hub fan-out (never fail the webhook response)
+                    if 'whatsapp.evolution.recovery' in request.env:
+                        try:
+                            Recovery = request.env['whatsapp.evolution.recovery'].sudo()
+                            payload = Recovery.normalize_evolution_upsert(
+                                msg_data, instance
+                            )
+                            if payload and 'whatsapp.message' in request.env:
+                                result = (
+                                    request.env['whatsapp.message']
+                                    .sudo()
+                                    .service_ingest_normalized(payload)
+                                )
+                                _logger.info(
+                                    "[EVO Webhook] Hub ingest ok instance=%s evo_id=%s "
+                                    "message_id=%s duplicate=%s",
+                                    instance,
+                                    payload.get('evolution_message_id'),
+                                    result.get('message_id'),
+                                    result.get('duplicate'),
+                                )
+                                if (
+                                    result.get('conversation_id')
+                                    and 'whatsapp.ingestion.health' in request.env
+                                ):
+                                    conv = request.env['whatsapp.conversation'].sudo().browse(
+                                        result['conversation_id']
+                                    )
+                                    if conv.exists():
+                                        health = (
+                                            request.env['whatsapp.ingestion.health']
+                                            .sudo()
+                                            ._get_or_create_for_conversation(conv)
+                                        )
+                                        health.record_provider_event(
+                                            external_id=payload.get('evolution_message_id'),
+                                        )
+                        except Exception as hub_exc:
+                            _logger.warning(
+                                "[EVO Webhook] Hub ingest failed instance=%s: %s",
+                                instance,
+                                hub_exc,
+                            )
+                            try:
+                                if 'whatsapp.ingestion.health' in request.env:
+                                    remote = (msg_data.get('key') or {}).get('remoteJid')
+                                    if remote:
+                                        conv = request.env['whatsapp.conversation'].sudo().search(
+                                            [('remote_jid', '=', remote)],
+                                            limit=1,
+                                        )
+                                        if conv:
+                                            health = (
+                                                request.env['whatsapp.ingestion.health']
+                                                .sudo()
+                                                ._get_or_create_for_conversation(conv)
+                                            )
+                                            health.record_failure(str(hub_exc))
+                                            health.record_provider_event(
+                                                external_id=(
+                                                    (msg_data.get('key') or {}).get('id')
+                                                ),
+                                            )
+                            except Exception:
+                                _logger.warning(
+                                    "[EVO Webhook] Hub health failure record skipped",
+                                    exc_info=True,
+                                )
+
         except Exception as e:
             _logger.warning(f"[EVO Webhook] Error processing event: {e}")
 

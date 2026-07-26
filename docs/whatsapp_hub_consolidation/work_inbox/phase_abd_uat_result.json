@@ -1,0 +1,118 @@
+{
+  "traffic_kind": "synthetic_uat",
+  "calendar_note": "Wall-clock 24h observation not elapsed. Synthetic multi-message ingest + debounce observation executed on Dev Needed Test; real traffic after Gate 5 was only prior UAT debounce pings.",
+  "finished_at": "2026-07-26T05:08:20.479907Z",
+  "phase_a": {
+    "flags": {
+      "ai_triage_enabled": true,
+      "auto_analysis_enabled": true,
+      "analysis_review_only": true,
+      "debounce": 3,
+      "op_create": false,
+      "prompt": "wa_project_aware_v3.0"
+    },
+    "new_messages_since_obs_start": 20,
+    "synthetic_obs_messages": 9,
+    "conversations_affected_synth": 1,
+    "debounce_schedules_observed": ">=3 synthetic schedule events across runner passes",
+    "debounce_resets_observed": ">=1 (pending_analysis_after moved on re-ingest)",
+    "analyses_created_obs_window": 8,
+    "source_message_count_per_analysis": {
+      "399": 3,
+      "398": 2,
+      "396": 2,
+      "395": 2,
+      "394": 2,
+      "392": 7,
+      "391": 7,
+      "390": 7
+    },
+    "fingerprint_390_exists": true,
+    "extra_analyses_same_fingerprint_390": 0,
+    "dify_successes_native_v3": 1,
+    "dify_failures_unhandled": 0,
+    "validation_failures_obs": 0,
+    "needs_review": 4,
+    "stuck_pending_analyses": 0,
+    "pending_jobs_older_15m": 0,
+    "accidental_devhub_wi_non_uat": 0,
+    "accidental_odoo_tasks_non_uat": 0,
+    "accidental_op_creations_non_testing_uat": 0,
+    "ingestion_health_warnings": 44,
+    "gap_detected_rows": 0,
+    "recovery_operations": "none during this UAT window",
+    "missing_message_gaps": 0,
+    "duplicate_default_analyses": 0,
+    "replay_duplicates_ok_synth": true
+  },
+  "phase_b": {
+    "before_continue_counts": {
+      "wi": 62,
+      "tasks": 379
+    },
+    "after_tests_counts": {
+      "wi": 62,
+      "tasks": 379,
+      "wi_same": 3411,
+      "task_same": 3348,
+      "op_same": 404
+    },
+    "after_rollback": {
+      "wi": 62,
+      "tasks_active": 378,
+      "wi_phase": "cancelled",
+      "task_active": false
+    },
+    "blocked_without_force": true,
+    "work_id": 3411,
+    "task_id": 3348,
+    "op_wp_id": 404,
+    "op_backend_id": 1,
+    "links": {
+      "analysis_id": 396,
+      "analysis_item_index": 0,
+      "source_message_ids": [
+        9274,
+        9273
+      ],
+      "conversation_fingerprint": "75878eb0438d56afa59276b39b1b2b15cefa54fb056358f9571cfbe2c62ef7cb",
+      "dev_work_item_id": 3411,
+      "odoo_task_id": 3348,
+      "openproject_project_id": 21,
+      "openproject_work_package_id": 404,
+      "openproject_parent_id": "op_project:21",
+      "decision_reason": "phase_b_controlled_manual_approve_force"
+    },
+    "retry_blocked": true,
+    "retry_same_wi": true,
+    "rerun_analysis_id": 398,
+    "rerun_orch_decision": "update_existing",
+    "rerun_wi_matches": [
+      {
+        "id": 3411,
+        "name": "PHASE-B UAT fix missing index.html (20260726050631)",
+        "reason": "source_message_link"
+      }
+    ],
+    "provider_replay_duplicates": true,
+    "followup_analysis_id": 399,
+    "followup_orch_decision": "update_existing",
+    "followup_wi_matches": [
+      {
+        "id": 3411,
+        "name": "PHASE-B UAT fix missing index.html (20260726050631)",
+        "reason": "source_message_link"
+      }
+    ],
+    "archive": {
+      "wi_cancelled": true,
+      "task_archived": true,
+      "error": null,
+      "op_wp_retained": 404,
+      "op_note": "OP WP retained as historical evidence; Odoo task archived; WI cancelled. Do not permanently delete analysis evidence."
+    },
+    "delta_wi_during_retry_rerun_replay": 0,
+    "delta_tasks_during_retry_rerun_replay": 0,
+    "no_duplicate_work_on_retry": true
+  }
+}

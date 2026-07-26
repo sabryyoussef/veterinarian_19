@@ -1,0 +1,10 @@
+auth_admin 2
+login admin uid 2
+counts {'dev.project': 7, 'dev.work.item': 44, 'dev.work.analysis': 47, 'dev.work.plan': 25, 'dev.work.approval': 21, 'dev.session': 23, 'dev.whatsapp.source': 1, 'dev.whatsapp.intake': 0}
+model_ok dev.workflow.board 0
+model_ok dev.dashboard 2
+model_miss dev.workflow.dashboard <Fault 2: "Object dev.workflow.dashboard doesn't exist">
+workflow_menus [{'id': 918, 'name': 'Workflow', 'complete_name': 'Dev Hub/Workflow'}]
+groups [('devhub_core', 'group_dev_hub_approver', 154), ('devhub_core', 'group_dev_hub_deploy_approver', 156), ('devhub_core', 'group_dev_hub_generation', 155), ('devhub_core', 'group_dev_hub_integration', 153), ('devhub_core', 'group_dev_hub_manager', 152), ('devhub_core', 'group_dev_hub_production_approver', 157), ('devhub_core', 'group_dev_hub_user', 151)]
+sample_work_op [{'id': 1, 'name': '[Personal] Account access issues for petspot', 'op_work_package_id': 337, 'op_url': 'https://master.tailcf9988.ts.net:10081/work_packages/337'}, {'id': 2, 'name': 'Dev Hub Integration UAT', 'op_work_package_id': 992407020, 'op_url': 'https://openproject.invalid/work_packages/992407020'}, {'id': 126, 'name': 'UAT: inventory valuation report warehouse filter', 'op_work_package_id': 173, 'op_url': 'https://master.tailcf9988.ts.net:10081/work_packages/173'}]
+SMOKE_OK

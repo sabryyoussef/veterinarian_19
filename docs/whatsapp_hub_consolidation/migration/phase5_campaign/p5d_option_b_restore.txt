@@ -1,0 +1,22 @@
+JOB_BODIES [(18, 'Campaign Hub Pilot PLACEHOLDER'), (19, 'Campaign Hub Pilot PLACEHOLDER'), (20, 'Campaign Hub Pilot PLACEHOLDER')]
+LINE_MSGS [(3018, 'Campaign Hub Pilot PLACEHOLDER', 'sent'), (3019, 'Campaign Hub Pilot PLACEHOLDER', 'sent'), (3020, 'Campaign Hub Pilot PLACEHOLDER', 'sent')]
+BEFORE_MODE hub
+QUARANTINE {"ok": true, "campaign_id": 17, "jobs_found": 3, "cancelled": 0, "already_sent": 3, "failed": 0, "uncertain": 0, "already_cancelled": 0, "job_ids": {"cancelled": [], "already_sent": [18, 19, 20], "failed": [], "uncertain": [], "already_cancelled": []}, "reason": "P5D pilot complete - safe restore"}
+FINAL {
+  "campaign_cutover": "False",
+  "allowlist": "False",
+  "inst1_camp_cutover": false,
+  "purposes": "discuss",
+  "batch_size": "25",
+  "pilot_mode": "shadow",
+  "pilot_state": "completed",
+  "camp16_mode": "shadow",
+  "hub_campaigns": [],
+  "pending_camp_jobs": 0,
+  "sent_camp_jobs_pilot": 3,
+  "ch5": "hub",
+  "ch10": "hub",
+  "discuss_allow": "10,5",
+  "discuss_health": "healthy"
+}
+OPTION_B_OK

@@ -1,0 +1,195 @@
+# Managed by: server setup/ssh/install-ssh-config.sh
+
+Include ~/.ssh/config.d/phone
+
+# Managed by: server setup/ssh/install-ssh-config.sh
+# Source: ssh/config.d/*.conf — edit fragments, then re-run this script
+# Inactive/failed: ssh/inactive/*.disabled — see ssh/TEST-RESULTS.md
+# Cursor: .vscode/settings.json -> ssh/config
+
+# =============================================================================
+# Global defaults (all hosts unless overridden)
+# =============================================================================
+Host * !master-ts
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  TCPKeepAlive yes
+  ForwardAgent no
+  AddKeysToAgent yes
+  StrictHostKeyChecking accept-new
+
+# =============================================================================
+# 4-machine cluster — TESTED OK on master (2026-06-25)
+# Run: python3 ssh/test-all-hosts.py
+# Failed / inactive hosts: ssh/inactive/*.disabled
+# =============================================================================
+
+Host master sabry-z620
+  HostName 192.168.100.66
+  User sabry
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 10
+
+Host master-ts
+  HostName 100.76.217.35
+  User sabry
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  StrictHostKeyChecking yes
+  UserKnownHostsFile ~/.ssh/known_hosts
+  HostKeyAlias master-ts
+  CheckHostIP yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host probook bis bis-hp-probook bis-hp-probook-450-g6
+  HostName 192.168.100.71
+  User bis
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host probook-ts bis-hp-ts
+  HostName 100.90.122.76
+  User bis
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host precision sabry3 sabry3-precision-5540
+  HostName 192.168.100.67
+  User sabry3
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 10
+
+Host precision-ts sabry-precision-ts sabry3-precision-5540-ts
+  HostName 100.110.211.53
+  User sabry3
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+# Windows — use desktop-ts (LAN SSH .58 times out; firewall/session)
+Host desktop desktop-rc42jmh desktop-ts
+  HostName 100.100.240.120
+  User hp
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host desktop-ts-dns
+  HostName desktop-rc42jmh.tailcf9988.ts.net
+  User hp
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host phone termux honor-400
+  HostName 192.168.100.59
+  User u0_a336
+  Port 8022
+  IdentityFile ~/.ssh/phone_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host phone-ts honor-ts honor-400-ts
+  HostName 100.69.29.49
+  User u0_a336
+  Port 8022
+  IdentityFile ~/.ssh/phone_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+# =============================================================================
+# A-Zone Odoo VM (WorldPosta / CloudEdge) — Tailscale (2026-06-28)
+# Tailscale: worldposta-azone @ 100.115.138.9
+# Internal (VPN): 172.20.1.1 | Public SNAT: 37.61.219.169
+# Primary SSH user: sabry (after setup-azone-master-access.sh on VM)
+Host worldposta-azone azone azone-ts a-zone
+  HostName 100.115.138.9
+  User sabry
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  PreferredAuthentications publickey,password,keyboard-interactive
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host worldposta-azone-root azone-root-only
+  HostName 100.115.138.9
+  User root
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  PreferredAuthentications publickey,password,keyboard-interactive
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host worldposta-azone-sabry
+  HostName 100.115.138.9
+  User sabry
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  PreferredAuthentications publickey,password,keyboard-interactive
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host worldposta-azone-legacy
+  HostName 100.115.138.9
+  User A-Zone
+  PreferredAuthentications password,keyboard-interactive,publickey
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host worldposta-azone-dns
+  HostName worldposta-azone.tailcf9988.ts.net
+  User root
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  PreferredAuthentications publickey,password,keyboard-interactive
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+# =============================================================================
+# Kafaat Odoo server (كفاءات)
+# Repo: /opt/new_kafaat — https://erp.kafaat.edu.sa
+# =============================================================================
+Host edafa-kafaat kafaat
+  HostName kafaat.softether.net
+  Port 5522
+  User root
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+Host edafa-kafaat-ts kafaat-ts
+  HostName edafa-kafaat.tailcf9988.ts.net
+  Port 5522
+  User root
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+
+# =============================================================================
+# Asta / Lasta Odoo server — Tailscale
+# Public: 46.240.3.233 | Tailscale: odoo @ 100.97.177.36
+# =============================================================================
+Host asta-last
+  HostName 100.97.177.36
+  User root
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ConnectTimeout 15
+

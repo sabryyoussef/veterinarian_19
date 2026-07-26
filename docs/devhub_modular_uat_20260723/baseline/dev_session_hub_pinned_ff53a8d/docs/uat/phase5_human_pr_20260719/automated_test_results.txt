@@ -1,0 +1,41 @@
+Human-Approved PR Creation automated validation
+Date: 2026-07-19
+
+Focused lifecycle suite:
+- 61 executed tests
+- 0 failures
+- 0 errors
+- Odoo stats line: 63 tests including subtest accounting
+
+Complete dev_session_hub suite:
+- 96 executed tests
+- 0 failures
+- 0 errors
+- Odoo stats line: 102 tests including subtest accounting
+
+Dedicated security suite:
+- 20 executed tests
+- 0 failures
+- 0 errors
+- Odoo stats line: 22 tests including subtest accounting
+
+Playwright PR scenario:
+- 1 test discovered
+- 1 passed
+- Duration: 1.1 minutes
+- Ten screenshots captured
+- Verified created, open, unmerged, auto-merge-disabled PR and final
+  pr_created_reviewed state
+
+Credential and runtime regressions:
+- GitHub App ISO-8601 expiry with `T` separator accepted
+- Missing OAuth scope header accepted only after protected App broker attestation
+- Broad classic OAuth scope header rejected
+- Exact PR POST payload passed only through subprocess input; no token or PR body
+  appears in command arguments
+- Separate protected SSH profile used for exact Git Push
+
+TypeScript:
+- New PR spec plus shared helper: passed isolated `tsc --noEmit`
+- Whole Playwright directory has two unrelated pre-existing type errors in
+  odoo_partners_smoke.spec.ts

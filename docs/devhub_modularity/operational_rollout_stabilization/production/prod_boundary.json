@@ -1,0 +1,113 @@
+{
+  "reachable": true,
+  "checks": [
+    {
+      "db": "pet_spot_elsahel",
+      "auth": true,
+      "devhub_like": [
+        {
+          "id": 1396,
+          "name": "devhub_core",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1410,
+          "name": "devhub_analysis",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1411,
+          "name": "devhub_approval",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1395,
+          "name": "devhub_code_analysis",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1397,
+          "name": "devhub_deploy",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1398,
+          "name": "devhub_execution",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1399,
+          "name": "devhub_generation",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1400,
+          "name": "devhub_git",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1401,
+          "name": "devhub_github",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1402,
+          "name": "devhub_infrastructure",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1403,
+          "name": "devhub_odoo_runtime",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1404,
+          "name": "devhub_openproject",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1405,
+          "name": "devhub_outbox",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1412,
+          "name": "devhub_plan",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1406,
+          "name": "devhub_session",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1407,
+          "name": "devhub_whatsapp",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1408,
+          "name": "devhub_work",
+          "state": "uninstalled"
+        },
+        {
+          "id": 1413,
+          "name": "devhub_workflow",
+          "state": "uninstalled"
+        }
+      ],
+      "dev_session_hub": [
+        {
+          "id": 1393,
+          "name": "dev_session_hub",
+          "state": "uninstalled",
+          "installed_version": "19.0.9.1.0"
+        }
+      ]
+    },
+    {
+      "db": "pet_spot",
+      "error": "<Fault 1: 'Traceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py\", line 118, in __new__\\n    return cls.registries[db_name]\\n           ~~~~"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PYVOBJECT//NONSGML Version 1//EN
+BEGIN:VEVENT
+UID:20260722T111032Z - 74385@master
+DTSTART:20260722T111500Z
+DTEND:20260722T121500Z
+ATTENDEE:MAILTO:d@1-tok.com
+CREATED:20260722T111032Z
+DESCRIPTION:Pet: (no pet yet)\nOwner: 1-tok\nRoom: (none)\nType: Emergency 
+ Exam\nNotes:\n*Organized by*\nAdministrator\n*Contact Details*\n1-tok\nd@1
+ -tok.com [1]\n+1 303-990-6552 [2]\nNeed to reschedule? Click here [3]\n\n[
+ 1] mailto:d@1-tok.com\n[2] tel:+1%20303-990-6552\n[3] https://test.drpaws.
+ ai/calendar/view/3c62a34f-7e2b-4e08-b43f-856734fae7a3
+DTSTAMP:20260722T111032Z
+SUMMARY:Clinic Emergency with Administrator
+BEGIN:VALARM
+ACTION:AUDIO
+DESCRIPTION:Email - 3 Hours
+TRIGGER;related=START:PT3H
+END:VALARM
+BEGIN:VALARM
+ACTION:AUDIO
+DESCRIPTION:SMS Text Message - 1 Hours
+TRIGGER;related=START:PT1H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

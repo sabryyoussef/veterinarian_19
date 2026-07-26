@@ -1,3 +1,1 @@
-# -*- coding: utf-8 -*-
-from . import models
-from . import wizards
+# Compatibility / meta bridge — models live in devhub_* modules.

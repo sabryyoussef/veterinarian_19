@@ -1,0 +1,351 @@
+{
+  "started_at": "2026-07-23T13:27:35.099086+00:00",
+  "screenshots": [
+    {
+      "file": "01_login_backend.png",
+      "page": "http://127.0.0.1:8028/odoo",
+      "proves": "Odoo backend after Live Test login",
+      "result": "PASS",
+      "bytes": 197460
+    },
+    {
+      "file": "02_devhub_main_menu.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1377",
+      "proves": "Dev Hub navigation / Recent Work surface",
+      "result": "PASS",
+      "bytes": 253077
+    },
+    {
+      "file": "03_workflow_board.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1391/new",
+      "proves": "Workflow Board stages + KPIs",
+      "result": "PASS",
+      "bytes": 105459
+    },
+    {
+      "file": "04_work_item_3324.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1377/3324",
+      "proves": "Work Item 3324 completed operational UAT",
+      "result": "PASS",
+      "bytes": 290211
+    },
+    {
+      "file": "05_analysis_2695.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1389/2695",
+      "proves": "Analysis 2695 linked to WI 3324",
+      "result": "PASS",
+      "bytes": 163172
+    },
+    {
+      "file": "06_plan_2478.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1388/2478",
+      "proves": "Plan 2478 approved",
+      "result": "PASS",
+      "bytes": 135065
+    },
+    {
+      "file": "07_plan_steps.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1388/2478",
+      "proves": "Plan 2478 steps visible",
+      "result": "PASS",
+      "bytes": 133793
+    },
+    {
+      "file": "08_approval_2276.png",
+      "page": "http://127.0.0.1:8028/odoo/dev.work.approval/2276",
+      "proves": "Exact-hash Approval 2276 approved",
+      "result": "PASS",
+      "bytes": 110472
+    },
+    {
+      "file": "09_session_950.png",
+      "page": "http://127.0.0.1:8028/odoo/dev.session/950",
+      "proves": "Session 950 paused isolated execution",
+      "result": "PASS",
+      "bytes": 178146
+    },
+    {
+      "file": "10_workspace_1849.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1396/1849",
+      "proves": "Workspace 1849 deployed_staging_reviewed",
+      "result": "PASS",
+      "bytes": 271363
+    },
+    {
+      "file": "11_execution_state.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1396/1849",
+      "proves": "Workspace execution/deployed state for DW-3324",
+      "result": "PASS",
+      "bytes": 271363
+    },
+    {
+      "file": "12_checkpoint_evidence.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1397/2144",
+      "proves": "Checkpoint 2144 for WI 3324",
+      "result": "PASS",
+      "bytes": 186775
+    },
+    {
+      "file": "13_git_commit_push.png",
+      "page": "http://127.0.0.1:8028/odoo/dev.git.commit.record/1102",
+      "proves": "Commit record 1102 SHA 22c3cdc0\u2026",
+      "result": "PASS",
+      "bytes": 139799
+    },
+    {
+      "file": "14_github_pr_16.png",
+      "page": "http://127.0.0.1:8028/odoo/dev.git.pr.record/200",
+      "proves": "Dev Hub GitHub App PR record #16",
+      "result": "PASS",
+      "bytes": 180425
+    },
+    {
+      "file": "15_merge_approval_57.png",
+      "page": "http://127.0.0.1:8028/odoo/dev.git.merge.approval/57",
+      "proves": "Merge Approval 57 requester\u2260approver",
+      "result": "PASS",
+      "bytes": 159086
+    },
+    {
+      "file": "16_merge_record_35.png",
+      "page": "http://127.0.0.1:8028/odoo/dev.git.merge.record/35",
+      "proves": "Governed Merge Record 35 SHA 0b516d5a\u2026",
+      "result": "PASS",
+      "bytes": 157401
+    },
+    {
+      "file": "17_test_deployment_success.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1406/1",
+      "proves": "Test Deploy record 1 \u2192 target 4 succeeded",
+      "result": "PASS",
+      "bytes": 115963
+    },
+    {
+      "file": "18_workflow_board_final.png",
+      "page": "http://127.0.0.1:8028/odoo/action-1391/new",
+      "proves": "Workflow Board final after full navigation",
+      "result": "PASS",
+      "bytes": 105459
+    }
+  ],
+  "console": [
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1377"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1377"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1391"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1391"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3324"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3324"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1389/2695"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1389/2695"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1388/2478"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1388/2478"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.approval/2276?model=dev.work.approval&resId=2276"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.approval/2276?model=dev.work.approval&resId=2276"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "ConnectionLostError: Connection to \"/web/action/load\" couldn't be established or was interrupted\n    Error: Connection to \"/web/action/load\" couldn't be established or was interrupted\n        at XMLHttpRequest.<anonymous> (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:3192:200)",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "ConnectionLostError: Connection to \"/mail/data\" couldn't be established or was interrupted\n    Error: Connection to \"/mail/data\" couldn't be established or was interrupted\n        at XMLHttpRequest.<anonymous> (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:3192:200)",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8028/odoo/action-1393/950"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/dev.session/950?model=dev.session&resId=950"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/dev.session/950?model=dev.session&resId=950"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1396/1849"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1396/1849"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1397/2144"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1397/2144"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.commit.record/1102?model=dev.git.commit.record&resId=1102"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.commit.record/1102?model=dev.git.commit.record&resId=1102"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.pr.record/200?model=dev.git.pr.record&resId=200"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.pr.record/200?model=dev.git.pr.record&resId=200"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.merge.approval/57?model=dev.git.merge.approval&resId=57"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.merge.approval/57?model=dev.git.merge.approval&resId=57"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.merge.record/35?model=dev.git.merge.record&resId=35"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/dev.git.merge.record/35?model=dev.git.merge.record&resId=35"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1406/1"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1406/1"
+    },
+    {
+      "type": "error",
+      "text": "Error while storing menus in localStorage QuotaExceededError: Failed to execute 'setItem' on 'Storage': Setting the value of 'webclient_menus' exceeded the quota.\n    at Object.start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:10850:243)\n    at async Promise.all (index 0)\n    at async start (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1452:1)\n    at async _startServices (http://127.0.0.1:8028/web/assets/7a72046/web.assets_web.min.js:1453:72)\n    at async st",
+      "url": "http://127.0.0.1:8028/odoo/action-1391"
+    },
+    {
+      "type": "log",
+      "text": "click .o_app[data-menu-xmlid=\"knowledge.knowledge_menu_root\"]",
+      "url": "http://127.0.0.1:8028/odoo/action-1391"
+    }
+  ],
+  "network_fails": [],
+  "non_blockers": [],
+  "errors": [],
+  "console_network": {
+    "critical_count": 0,
+    "console_total": 41,
+    "network_fail_total": 0
+  },
+  "production_safety": {
+    "prod_service": "inactive",
+    "test_service": "active",
+    "prod_check_error": "[Errno 111] Connection refused"
+  }
+}

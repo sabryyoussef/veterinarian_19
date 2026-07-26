@@ -1,0 +1,20 @@
+2026-07-23 08:11:17,817 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,817 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,817 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,821 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,821 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,821 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,821 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,822 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,968 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,969 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-07-23 08:11:17,969 2758920 INFO pet_spot_elsahel_test_modular_mig odoo.modules.loading: 339 modules loaded in 2.12s, 0 queries (+0 extra) 
+2026-07-23 08:11:18,650 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-07-23 08:11:18,921 2758920 INFO pet_spot_elsahel_test_modular_mig odoo.modules.loading: Modules loaded. 
+2026-07-23 08:11:18,970 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.schema: Missing not-null constraint on ai.embedding.attachment_id 
+2026-07-23 08:11:18,971 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.schema: Missing not-null constraint on ai.embedding.content 
+2026-07-23 08:11:18,971 2758920 WARNING pet_spot_elsahel_test_modular_mig odoo.schema: Missing not-null constraint on ai.embedding.embedding_model 
+2026-07-23 08:11:19,164 2758920 INFO pet_spot_elsahel_test_modular_mig odoo.registry: Registry loaded in 3.506s 
+2026-07-23 08:11:22,834 2758920 INFO pet_spot_elsahel_test_modular_mig odoo.addons.base.models.ir_http: Generating routing map for key 1 
+2026-07-23 08:11:23,848 2758920 INFO pet_spot_elsahel_test_modular_mig werkzeug: 127.0.0.1 - - [23/Jul/2026 08:11:23] "GET /web/login HTTP/1.1" 200 - 106 0.129 0.919
+2026-07-23 08:11:23,937 2758920 INFO pet_spot_elsahel_test_modular_mig werkzeug: 127.0.0.1 - - [23/Jul/2026 08:11:23] "GET /web/login HTTP/1.1" 200 - 10 0.011 0.064

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_repository_discovery_wizard_form" model="ir.ui.view">
+        <field name="name">dev.repository.discovery.wizard.form</field>
+        <field name="model">dev.repository.discovery.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Discover Repository">
+                <group>
+                    <field name="project_id"/>
+                    <field name="local_path"/>
+                    <field name="selected_remote_name"/>
+                </group>
+                <footer>
+                    <button name="action_scan" type="object" string="Scan" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_repository_bind_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.repository.bind.approval.wizard.form</field>
+        <field name="model">dev.repository.bind.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve Repository Bind">
+                <group>
+                    <field name="discovery_id"/>
+                    <field name="installation_id"/>
+                    <field name="requester_id"/>
+                    <field name="confirm_exact_bind"/>
+                    <field name="confirm_app_authorized"/>
+                    <field name="confirm_origin_lock"/>
+                </group>
+                <footer>
+                    <button name="action_approve" type="object" string="Approve &amp; Bind" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_dev_repository_bootstrap_approval_wizard_form" model="ir.ui.view">
+        <field name="name">dev.repository.bootstrap.approval.wizard.form</field>
+        <field name="model">dev.repository.bootstrap.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approve Repository Bootstrap">
+                <group>
+                    <field name="discovery_id"/>
+                    <field name="proposed_github_repository"/>
+                    <field name="requester_id"/>
+                    <field name="confirm_secret_review"/>
+                    <field name="confirm_no_upload"/>
+                </group>
+                <footer>
+                    <button name="action_approve" type="object" string="Approve Bootstrap" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_dev_repository_discovery_wizard" model="ir.actions.act_window">
+        <field name="name">Discover Repository</field>
+        <field name="res_model">dev.repository.discovery.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

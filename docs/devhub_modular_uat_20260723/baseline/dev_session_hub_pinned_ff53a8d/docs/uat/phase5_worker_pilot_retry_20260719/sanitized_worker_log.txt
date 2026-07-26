@@ -1,0 +1,72 @@
+{
+  "completed": [
+    "P1"
+  ],
+  "effective_uid": 1001,
+  "effective_user": "devworker",
+  "lease_version": 1,
+  "stage": "start",
+  "state": "active",
+  "workspace_id": 9
+}
+{
+  "completed": [
+    "P1",
+    "P2",
+    "P3"
+  ],
+  "effective_uid": 1001,
+  "effective_user": "devworker",
+  "normalized_paths": [
+    "tests/__init__.py",
+    "tests/test_fixture_readme_retry.py"
+  ],
+  "raw_status_codes": [
+    "??",
+    "??"
+  ],
+  "stage": "implement",
+  "state": "active",
+  "targeted_tests": 2,
+  "workspace_id": 9
+}
+{
+  "checkpoint_id": 9,
+  "effective_uid": 1001,
+  "effective_user": "devworker",
+  "fenced_version": 1,
+  "stage": "pause",
+  "state": "paused",
+  "workspace_id": 9
+}
+{
+  "completed": [
+    "P1",
+    "P2",
+    "P3",
+    "P4"
+  ],
+  "concurrent_writer": "rejected",
+  "effective_uid": 1001,
+  "effective_user": "devworker",
+  "lease_version": 2,
+  "same_worktree": true,
+  "stage": "resume",
+  "state": "active",
+  "workspace_id": 9
+}
+{
+  "effective_uid": 1001,
+  "effective_user": "devworker",
+  "normalized_paths": [
+    "tests/__init__.py",
+    "tests/test_fixture_readme_retry.py"
+  ],
+  "policy_violations": 0,
+  "regression_tests": 2,
+  "stage": "finish",
+  "state": "review_required",
+  "targeted_tests": 2,
+  "work_phase": "ready_for_review",
+  "workspace_id": 9
+}

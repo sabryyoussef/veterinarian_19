@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/46
+- Message ID: 10727
+- Customer: Bright&I zone ( Odoo ERP )
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-14 17:56:49 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Received a meeting recap link from Bright&I zone regarding Odoo ERP.
+
+**الإجراء المطلوب:**
+No action required, informational message only.
+
+## Original Message
+
+```
+https://teams.microsoft.com/l/meetingrecap?driveId=b%21CoviNWGTSEWOAXC_Vj8VzvVtum5Jp_dEjZ2yjQfPDZf631bdlYNRQJ8ak_pJbTxZ&driveItemId=01L6QX3OQFLBPDXWUGA5FJDCKFYA64LG23&sitePath=https%3A%2F%2Ferpbrightqatar-my.sharepoint.com%2F%3Av%3A%2Fg%2Fpersonal%2Fabdelrahman_ashraf_erpbright_com%2FIQAFWF472oYHSpGJRcA9xZtbAeb31QDegYthOlLLQ-3bHcE&fileUrl=https%3A%2F%2Ferpbrightqatar-my.sharepoint.com%2Fpersonal%2Fabdelrahman_ashraf_erpbright_com%2FDocuments%2FRecordings%2FMeeting+with+Abdelrahman+Ashraf-20260714_191301-Meeting+Recording.mp4%3Fweb%3D1&threadId=19%3Ameeting_ZjBjNTYyNmQtNzNmNS00ZjVkLTg5ZjMtN2NmYjJkNzMzY2Ex%40thread.v2&organizerId=8842f816-2c22-4369-a174-33cfca8d5cb3&tenantId=95ceb3f7-f051-46c9-bd1c-1b97a7f90cad&callId=6801db35-2a33-4a39-9c8e-eeed08bd0f4c&threadType=Meeting&meetingType=MeetNow&subType=RecapSharingLink_RecapCore
+```

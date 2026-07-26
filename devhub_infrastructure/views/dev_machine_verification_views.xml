@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_machine_verification_form" model="ir.ui.view">
+        <field name="name">dev.machine.verification.form</field>
+        <field name="model">dev.machine</field>
+        <field name="inherit_id" ref="devhub_core.view_dev_machine_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_verify_tailscale_destination"
+                        type="object"
+                        string="Verify Tailscale Destination"
+                        class="btn-primary"
+                        groups="devhub_core.group_dev_hub_manager"
+                        invisible="production or not active"
+                        confirm="Run active Tailscale and SSH host-key verification for this registered destination?"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Verification Audit" groups="devhub_core.group_dev_hub_manager">
+                    <field name="verification_event_ids" readonly="1">
+                        <list>
+                            <field name="timestamp"/>
+                            <field name="success"/>
+                            <field name="reason_code"/>
+                            <field name="destination_ref"/>
+                            <field name="fingerprint_ref"/>
+                            <field name="actor_id"/>
+                            <field name="dry_run"/>
+                            <field name="correlation_id"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

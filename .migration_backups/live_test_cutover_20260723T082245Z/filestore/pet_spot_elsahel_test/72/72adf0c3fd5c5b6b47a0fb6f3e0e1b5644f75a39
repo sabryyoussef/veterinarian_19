@@ -1,0 +1,399 @@
+﻿# Kafaat Leave Form — Task Analysis (OP #339 / #340)
+
+**Generated:** 2026-07-14  
+**Host:** Kafaat Odoo container (`/opt`, Odoo 19.0+e)  
+**Client:** Kafaat (not Nadco)  
+**Parent:** [#87 edafa_kafaat_parent](https://master.tailcf9988.ts.net:10081/work_packages/87)  
+**Source Chatwoot:** #9169 (Dev Needed) — content **UNVERIFIED** (not fetched)
+
+---
+
+## 1. Executive summary
+
+**EN:** On TR_K19, Time Off is installed and a print template `نموذج طلب إجازة` already exists in `kafaat_hr_templates`, covering employee data, leave kind/duration, and **management** approval only. There is **no** `شؤون الموظفين` section in the live QWeb/PDF. Leave form fields live on a **transient print wizard** (`kafaat.hr.template.wizard`), not on `hr.leave`; **zero** custom/manual fields exist on `hr.leave`. WP **#339** is primarily a **form/UI (print + wizard) gap** to add the Employee Affairs block. WP **#340** is a **field-mapping / import** problem: several paper-form concepts (resume date, print leave-kind checkboxes, management print fields, signatures) have no clean `hr.leave` counterpart for Excel/docx → Odoo import. Existing leave rows on TR_K19: **2** (low migration risk). OP attachment `.docx` could **not** be downloaded from this host (API 401; token not available here) — HR-section field labels from the docx remain **UNVERIFIED**.
+
+**AR (قصير):** نموذج طلب الإجازة موجود في أودو كطباعة فقط (موظف + إدارة) بدون قسم شؤون الموظفين. الحقول ليست على `hr.leave`. المهمة #339 لإضافة قسم شؤون الموظفين، و#340 لإصلاح مطابقة الحقول/الاستيراد. مرفق الـdocx لم يُحمّل من هذه البيئة — تفاصيل حقول شؤون الموظفين من الملف **غير مؤِّكدة**.
+
+---
+
+## 2. OP metadata + links
+
+| WP | Subject (as provided) | Link | Parent | Status | Description | Attachments |
+|----|----------------------|------|--------|--------|-------------|-------------|
+| **#339** | [Kafaat] Leave request form — add HR employee affairs | https://master.tailcf9988.ts.net:10081/work_packages/339 | #87 | **UNVERIFIED** (API 401) | **UNVERIFIED** | Expected: `نموذج طلب اجازة (اضافة شؤون الموظفين).docx` — **not downloaded** |
+| **#340** | [Kafaat] Leave form — field mapping (import to Odoo) | https://master.tailcf9988.ts.net:10081/work_packages/340 | #87 | **UNVERIFIED** | **UNVERIFIED** | **UNVERIFIED** |
+| **#87** | edafa_kafaat_parent | https://master.tailcf9988.ts.net:10081/work_packages/87 | — | **UNVERIFIED** | — | — |
+
+### OP fetch notes (this host)
+
+| Check | Result |
+|-------|--------|
+| `https://master.tailcf9988.ts.net/api/v3` (Funnel IP `176.58.90.145`) | Reachable; **401 Unauthenticated** without token |
+| `:10081` from this network | **Closed** (use HTTPS `:443` / Funnel host) |
+| Token path `/home/sabry/infra/n8n/.env` | **Not present** on Kafaat container (master-only) |
+| Attachment dir | `/tmp/wp339-340-attachments/` (blocker note + current AR labels only) |
+
+**Action needed (master):** export `OPENPROJECT_API_TOKEN`, GET WPs + attachments into `/tmp/wp339-340-attachments/`, re-parse docx to replace UNVERIFIED HR-affairs rows.
+
+---
+
+## 3. Docx / form field inventory
+
+### 3.1 Source of truth used
+
+| Source | Status |
+|--------|--------|
+| OP attachment `نموذج طلب اجازة (اضافة شؤون الموظفين).docx` | **BLOCKED** — not on disk |
+| Live Odoo QWeb `kafaat_hr_templates.report_leave_request_form` | **VERIFIED** — labels below are exact Arabic from XML |
+| Wizard `kafaat.hr.template.wizard` leave fields | **VERIFIED** in DB + Python/XML |
+
+### 3.2 Verified current form fields (live PDF/QWeb)
+
+| # | Field label (AR) | EN (approx) | Type | Required? | Section / actor | Notes |
+|---|------------------|---------------|------|-----------|-----------------|-------|
+| 1 | نموذج طلب إجازة | Leave request form | title | — | Header | |
+| 2 | بيانات طالب الإجازة | Requester data | section | — | Employee | |
+| 3 | الاسم | Name | text (auto) | implied | Employee | from `hr.employee.name` |
+| 4 | تاريخ الطلب (اليوم) | Request date | date | no | Employee | wizard `leave_req_request_date` |
+| 5 | المسمى الوظيفي | Job title | text (auto) | no | Employee | `job_id` / related |
+| 6 | الرقم الوظيفي | Employee number | text (auto) | no | Employee | `emp_no` or `no_employee` |
+| 7 | بيانات الإجازة | Leave data | section | — | Employee | |
+| 8 | اعتيادية | Regular/annual | selection checkbox | no | Employee | wizard kind=`annual` |
+| 9 | بدون راتب | Unpaid | selection checkbox | no | Employee | kind=`unpaid` |
+| 10 | مرضي | Sick | selection checkbox | no | Employee | kind=`sick` |
+| 11 | أخرى | Other | selection + text | no | Employee | kind=`other` + `leave_req_kind_other` |
+| 12 | مدة الإجازة | Leave duration | section | — | Employee | |
+| 13 | تاريخ بداية الإجازة | Start date | date | no | Employee | |
+| 14 | تاريخ نهاية الإجازة | End date | date | no | Employee | |
+| 15 | تاريخ مباشرة العمل بعد الإجازة | Resume/work return date | date | no | Employee | **no `hr.leave` field** |
+| 16 | مدة الإجازة (باليوم) | Duration (days) | float | no | Employee | |
+| 17 | أسباب طلب الإجازة | Reason | text | no | Employee | note: يرجى إرفاق ما يثبت طلب الإجازة غير السنوية |
+| 18 | توقيع مقدم الطلب | Applicant signature | signature line | no | Employee | print blank line only |
+| 19 | اعتماد وموافقة الإدارة على الطلب | Management approval | section | — | Manager | |
+| 20 | موافق | Approve | selection checkbox | no | Manager | wizard print helper |
+| 21 | لا أوافق | Disapprove | selection checkbox | no | Manager | |
+| 22 | السبب | Management reason | text | no | Manager | |
+| 23 | التاريخ | Management decision date | date | no | Manager | |
+| 24 | التوقيع | Management signature | signature line | no | Manager | print blank |
+| 25 | (footer rule) القائم بالأعمال في فترة الإجازة | Acting employee during leave | text mention only | referenced | Employee/Admin | **mentioned in notes, no input field** |
+
+### 3.3 Workflow steps (verified from current form)
+
+1. **Employee** — fills requester + leave kind + dates + reason + signature.  
+2. **Manager (الإدارة)** — approve / reject + reason + date + signature.  
+3. **شؤون الموظفين (Employee Affairs / HR)** — **MISSING** in live form (subject of #339).  
+
+### 3.4 Docx “اضافة شؤون الموظفين” section
+
+| Item | Status |
+|------|--------|
+| Exact field labels from docx | **UNVERIFIED — attachment not fetched** |
+| Implication from filename + WP subject | New **third workflow block** after management (not a new Odoo department record by itself) |
+| Related note already in PDF footer | Requires acting-employee data (`القائم بالأعمال`) for annual leave — field still absent |
+
+---
+
+## 4. DB inventory (TR_K19 unless noted)
+
+### 4.1 Which DB?
+
+| DB | `hr.employee` | `hr.leave` | `kafaat_hr_templates` | `web.base.url` | Notes |
+|----|---------------|------------|----------------------|----------------|-------|
+| **TR_K19** | 3 | **2** | **installed** | http://erp.kafaat.edu.sa | User-designated primary; templates live here |
+| K-19 | **21** | 0 | **uninstalled** | http://erp.kafaat.edu.sa | More employee master data; no Kafaat leave print module |
+| sabry-test | 21 | 0 | installed | http://erp.kafaat.edu.sa | Dev/test clone-like |
+| training | 1 | 0 | — | — | |
+
+`odoo.conf`: no `dbfilter`; `addons_path=/usr/lib/python3/dist-packages/odoo/addons,/opt/localaddons`.  
+Process listens `:8069`. Company name on TR_K19: **Kafaat**.  
+SA annual leave type on company: `hr.leave.type` id **1** `Paid Time Off` / `أيام الإجازة المدفوعة`.
+
+### 4.2 Leave stack modules (TR_K19)
+
+| Module | State | Version |
+|--------|-------|---------|
+| hr_holidays | installed | 19.0.1.6 |
+| hr_holidays_attendance | installed | 19.0.1.0 |
+| hr_holidays_gantt | installed | 19.0.1.0 |
+| documents_hr_holidays | installed | 19.0.1.0 |
+| hr_payroll_holidays | installed | (present) |
+| hr_work_entry_holidays (+ enterprise) | installed | |
+| kafaat_hr_templates | **installed** | 19.0.1.0.0 |
+| kafaat_hr_entitlement_settlement | installed | (settlement print; not leave request) |
+| hr_employee_enhance | installed | emp_no / no_employee |
+| l10n_sa_hr_payroll | installed | SA leave balance helpers on employee |
+
+### 4.3 Models
+
+| Model | Role |
+|-------|------|
+| `hr.leave` | Time Off requests (stored) |
+| `hr.leave.type` | Leave types (73 rows) |
+| `hr.leave.allocation` | Allocations (2 rows) |
+| `kafaat.hr.template.wizard` | Transient print wizard (leave form fields) |
+| `hr.employee` | Employee master (+ `emp_no`, `leave_manager_id`, SA leave balance **non-stored** fields) |
+
+**Custom/manual fields on `hr.leave`:** **0** (verified `ir_model_fields.state='manual'`).
+
+### 4.4 Leave types (selected)
+
+| id | EN | AR | validation | unpaid | allocation |
+|----|----|----|------------|--------|------------|
+| 1 | Paid Time Off | أيام الإجازة المدفوعة | **both** (manager + time-off officer) | f | required |
+| 2 | Sick Time Off | الإجازة المرضية | hr | f | no |
+| 4 | Unpaid | غير مدفوعة | both | t | no |
+| 27–30 | Marriage / Maternity / Hajj / Death | زواج / وضع / حج / وفاة | hr | f | no |
+| — | (many HK/ID/EU demo types) | — | mostly hr | — | clutter |
+
+**Validation types in use:** `hr` 53 · `no_validation` 16 · `manager` 2 · `both` 2.  
+**Responsible users (sample):** most types → `admin` via `hr_leave_type_res_users_rel`.
+
+**States on `hr.leave`:** `confirm` بانتظار الموافقة → `validate1` الموافقة الثانية → `validate` تمت الموافقة · `refuse` · `cancel`.
+
+### 4.5 Existing leave records (breakage risk)
+
+| Metric | Value |
+|--------|-------|
+| `hr_leave` count | **2** (both `validate`, type Paid Time Off, 1 day each) |
+| Approver columns populated | both null |
+| Risk of adding **nullable** new columns / wizard fields | **Low** |
+| Risk of making new fields **required** without default | Avoid on existing 2 rows / future imports |
+
+### 4.6 Custom HR addons path
+
+Live addons under `/opt/localaddons` (not only `/opt/new_kafaat/custom_addons`). Leave-related custom:
+
+| Addon | Leave relevance |
+|-------|-----------------|
+| `kafaat_hr_templates` | **Leave request PDF** (target of #339/#340) |
+| `kafaat_hr_entitlement_settlement` | End-of-service print; depends on templates |
+| `hr_employee_enhance` | Employee numbers used on form |
+| `hr_reward_warning` | Unrelated to leave form |
+
+---
+
+## 5. Field mapping + gaps
+
+### 5.1 WP #339 — HR employee affairs (form/print)
+
+**Verdict:** Missing **custom print/wizard section** (and likely wizard fields), **not** a missing core `hr_holidays` install.
+
+| Question | Answer |
+|----------|--------|
+| What does شؤون الموظفين mean here? | A **third approval/processing block on the paper/PDF form** after الإدارة — Employee Affairs / HR attestation (balance, HR stamp/signature, etc.). **Not** verified as a new `hr.department` or new approval *engine* stage until docx is read. Odoo already has HR/time-off validation via `leave_validation_type` (`hr` / `both`) + `first_approver_id` / `second_approver_id`. |
+| Exists today in QWeb? | **No** — form ends at الإدارة + footer notes |
+| Exists on `hr.leave`? | **No** dedicated Employee Affairs fields |
+| Docx field list | **UNVERIFIED** |
+
+**#339 gap count (honest):**
+
+| Metric | Count |
+|--------|-------|
+| Missing sections in live form | **1** (`شؤون الموظفين`) |
+| Exact # of new fields from docx | **UNVERIFIED (TBD)** — treat as blocker before implementation estimate lock |
+| Related missing field already implied by footer | **≥1** (`القائم بالأعمال…`) — candidate for same WP or #340 |
+
+### 5.2 Mapping table — verified form → Odoo
+
+| Form field (AR) | Odoo model | Technical field | Exists? | Required? | Gap |
+|-----------------|------------|-----------------|---------|-----------|-----|
+| الاسم | hr.employee | `name` | Yes | Yes (employee) | — |
+| الرقم الوظيفي | hr.employee | `emp_no` / `no_employee` | Yes | No | — |
+| المسمى الوظيفي | hr.employee | `job_id` / `job_title` (related, non-stored) | Yes | No | Often empty in TR_K19 |
+| تاريخ الطلب (اليوم) | kafaat.hr.template.wizard | `leave_req_request_date` | Wizard only | No | **No stored field on `hr.leave`** (import gap for #340) |
+| اعتيادية / بدون راتب / مرضي / أخرى | wizard + conceptually `hr.leave` | `leave_req_kind` vs `holiday_status_id` | Partial | Type required on leave | **Checkbox set ≠ leave type M2O** (#340) |
+| أخرى (specify) | wizard | `leave_req_kind_other` | Wizard only | No | **No `hr.leave` field** |
+| تاريخ بداية الإجازة | hr.leave | `request_date_from` | Yes | No* | *required in practice by business |
+| تاريخ نهاية الإجازة | hr.leave | `request_date_to` | Yes | No* | |
+| تاريخ مباشرة العمل بعد الإجازة | — | — | **No** | — | **Gap** (#339 print + #340 import) |
+| مدة الإجازة (باليوم) | hr.leave | `number_of_days` | Yes | computed/readonly store | OK for target |
+| أسباب طلب الإجازة | hr.leave | `notes` | Yes | No | OK |
+| مرفق إثبات | hr.leave | `supported_attachment_ids` | Yes | No | OK if support_document on type |
+| توقيع مقدم الطلب | — | — | **No** | — | Print-only |
+| موافقة الإدارة | hr.leave | `state` / approvers | Partial | — | Print checkboxes ≠ workflow fields |
+| سبب الإدارة | wizard | `leave_req_mgmt_reason` | Wizard only | No | **Gap for import** |
+| تاريخ الإدارة | wizard | `leave_req_mgmt_date` | Wizard only | No | **Gap for import** |
+| توقيع الإدارة | — | — | **No** | — | Print-only |
+| شؤون الموظفين (all) | — | — | **No** | — | **#339 gap (docx TBD)** |
+| القائم بالأعمال | — | — | **No** | — | Footer-only mention |
+| رصيد الإجازة السنوية (likely HR block) | hr.employee | `l10n_sa_remaining_annual_leave_balance` | Field exists (non-stored) | No | Usable for print autofill; **UNVERIFIED** if on docx |
+
+### 5.3 WP #340 — import / mapping failures
+
+**Verdict:** Separate from #339 UI section work. Mapping/import fails (or will fail) because the paper/print model ≠ `hr.leave` schema.
+
+| # | Mapping failure | Severity |
+|---|-----------------|----------|
+| 1 | Leave kind checkboxes (اعتيادية/…) must map to concrete `holiday_status_id` (recommend: annual→type 1, unpaid→4, sick→2, other→manual/other SA types) | High |
+| 2 | `leave_req_kind_other` has no target column | Medium |
+| 3 | Resume date has no `hr.leave` field | High |
+| 4 | Request date (form) ≠ `request_date_from` | Medium |
+| 5 | Management print fields not importable into approver workflow | Medium |
+| 6 | Signatures not data fields | Low (ignore for import) |
+| 7 | Employee Affairs block unknown until docx | Blocked |
+| 8 | No `base_import_import` history on TR_K19 for leave (0 rows) — failure mode not reproduced in DB logs | Info |
+| 9 | `kafaat_hr_templates` **uninstalled on K-19** — import/print path may target wrong DB | Process risk |
+
+**#340 mapping-failure count (verified from current form → `hr.leave`):** **6** hard gaps (rows 1–6 above); **+TBD** for docx HR-affairs columns once attached.
+
+---
+
+## 6. Root-cause answers
+
+1. **#339 vs #340?**  
+   - **#339** = missing **Employee Affairs section** on leave **print form** (+ wizard inputs).  
+   - **#340** = **mapping/import** of form fields into Odoo Time Off (`hr.leave` / types).  
+   They share the same form but are different deliverables.
+
+2. **Fields with NO Odoo counterpart today (verified):**  
+   Resume date; other-leave specify; management print reason/date; signatures; **entire شؤون الموظفين block**; acting employee (`القائم بالأعمال`).
+
+3. **Meaning of شؤون الموظفين:**  
+   Extra **form stage / HR attestation block** (print + data capture). May align with Odoo’s existing **HR validation** (`leave_validation_type` in `hr`/`both`) but is **not implemented** as a labeled section on the Kafaat PDF. Do **not** assume a new department until client confirms via docx.
+
+4. **Existing data risk:**  
+   Only **2** validated leaves on TR_K19 — safe to add nullable columns; avoid required SQL constraints without migrate.
+
+---
+
+## 7. Risks / blockers
+
+| Risk / blocker | Impact | Mitigation |
+|----------------|--------|------------|
+| OP token + docx unavailable on Kafaat | Cannot lock HR field labels/AC | Fetch from master; drop files in `/tmp/wp339-340-attachments/` |
+| Wrong DB (`TR_K19` vs `K-19`) | Templates missing on K-19; employees differ | Confirm prod DB with client; install/upgrade templates where needed |
+| 73 leave types / demo clutter | Wrong type mapped on import | Curate active SA-relevant types; hide others |
+| Print wizard ≠ Time Off record | Users print without creating `hr.leave` | Decide: print-only vs create/link leave |
+| Dual systems (wizard print vs hr_holidays approval) | Divergent status | Optionally drive print from `hr.leave` after mapping |
+| Making new fields required | Break imports / 2 existing rows | Nullable + UI required only when printing HR section |
+
+---
+
+## 8. Implementation plan (ordered)
+
+| Step | Action | WP | Effort |
+|------|--------|----|--------|
+| 1 | Confirm live DB + stage on `sabry-test` or TR_K19 clone; fetch/parse OP docx on master | both | S |
+| 2 | #339: Add wizard fields + QWeb section **شؤون الموظفين** with **exact** docx Arabic labels; include acting employee if in docx | #339 | **M** |
+| 3 | Optional: store key HR fields on `hr.leave` (or related) if needed beyond print — only if #340/import needs persistence | both | M |
+| 4 | UI: Arabic labels on wizard groups; print RTL layout consistent with existing template | #339 | S |
+| 5 | #340: Mapping matrix + import template (XLSX column headers = AR labels); transforms kind→`holiday_status_id`; compute days; attach support docs | #340 | **M** |
+| 6 | Align leave types (اعتيادية→Paid Time Off id1, etc.); set validation `both` where Manager+HR required | #340 | S |
+| 7 | UAT on TR_K19/sabry-test | both | S |
+| 8 | Sync OP (from master): `python3 /home/sabry/infra/openproject/scripts/kafaat-update-op-package.py -m "…"` | both | S |
+
+**Effort summary:** #339 **M** · #340 **M** (or **L** if full `hr.leave` UI + multi-level custom approval beyond standard `both`).
+
+---
+
+## 9. Acceptance criteria
+
+### WP #339
+
+- [ ] OP docx downloaded and every شؤون الموظفين label listed with Exists?/Gap  
+- [ ] Printed `نموذج طلب إجازة` shows **شؤون الموظفين** section with docx labels (exact AR)  
+- [ ] Wizard exposes inputs needed to fill that section (or autofill from employee leave balance where applicable)  
+- [ ] Management section unchanged functionally  
+- [ ] No production data wipe; module upgrade on agreed DB only  
+- [ ] Arabic RTL print smoke-tested for sample employee  
+
+### WP #340
+
+- [ ] Written mapping table: Form column → `hr.leave` / `hr.employee` field  
+- [ ] Import template (XLSX) accepted by Odoo import or custom importer without silent drops  
+- [ ] Leave kind checkboxes map to correct `holiday_status_id`  
+- [ ] Start/end/days/reason land on correct fields; resume date policy documented (custom field or computed)  
+- [ ] Failed-row report for unmapped “أخرى” / missing employee number  
+- [ ] UAT: ≥1 annual + ≥1 sick + ≥1 unpaid test import on non-prod  
+
+---
+
+## 10. Ready-to-paste OP comments
+
+### Comment for #339
+
+```markdown
+## Analysis (Kafaat / TR_K19) — leave form HR affairs
+
+**Scope split:** This WP = add **شؤون الموظفين** block to the leave **print form**. Mapping/import → #340.
+
+### Verified on server
+- Module `kafaat_hr_templates` **installed** on **TR_K19**; template `نموذج طلب إجازة` already prints:
+  - بيانات طالب الإجازة
+  - بيانات الإجازة + مدة الإجازة
+  - اعتماد وموافقة الإدارة
+- **Missing today:** any **شؤون الموظفين** section in QWeb/PDF.
+- Fields are on transient `kafaat.hr.template.wizard` — **0** custom fields on `hr.leave`.
+- `hr.leave` rows on TR_K19: **2** (low risk for nullable additions).
+- K-19 has 21 employees but **`kafaat_hr_templates` uninstalled** — confirm target DB before UAT.
+
+### Blocker
+OP attachment `نموذج طلب اجازة (اضافة شؤون الموظفين).docx` **not readable from Kafaat host** (API needs token on master). Need docx field list before freezing Arabic labels.
+
+### Proposed next
+1. Attach/parse docx field inventory for شؤون الموظفين  
+2. Extend wizard + `report_leave_request_form`  
+3. UAT print on sabry-test / TR_K19  
+
+Full write-up: `/tmp/op-wp339-340-kafaat-leave-form-task-analysis.md` on Kafaat.
+```
+
+### Comment for #340
+
+```markdown
+## Analysis (Kafaat / TR_K19) — leave form → Odoo mapping
+
+**Scope split:** This WP = **import / field mapping** into Time Off. Form section شؤون الموظفين → #339.
+
+### Verified gaps (current form → `hr.leave`)
+| Form concept | Target today | Gap |
+|---|---|---|
+| اعتيادية / بدون راتب / مرضي / أخرى | `holiday_status_id` | checkbox set ≠ leave type (map: e.g. type 1 / 4 / 2 + other) |
+| تاريخ مباشرة العمل بعد الإجازة | — | **no field** |
+| تاريخ الطلب | — | wizard-only |
+| أخرى (نص) | — | wizard-only |
+| سبب/تاريخ اعتماد الإدارة (طباعة) | `state` / approvers | not 1:1 for import |
+| Signatures | — | print-only |
+
+Also: **no** `base_import` leave history on TR_K19; leave types count **73** (needs curation). SA annual type on company = Paid Time Off (id 1). Approval engine already supports manager+HR via `leave_validation_type=both`.
+
+### Proposed next
+1. Publish XLSX template with AR headers + transform rules  
+2. Add missing stored fields only where import requires them (resume date / acting employee / HR block)  
+3. Dry-run import on sabry-test  
+
+Full write-up: `/tmp/op-wp339-340-kafaat-leave-form-task-analysis.md` on Kafaat.
+```
+
+---
+
+## Appendix A — Useful verified SQL
+
+```sql
+-- modules
+SELECT name, state FROM ir_module_module
+WHERE name ILIKE '%hr_holiday%' OR name = 'kafaat_hr_templates';
+
+-- leave counts
+SELECT count(*) FROM hr_leave;
+SELECT count(*) FROM hr_leave_type;
+
+-- no custom fields on hr.leave
+SELECT name FROM ir_model_fields WHERE model='hr.leave' AND state='manual';
+
+-- wizard leave fields
+SELECT name, ttype FROM ir_model_fields
+WHERE model='kafaat.hr.template.wizard' AND name LIKE 'leave_req%';
+```
+
+## Appendix B — Files touched by current implementation
+
+| Path | Role |
+|------|------|
+| `/opt/localaddons/kafaat_hr_templates/models/kafaat_hr_template_wizard.py` | Wizard fields / print routing |
+| `/opt/localaddons/kafaat_hr_templates/views/kafaat_hr_template_wizard_views.xml` | Wizard UI |
+| `/opt/localaddons/kafaat_hr_templates/report/kafaat_hr_templates_templates.xml` | QWeb `report_leave_request_form` |
+
+---
+
+*End of analysis. No production data modified. No OpenProject comments posted.*

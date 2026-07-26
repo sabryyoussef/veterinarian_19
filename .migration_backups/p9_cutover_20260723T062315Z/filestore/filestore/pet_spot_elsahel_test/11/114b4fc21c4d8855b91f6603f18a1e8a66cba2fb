@@ -1,0 +1,28 @@
+# Meeting S1 — Playwright evidence
+
+DB: `sabry-test` · Module: `edafaa_student_profile` `19.0.2.4.0`  
+Suite: `tests/playwright/meeting_s1/` · Proof trainee: id `213` (`id_number=35135399001`, `voucher_number=VCH-S1-PW-001`)
+
+Run:
+
+```bash
+cd /opt/new_kafaat/tests/playwright/meeting_s1
+npx playwright test --reporter=list
+```
+
+## Screenshots
+
+| File | Covers | What it shows |
+|------|--------|----------------|
+| `screenshots/s1_351_students_list_before_search.png` | OP#351 | Students list with رقم الهوية / رقم قسيمة الاختبار columns available |
+| `screenshots/s1_351_search_by_id_number.png` | OP#351 | Search by national ID `35135399001` finds proof trainee |
+| `screenshots/s1_353_student_form_voucher.png` | OP#353 | Student form shows `voucher_number` (رقم قسيمة الاختبار) + `id_number` |
+| `screenshots/s1_353_search_by_voucher.png` | OP#353 | Search by voucher `VCH-S1-PW-001` |
+| `screenshots/s1_356_admin_courses_list.png` | OP#356 | Admin Courses list (not menu-capped) |
+| `screenshots/s1_356_courses_count_context.png` | OP#356 | Same context; `search_count` asserted &gt; 2 |
+
+## Result
+
+Last run: **5 passed** (2026-07-15).
+
+**Note:** After Python model changes, restart Odoo so the registry picks up new fields (`voucher_number`); otherwise list/form views crash with `"op.student"."voucher_number" field is undefined`.

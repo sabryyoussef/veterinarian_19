@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- No groups: visible to any backend user (admin on this DB is not in base.group_user). -->
+    <!-- Nested under WhatsApp Hub — not a separate home-screen app tile. -->
     <menuitem id="menu_petspot_wa_intake_root"
               name="WA Intake"
+              parent="whatsapp_hub.menu_whatsapp_hub_root"
               action="action_petspot_wa_intake"
-              web_icon="petspot_wa_intake,static/description/icon.png"
               sequence="25"/>
+
+    <!-- Clear leftover home-tile icon from earlier installs. -->
+    <record id="menu_petspot_wa_intake_root" model="ir.ui.menu">
+        <field name="web_icon" eval="False"/>
+    </record>
 
     <menuitem id="menu_petspot_wa_intake_pets"
               name="WA Intake"
               parent="pet_management.menu_pet_root"
               action="action_petspot_wa_intake"
               sequence="90"/>
+
+    <!-- Prefer single entry under WhatsApp; hide duplicate under Pets. -->
+    <record id="menu_petspot_wa_intake_pets" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
 </odoo>

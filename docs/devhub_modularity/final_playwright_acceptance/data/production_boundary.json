@@ -1,0 +1,19 @@
+{
+  "prod_modules": [
+    {
+      "id": 1396,
+      "name": "devhub_core",
+      "state": "uninstalled"
+    },
+    {
+      "id": 1393,
+      "name": "dev_session_hub",
+      "state": "uninstalled"
+    },
+    {
+      "id": 1408,
+      "name": "devhub_work",
+      "state": "uninstalled"
+    }
+  ]
+}

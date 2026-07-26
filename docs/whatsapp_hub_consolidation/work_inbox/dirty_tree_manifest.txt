@@ -1,0 +1,240 @@
+ROOT=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+BRANCH=feature/petspot-vet-shop-phase6-pricing-expansion
+HEAD=f6e701ec754ea8168d4fa93051c5162a5ad940d1
+HEAD_SUBJECT=Phase 5: add petspot_vet_shop Vetution-style shop UX on Test.
+PARENT=b2645d12c996eb67a6bc6b79c5d998a8f40ae061
+
+=== PORCELAIN (232) ===
+ M dev_session_hub/__init__.py
+ M dev_session_hub/__manifest__.py
+ M dev_session_hub/data/dev_session_hub_seed.xml
+ M dev_session_hub/models/__init__.py
+ D dev_session_hub/models/dev_integration.py
+ D dev_session_hub/models/dev_registry.py
+ D dev_session_hub/models/dev_session.py
+ D dev_session_hub/models/dev_work.py
+ D dev_session_hub/security/dev_session_hub_security.xml
+ M dev_session_hub/security/ir.model.access.csv
+ M dev_session_hub/tests/__init__.py
+ D dev_session_hub/tests/test_dev_session_hub.py
+ D dev_session_hub/tests/test_dev_work_lifecycle.py
+ D dev_session_hub/views/dev_dashboard_views.xml
+ D dev_session_hub/views/dev_integration_views.xml
+ D dev_session_hub/views/dev_launch_wizard_views.xml
+ D dev_session_hub/views/dev_registry_views.xml
+ D dev_session_hub/views/dev_resume_brief_wizard_views.xml
+ M dev_session_hub/views/dev_session_hub_menus.xml
+ D dev_session_hub/views/dev_session_views.xml
+ D dev_session_hub/views/dev_work_views.xml
+ D dev_session_hub/wizards/__init__.py
+ D dev_session_hub/wizards/dev_launch_wizard.py
+ D dev_session_hub/wizards/dev_resume_brief_wizard.py
+ M devhub_approval/__manifest__.py
+ M devhub_approval/models/dev_work_plan_approval.py
+ M devhub_approval/views/dev_approval_views.xml
+ M devhub_whatsapp/__manifest__.py
+ M devhub_whatsapp/data/ir_config_parameter_ai.xml
+ M devhub_whatsapp/models/__init__.py
+ M devhub_whatsapp/models/dev_whatsapp_analysis.py
+ M devhub_whatsapp/models/dev_whatsapp_analysis_utils.py
+ M devhub_whatsapp/models/dev_whatsapp_inbox.py
+ M devhub_whatsapp/models/dev_whatsapp_source.py
+ M devhub_whatsapp/security/ir.model.access.csv
+ M devhub_whatsapp/static/src/work_inbox/work_inbox.css
+ M devhub_whatsapp/static/src/work_inbox/work_inbox.xml
+ M devhub_whatsapp/tests/__init__.py
+ M devhub_whatsapp/tests/test_whatsapp_resolution_policy.py
+ M devhub_whatsapp/tests/test_work_inbox.py
+ M devhub_whatsapp/views/dev_whatsapp_analysis_views.xml
+ M devhub_whatsapp/views/dev_whatsapp_menus.xml
+ M docs/whatsapp_hub_consolidation/ARCHITECTURE.md
+ M docs/whatsapp_hub_consolidation/work_inbox/DIFY_DEVHUB_WA_PROJECT_RESOLVER.md
+ M evolution_whatsapp_chat/__manifest__.py
+ M evolution_whatsapp_chat/data/whatsapp_templates.xml
+ M evolution_whatsapp_chat/models/discuss_channel.py
+ M evolution_whatsapp_chat/models/wa_campaign.py
+ M evolution_whatsapp_chat/models/wa_campaign_line.py
+ M evolution_whatsapp_chat/models/wa_message_log.py
+ M evolution_whatsapp_chat/models/wa_message_log_hub.py
+ M evolution_whatsapp_chat/static/description/icon.png
+ M evolution_whatsapp_chat/tests/__init__.py
+ M evolution_whatsapp_chat/views/wa_campaign_line_views.xml
+ M evolution_whatsapp_chat/views/wa_campaign_views.xml
+ M evolution_whatsapp_chat/views/whatsapp_menu.xml
+ M integration_bridge_core/__manifest__.py
+ M integration_bridge_core/controllers/bridge_unified.py
+ M integration_bridge_core/models/evolution_instance.py
+ M integration_bridge_core/views/integration_menu.xml
+ M openproject_sync/__manifest__.py
+ M openproject_sync/models/__init__.py
+ M openproject_sync/models/openproject_api.py
+ M openproject_sync/models/openproject_project_map.py
+ M openproject_sync/models/project_task.py
+ M openproject_sync/views/project_task_views.xml
+ M pet_management/static/src/css/petspot_test_ui.css
+ M petspot_wa_intake/__manifest__.py
+ M petspot_wa_intake/static/description/icon.png
+ M petspot_wa_intake/views/menus.xml
+ M tests/playwright/helpers/intake.ts
+ M website/.env.example
+ M website/assets/gallery/facebook/manifest.json
+ M website/assets/gallery/selection.json
+ M website/business_data.json
+ M website/deploy.py
+ M website/page_templates.py
+ M website/site_config.py
+ M whatsapp_hub/__manifest__.py
+ M whatsapp_hub/controllers/whatsapp_ingress.py
+ M whatsapp_hub/models/__init__.py
+ M whatsapp_hub/models/compat_bridge.py
+ M whatsapp_hub/models/whatsapp_conversation.py
+ M whatsapp_hub/models/whatsapp_instance.py
+ M whatsapp_hub/models/whatsapp_message.py
+ M whatsapp_hub/models/whatsapp_outbound.py
+ M whatsapp_hub/security/ir.model.access.csv
+ M whatsapp_hub/tests/__init__.py
+ M whatsapp_hub/views/whatsapp_conversation_views.xml
+ M whatsapp_hub/views/whatsapp_hub_menus.xml
+ M whatsapp_hub/views/whatsapp_instance_views.xml
+ M whatsapp_hub/views/whatsapp_message_views.xml
+ M whatsapp_hub/views/whatsapp_outbound_views.xml
+?? .filestore_func_matrix/
+?? .filestore_test_modular_mig/
+?? .migration_backups/
+?? custom_odoo_shopify_connector
+?? dev_session_hub/docs/
+?? dev_session_hub/migrations/19.0.8.2.0/
+?? dev_session_hub/scripts/
+?? dev_session_hub/security/dev_session_hub_rules.xml
+?? dev_session_hub/tests/common.py
+?? dev_session_hub/tests/test_dev_session_hub_install.py
+?? devhub_approval/static/
+?? devhub_code_analysis/
+?? devhub_core/
+?? devhub_deploy/
+?? devhub_execution/
+?? devhub_generation/
+?? devhub_git/
+?? devhub_github/
+?? devhub_infrastructure/
+?? devhub_odoo_runtime/
+?? devhub_openproject/
+?? devhub_outbox/
+?? devhub_plan/
+?? devhub_session/
+?? devhub_whatsapp/data/ir_cron_analysis_debounce.xml
+?? devhub_whatsapp/models/dev_whatsapp_analysis_eval.py
+?? devhub_whatsapp/models/dev_whatsapp_technical_extract.py
+?? devhub_whatsapp/models/dev_whatsapp_work_orchestration.py
+?? devhub_whatsapp/tests/test_whatsapp_analysis_debounce.py
+?? devhub_whatsapp/tests/test_whatsapp_analysis_v3_validation.py
+?? devhub_whatsapp/tests/test_whatsapp_eval_path_norm.py
+?? devhub_whatsapp/tests/test_whatsapp_prompt_v24_shadow.py
+?? devhub_whatsapp/tests/test_whatsapp_technical_extract.py
+?? devhub_whatsapp/tests/test_whatsapp_work_orchestration.py
+?? devhub_workflow/
+?? docs/devhub_modular_uat_20260723/
+?? docs/devhub_modularity/
+?? docs/seo_ai_visibility/
+?? docs/whatsapp_hub_consolidation/HUB_PLATFORM_EVOLUTION_PLAN.md
+?? docs/whatsapp_hub_consolidation/migration/p3_p8_rehearsal/clone_server.pid
+?? docs/whatsapp_hub_consolidation/migration/phase1_2/
+?? docs/whatsapp_hub_consolidation/migration/phase3/
+?? docs/whatsapp_hub_consolidation/migration/phase4/
+?? docs/whatsapp_hub_consolidation/migration/phase4_prod_shadow/
+?? docs/whatsapp_hub_consolidation/migration/phase5_campaign/
+?? docs/whatsapp_hub_consolidation/work_inbox/AI_PIPELINE_DELIVERY_REPORT.md
+?? docs/whatsapp_hub_consolidation/work_inbox/AI_PIPELINE_GATES_1_5_COMPLETION.md
+?? docs/whatsapp_hub_consolidation/work_inbox/AI_PIPELINE_OPS_PHASES_1_5_READINESS.md
+?? docs/whatsapp_hub_consolidation/work_inbox/AI_PIPELINE_PHASE0_AUDIT.md
+?? docs/whatsapp_hub_consolidation/work_inbox/AI_PIPELINE_PHASES_A_D_READINESS.md
+?? docs/whatsapp_hub_consolidation/work_inbox/MEDIA_DN_V24_SHADOW_DELIVERY.md
+?? docs/whatsapp_hub_consolidation/work_inbox/WA_CHAT_MESSAGE_UX_DELIVERY.md
+?? docs/whatsapp_hub_consolidation/work_inbox/baseline_analysis_383.csv
+?? docs/whatsapp_hub_consolidation/work_inbox/devhub-wa-project-resolver-v2.4.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/devhub-wa-project-resolver-v3.0.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/dify_v3_kafaat_result.json
+?? docs/whatsapp_hub_consolidation/work_inbox/dirty_tree_manifest.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/env_after.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/env_before.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/kafaat_gates_2_5_runner.py
+?? docs/whatsapp_hub_consolidation/work_inbox/kafaat_gates_2_5_uat.json
+?? docs/whatsapp_hub_consolidation/work_inbox/kafaat_retest_20260726.json
+?? docs/whatsapp_hub_consolidation/work_inbox/kafaat_retest_runner.py
+?? docs/whatsapp_hub_consolidation/work_inbox/media_phase0_probe.py
+?? docs/whatsapp_hub_consolidation/work_inbox/media_phase0_results/
+?? docs/whatsapp_hub_consolidation/work_inbox/media_phase1_pick_pilot.py
+?? docs/whatsapp_hub_consolidation/work_inbox/media_phase2_enqueue_pilot.py
+?? docs/whatsapp_hub_consolidation/work_inbox/obs24_sampler.sh
+?? docs/whatsapp_hub_consolidation/work_inbox/obs24_samples.ndjson
+?? docs/whatsapp_hub_consolidation/work_inbox/obs24_t0.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/pet_spot_elsahel_test_pre_work_inbox_20260724T145701Z.dump
+?? docs/whatsapp_hub_consolidation/work_inbox/phase_abd_uat_result.json
+?? docs/whatsapp_hub_consolidation/work_inbox/phase_abd_uat_runner.py
+?? docs/whatsapp_hub_consolidation/work_inbox/phase_b_continue_runner.py
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/QUALITY_FIX_ROUND2_REPORT.md
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/enqueued_v22.json
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/enqueued_v22_final.json
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/enqueued_v22_retries.json
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/results_raw_v22.json
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/results_raw_v22_final.json
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/results_scored_v22.json
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/results_scored_v22_final.json
+?? docs/whatsapp_hub_consolidation/work_inbox/quality_eval_dev_needed/v22_failure_diagnostics.json
+?? docs/whatsapp_hub_consolidation/work_inbox/shadow_v24_meta.json
+?? docs/whatsapp_hub_consolidation/work_inbox/shadow_v24_runs/
+?? docs/whatsapp_hub_consolidation/work_inbox/test_kafaat_rpc_analysis.py
+?? docs/whatsapp_hub_consolidation/work_inbox/uat_shell.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/uat_shell_stderr.txt
+?? docs/whatsapp_hub_consolidation/work_inbox/workflows_prompt_backup_20260725_v24_prechange/
+?? evolution_whatsapp_chat/static/description/icon.png.bak_large
+?? evolution_whatsapp_chat/tests/test_whatsapp_discuss_phase4.py
+?? evolution_whatsapp_chat/views/campaign_hub_ops_views.xml
+?? evolution_whatsapp_chat/views/discuss_channel_wa_views.xml
+?? evolution_whatsapp_chat/views/discuss_hub_ops_views.xml
+?? evolution_whatsapp_chat/views/whatsapp_ui_merge_menus.xml
+?? openproject_sync/models/ir_attachment.py
+?? petspot_wa_intake/static/description/icon.png.bak_large
+?? tests/playwright/dev_session_hub_header.spec.ts
+?? tests/playwright/phase5_human_pr.spec.ts
+?? tests/playwright/phase5_human_push.spec.ts
+?? tests/playwright/phase5_human_push_hardening.spec.ts
+?? tests/playwright/phase6_human_merge_stop_gate.spec.ts
+?? vetution_import/
+?? website/deploy_prod_petspot_location.py
+?? website/implement_prod_seo.py
+?? website/implement_test_seo.py
+?? website/schema_ld.py
+?? whatsapp_hub/data/ir_cron_campaign_hub_health.xml
+?? whatsapp_hub/data/ir_cron_discuss_hub_health.xml
+?? whatsapp_hub/data/ir_cron_ingestion_health.xml
+?? whatsapp_hub/data/whatsapp_hub_outbound_flags.xml
+?? whatsapp_hub/migrations/
+?? whatsapp_hub/models/transport_adapter.py
+?? whatsapp_hub/models/whatsapp_campaign_hub_health.py
+?? whatsapp_hub/models/whatsapp_campaign_hub_routing.py
+?? whatsapp_hub/models/whatsapp_campaign_shadow.py
+?? whatsapp_hub/models/whatsapp_discuss_hub_health.py
+?? whatsapp_hub/models/whatsapp_discuss_shadow.py
+?? whatsapp_hub/models/whatsapp_evolution_recovery.py
+?? whatsapp_hub/models/whatsapp_hub_dashboard.py
+?? whatsapp_hub/models/whatsapp_ingestion_health.py
+?? whatsapp_hub/static/
+?? whatsapp_hub/tests/test_whatsapp_campaign_hub_adapter.py
+?? whatsapp_hub/tests/test_whatsapp_campaign_hub_foundation.py
+?? whatsapp_hub/tests/test_whatsapp_campaign_p5e_foundation.py
+?? whatsapp_hub/tests/test_whatsapp_campaign_p5f_governance.py
+?? whatsapp_hub/tests/test_whatsapp_campaign_shadow.py
+?? whatsapp_hub/tests/test_whatsapp_chat_thread.py
+?? whatsapp_hub/tests/test_whatsapp_discuss_hub_health.py
+?? whatsapp_hub/tests/test_whatsapp_hub_mirror.py
+?? whatsapp_hub/tests/test_whatsapp_hub_unified_outbound.py
+?? whatsapp_hub/tests/test_whatsapp_ingestion_health.py
+?? whatsapp_hub/tests/test_whatsapp_media_kind.py
+?? whatsapp_hub/tests/test_whatsapp_outbound_quarantine.py
+?? whatsapp_hub/views/whatsapp_campaign_hub_health_views.xml
+?? whatsapp_hub/views/whatsapp_campaign_shadow_views.xml
+?? whatsapp_hub/views/whatsapp_discuss_hub_health_views.xml
+?? whatsapp_hub/views/whatsapp_discuss_shadow_views.xml
+?? whatsapp_hub/views/whatsapp_hub_dashboard_views.xml
+?? whatsapp_hub/views/whatsapp_ingestion_health_views.xml

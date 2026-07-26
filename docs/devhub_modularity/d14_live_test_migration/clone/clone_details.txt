@@ -1,0 +1,6 @@
+clone_db=pet_spot_elsahel_test_modular_mig
+port=8041
+config=/home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_modular_mig.conf
+filestore=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore_test_modular_mig
+backup=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/d14_20260723T080408Z/pet_spot_elsahel_test.dump
+addons_path=community,enterprise,pet_spot_elsahel (NO overlay)

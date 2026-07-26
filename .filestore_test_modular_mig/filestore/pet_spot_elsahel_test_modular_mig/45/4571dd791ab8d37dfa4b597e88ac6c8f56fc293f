@@ -1,0 +1,47 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 11258
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-15 12:00:35 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** medium
+**الثقة:** 0.88
+
+**الملخص:**
+OwlError occurs due to unknown field 'voucher_number' in the search architecture.
+
+**الإجراء المطلوب:**
+Investigate the model definition for 'voucher_number' and ensure it exists or is correctly referenced in the search view.
+
+## Original Message
+
+```
+UncaughtPromiseError > OwlError
+
+Uncaught Promise > An error occured in the owl lifecycle (see this Error's "cause" property)
+
+Occured on erp.kafaat.edu.sa on 2026-07-15 12:00:00 GMT
+
+OwlError: An error occured in the owl lifecycle (see this Error's "cause" property)
+    Error: An error occured in the owl lifecycle (see this Error's "cause" property)
+        at handleError (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:762:101)
+        at App.handleError (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:1420:29)
+        at ComponentNode.initiateRender (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:854:19)
+
+Caused by: Error: Unknown field voucher_number
+    at SearchArchParser.visitField (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:6947:97)
+    at https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:6939:296
+    at visit (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:5042:51)
+    at visitChildren (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:5041:171)
+    at SearchArchParser.visitSearch (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:6969:33)
+    at https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:6939:90
+    at visit (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:5042:51)
+    at visitXML (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:5042:202)
+    at SearchArchParser.parse (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:6939:9)
+    at SearchModel.load (https://erp.kafaat.edu.sa/web/assets/91622b0/web.assets_web.min.js:7079:289)
+```

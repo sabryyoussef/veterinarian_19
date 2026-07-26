@@ -1,0 +1,8 @@
+Phase A (foundation): -i devhub_core
+Phase B (work): -i devhub_work
+Phase C (plan/approval/analysis): -i devhub_plan,devhub_approval,devhub_analysis
+Phase D (generation/workflow): -i devhub_generation,devhub_workflow
+Phase E (session/execution): -i devhub_session,devhub_execution
+Phase F (providers): -i devhub_outbox,devhub_odoo_runtime,devhub_infrastructure,devhub_git,devhub_github,devhub_deploy,devhub_code_analysis
+Phase G (boundaries): -i devhub_openproject,devhub_whatsapp
+Phase H (meta): -u dev_session_hub

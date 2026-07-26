@@ -1,0 +1,74 @@
+{
+  "schema_version": "2",
+  "message_understanding": {
+    "summary": "The audio message discusses an issue related to internet connectivity and data entry errors, but lacks clear actionable requests.",
+    "classification": "noise",
+    "language": "ar",
+    "technical_terms": [],
+    "missing_information": [],
+    "contains_multiple_tasks": false
+  },
+  "project_resolution": {
+    "project_id": null,
+    "project_name": null,
+    "confidence": 0.0,
+    "evidence": [],
+    "candidate_ids": [],
+    "requires_confirmation": true,
+    "resolution_status": "unresolved"
+  },
+  "project_relevance": {
+    "is_current_topic": false,
+    "evidence": [],
+    "confidence": 0.0
+  },
+  "actionability": {
+    "is_actionable": false,
+    "score": 0.0,
+    "signals": [],
+    "missing_requirements": []
+  },
+  "work_item_resolution": {
+    "decision": "none",
+    "work_item_id": null,
+    "work_item_title": null,
+    "confidence": 0.0,
+    "evidence": [],
+    "candidate_ids": [],
+    "requires_confirmation": true
+  },
+  "analysis": {
+    "business_request": "",
+    "current_state": "",
+    "existing_relevant_functionality": [],
+    "likely_affected_modules": [],
+    "likely_affected_models": [],
+    "likely_affected_views": [],
+    "database_considerations": [],
+    "integration_considerations": [],
+    "risks": [],
+    "recommended_approach": [],
+    "acceptance_criteria": [],
+    "questions_before_implementation": []
+  },
+  "evidence_used": [
+    {
+      "source_type": "message",
+      "reference": "media:644:transcript",
+      "summary": "The stored transcript indicates issues with internet connectivity and data entry errors.",
+      "evidence_status": "inferred"
+    }
+  ],
+  "confidence": 0.0,
+  "safe_to_create_work": false,
+  "safe_to_attach_to_existing_work": false,
+  "legacy_v1_bridge": {
+    "source_message_ids": [],
+    "noise_message_ids": [],
+    "work_message_ids": [],
+    "work_title": "",
+    "work_description": "",
+    "priority": "2",
+    "should_ignore": false
+  }
+}

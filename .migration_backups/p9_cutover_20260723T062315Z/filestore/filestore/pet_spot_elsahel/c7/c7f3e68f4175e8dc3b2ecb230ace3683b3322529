@@ -1,0 +1,88 @@
+RPC_ERROR
+
+Odoo Server Error
+
+Occured on drpaws.ai on model pet.appointment on 2026-07-08 19:54:48 GMT
+
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 914, in __get_field
+    field = model._fields[field_name]
+            ~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'company_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/http.py", line 2275, in _serve_db
+    return service_model.retrying(serve_func, env=self.env)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py", line 184, in retrying
+    result = func()
+             ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/http.py", line 2330, in _serve_ir_http
+    response = self.dispatcher.dispatch(rule.endpoint, args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/http.py", line 2545, in dispatch
+    result = self.request.registry['ir.http']._dispatch(endpoint)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_http.py", line 355, in _dispatch
+    result = endpoint(**request.params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/http.py", line 788, in route_wrapper
+    result = endpoint(self, *args, **params_ok)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/web/controllers/dataset.py", line 38, in call_button
+    action = call_kw(request.env[model], method, args, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/model.py", line 93, in call_kw
+    result = method(recs, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/pet_management/models/pet_appointment.py", line 846, in action_create_invoice
+    invoice_lines = rec._prepare_invoice_lines()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/pet_management/models/pet_appointment.py", line 866, in _prepare_invoice_lines
+    account_id = self._get_default_account_id()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/pet_management/models/pet_appointment.py", line 973, in _get_default_account_id
+    account = self.env['account.account'].search([
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 1378, in search
+    return self.search_fetch(domain, [], offset=offset, limit=limit, order=order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 1408, in search_fetch
+    query = self._search(domain, offset=offset, limit=limit, order=order or self._order)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 5361, in _search
+    domain = domain.optimize_full(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 445, in optimize_full
+    return self._optimize(model, OptimizationLevel.FULL)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 459, in _optimize
+    previous, domain = domain, domain._optimize_step(model, next_level)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 653, in _optimize_step
+    children = self._flatten(child._optimize(model, level) for child in self.children)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 608, in _flatten
+    for child in children:
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 653, in <genexpr>
+    children = self._flatten(child._optimize(model, level) for child in self.children)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 459, in _optimize
+    previous, domain = domain, domain._optimize_step(model, next_level)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 938, in _optimize_step
+    field, property_name = self.__get_field(model)
+                           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 916, in __get_field
+    self._raise("Invalid field %s.%s", model._name, field_name)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/domains.py", line 901, in _raise
+    raise error(message % (*args, self.field_expr, self.operator, self.value))
+ValueError: Invalid field account.account.company_id in condition ('company_id', '=', 1)
+
+The above server error caused the following client error:
+RPC_ERROR: Odoo Server Error
+    RPC_ERROR
+        at makeErrorFromResponse (https://drpaws.ai/web/assets/5963344/web.assets_web.min.js:3186:165)
+        at XMLHttpRequest.<anonymous> (https://drpaws.ai/web/assets/5963344/web.assets_web.min.js:3192:13)

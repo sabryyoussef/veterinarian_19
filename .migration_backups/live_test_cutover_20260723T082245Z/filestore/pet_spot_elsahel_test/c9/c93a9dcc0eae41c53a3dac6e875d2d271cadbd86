@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/308
+- Message ID: 9452
+- Customer: مهمات مفتوحة لاستكمال فرع الساحل petspot
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-12 19:14:56 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** high
+**الثقة:** 0.75
+
+**الملخص:**
+Customer account is facing repeated bans and is currently inaccessible. Need to investigate the account status and possible automation issues.
+
+**الإجراء المطلوب:**
+Review account settings and automation configurations, check for compliance issues, and resolve the ban status.
+
+**نص مرفق مستخرج:**
+هو الاكاونت تقريباً هم جم يحولوه من عادي البزنس أو مش عارف بقى الأوتوميشن أو الحاجات دي أخد بان فعملناه رح رجع تاني بعد كده أخد بان تاني ودلوقتي بقى مش راضي يفتح فأنا دلوقتي مش عارف أعمل إيه
+
+## Original Message
+
+```
+Voice message: ACFCE8B5E4C87A9D256BACD52011CD60.oga
+```

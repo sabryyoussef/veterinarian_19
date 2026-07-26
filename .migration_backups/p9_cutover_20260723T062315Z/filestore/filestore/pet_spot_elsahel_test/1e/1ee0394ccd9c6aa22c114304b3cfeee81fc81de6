@@ -1,0 +1,37 @@
+# فهرس لقطات Playwright — مشروع Gulf Phase 1
+
+**الموديول:** `gpc_gulf_project_ext`  
+**قاعدة البيانات:** `trgulf_Mrp`  
+**المشروع:** GPC Playwright Phase1 UAT  
+**عرض السعر:** S00030  
+
+---
+
+| الملف | ماذا فعلنا | ماذا يثبت | WP |
+|-------|-----------|-----------|-----|
+| **01-login-page.png** | فتح صفحة تسجيل الدخول | البيئة متاحة | — |
+| **02-after-login.png** | تسجيل الدخول بنجاح | المستخدم يصل للنظام | — |
+| **03-project-form.png** | فتح نموذج المشروع UAT | المشروع يفتح بعد التثبيت | #136 #137 |
+| **04-project-expected-budget-contract-amount.png** | تبويب Expected Budget — حقل **مبلغ التعاقد** = **591,706.80 SR** متزامن مع before VAT | WP #137 | #137 |
+| **05-project-description-tab.png** | تبويب Description — نص منسّق (فقرات + قائمة) | مصدر الوصف للـ Dashboard | #136 |
+| **06-project-dashboard.png** | الضغط على Dashboard من المشروع | الوصول لشاشة Dashboard | #136 #137 |
+| **07-project-dashboard-details-panel.png** | *(اختياري)* لوحة Project Details — الوصف + مبلغ التعاقد | WP #136 + #137 على Dashboard | #136 #137 |
+| **08-quotation-form-dimensions.png** | عرض سعر S00030 — Length 180 × Width 305 → Area 5.49 × Qty 24 × Price 490 = **64,562.40** | WP #138 — حقول المقاسات + الحساب | #138 |
+| **09-quotation-order-lines.png** | تكبير جدول بنود Order Lines | إجمالي السطر واضح | #138 |
+| **10-quotation-print-dialog.png** | زر Print — نافذة اختيار التقرير | تقرير PDF جاهز للطباعة | #138 |
+| **11-final-quotation.png** | لقطة نهائية للعرض — Untaxed 64,562.40 + VAT | الحالة النهائية للعرض | #138 |
+
+---
+
+## سيناريو العميل (مُتحقّق في 08–11)
+
+```
+Length = 180 CM
+Width  = 305 CM
+Area   = 5.49 M²
+Qty    = 24
+Price  = 490
+Total  = 64,562.40 SR  ✓
+```
+
+English index: [README.md](README.md)

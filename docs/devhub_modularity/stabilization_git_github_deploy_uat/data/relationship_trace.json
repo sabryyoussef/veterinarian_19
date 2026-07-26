@@ -1,0 +1,210 @@
+{
+  "work_item": {
+    "id": 3320,
+    "name": "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z: harmless Test-only documentation artifact for Git/GitHub/Deploy UAT",
+    "uuid": "40c16d4a-a6c4-4969-b2c3-b96326348ae8",
+    "current_phase": "completed",
+    "approved_plan_id": [
+      2475,
+      "dev.work.plan,2475"
+    ]
+  },
+  "analysis": [
+    {
+      "id": 2691,
+      "status": "accepted",
+      "content_hash": "a55e9f0544c812b91a901027f06cc32b99900948082f6de1acac0866888fe8ae",
+      "revision": 1
+    }
+  ],
+  "plan": {
+    "id": 2475,
+    "status": "approved",
+    "content_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219",
+    "revision": 1
+  },
+  "steps": [
+    {
+      "id": 3013,
+      "step_key": "write_uat_doc",
+      "status": "done",
+      "sequence": 10
+    },
+    {
+      "id": 3014,
+      "step_key": "git_commit",
+      "status": "done",
+      "sequence": 20
+    },
+    {
+      "id": 3015,
+      "step_key": "git_push",
+      "status": "done",
+      "sequence": 30
+    },
+    {
+      "id": 3016,
+      "step_key": "draft_pr",
+      "status": "done",
+      "sequence": 40
+    },
+    {
+      "id": 3017,
+      "step_key": "deploy_ready",
+      "status": "done",
+      "sequence": 50
+    }
+  ],
+  "approval": {
+    "id": 2273,
+    "decision": "approved",
+    "plan_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219",
+    "exact_plan_hash": "ecc773ad6a86de8f52973f58bb53e007c6a4f4f3fded839ac98c86e16e04f219",
+    "plan_revision": 1,
+    "approver_id": [
+      2,
+      "Administrator"
+    ],
+    "decided_at": "2026-07-23 11:50:07"
+  },
+  "workspace": {
+    "id": 1847,
+    "name": "DW-3320",
+    "state": "pushed_reviewed",
+    "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3320",
+    "base_branch": "staging",
+    "base_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "current_head": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "committed_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "committed_parent_sha": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "commit_record_id": [
+      1101,
+      "dev.git.commit.record,1101"
+    ],
+    "push_record_id": [
+      656,
+      "dev.git.push.record,656"
+    ],
+    "last_checkpoint_id": [
+      2141,
+      "dev.work.checkpoint,2141"
+    ],
+    "approval_id": [
+      2273,
+      "dev.work.approval,2273"
+    ],
+    "plan_id": [
+      2475,
+      "dev.work.plan,2475"
+    ],
+    "dirty_summary": "changed=0",
+    "changed_files_summary": "",
+    "worker_identity": "devworker"
+  },
+  "checkpoint": {
+    "id": 2141,
+    "trigger": "agent_handoff",
+    "git_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "files_touched_summary": "docs/devhub_modularity/uat/DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z.md",
+    "lifecycle_phase": "testing"
+  },
+  "sessions": [
+    {
+      "id": 948,
+      "name": "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z isolated session",
+      "state": "draft",
+      "session_type": "isolated_execution_workspace",
+      "working_directory": "/srv/devhub/worktrees/petspot/DW-3320",
+      "execution_workspace_id": [
+        1847,
+        "DW-3320"
+      ]
+    }
+  ],
+  "completion_reports": [
+    {
+      "id": 1709,
+      "status": "approved",
+      "uat_status": "passed",
+      "deployment_status": "not_deployed"
+    }
+  ],
+  "commit_record": {
+    "id": 1101,
+    "work_item_id": [
+      3320,
+      "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z: harmless Test-only documentation artifact for Git/GitHub/Deploy UAT"
+    ],
+    "workspace_id": [
+      1847,
+      "DW-3320"
+    ],
+    "approval_id": [
+      1404,
+      "dev.git.commit.approval,1404"
+    ],
+    "branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "parent_sha": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "commit_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "committed_files_summary": "docs/devhub_modularity/uat/DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z.md",
+    "approver_id": [
+      2,
+      "Administrator"
+    ],
+    "committed_at": "2026-07-23 11:55:42",
+    "commit_message_hash": "74598bb233abc86c811a98f3deca172c7d52b9f55f6d49669a09dcdd2a2693c0",
+    "test_evidence_references": "run=1; passed=1; failed=0; skipped=0; commands=stabilization-uat-doc-only",
+    "create_uid": [
+      2,
+      "Administrator"
+    ],
+    "write_uid": [
+      1,
+      "OdooBot"
+    ]
+  },
+  "push_record": {
+    "id": 656,
+    "work_item_id": [
+      3320,
+      "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z: harmless Test-only documentation artifact for Git/GitHub/Deploy UAT"
+    ],
+    "workspace_id": [
+      1847,
+      "DW-3320"
+    ],
+    "approval_id": [
+      889,
+      "dev.git.push.approval,889"
+    ],
+    "remote_id": [
+      2129,
+      "origin"
+    ],
+    "local_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "remote_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only",
+    "commit_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "remote_head_before": false,
+    "remote_head_after": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "approver_id": [
+      2,
+      "Administrator"
+    ],
+    "result": "success",
+    "verification_result": "exact branch updated; other heads/tags unchanged",
+    "reconciliation_state": "pushed",
+    "expected_remote_head": "baafb83d2520f57b09b57cc69a1e47f7e0551f74",
+    "reconciliation_result": "Push succeeded and exact expected remote state was verified.",
+    "create_uid": [
+      2,
+      "Administrator"
+    ],
+    "write_uid": [
+      1,
+      "OdooBot"
+    ]
+  },
+  "github_pr": null
+}

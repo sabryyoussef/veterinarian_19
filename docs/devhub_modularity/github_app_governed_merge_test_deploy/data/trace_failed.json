@@ -1,0 +1,103 @@
+{
+  "marker": "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z",
+  "errors": [],
+  "non_blockers": [],
+  "screenshots": [
+    {
+      "file": "01_work.png",
+      "proves": "Work Item created",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3324"
+    },
+    {
+      "file": "02_analysis.png",
+      "proves": "Analysis",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.analysis/2695"
+    },
+    {
+      "file": "03_plan.png",
+      "proves": "Plan",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.plan/2478"
+    },
+    {
+      "file": "04_approval.png",
+      "proves": "Exact-hash approval",
+      "url": "http://127.0.0.1:8028/odoo/action-1377/3324"
+    },
+    {
+      "file": "05_session_started.png",
+      "proves": "Session started while workspace Ready",
+      "url": "http://127.0.0.1:8028/odoo/dev.session/950"
+    },
+    {
+      "file": "06_workspace.png",
+      "proves": "Workspace after session pause (paused for worker)",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    },
+    {
+      "file": "07_execution.png",
+      "proves": "After worker implement",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    },
+    {
+      "file": "08_checkpoint.png",
+      "proves": "Checkpoint",
+      "url": "http://127.0.0.1:8028/odoo/dev.work.checkpoint/2143"
+    },
+    {
+      "file": "09_git_commit.png",
+      "proves": "Commit 22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+      "url": "http://127.0.0.1:8028/odoo/dev.execution.workspace/1849"
+    }
+  ],
+  "work_item_id": 3324,
+  "analysis_id": 2695,
+  "plan_id": 2478,
+  "approval": {
+    "id": 2276,
+    "plan_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01",
+    "exact_plan_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01"
+  },
+  "workspace": {
+    "id": 1849,
+    "state": "ready",
+    "execution_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3324",
+    "base_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8"
+  },
+  "session_started": {
+    "ok": true,
+    "session_id": 950,
+    "session_state": "started",
+    "workspace_state": "active"
+  },
+  "implement": {
+    "changed_file": "docs/devhub_modularity/uat/DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z.md",
+    "checkpoint_id": 2143,
+    "current_head": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+    "dirty_summary": "changed=1",
+    "effective_uid": 1100,
+    "effective_user": "devworker",
+    "execution_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+    "ok": true,
+    "stage": "implement",
+    "state": "review_required",
+    "workspace_id": 1849,
+    "worktree_path": "/srv/devhub/worktrees/petspot/DW-3324"
+  },
+  "git": {
+    "sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+    "branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+    "push": {
+      "committed_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+      "current_head": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+      "effective_uid": 1100,
+      "effective_user": "devworker",
+      "execution_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+      "ok": true,
+      "push_record_id": 657,
+      "stage": "push_execute",
+      "state": "pushed_reviewed",
+      "workspace_id": 1849
+    }
+  }
+}

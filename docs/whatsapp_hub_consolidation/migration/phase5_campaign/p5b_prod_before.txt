@@ -1,0 +1,10 @@
+=== Prod BEFORE P5B ===
+ch5=hub
+ch10=hub
+discuss_allow=10,5
+purposes=discuss
+camp_cutover=False
+camp_allow=
+hub=19.0.1.6.0
+chat=19.0.1.15.0
+camp_purpose_jobs=0

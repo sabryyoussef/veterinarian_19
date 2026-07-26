@@ -1,0 +1,4 @@
+user sabry3
+hostname 100.110.211.53
+stricthostkeychecking accept-new
+hostkeyalias sabry3-precision-5540-ts

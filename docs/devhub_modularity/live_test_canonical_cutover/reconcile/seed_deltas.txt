@@ -1,0 +1,11 @@
+env_max_id|292|count|14
+policy_max_id|83|count|10
+runtime_max_id|2|count|2
+292|Dev Hub Modular Fresh
+291|WorldPosta Workspace
+284|Kafaat Test
+83|Modular Fresh MVP
+82|WorldPosta Workspace MVP
+76|KAFAAT Test MVP
+2|Master Odoo 19 Runtime
+1|Odoo 19 Shared Stack

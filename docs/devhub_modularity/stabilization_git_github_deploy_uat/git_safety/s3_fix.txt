@@ -1,0 +1,27 @@
+S3 — Git Safety Fix (correct, minimal)
+
+Applied (Live Test DB pet_spot_elsahel_test only):
+
+1. OS user `devworker` uid=1100, home=/srv/devhub/home/devworker (not under /home/sabry)
+2. Bare mirror `/srv/devhub/repos/petspot.git` + worktree root `/srv/devhub/worktrees`
+3. Repository id=1 fields:
+   - execution_classification=safe_for_isolated_worktree
+   - agent_execution_allowed=True
+   - worker_identity=devworker
+   - worker_git_common_dir=/srv/devhub/repos/petspot.git
+   - worker_worktree_root=/srv/devhub/worktrees
+   - default_branch=staging
+   - head_cache=<staging tip>
+   - git_remote=git@github.com:sabryyoussef/veterinarian_19.git
+4. Registered non-production push remote `origin` (dev.git.remote id=2129)
+5. Worker SSH profile under /srv/devhub/credentials/github/push_ssh_config
+
+NOT done (unacceptable):
+- Disabled Git safety checks
+- Forced execution on protected branch
+- Marked every path globally safe
+- Deleted unrelated dirty work
+
+Physical Git confirm/commit/push still requires process euid==devworker
+(CORRECT SAFETY BLOCK preserved).
+6. Remapped working_directory to clean snapshot /srv/devhub/main-snapshots/petspot (does not discard user dirty work)

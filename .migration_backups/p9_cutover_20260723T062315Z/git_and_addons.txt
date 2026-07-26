@@ -1,0 +1,2 @@
+git_sha=4ce0387d45c13eae347e459d1683ee3886da57f4
+addons_path=addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel

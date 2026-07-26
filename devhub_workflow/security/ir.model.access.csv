@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_workflow_board_user,dev.workflow.board user,model_dev_workflow_board,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_workflow_board_manager,dev.workflow.board manager,model_dev_workflow_board,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_workflow_capability_user,dev.workflow.capability user,model_dev_workflow_capability,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_workflow_capability_manager,dev.workflow.capability manager,model_dev_workflow_capability,devhub_core.group_dev_hub_manager,1,1,1,0

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_session_user,dev.session user,model_dev_session,devhub_core.group_dev_hub_user,1,1,1,0
+access_dev_session_manager,dev.session manager,model_dev_session,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_session_event_user,dev.session.event user,model_dev_session_event,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_session_event_manager,dev.session.event manager,model_dev_session_event,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_launch_wizard_user,dev.launch.wizard user,model_dev_launch_wizard,devhub_core.group_dev_hub_user,1,1,1,1
+access_dev_launch_wizard_manager,dev.launch.wizard manager,model_dev_launch_wizard,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_resume_brief_wizard_user,dev.resume.brief.wizard user,model_dev_resume_brief_wizard,devhub_core.group_dev_hub_user,1,1,1,1
+access_dev_resume_brief_wizard_manager,dev.resume.brief.wizard manager,model_dev_resume_brief_wizard,devhub_core.group_dev_hub_manager,1,1,1,1

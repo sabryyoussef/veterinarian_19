@@ -1,0 +1,7 @@
+-rw-rw-r-- 1 sabry sabry 679 Jul 13 08:08 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf
+-rw-rw-r-- 1 sabry sabry 747 Jul 20 06:35 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_879acffe.conf
+-rw-rw-r-- 1 sabry sabry 746 Jul 20 07:21 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_ff53a8d.conf
+-rw-rw-r-- 1 sabry sabry 746 Jul 21 14:53 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_activation_staging.conf
+-rw-rw-r-- 1 sabry sabry 748 Jul 21 19:16 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_hardening.conf
+-rw-rw-r-- 1 sabry sabry 762 Jul 20 07:07 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_hotfix_land.conf
+-rw-rw-r-- 1 sabry sabry 750 Jul 20 07:05 /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test_land_gate_c_hotfix.conf

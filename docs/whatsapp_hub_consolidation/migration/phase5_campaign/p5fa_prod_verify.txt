@@ -1,0 +1,121 @@
+{
+  "versions": {
+    "evolution_whatsapp_chat": "19.0.1.19.0",
+    "whatsapp_hub": "19.0.1.10.0"
+  },
+  "cfg": {
+    "campaign_cutover": "False",
+    "campaign_allowlist": "",
+    "purposes": "discuss",
+    "discuss_cutover": "True",
+    "discuss_allowlist": "10,5",
+    "batch": "5",
+    "max_pending": false
+  },
+  "inst_campaign_cutover_any_true": false,
+  "campaigns_10_19": {
+    "19": {
+      "name": "P5E Campaign Hub Soak B (PROD)",
+      "mode": "shadow",
+      "state": "completed",
+      "send_mode": "immediate",
+      "lines": 8,
+      "attachments": 0
+    },
+    "18": {
+      "name": "P5E Campaign Hub Soak A (PROD)",
+      "mode": "shadow",
+      "state": "completed",
+      "send_mode": "immediate",
+      "lines": 7,
+      "attachments": 0
+    },
+    "17": {
+      "name": "P5D Controlled Campaign Hub Pilot (PROD)",
+      "mode": "shadow",
+      "state": "completed",
+      "send_mode": "immediate",
+      "lines": 3,
+      "attachments": 0
+    },
+    "16": {
+      "name": "P5C Controlled Campaign Shadow (PROD)",
+      "mode": "shadow",
+      "state": "completed",
+      "send_mode": "immediate",
+      "lines": 10,
+      "attachments": 0
+    },
+    "15": {
+      "name": "[TEST DRAFT] Ready Partners - Afghanistan",
+      "mode": "legacy",
+      "state": "draft",
+      "send_mode": "queue",
+      "lines": 4,
+      "attachments": 1
+    },
+    "14": {
+      "name": "PetSpot WA 2026-06-20 Thursday \u2014 PetSpot \u2014 Follow-up Check-in",
+      "mode": "legacy",
+      "state": "scheduled",
+      "send_mode": "queue",
+      "lines": 125,
+      "attachments": 0
+    },
+    "13": {
+      "name": "PetSpot WA 2026-06-20 Wednesday \u2014 PetSpot \u2014 Location & Directi",
+      "mode": "legacy",
+      "state": "scheduled",
+      "send_mode": "queue",
+      "lines": 125,
+      "attachments": 0
+    },
+    "12": {
+      "name": "PetSpot WA 2026-06-20 Tuesday \u2014 PetSpot \u2014 Grooming \u2702\ufe0f",
+      "mode": "legacy",
+      "state": "scheduled",
+      "send_mode": "queue",
+      "lines": 125,
+      "attachments": 0
+    },
+    "11": {
+      "name": "PetSpot WA 2026-06-20 Monday \u2014 PetSpot \u2014 Book Appointment \ud83d\udcc5",
+      "mode": "legacy",
+      "state": "scheduled",
+      "send_mode": "queue",
+      "lines": 125,
+      "attachments": 0
+    },
+    "10": {
+      "name": "PetSpot WA 2026-06-20 Sunday \u2014 PetSpot \u2014 Services Overview ",
+      "mode": "legacy",
+      "state": "scheduled",
+      "send_mode": "queue",
+      "lines": 125,
+      "attachments": 0
+    }
+  },
+  "mode_counts": {
+    "legacy": 14,
+    "shadow": 4,
+    "hub": 0,
+    "total": 18
+  },
+  "active_hub_campaigns": 0,
+  "pending_campaign_hub_jobs": 0,
+  "discuss": {
+    "5": "hub",
+    "10": "hub"
+  },
+  "campaign_health": {
+    "status": "healthy",
+    "critical": 0,
+    "warning": 0,
+    "issues": []
+  },
+  "discuss_health": {
+    "status": "healthy",
+    "critical": 0,
+    "warning": 0
+  }
+}

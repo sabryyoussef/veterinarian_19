@@ -1,0 +1,2 @@
+http_ready_attempt=1
+login_http=200

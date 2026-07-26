@@ -30,6 +30,11 @@
                 <button name="action_retry" string="Retry"
                         type="object" icon="fa-refresh"
                         invisible="status != 'failed'"/>
+                <button name="action_admin_rerender_for_hub" string="Re-render"
+                        type="object" icon="fa-pencil"
+                        groups="base.group_system"
+                        invisible="hub_message_id or hub_outbound_id"
+                        confirm="Re-freeze this line from campaign.message? Only allowed before Hub admission."/>
                 <button name="action_open_contact" string="Open"
                         type="object" icon="fa-external-link"/>
             </list>
@@ -46,6 +51,11 @@
                     <button name="action_retry" string="Retry"
                             type="object" class="btn-primary"
                             invisible="status != 'failed'"/>
+                    <button name="action_admin_rerender_for_hub" string="Re-render for Hub"
+                            type="object" class="btn-secondary"
+                            groups="base.group_system"
+                            invisible="hub_message_id or hub_outbound_id"
+                            confirm="Re-freeze from campaign.message? Only before Hub admission."/>
                     <button name="action_mark_sent" string="Mark as Sent"
                             type="object" class="btn-secondary"
                             invisible="status != 'pending'"/>
@@ -65,6 +75,12 @@
                     </group>
                     <group string="Message">
                         <field name="message" nolabel="1" widget="text"/>
+                        <field name="rendered_body" readonly="1"/>
+                        <field name="rendered_body_hash" readonly="1"/>
+                        <field name="rendered_at" readonly="1"/>
+                        <field name="rendered_locked" readonly="1"/>
+                        <field name="hub_message_id" readonly="1"/>
+                        <field name="hub_outbound_id" readonly="1"/>
                     </group>
                     <group>
                         <group string="Status Details">

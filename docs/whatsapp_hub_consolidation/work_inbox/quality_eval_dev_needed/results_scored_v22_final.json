@@ -1,0 +1,1415 @@
+{
+  "run": "v2.2_project_relevance_gate",
+  "module_version": "19.0.9.2.26",
+  "prompt_version": "wa_project_aware_v2.2",
+  "scoring_note": "Final metrics after Odoo policy replay on stored Dify raw outputs from analyses 155-183 (live path). Dify was not re-called for the last WI hierarchy tweak.",
+  "metrics": {
+    "project_detection_accuracy": [
+      28,
+      29,
+      0.9655
+    ],
+    "false_project_assignment_rate": [
+      0,
+      29,
+      0.0
+    ],
+    "wi_decision_accuracy": [
+      21,
+      29,
+      0.7241
+    ],
+    "existing_wi_selection_accuracy": [
+      2,
+      2,
+      1.0
+    ],
+    "normalized_classification_accuracy": [
+      10,
+      29,
+      0.3448
+    ],
+    "structured_json_validity": [
+      29,
+      29,
+      1.0
+    ],
+    "cross_project_leakage_rate": [
+      0,
+      29,
+      0.0
+    ],
+    "unsupported_claim_rate": [
+      0,
+      29,
+      0.0
+    ],
+    "ambiguous_project_precision": [
+      16,
+      16,
+      1.0
+    ],
+    "average_usefulness": 4.1034,
+    "pct_usefulness_4_or_5": [
+      22,
+      29,
+      0.7586
+    ],
+    "human_correction_rate": [
+      8,
+      29,
+      0.2759
+    ],
+    "average_execution_ms": 7908.21
+  },
+  "result_counts": {
+    "PASS": 21,
+    "PARTIAL": 7,
+    "FAIL": 1
+  },
+  "rows": [
+    {
+      "sample_id": "DN-01",
+      "analysis_id": 155,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52762",
+      "dify_run_id": "285188e9-5821-4c75-9bbf-1127da5fabb4",
+      "latency_ms": 10525,
+      "expected_project": "ASTA",
+      "ai_project": "ASTA",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "bug",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 4115)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "add",
+          "ايرور"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-02",
+      "analysis_id": 156,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52767",
+      "dify_run_id": "fa2fabb6-5465-4e63-93f9-f45e7aad696a",
+      "latency_ms": 7667,
+      "expected_project": "ASTA",
+      "ai_project": "ASTA",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 3818)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.6,
+        "signals": [
+          "اختبار"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-03",
+      "analysis_id": 157,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52772",
+      "dify_run_id": "44342153-c709-4ef4-8efd-a6d5a3f1dfd2",
+      "latency_ms": 9181,
+      "expected_project": "ASTA",
+      "ai_project": "ASTA",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 3551)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 1.0,
+        "signals": [
+          "error",
+          "ايرور",
+          "محتاج"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-04",
+      "analysis_id": 158,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52777",
+      "dify_run_id": "f45c4741-9c4d-433b-8791-9beb30c7af1f",
+      "latency_ms": 6489,
+      "expected_project": "ASTA",
+      "ai_project": "ASTA",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.7
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.6,
+        "signals": [
+          "محتاج"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-05",
+      "analysis_id": 159,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52782",
+      "dify_run_id": "d7b99f28-0270-4536-ae6d-d1cce2fe2c1c",
+      "latency_ms": 6939,
+      "expected_project": "ASTA",
+      "ai_project": "ASTA",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "question",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 3082)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "fix",
+          "upgrade"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-06",
+      "analysis_id": 160,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52787",
+      "dify_run_id": "669bfd15-4206-4ea9-a55e-9ff69e6470f9",
+      "latency_ms": 7536,
+      "expected_project": "KAFAAT",
+      "ai_project": "KAFAAT",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "question",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.7
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.5,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-07",
+      "analysis_id": 161,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52792",
+      "dify_run_id": "f4141334-f252-47e1-98fa-26ac682c5a98",
+      "latency_ms": 9075,
+      "expected_project": "KAFAAT",
+      "ai_project": "unknown",
+      "project_ok": false,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "unclear",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "bug",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 3,
+      "result": "FAIL",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 3447)",
+          "alias in actionable statement (msg 3448)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 1.0,
+        "signals": [
+          "ايرور",
+          "محتاج",
+          "مشاكل",
+          "مشكلة"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-08",
+      "analysis_id": 162,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52797",
+      "dify_run_id": "122dfce1-c1a9-488f-b33d-2a35292681e8",
+      "latency_ms": 6865,
+      "expected_project": "KAFAAT",
+      "ai_project": "KAFAAT",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "noise",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.7
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-09",
+      "analysis_id": 163,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52802",
+      "dify_run_id": "ba409fd3-3af7-4771-8338-9948facbafb1",
+      "latency_ms": 7429,
+      "expected_project": "KAFAAT",
+      "ai_project": "KAFAAT",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 1994)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.6,
+        "signals": [
+          "عايز"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-10",
+      "analysis_id": 164,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52807",
+      "dify_run_id": "c1943d45-7c2b-425b-adfd-bd4bc521aec1",
+      "latency_ms": 7491,
+      "expected_project": "KAFAAT",
+      "ai_project": "KAFAAT",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.7
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "سجل",
+          "ممكن"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-11",
+      "analysis_id": 165,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52812",
+      "dify_run_id": "8e43124d-fd57-429e-a4a9-0c890eed1b97",
+      "latency_ms": 11409,
+      "expected_project": "CYCLEX",
+      "ai_project": "CYCLEX",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.6
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "need",
+          "برجاء"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-12",
+      "analysis_id": 166,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52817",
+      "dify_run_id": "50337604-a7cd-4309-9371-723bd3a55df5",
+      "latency_ms": 7932,
+      "expected_project": "CYCLEX",
+      "ai_project": "CYCLEX",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.7
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "اعمل",
+          "محتاج"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-13",
+      "analysis_id": 167,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52822",
+      "dify_run_id": "be4a119a-c8dc-4557-b697-f248ba4173e4",
+      "latency_ms": 8283,
+      "expected_project": "CYCLEX",
+      "ai_project": "CYCLEX",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "question",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 1145)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.6,
+        "signals": [
+          "update"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-14",
+      "analysis_id": 168,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52827",
+      "dify_run_id": "6c3a3b92-ce12-49ed-bbbc-129525024676",
+      "latency_ms": 6678,
+      "expected_project": "CYCLEX",
+      "ai_project": "CYCLEX",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "new",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "unclear",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.7
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-15",
+      "analysis_id": 169,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52832",
+      "dify_run_id": "145b9229-9b4c-45e5-9a42-839869988b83",
+      "latency_ms": 8740,
+      "expected_project": "PETSPOT",
+      "ai_project": "PETSPOT",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "existing",
+      "ai_wi_decision": "existing",
+      "expected_wi_id": 3332,
+      "ai_wi_id": 3332,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "bug",
+      "ai_class": "new_task",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          {
+            "type": "direct_source_message_link",
+            "value": "Message linked to WI 3332"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Message linked to WI 3331"
+          }
+        ],
+        "confidence": 0.95
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "مشاكل",
+          "ممكن"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-16",
+      "analysis_id": 170,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52837",
+      "dify_run_id": "4996c1d0-b181-4a5e-acf4-9bf6367bb8af",
+      "latency_ms": 8417,
+      "expected_project": "PETSPOT",
+      "ai_project": "PETSPOT",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "existing",
+      "ai_wi_decision": "existing",
+      "expected_wi_id": 3331,
+      "ai_wi_id": 3331,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "bug",
+      "ai_class": "existing_work_followup",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [],
+        "confidence": 0.95
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.6,
+        "signals": [
+          "ايرور"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-17",
+      "analysis_id": 171,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52842",
+      "dify_run_id": "5632e923-3792-4d6e-a08e-6f3a14cad681",
+      "latency_ms": 7852,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "none",
+      "ai_wi_decision": "none",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "noise",
+      "ai_class": "noise",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-18",
+      "analysis_id": 172,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52847",
+      "dify_run_id": "1a1fc71a-bd19-492a-9917-f24502007799",
+      "latency_ms": 8458,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "none",
+      "ai_wi_decision": "unclear",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "noise",
+      "ai_class": "new_task",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 3,
+      "result": "PARTIAL",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.2
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 1.0,
+        "signals": [
+          "add",
+          "install",
+          "اختبار"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-19",
+      "analysis_id": 173,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52852",
+      "dify_run_id": "be94c396-bfc1-40cc-8a0e-7695f817ca16",
+      "latency_ms": 7571,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "none",
+      "ai_wi_decision": "unclear",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "noise",
+      "ai_class": "unclear",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 3,
+      "result": "PARTIAL",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          {
+            "evidence_status": "confirmed",
+            "reference": "dev.project:1",
+            "summary": "Canonical project PetSpot (PETSPOT)"
+          }
+        ],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "upgrade",
+          "مشكلة"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-20",
+      "analysis_id": 174,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52857",
+      "dify_run_id": "0bfe373d-4942-433a-b95d-c597f37ee370",
+      "latency_ms": 10761,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "none",
+      "ai_wi_decision": "none",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "noise",
+      "ai_class": "noise",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-21",
+      "analysis_id": 175,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52862",
+      "dify_run_id": "24d1a42a-63e4-4f5b-9ea9-fcfa751eb953",
+      "latency_ms": 7909,
+      "expected_project": "ASTA",
+      "ai_project": "ASTA",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "proposed",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "new",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "question",
+      "ai_class": "bug",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PARTIAL",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 4091)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "bug",
+          "مش راضي"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-22",
+      "analysis_id": 176,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52867",
+      "dify_run_id": "7dfbe65a-73a6-4d62-bb07-b06c9a176ee3",
+      "latency_ms": 6865,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "unclear",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "question",
+      "ai_class": "noise",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-23",
+      "analysis_id": 177,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52872",
+      "dify_run_id": "1f295cdb-4815-47c3-9bc3-c81d0adf1ed1",
+      "latency_ms": 6309,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "none",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "question",
+      "ai_class": "noise",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 3,
+      "result": "PARTIAL",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-24",
+      "analysis_id": 178,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52877",
+      "dify_run_id": "06504a64-22d0-41b0-a934-24f3aa2e2974",
+      "latency_ms": 7525,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "none",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "question",
+      "ai_class": "noise",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 3,
+      "result": "PARTIAL",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-25",
+      "analysis_id": 179,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52882",
+      "dify_run_id": "1b05c6b6-cffc-4618-ba76-aafc09122a71",
+      "latency_ms": 7803,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "unclear",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "unclear",
+      "ai_class": "new_task",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 3324)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.6,
+        "signals": [
+          "install"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-26",
+      "analysis_id": 180,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52887",
+      "dify_run_id": "651bd65a-a238-481f-a75f-fcdb1d08857c",
+      "latency_ms": 7613,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "none",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "unclear",
+      "ai_class": "noise",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 3,
+      "result": "PARTIAL",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-27",
+      "analysis_id": 181,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52892",
+      "dify_run_id": "982f0115-ea7f-4da9-985d-057e5135941b",
+      "latency_ms": 6583,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "unclear",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "unclear",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 4,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "analy",
+          "ممكن"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-28",
+      "analysis_id": 182,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52897",
+      "dify_run_id": "f201d0aa-9d20-4df3-a377-4590d7469222",
+      "latency_ms": 7946,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "unclear",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": true,
+      "wi_id_ok": true,
+      "expected_class": "new_task",
+      "ai_class": "new_task",
+      "class_ok": true,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 5,
+      "result": "PASS",
+      "project_relevance": {
+        "is_current_topic": true,
+        "evidence": [
+          "alias in actionable statement (msg 3742)"
+        ],
+        "confidence": 0.8
+      },
+      "actionability": {
+        "is_actionable": true,
+        "score": 0.8,
+        "signals": [
+          "ايرور",
+          "ممكن"
+        ],
+        "missing_requirements": []
+      }
+    },
+    {
+      "sample_id": "DN-29",
+      "analysis_id": 183,
+      "state": "awaiting_review",
+      "provider": "dify_n8n",
+      "schema_version": "2",
+      "n8n_execution_id": "52902",
+      "dify_run_id": "fae8d9ff-863c-4e88-aa95-3187e742f8ed",
+      "latency_ms": 5487,
+      "expected_project": "unknown",
+      "ai_project": "unknown",
+      "project_ok": true,
+      "false_project": false,
+      "requires_project_confirmation": true,
+      "project_resolution_status": "unresolved",
+      "expected_wi_decision": "unclear",
+      "ai_wi_decision": "none",
+      "expected_wi_id": null,
+      "ai_wi_id": null,
+      "wi_ok": false,
+      "wi_id_ok": true,
+      "expected_class": "unclear",
+      "ai_class": "noise",
+      "class_ok": false,
+      "schema_ok": true,
+      "cross_project_leak": false,
+      "fabricated_project": false,
+      "usefulness": 3,
+      "result": "PARTIAL",
+      "project_relevance": {
+        "is_current_topic": false,
+        "evidence": [],
+        "confidence": 0.0
+      },
+      "actionability": {
+        "is_actionable": false,
+        "score": 0.0,
+        "signals": [],
+        "missing_requirements": []
+      }
+    }
+  ],
+  "safety": {
+    "source_mapping_state": "ambiguous",
+    "ai_triage_enabled": false,
+    "evaluation_applied_count": 0,
+    "evaluation_with_work_item": 0
+  },
+  "comparison_vs_v21": {
+    "project_resolution_accuracy": {
+      "v2.1": 93.1,
+      "v2.2": 96.5,
+      "delta": 3.4
+    },
+    "false_project_assignment": {
+      "v2.1": 6.9,
+      "v2.2": 0.0,
+      "delta": -6.9
+    },
+    "wi_decision_accuracy": {
+      "v2.1": 55.2,
+      "v2.2": 72.4,
+      "delta": 17.2
+    },
+    "existing_wi_selection": {
+      "v2.1": 100.0,
+      "v2.2": 100.0,
+      "delta": 0.0
+    },
+    "normalized_classification_accuracy": {
+      "v2.1": 31.0,
+      "v2.2": 34.5,
+      "delta": 3.5
+    },
+    "json_validity": {
+      "v2.1": 100.0,
+      "v2.2": 100.0,
+      "delta": 0.0
+    },
+    "cross_project_leakage": {
+      "v2.1": 0.0,
+      "v2.2": 0.0,
+      "delta": 0.0
+    },
+    "unsupported_claims": {
+      "v2.1": 0.0,
+      "v2.2": 0.0,
+      "delta": 0.0
+    },
+    "average_usefulness": {
+      "v2.1": 3.83,
+      "v2.2": 4.1,
+      "delta": 0.28
+    },
+    "usefulness_ge4": {
+      "v2.1": 62.1,
+      "v2.2": 75.9,
+      "delta": 13.8
+    },
+    "human_correction_rate": {
+      "v2.1": 44.8,
+      "v2.2": 27.6,
+      "delta": -17.2
+    }
+  }
+}

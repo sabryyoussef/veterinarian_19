@@ -1,0 +1,5 @@
+format=git status --porcelain=v1 -z --untracked-files=all
+raw_status_codes=??,??
+normalized_path_1=tests/__init__.py
+normalized_path_2=tests/test_fixture_readme_retry.py
+allowlist_result=pass

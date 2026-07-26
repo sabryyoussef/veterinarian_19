@@ -52,6 +52,13 @@
               sequence="9"
               groups="devhub_core.group_dev_hub_manager,group_dev_hub_wa_analysis_service"/>
 
+    <menuitem id="menu_devhub_whatsapp_ai_evals"
+              name="AI Evals"
+              parent="menu_devhub_whatsapp_root"
+              action="action_dev_whatsapp_analysis_eval"
+              sequence="9"
+              groups="devhub_core.group_dev_hub_manager"/>
+
     <menuitem id="menu_devhub_whatsapp_media"
               name="Media Assets"
               parent="menu_devhub_whatsapp_root"

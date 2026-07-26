@@ -1,0 +1,23 @@
+{
+  "analysis": [
+    {
+      "id": 2695,
+      "status": "accepted"
+    }
+  ],
+  "plan": [
+    {
+      "id": 2478,
+      "status": "approved",
+      "content_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01"
+    }
+  ],
+  "approval": [
+    {
+      "id": 2276,
+      "decision": "approved",
+      "plan_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01",
+      "exact_plan_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01"
+    }
+  ]
+}

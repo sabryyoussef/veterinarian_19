@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_execution_workspace_user,dev.execution.workspace user,model_dev_execution_workspace,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_execution_workspace_manager,dev.execution.workspace manager,model_dev_execution_workspace,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_execution_workspace_event_user,dev.execution.workspace.event user,model_dev_execution_workspace_event,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_execution_workspace_event_manager,dev.execution.workspace.event manager,model_dev_execution_workspace_event,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_work_checkpoint_user,dev.work.checkpoint user,model_dev_work_checkpoint,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_work_checkpoint_manager,dev.work.checkpoint manager,model_dev_work_checkpoint,devhub_core.group_dev_hub_manager,1,0,0,0

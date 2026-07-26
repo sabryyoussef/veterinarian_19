@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "OpenProject Sync",
-    "version": "19.0.1.5.1",
+    "version": "19.0.1.6.0",
     "category": "Project",
     "summary": "Phased OpenProject ↔ Odoo work package / task sync",
     "description": """

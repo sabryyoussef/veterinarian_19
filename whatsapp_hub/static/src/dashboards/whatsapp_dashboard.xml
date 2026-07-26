@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="whatsapp_hub.WhatsappDashboard">
+        <div class="o_wa_hub_dashboard o_wa_hub_dashboard_ops">
+            <header class="o_wa_dash_header">
+                <div class="o_wa_dash_brand">
+                    <button type="button" class="o_wa_back_link" t-on-click="openGeneral">
+                        ← General Dashboard
+                    </button>
+                    <h1 class="o_wa_dash_title" t-esc="state.data and state.data.title or 'WhatsApp Dashboard'"/>
+                    <p class="o_wa_dash_sub" t-esc="state.data and state.data.subtitle or ''"/>
+                </div>
+                <div class="o_wa_dash_toolbar">
+                    <button type="button" class="o_wa_btn o_wa_btn_ghost" t-on-click="load" t-att-disabled="state.loading">
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <div t-if="state.loading" class="o_wa_dash_loading">Loading WhatsApp ops…</div>
+            <div t-if="state.error" class="o_wa_dash_error" t-esc="state.error"/>
+
+            <t t-if="state.data and !state.loading">
+                <section class="o_wa_dash_section">
+                    <div class="o_wa_kpi_grid o_wa_kpi_grid_dense">
+                        <t t-foreach="state.data.kpis" t-as="kpi" t-key="kpi.key">
+                            <div class="o_wa_kpi" t-att-class="toneClass(kpi.tone)">
+                                <span class="o_wa_kpi_label" t-esc="kpi.label"/>
+                                <div class="o_wa_kpi_value" t-esc="kpi.value"/>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+
+                <section class="o_wa_dash_section">
+                    <div class="o_wa_section_head">
+                        <h2 class="o_wa_section_title">Outbound queue</h2>
+                    </div>
+                    <div class="o_wa_queue_row">
+                        <div class="o_wa_queue_chip">
+                            <span>Pending</span>
+                            <strong t-esc="state.data.queue.pending"/>
+                        </div>
+                        <div class="o_wa_queue_chip">
+                            <span>Processing</span>
+                            <strong t-esc="state.data.queue.processing"/>
+                        </div>
+                        <div class="o_wa_queue_chip o_wa_queue_chip_warn" t-att-class="{'is-hot': state.data.queue.failed}">
+                            <span>Failed</span>
+                            <strong t-esc="state.data.queue.failed"/>
+                        </div>
+                        <div class="o_wa_queue_chip">
+                            <span>Sent today</span>
+                            <strong t-esc="state.data.queue.sent_today"/>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="o_wa_dash_section">
+                    <div class="o_wa_section_head">
+                        <h2 class="o_wa_section_title">Manage</h2>
+                    </div>
+                    <div class="o_wa_action_grid">
+                        <t t-foreach="state.data.actions" t-as="act" t-key="act.action_xmlid">
+                            <button type="button"
+                                    class="o_wa_action_btn"
+                                    t-att-class="{'is-primary': act.primary}"
+                                    t-att-data-action-xmlid="act.action_xmlid"
+                                    t-on-click="onActionClick"
+                                    t-esc="act.label"/>
+                        </t>
+                    </div>
+                </section>
+
+                <section class="o_wa_dash_section">
+                    <div class="o_wa_section_head">
+                        <h2 class="o_wa_section_title">Recent Hub messages</h2>
+                    </div>
+                    <div t-if="!state.data.recent_messages.length" class="o_wa_dash_empty">No messages yet.</div>
+                    <div t-else="" class="o_wa_recent_list">
+                        <t t-foreach="state.data.recent_messages" t-as="msg" t-key="msg.id">
+                            <button type="button"
+                                    class="o_wa_recent_item"
+                                    t-att-data-id="msg.id"
+                                    t-on-click="openMessage">
+                                <span class="o_wa_recent_dir" t-esc="msg.direction === 'in' ? 'IN' : 'OUT'"/>
+                                <div class="o_wa_recent_main">
+                                    <span class="o_wa_recent_who" t-esc="msg.who"/>
+                                    <span class="o_wa_recent_body" t-esc="msg.body"/>
+                                </div>
+                                <span class="o_wa_recent_when" t-esc="msg.when"/>
+                            </button>
+                        </t>
+                    </div>
+                </section>
+            </t>
+        </div>
+    </t>
+</templates>

@@ -97,6 +97,8 @@
                                    invisible="send_mode != 'scheduled'"/>
                             <field name="delay_between"
                                    invisible="send_mode != 'immediate'"/>
+                            <field name="wa_outbound_mode" widget="radio"
+                                     groups="base.group_system"/>
                         </group>
                     </group>
 

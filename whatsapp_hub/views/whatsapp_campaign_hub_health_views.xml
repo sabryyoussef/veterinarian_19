@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_campaign_hub_health_form" model="ir.ui.view">
+        <field name="name">whatsapp.campaign.hub.health.form</field>
+        <field name="model">whatsapp.campaign.hub.health</field>
+        <field name="arch" type="xml">
+            <form string="Campaign Hub Health" create="0" delete="0">
+                <header>
+                    <button name="action_run_health_check" type="object"
+                            string="Run Health Check" class="btn-primary"
+                            groups="whatsapp_hub.group_whatsapp_manager"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="display_name"/>
+                        <field name="last_status"/>
+                        <field name="last_run_at"/>
+                        <field name="last_issue_count"/>
+                        <field name="last_critical_count"/>
+                        <field name="last_warning_count"/>
+                        <field name="last_issue_fingerprint"/>
+                    </group>
+                    <group string="Fairness snapshot">
+                        <field name="pending_campaign_jobs"/>
+                        <field name="pending_discuss_jobs"/>
+                        <field name="oldest_campaign_pending_minutes"/>
+                        <field name="oldest_discuss_pending_minutes"/>
+                    </group>
+                    <group string="Result JSON">
+                        <field name="last_result_json" widget="text" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_whatsapp_campaign_hub_health" model="ir.actions.act_window">
+        <field name="name">Campaign Hub Health</field>
+        <field name="res_model">whatsapp.campaign.hub.health</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+</odoo>

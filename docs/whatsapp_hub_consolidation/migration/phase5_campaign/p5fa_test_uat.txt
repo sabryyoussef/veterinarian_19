@@ -1,0 +1,6 @@
+CFG_BEFORE {"cutover": "False", "allowlist": "", "purposes": "discuss"}
+DISCUSS_BEFORE {"5_mode": "legacy", "10_mode": "legacy", "discuss_allowlist": ""}
+HUB_INST 57
+CFG_AFTER {"cutover": "False", "allowlist": "", "purposes": "discuss"}
+RESULTS {"R1": {"pass": true, "id": 445, "eligible": true, "allowlisted": true, "mode": "legacy"}, "R2": {"pass": true, "status": "critical", "types": ["missing_hub_outbound"], "allowlisted": false}, "R3": {"pass": true, "status": "critical", "warn_types": ["completed_campaign_still_allowlisted"]}, "R4": {"pass": true, "reason": "scheduled_not_supported", "error": "Campaign is not Hub-eligible for approval: scheduled_not_supported \u2014 Scheduled Campaign Hub execution is not supported (P5F-E)"}, "R5": {"pass": true, "reason": "attachments_media"}, "R6": {"pass": true, "frozen": true, "blocked_after_hub": true}, "R7": {"pass": true, "allowlist": [451, 452], "status": "critical", "count": 2}, "R8": {"pass": true, "message": "Cannot revoke Hub approval while 1 incomplete Hub job(s) exist. Quarantine incomplete Campaign Hub jobs first."}, "R9": {"pass": true, "before": {"5_mode": "legacy", "10_mode": "legacy", "discuss_allowlist": ""}, "after": {"5_mode": "legacy", "10_mode": "legacy", "discuss_allowlist": ""}}}
+UAT_ALL_PASS True

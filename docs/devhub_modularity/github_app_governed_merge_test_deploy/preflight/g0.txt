@@ -1,0 +1,6 @@
+=== G0 Preflight 2026-07-23T12:07:11Z ===
+branch=feature/devhub-modularization-whatsapp
+head=4c1fc00555a3ede2ccf7582fdb87af6082a29195
+test_service=active
+prod_service=active
+test_port=LISTEN 0      128                        0.0.0.0:8028       0.0.0.0:*    users:(("python3",pid=3544519,fd=3))                                                          

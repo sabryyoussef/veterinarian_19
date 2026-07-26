@@ -1,0 +1,7 @@
+dev_session_hub.group_dev_hub_approver
+dev_session_hub.group_dev_hub_deploy_approver
+dev_session_hub.group_dev_hub_generation
+dev_session_hub.group_dev_hub_integration
+dev_session_hub.group_dev_hub_manager
+dev_session_hub.group_dev_hub_production_approver
+dev_session_hub.group_dev_hub_user

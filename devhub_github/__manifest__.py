@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+{
+    "name": "Dev Hub GitHub",
+    "version": "19.0.9.1.1",
+    "category": "Productivity",
+    "summary": "GitHub App credentials, PR/merge, and repository onboarding",
+    "author": "Sabry Youssef",
+    "license": "LGPL-3",
+    "depends": ["devhub_git"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/dev_git_pr_views.xml",
+        "views/dev_git_pr_wizard_views.xml",
+        "views/dev_git_merge_views.xml",
+        "views/dev_git_merge_wizard_views.xml",
+        "views/dev_github_credentials_views.xml",
+        "views/dev_repository_onboarding_views.xml",
+        "views/dev_repository_onboarding_wizard_views.xml",
+        "views/dev_execution_github_views.xml",
+        "views/dev_repository_github_views.xml",
+        "views/dev_github_menus.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

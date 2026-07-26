@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/308
+- Message ID: 10782
+- Customer: مهمات مفتوحة لاستكمال فرع الساحل petspot
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-14 19:45:50 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Voice transcription regarding cash and electricity payment, unclear context.
+
+**الإجراء المطلوب:**
+Review the audio for clarity and context.
+
+**نص مرفق مستخرج:**
+احنا دلوقتي معانا كاش فالعادة انت حارك اصلك من الكاش اللي فالعادة ده لو هو تمن الكهربا دي خلاص يبقى هنعنوه مع الجامعة دول بتعود دكتور بركاته ولا ياني عشان انا مش فاهم
+
+## Original Message
+
+```
+Voice message: ACAD487430C3803E8ED4C29BF1A43865.oga
+```

@@ -1,0 +1,54 @@
+{
+  "id": 35,
+  "display_name": "dev.git.merge.record,35",
+  "work_item_id": [
+    3324,
+    "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+  ],
+  "merge_request_work_item_id": [
+    3324,
+    "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+  ],
+  "workspace_id": [
+    1849,
+    "DW-3324"
+  ],
+  "approval_id": [
+    57,
+    "dev.git.merge.approval,57"
+  ],
+  "github_repository": "sabryyoussef/veterinarian_19",
+  "pr_number": 16,
+  "pr_url_reference": "https://github.com/sabryyoussef/veterinarian_19/pull/16",
+  "requester_id": [
+    714,
+    "Dev Hub Merge Requester"
+  ],
+  "approver_id": [
+    2,
+    "Administrator"
+  ],
+  "approved_head_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+  "base_branch": "staging",
+  "approved_base_sha": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+  "merge_method": "squash",
+  "result_state": "merged",
+  "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+  "remote_result": "Exact squash merge verified remotely.",
+  "requested_at": "2026-07-23 12:29:10",
+  "approved_at": "2026-07-23 12:29:29",
+  "merged_at": "2026-07-23 12:29:38",
+  "idempotency_key": "0fa7b3984c1d5c042c5b4de249c040401d4b1423d21f839f304a1bf90d270e72",
+  "api_correlation_reference": "b9770bacb9b6d6b67f690b4e37b0a9ecefc5b162aa365c022c3310f7d3875ff6",
+  "audit_hash": "2edbdcced582308c98d69ac5300322cdcc28729baa68debe4c39907c94d35e54",
+  "create_uid": [
+    2,
+    "Administrator"
+  ],
+  "create_date": "2026-07-23 12:29:18",
+  "write_uid": [
+    1,
+    "OdooBot"
+  ],
+  "write_date": "2026-07-23 12:29:18"
+}

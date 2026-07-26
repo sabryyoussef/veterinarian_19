@@ -1,0 +1,7 @@
+=== Prod BEFORE P5A ===
+ch5=hub
+ch10=hub
+discuss_allow=10,5
+purposes=discuss
+hub=19.0.1.5.0
+chat=19.0.1.14.0

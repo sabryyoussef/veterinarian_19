@@ -1,0 +1,82 @@
+[
+  {
+    "model": "dev.work.item",
+    "expected_module": "devhub_work",
+    "ir_model": {
+      "id": 1292,
+      "model": "dev.work.item",
+      "name": "Development Work Item",
+      "modules": "devhub_analysis, devhub_code_analysis, devhub_execution, devhub_generation, devhub_openproject, devhub_plan, devhub_session, devhub_whatsapp, devhub_work"
+    }
+  },
+  {
+    "model": "dev.work.analysis",
+    "expected_module": "devhub_analysis",
+    "ir_model": {
+      "id": 1296,
+      "model": "dev.work.analysis",
+      "name": "Versioned Development Work Analysis",
+      "modules": "devhub_analysis, devhub_code_analysis, devhub_generation"
+    }
+  },
+  {
+    "model": "dev.work.plan",
+    "expected_module": "devhub_plan",
+    "ir_model": {
+      "id": 1297,
+      "model": "dev.work.plan",
+      "name": "Versioned Development Work Plan",
+      "modules": "devhub_analysis, devhub_approval, devhub_plan"
+    }
+  },
+  {
+    "model": "dev.work.approval",
+    "expected_module": "devhub_approval",
+    "ir_model": {
+      "id": 1299,
+      "model": "dev.work.approval",
+      "name": "Immutable Development Work Approval",
+      "modules": "devhub_approval"
+    }
+  },
+  {
+    "model": "dev.work.checkpoint",
+    "expected_module": "devhub_execution",
+    "ir_model": {
+      "id": 1300,
+      "model": "dev.work.checkpoint",
+      "name": "Immutable Development Work Checkpoint",
+      "modules": "devhub_execution"
+    }
+  },
+  {
+    "model": "dev.git.pr.record",
+    "expected_module": "devhub_github",
+    "ir_model": {
+      "id": 1322,
+      "model": "dev.git.pr.record",
+      "name": "Immutable Pull Request Creation Record",
+      "modules": "devhub_github"
+    }
+  },
+  {
+    "model": "dev.deploy.record",
+    "expected_module": "devhub_deploy",
+    "ir_model": {
+      "id": 1349,
+      "model": "dev.deploy.record",
+      "name": "Terminal Deployment Record",
+      "modules": "devhub_deploy"
+    }
+  },
+  {
+    "model": "dev.workflow.board",
+    "expected_module": "devhub_workflow",
+    "ir_model": {
+      "id": 1401,
+      "model": "dev.workflow.board",
+      "name": "Dev Hub Workflow Board",
+      "modules": "devhub_workflow"
+    }
+  }
+]

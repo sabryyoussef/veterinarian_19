@@ -1,0 +1,19 @@
+{
+  "db": "pet_spot_elsahel_test",
+  "port": 8028,
+  "prod_service": "active",
+  "test_service": "active",
+  "code_pin": "4c1fc00555a3ede2ccf7582fdb87af6082a29195",
+  "github_apps": {
+    "pr": {
+      "app_id": 4340040,
+      "installation_id": 147639376,
+      "slug": "sabry-uat-agent"
+    },
+    "merge": {
+      "app_id": 4341059,
+      "installation_id": 147666583,
+      "slug": "sabry-uat-merge-agent"
+    }
+  }
+}

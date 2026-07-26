@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vetution_sync_wizard_form" model="ir.ui.view">
+        <field name="name">vetution.sync.wizard.form</field>
+        <field name="model">vetution.sync.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sync from Vetution">
+                <group>
+                    <group string="Products">
+                        <field name="page_from"/>
+                        <field name="page_to" placeholder="empty = all pages"/>
+                        <field name="product_slug" placeholder="e.g. wenefro-advanced"/>
+                        <field name="only_missing"/>
+                    </group>
+                    <group string="Brands / options">
+                        <field name="brand_page_from"/>
+                        <field name="brand_page_to" placeholder="empty = all"/>
+                        <field name="import_prices"/>
+                        <field name="publish_products"/>
+                    </group>
+                </group>
+                <group string="Log">
+                    <field name="log_text" nolabel="1" colspan="2" readonly="1"/>
+                    <field name="state" invisible="1"/>
+                </group>
+                <footer>
+                    <button
+                        name="action_sync_taxonomy"
+                        type="object"
+                        string="Sync taxonomy"
+                        class="btn-secondary"
+                    />
+                    <button
+                        name="action_sync_products"
+                        type="object"
+                        string="Sync products"
+                        class="btn-secondary"
+                    />
+                    <button
+                        name="action_sync_cross_links"
+                        type="object"
+                        string="Sync cross-links"
+                        class="btn-secondary"
+                    />
+                    <button
+                        name="action_sync_full"
+                        type="object"
+                        string="Full sync"
+                        class="btn-primary"
+                    />
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vetution_sync_wizard" model="ir.actions.act_window">
+        <field name="name">Sync from Vetution</field>
+        <field name="res_model">vetution.sync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,552 @@
+{
+  "ts": "2026-07-24T16:49:14.743769+00:00",
+  "backup": "/home/sabry/odoo_base/base_odoo_19/backups/pet_spot_elsahel_petspot_loc_prod_20260724T164244Z",
+  "deploy_script": "website/deploy_prod_petspot_location.py",
+  "deploy_report": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/petspot_location_prod_deploy.json",
+  "public_scan": [
+    {
+      "path": "/",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": true
+    },
+    {
+      "path": "/contactus",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/contact-directions-booking",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/veterinary-clinic-near-amwaj",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/emergency-vet-north-coast",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/appointment",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/blog",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/pet-vaccinations-north-coast",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/grooming-boarding-sahel",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    },
+    {
+      "path": "/veterinary-home-visits-sahel",
+      "http": 200,
+      "public_bad": [],
+      "has_petspot": true,
+      "has_gate1": true,
+      "has_new_coords": true,
+      "jsonld_ok": null
+    }
+  ],
+  "public_bad_count": 0,
+  "internal_remaining_non_customer": [
+    {
+      "id": 12,
+      "state": "draft",
+      "scheduled": false,
+      "hits": [
+        "Amwaj 2",
+        "أمواج 2",
+        "AaHup6NEFodZEs7S7"
+      ],
+      "visibility": "internal_unpublished_social_draft"
+    },
+    {
+      "id": 11,
+      "state": "draft",
+      "scheduled": false,
+      "hits": [
+        "Amwaj 2",
+        "أمواج 2"
+      ],
+      "visibility": "internal_unpublished_social_draft"
+    },
+    {
+      "id": 6,
+      "state": "draft",
+      "scheduled": false,
+      "hits": [
+        "Amwaj 2",
+        "أمواج 2"
+      ],
+      "visibility": "internal_unpublished_social_draft"
+    },
+    {
+      "id": 4,
+      "state": "draft",
+      "scheduled": false,
+      "hits": [
+        "Amwaj 2",
+        "أمواج 2"
+      ],
+      "visibility": "internal_unpublished_social_draft"
+    },
+    {
+      "id": 1,
+      "state": "draft",
+      "scheduled": false,
+      "hits": [
+        "Amwaj 2",
+        "أمواج 2",
+        "AaHup6NEFodZEs7S7"
+      ],
+      "visibility": "internal_unpublished_social_draft"
+    }
+  ],
+  "campaign_params": [
+    {
+      "id": 85,
+      "key": "social_media_connector.campaign_call_center",
+      "value": "01201568888"
+    },
+    {
+      "id": 87,
+      "key": "social_media_connector.campaign_facebook_url",
+      "value": "https://www.facebook.com/animalcarecenterpetspots"
+    },
+    {
+      "id": 122,
+      "key": "social_media_connector.campaign_hashtags",
+      "value": "#PetSpot_El_Sahel #بيت_سبوت_الساحل #عيادة_بيطرية_الساحل #الساحل_الشمالي #أمواج #SidiAbdelRahman #NorthCoast #MarsaMatruh #VetClinic #PetCare #Grooming #Boarding"
+    },
+    {
+      "id": 88,
+      "key": "social_media_connector.campaign_linkedin_url",
+      "value": "https://www.linkedin.com/company/129944345"
+    },
+    {
+      "id": 90,
+      "key": "social_media_connector.campaign_location_ar",
+      "value": "الطريق الرئيسي، بجوار بوابة أمواج 1، سيدي عبد الرحمن، الساحل الشمالي"
+    },
+    {
+      "id": 89,
+      "key": "social_media_connector.campaign_location_en",
+      "value": "Main Road, beside Amwaj Gate 1, Sidi Abdel Rahman, North Coast"
+    },
+    {
+      "id": 91,
+      "key": "social_media_connector.campaign_maps_url",
+      "value": "https://www.google.com/maps?q=30.9909056,28.6842417"
+    },
+    {
+      "id": 133,
+      "key": "social_media_connector.campaign_phone_amwaj",
+      "value": "01280833332"
+    },
+    {
+      "id": 134,
+      "key": "social_media_connector.campaign_phone_haram",
+      "value": "01000059085"
+    },
+    {
+      "id": 82,
+      "key": "social_media_connector.campaign_prefix",
+      "value": "[PetSpot FB]"
+    },
+    {
+      "id": 95,
+      "key": "social_media_connector.campaign_schedule_end_hour",
+      "value": "22"
+    },
+    {
+      "id": 92,
+      "key": "social_media_connector.campaign_schedule_interval",
+      "value": "60"
+    },
+    {
+      "id": 94,
+      "key": "social_media_connector.campaign_schedule_start_hour",
+      "value": "10"
+    },
+    {
+      "id": 93,
+      "key": "social_media_connector.campaign_schedule_timezone",
+      "value": "Africa/Cairo"
+    },
+    {
+      "id": 86,
+      "key": "social_media_connector.campaign_website",
+      "value": "https://drpaws.ai"
+    },
+    {
+      "id": 84,
+      "key": "social_media_connector.campaign_whatsapp",
+      "value": "01201568888"
+    }
+  ],
+  "whatsapp_templates": {
+    "ts": "2026-07-24T16:48:22.435569+00:00",
+    "updated": [
+      {
+        "id": 11,
+        "name": "PetSpot — Grand Opening 🎉",
+        "has_new_maps": true,
+        "has_old": false
+      },
+      {
+        "id": 14,
+        "name": "PetSpot — Location & Directions 📍",
+        "has_new_maps": true,
+        "has_old": false
+      },
+      {
+        "id": 16,
+        "name": "PetSpot — Emergency & Urgent Care 🚨",
+        "has_new_maps": true,
+        "has_old": false
+      },
+      {
+        "id": 20,
+        "name": "PetSpot Reminder (AR)",
+        "has_new_maps": true,
+        "has_old": false
+      }
+    ],
+    "verify_all": [
+      {
+        "id": 11,
+        "name": "PetSpot — Grand Opening 🎉",
+        "old_maps": false,
+        "new_maps": true,
+        "amwaj2": false
+      },
+      {
+        "id": 12,
+        "name": "PetSpot — Book Appointment 📅",
+        "old_maps": false,
+        "new_maps": false,
+        "amwaj2": false
+      },
+      {
+        "id": 13,
+        "name": "PetSpot — Services Overview 🏥",
+        "old_maps": false,
+        "new_maps": false,
+        "amwaj2": false
+      },
+      {
+        "id": 14,
+        "name": "PetSpot — Location & Directions 📍",
+        "old_maps": false,
+        "new_maps": true,
+        "amwaj2": false
+      },
+      {
+        "id": 15,
+        "name": "PetSpot — Grooming ✂️",
+        "old_maps": false,
+        "new_maps": false,
+        "amwaj2": false
+      },
+      {
+        "id": 16,
+        "name": "PetSpot — Emergency & Urgent Care 🚨",
+        "old_maps": false,
+        "new_maps": true,
+        "amwaj2": false
+      },
+      {
+        "id": 17,
+        "name": "PetSpot — Follow-up Check-in 💛",
+        "old_maps": false,
+        "new_maps": false,
+        "amwaj2": false
+      },
+      {
+        "id": 18,
+        "name": "PetSpot Weekly Offer (EN)",
+        "old_maps": false,
+        "new_maps": false,
+        "amwaj2": false
+      },
+      {
+        "id": 19,
+        "name": "PetSpot Weekly Offer (AR)",
+        "old_maps": false,
+        "new_maps": false,
+        "amwaj2": false
+      },
+      {
+        "id": 20,
+        "name": "PetSpot Reminder (AR)",
+        "old_maps": false,
+        "new_maps": true,
+        "amwaj2": false
+      }
+    ],
+    "new_maps": "https://www.google.com/maps?q=30.9909056,28.6842417"
+  },
+  "facebook_posts": [
+    {
+      "id": 3,
+      "state": "draft",
+      "scheduled_date": false,
+      "live_post_ids": []
+    },
+    {
+      "id": 2,
+      "state": "scheduled",
+      "scheduled_date": "2026-08-05 07:00:00",
+      "live_post_ids": []
+    },
+    {
+      "id": 1,
+      "state": "draft",
+      "scheduled_date": false,
+      "live_post_ids": []
+    }
+  ],
+  "json_ld": [
+    {
+      "@context": "https://schema.org",
+      "@type": [
+        "VeterinaryCare",
+        "LocalBusiness"
+      ],
+      "@id": "https://drpaws.ai/#veterinarycare",
+      "name": "pet.spot",
+      "alternateName": [
+        "PetSpot El Sahel Veterinary Clinic",
+        "عيادة بيت سبوت الساحل البيطرية"
+      ],
+      "url": "https://drpaws.ai/",
+      "logo": "/web/image/res.company/1/logo",
+      "image": "/web/image/res.company/1/logo",
+      "telephone": "+201280833332",
+      "email": "vetelsahel@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Main Road, beside Amwaj Gate 1, Sidi Abdel Rahman, North Coast, Egypt",
+        "addressLocality": "Sidi Abdel Rahman",
+        "addressRegion": "Matrouh",
+        "addressCountry": "EG"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 30.9909056,
+        "longitude": 28.6842417
+      },
+      "hasMap": "https://www.google.com/maps?q=30.9909056,28.6842417",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+201280833332",
+          "contactType": "customer service",
+          "areaServed": "EG",
+          "availableLanguage": [
+            "en",
+            "ar"
+          ]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+201201568888",
+          "contactType": "customer service",
+          "name": "Call center",
+          "areaServed": "EG",
+          "availableLanguage": [
+            "en",
+            "ar"
+          ]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+201000059085",
+          "contactType": "customer support",
+          "contactOption": "TollFree",
+          "areaServed": "EG",
+          "availableLanguage": [
+            "en",
+            "ar"
+          ]
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/animalcarecenterpetspots",
+        "https://www.instagram.com/pet_spot_clinic"
+      ],
+      "areaServed": [
+        {
+          "@type": "Place",
+          "name": "Amwaj"
+        },
+        {
+          "@type": "Place",
+          "name": "Sidi Abdel Rahman"
+        },
+        {
+          "@type": "Place",
+          "name": "El Alamein"
+        },
+        {
+          "@type": "Place",
+          "name": "North Coast Egypt"
+        }
+      ],
+      "availableService": [
+        {
+          "@type": "MedicalProcedure",
+          "name": "Veterinary consultation"
+        },
+        {
+          "@type": "MedicalProcedure",
+          "name": "Emergency veterinary care"
+        },
+        {
+          "@type": "MedicalProcedure",
+          "name": "Pet vaccination"
+        },
+        {
+          "@type": "Service",
+          "name": "Pet grooming"
+        },
+        {
+          "@type": "Service",
+          "name": "Pet boarding"
+        },
+        {
+          "@type": "Service",
+          "name": "Veterinary home visit"
+        }
+      ]
+    }
+  ],
+  "sitemap": {
+    "url": "https://drpaws.ai/sitemap.xml",
+    "http": 200,
+    "bytes": 2714
+  },
+  "robots_head": "# As a condition of accessing this website, you agree to abide by the following\n# content signals:\n\n# (a)  If a Content-Signal = yes, you may collect content for the corresponding\n#      use.\n# (b)  If a Content-Signal = no, you may not collect content for the\n#      corresponding use.\n# (c)  If the website operator does not include a Content-Signal for a\n#      corresponding use, the website operator neither grants nor restricts\n#      permission via Content-Signal with respect to the correspon",
+  "screenshots": [
+    "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/screenshots_petspot_prod/home_mobile.png",
+    "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/screenshots_petspot_prod/contact_desktop.png",
+    "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/screenshots_petspot_prod/contact_mobile.png",
+    "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/seo_ai_visibility/2026-07-24_read_only_audit/prod_uat_evidence/screenshots_petspot_prod/home_desktop.png"
+  ],
+  "articles_published": [
+    {
+      "id": 2,
+      "is_published": true,
+      "website_url": "/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2"
+    },
+    {
+      "id": 1,
+      "is_published": true,
+      "website_url": "/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1"
+    }
+  ],
+  "company": [
+    {
+      "id": 1,
+      "name": "pet.spot",
+      "street": "Main Road, beside Amwaj Gate 1, Sidi Abdel Rahman, North Coast, Egypt",
+      "city": "Sidi Abdel Rahman",
+      "phone": "+201280833332",
+      "website": "https://drpaws.ai"
+    }
+  ],
+  "untouched_confirmation": {
+    "GBP": "untouched",
+    "Facebook_scheduling": "post #2 remains scheduled; #1/#3 draft; Directions not newly scheduled",
+    "external_listings": "untouched",
+    "DNS_Cloudflare": "untouched"
+  },
+  "signage_gbp_blocker": "Permanent sign PET SPOT vs profile pet.spot — no verification until Sabry chooses A (dot) or B (rename profile). Do not edit disputed legacy listing.",
+  "rollback": {
+    "status": "not_needed_success",
+    "backup_dir": "/home/sabry/odoo_base/base_odoo_19/backups/pet_spot_elsahel_petspot_loc_prod_20260724T164244Z",
+    "restore": "pg_restore -h localhost -U odoo -d pet_spot_elsahel --clean --if-exists pet_spot_elsahel.dump; extract filestore.tgz; restart :8027"
+  }
+}

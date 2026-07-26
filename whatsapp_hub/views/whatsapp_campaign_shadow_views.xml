@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_campaign_shadow_list" model="ir.ui.view">
+        <field name="name">whatsapp.campaign.shadow.list</field>
+        <field name="model">whatsapp.campaign.shadow</field>
+        <field name="arch" type="xml">
+            <list
+                decoration-success="classification == 'matched'"
+                decoration-warning="classification == 'legacy_queue_limited_evidence' or classification == 'replay_skipped'"
+                decoration-danger="classification not in ('matched', 'legacy_queue_limited_evidence', 'replay_skipped')">
+                <field name="create_date"/>
+                <field name="campaign_id"/>
+                <field name="campaign_line_id"/>
+                <field name="partner_id"/>
+                <field name="classification"/>
+                <field name="candidate_destination"/>
+                <field name="actual_remote_jid"/>
+                <field name="candidate_instance_reference"/>
+                <field name="actual_instance_reference"/>
+                <field name="legacy_transport"/>
+                <field name="legacy_provider_message_id"/>
+                <field name="legacy_send_completed"/>
+                <field name="mismatch_reason"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_whatsapp_campaign_shadow_form" model="ir.ui.view">
+        <field name="name">whatsapp.campaign.shadow.form</field>
+        <field name="model">whatsapp.campaign.shadow</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="classification"/>
+                        <field name="eligible"/>
+                        <field name="legacy_send_completed"/>
+                        <field name="mismatch_reason"/>
+                    </group>
+                    <group string="Campaign source">
+                        <field name="campaign_id"/>
+                        <field name="campaign_line_id"/>
+                        <field name="partner_id"/>
+                        <field name="lead_id"/>
+                        <field name="destination"/>
+                        <field name="normalized_jid"/>
+                        <field name="wa_message_log_id"/>
+                        <field name="mirrored_message_id"/>
+                        <field name="legacy_queue_id"/>
+                    </group>
+                    <group string="Candidate vs actual">
+                        <field name="candidate_business_key"/>
+                        <field name="actual_business_key"/>
+                        <field name="candidate_destination"/>
+                        <field name="actual_remote_jid"/>
+                        <field name="candidate_purpose"/>
+                        <field name="actual_purpose"/>
+                        <field name="candidate_instance_reference"/>
+                        <field name="actual_instance_reference"/>
+                        <field name="candidate_body_preview"/>
+                        <field name="actual_body_preview"/>
+                        <field name="candidate_body_hash"/>
+                        <field name="actual_body_hash"/>
+                    </group>
+                    <group string="Legacy transport">
+                        <field name="legacy_transport"/>
+                        <field name="legacy_provider_message_id"/>
+                    </group>
+                    <group string="Evidence">
+                        <field name="preview_payload" widget="text"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_whatsapp_campaign_shadow_search" model="ir.ui.view">
+        <field name="name">whatsapp.campaign.shadow.search</field>
+        <field name="model">whatsapp.campaign.shadow</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="classification"/>
+                <field name="legacy_transport"/>
+                <field name="candidate_destination"/>
+                <field name="name"/>
+                <filter name="filter_matched" string="Matched"
+                        domain="[('classification', '=', 'matched')]"/>
+                <filter name="filter_mismatches" string="Mismatches"
+                        domain="[('classification', 'in', ['body_mismatch', 'instance_mismatch', 'destination_mismatch', 'campaign_identity_mismatch', 'provenance_mismatch', 'conversation_mismatch'])]"/>
+                <filter name="filter_validation" string="Validation Errors"
+                        domain="[('classification', 'in', ['validation_error', 'missing_instance', 'invalid_destination', 'has_attachments', 'unsupported_message_type'])]"/>
+                <filter name="filter_queue_limited" string="Queue-Limited Evidence"
+                        domain="[('classification', '=', 'legacy_queue_limited_evidence')]"/>
+                <filter name="filter_replay" string="Replay Skipped"
+                        domain="[('classification', '=', 'replay_skipped')]"/>
+                <separator/>
+                <filter name="groupby_campaign" string="Campaign"
+                        context="{'group_by': 'campaign_id'}"/>
+                <filter name="groupby_classification" string="Classification"
+                        context="{'group_by': 'classification'}"/>
+                <filter name="groupby_transport" string="Legacy Transport"
+                        context="{'group_by': 'legacy_transport'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_whatsapp_campaign_shadow" model="ir.actions.act_window">
+        <field name="name">Campaign Shadow Reports</field>
+        <field name="res_model">whatsapp.campaign.shadow</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_whatsapp_campaign_shadow_search"/>
+        <field name="context">{'search_default_groupby_campaign': 1}</field>
+    </record>
+</odoo>

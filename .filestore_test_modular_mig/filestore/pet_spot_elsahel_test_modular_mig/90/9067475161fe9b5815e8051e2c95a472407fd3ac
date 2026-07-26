@@ -1,0 +1,25 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 6915
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-06 12:08:50 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** configuration
+**الأولوية:** medium
+**الثقة:** 0.65
+
+**الملخص:**
+Goods without tracking inventory are treated as consumable products, potentially causing inventory issues.
+
+**الإجراء المطلوب:**
+Review and adjust inventory tracking settings for consumable products in Odoo.
+
+## Original Message
+
+```
+It's related because goods without tracking inventory mean a consumable product, and this will lead to inventory problems.
+```

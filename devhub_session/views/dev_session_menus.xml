@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_devhub_session_root"
+              name="DH Sessions"
+              sequence="90"
+              web_icon="devhub_session,static/description/icon.png"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_session_all"
+              name="Sessions"
+              parent="menu_devhub_session_root"
+              action="action_dev_session"
+              sequence="10"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_session_active"
+              name="Active"
+              parent="menu_devhub_session_root"
+              action="action_dev_session_active"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_session_paused"
+              name="Paused"
+              parent="menu_devhub_session_root"
+              action="action_dev_session_paused"
+              sequence="30"
+              groups="devhub_core.group_dev_hub_user"/>
+</odoo>

@@ -1,0 +1,50 @@
+=== MODEL OWNERSHIP / PRESENCE ===
+dev.work.item|yes
+dev.work.analysis|yes
+dev.work.plan|yes
+dev.work.plan.step|yes
+dev.work.approval|yes
+dev.work.checkpoint|yes
+dev.workflow.board|yes
+dev.workflow.capability|yes
+dev.session|yes
+dev.execution.workspace|yes
+dev.work.generation|yes
+dev.external.outbox|yes
+=== WORK INDEPENDENCE ===
+has_op_backend_field True
+work_manifest_openproject_sync False
+work_depends ['devhub_core', 'project']
+work_hard_op_sync False
+=== OP MODULE ===
+op_state installed 19.0.9.1.0
+op_depends ['devhub_work', 'openproject_sync']
+=== CAPABILITY FIELDS ===
+analysis_ids True
+plan_ids True
+checkpoint_ids True
+=== GENERATION REGISTRY ===
+registry ['analysis', 'merge_analysis', 'plan']
+has_lease True
+has_complete True
+has_fail True
+has_mark True
+=== WORKFLOW ===
+capabilities [('work', True), ('analysis', True), ('plan', True), ('approval', True), ('execution', True), ('git', True), ('deploy', True)]
+board dev.workflow.board 1
+stage_summary Work → Analysis → Plan → Approval → Execution → Git / GitHub → Deploy
+kpis 44 47 25 4 0
+=== WHATSAPP BOUNDARY ===
+wa_depends ['devhub_work', 'whatsapp_hub']
+hub_installed installed
+generic_whatsapp_models_in_devhub []
+dev.whatsapp.intake yes
+dev.whatsapp.source yes
+=== SAMPLE RECORD ACCESS ===
+sample_work 1 [Personal] Account access issues for petspot received
+sample_op_backend 1
+sample_analyses []
+sample_plans []
+=== GIT CONSTANTS ===
+SHA1_RE True
+BRANCH_RE_ok ^devhub/DW-[0-9]+-[a

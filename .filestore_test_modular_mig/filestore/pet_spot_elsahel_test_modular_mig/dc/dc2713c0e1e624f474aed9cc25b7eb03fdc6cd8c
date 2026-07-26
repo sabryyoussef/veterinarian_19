@@ -1,0 +1,49 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/308
+- Message ID: 10465
+- Customer: مهمات مفتوحة لاستكمال فرع الساحل petspot
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-14 14:57:05 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Message contains an image attachment but lacks clear context or actionable items for Odoo development.
+
+**الإجراء المطلوب:**
+None
+
+**نص مرفق مستخرج:**
+7:56 (ey Cc Bt
+< Approved Transaction
+
+(
+e e
+
+‘a
+2,000 EcP
+a) Send Money
+
+@ Gaastlaue agate cies Lille
+
+v
+Gre th al vy
+
+Send Money
+
+2EGP
+
+2,002 EGP
+
+i
+
+## Original Message
+
+```
+Photo: AC908DF0C37613D9A890B415535B690C.jpeg
+```

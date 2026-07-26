@@ -1,0 +1,14 @@
+versions [('evolution_whatsapp_chat', '19.0.1.12.0'), ('whatsapp_hub', '19.0.1.3.0')]
+flags_start False False legacy
+channel 12 201007775820 inst p3-uat-inst
+A {'legacy_calls': 1, 'hub_transport': 0, 'logs': 1, 'hub_msgs': 1, 'outs': 0}
+B {'legacy_calls': 1, 'hub_transport': 0, 'outs': 0, 'shadow': True, 'eligible': True, 'class': 'matched', 'cand_key': 'discuss:12:27725', 'mirrored': True, 'purpose': 'discuss'}
+C {'legacy_calls': 0, 'hub_transport': 1, 'hub_msgs': 1, 'outs': 1, 'compat_logs': 1, 'hub_message_id_match': True, 'second_hub': 1, 'biz': 'discuss:12:27726'}
+D {'duplicate': True, 'transport_calls': 0}
+E {'transport': 1, 'two_msgs': True, 'same_conv': True}
+F_fail {'legacy': 0, 'hub_t': 1, 'state': 'pending', 'msg_id': 20}
+F_retry {'state': 'sent', 'same_msg': True, 'transport': 1, 'evo_id': 'HUBF-1784805820'}
+G {'legacy': 0, 'hub_t': 0}
+H {'ok': True, 'legacy': 1, 'hub_t': 0, 'wid': 'CAMP-1784805820'}
+flags_end False False legacy
+UAT_OK True

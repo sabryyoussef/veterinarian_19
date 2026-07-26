@@ -1,0 +1,29 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/47
+- Message ID: 12258
+- Customer: Asta development
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-18 20:19:02 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Discussion about test credentials and tracking educational requests/responses.
+
+**الإجراء المطلوب:**
+No action required, informational message.
+
+## Original Message
+
+```
+بالضبط. طالما الـ test credentialsنجح وظهر الـ production ده معناه إن الربط الأساسي سليم
+لما حضرنا الورش مع التعليم الالكتروني اللي كانت معموله كان تعمل test يظهرلك ال production كده انت تمام 100% 
+بس كنا بنعمل حاجة كمان من عندنا  هنسجل كل Request/Response ونعمل Tracking للرحلة التعليمية للطالب بحيث نبقي عارفين هوا واقف فين 
+شاهد ايه ؟ حل اختبارات ايه وجاب فيها كام ؟
+كده لانهم بيحتاجوها كل شوية
+```

@@ -1,0 +1,76 @@
+# Development Plan — OP#353 / Odoo #44
+
+**Title:** Voucher Number on student profile  
+**Sprint:** S1 — Day 1 (afternoon)  
+**Effort:** 0.5 day  
+**Module:** `edafaa_student_profile`
+
+---
+
+## Steps & time
+
+| Step | Hours | Action |
+|------|-------|--------|
+| 1 | 0.5 | Add `voucher_number` Char field |
+| 2 | 1 | Form (+ list/search if needed) |
+| 3 | 0.5 | Optional: registration / batch column mapping |
+| 4 | 1 | Upgrade + UAT |
+| 5 | 0.5 | OP/Odoo comment |
+
+---
+
+## Code changes
+
+### 1. Model
+
+**File:** `edafaa_student_profile/models/student.py`
+
+```python
+voucher_number = fields.Char(
+    string='رقم قسيمة الاختبار',
+    size=64,
+    index=True,
+    help='Exam voucher / test voucher number',
+)
+```
+
+### 2. Form
+
+**File:** `edafaa_student_profile/views/student_views.xml`
+
+Add next to identity / personal info block:
+
+```xml
+<field name="voucher_number"/>
+```
+
+Optional list + search:
+
+```xml
+<field name="voucher_number" string="رقم قسيمة الاختبار"/>
+```
+
+### 3. Intake (optional)
+
+If batch CSV has a voucher column, map in `edafaa_batch_intake` row processing → `op.student.voucher_number`.
+
+---
+
+## Tests
+
+```python
+s = env['op.student'].create({... 'voucher_number': 'VCH-001'})
+assert s.voucher_number == 'VCH-001'
+```
+
+---
+
+## Acceptance
+
+- [ ] Field on profile with Arabic label  
+- [ ] Persists after save  
+- [ ] Visible in list if requested  
+
+## Open (confirm during UAT)
+
+Unique constraint? External import only?

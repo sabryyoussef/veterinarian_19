@@ -1,0 +1,11 @@
+=== R2: create release ===
+/home/sabry3/devhub/veterinarian_19  ff53a8d [staging]
+HEAD is now at b6e8a5d Fix dev_session_hub fresh install and test isolation (19.0.8.0.1).
+HEAD=b6e8a5d290b3629c8f321016a6dea899da83c0ee
+ORIGIN=git@github.com:sabryyoussef/veterinarian_19.git
+hub 19.0.8.0.1 op 19.0.1.5.1
+RELEASE_OP_TREE=9c6e94eb4052e67efbd9811f531208cf7ef5a3c22ca7624b74c14fa5fc99146c
+REALPATH=/home/sabry3/devhub/releases/veterinarian_19_b6e8a5d
+NO_SECRETS_OK
+EV=/home/sabry3/devhub/logs/phase16_dell_repin_b6e8a5d_20260720T101550Z
+R2_OK

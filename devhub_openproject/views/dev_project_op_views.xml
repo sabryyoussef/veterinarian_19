@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_project_op_tabs" model="ir.ui.view">
+        <field name="name">dev.project.op.tabs</field>
+        <field name="model">dev.project</field>
+        <field name="inherit_id" ref="devhub_core.view_dev_project_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Odoo Project &amp; Tasks">
+                    <div class="alert alert-info" role="alert" invisible="has_openproject_mapping">
+                        No OpenProject map is linked. Add maps below (managers) to show Odoo tasks.
+                    </div>
+                    <group invisible="not has_openproject_mapping">
+                        <group>
+                            <field name="primary_odoo_project_id" readonly="1"/>
+                            <field name="odoo_project_ids" widget="many2many_tags" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_open_primary_odoo_project" type="object" string="Open Odoo Project" class="btn-secondary"/>
+                        </group>
+                    </group>
+                    <group string="OpenProject Maps" groups="devhub_core.group_dev_hub_manager">
+                        <field name="openproject_map_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                    <field name="has_openproject_mapping" invisible="1"/>
+                    <field name="mapped_task_ids" readonly="1" context="{'dev_project_id': id}">
+                        <list>
+                            <field name="id"/>
+                            <field name="name"/>
+                            <field name="stage_id"/>
+                            <field name="op_work_package_id"/>
+                            <field name="dev_work_item_id"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="OpenProject Work Packages">
+                    <field name="mapped_op_task_ids" readonly="1" context="{'dev_project_id': id}">
+                        <list>
+                            <field name="op_work_package_id"/>
+                            <field name="name"/>
+                            <field name="stage_id"/>
+                            <field name="dev_work_item_id"/>
+                            <field name="op_url" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

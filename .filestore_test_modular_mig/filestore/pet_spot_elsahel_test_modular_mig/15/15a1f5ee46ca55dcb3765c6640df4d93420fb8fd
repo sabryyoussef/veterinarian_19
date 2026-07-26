@@ -1,0 +1,137 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 7411
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-07 19:18:49 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** high
+**الثقة:** 0.88
+
+**الملخص:**
+KeyError when printing quotation from sales module
+
+**الإجراء المطلوب:**
+Check the template 'template_sale_report_saleorder_document_1496_t_call_0' for missing key 'o' and ensure all required data is passed correctly.
+
+## Original Message
+
+```
+في ارور لما بحاول اطبع كوتيشن من مديول المبيعات 
+RPC_ERROR
+
+Odoo Server Error
+
+Occured on gpc.odoo.com.se on 2026-07-07 19:18:15 GMT
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_qweb.py", line 749, in _render_iterall
+    for item in frame.iterator:
+  File "<1496>", line 2255, in template_sale_report_saleorder_document_1496_t_call_0
+KeyError: 'o'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/controllers/report.py", line 120, in report_download
+    response = self.report_routes(reportname, docids=docids, converter=converter, context=context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 788, in route_wrapper
+    result = endpoint(self, *args, **params_ok)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/localaddons/report_xlsx/controllers/main.py", line 51, in report_routes
+    return super().report_routes(reportname, docids, converter, **data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 788, in route_wrapper
+    result = endpoint(self, *args, **params_ok)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/controllers/report.py", line 42, in report_routes
+    pdf = report.with_context(context)._render_qweb_pdf(reportname, docids, data=data)[0]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py", line 1030, in _render_qweb_pdf
+    collected_streams, report_type = self._pre_render_qweb_pdf(report_ref, res_ids=res_ids, data=data)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/account/models/ir_actions_report.py", line 74, in _pre_render_qweb_pdf
+    return super()._pre_render_qweb_pdf(report_ref, res_ids=res_ids, data=data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py", line 1021, in _pre_render_qweb_pdf
+    return self._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids), 'pdf'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/sale_pdf_quote_builder/models/ir_actions_report.py", line 23, in _render_qweb_pdf_prepare_streams
+    result = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/sale/models/ir_actions_report.py", line 12, in _render_qweb_pdf_prepare_streams
+    collected_streams = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/purchase/models/ir_actions_report.py", line 12, in _render_qweb_pdf_prepare_streams
+    collected_streams = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/hr_expense/models/ir_actions_report.py", line 12, in _render_qweb_pdf_prepare_streams
+    res = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/account_edi_ubl_cii/models/ir_actions_report.py", line 11, in _render_qweb_pdf_prepare_streams
+    collected_streams = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/account_edi/models/ir_actions_report.py", line 14, in _render_qweb_pdf_prepare_streams
+    collected_streams = super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/account/models/ir_actions_report.py", line 21, in _render_qweb_pdf_prepare_streams
+    return super()._render_qweb_pdf_prepare_streams(report_ref, data, res_ids=res_ids)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py", line 869, in _render_qweb_pdf_prepare_streams
+    html = self.with_context(**additional_context)._render_qweb_html(report_ref, all_res_ids_wo_stream, data=data)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/localaddons/account_financial_report/models/ir_actions_report.py", line 19, in _render_qweb_html
+    return super(IrActionsReport, obj)._render_qweb_html(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py", line 1109, in _render_qweb_html
+    return self._render_template(report.report_name, data), 'html'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_actions_report.py", line 785, in _render_template
+    return view_obj._render_template(template, values).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/website/models/ir_ui_view.py", line 456, in _render_template
+    return super()._render_template(template, values=values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_ui_view.py", line 2532, in _render_template
+    return self.env['ir.qweb']._render(template, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_qweb.py", line 721, in _render
+    return Markup(''.join(iterator))
+                  ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_qweb.py", line 749, in _render_iterall
+    for item in frame.iterator:
+  File "<1496>", line 2962, in template_sale_report_saleorder_document_1496
+  File "<1496>", line 2948, in template_sale_report_saleorder_document_1496_content
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_qweb.py", line 612, in __str__
+    self.html = ''.join(self.irQweb._render_iterall(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_qweb.py", line 843, in _render_iterall
+    raise QWebError(qweb_error_info) from error
+odoo.addons.base.models.ir_qweb.QWebError: Error while rendering the template:
+    KeyError: 'o'
+    Template: sale.report_saleorder_document
+    Reference: 1496
+    Path: /t/t/div/div[4]/div[2]/div[1]/table/tbody/tr[1]/td[2]/span
+    Element: <span t-esc="o.contract_ref or \'\'"/>
+    From: (1498, '/t/t', '<t t-call="sale.report_saleorder_raw"/>')
+          (1497, '/t/t', '<t t-call="web.html_container"/>')
+          (200, '/t/t[2]', '<t t-call="web.report_layout"/>')
+          (1498, '/t/t', '<t t-call="sale.report_saleorder_raw"/>')
+          (200, '/t/t[2]', '<t t-call="web.report_layout"/>')
+          (1498, '/t/t', '<t t-call="sale.report_saleorder_raw"/>')
+          (1497, '/t/t', '<t t-call="web.html_container"/>')
+          (1497, '/t/t/t/t', '<t t-call="sale.report_saleorder_document" t-inner-content="True" t-options-lang="doc.partner_id.lang"/>')
+          (1496, '/t/t', '<t t-call="web.external_layout"/>')
+          (1496, '/t/t/div/div[4]/div[2]/div[1]/table/tbody/tr[1]/td[2]/span', '<span t-esc="o.contract_ref or \\\'\\\'"/>')
+
+The above server error caused the following client error:
+RPC_ERROR: Odoo Server Error
+    RPC_ERROR
+        at makeErrorFromResponse (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:3185:163)
+        at decoder.onload (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:3168:7)
+```

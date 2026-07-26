@@ -1,0 +1,18 @@
+{
+  "headRefOid": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "state": "OPEN",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-07-23T12:25:29Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://dashboard.gitguardian.com",
+      "name": "GitGuardian Security Checks",
+      "startedAt": "2026-07-23T12:25:29Z",
+      "status": "COMPLETED",
+      "workflowName": ""
+    }
+  ]
+}

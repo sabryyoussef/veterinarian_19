@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_discuss_hub_health_form" model="ir.ui.view">
+        <field name="name">whatsapp.discuss.hub.health.form</field>
+        <field name="model">whatsapp.discuss.hub.health</field>
+        <field name="arch" type="xml">
+            <form string="Discuss Hub Health" create="0" delete="0">
+                <header>
+                    <button name="action_run_health_check"
+                            type="object"
+                            string="Run Health Check"
+                            class="btn-primary"/>
+                    <field name="last_status" widget="statusbar"
+                             statusbar_visible="healthy,warning,critical"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="display_name" readonly="1"/>
+                        <field name="last_run_at" readonly="1"/>
+                        <field name="last_issue_count" readonly="1"/>
+                        <field name="last_critical_count" readonly="1"/>
+                        <field name="last_warning_count" readonly="1"/>
+                        <field name="last_issue_fingerprint" readonly="1" groups="base.group_no_one"/>
+                    </group>
+                    <group string="Last Result JSON">
+                        <field name="last_result_json" widget="text" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_whatsapp_discuss_hub_health" model="ir.actions.act_window">
+        <field name="name">Discuss Hub Health</field>
+        <field name="res_model">whatsapp.discuss.hub.health</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="whatsapp_discuss_hub_health_singleton"/>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Saved filters: Outbound (global / shared via empty user_ids) -->
+    <record id="filter_outbound_unified_bridge" model="ir.filters">
+        <field name="name">Unified Bridge</field>
+        <field name="model_id">whatsapp.outbound.message</field>
+        <field name="domain">[('transport_mode','=','unified_bridge')]</field>
+    </record>
+    <record id="filter_outbound_unified_pending" model="ir.filters">
+        <field name="name">Unified Pending/Processing</field>
+        <field name="model_id">whatsapp.outbound.message</field>
+        <field name="domain">[('transport_mode','=','unified_bridge'),('state','in',('pending','processing'))]</field>
+    </record>
+    <record id="filter_outbound_unified_failed" model="ir.filters">
+        <field name="name">Unified Failed</field>
+        <field name="model_id">whatsapp.outbound.message</field>
+        <field name="domain">[('transport_mode','=','unified_bridge'),('state','=','failed')]</field>
+    </record>
+
+    <!-- Shadow filters -->
+    <record id="filter_shadow_matched" model="ir.filters">
+        <field name="name">Matched Only</field>
+        <field name="model_id">whatsapp.discuss.shadow</field>
+        <field name="domain">[('classification','=','matched')]</field>
+    </record>
+    <record id="filter_shadow_mismatches" model="ir.filters">
+        <field name="name">Mismatches Only</field>
+        <field name="model_id">whatsapp.discuss.shadow</field>
+        <field name="domain">[('classification','!=','matched')]</field>
+    </record>
+
+    <!-- Message filters -->
+    <record id="filter_message_discuss_source" model="ir.filters">
+        <field name="name">Discuss Source</field>
+        <field name="model_id">whatsapp.message</field>
+        <field name="domain">[('source_app','=','discuss')]</field>
+    </record>
+</odoo>

@@ -1,0 +1,3 @@
+
+/* /website_knowledge/static/src/frontend/knowledge_public_view/knowledge_public_view_print.scss */
+ @media print{body > :not(.o_knowledge_public_view){display: none;}}

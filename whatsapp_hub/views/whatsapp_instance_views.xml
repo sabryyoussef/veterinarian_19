@@ -11,6 +11,9 @@
                 <field name="purpose"/>
                 <field name="api_url"/>
                 <field name="is_default"/>
+                <field name="unified_outbound_enabled"/>
+                <field name="discuss_cutover_enabled"/>
+                <field name="campaign_cutover_enabled"/>
                 <field name="active"/>
             </list>
         </field>
@@ -26,10 +29,15 @@
                         <field name="instance_name"/>
                         <field name="purpose"/>
                         <field name="api_url"/>
-                        <field name="api_key" password="True"/>
                         <field name="is_default"/>
+                        <field name="unified_outbound_enabled"/>
+                        <field name="discuss_cutover_enabled"/>
+                <field name="campaign_cutover_enabled"/>
                         <field name="web_url"/>
                         <field name="active"/>
+                        <field name="evolution_instance_id" groups="base.group_no_one"/>
+                        <field name="api_key" password="True"
+                                 groups="whatsapp_hub.group_whatsapp_manager"/>
                     </group>
                 </sheet>
             </form>

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1400,
+    "name": "devhub_core",
+    "state": "installed"
+  },
+  {
+    "id": 1415,
+    "name": "devhub_approval",
+    "state": "installed"
+  },
+  {
+    "id": 1401,
+    "name": "devhub_deploy",
+    "state": "installed"
+  },
+  {
+    "id": 1402,
+    "name": "devhub_execution",
+    "state": "installed"
+  },
+  {
+    "id": 1404,
+    "name": "devhub_git",
+    "state": "installed"
+  },
+  {
+    "id": 1405,
+    "name": "devhub_github",
+    "state": "installed"
+  },
+  {
+    "id": 1410,
+    "name": "devhub_session",
+    "state": "installed"
+  },
+  {
+    "id": 1411,
+    "name": "devhub_work",
+    "state": "installed"
+  }
+]

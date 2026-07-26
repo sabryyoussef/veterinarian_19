@@ -1,0 +1,3378 @@
+{
+  "info": {
+    "_postman_id": "dbdd0f95-068f-421c-9386-38c263bd24a8",
+    "name": "CycleX API Collection",
+    "description": "Complete API collection for CycleX recycling mobile app - Odoo 18",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31666280"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"phone\": \"+201092015998\", \"password\": \"TestPass123\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "login"
+              ]
+            },
+            "description": "User login with phone number and password"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login status true', function () {",
+                  "  const j = pm.response.json();",
+                  "  pm.expect(j.status).to.eql(true);",
+                  "});",
+                  "const j = pm.response.json();",
+                  "if (j && j.results && j.results.token) {",
+                  "  pm.environment.set('auth_token', j.results.token);",
+                  "  console.log('Bearer token saved');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "profile"
+              ]
+            },
+            "description": "Get current authenticated user profile. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "profile_image",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded profile image (optional, also accepts 'image' parameter)"
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "type": "text",
+                  "description": "Email address (optional). If not provided or empty, will be set to phone number"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/update-profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "update-profile"
+              ]
+            },
+            "description": "Update user profile image and email. Optional: profile_image (base64 encoded image, also accepts 'image' parameter), email. If email is not provided or empty, it will be automatically set to the user's phone number. Returns user_id, name, and image (URL to profile image). Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Customer Address",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "saved_address",
+                  "value": "123 Main Street, Cairo",
+                  "type": "text",
+                  "description": "The saved address text (required)"
+                },
+                {
+                  "key": "add_address",
+                  "value": "Apartment 5, Building 10",
+                  "type": "text",
+                  "description": "Additional address details (optional)"
+                },
+                {
+                  "key": "lat",
+                  "value": "30.0444",
+                  "type": "text",
+                  "description": "GPS latitude coordinate (optional)"
+                },
+                {
+                  "key": "lng",
+                  "value": "31.2357",
+                  "type": "text",
+                  "description": "GPS longitude coordinate (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/customer/save-address",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "customer",
+                "save-address"
+              ]
+            },
+            "description": "Save an address for the authenticated customer. Required: saved_address. Optional: add_address, lat, lng. Returns address_id on success. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer Addresses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/customer/get-addresses",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "customer",
+                "get-addresses"
+              ]
+            },
+            "description": "Get all saved addresses for the authenticated customer. Returns list of addresses with address_id, saved_address, add_address, lat, lng. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Customer Address",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "address_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "ID of the address to delete (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/customer/delete-address",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "customer",
+                "delete-address"
+              ]
+            },
+            "description": "Delete a saved address for the authenticated customer. Required: address_id. Only allows deletion of own addresses. Requires customer authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Governorates",
+      "item": [
+        {
+          "name": "Get Governorates",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text"
+                },
+                {
+                  "key": "active_only",
+                  "value": "true",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/governorates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "governorates"
+              ]
+            },
+            "description": "Get list of governorates. Optional: language (en/ar), active_only (true/false, default: true). Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Governorate Details",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/governorate/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "governorate",
+                "1"
+              ]
+            },
+            "description": "Get governorate details by ID with working areas. Replace '1' with actual governorate ID. Optional: language (en/ar). Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Working Areas",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "governorate_id",
+                  "value": "",
+                  "description": "Filter by governorate ID",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "governorate",
+                  "value": "",
+                  "description": "Filter by governorate name (legacy - searches via governorate_id.name)",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/working-areas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "working-areas"
+              ]
+            },
+            "description": "Get list of working areas. Optional: governorate_id (filter by governorate ID - recommended), governorate (filter by governorate name - legacy, searches via governorate_id.name), language (en/ar). Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vehicle Types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/vehicle-types?language=en",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "vehicle-types"
+              ],
+              "query": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "description": "Language: 'en' or 'ar' (default: 'en')",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "Get list of available vehicle types for collectors. Optional: language (en/ar, default: en). Public endpoint. Returns: bicycle, motorcycle, car, van, truck."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vehicle Types (POST)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text",
+                  "description": "Language: 'en' or 'ar' (default: 'en')"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/vehicle-types",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "vehicle-types"
+              ]
+            },
+            "description": "Get list of available vehicle types for collectors. Optional: language (en/ar, default: en). Public endpoint. Returns: bicycle, motorcycle, car, van, truck."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories & Products",
+      "item": [
+        {
+          "name": "Get Limit Categories (Home Screen)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/limit_categories?language=en&category_limit=6&popular_limit=4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "limit_categories"
+              ],
+              "query": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "description": "Language: 'en' or 'ar' (default: 'en')",
+                  "disabled": false
+                },
+                {
+                  "key": "category_limit",
+                  "value": "6",
+                  "description": "Number of categories (default: 6)",
+                  "disabled": false
+                },
+                {
+                  "key": "popular_limit",
+                  "value": "4",
+                  "description": "Number of popular picks (default: 4)",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "Get limited categories and popular picks for home screen. Returns 6 categories and 4 popular picks by default. Popular picks include is_favorite flag for authenticated customers. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Limit Categories (POST)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text",
+                  "description": "Language: 'en' or 'ar' (default: 'en')"
+                },
+                {
+                  "key": "category_limit",
+                  "value": "6",
+                  "type": "text",
+                  "description": "Number of categories (default: 6)"
+                },
+                {
+                  "key": "popular_limit",
+                  "value": "4",
+                  "type": "text",
+                  "description": "Number of popular picks (default: 4)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/limit_categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "limit_categories"
+              ]
+            },
+            "description": "Get limited categories and popular picks for home screen. Returns 6 categories and 4 popular picks by default. Popular picks include is_favorite flag for authenticated customers. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Categories (Public)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "parent_id",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "categories"
+              ]
+            },
+            "description": "Get list of categories (hierarchical). Optional: parent_id, language (en/ar)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Products (Public)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "category_id",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "products"
+              ]
+            },
+            "description": "Get list of products. Optional: category_id, search, language (en/ar). Returns is_favorite flag for authenticated customers. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product Details",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/product/3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "product",
+                "3"
+              ]
+            },
+            "description": "Get product details by ID. Returns is_favorite flag for authenticated customers. Replace '3' with actual product ID. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Popular Picks (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/popular_picks?language=en",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "popular_picks"
+              ],
+              "query": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "description": "Language: 'en' or 'ar' (default: 'en')",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Limit number of popular picks (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all popular picks (products marked as popular). Optional: language (en/ar), limit. Returns is_favorite flag for authenticated customers. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Popular Picks (POST)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text",
+                  "description": "Language: 'en' or 'ar' (default: 'en')"
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "type": "text",
+                  "description": "Limit number of popular picks (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/popular_picks",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "popular_picks"
+              ]
+            },
+            "description": "Get all popular picks (products marked as popular). Optional: language (en/ar), limit. Returns is_favorite flag for authenticated customers. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Categories (Authenticated)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/auth/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "auth",
+                "categories"
+              ]
+            },
+            "description": "Get all active categories with product count. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Products (Authenticated)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "category_id",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "50",
+                  "type": "text"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "products"
+              ]
+            },
+            "description": "Get products by category with pagination. Optional: category_id, limit, offset. Returns is_favorite flag for customers. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Limit Categories (Authenticated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/auth/limit_categories?language=en&category_limit=6&popular_limit=4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "auth",
+                "limit_categories"
+              ],
+              "query": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "description": "Language: 'en' or 'ar' (default: 'en')",
+                  "disabled": false
+                },
+                {
+                  "key": "category_limit",
+                  "value": "6",
+                  "description": "Number of categories (default: 6)",
+                  "disabled": false
+                },
+                {
+                  "key": "popular_limit",
+                  "value": "4",
+                  "description": "Number of popular picks (default: 4)",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "Get limited categories and popular picks for home screen (Authenticated). Returns 6 categories and 4 popular picks by default. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Limit Categories (Authenticated POST)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text",
+                  "description": "Language: 'en' or 'ar' (default: 'en')"
+                },
+                {
+                  "key": "category_limit",
+                  "value": "6",
+                  "type": "text",
+                  "description": "Number of categories (default: 6)"
+                },
+                {
+                  "key": "popular_limit",
+                  "value": "4",
+                  "type": "text",
+                  "description": "Number of popular picks (default: 4)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/auth/limit_categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "auth",
+                "limit_categories"
+              ]
+            },
+            "description": "Get limited categories and popular picks for home screen (Authenticated). Returns 6 categories and 4 popular picks by default. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Popular Picks (Authenticated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/auth/popular_picks?language=en",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "auth",
+                "popular_picks"
+              ],
+              "query": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "description": "Language: 'en' or 'ar' (default: 'en')",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Limit number of popular picks (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all popular picks (Authenticated). Optional: language (en/ar), limit. Returns is_favorite flag for customers. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Popular Picks (Authenticated POST)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "language",
+                  "value": "en",
+                  "type": "text",
+                  "description": "Language: 'en' or 'ar' (default: 'en')"
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "type": "text",
+                  "description": "Limit number of popular picks (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/auth/popular_picks",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "auth",
+                "popular_picks"
+              ]
+            },
+            "description": "Get all popular picks (Authenticated). Optional: language (en/ar), limit. Returns is_favorite flag for customers. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Add to Favorites",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "product_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "Product ID to add to favorites (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/favorites/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "favorites",
+                "add"
+              ]
+            },
+            "description": "Add a product to user's favorites. Required: product_id. Only customers can add products to favorites. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Remove from Favorites",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "product_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "Product ID to remove from favorites (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/favorites/remove",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "favorites",
+                "remove"
+              ]
+            },
+            "description": "Remove a product from user's favorites. Required: product_id. Only customers can remove products from favorites. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Favorites",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/favorites?limit=50&offset=0",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "favorites"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Number of results (default: 50)",
+                  "disabled": false
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Pagination offset (default: 0)",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "Get user's favorite products list. Supports both GET and POST methods. Optional: limit (default: 50), offset (default: 0). Only customers can view favorites. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Favorites (POST)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "limit",
+                  "value": "50",
+                  "type": "text",
+                  "description": "Number of results (default: 50)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text",
+                  "description": "Pagination offset (default: 0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/favorites",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "favorites"
+              ]
+            },
+            "description": "Get user's favorite products list. Supports both GET and POST methods. Optional: limit (default: 50), offset (default: 0). Only customers can view favorites. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Check if Favorite",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/favorites/check/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "favorites",
+                "check",
+                "1"
+              ]
+            },
+            "description": "Check if a product is in user's favorites. Supports both GET and POST methods. Returns is_favorite (boolean) and favorite_id if favorited. Replace '1' with actual product ID. Only customers can check favorites. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Request New Product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "New Product Name",
+                  "type": "text",
+                  "description": "Product name (required)"
+                },
+                {
+                  "key": "description",
+                  "value": "Product description here",
+                  "type": "text",
+                  "description": "Product description (required)"
+                },
+                {
+                  "key": "category_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "Category ID (optional, admin will assign during approval)",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded image (optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "price_per_kg",
+                  "value": "10.0",
+                  "type": "text",
+                  "description": "Suggested price per kilogram (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/product/request",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "product",
+                "request"
+              ]
+            },
+            "description": "Request a new product/item that is not found in the system. Required: name, description. Optional: category_id, image, price_per_kg. The request will be reviewed by an administrator who will assign a category and approve/reject it. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Product Requests",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "type": "text",
+                  "description": "Filter by status: 'pending', 'approved', 'rejected', or 'all' (optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "type": "text",
+                  "description": "Search by product name or description (optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text",
+                  "description": "Number of results (default: 20)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text",
+                  "description": "Pagination offset (default: 0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/product/request/list",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "product",
+                "request",
+                "list"
+              ]
+            },
+            "description": "Search product requests. For Admins/Managers: Shows all requests. For Regular Users: Shows only their own requests. Supports both GET and POST methods. Optional: status ('pending', 'approved', 'rejected', 'all'), search (by product name or description), limit (default: 20), offset (default: 0). Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Product Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "category_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "Category ID (required if not already set in request)"
+                },
+                {
+                  "key": "price_per_kg",
+                  "value": "10.0",
+                  "type": "text",
+                  "description": "Override suggested price (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/product/request/approve/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "product",
+                "request",
+                "approve",
+                "1"
+              ]
+            },
+            "description": "Approve a product request and automatically create the product in the backend. Admin/Manager only. Required: category_id (if not already set in request). Optional: price_per_kg (to override suggested price). The product will be created with the request details (name, description, image, price) and linked to the request. Replace '1' with actual request ID. Requires admin/manager authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Product Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "rejection_reason",
+                  "value": "Product already exists in the system",
+                  "type": "text",
+                  "description": "Reason for rejection (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/product/request/reject/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "product",
+                "request",
+                "reject",
+                "1"
+              ]
+            },
+            "description": "Reject a product request. Admin/Manager only. Optional: rejection_reason. Only pending requests can be rejected. Replace '1' with actual request ID. Requires admin/manager authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Requests/Orders",
+      "item": [
+        {
+          "name": "Create Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "category_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "product_id",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "quantity",
+                  "value": "10",
+                  "type": "text",
+                  "description": "Quantity count (optional, send either quantity or weight)"
+                },
+                {
+                  "key": "weight",
+                  "value": "5.5",
+                  "type": "text",
+                  "description": "Weight in KG (optional, send either quantity or weight)",
+                  "disabled": true
+                },
+                {
+                  "key": "pickup_date",
+                  "value": "2024-12-31",
+                  "type": "text"
+                },
+                {
+                  "key": "pickup_time",
+                  "value": "10:00-12:00",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "item_name",
+                  "value": "Custom Item Name",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "description",
+                  "value": "Additional description",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "photo_1",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "photo_2",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "gps_latitude",
+                  "value": "30.0444",
+                  "type": "text"
+                },
+                {
+                  "key": "gps_longitude",
+                  "value": "31.2357",
+                  "type": "text"
+                },
+                {
+                  "key": "address",
+                  "value": "123 Main Street, Cairo, Egypt",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "create"
+              ]
+            },
+            "description": "Create new recycling request. Required: category_id, pickup_date, gps_latitude, gps_longitude. Either quantity OR weight must be provided (at least one). Optional: product_id (or item_name for custom), pickup_time, description, photos. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Requests List",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "all",
+                  "type": "text"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/list",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "list"
+              ]
+            },
+            "description": "Get user's requests. Supports both GET and POST methods. Status: 'draft', 'pending', 'assigned', 'collected', 'cancelled', or 'all'. Optional: limit (default: 20), offset (default: 0). Returns requests with collector_phone if assigned. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Assigned Orders",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text",
+                  "description": "Number of results (default: 20)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text",
+                  "description": "Pagination offset (default: 0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/assigned-orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "assigned-orders"
+              ]
+            },
+            "description": "Get assigned orders with QR codes. Supports both GET and POST methods. For Customers: Returns orders assigned to a collector (status = 'assigned'). For Collectors: Returns orders assigned to them (status = 'assigned'). Optional: limit (default: 20), offset (default: 0). Each order includes QR code for scanning. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order QR Code",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "order_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "Order/Request ID (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/qr-code",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "qr-code"
+              ]
+            },
+            "description": "Get QR code and QR code image for a specific order. Required: order_id. Returns qr_code (string) and qr_code_image (base64 string). Customers can only access their own orders. Collectors can only access orders assigned to them. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Request Details",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/details/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "details",
+                "1"
+              ]
+            },
+            "description": "Get detailed request information with tracking info. Replace '1' with actual request ID. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Request Details (Timeline)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/details-timeline/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "details-timeline",
+                "1"
+              ]
+            },
+            "description": "Get detailed request information with order timeline for mobile UI. Returns timeline stages (Order Received, Order Ongoing, Order Collected) with formatted dates and times. Replace '1' with actual request ID. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "reason",
+                  "value": "Changed my mind",
+                  "type": "text",
+                  "description": "Reason for rejecting/cancelling the request (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/reject/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "reject",
+                "1"
+              ]
+            },
+            "description": "Reject/cancel a request. Requires reason parameter. Cannot reject requests that are already collected. Replace '1' with actual request ID. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Receipt",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "receipt",
+                  "value": "base64_encoded_receipt_image",
+                  "type": "text",
+                  "description": "Base64 encoded receipt image (required). Can also use 'receipt_image' as parameter name."
+                },
+                {
+                  "key": "receipt_image",
+                  "value": "",
+                  "type": "text",
+                  "description": "Alternative parameter name for receipt (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/request/upload-receipt/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "request",
+                "upload-receipt",
+                "1"
+              ]
+            },
+            "description": "Upload receipt image for a collected order. Requires receipt parameter (base64 encoded image). Can only upload receipt for orders with 'collected' status. Customer can upload for their orders, collector can upload for orders they completed. Replace '1' with actual request ID. Requires authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Collector",
+      "item": [
+        {
+          "name": "Get Collector Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "profile"
+              ]
+            },
+            "description": "Get collector profile with detailed statistics. Returns collector information including: user_id, name, role, phone, email, image (URL), profile_image (base64), user_type, language, account_status, verified, gps_latitude, gps_longitude, collector_status, total_orders, orders_in_progress, orders_waiting, total_orders_completed, average_rating, commission_rate, balance, currency_symbol. Supports both GET and POST methods. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Collector Profile (POST)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "profile"
+              ]
+            },
+            "description": "Get collector profile with detailed statistics (POST method). Returns collector information including: user_id, name, role, phone, email, image (URL), profile_image (base64), user_type, language, account_status, verified, gps_latitude, gps_longitude, collector_status, total_orders, orders_in_progress, orders_waiting, total_orders_completed, average_rating, commission_rate, balance, currency_symbol. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Orders",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/available-orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "available-orders"
+              ]
+            },
+            "description": "Get available orders for collectors (pending orders not assigned to anyone). Excludes orders already rejected by this collector. Supports both GET and POST methods. Optional: limit (default: 20), offset (default: 0). Requires collector authentication and approval."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Orders",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/active-orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "active-orders"
+              ]
+            },
+            "description": "Get active orders assigned to the collector (for QR scanning). Supports both GET and POST methods. Returns orders with status 'assigned'. Includes order_id, estimated_date, estimated_time, location, weight, quantity, user_type ('weight' or 'quantity'), price, and QR code. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Collector Orders",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "all",
+                  "type": "text",
+                  "description": "Filter by status: 'pending', 'assigned', 'collected', 'cancelled', or 'all'"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "orders"
+              ]
+            },
+            "description": "Get collector's orders (assigned to this collector) with status filter. Supports both GET and POST methods. Status: 'pending', 'assigned', 'collected', 'cancelled', or 'all'. Optional: limit (default: 20), offset (default: 0). Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Available Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "reason",
+                  "value": "Too far from my location",
+                  "type": "text",
+                  "description": "Reason for rejecting the order (optional but recommended)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/reject-available-order/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "reject-available-order",
+                "1"
+              ]
+            },
+            "description": "Reject an available order (before accepting it). This rejection is specific to this collector only - other collectors can still see and accept the order. Optional: reason. Replace '1' with actual request ID. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Accept Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "pickup_time",
+                  "value": "4:00 PM to 6:00 PM",
+                  "type": "text",
+                  "description": "Time range for pickup (optional, e.g., '4:00 PM to 6:00 PM', 'Morning', '10:00 AM - 12:00 PM')",
+                  "disabled": false
+                },
+                {
+                  "key": "time_range",
+                  "value": "",
+                  "type": "text",
+                  "description": "Alternative parameter name for pickup_time (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/accept-order/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "accept-order",
+                "1"
+              ]
+            },
+            "description": "Accept an available order. Optional: pickup_time or time_range (e.g., '4:00 PM to 6:00 PM', 'Morning'). If not provided, a recommended time range based on collector's historical patterns will be used. Response includes recommended_time_range. Replace '1' with actual request ID. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "reason",
+                  "value": "Unable to reach customer location",
+                  "type": "text",
+                  "description": "Reason for rejecting the order (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/reject-order/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "reject-order",
+                "1"
+              ]
+            },
+            "description": "Reject an assigned order. Requires reason parameter. Replace '1' with actual request ID. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "final_weight",
+                  "value": "5.5",
+                  "type": "text",
+                  "description": "Final weight collected (for weight-based orders)",
+                  "disabled": true
+                },
+                {
+                  "key": "final_quantity",
+                  "value": "10",
+                  "type": "text",
+                  "description": "Final quantity collected (for quantity-based orders)",
+                  "disabled": true
+                },
+                {
+                  "key": "payment_method",
+                  "value": "cash",
+                  "type": "text",
+                  "description": "Payment method: 'cash' or 'wallet' (default: 'cash'). If 'wallet', amount is deducted from collector's wallet and added to customer's wallet.",
+                  "disabled": false
+                },
+                {
+                  "key": "notes",
+                  "value": "Collection completed successfully",
+                  "type": "text",
+                  "description": "Optional collection notes",
+                  "disabled": true
+                },
+                {
+                  "key": "items",
+                  "value": "[{\"weight\": 5.5, \"category_id\": 1, \"item_name\": \"\", \"photo\": \"\"}, {\"weight\": 3.2, \"category_id\": 2, \"item_name\": \"Custom Item\", \"photo\": \"\"}]",
+                  "type": "text",
+                  "description": "Optional: Array of items with weight, category_id, item_name (for 'Other' category), and photo (base64). JSON string format.",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/complete-order/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "complete-order",
+                "1"
+              ]
+            },
+            "description": "Complete/finish an assigned order. Required: final_weight (for weight-based) or final_quantity (for quantity-based). Optional: payment_method ('cash' or 'wallet', default: 'cash'), notes, items array. If payment_method is 'wallet', amount is deducted from collector's wallet. Replace '1' with actual request ID. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Scan QR Code",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "qr_code",
+                  "value": "123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/scan-qr",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "scan-qr"
+              ]
+            },
+            "description": "Scan QR code to verify and get active order details with items. QR code should contain request ID. Returns full order details including order_id, estimated_date, estimated_time, location, items list with original and actual weights/quantities. Each item shows: item_name, original_quantity, original_weight, actual_quantity (to be filled), actual_weight (to be filled), price_per_kg, calculated_price, user_type. Only works for orders assigned to the collector with 'assigned' status. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Items",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "items",
+                  "value": "[{\"item_id\": 1, \"item_name\": \"Plastic Bottle\", \"actual_weight\": 2.56}, {\"item_id\": 2, \"item_name\": \"Cartoons\", \"actual_weight\": 2.56}]",
+                  "type": "text",
+                  "description": "Array of items with actual weights/quantities. Each item: item_id (if exists), item_name, actual_weight (for weight-based), actual_quantity (for quantity-based), product_id (optional). JSON string format."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/update-order-items/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "update-order-items",
+                "1"
+              ]
+            },
+            "description": "Update actual weight/quantity for each item in an order (after QR scan). Required: items array. Each item should have: item_id (if exists), item_name, actual_weight (for weight-based items), actual_quantity (for quantity-based items). Returns updated order with items and calculated prices. Replace '1' with actual request ID. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Receipt",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/order-receipt/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "order-receipt",
+                "1"
+              ]
+            },
+            "description": "Get order receipt/details after collector updates quantities/weights. Returns order ID, date/time, items list with actual weights/quantities, collector fee, Cycle X fee, and total amount. Can be accessed by both collector (for assigned orders) and customer (for their own orders). Replace '1' with actual request ID. Requires customer or collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Request Area Change",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "governorate_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "New governorate ID (required)"
+                },
+                {
+                  "key": "working_area_ids",
+                  "value": "[1, 2, 3]",
+                  "type": "text",
+                  "description": "Array of working area IDs (required, max 5)"
+                },
+                {
+                  "key": "reason",
+                  "value": "Moving to a new location",
+                  "type": "text",
+                  "description": "Reason for requesting area change (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/request-area-change",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "request-area-change"
+              ]
+            },
+            "description": "Request to change working areas and governorate. Required: governorate_id, working_area_ids (array, max 5). Optional: reason. Returns request details with current and requested areas. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Area Change Requests",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "type": "text",
+                  "description": "Filter by status: 'pending', 'approved', 'rejected' (optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text",
+                  "description": "Number of results (default: 20)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text",
+                  "description": "Pagination offset (default: 0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/area-change-requests",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "area-change-requests"
+              ]
+            },
+            "description": "Get area change requests for collector. Optional: status filter, limit, offset. Returns list of requests with current and requested areas, status, and approval information. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Orders Grouped",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/available-orders-grouped",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "available-orders-grouped"
+              ]
+            },
+            "description": "Get available orders grouped by customer and pickup address. Returns orders organized by customer_id and pickup_address. Each group includes customer info, location, summary statistics (orders_count, total_price, total_quantity, total_weight), and array of orders. Optional: limit (default: 20), offset (default: 0). Requires collector authentication and approval."
+          },
+          "response": []
+        },
+        {
+          "name": "Accept Order Group",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "customer_id",
+                  "value": "123",
+                  "type": "text",
+                  "description": "Customer ID (required)"
+                },
+                {
+                  "key": "pickup_address",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "description": "Pickup address (required)"
+                },
+                {
+                  "key": "pickup_time",
+                  "value": "4:00 PM to 6:00 PM",
+                  "type": "text",
+                  "description": "Time range for pickup (optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "time_range",
+                  "value": "",
+                  "type": "text",
+                  "description": "Alternative parameter name for pickup_time (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/accept-order-group",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "accept-order-group"
+              ]
+            },
+            "description": "Accept all available orders for a customer at a specific pickup address. Required: customer_id, pickup_address. Optional: pickup_time or time_range. Accepts all pending orders for the specified customer and address in one call. Returns summary with accepted_count, failed_count, totals, and lists of accepted/failed orders. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Order Group",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "customer_id",
+                  "value": "123",
+                  "type": "text",
+                  "description": "Customer ID (required)"
+                },
+                {
+                  "key": "pickup_address",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "description": "Pickup address (required)"
+                },
+                {
+                  "key": "reason",
+                  "value": "Unable to reach location",
+                  "type": "text",
+                  "description": "Reason for rejection (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/reject-order-group",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "reject-order-group"
+              ]
+            },
+            "description": "Reject all assigned orders for a customer at a specific pickup address. Required: customer_id, pickup_address, reason. Rejects all orders assigned to the collector for the specified customer and address. Unassigns collector, reverts status to pending, and adds rejection note. Returns summary with rejected_count, failed_count, totals, and lists of rejected/failed orders. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Order Group",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "customer_id",
+                  "value": "123",
+                  "type": "text",
+                  "description": "Customer ID (required)"
+                },
+                {
+                  "key": "pickup_address",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "description": "Pickup address (required)"
+                },
+                {
+                  "key": "final_weight",
+                  "value": "15.5",
+                  "type": "text",
+                  "description": "Final weight collected (optional, applied to all orders if not specified per order)",
+                  "disabled": true
+                },
+                {
+                  "key": "notes",
+                  "value": "Collection completed successfully",
+                  "type": "text",
+                  "description": "Collection notes (optional, applied to all orders if not specified per order)",
+                  "disabled": true
+                },
+                {
+                  "key": "items",
+                  "value": "[{\"weight\": 5.5, \"category_id\": 1, \"item_name\": \"Bottles\", \"photo\": \"base64_encoded_image\"}]",
+                  "type": "text",
+                  "description": "Array of items with photos (optional, global items for all orders)",
+                  "disabled": true
+                },
+                {
+                  "key": "orders_data",
+                  "value": "[{\"order_id\": 1, \"final_weight\": 5.5, \"notes\": \"Order 1 notes\", \"items\": []}]",
+                  "type": "text",
+                  "description": "Array of order-specific data (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/complete-order-group",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "complete-order-group"
+              ]
+            },
+            "description": "Complete all assigned orders for a customer at a specific pickup address. Required: customer_id, pickup_address. Optional: final_weight (global), notes (global), items (global array), orders_data (array with order_id, final_weight, notes, items per order). Supports global parameters or per-order parameters. Calculates final price and commission for each order. Returns summary with completed_count, failed_count, totals, and lists of completed/failed orders. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Scan QR Group",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "customer_id",
+                  "value": "123",
+                  "type": "text",
+                  "description": "Customer ID (required)"
+                },
+                {
+                  "key": "pickup_address",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "description": "Pickup address (required)"
+                },
+                {
+                  "key": "qr_codes",
+                  "value": "[\"1\", \"2\", \"3\"]",
+                  "type": "text",
+                  "description": "Array of QR codes to verify (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/collector/scan-qr-group",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "collector",
+                "scan-qr-group"
+              ]
+            },
+            "description": "Scan QR codes for a group of orders (all orders for a customer at a specific pickup address). Required: customer_id, pickup_address. Optional: qr_codes (array of QR codes to verify - validates all QR codes match the group). Returns all assigned orders for the customer at the address with full details, QR codes, and group totals. If qr_codes provided, verifies all scanned QR codes match the orders in the group. Requires collector authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Rating",
+      "item": [
+        {
+          "name": "Rate Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "rating",
+                  "value": "5",
+                  "type": "text"
+                },
+                {
+                  "key": "comments",
+                  "value": "Excellent service!",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/order/rate/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "order",
+                "rate",
+                "1"
+              ]
+            },
+            "description": "Rate and provide feedback for a completed order. Rating: 1-5. Optional: comments. Replace '1' with actual request ID. Requires customer authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        {
+          "name": "Get Wallet Balance",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/wallet/balance",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "wallet",
+                "balance"
+              ]
+            },
+            "description": "Get current wallet balance. Requires customer or collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Wallet Transactions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "transaction_type",
+                  "value": "credit",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/wallet/transactions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "wallet",
+                "transactions"
+              ]
+            },
+            "description": "Get wallet transaction history. Optional: transaction_type ('credit' or 'debit'), limit, offset. Requires customer or collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Request Withdrawal",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "amount",
+                  "value": "100.0",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/wallet/withdraw",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "wallet",
+                "withdraw"
+              ]
+            },
+            "description": "Request withdrawal from wallet. Amount must be above withdrawal threshold and within balance. Requires customer or collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Collector Pending Commissions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text",
+                  "description": "Number of results (default: 20)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text",
+                  "description": "Pagination offset (default: 0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/wallet/collector/pending-commissions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "wallet",
+                "collector",
+                "pending-commissions"
+              ]
+            },
+            "description": "Get pending commissions for collector. Optional: limit, offset. Returns list of pending commissions and total pending amount. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Transfer Commissions to Wallet",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "commission_ids",
+                  "value": "[1, 2, 3]",
+                  "type": "text",
+                  "description": "Array of commission IDs to transfer (optional - if not provided, transfers all pending commissions)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/wallet/collector/transfer-commissions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "wallet",
+                "collector",
+                "transfer-commissions"
+              ]
+            },
+            "description": "Transfer pending commissions to collector's wallet. Optional: commission_ids array. If not provided, transfers all pending commissions. Requires collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Request Bank Transfer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "amount",
+                  "value": "1000",
+                  "type": "text",
+                  "description": "Amount to transfer (required)"
+                },
+                {
+                  "key": "transfer_type",
+                  "value": "bank",
+                  "type": "text",
+                  "description": "Transfer type: 'bank' or 'instapay' (required)"
+                },
+                {
+                  "key": "bank_name",
+                  "value": "Bank Name",
+                  "type": "text",
+                  "description": "Bank name (required for bank transfers)"
+                },
+                {
+                  "key": "account_number",
+                  "value": "123456789",
+                  "type": "text",
+                  "description": "Bank account number (required for bank transfers)"
+                },
+                {
+                  "key": "account_holder_name",
+                  "value": "John Doe",
+                  "type": "text",
+                  "description": "Account holder name (required for bank transfers)"
+                },
+                {
+                  "key": "iban",
+                  "value": "EG123456789012345678901234",
+                  "type": "text",
+                  "description": "IBAN number (optional for bank transfers)",
+                  "disabled": true
+                },
+                {
+                  "key": "instapay_phone",
+                  "value": "01234567890",
+                  "type": "text",
+                  "description": "Phone number for Instapay (required for Instapay transfers)",
+                  "disabled": true
+                },
+                {
+                  "key": "instapay_email",
+                  "value": "user@example.com",
+                  "type": "text",
+                  "description": "Email address for Instapay (required for Instapay transfers)",
+                  "disabled": true
+                },
+                {
+                  "key": "notes",
+                  "value": "Additional notes",
+                  "type": "text",
+                  "description": "Additional notes (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/wallet/request-bank-transfer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "wallet",
+                "request-bank-transfer"
+              ]
+            },
+            "description": "Request transfer from wallet to bank account or Instapay. Required: amount, transfer_type ('bank' or 'instapay'). For bank: bank_name, account_number, account_holder_name. For Instapay: instapay_phone, instapay_email. Requires customer or collector authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Bank Transfers",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "type": "text",
+                  "description": "Filter by status: 'pending', 'approved', 'rejected', 'completed' (optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text",
+                  "description": "Number of results (default: 20)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "type": "text",
+                  "description": "Pagination offset (default: 0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/wallet/bank-transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "wallet",
+                "bank-transfers"
+              ]
+            },
+            "description": "Get bank transfer requests for current user. Optional: status filter, limit, offset. Returns list of transfer requests with details. Requires customer or collector authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App Management",
+      "item": [
+        {
+          "name": "Get App Version (iOS)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/app_version",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "app_version"
+              ]
+            },
+            "description": "Get the latest iOS app version. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get App Version (Android)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/app_version_android",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "app_version_android"
+              ]
+            },
+            "description": "Get the latest Android app version. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Terms and Conditions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/terms_conditions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "terms_conditions"
+              ]
+            },
+            "description": "Get terms and conditions. Public endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Notification Log",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "fcm_token",
+                  "value": "fcm_token_here",
+                  "type": "text"
+                },
+                {
+                  "key": "title",
+                  "value": "Notification Title",
+                  "type": "text"
+                },
+                {
+                  "key": "body",
+                  "value": "Notification body message",
+                  "type": "text"
+                },
+                {
+                  "key": "status",
+                  "value": "sent",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "no_type",
+                  "value": "user",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "action_type",
+                  "value": "message",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "action_id",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/notification_log",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "notification_log"
+              ]
+            },
+            "description": "Create a notification log entry. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Notification Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/notification_log?limit=50&offset=0",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "notification_log"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Number of records to return (default: 50)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Number of records to skip (default: 0)"
+                }
+              ]
+            },
+            "description": "Get notification logs for the current user. Optional: limit, offset. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Send Notification to All Users",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Notification Title\",\n    \"body\": \"Notification message body\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/send_notification/all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "send_notification",
+                "all"
+              ]
+            },
+            "description": "Send notification to all users (customers and collectors). Required: title, body. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Send Notification to Clients",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Notification Title\",\n    \"body\": \"Notification message body\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/send_notification/clients",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "send_notification",
+                "clients"
+              ]
+            },
+            "description": "Send notification to clients (customers) only. Required: title, body. Requires authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Send Notification to Collectors",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Notification Title\",\n    \"body\": \"Notification message body\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/send_notification/collectors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "send_notification",
+                "collectors"
+              ]
+            },
+            "description": "Send notification to collectors only. Required: title, body. Requires authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Shopping Cart",
+      "item": [
+        {
+          "name": "Add Product to Cart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "product_id",
+                  "value": "1",
+                  "type": "text",
+                  "description": "Product ID (required)"
+                },
+                {
+                  "key": "quantity",
+                  "value": "5",
+                  "type": "text",
+                  "description": "Quantity count (optional, send either quantity or weight)"
+                },
+                {
+                  "key": "weight",
+                  "value": "5.5",
+                  "type": "text",
+                  "description": "Weight in KG (optional, send either quantity or weight)",
+                  "disabled": true
+                },
+                {
+                  "key": "photo_1",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded image - customer's photo (optional)",
+                  "disabled": true
+                },
+                {
+                  "key": "photo_2",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded image - customer's photo (optional)",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/add",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "add"
+              ]
+            },
+            "description": "Add product to shopping cart. If product already exists, quantity/weight will be increased. Required: product_id. Either quantity OR weight must be provided (at least one). Optional: photo_1, photo_2 (customer's photos as base64 encoded images). Photos are stored with the cart item and returned in all cart endpoints. Response includes item with photo_1 and photo_2 (customer's uploaded photos, if provided). Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart"
+              ]
+            },
+            "description": "Get current user's shopping cart with all items, quantities, prices, and total reward. Each item includes input_type field ('quantity' or 'weight') indicating which field was used when adding to cart. Each item also includes photo_1 and photo_2 (customer's uploaded photos, if provided). Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cart Items (Product Format)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/items",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "items"
+              ]
+            },
+            "description": "Get current user's cart items formatted as products. Returns items with product structure (id, name, description, category_id, category_name, price_per_kg, currency, currency_symbol, image, item_count_in_cart) plus cart-specific fields (cart_line_id, quantity, weight, subtotal, reward, input_type, photo_1, photo_2). input_type indicates which field was used when adding to cart ('quantity' or 'weight'). photo_1 and photo_2 are customer's uploaded photos (base64 encoded, if provided). Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "quantity",
+                  "value": "10.0",
+                  "type": "text",
+                  "description": "New quantity in KG (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/update/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "update",
+                "1"
+              ]
+            },
+            "description": "Update quantity of a cart item. Replace '1' with actual cart line ID. Required: quantity. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Increment Cart Item",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "amount",
+                  "value": "1.0",
+                  "type": "text",
+                  "description": "Amount to increment (default: 1.0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/increment/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "increment",
+                "1"
+              ]
+            },
+            "description": "Increment cart item quantity by specified amount (default: 1.0). Replace '1' with actual cart line ID. Optional: amount. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Decrement Cart Item",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "amount",
+                  "value": "1.0",
+                  "type": "text",
+                  "description": "Amount to decrement (default: 1.0)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/decrement/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "decrement",
+                "1"
+              ]
+            },
+            "description": "Decrement cart item quantity by specified amount (default: 1.0). If quantity reaches 0 or below, item is removed. Replace '1' with actual cart line ID. Optional: amount. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Remove from Cart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/remove/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "remove",
+                "1"
+              ]
+            },
+            "description": "Remove item from cart. Replace '1' with actual cart line ID. Also supports DELETE method. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/clear",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "clear"
+              ]
+            },
+            "description": "Remove all items from cart. Cart remains active but empty. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Request from Cart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "pickup_date",
+                  "value": "2024-12-31",
+                  "type": "text",
+                  "description": "Pickup date (YYYY-MM-DD) (required)"
+                },
+                {
+                  "key": "address",
+                  "value": "123 Main Street, Cairo, Egypt",
+                  "type": "text",
+                  "description": "Pickup address (required)"
+                },
+                {
+                  "key": "gps_latitude",
+                  "value": "30.0444",
+                  "type": "text",
+                  "description": "GPS latitude (required)"
+                },
+                {
+                  "key": "gps_longitude",
+                  "value": "31.2357",
+                  "type": "text",
+                  "description": "GPS longitude (required)"
+                },
+                {
+                  "key": "description",
+                  "value": "Additional description",
+                  "type": "text",
+                  "description": "Additional description (optional)"
+                },
+                {
+                  "key": "photo_1",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded image (optional)"
+                },
+                {
+                  "key": "photo_2",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded image (optional)"
+                },
+                {
+                  "key": "cart_id",
+                  "value": "",
+                  "type": "text",
+                  "description": "Cart ID (optional, uses active cart if not provided)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/create_request",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "create_request"
+              ]
+            },
+            "description": "Create recycling request(s) from cart. Each cart line becomes a separate request. Required: pickup_date, address, gps_latitude, gps_longitude. Optional: description, photo_1, photo_2, cart_id. Cart is cleared after successful creation. Requires customer authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Multiple Requests from Cart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "pickup_date",
+                  "value": "2024-12-31",
+                  "type": "text",
+                  "description": "Pickup date (YYYY-MM-DD) (required)"
+                },
+                {
+                  "key": "address",
+                  "value": "123 Main Street, Cairo, Egypt",
+                  "type": "text",
+                  "description": "Pickup address (required)"
+                },
+                {
+                  "key": "gps_latitude",
+                  "value": "30.0444",
+                  "type": "text",
+                  "description": "GPS latitude (required)"
+                },
+                {
+                  "key": "gps_longitude",
+                  "value": "31.2357",
+                  "type": "text",
+                  "description": "GPS longitude (required)"
+                },
+                {
+                  "key": "description",
+                  "value": "Additional description",
+                  "type": "text",
+                  "description": "Additional description (optional, applied to all requests)"
+                },
+                {
+                  "key": "pickup_time",
+                  "value": "Morning",
+                  "type": "text",
+                  "description": "Pickup time slot (optional, applied to all requests)"
+                },
+                {
+                  "key": "photo_1",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded image (optional, applied to all requests)"
+                },
+                {
+                  "key": "photo_2",
+                  "value": "base64_encoded_image",
+                  "type": "text",
+                  "description": "Base64 encoded image (optional, applied to all requests)"
+                },
+                {
+                  "key": "cart_id",
+                  "value": "",
+                  "type": "text",
+                  "description": "Cart ID (optional, uses active cart if not provided)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cyclex/cart/create_requests",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "cyclex",
+                "cart",
+                "create_requests"
+              ]
+            },
+            "description": "Create multiple recycling requests from cart (one request per product). Each cart line item becomes a separate request. Features: Better error handling (continues even if some fail), partial success support, photos applied to all requests. Required: pickup_date, address, gps_latitude, gps_longitude. Optional: description, pickup_time, photo_1, photo_2, cart_id. Cart is cleared only if all requests succeed. Requires customer authentication."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://cyclex.edafa.cloud"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const token = pm.environment.get('auth_token');",
+          "if (!token) {",
+          "  // Remove bearer so public endpoints work before login",
+          "  const headers = pm.request.headers;",
+          "  if (headers.has('Authorization')) { headers.remove('Authorization'); }",
+          "}"
+        ]
+      }
+    }
+  ]
+}

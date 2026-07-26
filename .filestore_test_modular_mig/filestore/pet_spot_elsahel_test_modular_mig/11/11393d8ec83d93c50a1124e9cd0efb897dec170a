@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/46
+- Message ID: 9729
+- Customer: Bright&I zone ( Odoo ERP )
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 11:18:12 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.65
+
+**الملخص:**
+User requests assistance with account password setup and access management in Odoo ERP.
+
+**الإجراء المطلوب:**
+Provide guidance on how users can set their passwords and manage access in Odoo.
+
+**نص مرفق مستخرج:**
+مساء الخير يا جماعة. ممكن تعملوا العمل الاكاونت يخش يعمل باسورد. انتو اللي بتختار الباسورد مش احنا. احنا بعتن لكو الاكسس على الميل ده. اي حاجة بعد كده عايز تغير الباسورد نسيت الباسورد بتقدر تعملها من عندك. مش من عندنا احنا. ده اكسس. فاكيدا يعني تعمل لكو اكسس بل كده الحاجات كثير. باسورد من عندك انتو. عد يدخل يعمل باسورد. هيجي له لينك على الميل بتاعه. اللي بتسجل بيه في الصورة دي. يقدر يعمل يقدر يعمل عادي.
+
+## Original Message
+
+```
+Voice message: 3AED9FC8ED48733CB84A.oga
+```

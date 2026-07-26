@@ -1,0 +1,4 @@
+alias_present=yes (multi-name Host block)
+fingerprint_keyscan_match=yes (ED25519)
+permanent_known_hosts_pin=absent — required before transfer
+connectivity_probe_rc=0 (via temporary known_hosts; ~/.ssh/known_hosts unchanged)

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Phase 3: unified outbound OFF by default (no business cutover). -->
+    <record id="icp_whatsapp_hub_unified_outbound_enabled" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.unified_outbound_enabled</field>
+        <field name="value">False</field>
+    </record>
+    <!-- Empty = all purposes allowed once global+instance flags are on. -->
+    <record id="icp_whatsapp_hub_unified_outbound_purposes" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.unified_outbound_purposes</field>
+        <field name="value"></field>
+    </record>
+    <!-- Phase 4: Discuss cutover OFF by default. -->
+    <record id="icp_whatsapp_hub_discuss_cutover_enabled" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.discuss_cutover_enabled</field>
+        <field name="value">False</field>
+    </record>
+    <!-- E1: Discuss Hub channel allowlist — empty = fail-closed when cutover ON. -->
+    <record id="icp_whatsapp_hub_discuss_hub_allowed_channel_ids" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.discuss_hub_allowed_channel_ids</field>
+        <field name="value"></field>
+    </record>
+    <!-- Phase 5A: Campaign cutover OFF by default (parallel to Discuss). -->
+    <record id="icp_whatsapp_hub_campaign_cutover_enabled" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.campaign_cutover_enabled</field>
+        <field name="value">False</field>
+    </record>
+    <!-- Phase 5A: Campaign Hub allowlist — empty = fail-closed when cutover ON. -->
+    <record id="icp_whatsapp_hub_campaign_hub_allowed_campaign_ids" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.campaign_hub_allowed_campaign_ids</field>
+        <field name="value"></field>
+    </record>
+    <!-- Phase 5A: max pending Hub Campaign jobs per instance (backpressure). -->
+    <record id="icp_whatsapp_hub_max_pending_campaign_jobs" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.max_pending_campaign_jobs</field>
+        <field name="value">100</field>
+    </record>
+    <!-- Phase 5A: Campaign admit batch size per Start/Resume tick. -->
+    <record id="icp_whatsapp_hub_campaign_admit_batch_size" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.campaign_admit_batch_size</field>
+        <field name="value">25</field>
+    </record>
+
+    <!-- P5E: Campaign Hub health thresholds (safe defaults; soak uses Ops docs). -->
+    <record id="icp_whatsapp_hub_campaign_health_stale_minutes" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.campaign_health_stale_minutes</field>
+        <field name="value">30</field>
+    </record>
+    <record id="icp_whatsapp_hub_campaign_health_stuck_processing_minutes" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.campaign_health_stuck_processing_minutes</field>
+        <field name="value">15</field>
+    </record>
+    <record id="icp_whatsapp_hub_campaign_health_pending_warn" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.campaign_health_pending_warn</field>
+        <field name="value">15</field>
+    </record>
+    <record id="icp_whatsapp_hub_discuss_starvation_minutes" model="ir.config_parameter">
+        <field name="key">whatsapp_hub.discuss_starvation_minutes</field>
+        <field name="value">10</field>
+    </record>
+    <!-- Recommended soak values (documented); do not lower Production admit/max here
+         until soak activation — current general defaults remain for legacy safety.
+         Soak activation should set:
+           campaign_admit_batch_size = 5
+           max_pending_campaign_jobs = 20
+         These ICPs affect Hub Campaign admission only (not legacy Campaign path). -->
+</odoo>

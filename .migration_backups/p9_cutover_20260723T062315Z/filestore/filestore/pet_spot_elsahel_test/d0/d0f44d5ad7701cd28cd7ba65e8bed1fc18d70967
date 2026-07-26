@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 7651
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-08 15:55:45 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+User reports missing details in the internal account related to purchases and bills.
+
+**الإجراء المطلوب:**
+Investigate the visibility settings for the internal account details and ensure that the description and amount fields are displayed correctly.
+
+**نص مرفق مستخرج:**
+بيبقى انا محمد ديز دلوقتي انا عندي حساب تحيلي لده لوه اسمه انترنل الحساب ده مثلا مستخدمه في المشتريات وفي البيل وفي كل حاجة فمفروض بيجي ليه تفاصيل هنا تفاصيل ليه يعني توتر المشتريات او توتر البيل على توتر التايمشيت على توتر المعرفش ايه كده التفاصيل دي حسنة مخفية فحلوا السبب احنا ادفنا الdescription ومبلغ فهم اختفوا
+
+## Original Message
+
+```
+Voice message: 3EB048BD836FD6D0DF0CCA.oga
+```

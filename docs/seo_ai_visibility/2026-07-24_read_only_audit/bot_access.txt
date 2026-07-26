@@ -1,0 +1,6 @@
+Googlebot -> 200
+bingbot -> 200
+OAI-SearchBot -> 200
+GPTBot -> 200
+ChatGPT-User -> 200
+ClaudeBot -> 200

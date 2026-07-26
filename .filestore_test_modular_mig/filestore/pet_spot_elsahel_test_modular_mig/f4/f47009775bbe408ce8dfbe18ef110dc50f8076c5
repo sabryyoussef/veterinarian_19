@@ -1,0 +1,27 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 5391
+- Customer: Dev Needed
+- Provider: openai / gpt-4o-mini
+- Analyzed at: 2026-07-02 08:43:44 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** configuration
+**الأولوية:** medium
+**الثقة:** 0.00
+
+**الملخص:**
+Request to change database name and create live and test databases.
+
+**الإجراء المطلوب:**
+Create new databases with the specified names and configure them accordingly.
+
+## Original Message
+
+```
+دي الداتا بيز 
+بتاعتهم 
+عايزين نغيرها لاسمهم وكمان علشان يبقي عندنا داتا بيز لايف وتيست
+```

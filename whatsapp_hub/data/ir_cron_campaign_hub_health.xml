@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_whatsapp_campaign_hub_health" model="ir.cron">
+        <field name="name">WhatsApp Hub: Campaign Hub Health Check</field>
+        <field name="model_id" ref="model_whatsapp_campaign_hub_health"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_run_health_check()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="whatsapp_campaign_hub_health_singleton" model="whatsapp.campaign.hub.health">
+        <field name="display_name">Campaign Hub Health</field>
+        <field name="last_status">unknown</field>
+    </record>
+</odoo>

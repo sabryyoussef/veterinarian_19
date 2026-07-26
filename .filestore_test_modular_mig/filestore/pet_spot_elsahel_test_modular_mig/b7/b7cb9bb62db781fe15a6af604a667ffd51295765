@@ -1,0 +1,9 @@
+row,emp_no,error
+2,UNKNOWN,Unknown employee number: UNKNOWN
+3,,Missing employee number.
+4,PW-UAT-REQ-001,Unknown leave kind: نوع-مجهول
+5,PW-UAT-REQ-001,Configured leave type missing for kind 'other'. Set it in Settings.
+6,PW-UAT-REQ-001,Start date must be on or before end date.
+7,PW-UAT-REQ-001,Resume date must be after end date.
+8,PW-UAT-REQ-001,Acting employee cannot be the requester.
+9,PW-UAT-REQ-001,Unknown acting employee number: NO-ACT-EMP

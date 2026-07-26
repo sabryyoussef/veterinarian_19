@@ -237,6 +237,16 @@ class OpenprojectProjectMap(models.Model):
                 stats["warnings"] += warnings
                 if parent_wp_id:
                     pending_parents.append((task, parent_wp_id))
+                try:
+                    task._op_sync_attachments_from_wp()
+                except Exception as att_err:
+                    _logger.warning(
+                        "Attachment sync failed for task %s WP %s: %s",
+                        task.id,
+                        task.op_work_package_id,
+                        att_err,
+                    )
+                    stats["warnings"] += 1
                 Log.log(
                     name=f"{'Create' if created else 'Update'} WP {wp.get('id')}",
                     operation="create" if created else "update",

@@ -1,0 +1,14 @@
+=== who owns 8028 ===
+LISTEN 0      511                      127.0.0.1:8028       0.0.0.0:*    users:(("cursor",pid=474709,fd=53))   
+LISTEN 0      511                          [::1]:8028          [::]:*    users:(("cursor",pid=474709,fd=62))   
+sabry3      3051       1  0 Jul19 ?        00:02:02 /home/sabry3/sabry_backup/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry3/sabry_backup/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry3/sabry_backup/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf -d pet_spot_elsahel
+postgres    4715    2472  0 Jul19 ?        00:00:00 postgres: 16/main: odoo19 postgres 127.0.0.1(44676) idle
+postgres    4727    2472  0 Jul19 ?        00:00:00 postgres: 16/main: odoo19 postgres 127.0.0.1(44678) idle
+devwork+  244059       1  0 Jul19 ?        00:00:30 /srv/devhub-uat/runtime/venv19/bin/python3 /srv/devhub-uat/runtime/odoo19/odoo19/odoo-bin -c /srv/devhub-uat/config/odoo.conf -d devhub_isolation_uat --http-port=18041 --logfile=/srv/devhub-uat/logs/human-push-server.log
+devwork+  249769       1  0 Jul19 ?        00:00:23 /srv/devhub-uat/runtime/venv19/bin/python3 /srv/devhub-uat/runtime/odoo19/odoo19/odoo-bin -c /srv/devhub-uat/config/odoo.conf -d devhub_isolation_uat --http-port=18044 --logfile=/srv/devhub-uat/logs/human-push-server-18044.log
+devwork+  280408       1  0 Jul19 ?        00:00:33 /srv/devhub-uat/runtime/venv19/bin/python3 /srv/devhub-uat/runtime/odoo19/odoo19/odoo-bin -c /srv/devhub-uat/config/odoo.conf -d devhub_isolation_uat --http-port=18047 --logfile=/srv/devhub-uat/logs/push-hardening-server.log
+sabry3    487752  486027  0 06:23 ?        00:00:07 /snap/node/10816/bin/node ../../../../../mnt/sabry_backup/odoo_base/base_odoo_19/projects/qatar_property_phase2/tests/playwright/node_modules/@playwright/test/cli.js test-server -c projects/qatar_property_phase2/tests/playwright/playwright.config.js --host 127.0.0.1
+postgres  526933    2472  0 08:28 ?        00:00:00 postgres: 16/main: odoo19 pet_spot_elsahel 127.0.0.1(48538) idle
+postgres  526934    2472  0 08:28 ?        00:00:00 postgres: 16/main: odoo19 pet_spot_elsahel 127.0.0.1(48548) idle
+postgres  526935    2472  0 08:28 ?        00:00:00 postgres: 16/main: odoo19 pet_spot_elsahel 127.0.0.1(48562) idle
+FREE_PORT=8029

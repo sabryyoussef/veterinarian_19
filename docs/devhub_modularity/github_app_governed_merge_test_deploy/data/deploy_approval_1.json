@@ -1,0 +1,49 @@
+{
+  "id": 1,
+  "display_name": "dev.deploy.approval,1",
+  "workspace_id": [
+    1849,
+    "DW-3324"
+  ],
+  "target_id": [
+    4,
+    "PetSpot Test Staging Deploy"
+  ],
+  "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+  "merge_record_id": [
+    35,
+    "dev.git.merge.record,35"
+  ],
+  "protected_branch": "staging",
+  "environment_type": "test",
+  "database_identifier": "pet_spot_elsahel_test",
+  "module_allowlist_digest": "31a85e5ba96b8a68f6a1efd8eaf0a8cd72f0b934c659cdc09bd09b14144c0125",
+  "runner_profile_reference": "/srv/devhub/runners/staging",
+  "plan_hash": "f5ddc674d5b5c811a7be51f5d269bf13bff37d707582800ad6829bf2b94b99b0",
+  "policy_hash": "404429d3307526812a45217362aa9661b40f8f4d3c255387b35971a38d13aa4d",
+  "contract_hash": "f5ddc674d5b5c811a7be51f5d269bf13bff37d707582800ad6829bf2b94b99b0",
+  "idempotency_key": "1849:4:0b516d5af4ae24ab0d1575e3eff3b2682a5bb439:31a85e5ba96b8a68f6a1efd8eaf0a8cd72f0b934c659cdc09bd09b14144c0125",
+  "requester_id": [
+    714,
+    "Dev Hub Merge Requester"
+  ],
+  "approver_id": [
+    2,
+    "Administrator"
+  ],
+  "binding_hash": "57a8ef590a3c28fff1d925c549b7200064bf1d4b0c3ad8adc1ad947f117c4c29",
+  "approved_at": "2026-07-23 12:34:27",
+  "event_ids": [
+    1
+  ],
+  "create_uid": [
+    2,
+    "Administrator"
+  ],
+  "create_date": "2026-07-23 12:34:25",
+  "write_uid": [
+    1,
+    "OdooBot"
+  ],
+  "write_date": "2026-07-23 12:34:25"
+}

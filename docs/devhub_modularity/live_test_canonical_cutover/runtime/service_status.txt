@@ -1,0 +1,24 @@
+● pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (port 8028)
+     Loaded: loaded (/home/sabry/.config/systemd/user/pet_spot_elsahel_test.service; enabled; preset: enabled)
+    Drop-In: /home/sabry/.config/systemd/user/pet_spot_elsahel_test.service.d
+             └─canonical-cutover.conf
+     Active: active (running) since Thu 2026-07-23 11:28:27 EEST; 8s ago
+ Invocation: cfee462466654905a0f22b03c8fa3271
+    Process: 2837547 ExecStartPre=/bin/bash -c for i in $(seq 1 60); do pg_isready -h localhost -p 5432 >/dev/null 2>&1 && exit 0; sleep 1; done; echo "PostgreSQL not ready" >&2; exit 1 (code=exited, status=0/SUCCESS)
+   Main PID: 2837553 (python3)
+      Tasks: 4 (limit: 37132)
+     Memory: 175.7M (peak: 177.3M)
+        CPU: 4.624s
+     CGroup: /user.slice/user-1000.slice/user@1000.service/app.slice/pet_spot_elsahel_test.service
+             └─2837553 /home/sabry/odoo_base/base_odoo_19/venv19/bin/python3 /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin -c /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf -d pet_spot_elsahel_test
+
+Jul 23 11:28:30 master python3[2837553]: 2026-07-23 08:28:30,628 2837553 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model.
+Jul 23 11:28:30 master python3[2837553]: 2026-07-23 08:28:30,775 2837553 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model.
+Jul 23 11:28:30 master python3[2837553]: 2026-07-23 08:28:30,775 2837553 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model.
+Jul 23 11:28:30 master python3[2837553]: 2026-07-23 08:28:30,775 2837553 INFO pet_spot_elsahel_test odoo.modules.loading: 339 modules loaded in 2.22s, 0 queries (+0 extra)
+Jul 23 11:28:31 master python3[2837553]: 2026-07-23 08:28:31,471 2837553 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it
+Jul 23 11:28:31 master python3[2837553]: 2026-07-23 08:28:31,758 2837553 INFO pet_spot_elsahel_test odoo.modules.loading: Modules loaded.
+Jul 23 11:28:31 master python3[2837553]: 2026-07-23 08:28:31,827 2837553 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.attachment_id
+Jul 23 11:28:31 master python3[2837553]: 2026-07-23 08:28:31,827 2837553 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.content
+Jul 23 11:28:31 master python3[2837553]: 2026-07-23 08:28:31,827 2837553 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.embedding_model
+Jul 23 11:28:32 master python3[2837553]: 2026-07-23 08:28:32,073 2837553 INFO pet_spot_elsahel_test odoo.registry: Registry loaded in 3.703s

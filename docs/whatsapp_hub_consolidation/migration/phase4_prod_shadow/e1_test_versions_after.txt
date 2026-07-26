@@ -1,0 +1,11 @@
+whatsapp_hub|19.0.1.4.0|installed
+evolution_whatsapp_chat|19.0.1.13.0|installed
+integration_bridge_core|19.0.1.1.2|installed
+ICP|whatsapp_hub.unified_outbound_enabled|'False'
+ICP|whatsapp_hub.discuss_cutover_enabled|'False'
+ICP|whatsapp_hub.discuss_hub_allowed_channel_ids|False
+ICP|whatsapp_hub.unified_outbound_purposes|False
+HAS_QUARANTINE True
+PARSE_EMPTY None
+PARSE_10 [10]
+OK

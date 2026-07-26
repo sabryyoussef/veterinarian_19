@@ -1,0 +1,20 @@
+[2026-07-23T16:27:35] meta {'base': 'http://127.0.0.1:8028', 'db': 'pet_spot_elsahel_test', 'viewport': {'width': 1440, 'height': 900}, 'playwright': '1.59.0', 'browser': 'chromium', 'git_sha': '4c1fc00555a3ede2ccf7582fdb87af6082a29195', 'test_service': 'active', 'prod_service': 'active', 'addons_path_canonical': True}
+[2026-07-23T16:27:43] shot 01_login_backend.png :: Odoo backend after Live Test login (PASS) bytes=197460
+[2026-07-23T16:27:46] shot 02_devhub_main_menu.png :: Dev Hub navigation / Recent Work surface (PASS) bytes=253077
+[2026-07-23T16:27:48] shot 03_workflow_board.png :: Workflow Board stages + KPIs (PASS) bytes=105459
+[2026-07-23T16:27:51] shot 04_work_item_3324.png :: Work Item 3324 completed operational UAT (PASS) bytes=290211
+[2026-07-23T16:27:54] shot 05_analysis_2695.png :: Analysis 2695 linked to WI 3324 (PASS) bytes=163172
+[2026-07-23T16:27:56] shot 06_plan_2478.png :: Plan 2478 approved (PASS) bytes=135065
+[2026-07-23T16:27:57] shot 07_plan_steps.png :: Plan 2478 steps visible (PASS) bytes=133793
+[2026-07-23T16:28:00] shot 08_approval_2276.png :: Exact-hash Approval 2276 approved (PASS) bytes=110472
+[2026-07-23T16:28:32] shot 09_session_950.png :: Session 950 paused isolated execution (PASS) bytes=178146
+[2026-07-23T16:28:35] shot 10_workspace_1849.png :: Workspace 1849 deployed_staging_reviewed (PASS) bytes=271363
+[2026-07-23T16:28:36] shot 11_execution_state.png :: Workspace execution/deployed state for DW-3324 (PASS) bytes=271363
+[2026-07-23T16:28:39] shot 12_checkpoint_evidence.png :: Checkpoint 2144 for WI 3324 (PASS) bytes=186775
+[2026-07-23T16:28:41] shot 13_git_commit_push.png :: Commit record 1102 SHA 22c3cdc0… (PASS) bytes=139799
+[2026-07-23T16:28:44] shot 14_github_pr_16.png :: Dev Hub GitHub App PR record #16 (PASS) bytes=180425
+[2026-07-23T16:28:47] shot 15_merge_approval_57.png :: Merge Approval 57 requester≠approver (PASS) bytes=159086
+[2026-07-23T16:28:49] shot 16_merge_record_35.png :: Governed Merge Record 35 SHA 0b516d5a… (PASS) bytes=157401
+[2026-07-23T16:28:52] shot 17_test_deployment_success.png :: Test Deploy record 1 → target 4 succeeded (PASS) bytes=115963
+[2026-07-23T16:28:54] shot 18_workflow_board_final.png :: Workflow Board final after full navigation (PASS) bytes=105459
+[2026-07-23T16:28:54] missing=[] critical=0

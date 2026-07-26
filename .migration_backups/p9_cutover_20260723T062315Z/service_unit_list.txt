@@ -1,0 +1,5 @@
+/etc/systemd/system/cycle-x-odoo18.service
+/etc/systemd/system/odoo18.service
+/etc/systemd/system/odoo19.service
+/etc/systemd/system/pet_spot_elsahel.service
+/etc/systemd/system/petspot_odoo_https.service

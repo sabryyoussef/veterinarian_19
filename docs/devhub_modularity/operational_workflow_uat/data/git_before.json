@@ -1,0 +1,7 @@
+{
+  "path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel",
+  "branch": "feature/devhub-modularization-whatsapp",
+  "head": "5d627a7e4b6ec4a29928dfd3c57f3fcf000f66cc",
+  "porcelain_lines": 98,
+  "status_sample": "M dev_session_hub/__init__.py\n M dev_session_hub/__manifest__.py\n M dev_session_hub/data/dev_session_hub_seed.xml\n M dev_session_hub/models/__init__.py\n D dev_session_hub/models/dev_integration.py\n D dev_session_hub/models/dev_registry.py\n D dev_session_hub/models/dev_session.py\n D dev_session_hub/models/dev_work.py\n D dev_session_hub/security/dev_session_hub_security.xml\n M dev_session_hub/security/ir.model.access.csv\n M dev_session_hub/tests/__init__.py\n D dev_session_hub/tests/test_dev_session_hub.py"
+}

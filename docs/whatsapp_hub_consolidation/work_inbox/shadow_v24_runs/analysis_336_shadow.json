@@ -1,0 +1,153 @@
+{
+  "source_analysis_id": 336,
+  "shadow_prompt_version": "wa_project_aware_v2.4",
+  "shadow_run_id": "3b6e4b81-7055-4a16-ba69-13251b1171a5",
+  "shadow_app_id": "0621c1db-cc51-40ee-844d-37b6a03f5ade",
+  "elapsed_sec": 7.34,
+  "dify_status": "succeeded",
+  "shadow_output_json": {
+    "schema_version": "2",
+    "message_understanding": {
+      "summary": "The messages discuss uploading to a test database and request for modifications if needed, but lack clear actionable requests or project context.",
+      "classification": "unclear",
+      "language": "ar",
+      "technical_terms": [],
+      "missing_information": [
+        "No clear project context or actionable requests.",
+        "No existing work item candidates."
+      ],
+      "contains_multiple_tasks": false
+    },
+    "project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "يا ريت"
+      ],
+      "missing_requirements": []
+    },
+    "work_item_resolution": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": false
+    },
+    "analysis": {
+      "business_request": "Request to upload to a test database and notify for any modifications.",
+      "current_state": "Messages indicate actions taken but lack clarity on specific requests.",
+      "existing_relevant_functionality": "No specific functionality mentioned.",
+      "likely_affected_modules": [],
+      "likely_affected_models": [],
+      "likely_affected_views": [],
+      "database_considerations": "Test database mentioned.",
+      "integration_considerations": [],
+      "risks": [],
+      "recommended_approach": "Clarify the specific requests and project context.",
+      "acceptance_criteria": [],
+      "questions_before_implementation": []
+    },
+    "evidence_used": [],
+    "confidence": 0.0,
+    "safe_to_create_work": false,
+    "safe_to_attach_to_existing_work": false,
+    "legacy_v1_bridge": {
+      "source_message_ids": [
+        6167,
+        6184
+      ],
+      "noise_message_ids": [],
+      "work_message_ids": [],
+      "work_title": null,
+      "work_description": null,
+      "priority": "0",
+      "should_ignore": false
+    }
+  },
+  "shadow_output_raw": "{\n  \"schema_version\": \"2\",\n  \"message_understanding\": {\n    \"summary\": \"The messages discuss uploading to a test database and request for modifications if needed, but lack clear actionable requests or project context.\",\n    \"classification\": \"unclear\",\n    \"language\": \"ar\",\n    \"technical_terms\": [],\n    \"missing_information\": [\n      \"No clear project context or actionable requests.\",\n      \"No existing work item candidates.\"\n    ],\n    \"contains_multiple_tasks\": false\n  },\n  \"project_resolution\": {\n    \"project_id\": null,\n    \"project_name\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": true,\n    \"resolution_status\": \"unresolved\"\n  },\n  \"project_relevance\": {\n    \"is_current_topic\": false,\n    \"evidence\": [],\n    \"confidence\": 0.0\n  },\n  \"actionability\": {\n    \"is_actionable\": true,\n    \"score\": 0.6,\n    \"signals\": [\n      \"يا ريت\"\n    ],\n    \"missing_requirements\": []\n  },\n  \"work_item_resolution\": {\n    \"decision\": \"none\",\n    \"work_item_id\": null,\n    \"work_item_title\": null,\n    \"confidence\": 0.0,\n    \"evidence\": [],\n    \"candidate_ids\": [],\n    \"requires_confirmation\": false\n  },\n  \"analysis\": {\n    \"business_request\": \"Request to upload to a test database and notify for any modifications.\",\n    \"current_state\": \"Messages indicate actions taken but lack clarity on specific requests.\",\n    \"existing_relevant_functionality\": \"No specific functionality mentioned.\",\n    \"likely_affected_modules\": [],\n    \"likely_affected_models\": [],\n    \"likely_affected_views\": [],\n    \"database_considerations\": \"Test database mentioned.\",\n    \"integration_considerations\": [],\n    \"risks\": [],\n    \"recommended_approach\": \"Clarify the specific requests and project context.\",\n    \"acceptance_criteria\": [],\n    \"questions_before_implementation\": []\n  },\n  \"evidence_used\": [],\n  \"confidence\": 0.0,\n  \"safe_to_create_work\": false,\n  \"safe_to_attach_to_existing_work\": false,\n  \"legacy_v1_bridge\": {\n    \"source_message_ids\": [],\n    \"noise_message_ids\": [],\n    \"work_message_ids\": [],\n    \"work_title\": null,\n    \"work_description\": null,\n    \"priority\": \"0\",\n    \"should_ignore\": false\n  }\n}",
+  "shadow_schema_valid": true,
+  "shadow_validated": {
+    "schema_version": "2",
+    "summary": "The messages discuss uploading to a test database and request for modifications if needed, but lack clear actionable requests or project context.",
+    "classification": "information",
+    "classification_v2": "unclear",
+    "should_ignore": false,
+    "ignore_reason": null,
+    "contains_work": false,
+    "work_title": "Request to upload to a test database and notify for any modifications.",
+    "work_description": "{\"business_request\": \"Request to upload to a test database and notify for any modifications.\", \"recommended_approach\": \"Clarify the specific requests and project context.\", \"questions\": []}",
+    "priority": "0",
+    "project_reference": null,
+    "participants": [],
+    "source_message_ids": [
+      6167,
+      6184
+    ],
+    "noise_message_ids": [],
+    "work_message_ids": [],
+    "confidence": 0.0,
+    "requires_human_review": true,
+    "recommended_action": "request_context",
+    "missing_information": [
+      "No clear project context or actionable requests.",
+      "No existing work item candidates."
+    ],
+    "project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "work_item_resolution": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": false
+    },
+    "analysis_detail": {
+      "business_request": "Request to upload to a test database and notify for any modifications.",
+      "current_state": "Messages indicate actions taken but lack clarity on specific requests.",
+      "existing_relevant_functionality": "No specific functionality mentioned.",
+      "likely_affected_modules": [],
+      "likely_affected_models": [],
+      "likely_affected_views": [],
+      "database_considerations": "Test database mentioned.",
+      "integration_considerations": [],
+      "risks": [],
+      "recommended_approach": "Clarify the specific requests and project context.",
+      "acceptance_criteria": [],
+      "questions_before_implementation": []
+    },
+    "evidence_used": [],
+    "safe_to_create_work": false,
+    "safe_to_attach_to_existing_work": false,
+    "resolved_project_id": null,
+    "resolved_work_item_id": null,
+    "requires_project_confirmation": true,
+    "contains_multiple_tasks": false,
+    "language": "ar",
+    "technical_terms": []
+  }
+}

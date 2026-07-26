@@ -1,0 +1,19 @@
+{
+  "id": "cycle-x-local-8071-bearer",
+  "name": "Cycle X Local 8071 Bearer",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8071",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "auth_token",
+      "value": "0d3y8puOQvL9TaTWNM1hQKnCx6ZK_b1usG_0jc-nQvc",
+      "type": "secret",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

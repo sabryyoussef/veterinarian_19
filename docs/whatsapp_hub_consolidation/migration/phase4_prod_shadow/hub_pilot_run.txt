@@ -1,0 +1,23 @@
+SNAP T0 {"unified": "False", "discuss_cutover": "False", "purposes": false, "inst": {"id": 1, "instance_name": "sabry min", "unified_outbound_enabled": false, "discuss_cutover_enabled": false}, "ch5": "shadow", "ch10": "shadow", "hub_channels": 0, "unified_jobs": 0, "unified_pending": 0}
+PURPOSES discuss
+SNAP after_globals {"unified": "True", "discuss_cutover": "True", "purposes": "discuss", "inst": {"id": 1, "instance_name": "sabry min", "unified_outbound_enabled": false, "discuss_cutover_enabled": false}, "ch5": "shadow", "ch10": "shadow", "hub_channels": 0, "unified_jobs": 0, "unified_pending": 0}
+SNAP after_instance {"unified": "True", "discuss_cutover": "True", "purposes": "discuss", "inst": {"id": 1, "instance_name": "sabry min", "unified_outbound_enabled": true, "discuss_cutover_enabled": true}, "ch5": "shadow", "ch10": "shadow", "hub_channels": 0, "unified_jobs": 0, "unified_pending": 0}
+SNAP after_flip {"unified": "True", "discuss_cutover": "True", "purposes": "discuss", "inst": {"id": 1, "instance_name": "sabry min", "unified_outbound_enabled": true, "discuss_cutover_enabled": true}, "ch5": "shadow", "ch10": "hub", "hub_channels": 1, "unified_jobs": 0, "unified_pending": 0}
+ACTIVATION_COMMITTED
+PILOT {"seq": 1, "body": "OpenLow Hub Cutover Pilot 01", "mail_message_id": 11320, "business_key": "discuss:10:11320", "hub_count": 1, "hub_id": 19, "hub_conv": 8, "hub_purpose": "discuss", "hub_remote": "120363411424964076@g.us", "hub_inst": "sabry min", "hub_biz": "discuss:10:11320", "hub_walog_id": 16, "out_count": 1, "out_id": 1, "out_state": "sent", "out_mode": "unified_bridge", "out_retry": 0, "provider_id": "3EB06D68816DC7D6CFD6CC", "log_id": 16, "log_origin": "hub_unified", "log_hub_message_id": 19, "log_mail_message_id": 11320, "log_wa_id": "3EB06D68816DC7D6CFD6CC", "walog_dup_count": 0, "legacy_calls": 0, "legacy_log": false, "queue_delta": 0, "hub_channels": 1, "ch5": "shadow", "ch10": "hub", "outside_jobs": 0}
+PILOT_OK 1 True
+CONTINUE_AFTER 1
+PILOT {"seq": 2, "body": "OpenLow Hub Cutover Pilot 02", "mail_message_id": 11321, "business_key": "discuss:10:11321", "hub_count": 1, "hub_id": 20, "hub_conv": 8, "hub_purpose": "discuss", "hub_remote": "120363411424964076@g.us", "hub_inst": "sabry min", "hub_biz": "discuss:10:11321", "hub_walog_id": 17, "out_count": 1, "out_id": 2, "out_state": "sent", "out_mode": "unified_bridge", "out_retry": 0, "provider_id": "3EB07360E4226E6C40D8F0", "log_id": 17, "log_origin": "hub_unified", "log_hub_message_id": 20, "log_mail_message_id": 11321, "log_wa_id": "3EB07360E4226E6C40D8F0", "walog_dup_count": 0, "legacy_calls": 0, "legacy_log": false, "queue_delta": 0, "hub_channels": 1, "ch5": "shadow", "ch10": "hub", "outside_jobs": 0}
+PILOT_OK 2 True
+CONTINUE_AFTER 2
+PILOT {"seq": 3, "body": "OpenLow Hub Cutover Pilot 03", "mail_message_id": 11322, "business_key": "discuss:10:11322", "hub_count": 1, "hub_id": 21, "hub_conv": 8, "hub_purpose": "discuss", "hub_remote": "120363411424964076@g.us", "hub_inst": "sabry min", "hub_biz": "discuss:10:11322", "hub_walog_id": 18, "out_count": 1, "out_id": 3, "out_state": "sent", "out_mode": "unified_bridge", "out_retry": 0, "provider_id": "3EB0896A630B01ACB59256", "log_id": 18, "log_origin": "hub_unified", "log_hub_message_id": 21, "log_mail_message_id": 11322, "log_wa_id": "3EB0896A630B01ACB59256", "walog_dup_count": 0, "legacy_calls": 0, "legacy_log": false, "queue_delta": 0, "hub_channels": 1, "ch5": "shadow", "ch10": "hub", "outside_jobs": 0}
+PILOT_OK 3 True
+CONTINUE_AFTER 3
+AGG {"n": 3, "hub_ids": [19, 20, 21], "unique_hub": 3, "provider_ids": ["3EB06D68816DC7D6CFD6CC", "3EB07360E4226E6C40D8F0", "3EB0896A630B01ACB59256"], "unique_provider": 3, "convs": [8], "legacy_total": 0, "outside_jobs": 0, "ch10_jobs": 3}
+AGG_OK True
+POST_PILOT_SAFE_STATE
+QUARANTINED_POST []
+PURPOSES_KEPT discuss
+SNAP final {"unified": "False", "discuss_cutover": "False", "purposes": "discuss", "inst": {"id": 1, "instance_name": "sabry min", "unified_outbound_enabled": false, "discuss_cutover_enabled": false}, "ch5": "shadow", "ch10": "shadow", "hub_channels": 0, "unified_jobs": 3, "unified_pending": 0}
+DECISION SINGLE-COHORT HUB PILOT PASSED
+NEXT READY TO DESIGN CONTROLLED DISCUSS HUB EXPANSION

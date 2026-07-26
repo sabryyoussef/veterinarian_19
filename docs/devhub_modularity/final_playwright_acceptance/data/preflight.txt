@@ -1,0 +1,8 @@
+test_svc=inactive
+prod_svc=active
+test_http=000
+addons_path = /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons,/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise,/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel
+http_port = 8028
+HEAD=4c1fc00555a3ede2ccf7582fdb87af6082a29195
+branch=feature/devhub-modularization-whatsapp
+playwright_ok

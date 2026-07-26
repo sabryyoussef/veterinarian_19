@@ -1,0 +1,6 @@
+Starting dump...
+-rw-rw-r-- 1 sabry sabry 18M Jul 23 11:04 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/d14_20260723T080408Z/pet_spot_elsahel_test.dump
+restore_exit=0
+45
+copied filestore pet_spot_elsahel_test -> pet_spot_elsahel_test_modular_mig
+219M	/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore_test_modular_mig

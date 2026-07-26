@@ -2,8 +2,12 @@
 """WhatsApp Work Inbox triage, context window, and audit events."""
 from __future__ import annotations
 
+import logging
+
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
+
+_logger = logging.getLogger(__name__)
 
 INBOX_STATES = [
     ("untriaged", "Not in Inbox"),
@@ -120,10 +124,58 @@ class WhatsappMessageWorkInbox(models.Model):
 
     @api.model
     def service_ingest_normalized(self, payload):
-        """Admit only newly created Hub rows into Inbox as new; never reset triage on dedupe."""
-        return super(
+        """Admit only newly created Hub rows into Inbox as new; never reset triage on dedupe.
+
+        After a successful non-duplicate ingest, schedule debounced AI analysis when
+        the mapped source has ai_triage_enabled (+ auto_analysis_enabled).
+        """
+        result = super(
             WhatsappMessageWorkInbox, self.with_context(whatsapp_inbox_admit_new=True)
         ).service_ingest_normalized(payload)
+        try:
+            self._maybe_schedule_debounced_analysis(payload, result)
+        except Exception:  # noqa: BLE001 — ingest must not fail on triage scheduling
+            _logger.exception("Debounced analysis schedule after ingest failed")
+        return result
+
+    @api.model
+    def _maybe_schedule_debounced_analysis(self, payload, result):
+        if not isinstance(result, dict):
+            return
+        if result.get("duplicate") or result.get("skipped"):
+            return
+        if not result.get("message_id"):
+            return
+        group_jid = (payload or {}).get("group_jid") or False
+        if not group_jid:
+            msg = self.sudo().browse(int(result["message_id"])).exists()
+            group_jid = msg.group_jid if msg else False
+        if not group_jid:
+            return
+        # Skip while conversation health recovery is running (if that model exists)
+        if "whatsapp.conversation.health" in self.env:
+            Health = self.env["whatsapp.conversation.health"].sudo()
+            running = Health.search(
+                [
+                    ("group_jid", "=", group_jid),
+                    ("recovery_state", "=", "running"),
+                ],
+                limit=1,
+            )
+            if running:
+                return
+        Source = self.env["dev.whatsapp.source"].sudo()
+        source = Source.search(
+            [
+                ("group_jid", "=", group_jid),
+                ("active", "=", True),
+                ("ai_triage_enabled", "=", True),
+                ("auto_analysis_enabled", "=", True),
+            ],
+            limit=1,
+        )
+        if source:
+            source.schedule_debounced_analysis()
 
     def _inbox_require_triage_user(self):
         """Work Inbox is a Dev Hub triage surface over Chatwoot/Hub messages.
@@ -501,38 +553,43 @@ class WhatsappMessageWorkInbox(models.Model):
     def get_inbox_context(self, message_id, before=20, after=20):
         """Bounded window: before + focus + after (same conversation)."""
         self._inbox_require_triage_user()
-        before = max(0, min(int(before or 20), 20))
-        after = max(0, min(int(after or 20), 20))
+        before = max(0, min(int(20 if before is None else before), 20))
+        after = max(0, min(int(20 if after is None else after), 20))
         focus = self.browse(int(message_id)).exists()
         if not focus:
             raise UserError("Message not found.")
         focus.check_access("read")
         conv = focus.conversation_id
         ts = focus.message_timestamp or fields.Datetime.now()
-        older = self.search(
-            [
-                ("conversation_id", "=", conv.id),
-                "|",
-                ("message_timestamp", "<", ts),
-                "&",
-                ("message_timestamp", "=", ts),
-                ("id", "<", focus.id),
-            ],
-            order="message_timestamp desc, id desc",
-            limit=before,
-        )
-        newer = self.search(
-            [
-                ("conversation_id", "=", conv.id),
-                "|",
-                ("message_timestamp", ">", ts),
-                "&",
-                ("message_timestamp", "=", ts),
-                ("id", ">", focus.id),
-            ],
-            order="message_timestamp asc, id asc",
-            limit=after,
-        )
+        # Odoo search(limit=0) means unlimited — skip queries when window side is 0.
+        older = self.browse()
+        if before:
+            older = self.search(
+                [
+                    ("conversation_id", "=", conv.id),
+                    "|",
+                    ("message_timestamp", "<", ts),
+                    "&",
+                    ("message_timestamp", "=", ts),
+                    ("id", "<", focus.id),
+                ],
+                order="message_timestamp desc, id desc",
+                limit=before,
+            )
+        newer = self.browse()
+        if after:
+            newer = self.search(
+                [
+                    ("conversation_id", "=", conv.id),
+                    "|",
+                    ("message_timestamp", ">", ts),
+                    "&",
+                    ("message_timestamp", "=", ts),
+                    ("id", ">", focus.id),
+                ],
+                order="message_timestamp asc, id asc",
+                limit=after,
+            )
         # chronological: older(reversed) + focus + newer
         ordered = list(reversed(list(older))) + [focus] + list(newer)
         return {
@@ -540,7 +597,7 @@ class WhatsappMessageWorkInbox(models.Model):
             "conversation_id": conv.id,
             "conversation_name": conv.name,
             "conversation_type": conv.conversation_type,
-            "messages": [self._context_bubble(m) for m in ordered],
+            "messages": self._context_bubbles(ordered),
             "has_older": len(older) == before,
             "has_newer": len(newer) == after,
             "older_cursor": (
@@ -564,7 +621,7 @@ class WhatsappMessageWorkInbox(models.Model):
     @api.model
     def load_inbox_context_older(self, conversation_id, cursor, limit=20):
         self._inbox_require_triage_user()
-        limit = max(1, min(int(limit or 20), 20))
+        limit = max(1, min(int(20 if limit is None else limit), 20))
         ts, mid = cursor
         rows = self.search(
             [
@@ -580,7 +637,7 @@ class WhatsappMessageWorkInbox(models.Model):
         )
         ordered = list(reversed(list(rows)))
         return {
-            "messages": [self._context_bubble(m) for m in ordered],
+            "messages": self._context_bubbles(ordered),
             "has_older": len(rows) == limit,
             "older_cursor": (
                 [
@@ -595,7 +652,7 @@ class WhatsappMessageWorkInbox(models.Model):
     @api.model
     def load_inbox_context_newer(self, conversation_id, cursor, limit=20):
         self._inbox_require_triage_user()
-        limit = max(1, min(int(limit or 20), 20))
+        limit = max(1, min(int(20 if limit is None else limit), 20))
         ts, mid = cursor
         rows = self.search(
             [
@@ -610,7 +667,7 @@ class WhatsappMessageWorkInbox(models.Model):
             limit=limit,
         )
         return {
-            "messages": [self._context_bubble(m) for m in rows],
+            "messages": self._context_bubbles(rows),
             "has_newer": len(rows) == limit,
             "newer_cursor": (
                 [
@@ -622,7 +679,120 @@ class WhatsappMessageWorkInbox(models.Model):
             ),
         }
 
-    def _context_bubble(self, msg):
+    def _context_bubbles(self, messages):
+        """Build chat bubbles with batched media preview payloads."""
+        media_map = self._inbox_media_preview_map(messages)
+        return [self._context_bubble(m, media_map.get(m.id, [])) for m in messages]
+
+    def _inbox_media_preview_map(self, messages):
+        """Map message id → list of playable/viewable media asset dicts."""
+        msg_ids = [m.id for m in messages if m]
+        if not msg_ids:
+            return {}
+        Media = self.env["dev.whatsapp.media"]
+        assets = Media.search(
+            [("whatsapp_message_id", "in", msg_ids)],
+            order="id asc",
+        )
+        by_msg = {mid: [] for mid in msg_ids}
+        for media in assets:
+            by_msg.setdefault(media.whatsapp_message_id.id, []).append(
+                self._inbox_media_asset_payload(media)
+            )
+        # Messages marked as media but with no asset row yet.
+        for msg in messages:
+            if by_msg.get(msg.id):
+                continue
+            kind = (msg.media_kind or "none")
+            if not msg.has_media and kind == "none":
+                continue
+            by_msg[msg.id] = [
+                {
+                    "media_id": False,
+                    "media_type": kind if kind != "none" else "unknown",
+                    "mime_type": "",
+                    "filename": "",
+                    "retrieval_state": "not_retrieved",
+                    "preview_kind": "none",
+                    "content_url": False,
+                    "download_url": False,
+                    "status_label": self._inbox_media_status_label(
+                        kind if kind != "none" else "media",
+                        "not_retrieved",
+                    ),
+                    "enrichment_text": "",
+                }
+            ]
+        return by_msg
+
+    @api.model
+    def _inbox_media_status_label(self, media_type, retrieval_state):
+        kind = {
+            "image": "Photo",
+            "sticker": "Sticker",
+            "audio": "Audio",
+            "video": "Video",
+            "document": "Document",
+        }.get(media_type or "", "Media")
+        state = retrieval_state or "not_retrieved"
+        if state == "downloaded":
+            return ""
+        if state in ("pending", "downloading"):
+            return "%s download pending…" % kind
+        if state == "not_retrieved":
+            return "%s not downloaded yet" % kind
+        if state == "expired":
+            return "%s expired on WhatsApp (cannot download)" % kind
+        if state == "unavailable":
+            return "%s unavailable" % kind
+        if state == "failed":
+            return "%s download failed" % kind
+        return "%s unavailable" % kind
+
+    def _inbox_media_asset_payload(self, media):
+        """One media row for Work Inbox chat preview."""
+        media_type = media.media_type or "unknown"
+        state = media.retrieval_state or "pending"
+        content_url = False
+        download_url = False
+        preview_kind = "none"
+        if state == "downloaded" and media.attachment_id:
+            aid = media.attachment_id.id
+            content_url = "/web/content/%s" % aid
+            download_url = "/web/content/%s?download=true" % aid
+            if media_type in ("image", "sticker"):
+                preview_kind = "image"
+                # Prefer image route for inline display / caching.
+                content_url = "/web/image/%s" % aid
+            elif media_type == "audio":
+                preview_kind = "audio"
+            elif media_type == "video":
+                preview_kind = "video"
+            else:
+                preview_kind = "file"
+        enrichment_text = ""
+        if media_type in ("image", "sticker"):
+            enrichment_text = (
+                media.corrected_image_text or media.image_extracted_text or ""
+            )[:500]
+        elif media_type == "audio":
+            enrichment_text = (
+                media.corrected_audio_transcript or media.audio_transcript or ""
+            )[:500]
+        return {
+            "media_id": media.id,
+            "media_type": media_type,
+            "mime_type": media.mime_type or "",
+            "filename": media.filename or "",
+            "retrieval_state": state,
+            "preview_kind": preview_kind,
+            "content_url": content_url,
+            "download_url": download_url,
+            "status_label": self._inbox_media_status_label(media_type, state),
+            "enrichment_text": enrichment_text,
+        }
+
+    def _context_bubble(self, msg, media_assets=None):
         return {
             "id": msg.id,
             "direction": msg.direction,
@@ -635,6 +805,7 @@ class WhatsappMessageWorkInbox(models.Model):
             "inbox_state": msg.inbox_state,
             "media_kind": msg.media_kind,
             "has_media": msg.has_media,
+            "media_assets": media_assets if media_assets is not None else [],
             "attachment_references": (msg.attachment_references or "")[:300],
             "has_work_item": msg.has_work_item,
             "work_item_count": msg.work_item_count,

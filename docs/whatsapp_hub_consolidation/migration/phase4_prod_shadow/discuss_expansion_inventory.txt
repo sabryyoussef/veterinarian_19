@@ -1,0 +1,69 @@
+=== ALL WA DISCUSS CHANNELS ===
+ id |                 name                 |        wa_phone         | wa_outbound_mode | wa_partner_id |      partner      |  wa_last_outbound   | wa_last_inbound |        create_date         
+----+--------------------------------------+-------------------------+------------------+---------------+-------------------+---------------------+-----------------+----------------------------
+  5 | WA: كريم ايهاب  الساحل 2022          | 201000059085            | shadow           |           469 | Sabry Bridge Test | 2026-07-23 11:32:45 |                 | 2026-06-19 17:49:35.965665
+ 10 | WA Group: Testopenclow (openlowtest) | 120363411424964076@g.us | shadow           |               |                   | 2026-07-23 12:24:48 |                 | 2026-07-23 11:50:01.357394
+(2 rows)
+
+=== LOG VOLUME BY CHANNEL ===
+ channel_id | direction | send_origin | n  |      first_at       |       last_at       | media_n 
+------------+-----------+-------------+----+---------------------+---------------------+---------
+          5 | out       | legacy      |  2 | 2026-06-19 17:49:38 | 2026-07-23 11:32:45 |       0
+         10 | out       | hub_unified |  3 | 2026-07-23 12:24:47 | 2026-07-23 12:24:48 |       0
+         10 | out       | legacy      | 10 | 2026-07-23 11:50:02 | 2026-07-23 11:50:08 |       0
+(3 rows)
+
+=== LOG BY PHONE (incl null channel) ===
+          left           | direction | count | media |       last_at       
+-------------------------+-----------+-------+-------+---------------------
+ 120363411424964076@g.us | out       |    13 |     0 | 2026-07-23 12:24:48
+ 201000059085            | out       |     3 |     0 | 2026-07-23 11:32:45
+(2 rows)
+
+=== SHADOW BY CHANNEL ===
+ channel_id | classification | count 
+------------+----------------+-------
+          5 | matched        |     1
+         10 | matched        |    10
+(2 rows)
+
+=== HUB MSGS BY DISCUSS CHANNEL ===
+ discuss_channel_id | purpose | count | convs 
+--------------------+---------+-------+-------
+                  5 | discuss |     1 |     1
+                 10 | discuss |    13 |     1
+(2 rows)
+
+=== OUTBOUND UNIFIED BY CHANNEL ===
+ discuss_channel_id | state | count 
+--------------------+-------+-------
+                 10 | sent  |     3
+(1 row)
+
+=== CONVERSATIONS LINKED ===
+ id |          left           |         remote_jid          | purpose | instance_reference 
+----+-------------------------+-----------------------------+---------+--------------------
+  7 | Sabry Bridge Test       | 201000059085@s.whatsapp.net | discuss | sabry min
+  8 | 120363411424964076@g.us | 120363411424964076@g.us     | discuss | sabry min
+(2 rows)
+
+=== ATTACHMENTS ON WA CHANNEL MESSAGES (sample) ===
+ channel_id | msgs_with_attach 
+------------+------------------
+(0 rows)
+
+=== FLAGS/INSTANCE CURRENT ===
+whatsapp_hub.discuss_cutover_enabled|False
+whatsapp_hub.unified_outbound_enabled|False
+whatsapp_hub.unified_outbound_purposes|discuss
+ id | instance_name | unified_outbound_enabled | discuss_cutover_enabled 
+----+---------------+--------------------------+-------------------------
+  1 | sabry min     | f                        | f
+(1 row)
+
+=== PARTNER WA CHANNEL LINK ===
+ERROR:  column p.mobile does not exist
+LINE 2: ...CT p.id, left(p.name,40), p.wa_channel_id, p.phone, p.mobile
+                                                               ^
+=== DYNAMIC CHANNEL CREATION CODE PATH ===
+res_partner._get_or_create_wa_channel creates discuss.channel with wa_phone=normalized phone, no wa_outbound_mode override → default legacy

@@ -1,0 +1,36 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 9618
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 10:28:38 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Received an image attachment related to Pre-Wash diagrams from Torz Trading - Qatar.
+
+**الإجراء المطلوب:**
+Review the image attachment for relevant information or issues.
+
+**نص مرفق مستخرج:**
+Pre-Wash diagrams
+
+‘Top
+
+Right
+
+ell Jas Laban
+
+ot
+
+## Original Message
+
+```
+Photo: 3EB0F4232D8B16657C7B45.jpeg
+```

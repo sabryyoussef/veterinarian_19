@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_repository_git_push_form" model="ir.ui.view">
+        <field name="name">dev.repository.git.push.form</field>
+        <field name="model">dev.repository</field>
+        <field name="inherit_id" ref="devhub_execution.view_dev_repository_execution_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="page_approved_push" string="Approved Push Remotes">
+                        <div class="alert alert-warning" role="alert">
+                            Only registered non-production remotes and dedicated devhub/* branches may be pushed. Credentials must remain in protected Git configuration.
+                        </div>
+                        <field name="approved_push_root"/>
+                        <field name="approved_push_remote_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="protocol"/>
+                                <field name="remote_url"/>
+                                <field name="approved"/>
+                                <field name="non_production"/>
+                                <field name="allowed_branch_prefix"/>
+                                <field name="active"/>
+                            </list>
+                        </field>
+                    </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

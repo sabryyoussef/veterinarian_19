@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_work_item_form_checkpoint" model="ir.ui.view">
+        <field name="name">dev.work.item.form.checkpoint</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="priority" eval="40"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_source_request']" position="after">
+                        <page string="Current Checkpoint">
+                            <field name="current_checkpoint_id" readonly="1"/>
+                            <field name="checkpoint_ids" readonly="1">
+                                <list create="0" edit="0" delete="0" decoration-info="id == parent.current_checkpoint_id">
+                                    <field name="timestamp"/>
+                                    <field name="trigger"/>
+                                    <field name="actor_id"/>
+                                    <field name="lifecycle_phase"/>
+                                    <field name="last_completed_step_id"/>
+                                    <field name="current_plan_step_id"/>
+                                    <field name="next_recommended_step"/>
+                                    <field name="branch"/>
+                                    <field name="full_head"/>
+                                    <field name="snapshot_hash"/>
+                                </list>
+                                <form string="Immutable Checkpoint" create="0" edit="0" delete="0">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="work_item_id"/>
+                                                <field name="trigger"/>
+                                                <field name="timestamp"/>
+                                                <field name="actor_id"/>
+                                                <field name="lifecycle_phase"/>
+                                                <field name="approved_plan_id"/>
+                                                <field name="supersedes_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="repository_id"/>
+                                                <field name="machine_id"/>
+                                                <field name="client_id"/>
+                                                <field name="working_directory"/>
+                                                <field name="manifest_revision"/>
+                                                <field name="schema_version"/>
+                                                <field name="snapshot_hash"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Progress">
+                                                <field name="last_completed_step_id"/>
+                                                <field name="current_plan_step_id"/>
+                                                <field name="next_recommended_step"/>
+                                                <field name="remaining_step_references"/>
+                                                <field name="blockers"/>
+                                                <field name="decisions_made"/>
+                                                <field name="pending_decisions"/>
+                                                <field name="last_agent_note"/>
+                                            </page>
+                                            <page string="Git">
+                                                <field name="branch"/>
+                                                <field name="full_head"/>
+                                                <field name="dirty_summary"/>
+                                                <field name="ahead_count"/>
+                                                <field name="behind_count"/>
+                                                <field name="files_touched_summary"/>
+                                            </page>
+                                            <page string="Tests">
+                                                <field name="tests_run"/>
+                                                <field name="tests_passed"/>
+                                                <field name="tests_failed"/>
+                                                <field name="tests_skipped"/>
+                                                <field name="sanitized_test_commands"/>
+                                                <field name="duration_seconds"/>
+                                                <field name="evidence_references"/>
+                                            </page>
+                                            <page string="References">
+                                                <field name="op_work_package_reference"/>
+                                                <field name="odoo_task_reference"/>
+                                                <field name="cursor_thread_id"/>
+                                                <field name="run_reference"/>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_checkpoint_list" model="ir.ui.view">
+        <field name="name">dev.work.checkpoint.list</field>
+        <field name="model">dev.work.checkpoint</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" default_order="timestamp desc">
+                <field name="timestamp"/>
+                <field name="work_item_id"/>
+                <field name="trigger"/>
+                <field name="actor_id"/>
+                <field name="lifecycle_phase"/>
+                <field name="current_plan_step_id"/>
+                <field name="branch"/>
+                <field name="full_head"/>
+                <field name="snapshot_hash"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dev_work_checkpoint" model="ir.actions.act_window">
+        <field name="name">Checkpoints</field>
+        <field name="res_model">dev.work.checkpoint</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <record id="view_dev_work_item_form_checkpoint_summary" model="ir.ui.view">
+        <field name="name">dev.work.item.form.checkpoint.summary</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_work.view_dev_work_item_form"/>
+        <field name="priority" eval="41"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='completion_report_id']" position="before">
+                <field name="current_checkpoint_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//page[@name='page_development']" position="after">
+                <page string="Tests">
+                    <group>
+                        <field name="current_checkpoint_id" readonly="1"/>
+                    </group>
+                    <field name="checkpoint_ids" readonly="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="timestamp"/>
+                            <field name="trigger"/>
+                            <field name="tests_run"/>
+                            <field name="tests_passed"/>
+                            <field name="tests_failed"/>
+                            <field name="tests_skipped"/>
+                            <field name="duration_seconds"/>
+                            <field name="evidence_references"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_item_checkpoint_session_form" model="ir.ui.view">
+        <field name="name">dev.work.item.checkpoint.session.form</field>
+        <field name="model">dev.work.item</field>
+        <field name="inherit_id" ref="devhub_execution.view_dev_work_item_form_checkpoint"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='checkpoint_ids']/list/field[@name='timestamp']" position="after">
+                <field name="session_id"/>
+            </xpath>
+            <xpath expr="//field[@name='checkpoint_ids']/form//field[@name='work_item_id']" position="after">
+                <field name="session_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_dev_work_checkpoint_session_list" model="ir.ui.view">
+        <field name="name">dev.work.checkpoint.session.list</field>
+        <field name="model">dev.work.checkpoint</field>
+        <field name="inherit_id" ref="devhub_execution.view_dev_work_checkpoint_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='work_item_id']" position="after">
+                <field name="session_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

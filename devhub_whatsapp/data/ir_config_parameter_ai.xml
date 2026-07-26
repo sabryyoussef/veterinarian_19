@@ -24,4 +24,8 @@
         <field name="key">devhub_whatsapp.media_dominant_ratio</field>
         <field name="value">0.40</field>
     </record>
+    <record id="icp_analysis_review_only" model="ir.config_parameter">
+        <field name="key">devhub_whatsapp.analysis_review_only</field>
+        <field name="value">False</field>
+    </record>
 </odoo>

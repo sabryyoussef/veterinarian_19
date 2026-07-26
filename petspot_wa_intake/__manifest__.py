@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'PetSpot WhatsApp Intake',
-    'version': '19.0.1.0.1',
+    'version': '19.0.1.0.3',
     'category': 'Services',
     'summary': 'Draft pets, visits, and sales from PetSpot Sahel WhatsApp / Chatwoot',
     'description': """

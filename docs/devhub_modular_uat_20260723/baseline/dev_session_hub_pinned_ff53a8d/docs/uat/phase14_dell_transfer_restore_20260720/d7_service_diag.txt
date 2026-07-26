@@ -1,0 +1,90 @@
+● pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030)
+     Loaded: loaded (/home/sabry3/.config/systemd/user/pet_spot_elsahel_test.service; disabled; preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Mon 2026-07-20 09:14:35 EEST; 4s ago
+    Process: 556061 ExecStart=/mnt/downloads/home_extended/odoo_ssd/venv19/bin/python3 /mnt/downloads/home_extended/odoo_ssd/odoo19/odoo19/odoo-bin -c /home/sabry3/devhub/config/pet_spot_elsahel_test.conf -d pet_spot_elsahel_test (code=exited, status=1/FAILURE)
+   Main PID: 556061 (code=exited, status=1/FAILURE)
+        CPU: 1.894s
+
+Jul 20 09:14:35 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 1.894s CPU time.
+=== journal ===
+Jul 20 09:10:55 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.106s CPU time.
+Jul 20 09:12:42 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:12:44 sabry3-Precision-5540 pet_spot_elsahel_test[555114]: Address already in use
+Jul 20 09:12:44 sabry3-Precision-5540 pet_spot_elsahel_test[555114]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:12:44 sabry3-Precision-5540 pet_spot_elsahel_test[555114]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:12:44 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:12:44 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:12:44 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.026s CPU time, 2.4M memory peak, 0B memory swap peak.
+Jul 20 09:12:54 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 1.
+Jul 20 09:12:54 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:12:56 sabry3-Precision-5540 pet_spot_elsahel_test[555223]: Address already in use
+Jul 20 09:12:56 sabry3-Precision-5540 pet_spot_elsahel_test[555223]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:12:56 sabry3-Precision-5540 pet_spot_elsahel_test[555223]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:12:56 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:12:56 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:12:56 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.124s CPU time, 36.1M memory peak, 0B memory swap peak.
+Jul 20 09:13:07 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 2.
+Jul 20 09:13:07 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:13:08 sabry3-Precision-5540 pet_spot_elsahel_test[555336]: Address already in use
+Jul 20 09:13:08 sabry3-Precision-5540 pet_spot_elsahel_test[555336]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:13:09 sabry3-Precision-5540 pet_spot_elsahel_test[555336]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:13:09 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:13:09 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:13:09 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.009s CPU time.
+Jul 20 09:13:19 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 3.
+Jul 20 09:13:19 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:13:21 sabry3-Precision-5540 pet_spot_elsahel_test[555441]: Address already in use
+Jul 20 09:13:21 sabry3-Precision-5540 pet_spot_elsahel_test[555441]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:13:21 sabry3-Precision-5540 pet_spot_elsahel_test[555441]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:13:21 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:13:21 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:13:21 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.044s CPU time, 31.5M memory peak, 0B memory swap peak.
+Jul 20 09:13:31 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 4.
+Jul 20 09:13:31 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:13:33 sabry3-Precision-5540 pet_spot_elsahel_test[555547]: Address already in use
+Jul 20 09:13:33 sabry3-Precision-5540 pet_spot_elsahel_test[555547]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:13:33 sabry3-Precision-5540 pet_spot_elsahel_test[555547]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:13:33 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:13:33 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:13:33 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.136s CPU time, 62.7M memory peak, 0B memory swap peak.
+Jul 20 09:13:43 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 5.
+Jul 20 09:13:43 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:13:45 sabry3-Precision-5540 pet_spot_elsahel_test[555653]: Address already in use
+Jul 20 09:13:45 sabry3-Precision-5540 pet_spot_elsahel_test[555653]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:13:45 sabry3-Precision-5540 pet_spot_elsahel_test[555653]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:13:45 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:13:45 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:13:45 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.053s CPU time, 23.9M memory peak, 0B memory swap peak.
+Jul 20 09:13:56 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 6.
+Jul 20 09:13:56 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:13:57 sabry3-Precision-5540 pet_spot_elsahel_test[555759]: Address already in use
+Jul 20 09:13:57 sabry3-Precision-5540 pet_spot_elsahel_test[555759]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:13:58 sabry3-Precision-5540 pet_spot_elsahel_test[555759]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:13:58 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:13:58 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:13:58 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.110s CPU time, 53.6M memory peak, 0B memory swap peak.
+Jul 20 09:14:08 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 7.
+Jul 20 09:14:08 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:14:10 sabry3-Precision-5540 pet_spot_elsahel_test[555867]: Address already in use
+Jul 20 09:14:10 sabry3-Precision-5540 pet_spot_elsahel_test[555867]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:14:10 sabry3-Precision-5540 pet_spot_elsahel_test[555867]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:14:10 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:14:10 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:14:10 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.065s CPU time, 14.7M memory peak, 0B memory swap peak.
+Jul 20 09:14:20 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 8.
+Jul 20 09:14:20 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:14:22 sabry3-Precision-5540 pet_spot_elsahel_test[555973]: Address already in use
+Jul 20 09:14:22 sabry3-Precision-5540 pet_spot_elsahel_test[555973]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:14:22 sabry3-Precision-5540 pet_spot_elsahel_test[555973]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:14:22 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:14:22 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:14:22 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 2.250s CPU time.
+Jul 20 09:14:33 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Scheduled restart job, restart counter is at 9.
+Jul 20 09:14:33 sabry3-Precision-5540 systemd[2438]: Started pet_spot_elsahel_test.service - Odoo 19 — PetSpot El Sahel TEST (Dell, port 8030).
+Jul 20 09:14:34 sabry3-Precision-5540 pet_spot_elsahel_test[556061]: Address already in use
+Jul 20 09:14:34 sabry3-Precision-5540 pet_spot_elsahel_test[556061]: Port 8030 is in use by another program. Either identify and stop that program, or start the server with a different port.
+Jul 20 09:14:34 sabry3-Precision-5540 pet_spot_elsahel_test[556061]: profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open
+Jul 20 09:14:35 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Main process exited, code=exited, status=1/FAILURE
+Jul 20 09:14:35 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Failed with result 'exit-code'.
+Jul 20 09:14:35 sabry3-Precision-5540 systemd[2438]: pet_spot_elsahel_test.service: Consumed 1.894s CPU time.
+=== conf ===

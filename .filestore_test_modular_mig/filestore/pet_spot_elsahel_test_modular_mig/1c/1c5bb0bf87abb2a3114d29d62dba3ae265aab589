@@ -1,0 +1,19 @@
+{
+  "status": true,
+  "results": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Recyclable Materials",
+        "description": "All recyclable materials accepted by CycleX",
+        "parent_id": null,
+        "parent_name": null,
+        "has_children": true,
+        "product_count": 0,
+        "item_count_in_cart": 0,
+        "image": null
+      }
+    ],
+    "total": 1
+  }
+}

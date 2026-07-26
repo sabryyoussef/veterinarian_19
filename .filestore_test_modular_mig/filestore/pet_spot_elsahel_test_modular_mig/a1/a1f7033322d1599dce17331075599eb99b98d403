@@ -1,0 +1,27 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/47
+- Message ID: 11847
+- Customer: Asta development
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-17 22:16:00 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.65
+
+**الملخص:**
+Request for credentials for STAGING endpoint.
+
+**الإجراء المطلوب:**
+Provide the requested credentials to the user.
+
+## Original Message
+
+```
+فين ال credentials 
+STAGING Endpoint
+Username و Password
+```

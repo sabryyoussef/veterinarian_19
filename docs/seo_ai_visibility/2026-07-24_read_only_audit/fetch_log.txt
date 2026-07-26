@@ -1,0 +1,12 @@
+===== https://drpaws.ai/ =====
+HTTP:200 FINAL:https://drpaws.ai/ REDIR:0 SSL:0
+===== https://www.drpaws.ai/ =====
+HTTP:200 FINAL:https://www.drpaws.ai/ REDIR:0 SSL:0
+===== https://drpaws.ai/robots.txt =====
+HTTP:200 FINAL:https://drpaws.ai/robots.txt REDIR:0 SSL:0
+===== https://drpaws.ai/sitemap.xml =====
+HTTP:200 FINAL:https://drpaws.ai/sitemap.xml REDIR:0 SSL:0
+===== https://petspot.drpaws.ai/ =====
+HTTP:200 FINAL:https://petspot.drpaws.ai/web/login?redirect=%2Fodoo%2Faction-741%3F REDIR:2 SSL:0
+===== https://test.drpaws.ai/ =====
+HTTP:200 FINAL:https://test.drpaws.ai/ REDIR:0 SSL:0

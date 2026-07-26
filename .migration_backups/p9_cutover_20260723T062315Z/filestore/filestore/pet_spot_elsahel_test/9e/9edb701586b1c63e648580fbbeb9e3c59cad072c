@@ -1,0 +1,27 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 11193
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-15 10:42:56 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** configuration
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+العميل طلب تعديل الفورم ليكون مطابقًا للفورم المرفق.
+
+**الإجراء المطلوب:**
+مراجعة الفورم المرفق وتطبيق التعديلات المطلوبة على النظام.
+
+## Original Message
+
+```
+السلام عليكم 
+مهندس صبري العميل اليوم شاف الفورم اللي تم تطبيقه على السيستم وطلب يكون مطابق للفورم المرفق هنا
+@117141609144452 @165837629583434
+```

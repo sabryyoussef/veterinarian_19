@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_ingestion_health_list" model="ir.ui.view">
+        <field name="name">whatsapp.ingestion.health.list</field>
+        <field name="model">whatsapp.ingestion.health</field>
+        <field name="arch" type="xml">
+            <list string="Ingestion Health"
+                  decoration-danger="health_status == 'failed'"
+                  decoration-warning="health_status in ('delayed', 'gap_detected')"
+                  decoration-info="health_status == 'recovering'">
+                <field name="conversation_id"/>
+                <field name="remote_jid"/>
+                <field name="group_jid"/>
+                <field name="instance_id"/>
+                <field name="health_status"/>
+                <field name="recovery_state"/>
+                <field name="gap_detected"/>
+                <field name="last_successful_ingestion_at"/>
+                <field name="last_provider_event_at"/>
+                <field name="consecutive_failure_count"/>
+                <field name="last_external_message_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_whatsapp_ingestion_health_form" model="ir.ui.view">
+        <field name="name">whatsapp.ingestion.health.form</field>
+        <field name="model">whatsapp.ingestion.health</field>
+        <field name="arch" type="xml">
+            <form string="Ingestion Health">
+                <header>
+                    <button name="action_recover_missing_messages"
+                            type="object"
+                            string="Recover Missing Messages"
+                            class="btn-primary"
+                            groups="whatsapp_hub.group_whatsapp_manager"
+                            confirm="Pull missing messages from Evolution for this conversation?"/>
+                    <field name="health_status" widget="statusbar"
+                           statusbar_visible="healthy,delayed,gap_detected,recovering,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="conversation_id"/>
+                            <field name="remote_jid" readonly="1"/>
+                            <field name="group_jid" readonly="1"/>
+                            <field name="instance_id" readonly="1"/>
+                            <field name="stall_threshold_minutes"/>
+                        </group>
+                        <group>
+                            <field name="recovery_state"/>
+                            <field name="gap_detected"/>
+                            <field name="consecutive_failure_count"/>
+                            <field name="last_successful_ingestion_at"/>
+                            <field name="last_provider_event_at"/>
+                            <field name="last_external_message_id"/>
+                        </group>
+                    </group>
+                    <group string="Errors / Notes">
+                        <field name="last_ingestion_error" nolabel="1" colspan="2"/>
+                        <field name="notes" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_whatsapp_ingestion_health_search" model="ir.ui.view">
+        <field name="name">whatsapp.ingestion.health.search</field>
+        <field name="model">whatsapp.ingestion.health</field>
+        <field name="arch" type="xml">
+            <search string="Ingestion Health">
+                <field name="conversation_id"/>
+                <field name="remote_jid"/>
+                <field name="group_jid"/>
+                <field name="health_status"/>
+                <filter name="filter_unhealthy"
+                        string="Unhealthy"
+                        domain="[('health_status', '!=', 'healthy')]"/>
+                <filter name="filter_gap"
+                        string="Gaps"
+                        domain="[('gap_detected', '=', True)]"/>
+                <filter name="filter_failed"
+                        string="Failed"
+                        domain="[('health_status', '=', 'failed')]"/>
+                <group>
+                    <filter name="groupby_status"
+                            string="Health Status"
+                            context="{'group_by': 'health_status'}"/>
+                    <filter name="groupby_instance"
+                            string="Instance"
+                            context="{'group_by': 'instance_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_whatsapp_ingestion_health" model="ir.actions.act_window">
+        <field name="name">Ingestion Health</field>
+        <field name="res_model">whatsapp.ingestion.health</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_unhealthy': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No ingestion health rows yet.
+            </p>
+            <p>
+                Rows appear when messages are ingested or the watchdog cron runs.
+                Use Recover Missing Messages to pull gaps from Evolution.
+            </p>
+        </field>
+    </record>
+</odoo>

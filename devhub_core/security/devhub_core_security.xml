@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_devhub" model="ir.module.category">
+        <field name="name">Dev Hub</field>
+        <field name="description">Remote development registry and session lifecycle</field>
+        <field name="sequence">45</field>
+    </record>
+
+    <record id="privilege_devhub" model="res.groups.privilege">
+        <field name="name">Dev Hub</field>
+        <field name="category_id" ref="module_category_devhub"/>
+        <field name="sequence">45</field>
+    </record>
+
+    <record id="group_dev_hub_user" model="res.groups">
+        <field name="name">Dev Hub User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="privilege_devhub"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_dev_hub_integration" model="res.groups">
+        <field name="name">Dev Hub Scoped Outbox Service</field>
+        <field name="sequence">5</field>
+        <field name="privilege_id" ref="privilege_devhub"/>
+        <field name="api_key_duration">30</field>
+        <field name="comment">May only lease eligible outbox intents and acknowledge their outcome through guarded methods.</field>
+    </record>
+
+    <record id="group_dev_hub_generation" model="res.groups">
+        <field name="name">Dev Hub Scoped Draft Generation Service</field>
+        <field name="sequence">6</field>
+        <field name="privilege_id" ref="privilege_devhub"/>
+        <field name="api_key_duration">30</field>
+        <field name="comment">May only lease draft-generation requests and import schema-validated analysis or plan drafts.</field>
+    </record>
+
+    <record id="group_dev_hub_approver" model="res.groups">
+        <field name="name">Dev Hub Plan and Communication Approver</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="privilege_devhub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_user'))]"/>
+    </record>
+
+    <record id="group_dev_hub_deploy_approver" model="res.groups">
+        <field name="name">Dev Hub Deploy Approver</field>
+        <field name="sequence">25</field>
+        <field name="privilege_id" ref="privilege_devhub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_approver'))]"/>
+        <field name="comment">May approve Test/Staging deployment and non-destructive rollback requests.</field>
+    </record>
+
+    <record id="group_dev_hub_production_approver" model="res.groups">
+        <field name="name">Dev Hub Production Approver</field>
+        <field name="sequence">28</field>
+        <field name="privilege_id" ref="privilege_devhub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_deploy_approver'))]"/>
+        <field name="comment">May approve Production promotion and destructive rollback after soak evidence.</field>
+    </record>
+
+    <record id="group_dev_hub_manager" model="res.groups">
+        <field name="name">Dev Hub Manager</field>
+        <field name="sequence">30</field>
+        <field name="privilege_id" ref="privilege_devhub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_production_approver'))]"/>
+    </record>
+
+</odoo>

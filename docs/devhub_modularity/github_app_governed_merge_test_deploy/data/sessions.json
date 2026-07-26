@@ -1,0 +1,9 @@
+[
+  {
+    "id": 950,
+    "name": "Isolated session for DW-3324",
+    "state": "paused",
+    "working_directory": "/srv/devhub/worktrees/petspot/DW-3324",
+    "session_type": "isolated_execution_workspace"
+  }
+]

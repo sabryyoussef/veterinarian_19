@@ -66,3 +66,43 @@ class WhatsappHubIngressController(http.Controller):
     @http.route("/whatsapp_hub/health", type="http", auth="public", methods=["GET"], csrf=False)
     def health(self, **kwargs):
         return request.make_json_response({"ok": True, "module": "whatsapp_hub"})
+
+    @http.route(
+        "/whatsapp_hub/media/<int:message_id>",
+        type="http",
+        auth="user",
+        methods=["GET"],
+        csrf=False,
+    )
+    def media_preview(self, message_id, **kwargs):
+        """Serve cached (or lazily fetched) media for a WhatsApp message."""
+        import base64
+
+        message = request.env["whatsapp.message"].browse(int(message_id))
+        if not message.exists():
+            return request.not_found()
+        message.check_access("read")
+        try:
+            att = message.ensure_media_attachment()
+        except Exception as exc:
+            _logger.warning(
+                "whatsapp_hub media preview failed message=%s: %s", message_id, exc
+            )
+            return request.make_json_response(
+                {"ok": False, "error": str(exc)}, status=404
+            )
+        if not att:
+            return request.not_found()
+        data = base64.b64decode(att.datas or b"")
+        return request.make_response(
+            data,
+            headers=[
+                ("Content-Type", att.mimetype or "application/octet-stream"),
+                ("Content-Length", str(len(data))),
+                ("Cache-Control", "private, max-age=3600"),
+                (
+                    "Content-Disposition",
+                    f'inline; filename="{att.name or "media"}"',
+                ),
+            ],
+        )

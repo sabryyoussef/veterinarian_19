@@ -1,0 +1,76 @@
+[2026-07-23T14:49:39] authenticated uid=2
+[2026-07-23T14:49:39] Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 700, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 233, in main
+    task_id = odoo.create(
+              ^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 70, in create
+    return self.kw(model, "create", vals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 67, in kw
+    return self.models.execute_kw(DB, self.uid, PASSWORD, model, method, list(args), kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1122, in __call__
+    return self.__send(self.__name, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1458, in __request
+    request = dumps(params, methodname, encoding=self.__encoding,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 981, in dumps
+    data = m.dumps(params)
+           ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 514, in dumps
+    dump(v, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 536, in __dump
+    f(self, value, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 589, in dump_array
+    dump(v, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 536, in __dump
+    f(self, value, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 607, in dump_struct
+    dump(v, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 536, in __dump
+    f(self, value, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 552, in dump_long
+    raise OverflowError("int exceeds XML-RPC limits")
+OverflowError: int exceeds XML-RPC limits
+
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 700, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 233, in main
+    task_id = odoo.create(
+              ^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 70, in create
+    return self.kw(model, "create", vals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/stabilization_git_github_deploy_uat/run_stabilization_uat.py", line 67, in kw
+    return self.models.execute_kw(DB, self.uid, PASSWORD, model, method, list(args), kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1122, in __call__
+    return self.__send(self.__name, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 1458, in __request
+    request = dumps(params, methodname, encoding=self.__encoding,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 981, in dumps
+    data = m.dumps(params)
+           ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 514, in dumps
+    dump(v, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 536, in __dump
+    f(self, value, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 589, in dump_array
+    dump(v, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 536, in __dump
+    f(self, value, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 607, in dump_struct
+    dump(v, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 536, in __dump
+    f(self, value, write)
+  File "/usr/lib/python3.12/xmlrpc/client.py", line 552, in dump_long
+    raise OverflowError("int exceeds XML-RPC limits")
+OverflowError: int exceeds XML-RPC limits

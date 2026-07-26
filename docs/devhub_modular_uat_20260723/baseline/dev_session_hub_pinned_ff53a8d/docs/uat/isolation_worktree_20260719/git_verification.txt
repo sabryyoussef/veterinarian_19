@@ -1,0 +1,25 @@
+SANITIZED GIT VERIFICATION — 2026-07-19
+
+Main worktree: /srv/devhub-uat/manual/petspot-uat
+Before branch: main
+After branch: main
+Before HEAD: 5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+After HEAD: 5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+Before dirty digest: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+After dirty digest: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+Main invariant result: PASS
+
+Execution worktree: /srv/devhub-uat/worktrees/petspot-uat/DW-3
+Execution branch: devhub/DW-3-isolation-uat-verify-dedicated-branch-and-worktree
+Execution HEAD: 5a7f1e1404dbbc1efeacc1a1bcaea3021d7cd7ae
+Commits after Base HEAD: 0
+Status: ?? UAT_ISOLATION_MARKER.txt
+Marker absent from main worktree: PASS
+Branch retained for audit: PASS
+Worktree retained for audit: PASS
+
+Automatic commit: NONE
+Automatic push: NONE
+Automatic PR: NONE
+Automatic merge: NONE
+Automatic deployment: NONE

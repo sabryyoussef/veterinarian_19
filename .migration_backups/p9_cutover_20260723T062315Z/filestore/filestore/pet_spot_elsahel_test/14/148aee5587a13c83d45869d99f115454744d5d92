@@ -1,0 +1,87 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 7414
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-07 19:19:27 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** high
+**الثقة:** 0.88
+
+**الملخص:**
+Error when clicking the dashboard button in the projects module due to Owl lifecycle issue.
+
+**الإجراء المطلوب:**
+Investigate the XPath expression for the ProjectRightSidePanelSection and ensure it is correctly defined in the view. Fix the element location issue in the XML.
+
+## Original Message
+
+```
+في ارور لما بحاول اضغط علي الزر بتاع الداش بورد ف مديول المشاريع 
+UncaughtPromiseError > OwlError
+
+Uncaught Promise > An error occured in the owl lifecycle (see this Error's "cause" property)
+
+Occured on gpc.odoo.com.se on 2026-07-07 19:18:50 GMT
+
+OwlError: An error occured in the owl lifecycle (see this Error's "cause" property)
+    Error: An error occured in the owl lifecycle (see this Error's "cause" property)
+        at handleError (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:762:101)
+        at App.handleError (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:1420:29)
+        at Fiber._render (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:787:19)
+        at Fiber.render (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:785:6)
+        at ComponentNode.initiateRender (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:855:47)
+
+Caused by: Error: Element '<xpath expr="//ProjectRightSidePanelSection[@name='milestones']" position="before">
+                <ProjectRightSidePanelSection name="'project_details'" show="state.data.show_project_details and (hasDescription or hasContractAmount)">
+                    <t t-set-slot="title">
+                        Project Details
+                    </t>
+                    <div class="px-3 pb-3">
+                        <div t-if="hasContractAmount" class="mb-3">
+                            <strong>Contract Amount / مبلغ التعاقد</strong>
+                            <div class="o_stat_value text-primary">
+                                <t t-esc="formatMonetary(state.data.contract_amount)"/>
+                            </div>
+                        </div>
+                        <div t-if="hasDescription">
+                            <strong>Description / الوصف</strong>
+                            <div class="mt-2 o_gpc_project_description" t-out="descriptionMarkup"/>
+                        </div>
+                    </div>
+                </ProjectRightSidePanelSection>
+            </xpath>' cannot be located in element tree
+    Error: Element '<xpath expr="//ProjectRightSidePanelSection[@name='milestones']" position="before">
+                <ProjectRightSidePanelSection name="'project_details'" show="state.data.show_project_details and (hasDescription or hasContractAmount)">
+                    <t t-set-slot="title">
+                        Project Details
+                    </t>
+                    <div class="px-3 pb-3">
+                        <div t-if="hasContractAmount" class="mb-3">
+                            <strong>Contract Amount / مبلغ التعاقد</strong>
+                            <div class="o_stat_value text-primary">
+                                <t t-esc="formatMonetary(state.data.contract_amount)"/>
+                            </div>
+                        </div>
+                        <div t-if="hasDescription">
+                            <strong>Description / الوصف</strong>
+                            <div class="mt-2 o_gpc_project_description" t-out="descriptionMarkup"/>
+                        </div>
+                    </div>
+                </ProjectRightSidePanelSection>
+            </xpath>' cannot be located in element tree
+        at getElement (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:3887:94)
+        at applyInheritance (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:3908:193)
+        at _getTemplate (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:3932:19)
+        at App.getTemplate [as getRawTemplate] (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:3938:124)
+        at App.getTemplate (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:1005:130)
+        at new ComponentNode (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:850:133)
+        at https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:1418:6
+        at ProjectUpdateKanbanController.slot10 (eval at compile (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:1375:421), <anonymous>:180:11)
+        at callSlot (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:956:25)
+        at Layout.template (eval at compile (https://gpc.odoo.com.se/web/assets/fab4ced/web.assets_web.min.js:1375:421), <anonymous>:39:10)
+```

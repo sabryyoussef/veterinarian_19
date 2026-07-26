@@ -1,0 +1,19 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_git_commit_approval_user,dev.git.commit.approval user,model_dev_git_commit_approval,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_git_commit_approval_manager,dev.git.commit.approval manager,model_dev_git_commit_approval,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_git_commit_approval_event_user,dev.git.commit.approval.event user,model_dev_git_commit_approval_event,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_git_commit_approval_event_manager,dev.git.commit.approval.event manager,model_dev_git_commit_approval_event,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_git_commit_record_user,dev.git.commit.record user,model_dev_git_commit_record,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_git_commit_record_manager,dev.git.commit.record manager,model_dev_git_commit_record,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_git_commit_approval_wizard_manager,dev.git.commit.approval.wizard manager,model_dev_git_commit_approval_wizard,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_git_commit_execution_wizard_manager,dev.git.commit.execution.wizard manager,model_dev_git_commit_execution_wizard,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_git_remote_user,dev.git.remote user,model_dev_git_remote,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_git_remote_manager,dev.git.remote manager,model_dev_git_remote,devhub_core.group_dev_hub_manager,1,1,1,0
+access_dev_git_push_approval_user,dev.git.push.approval user,model_dev_git_push_approval,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_git_push_approval_manager,dev.git.push.approval manager,model_dev_git_push_approval,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_git_push_approval_event_user,dev.git.push.approval.event user,model_dev_git_push_approval_event,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_git_push_approval_event_manager,dev.git.push.approval.event manager,model_dev_git_push_approval_event,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_git_push_record_user,dev.git.push.record user,model_dev_git_push_record,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_git_push_record_manager,dev.git.push.record manager,model_dev_git_push_record,devhub_core.group_dev_hub_manager,1,0,0,0
+access_dev_git_push_approval_wizard_manager,dev.git.push.approval.wizard manager,model_dev_git_push_approval_wizard,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_git_push_execution_wizard_manager,dev.git.push.execution.wizard manager,model_dev_git_push_execution_wizard,devhub_core.group_dev_hub_manager,1,1,1,1

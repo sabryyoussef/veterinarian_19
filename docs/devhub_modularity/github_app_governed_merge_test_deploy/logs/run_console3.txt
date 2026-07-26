@@ -1,0 +1,28 @@
+[2026-07-23T15:20:36] WI 3323 approved plan=2477 approval=2275
+[2026-07-23T15:20:45] shot 01_work.png :: Work Item created
+[2026-07-23T15:20:47] shot 02_analysis.png :: Analysis
+[2026-07-23T15:20:50] shot 03_plan.png :: Plan
+[2026-07-23T15:20:52] shot 04_approval.png :: Exact-hash approval
+[2026-07-23T15:20:52] worker confirm
+[2026-07-23T15:21:01] workspace 1848 ready devhub/DW-3323-devhub-governed-merge-deploy-uat-20260723t122034z-harmless-docs
+[2026-07-23T15:21:11] Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/run_governed_uat.py", line 660, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/run_governed_uat.py", line 410, in main
+    session_payload = odoo_shell(
+                      ^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/run_governed_uat.py", line 155, in odoo_shell
+    raise RuntimeError(f"odoo shell failed: {payload}")
+RuntimeError: odoo shell failed: {'ok': False, 'raw': ''}
+
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/run_governed_uat.py", line 660, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/run_governed_uat.py", line 410, in main
+    session_payload = odoo_shell(
+                      ^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/run_governed_uat.py", line 155, in odoo_shell
+    raise RuntimeError(f"odoo shell failed: {payload}")
+RuntimeError: odoo shell failed: {'ok': False, 'raw': ''}

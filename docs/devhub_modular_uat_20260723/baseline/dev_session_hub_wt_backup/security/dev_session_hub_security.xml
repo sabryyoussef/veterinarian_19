@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_dev_session_hub" model="ir.module.category">
+        <field name="name">Development Session Hub</field>
+        <field name="description">Remote development registry and session lifecycle</field>
+        <field name="sequence">45</field>
+    </record>
+
+    <record id="privilege_dev_session_hub" model="res.groups.privilege">
+        <field name="name">Development Session Hub</field>
+        <field name="category_id" ref="module_category_dev_session_hub"/>
+        <field name="sequence">45</field>
+    </record>
+
+    <record id="group_dev_hub_user" model="res.groups">
+        <field name="name">Dev Hub User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="privilege_dev_session_hub"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_dev_hub_integration" model="res.groups">
+        <field name="name">Dev Hub Scoped Outbox Service</field>
+        <field name="sequence">5</field>
+        <field name="privilege_id" ref="privilege_dev_session_hub"/>
+        <field name="api_key_duration">30</field>
+        <field name="comment">May only lease eligible outbox intents and acknowledge their outcome through guarded methods.</field>
+    </record>
+
+    <record id="group_dev_hub_generation" model="res.groups">
+        <field name="name">Dev Hub Scoped Draft Generation Service</field>
+        <field name="sequence">6</field>
+        <field name="privilege_id" ref="privilege_dev_session_hub"/>
+        <field name="api_key_duration">30</field>
+        <field name="comment">May only lease draft-generation requests and import schema-validated analysis or plan drafts.</field>
+    </record>
+
+    <record id="group_dev_hub_approver" model="res.groups">
+        <field name="name">Dev Hub Plan and Communication Approver</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="privilege_dev_session_hub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_user'))]"/>
+    </record>
+
+    <record id="group_dev_hub_deploy_approver" model="res.groups">
+        <field name="name">Dev Hub Deploy Approver</field>
+        <field name="sequence">25</field>
+        <field name="privilege_id" ref="privilege_dev_session_hub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_approver'))]"/>
+        <field name="comment">May approve Test/Staging deployment and non-destructive rollback requests.</field>
+    </record>
+
+    <record id="group_dev_hub_production_approver" model="res.groups">
+        <field name="name">Dev Hub Production Approver</field>
+        <field name="sequence">28</field>
+        <field name="privilege_id" ref="privilege_dev_session_hub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_deploy_approver'))]"/>
+        <field name="comment">May approve Production promotion and destructive rollback after soak evidence.</field>
+    </record>
+
+    <record id="group_dev_hub_manager" model="res.groups">
+        <field name="name">Dev Hub Manager</field>
+        <field name="sequence">30</field>
+        <field name="privilege_id" ref="privilege_dev_session_hub"/>
+        <field name="implied_ids" eval="[(4, ref('group_dev_hub_production_approver'))]"/>
+    </record>
+
+    <record id="rule_dev_session_own" model="ir.rule">
+        <field name="name">Dev Hub users see authorized own sessions</field>
+        <field name="model_id" ref="model_dev_session"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['&amp;', ('user_id', '=', user.id), '|', ('project_id.owner_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+
+    <record id="rule_dev_session_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all sessions</field>
+        <field name="model_id" ref="model_dev_session"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_session_event_own" model="ir.rule">
+        <field name="name">Dev Hub users see events for their own sessions</field>
+        <field name="model_id" ref="model_dev_session_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['&amp;', ('session_id.user_id', '=', user.id), '|', ('session_id.project_id.owner_id', '=', user.id), ('session_id.project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+
+    <record id="rule_dev_session_event_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all session events</field>
+        <field name="model_id" ref="model_dev_session_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_project_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized projects</field>
+        <field name="model_id" ref="model_dev_project"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('owner_id', '=', user.id), ('member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_project_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all projects</field>
+        <field name="model_id" ref="model_dev_project"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_repository_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized repositories</field>
+        <field name="model_id" ref="model_dev_repository"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('project_id.owner_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_repository_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all repositories</field>
+        <field name="model_id" ref="model_dev_repository"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_environment_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized environments</field>
+        <field name="model_id" ref="model_dev_environment"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('project_id.owner_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_environment_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all environments</field>
+        <field name="model_id" ref="model_dev_environment"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_task_link_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized task links</field>
+        <field name="model_id" ref="model_dev_task_link"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('project_id.owner_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_task_link_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all task links</field>
+        <field name="model_id" ref="model_dev_task_link"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_policy_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized policies</field>
+        <field name="model_id" ref="model_dev_policy"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('project_id.owner_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_policy_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all policies</field>
+        <field name="model_id" ref="model_dev_policy"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_machine_member" model="ir.rule">
+        <field name="name">Dev Hub users see machines for authorized projects</field>
+        <field name="model_id" ref="model_dev_machine"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('environment_ids.project_id.owner_id', '=', user.id), ('environment_ids.project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_machine_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all machines</field>
+        <field name="model_id" ref="model_dev_machine"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_launch_wizard_own" model="ir.rule">
+        <field name="name">Dev Hub users see authorized own launchers</field>
+        <field name="model_id" ref="model_dev_launch_wizard"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['&amp;', ('session_id.user_id', '=', user.id), '|', ('session_id.project_id.owner_id', '=', user.id), ('session_id.project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_launch_wizard_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all launchers</field>
+        <field name="model_id" ref="model_dev_launch_wizard"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_work_item_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized work items</field>
+        <field name="model_id" ref="model_dev_work_item"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('dev_project_id.owner_id', '=', user.id), ('dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_item_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all work items</field>
+        <field name="model_id" ref="model_dev_work_item"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_work_source_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized source references</field>
+        <field name="model_id" ref="model_dev_work_source_message"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', '&amp;', ('work_item_ids', '=', False), ('create_uid', '=', user.id), '|', ('work_item_ids.dev_project_id.owner_id', '=', user.id), ('work_item_ids.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_source_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all source references</field>
+        <field name="model_id" ref="model_dev_work_source_message"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_dev_work_external_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized external links</field>
+        <field name="model_id" ref="model_dev_work_external_link"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_analysis_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized analyses</field>
+        <field name="model_id" ref="model_dev_work_analysis"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_plan_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized plans</field>
+        <field name="model_id" ref="model_dev_work_plan"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_plan_step_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized plan steps</field>
+        <field name="model_id" ref="model_dev_work_plan_step"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_approval_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized approvals</field>
+        <field name="model_id" ref="model_dev_work_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_checkpoint_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized checkpoints</field>
+        <field name="model_id" ref="model_dev_work_checkpoint"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_completion_report_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized completion reports</field>
+        <field name="model_id" ref="model_dev_completion_report"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_communication_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized communications</field>
+        <field name="model_id" ref="model_dev_work_communication"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_lifecycle_event_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized lifecycle events</field>
+        <field name="model_id" ref="model_dev_work_lifecycle_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_external_outbox_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized outbox records</field>
+        <field name="model_id" ref="model_dev_external_outbox"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+
+    <record id="rule_dev_work_artifacts_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all external links</field>
+        <field name="model_id" ref="model_dev_work_external_link"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_analysis_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all analyses</field>
+        <field name="model_id" ref="model_dev_work_analysis"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_plan_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all plans</field>
+        <field name="model_id" ref="model_dev_work_plan"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_plan_step_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all plan steps</field>
+        <field name="model_id" ref="model_dev_work_plan_step"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_approval_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all approvals</field>
+        <field name="model_id" ref="model_dev_work_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_checkpoint_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all checkpoints</field>
+        <field name="model_id" ref="model_dev_work_checkpoint"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_completion_report_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all completion reports</field>
+        <field name="model_id" ref="model_dev_completion_report"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_communication_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all communications</field>
+        <field name="model_id" ref="model_dev_work_communication"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_lifecycle_event_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all lifecycle events</field>
+        <field name="model_id" ref="model_dev_work_lifecycle_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_external_outbox_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all outbox records</field>
+        <field name="model_id" ref="model_dev_external_outbox"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_work_generation_member" model="ir.rule">
+        <field name="name">Dev Hub users see authorized generation requests</field>
+        <field name="model_id" ref="model_dev_work_generation"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_work_generation_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all generation requests</field>
+        <field name="model_id" ref="model_dev_work_generation"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Global company boundaries intersect every group-specific lifecycle rule. -->
+    <record id="rule_dev_work_item_company" model="ir.rule">
+        <field name="name">Dev work items stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_item"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_external_company" model="ir.rule">
+        <field name="name">Dev external links stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_external_link"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_analysis_company" model="ir.rule">
+        <field name="name">Dev analyses stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_analysis"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_plan_company" model="ir.rule">
+        <field name="name">Dev plans stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_plan"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_plan_step_company" model="ir.rule">
+        <field name="name">Dev plan steps stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_plan_step"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_approval_company" model="ir.rule">
+        <field name="name">Dev approvals stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_approval"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_checkpoint_company" model="ir.rule">
+        <field name="name">Dev checkpoints stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_checkpoint"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_completion_report_company" model="ir.rule">
+        <field name="name">Dev completion reports stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_completion_report"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_communication_company" model="ir.rule">
+        <field name="name">Dev communications stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_communication"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_lifecycle_event_company" model="ir.rule">
+        <field name="name">Dev lifecycle events stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_lifecycle_event"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_external_outbox_company" model="ir.rule">
+        <field name="name">Dev outbox records stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_external_outbox"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_work_generation_company" model="ir.rule">
+        <field name="name">Dev generation requests stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_work_generation"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_execution_workspace_member" model="ir.rule">
+        <field name="name">Dev users see authorized execution workspaces</field>
+        <field name="model_id" ref="model_dev_execution_workspace"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('project_id.owner_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_execution_workspace_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all execution workspaces</field>
+        <field name="model_id" ref="model_dev_execution_workspace"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_execution_workspace_event_member" model="ir.rule">
+        <field name="name">Dev users see authorized execution workspace events</field>
+        <field name="model_id" ref="model_dev_execution_workspace_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('workspace_id.project_id.owner_id', '=', user.id), ('workspace_id.project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_execution_workspace_event_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all execution workspace events</field>
+        <field name="model_id" ref="model_dev_execution_workspace_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_execution_workspace_company" model="ir.rule">
+        <field name="name">Execution workspaces stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_execution_workspace"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_execution_workspace_event_company" model="ir.rule">
+        <field name="name">Execution workspace events stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_execution_workspace_event"/>
+        <field name="domain_force">[('workspace_id.work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_commit_approval_member" model="ir.rule">
+        <field name="name">Dev users see authorized Git commit approvals</field>
+        <field name="model_id" ref="model_dev_git_commit_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_commit_approval_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all Git commit approvals</field>
+        <field name="model_id" ref="model_dev_git_commit_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_commit_approval_event_member" model="ir.rule">
+        <field name="name">Dev users see authorized Git commit approval events</field>
+        <field name="model_id" ref="model_dev_git_commit_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('approval_id.work_item_id.dev_project_id.owner_id', '=', user.id), ('approval_id.work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_commit_approval_event_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all Git commit approval events</field>
+        <field name="model_id" ref="model_dev_git_commit_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_commit_record_member" model="ir.rule">
+        <field name="name">Dev users see authorized reviewed commit records</field>
+        <field name="model_id" ref="model_dev_git_commit_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_commit_record_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all reviewed commit records</field>
+        <field name="model_id" ref="model_dev_git_commit_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_commit_approval_company" model="ir.rule">
+        <field name="name">Git commit approvals stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_commit_approval"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_commit_approval_event_company" model="ir.rule">
+        <field name="name">Git commit approval events stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_commit_approval_event"/>
+        <field name="domain_force">[('approval_id.work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_commit_record_company" model="ir.rule">
+        <field name="name">Reviewed commit records stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_commit_record"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_push_approval_member" model="ir.rule">
+        <field name="name">Dev users see authorized Git Push approvals</field>
+        <field name="model_id" ref="model_dev_git_push_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_push_approval_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all Git Push approvals</field>
+        <field name="model_id" ref="model_dev_git_push_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_push_approval_event_member" model="ir.rule">
+        <field name="name">Dev users see authorized Git Push approval events</field>
+        <field name="model_id" ref="model_dev_git_push_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('approval_id.work_item_id.dev_project_id.owner_id', '=', user.id), ('approval_id.work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_push_approval_event_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all Git Push approval events</field>
+        <field name="model_id" ref="model_dev_git_push_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_push_record_member" model="ir.rule">
+        <field name="name">Dev users see authorized verified Push records</field>
+        <field name="model_id" ref="model_dev_git_push_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_push_record_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all verified Push records</field>
+        <field name="model_id" ref="model_dev_git_push_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_push_approval_company" model="ir.rule">
+        <field name="name">Git Push approvals stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_push_approval"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_push_approval_event_company" model="ir.rule">
+        <field name="name">Git Push approval events stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_push_approval_event"/>
+        <field name="domain_force">[('approval_id.work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_push_record_company" model="ir.rule">
+        <field name="name">Verified Push records stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_push_record"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_pr_approval_member" model="ir.rule">
+        <field name="name">Dev users see authorized PR approvals</field>
+        <field name="model_id" ref="model_dev_git_pr_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_pr_approval_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all PR approvals</field>
+        <field name="model_id" ref="model_dev_git_pr_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_pr_approval_event_member" model="ir.rule">
+        <field name="name">Dev users see authorized PR approval events</field>
+        <field name="model_id" ref="model_dev_git_pr_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('approval_id.work_item_id.dev_project_id.owner_id', '=', user.id), ('approval_id.work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_pr_approval_event_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all PR approval events</field>
+        <field name="model_id" ref="model_dev_git_pr_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_pr_record_member" model="ir.rule">
+        <field name="name">Dev users see authorized verified PR records</field>
+        <field name="model_id" ref="model_dev_git_pr_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_pr_record_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all verified PR records</field>
+        <field name="model_id" ref="model_dev_git_pr_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_pr_approval_company" model="ir.rule">
+        <field name="name">PR approvals stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_pr_approval"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_pr_approval_event_company" model="ir.rule">
+        <field name="name">PR approval events stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_pr_approval_event"/>
+        <field name="domain_force">[('approval_id.work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_pr_record_company" model="ir.rule">
+        <field name="name">Verified PR records stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_pr_record"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_merge_approval_member" model="ir.rule">
+        <field name="name">Dev users see authorized Merge approvals</field>
+        <field name="model_id" ref="model_dev_git_merge_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_merge_approval_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all Merge approvals</field>
+        <field name="model_id" ref="model_dev_git_merge_approval"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_merge_approval_event_member" model="ir.rule">
+        <field name="name">Dev users see authorized Merge approval events</field>
+        <field name="model_id" ref="model_dev_git_merge_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('approval_id.work_item_id.dev_project_id.owner_id', '=', user.id), ('approval_id.work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_merge_approval_event_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all Merge approval events</field>
+        <field name="model_id" ref="model_dev_git_merge_approval_event"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_merge_record_member" model="ir.rule">
+        <field name="name">Dev users see authorized Merge records</field>
+        <field name="model_id" ref="model_dev_git_merge_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_user'))]"/>
+        <field name="domain_force">['|', ('work_item_id.dev_project_id.owner_id', '=', user.id), ('work_item_id.dev_project_id.member_ids', 'in', [user.id])]</field>
+    </record>
+    <record id="rule_dev_git_merge_record_manager_all" model="ir.rule">
+        <field name="name">Dev Hub managers see all Merge records</field>
+        <field name="model_id" ref="model_dev_git_merge_record"/>
+        <field name="groups" eval="[(4, ref('group_dev_hub_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_dev_git_merge_approval_company" model="ir.rule">
+        <field name="name">Merge approvals stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_merge_approval"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_merge_approval_event_company" model="ir.rule">
+        <field name="name">Merge approval events stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_merge_approval_event"/>
+        <field name="domain_force">[('approval_id.work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_dev_git_merge_record_company" model="ir.rule">
+        <field name="name">Merge records stay within allowed companies</field>
+        <field name="model_id" ref="model_dev_git_merge_record"/>
+        <field name="domain_force">[('work_item_id.company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

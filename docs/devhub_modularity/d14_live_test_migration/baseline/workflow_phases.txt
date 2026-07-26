@@ -1,0 +1,10 @@
+phase|analyzing|5
+phase|awaiting_plan_approval|4
+phase|blocked|2
+phase|completed|5
+phase|implementing|1
+phase|paused|3
+phase|received|10
+phase|registered|1
+phase|testing|13
+phase|triage|1

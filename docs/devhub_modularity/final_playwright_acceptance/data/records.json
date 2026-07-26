@@ -1,0 +1,615 @@
+{
+  "wi": {
+    "_error": "<Fault 1: 'Traceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3848, in _determine_fields_to_fetch\\n    field = self._fields[field_name]\\n            ~~~~~~~~~~~~^^^^^^^^^^^^\\nKeyError: \\'project_id\\'\\n\\nThe above exception was the direct cause of the following exception:\\n\\nTraceback (most recent call last):\\n  File \"/home/sabry/o"
+  },
+  "analysis": {
+    "id": 2695,
+    "work_item_id": [
+      3324,
+      "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+    ],
+    "status": "accepted"
+  },
+  "plan": {
+    "id": 2478,
+    "work_item_id": [
+      3324,
+      "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+    ],
+    "status": "approved",
+    "content_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01"
+  },
+  "plan_steps": [
+    {
+      "id": 3028,
+      "step_key": "write_doc",
+      "title": "Write UAT doc",
+      "sequence": 10
+    },
+    {
+      "id": 3029,
+      "step_key": "commit_push",
+      "title": "Commit and push",
+      "sequence": 20
+    },
+    {
+      "id": 3030,
+      "step_key": "app_pr",
+      "title": "GitHub App PR",
+      "sequence": 30
+    },
+    {
+      "id": 3031,
+      "step_key": "governed_merge",
+      "title": "Governed merge to staging",
+      "sequence": 40
+    },
+    {
+      "id": 3032,
+      "step_key": "test_deploy",
+      "title": "Test-only deploy",
+      "sequence": 50
+    }
+  ],
+  "approval": {
+    "id": 2276,
+    "work_item_id": [
+      3324,
+      "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+    ],
+    "decision": "approved",
+    "plan_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01",
+    "exact_plan_hash": "824be6510fe2943582a2f300f3c7ec60e7d554759ba1c3143d97abceb49a9d01"
+  },
+  "session": {
+    "id": 950,
+    "name": "Isolated session for DW-3324",
+    "state": "paused",
+    "work_item_id": [
+      3324,
+      "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+    ],
+    "execution_workspace_id": [
+      1849,
+      "DW-3324"
+    ],
+    "working_directory": "/srv/devhub/worktrees/petspot/DW-3324"
+  },
+  "workspace": {
+    "id": 1849,
+    "name": "DW-3324",
+    "state": "deployed_staging_reviewed",
+    "execution_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+    "committed_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+    "pr_number": 16,
+    "pr_url_reference": "https://github.com/sabryyoussef/veterinarian_19/pull/16",
+    "merge_result_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+    "merge_record_id": [
+      35,
+      "dev.git.merge.record,35"
+    ],
+    "pr_record_id": [
+      200,
+      "dev.git.pr.record,200"
+    ]
+  },
+  "checkpoints": [
+    {
+      "id": 2142,
+      "display_name": "dev.work.checkpoint,2142",
+      "work_item_id": [
+        3324,
+        "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+      ]
+    },
+    {
+      "id": 2143,
+      "display_name": "dev.work.checkpoint,2143",
+      "work_item_id": [
+        3324,
+        "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+      ]
+    },
+    {
+      "id": 2144,
+      "display_name": "dev.work.checkpoint,2144",
+      "work_item_id": [
+        3324,
+        "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+      ]
+    }
+  ],
+  "merge_approval": {
+    "_error": "<Fault 1: 'Traceback (most recent call last):\\n  File \"/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py\", line 3848, in _determine_fields_to_fetch\\n    field = self._fields[field_name]\\n            ~~~~~~~~~~~~^^^^^^^^^^^^\\nKeyError: \\'approved_head_sha\\'\\n\\nThe above exception was the direct cause of the following exception:\\n\\nTraceback (most recent call last):\\n  File \"/home/"
+  },
+  "merge_record": {
+    "id": 35,
+    "pr_number": 16,
+    "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+    "result_state": "merged",
+    "requester_id": [
+      714,
+      "Dev Hub Merge Requester"
+    ],
+    "approver_id": [
+      2,
+      "Administrator"
+    ],
+    "workspace_id": [
+      1849,
+      "DW-3324"
+    ]
+  },
+  "deploy": {
+    "id": 1,
+    "result_state": "succeeded",
+    "merge_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+    "target_id": [
+      4,
+      "PetSpot Test Staging Deploy"
+    ],
+    "workspace_id": [
+      1849,
+      "DW-3324"
+    ],
+    "backup_checkpoint_ref": "runner://staging/5d81cdc6f57b"
+  },
+  "deploy_target": {
+    "id": 4,
+    "name": "PetSpot Test Staging Deploy",
+    "non_production": true,
+    "database_identifier": "pet_spot_elsahel_test",
+    "target_kind": "staging"
+  },
+  "pr_record": {
+    "id": 200,
+    "pr_number": 16,
+    "pr_url_reference": "https://github.com/sabryyoussef/veterinarian_19/pull/16"
+  },
+  "actions": [
+    {
+      "id": 1394,
+      "name": "Active Sessions",
+      "res_model": "dev.session"
+    },
+    {
+      "id": 1378,
+      "name": "Active Work",
+      "res_model": "dev.work.item"
+    },
+    {
+      "id": 1389,
+      "name": "Analysis Revisions",
+      "res_model": "dev.work.analysis"
+    },
+    {
+      "id": 1381,
+      "name": "Awaiting Plan Approval",
+      "res_model": "dev.work.item"
+    },
+    {
+      "id": 1380,
+      "name": "Blocked Work",
+      "res_model": "dev.work.item"
+    },
+    {
+      "id": 1397,
+      "name": "Checkpoints",
+      "res_model": "dev.work.checkpoint"
+    },
+    {
+      "id": 1406,
+      "name": "Deploy Records",
+      "res_model": "dev.deploy.record"
+    },
+    {
+      "id": 1396,
+      "name": "Execution Workspaces",
+      "res_model": "dev.execution.workspace"
+    },
+    {
+      "id": 1395,
+      "name": "Paused Sessions",
+      "res_model": "dev.session"
+    },
+    {
+      "id": 1379,
+      "name": "Paused Work",
+      "res_model": "dev.work.item"
+    },
+    {
+      "id": 1388,
+      "name": "Plan Revisions",
+      "res_model": "dev.work.plan"
+    },
+    {
+      "id": 1382,
+      "name": "Ready for Review",
+      "res_model": "dev.work.item"
+    },
+    {
+      "id": 1377,
+      "name": "Recent Work",
+      "res_model": "dev.work.item"
+    },
+    {
+      "id": 1393,
+      "name": "Sessions",
+      "res_model": "dev.session"
+    },
+    {
+      "id": 1391,
+      "name": "Workflow",
+      "res_model": "dev.workflow.board"
+    }
+  ],
+  "devhub_root": [
+    {
+      "id": 860,
+      "name": "Dev Hub",
+      "child_id": [
+        861,
+        918,
+        862,
+        874,
+        875,
+        876,
+        877,
+        878,
+        920,
+        863,
+        864,
+        882,
+        888,
+        865,
+        872
+      ]
+    }
+  ],
+  "devhub_children": [
+    {
+      "id": 861,
+      "name": "Dashboard",
+      "action": "ir.actions.act_window,1369",
+      "child_id": []
+    },
+    {
+      "id": 918,
+      "name": "Workflow",
+      "action": "ir.actions.server,1390",
+      "child_id": []
+    },
+    {
+      "id": 862,
+      "name": "Recent Work",
+      "action": "ir.actions.act_window,1377",
+      "child_id": []
+    },
+    {
+      "id": 874,
+      "name": "Active Work",
+      "action": "ir.actions.act_window,1378",
+      "child_id": []
+    },
+    {
+      "id": 875,
+      "name": "Paused Work",
+      "action": "ir.actions.act_window,1379",
+      "child_id": []
+    },
+    {
+      "id": 876,
+      "name": "Blocked Work",
+      "action": "ir.actions.act_window,1380",
+      "child_id": []
+    },
+    {
+      "id": 877,
+      "name": "Awaiting Plan Approval",
+      "action": "ir.actions.act_window,1381",
+      "child_id": []
+    },
+    {
+      "id": 878,
+      "name": "Ready for Review",
+      "action": "ir.actions.act_window,1382",
+      "child_id": []
+    },
+    {
+      "id": 920,
+      "name": "WhatsApp Intake",
+      "action": "ir.actions.act_window,1410",
+      "child_id": []
+    },
+    {
+      "id": 863,
+      "name": "Active Sessions",
+      "action": "ir.actions.act_window,1394",
+      "child_id": []
+    },
+    {
+      "id": 864,
+      "name": "Paused Sessions",
+      "action": "ir.actions.act_window,1395",
+      "child_id": []
+    },
+    {
+      "id": 882,
+      "name": "Execution Workspaces",
+      "action": "ir.actions.act_window,1396",
+      "child_id": []
+    },
+    {
+      "id": 888,
+      "name": "Delivery",
+      "action": false,
+      "child_id": [
+        889,
+        890,
+        891,
+        892
+      ]
+    },
+    {
+      "id": 865,
+      "name": "Registry",
+      "action": false,
+      "child_id": [
+        866,
+        867,
+        919,
+        868,
+        883,
+        884,
+        885,
+        869,
+        870,
+        871
+      ]
+    },
+    {
+      "id": 872,
+      "name": "Configuration",
+      "action": false,
+      "child_id": [
+        873,
+        879,
+        880,
+        881,
+        886,
+        921,
+        887
+      ]
+    }
+  ],
+  "devhub_second": [
+    {
+      "id": 889,
+      "name": "Deploy Targets",
+      "action": "ir.actions.act_window,1405"
+    },
+    {
+      "id": 890,
+      "name": "Deploy Records",
+      "action": "ir.actions.act_window,1406"
+    },
+    {
+      "id": 891,
+      "name": "Rollback Records",
+      "action": "ir.actions.act_window,1407"
+    },
+    {
+      "id": 892,
+      "name": "Promotion Evidence",
+      "action": "ir.actions.act_window,1408"
+    },
+    {
+      "id": 866,
+      "name": "Projects",
+      "action": "ir.actions.act_window,1372"
+    },
+    {
+      "id": 867,
+      "name": "Environments",
+      "action": "ir.actions.act_window,1374"
+    },
+    {
+      "id": 919,
+      "name": "Odoo Runtimes",
+      "action": "ir.actions.act_window,1398"
+    },
+    {
+      "id": 868,
+      "name": "Repositories",
+      "action": "ir.actions.act_window,1373"
+    },
+    {
+      "id": 883,
+      "name": "Repository Discoveries",
+      "action": "ir.actions.act_window,1401"
+    },
+    {
+      "id": 884,
+      "name": "Bind Records",
+      "action": "ir.actions.act_window,1402"
+    },
+    {
+      "id": 885,
+      "name": "Bootstrap Records",
+      "action": "ir.actions.act_window,1403"
+    },
+    {
+      "id": 869,
+      "name": "Legacy Task Links",
+      "action": "ir.actions.act_window,1375"
+    },
+    {
+      "id": 870,
+      "name": "Machines",
+      "action": "ir.actions.act_window,1370"
+    },
+    {
+      "id": 871,
+      "name": "Development Clients",
+      "action": "ir.actions.act_window,1371"
+    },
+    {
+      "id": 873,
+      "name": "Policies",
+      "action": "ir.actions.act_window,1376"
+    },
+    {
+      "id": 879,
+      "name": "Lifecycle Audit",
+      "action": "ir.actions.act_window,1386"
+    },
+    {
+      "id": 880,
+      "name": "External Outbox",
+      "action": "ir.actions.act_window,1387"
+    },
+    {
+      "id": 881,
+      "name": "Analysis / Plan Generation",
+      "action": "ir.actions.act_window,1392"
+    },
+    {
+      "id": 886,
+      "name": "GitHub App Installations",
+      "action": "ir.actions.act_window,1399"
+    },
+    {
+      "id": 921,
+      "name": "WhatsApp Sources",
+      "action": "ir.actions.act_window,1409"
+    },
+    {
+      "id": 887,
+      "name": "Repository Allowlists",
+      "action": "ir.actions.act_window,1400"
+    }
+  ],
+  "workflow_server_actions": [
+    {
+      "id": 1390,
+      "name": "Workflow Board"
+    }
+  ],
+  "git_models": [
+    {
+      "id": 1324,
+      "model": "dev.git.pr.execution.wizard",
+      "name": "Confirm Exact Pull Request Creation"
+    },
+    {
+      "id": 1335,
+      "model": "dev.git.merge.approval.wizard",
+      "name": "Dedicated Human Merge Approval"
+    },
+    {
+      "id": 1315,
+      "model": "dev.git.commit.approval.wizard",
+      "name": "Explicit Human Git Commit Approval"
+    },
+    {
+      "id": 1316,
+      "model": "dev.git.commit.execution.wizard",
+      "name": "Final Human Confirmation for Local Git Commit"
+    },
+    {
+      "id": 1336,
+      "model": "dev.git.merge.execution.wizard",
+      "name": "Final Irreversible Merge Confirmation"
+    },
+    {
+      "id": 1317,
+      "model": "dev.git.push.approval.wizard",
+      "name": "Human Git Push Approval Wizard"
+    },
+    {
+      "id": 1318,
+      "model": "dev.git.push.execution.wizard",
+      "name": "Human Git Push Execution Confirmation"
+    },
+    {
+      "id": 1323,
+      "model": "dev.git.pr.approval.wizard",
+      "name": "Human Pull Request Creation Approval"
+    },
+    {
+      "id": 1334,
+      "model": "dev.git.merge.record",
+      "name": "Immutable Controlled Merge Record"
+    },
+    {
+      "id": 1309,
+      "model": "dev.git.commit.approval.event",
+      "name": "Immutable Git Commit Approval Event"
+    },
+    {
+      "id": 1313,
+      "model": "dev.git.push.approval.event",
+      "name": "Immutable Git Push Approval Event"
+    },
+    {
+      "id": 1308,
+      "model": "dev.git.commit.approval",
+      "name": "Immutable Human Git Commit Approval"
+    },
+    {
+      "id": 1312,
+      "model": "dev.git.push.approval",
+      "name": "Immutable Human Git Push Approval"
+    },
+    {
+      "id": 1332,
+      "model": "dev.git.merge.approval",
+      "name": "Immutable Human Merge Approval"
+    },
+    {
+      "id": 1320,
+      "model": "dev.git.pr.approval",
+      "name": "Immutable Human Pull Request Approval"
+    },
+    {
+      "id": 1333,
+      "model": "dev.git.merge.approval.event",
+      "name": "Immutable Merge Approval Event"
+    },
+    {
+      "id": 1321,
+      "model": "dev.git.pr.approval.event",
+      "name": "Immutable Pull Request Approval Event"
+    },
+    {
+      "id": 1322,
+      "model": "dev.git.pr.record",
+      "name": "Immutable Pull Request Creation Record"
+    },
+    {
+      "id": 1314,
+      "model": "dev.git.push.record",
+      "name": "Immutable Reviewed Git Push Record"
+    },
+    {
+      "id": 1310,
+      "model": "dev.git.commit.record",
+      "name": "Immutable Reviewed Local Git Commit Record"
+    },
+    {
+      "id": 1311,
+      "model": "dev.git.remote",
+      "name": "Registered Allowlisted Git Push Remote"
+    },
+    {
+      "id": 1331,
+      "model": "dev.git.merge.target",
+      "name": "Registered Human-Approved Merge Target"
+    },
+    {
+      "id": 1319,
+      "model": "dev.git.pr.target",
+      "name": "Registered Pull Request Target"
+    }
+  ]
+}

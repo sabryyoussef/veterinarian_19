@@ -13,11 +13,11 @@
         </field>
     </record>
 
-    <!-- Root app menu — shows as a tile on the home screen with icon.png -->
+    <!-- Nested under WhatsApp Hub — not a separate home-screen app tile. -->
     <menuitem id="menu_whatsapp_root"
-              name="WA Campaign"
-              sequence="91"
-              web_icon="evolution_whatsapp_chat,static/description/icon.png"/>
+              name="Campaign &amp; Chat"
+              parent="whatsapp_hub.menu_whatsapp_hub_root"
+              sequence="15"/>
 
     <!-- Top-level sections -->
     <menuitem id="menu_whatsapp_messaging"

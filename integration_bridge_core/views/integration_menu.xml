@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Root kept for install order; evolution_whatsapp_chat reparents under WhatsApp. -->
     <menuitem id="menu_integration_bridge_root"
               name="Integration Bridge"
-              sequence="100"
-              web_icon="integration_bridge_core,static/description/icon.png"/>
+              sequence="100"/>
 
     <menuitem id="menu_integration_bridge_config"
               name="Configuration"

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import logging
@@ -96,6 +97,25 @@ class ProjectTask(models.Model):
     op_sync_hash = fields.Char(string="OP Sync Hash", copy=False, index=True)
     op_last_error = fields.Text(string="OP Last Error", copy=False)
     op_description_raw = fields.Text(string="OP Description (raw)", copy=False)
+    op_attachment_ids = fields.Many2many(
+        "ir.attachment",
+        string="OpenProject Attachments",
+        compute="_compute_op_attachment_ids",
+        copy=False,
+    )
+    op_attachment_count = fields.Integer(
+        string="OP Attachment Count",
+        compute="_compute_op_attachment_ids",
+    )
+    op_primary_attachment_url = fields.Char(
+        string="Open Attachment",
+        compute="_compute_op_attachment_ids",
+        help="Direct link to open/download the first synced OpenProject attachment.",
+    )
+    op_attachments_synced_at = fields.Datetime(
+        string="OP Attachments Synced At",
+        copy=False,
+    )
 
     # Uniqueness for linked WPs is enforced in init() with a partial unique index
     # so unlinked tasks (NULL op_work_package_id) are not constrained.
@@ -110,6 +130,29 @@ class ProjectTask(models.Model):
             """
         )
 
+    def _compute_op_attachment_ids(self):
+        Attachment = self.env["ir.attachment"]
+        base = (self.env["ir.config_parameter"].sudo().get_param("web.base.url") or "").rstrip(
+            "/"
+        )
+        for task in self:
+            atts = Attachment.search(
+                [
+                    ("res_model", "=", "project.task"),
+                    ("res_id", "=", task.id),
+                    ("op_attachment_id", "!=", False),
+                ],
+                order="id asc",
+            )
+            task.op_attachment_ids = atts
+            task.op_attachment_count = len(atts)
+            if atts:
+                task.op_primary_attachment_url = (
+                    f"{base}/web/content/{atts[0].id}?download=true" if base else False
+                )
+            else:
+                task.op_primary_attachment_url = False
+
     def action_open_op_url(self):
         self.ensure_one()
         if not self.op_url:
@@ -119,6 +162,138 @@ class ProjectTask(models.Model):
             "url": self.op_url,
             "target": "new",
         }
+
+    def action_open_op_primary_attachment(self):
+        """Open the first synced OP attachment (Odoo copy, else OP URL)."""
+        self.ensure_one()
+        att = self.env["ir.attachment"].search(
+            [
+                ("res_model", "=", "project.task"),
+                ("res_id", "=", self.id),
+                ("op_attachment_id", "!=", False),
+            ],
+            order="id asc",
+            limit=1,
+        )
+        if not att:
+            raise UserError(_("No OpenProject attachments synced on this task yet."))
+        base = (self.env["ir.config_parameter"].sudo().get_param("web.base.url") or "").rstrip(
+            "/"
+        )
+        # Prefer Odoo-hosted file so login session works without OP auth.
+        if base:
+            return {
+                "type": "ir.actions.act_url",
+                "url": f"{base}/web/content/{att.id}?download=true",
+                "target": "new",
+            }
+        if att.op_attachment_url:
+            return {
+                "type": "ir.actions.act_url",
+                "url": att.op_attachment_url,
+                "target": "new",
+            }
+        raise UserError(_("web.base.url is not configured."))
+
+    def action_sync_op_attachments(self):
+        """Download OpenProject attachments onto this Odoo task (idempotent)."""
+        synced = 0
+        for task in self:
+            synced += task._op_sync_attachments_from_wp()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("OpenProject Attachments"),
+                "message": _("Synced %(count)s attachment(s).") % {"count": synced},
+                "type": "success",
+                "sticky": False,
+            },
+        }
+
+    def _op_sync_attachments_from_wp(self) -> int:
+        """Pull all OP attachments for this task's work package into ir.attachment.
+
+        Returns number of attachments created or updated.
+        """
+        self.ensure_one()
+        if not self.op_work_package_id or not self.op_backend_id:
+            return 0
+        backend = self.op_backend_id
+        client = backend._get_client()
+        base = (backend.public_url or backend.api_url or "").rstrip("/")
+        try:
+            elements = client.list_work_package_attachments(self.op_work_package_id)
+        except OpenProjectAPIError as e:
+            _logger.warning(
+                "OP attachment list failed for task %s WP %s: %s",
+                self.id,
+                self.op_work_package_id,
+                e,
+            )
+            self.op_last_error = _("Attachment sync failed: %s") % e
+            return 0
+
+        Attachment = self.env["ir.attachment"].sudo()
+        changed = 0
+        for att in elements:
+            op_att_id = att.get("id")
+            if not op_att_id:
+                continue
+            file_name = (
+                att.get("fileName")
+                or att.get("title")
+                or f"op-attachment-{op_att_id}"
+            )
+            op_url = OpenProjectClient.attachment_download_href(att, base_url=base)
+            existing = Attachment.search(
+                [
+                    ("res_model", "=", "project.task"),
+                    ("res_id", "=", self.id),
+                    ("op_attachment_id", "=", int(op_att_id)),
+                ],
+                limit=1,
+            )
+            try:
+                content, content_type = client.download_attachment_content(int(op_att_id))
+            except OpenProjectAPIError as e:
+                _logger.warning(
+                    "OP attachment download failed id=%s task=%s: %s",
+                    op_att_id,
+                    self.id,
+                    e,
+                )
+                continue
+            if not content:
+                continue
+            mimetype = (content_type or "").split(";")[0].strip() or att.get(
+                "contentType"
+            ) or "application/octet-stream"
+            vals = {
+                "name": file_name,
+                "res_model": "project.task",
+                "res_id": self.id,
+                "type": "binary",
+                "datas": base64.b64encode(content),
+                "mimetype": mimetype,
+                "op_attachment_id": int(op_att_id),
+                "op_attachment_url": op_url or False,
+                "description": _("Synced from OpenProject attachment #%s") % op_att_id,
+            }
+            if existing:
+                # Skip rewrite if size unchanged
+                if existing.file_size and existing.file_size == len(content):
+                    if op_url and existing.op_attachment_url != op_url:
+                        existing.write({"op_attachment_url": op_url})
+                        changed += 1
+                    continue
+                existing.write(vals)
+            else:
+                Attachment.create(vals)
+            changed += 1
+
+        self.op_attachments_synced_at = fields.Datetime.now()
+        return changed
 
     # ------------------------------------------------------------------
     # Hash / description helpers

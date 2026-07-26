@@ -1,0 +1,64 @@
+# Development Plan — OP#354 / Odoo #45
+
+**Title:** Batch workflow — Arabic user guide  
+**Sprint:** S2 — Days 5–6  
+**Effort:** 1–2 days (documentation; no feature code)  
+**Module:** docs only (+ screenshots)
+
+---
+
+## Steps & time
+
+| Step | Hours | Action |
+|------|-------|--------|
+| 1 | 1 | Draft Arabic outline from live UI |
+| 2 | 3 | Screenshots on sabry-test (create → process → assign) |
+| 3 | 3 | Write USER_GUIDE_BATCH_AR.md + HTML |
+| 4 | 1 | Document CSV-only limitation |
+| 5 | 1 | Attach to OP#354 + Odoo #45; WhatsApp-ready note |
+
+---
+
+## Deliverables
+
+| File | Content |
+|------|---------|
+| `docs/op_meeting_nabil/guides/USER_GUIDE_BATCH_AR.md` | Arabic steps |
+| `docs/op_meeting_nabil/guides/USER_GUIDE_BATCH_AR.html` | Shareable HTML |
+| Screenshots | Under `docs/op_meeting_nabil/guides/screenshots/` |
+
+---
+
+## Guide outline (required sections)
+
+1. ما هو الـ Batch؟  
+2. إنشاء Intake Batch  
+3. رفع ملف CSV (تنبيه: Excel غير مدعوم حالياً)  
+4. التحقق (Validate)  
+5. ربط Course / Schedule Batch  
+6. Process وإنشاء المتدربين  
+7. تعيين متدربين على دفعة (Assign to Batch)  
+8. أخطاء شائعة  
+
+---
+
+## Code reference (for writers, not changes)
+
+| Component | Path |
+|-----------|------|
+| Intake model | `batch_intake/models/batch_intake.py` |
+| Excel block | `_parse_file` raises if `xlsx` |
+| Bridge | `edafaa_batch_intake/` |
+| Wizard | `edafaa_batch_intake/wizard/batch_trainee_assignment_wizard.py` |
+
+---
+
+## Acceptance
+
+- [ ] Arabic guide complete with screenshots  
+- [ ] CSV vs Excel limitation stated  
+- [ ] Client can follow without developer  
+
+## Out of scope
+
+Implementing `.xlsx` parsing → create a **separate** WP if requested.

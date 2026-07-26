@@ -1,0 +1,102 @@
+{
+  "ts": "2026-07-24T16:48:22.435569+00:00",
+  "updated": [
+    {
+      "id": 11,
+      "name": "PetSpot — Grand Opening 🎉",
+      "has_new_maps": true,
+      "has_old": false
+    },
+    {
+      "id": 14,
+      "name": "PetSpot — Location & Directions 📍",
+      "has_new_maps": true,
+      "has_old": false
+    },
+    {
+      "id": 16,
+      "name": "PetSpot — Emergency & Urgent Care 🚨",
+      "has_new_maps": true,
+      "has_old": false
+    },
+    {
+      "id": 20,
+      "name": "PetSpot Reminder (AR)",
+      "has_new_maps": true,
+      "has_old": false
+    }
+  ],
+  "verify_all": [
+    {
+      "id": 11,
+      "name": "PetSpot — Grand Opening 🎉",
+      "old_maps": false,
+      "new_maps": true,
+      "amwaj2": false
+    },
+    {
+      "id": 12,
+      "name": "PetSpot — Book Appointment 📅",
+      "old_maps": false,
+      "new_maps": false,
+      "amwaj2": false
+    },
+    {
+      "id": 13,
+      "name": "PetSpot — Services Overview 🏥",
+      "old_maps": false,
+      "new_maps": false,
+      "amwaj2": false
+    },
+    {
+      "id": 14,
+      "name": "PetSpot — Location & Directions 📍",
+      "old_maps": false,
+      "new_maps": true,
+      "amwaj2": false
+    },
+    {
+      "id": 15,
+      "name": "PetSpot — Grooming ✂️",
+      "old_maps": false,
+      "new_maps": false,
+      "amwaj2": false
+    },
+    {
+      "id": 16,
+      "name": "PetSpot — Emergency & Urgent Care 🚨",
+      "old_maps": false,
+      "new_maps": true,
+      "amwaj2": false
+    },
+    {
+      "id": 17,
+      "name": "PetSpot — Follow-up Check-in 💛",
+      "old_maps": false,
+      "new_maps": false,
+      "amwaj2": false
+    },
+    {
+      "id": 18,
+      "name": "PetSpot Weekly Offer (EN)",
+      "old_maps": false,
+      "new_maps": false,
+      "amwaj2": false
+    },
+    {
+      "id": 19,
+      "name": "PetSpot Weekly Offer (AR)",
+      "old_maps": false,
+      "new_maps": false,
+      "amwaj2": false
+    },
+    {
+      "id": 20,
+      "name": "PetSpot Reminder (AR)",
+      "old_maps": false,
+      "new_maps": true,
+      "amwaj2": false
+    }
+  ],
+  "new_maps": "https://www.google.com/maps?q=30.9909056,28.6842417"
+}

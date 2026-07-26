@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/277
+- Message ID: 11157
+- Customer: Cycle X
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-15 10:34:03 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Request to send the Postman collection for testing additional features.
+
+**الإجراء المطلوب:**
+Send the Postman collection to the team for testing.
+
+**نص مرفق مستخرج:**
+السلام عليكم ورحمة الله وبركاته صبري ابعت القليكشن بتاع البوستمان للشباب عشان يبدأوا يشتغلوا عليه وعشان يعملوا تست الحاجات الاضافية اللي احنا دفناهم ولو في اي حاجة تابع معنا شكرا
+
+## Original Message
+
+```
+Voice message: 3A3DBD7585F66F4E9898.oga
+```

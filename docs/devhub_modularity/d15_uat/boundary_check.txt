@@ -1,0 +1,9 @@
+work_no_openproject_sync|PASS
+openproject_has_sync|PASS
+whatsapp_uses_hub|PASS
+plan_no_analysis|PASS
+approval_depends_plan|PASS
+workflow_depends_work|PASS
+generation_registry|PASS
+git_constants|PASS
+ALL PASS

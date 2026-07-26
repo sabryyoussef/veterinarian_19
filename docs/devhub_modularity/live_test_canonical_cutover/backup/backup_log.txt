@@ -1,0 +1,14 @@
+Dumping DB...
+dump_rc=0 size=18M
+configs_copied
+filestore_copied=219M
+total 17716
+drwxrwxr-x 3 sabry sabry     4096 Jul 23 11:22 .
+drwxrwxr-x 5 sabry sabry     4096 Jul 23 11:22 ..
+drwxrwxr-x 3 sabry sabry     4096 Jul 23 11:22 filestore
+-rw-rw-r-- 1 sabry sabry      302 Jul 23 11:22 git.txt
+-rw-rw-r-- 1 sabry sabry      628 Jul 23 11:22 modules_before.txt
+-rw-rw-r-- 1 sabry sabry      679 Jul 13 08:08 pet_spot_elsahel_test.conf
+-rw-rw-r-- 1 sabry sabry 18105406 Jul 23 11:22 pet_spot_elsahel_test.dump
+-rw-rw-r-- 1 sabry sabry      746 Jul 21 14:53 pet_spot_elsahel_test_activation_staging.conf
+-rw-rw-r-- 1 sabry sabry     1517 Jul 23 11:22 runtime.txt

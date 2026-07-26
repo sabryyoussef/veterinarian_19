@@ -1,0 +1,2 @@
+/bin/bash: /root/.bash_profile: Permission denied
+{"app_id": 4340040, "credential_type": "github_app_installation", "expires_at": "2026-07-23T13:17:30Z", "installation_id": 147639376, "permissions": {"contents": "read", "metadata": "read", "pull_requests": "write"}, "repositories": ["sabryyoussef/veterinarian_19"]}

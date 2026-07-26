@@ -1,0 +1,42 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 11731
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-17 13:02:45 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** configuration
+**الأولوية:** medium
+**الثقة:** 0.75
+
+**الملخص:**
+Need to configure payment journals for different payment methods in Odoo.
+
+**الإجراء المطلوب:**
+Create separate payment journals for Paymob, COD, and InstaPay in Odoo.
+
+## Original Message
+
+```
+الطلب المدفوع Online (Paymob):
+يتم إصدار فاتورة العميل (Customer Invoice) بعد تأكيد الدفع وإنشاء عملية البيع. من خلال بوسطة
+طلبات الدفع عند الاستلام (COD):
+يتم إصدار الفاتورة عند تسليم الطلب للعميل.
+يتم تسجيل التحصيل عندما تقوم شركة الشحن بتحويل المبلغ، وليس عند إنشاء الطلب.
+هل Shopify هو المصدر الأساسي لحالة الشحن؟
+نعم، إذا كان هو النظام الذي تتم عليه إدارة الطلبات والشحن، فيكون Shopify هو المصدر الرئيسي (Source of Truth) ويتم مزامنة الحالات إلى Odoo.
+
+تعديل الطلب بعد إصدار الفاتورة:
+
+يتم معالجة أي فرق باستخدام Credit Note أو Debit Note/Adjustment حسب نوع التعديل، للحفاظ على سلامة القيود المحاسبية.
+الطلبات القديمة:
+نعم، من الأفضل مراجعتها أولًا وإصدار تقرير بالأخطاء (الفواتير، المدفوعات، حالات الشحن، المخزون)
+Payment Journals المقترحة:
+Paymob: Journal باسم Paymob.
+COD: Journal باسم Cash on Delivery.
+InstaPay: Journal باسم InstaPay Bank أو InstaPay.
+يفضل أن يكون لكل وسيلة دفع Journal مستقل لتسهيل المطابقة البنكية والتقارير.
+```

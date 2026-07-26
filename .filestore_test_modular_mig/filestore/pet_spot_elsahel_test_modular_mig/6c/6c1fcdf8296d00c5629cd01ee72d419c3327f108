@@ -1,0 +1,31 @@
+{
+  "date": "2026-07-03",
+  "wp_parent": 135,
+  "docs": [
+    "INDEX_AR.md",
+    "PHASE2_IMPLEMENTATION_DELIVERY.md",
+    "PHASE1_IMPLEMENTATION_DELIVERY.md",
+    "WP135_FINAL_CLOSURE.md",
+    "USER_GUIDE_AR.md",
+    "USER_GUIDE_EN.md",
+    "DEVELOPER_GUIDE.md",
+    "README.md"
+  ],
+  "screenshots_phase1": [
+    "11-final-quotation.png",
+    "10-quotation-print-dialog.png",
+    "09-quotation-order-lines.png",
+    "08-quotation-form-dimensions.png",
+    "06-project-dashboard.png",
+    "05-project-description-tab.png",
+    "04-project-expected-budget-contract-amount.png",
+    "03-project-form.png",
+    "02-after-login.png",
+    "01-login-page.png"
+  ],
+  "screenshots_phase2": [
+    "03-employee-uat.png",
+    "02-payroll-structure-gulf-standard.png",
+    "01-after-login.png"
+  ]
+}

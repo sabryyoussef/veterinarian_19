@@ -1,0 +1,78 @@
+=== conf redacted ===
+[options]
+admin_passwd = REDACTED
+db_host = 127.0.0.1
+db_port = 5433
+db_user = odoo_test
+db_password = REDACTED
+dbfilter = ^pet_spot_elsahel_test$
+addons_path = /mnt/downloads/home_extended/odoo_ssd/odoo19/odoo19/addons,/mnt/downloads/home_extended/odoo_ssd/odoo19/odoo19/enterprise,/home/sabry3/devhub/addons_overlay_deps,/home/sabry3/devhub/veterinarian_19
+http_port = 18028
+data_dir = /home/sabry3/devhub/filestore/pet_spot_elsahel_test_data
+proxy_mode = False
+list_db = False
+without_demo = True
+logfile = /home/sabry3/devhub/logs/pet_spot_elsahel_test.log
+=== perms ===
+/home/sabry3/devhub/config/pet_spot_elsahel_test.conf mode=600 owner=sabry3:sabry3
+/home/sabry3/devhub/secrets/pet_spot_elsahel_test.env mode=600 owner=sabry3:sabry3
+/home/sabry3/devhub/filestore/pet_spot_elsahel_test_data mode=700 owner=sabry3:sabry3
+/home/sabry3/.config/systemd/user/pet_spot_elsahel_test.service mode=600 owner=sabry3:sabry3
+=== service ===
+MainPID=557016
+Description=Odoo 19 — PetSpot El Sahel TEST (Dell, port 18028)
+ActiveState=active
+FragmentPath=/home/sabry3/.config/systemd/user/pet_spot_elsahel_test.service
+LISTEN 0      128                        0.0.0.0:18028      0.0.0.0:*    users:(("python3",pid=557016,fd=4))   
+LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=3051,fd=3))     
+http_login=200
+=== dbfilter ===
+7:dbfilter = ^pet_spot_elsahel_test$
+12:list_db = False
+login_page_bytes 21409
+mentions_prod_db False
+mentions_test_db False
+=== hub state ===
+machine|77|sabry3-Precision-5540|prod=false|trusted_dev|sabry3-precision-5540-ts
+env|1|PetSpot Test|test|prod=false|machine=77|port=18028|http://127.0.0.1:18028
+policy|1|denied|deploy=false|launch=true
+fake_prod|246|false
+bad_staging|3|false
+module|dev_session_hub|installed|19.0.8.0.0
+op_backend_active=0
+mail_server_active=0
+fetchmail_active=0
+payment_enabled=0
+web.base.url=http://127.0.0.1:18028
+=== repo ===
+ff53a8d96ed1d63de38e2cd05230a3a0c432b64e
+0
+=== legacy untouched probe ===
+lrwxrwxrwx 1 sabry3 sabry3   17 Nov 27  2025 /home/sabry3/sabry_backup -> /mnt/sabry_backup
+drwxrwxr-x 1 ollama ollama 8192 Jun 12 21:08 /mnt/sabry_backup
+LISTEN 0      128                        0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=3051,fd=3))     
+=== roadmap why empty ===
+# Check if test tag syntax works; list tests
+"$ODOO_ROOT/venv19/bin/python3" "$ODOO_ROOT/odoo19/odoo19/odoo-bin" --help 2>&1 | rg -n 'test-tags|http-port' | head
+# Run roadmap with unbuffered python
+set +e
+PYTHONUNBUFFERED=1 "$ODOO_ROOT/venv19/bin/python3" -u "$ODOO_ROOT/odoo19/odoo19/odoo-bin" \
+  -c "$CONF" -d pet_spot_elsahel_test \
+  --http-port=18029 \
+  --test-enable --stop-after-init \
+  --test-tags=/dev_session_hub:TestCompletionRoadmap \
+  > /tmp/dell_roadmap_tests4.log 2>&1
+TRC=$?
+set -e
+echo roadmap_rc=$TRC
+wc -c /tmp/dell_roadmap_tests4.log
+head -c 2000 /tmp/dell_roadmap_tests4.log; echo
+tail -c 3000 /tmp/dell_roadmap_tests4.log; echo
+
+systemctl --user start pet_spot_elsahel_test.service
+sleep 6
+curl -s -o /dev/null -w 'http=%{http_code}\n' http://127.0.0.1:18028/web/login
+/mnt/downloads/home_extended/odoo_ssd/venv19/bin/python3
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'odoo'

@@ -1,0 +1,271 @@
+{
+  "timestamp": "2026-07-24T15:33:33.558198+00:00",
+  "phase": "2_deploy",
+  "target": {
+    "url": "http://127.0.0.1:8027",
+    "db": "pet_spot_elsahel",
+    "public": "https://drpaws.ai",
+    "website_id": 1
+  },
+  "social_account": {
+    "id": 16,
+    "name": "بيت الدواء البيطري -pet spot",
+    "social_account_handle": "animalcarecenterpetspots",
+    "media_type": "facebook",
+    "is_media_disconnected": false,
+    "active": true
+  },
+  "pages": [
+    {
+      "url": "/emergency-vet-north-coast",
+      "id": 7,
+      "action": "created"
+    },
+    {
+      "url": "/veterinary-clinic-near-amwaj",
+      "id": 8,
+      "action": "created"
+    },
+    {
+      "url": "/veterinary-home-visits-sahel",
+      "id": 9,
+      "action": "created"
+    },
+    {
+      "url": "/pet-vaccinations-north-coast",
+      "id": 10,
+      "action": "created"
+    },
+    {
+      "url": "/grooming-boarding-sahel",
+      "id": 11,
+      "action": "created"
+    },
+    {
+      "url": "/contact-directions-booking",
+      "id": 12,
+      "action": "created"
+    }
+  ],
+  "blog": {
+    "blog_id": 2,
+    "tags": {
+      "Emergency Care": 1,
+      "North Coast Pet Care": 2,
+      "Dogs": 3,
+      "Cats": 4,
+      "Vaccinations": 5,
+      "Travel and Summer Safety": 6
+    }
+  },
+  "articles": [
+    {
+      "id": 1,
+      "name": "What to do during a pet emergency in North Coast",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/what-to-do-during-a-pet-emergency-in-north-coast-1"
+    },
+    {
+      "id": 2,
+      "name": "Heatstroke signs in dogs and cats during Sahel summer",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/heatstroke-signs-in-dogs-and-cats-during-sahel-summer-2"
+    },
+    {
+      "id": 3,
+      "name": "How to travel safely with your pet to North Coast",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/how-to-travel-safely-with-your-pet-to-north-coast-3"
+    },
+    {
+      "id": 4,
+      "name": "Finding a 24/7 veterinarian near Amwaj",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/finding-a-247-veterinarian-near-amwaj-4"
+    },
+    {
+      "id": 5,
+      "name": "Pet vaccination preparation before travelling",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/pet-vaccination-preparation-before-travelling-5"
+    },
+    {
+      "id": 6,
+      "name": "Common digestive problems during summer trips",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/common-digestive-problems-during-summer-trips-6"
+    },
+    {
+      "id": 7,
+      "name": "When a pet needs a clinic visit versus a home visit",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/when-a-pet-needs-a-clinic-visit-versus-a-home-visit-7"
+    },
+    {
+      "id": 8,
+      "name": "Pet grooming and parasite prevention during summer",
+      "action": "created_draft",
+      "published": false,
+      "url": "/blog/petspot-pet-care-guide-2/pet-grooming-and-parasite-prevention-during-summer-8"
+    }
+  ],
+  "social_drafts": [
+    {
+      "id": 1,
+      "week": 1,
+      "key": "emergency",
+      "title": "Emergency readiness — North Coast",
+      "proposed_schedule_cairo": "2026-08-03 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 2,
+      "week": 1,
+      "key": "heatstroke",
+      "title": "Heatstroke signs — Sahel summer",
+      "proposed_schedule_cairo": "2026-08-05 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 3,
+      "week": 1,
+      "key": "directions",
+      "title": "Directions — Amwaj 2",
+      "proposed_schedule_cairo": "2026-08-07 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 4,
+      "week": 2,
+      "key": "w2",
+      "title": "Travel safely with pets to North Coast",
+      "proposed_schedule_cairo": "2026-08-10 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 5,
+      "week": 2,
+      "key": "w2",
+      "title": "Never leave pets in hot cars",
+      "proposed_schedule_cairo": "2026-08-12 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 6,
+      "week": 2,
+      "key": "w2",
+      "title": "Water + shade reminder",
+      "proposed_schedule_cairo": "2026-08-14 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 7,
+      "week": 3,
+      "key": "w3",
+      "title": "Vaccination prep before Coast travel",
+      "proposed_schedule_cairo": "2026-08-17 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 8,
+      "week": 3,
+      "key": "w3",
+      "title": "Digestive issues on summer trips",
+      "proposed_schedule_cairo": "2026-08-19 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 9,
+      "week": 3,
+      "key": "w3",
+      "title": "Phone hierarchy reminder",
+      "proposed_schedule_cairo": "2026-08-21 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 10,
+      "week": 4,
+      "key": "w4",
+      "title": "Clinic visit vs home visit",
+      "proposed_schedule_cairo": "2026-08-24 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 11,
+      "week": 4,
+      "key": "w4",
+      "title": "Grooming and parasite prevention",
+      "proposed_schedule_cairo": "2026-08-26 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    },
+    {
+      "id": 12,
+      "week": 4,
+      "key": "w4",
+      "title": "Recap — PetSpot El Sahel NAP",
+      "proposed_schedule_cairo": "2026-08-28 10:00:00",
+      "state": "draft",
+      "scheduled": false,
+      "account_ids": [
+        16
+      ]
+    }
+  ],
+  "notes": [
+    "Articles remain unpublished",
+    "Social posts state=draft; scheduled_date empty pending Sabry approval of first 3",
+    "No GBP/external/DNS/Cloudflare changes",
+    "Shop KG /g/11w2b6j71t not used"
+  ]
+}

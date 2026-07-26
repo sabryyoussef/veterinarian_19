@@ -1,0 +1,53 @@
+{
+  "status": true,
+  "results": {
+    "governorates": [
+      {
+        "id": 3,
+        "name": "Alexandria",
+        "code": "ALX",
+        "description": "Alexandria Governorate",
+        "working_area_count": 2,
+        "collector_count": 0,
+        "active": true
+      },
+      {
+        "id": 1,
+        "name": "Cairo",
+        "code": "CAI",
+        "description": "Cairo Governorate",
+        "working_area_count": 5,
+        "collector_count": 0,
+        "active": true
+      },
+      {
+        "id": 5,
+        "name": "Dakahlia",
+        "code": "DAK",
+        "description": "Dakahlia Governorate",
+        "working_area_count": 1,
+        "collector_count": 0,
+        "active": true
+      },
+      {
+        "id": 2,
+        "name": "Giza",
+        "code": "GIZ",
+        "description": "Giza Governorate",
+        "working_area_count": 3,
+        "collector_count": 0,
+        "active": true
+      },
+      {
+        "id": 4,
+        "name": "Qalyubia",
+        "code": "QAL",
+        "description": "Qalyubia Governorate",
+        "working_area_count": 1,
+        "collector_count": 0,
+        "active": true
+      }
+    ],
+    "total": 5
+  }
+}

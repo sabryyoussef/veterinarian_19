@@ -1,0 +1,82 @@
+[launcher] stage=push_execute workspace=1847
+/bin/bash: /root/.bash_profile: Permission denied
+2026-07-23 11:56:12,969 3707122 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 308, in <module>
+  File "<string>", line 301, in main
+  File "<string>", line 269, in stage_push_execute
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git/models/dev_git_push.py", line 935, in execute_approved_push
+    self._assert_push_approval_current(approval)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git/models/dev_git_push.py", line 682, in _assert_push_approval_current
+    self._assert_push_base(approval.remote_id)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git/models/dev_git_push.py", line 554, in _assert_push_base
+    self._validate_physical()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_execution/models/dev_execution.py", line 957, in _validate_physical
+    self._internal_write(
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_execution/models/dev_execution.py", line 722, in _internal_write
+    return super(DevExecutionWorkspace, self).write(values)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 390, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-07-23 11:56:12,969 3707122 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 162, in run
+    self.shell(dbnames[0])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 148, in shell
+    self.console(local_vars)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/shell.py", line 82, in console
+    exec(sys.stdin.read(), local_vars)
+  File "<string>", line 308, in <module>
+  File "<string>", line 301, in main
+  File "<string>", line 269, in stage_push_execute
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git/models/dev_git_push.py", line 935, in execute_approved_push
+    self._assert_push_approval_current(approval)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git/models/dev_git_push.py", line 682, in _assert_push_approval_current
+    self._assert_push_base(approval.remote_id)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_git/models/dev_git_push.py", line 554, in _assert_push_base
+    self._validate_physical()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_execution/models/dev_execution.py", line 957, in _validate_physical
+    self._internal_write(
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_execution/models/dev_execution.py", line 722, in _internal_write
+    return super(DevExecutionWorkspace, self).write(values)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons/mail/models/mail_thread.py", line 390, in write
+    result = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 57, in write
+    res = super().write(vals)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4414, in write
+    if self.pool.is_modifying_relations(field):
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 679, in is_modifying_relations
+    result = field in self._field_triggers and bool(
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+{"committed_sha": "baafb83d2520f57b09b57cc69a1e47f7e0551f74", "current_head": "baafb83d2520f57b09b57cc69a1e47f7e0551f74", "effective_uid": 1100, "effective_user": "devworker", "execution_branch": "devhub/DW-3320-devhub-git-github-deploy-uat-20260723t114946z-harmless-test-only", "ok": true, "push_record_id": 656, "stage": "push_execute", "state": "pushed_reviewed", "workspace_id": 1847}
+profiling:/tmp/pip-install-8jjqv0ge/rjsmin_68bb08825de84f6fbdee259467c2bcb9/build/temp.linux-x86_64-cpython-312/rjsmin.gcda:Cannot open

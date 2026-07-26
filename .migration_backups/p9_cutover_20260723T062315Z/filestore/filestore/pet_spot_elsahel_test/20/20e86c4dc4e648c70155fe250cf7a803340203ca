@@ -1,0 +1,146 @@
+
+/* /web/static/lib/bootstrap/scss/_functions.scss */
+ 
+
+/* /web/static/lib/bootstrap/scss/_mixins.scss */
+ 
+
+/* /web/static/src/scss/functions.scss */
+ 
+
+/* /web/static/src/scss/mixins_forwardport.scss */
+ 
+
+/* /web/static/src/scss/bs_mixins_overrides.scss */
+ 
+
+/* /web/static/src/scss/utils.scss */
+ 
+
+/* /web_enterprise/static/src/scss/primary_variables.scss */
+ 
+
+/* /web/static/src/scss/primary_variables.scss */
+ 
+
+/* /web_enterprise/static/src/webclient/home_menu/home_menu.variables.scss */
+ 
+
+/* /web_enterprise/static/src/webclient/navbar/navbar.variables.scss */
+ 
+
+/* /html_editor/static/src/scss/html_editor.variables.scss */
+ 
+
+/* /web/static/src/core/avatar/avatar.variables.scss */
+ 
+
+/* /web/static/src/core/bottom_sheet/bottom_sheet.variables.scss */
+ 
+
+/* /web/static/src/core/notifications/notification.variables.scss */
+ 
+
+/* /web/static/src/search/control_panel/control_panel.variables.scss */
+ 
+
+/* /web/static/src/search/search_bar/search_bar.variables.scss */
+ 
+
+/* /web/static/src/search/search_panel/search_panel.variables.scss */
+ 
+
+/* /web/static/src/views/fields/statusbar/statusbar_field.variables.scss */
+ 
+
+/* /web/static/src/views/fields/translation_button.variables.scss */
+ 
+
+/* /web/static/src/views/form/form.variables.scss */
+ 
+
+/* /web/static/src/views/kanban/kanban.variables.scss */
+ 
+
+/* /web/static/src/webclient/burger_menu/burger_menu.variables.scss */
+ 
+
+/* /web/static/src/webclient/navbar/navbar.variables.scss */
+ 
+
+/* /mail/static/src/core/common/primary_variables.scss */
+ 
+
+/* /mail/static/src/scss/variables/primary_variables.scss */
+ 
+
+/* /onboarding/static/src/scss/onboarding.variables.scss */
+ 
+
+/* /portal/static/src/scss/primary_variables.scss */
+ 
+
+/* /account/static/src/scss/variables.scss */
+ @keyframes animate-red{0%{color: red;}100%{color: inherit;}}.animate{animation: animate-red 1s ease;}
+
+/* /html_builder/static/src/core/building_blocks/builder_checkbox.variables.scss */
+ 
+
+/* /html_builder/static/src/core/building_blocks/builder_row.variables.scss */
+ 
+
+/* /html_builder/static/src/scss/builder.variables.scss */
+ .o_we_shape{--ShapeConnections--size-tiny: 2rem; --ShapeConnections--size-regular: 4rem; --ShapeConnections--size-big: 15rem; --ShapeAngular--size-regular: 15rem; --ShapeWavy--size-regular: 15rem; --ShapePattern--size-tiny: 12.5rem; --ShapePattern--size-regular: 50rem;}.o_we_shape_btn_content .o_we_shape{--ShapeConnections--size-tiny: 25%; --ShapeConnections--size-regular: 50%; --ShapeConnections--size-big: 75%; --ShapeAngular--size-regular: 50%; --ShapePattern--size-regular: 100%; --ShapePattern--size-tiny: 50%; --ShapeWavy--size-regular: 100%;}
+
+/* /website/static/src/scss/primary_variables.scss */
+ 
+
+/* /website/static/src/scss/options/user_values.scss */
+ 
+
+/* /website/static/src/scss/options/colors/user_color_palette.scss */
+ 
+
+/* /website/static/src/scss/options/colors/user_gray_color_palette.scss */
+ 
+
+/* /website/static/src/scss/options/colors/user_theme_color_palette.scss */
+ 
+
+/* /web_gantt/static/src/gantt_view.variables.scss */
+ 
+
+/* /hr_org_chart/static/src/scss/variables.scss */
+ 
+
+/* /documents/static/src/scss/documents.variables.scss */
+ 
+
+/* /website_knowledge/static/src/scss/primary_variables.scss */
+ 
+
+/* /website/static/src/snippets/s_badge/000_variables.scss */
+ 
+
+/* /website/static/src/scss/secondary_variables.scss */
+ 
+
+/* /web_enterprise/static/src/scss/secondary_variables.scss */
+ 
+
+/* /web/static/src/scss/secondary_variables.scss */
+ 
+
+/* /html_editor/static/src/scss/secondary_variables.scss */
+ 
+
+/* /web/static/src/scss/pre_variables.scss */
+ 
+
+/* /web/static/lib/bootstrap/scss/_variables.scss */
+ 
+
+/* /web/static/lib/bootstrap/scss/_variables-dark.scss */
+ 
+
+/* /web/static/lib/bootstrap/scss/_maps.scss */

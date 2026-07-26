@@ -1,0 +1,11 @@
+ch5=hub
+ch10=hub
+allowlist=10,5
+whatsapp_hub.discuss_cutover_enabled=True
+whatsapp_hub.unified_outbound_enabled=True
+whatsapp_hub.unified_outbound_purposes=discuss
+hub_channels=5,10
+pending_unified=0
+mod_hub=19.0.1.5.0
+mod_chat=19.0.1.14.0
+inst1_unified=true cutover=true

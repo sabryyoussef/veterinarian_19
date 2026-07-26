@@ -1,0 +1,24 @@
+=== HUB GROUPS ===
+=== ALL GROUPS SAMPLE ===
+=== DISCUSS CHANNELS ===
+ id | left | wa_phone | wa_outbound_mode | wa_partner_id 
+----+------+----------+------------------+---------------
+(0 rows)
+
+=== CONTACTS ===
+ERROR:  column "phone" does not exist
+LINE 1: SELECT id, name, phone, jid FROM whatsapp_contact WHERE name...
+                         ^
+=== CONVERSATIONS ===
+ id | name | remote_jid | purpose | instance_reference 
+----+------+------------+---------+--------------------
+(0 rows)
+
+=== EVO / ICP ===
+integration_bridge.evolution_instance|sabry min
+integration_bridge.evolution_key|***
+integration_bridge.evolution_url|http://127.0.0.1:8080
+integration_bridge.evolution_web_url|http://127.0.0.1:8080/manager
+whatsapp_hub.discuss_cutover_enabled|False
+whatsapp_hub.unified_outbound_enabled|False
+whatsapp_hub.unified_outbound_purposes|

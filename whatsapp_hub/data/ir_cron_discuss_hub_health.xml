@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_whatsapp_discuss_hub_health" model="ir.cron">
+        <field name="name">WhatsApp Hub: Discuss Hub Health Check</field>
+        <field name="model_id" ref="model_whatsapp_discuss_hub_health"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_run_health_check()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="whatsapp_discuss_hub_health_singleton" model="whatsapp.discuss.hub.health">
+        <field name="display_name">Discuss Hub Health</field>
+        <field name="last_status">unknown</field>
+    </record>
+</odoo>

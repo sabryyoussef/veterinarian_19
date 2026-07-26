@@ -1,0 +1,86 @@
+{
+  "active_session_id": false,
+  "activity_state": false,
+  "base_branch": "staging",
+  "commit_approval_id": [
+    1405,
+    "dev.git.commit.approval,1405"
+  ],
+  "commit_approval_ids": [
+    1405
+  ],
+  "commit_record_id": [
+    1102,
+    "dev.git.commit.record,1102"
+  ],
+  "committed_at": "2026-07-23 12:24:25",
+  "committed_parent_sha": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+  "committed_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+  "deploy_approval_ids": [
+    1
+  ],
+  "deploy_record_ids": [
+    1
+  ],
+  "execution_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+  "main_branch_after": "staging",
+  "main_branch_before": "staging",
+  "merge_approval_id": [
+    57,
+    "dev.git.merge.approval,57"
+  ],
+  "merge_base_branch": "staging",
+  "merge_base_sha": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+  "merge_checks_digest": "48c2fcb7f1ebd9ec272cd3769d48a8a88f606370150f582d4a53e1a8c79df840",
+  "merge_checks_summary": "[{\"app_id\": 46505, \"conclusion\": \"success\", \"name\": \"GitGuardian Security Checks\", \"status\": \"completed\"}]",
+  "merge_head_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+  "merge_head_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+  "merge_last_checked_at": "2026-07-23 12:29:23",
+  "merge_method": "squash",
+  "merge_pr_metadata_digest": "33e9f75808566f7f5544bdabfe16e7a167a08c84dc7fad9e2095c0f9665885d3",
+  "merge_pr_number": 16,
+  "merge_pr_url": "https://github.com/sabryyoussef/veterinarian_19/pull/16",
+  "merge_record_id": [
+    35,
+    "dev.git.merge.record,35"
+  ],
+  "merge_request_work_item_id": [
+    3324,
+    "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy"
+  ],
+  "merge_requested_at": "2026-07-23 12:29:10",
+  "merge_requester_id": [
+    714,
+    "Dev Hub Merge Requester"
+  ],
+  "merge_result_sha": "0b516d5af4ae24ab0d1575e3eff3b2682a5bb439",
+  "merge_target_id": [
+    105,
+    "PetSpot staging via sabry-uat-merge-agent"
+  ],
+  "pr_approval_id": [
+    421,
+    "dev.git.pr.approval,421"
+  ],
+  "pr_body_digest": "020af386f72e9a911fa2bf8d009488991ebcea5d6eb2860370e5c90564e4535f",
+  "pr_body_preview": "Governed UAT via Dev Hub GitHub App. Test-only. Marker DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z.",
+  "pr_commit_list": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786 test(devhub): governed merge deploy UAT DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z",
+  "pr_created_at": "2026-07-23 12:25:27",
+  "pr_last_checked_at": "2026-07-23 12:25:14",
+  "pr_number": 16,
+  "pr_record_id": [
+    200,
+    "dev.git.pr.record,200"
+  ],
+  "pr_source_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+  "pr_source_sha": "22c3cdc0d3bf82b418a6b70c7a0d698e09ca8786",
+  "pr_target_branch": "staging",
+  "pr_target_id": [
+    735,
+    "PetSpot staging via sabry-uat-agent"
+  ],
+  "pr_title_preview": "[UAT] DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z",
+  "pr_url_reference": "https://github.com/sabryyoussef/veterinarian_19/pull/16",
+  "push_remote_branch": "devhub/DW-3324-devhub-governed-merge-deploy-uat-20260723t122300z-harmless-docs",
+  "state": "deployed_staging_reviewed"
+}

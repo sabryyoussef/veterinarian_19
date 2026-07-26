@@ -1,0 +1,81 @@
+{
+  "analysis_detail": {
+    "acceptance_criteria": [],
+    "business_request": "",
+    "current_state": "",
+    "database_considerations": [],
+    "existing_relevant_functionality": [],
+    "integration_considerations": [],
+    "likely_affected_models": [],
+    "likely_affected_modules": [],
+    "likely_affected_views": [],
+    "questions_before_implementation": [],
+    "recommended_approach": [],
+    "risks": []
+  },
+  "classification": "noise",
+  "classification_v2": "noise",
+  "confidence": 1.0,
+  "contains_multiple_tasks": false,
+  "contains_work": false,
+  "evidence_used": [
+    {
+      "evidence_status": "confirmed",
+      "reference": "dev.project:1",
+      "source_type": "project_config",
+      "summary": "Canonical project PetSpot (PETSPOT)"
+    }
+  ],
+  "ignore_reason": "Classified as noise/unclear",
+  "language": "ar",
+  "missing_information": [],
+  "noise_message_ids": [
+    6180
+  ],
+  "participants": [],
+  "priority": "2",
+  "project_reference": "PetSpot",
+  "project_resolution": {
+    "candidate_ids": [],
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "evidence_status": "confirmed",
+        "reference": "dev.project:1",
+        "source_type": "project_config",
+        "summary": "Canonical project PetSpot (PETSPOT)"
+      }
+    ],
+    "project_id": null,
+    "project_name": "PetSpot",
+    "requires_confirmation": true,
+    "resolution_status": "unresolved"
+  },
+  "project_resolution_status": "unresolved",
+  "recommended_action": "ignore",
+  "requires_human_review": true,
+  "requires_project_confirmation": true,
+  "resolved_project_id": null,
+  "resolved_work_item_id": null,
+  "safe_to_attach_to_existing_work": false,
+  "safe_to_create_work": false,
+  "schema_version": "2",
+  "should_ignore": true,
+  "source_message_ids": [
+    6180
+  ],
+  "summary": "The audio message discusses various issues related to the PetSpot project, including testing and payroll concerns, but does not contain a clear actionable request.",
+  "technical_terms": [],
+  "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+  "work_item_resolution": {
+    "candidate_ids": [],
+    "confidence": 0.0,
+    "decision": "none",
+    "evidence": [],
+    "requires_confirmation": true,
+    "work_item_id": null,
+    "work_item_title": null
+  },
+  "work_message_ids": [],
+  "work_title": "The audio message discusses various issues related to the PetSpot project, including testing and payroll concerns, but does not contain a clear actionable request."
+}

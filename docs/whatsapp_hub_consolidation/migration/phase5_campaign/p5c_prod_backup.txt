@@ -1,0 +1,1 @@
+-rw-rw-r-- 1 sabry sabry 18M Jul 23 17:54 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/backups/pet_spot_elsahel_pre_p5c_20260723T145426Z.dump

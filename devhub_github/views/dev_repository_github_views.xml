@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dev_repository_github_targets_form" model="ir.ui.view">
+        <field name="name">dev.repository.github.targets.form</field>
+        <field name="model">dev.repository</field>
+        <field name="inherit_id" ref="devhub_execution.view_dev_repository_execution_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="page_approved_pr" string="Approved PR Targets">
+                        <div class="alert alert-warning" role="alert">
+                            Only registered GitHub repositories, dedicated devhub/* sources, and non-production integration targets are allowed. The credential field is a protected profile path reference, never a token.
+                        </div>
+                        <field name="pr_target_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="source_remote_id"/>
+                                <field name="github_repository"/>
+                                <field name="target_branch"/>
+                                <field name="approved"/>
+                                <field name="non_production"/>
+                                <field name="active"/>
+                            </list>
+                        </field>
+                    </page>
+                <page name="page_approved_merge" string="Approved Merge Targets">
+                        <div class="alert alert-danger" role="alert">
+                            Merge credentials must use the separate repository-only sabry-uat-merge-agent. PR creation credentials and deploy keys are not valid substitutes.
+                        </div>
+                        <field name="merge_target_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="pr_target_id"/>
+                                <field name="github_repository"/>
+                                <field name="base_branch"/>
+                                <field name="merge_method"/>
+                                <field name="requester_user_id"/>
+                                <field name="required_check_name"/>
+                                <field name="approved"/>
+                                <field name="active"/>
+                            </list>
+                        </field>
+                    </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

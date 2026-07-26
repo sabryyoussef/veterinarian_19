@@ -1,0 +1,511 @@
+{
+  "modules": [
+    {
+      "id": 1414,
+      "name": "devhub_analysis",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1415,
+      "name": "devhub_approval",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1399,
+      "name": "devhub_code_analysis",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1400,
+      "name": "devhub_core",
+      "state": "installed",
+      "latest_version": "19.0.9.0.1",
+      "installed_version": "19.0.9.0.1"
+    },
+    {
+      "id": 1401,
+      "name": "devhub_deploy",
+      "state": "installed",
+      "latest_version": "19.0.9.0.0",
+      "installed_version": "19.0.9.0.0"
+    },
+    {
+      "id": 1402,
+      "name": "devhub_execution",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1403,
+      "name": "devhub_generation",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1404,
+      "name": "devhub_git",
+      "state": "installed",
+      "latest_version": "19.0.9.0.0",
+      "installed_version": "19.0.9.0.0"
+    },
+    {
+      "id": 1405,
+      "name": "devhub_github",
+      "state": "installed",
+      "latest_version": "19.0.9.0.0",
+      "installed_version": "19.0.9.0.0"
+    },
+    {
+      "id": 1406,
+      "name": "devhub_infrastructure",
+      "state": "installed",
+      "latest_version": "19.0.9.0.0",
+      "installed_version": "19.0.9.0.0"
+    },
+    {
+      "id": 1407,
+      "name": "devhub_odoo_runtime",
+      "state": "installed",
+      "latest_version": "19.0.9.0.0",
+      "installed_version": "19.0.9.0.0"
+    },
+    {
+      "id": 1408,
+      "name": "devhub_openproject",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1409,
+      "name": "devhub_outbox",
+      "state": "installed",
+      "latest_version": "19.0.9.0.0",
+      "installed_version": "19.0.9.0.0"
+    },
+    {
+      "id": 1416,
+      "name": "devhub_plan",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1410,
+      "name": "devhub_session",
+      "state": "installed",
+      "latest_version": "19.0.9.0.0",
+      "installed_version": "19.0.9.0.0"
+    },
+    {
+      "id": 1412,
+      "name": "devhub_whatsapp",
+      "state": "installed",
+      "latest_version": "19.0.9.0.2",
+      "installed_version": "19.0.9.0.2"
+    },
+    {
+      "id": 1411,
+      "name": "devhub_work",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1417,
+      "name": "devhub_workflow",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    },
+    {
+      "id": 1398,
+      "name": "dev_session_hub",
+      "state": "installed",
+      "latest_version": "19.0.9.1.0",
+      "installed_version": "19.0.9.1.0"
+    }
+  ],
+  "repositories": [
+    {
+      "id": 39,
+      "name": "Al Shmoukh localaddons",
+      "git_remote": "ssh://root@160.153.184.188:3322/opt/localaddons",
+      "canonical_remote_path": "/home/sabry/devhub/projects/alshmoukh",
+      "working_directory": "/home/sabry/devhub/projects/alshmoukh",
+      "default_branch": "master",
+      "head_cache": false,
+      "execution_classification": "requires_review",
+      "agent_execution_allowed": false,
+      "worker_git_common_dir": false,
+      "worker_worktree_root": false,
+      "worker_identity": "devworker"
+    },
+    {
+      "id": 40,
+      "name": "Cycle X Odoo 18",
+      "git_remote": "git@github.com:sabryyoussef/wa-120363404024033208.git",
+      "canonical_remote_path": "/home/sabry/server setup/cycle-x-odoo18/track-repo",
+      "working_directory": "/home/sabry/server setup/cycle-x-odoo18/track-repo",
+      "default_branch": "main",
+      "head_cache": "640aadd6444ca554b098f5dd9b406273b7059094",
+      "execution_classification": "requires_review",
+      "agent_execution_allowed": false,
+      "worker_git_common_dir": false,
+      "worker_worktree_root": false,
+      "worker_identity": "devworker"
+    },
+    {
+      "id": 41,
+      "name": "Kafaat new_kafaat",
+      "git_remote": "https://github.com/sabryyoussef/new_kafaat.git",
+      "canonical_remote_path": "/home/sabry/projects/new_kafaat",
+      "working_directory": "/home/sabry/projects/new_kafaat",
+      "default_branch": "master",
+      "head_cache": "f9e1639",
+      "execution_classification": "requires_review",
+      "agent_execution_allowed": false,
+      "worker_git_common_dir": false,
+      "worker_worktree_root": false,
+      "worker_identity": "devworker"
+    },
+    {
+      "id": 1,
+      "name": "PetSpot Odoo 19",
+      "git_remote": "git@github.com:sabryyoussef/veterinarian_19.git",
+      "canonical_remote_path": "/srv/devhub/main-snapshots/petspot",
+      "working_directory": "/srv/devhub/main-snapshots/petspot",
+      "default_branch": "staging",
+      "head_cache": "791cd1b8ef3179529f4c1d4e5ce25343dcfb08f8",
+      "execution_classification": "safe_for_isolated_worktree",
+      "agent_execution_allowed": true,
+      "worker_git_common_dir": "/srv/devhub/repos/petspot.git",
+      "worker_worktree_root": "/srv/devhub/worktrees",
+      "worker_identity": "devworker"
+    },
+    {
+      "id": 36,
+      "name": "Tours Trading Odoo 19",
+      "git_remote": "git@github.com:ERPBright/tours-trading.git",
+      "canonical_remote_path": "/home/sabry/odoo_base/base_odoo_19/projects/tours-trading",
+      "working_directory": "/home/sabry/odoo_base/base_odoo_19/projects/tours-trading",
+      "default_branch": "staging",
+      "head_cache": "1eaef8a9bfa6452c775322604f14502a1439c402",
+      "execution_classification": "requires_review",
+      "agent_execution_allowed": false,
+      "worker_git_common_dir": false,
+      "worker_worktree_root": false,
+      "worker_identity": "devworker"
+    }
+  ],
+  "pr_targets": [
+    {
+      "id": 735,
+      "name": "PetSpot staging via sabry-uat-agent",
+      "repository_id": [
+        1,
+        "PetSpot Odoo 19"
+      ],
+      "source_remote_id": [
+        2129,
+        "origin"
+      ],
+      "target_repository_id": [
+        1,
+        "PetSpot Odoo 19"
+      ],
+      "github_repository": "sabryyoussef/veterinarian_19",
+      "target_branch": "staging",
+      "allowed_target_branches": "staging",
+      "credential_profile_reference": "/srv/devhub/credentials/github/gh-profile",
+      "credential_broker_reference": "/srv/devhub/credentials/github/mint-devhub-pr-token",
+      "credential_type": "github_app",
+      "github_app_slug": "sabry-uat-agent",
+      "github_app_id": 4340040,
+      "github_installation_id": 147639376,
+      "credential_owner_reference": "github-app:sabry-uat-agent",
+      "credential_repository_restriction": "sabryyoussef/veterinarian_19",
+      "credential_permission_summary": "contents:read\nmetadata:read\npull_requests:write",
+      "credential_expires_at": "2026-07-23 13:25:20",
+      "credential_validated_at": "2026-07-23 12:25:20",
+      "credential_validation_digest": "6b384228b4bd98db88a148a207b1c7a332eb3446bcc2fb12481b330dfd9bbacf",
+      "approved": true,
+      "non_production": true,
+      "active": true
+    }
+  ],
+  "merge_targets": [
+    {
+      "id": 105,
+      "name": "PetSpot staging via sabry-uat-merge-agent",
+      "repository_id": [
+        1,
+        "PetSpot Odoo 19"
+      ],
+      "pr_target_id": [
+        735,
+        "PetSpot staging via sabry-uat-agent"
+      ],
+      "github_repository": "sabryyoussef/veterinarian_19",
+      "base_branch": "staging",
+      "merge_method": "squash",
+      "requester_user_id": [
+        714,
+        "Dev Hub Merge Requester"
+      ],
+      "required_check_name": "GitGuardian Security Checks",
+      "required_check_app_id": 46505,
+      "credential_profile_reference": "/srv/devhub/credentials/github/merge-gh-profile",
+      "credential_broker_reference": "/srv/devhub/credentials/github/mint-devhub-merge-token",
+      "github_app_slug": "sabry-uat-merge-agent",
+      "github_app_id": 4341059,
+      "github_installation_id": 147666583,
+      "credential_repository_restriction": "sabryyoussef/veterinarian_19",
+      "credential_permission_summary": "checks:read\ncontents:write\nmetadata:read\npull_requests:read\nstatuses:read",
+      "credential_expires_at": "2026-07-23 13:29:30",
+      "credential_validated_at": "2026-07-23 12:29:31",
+      "credential_validation_digest": "1fa5629f968320fe86af18a019a86e6cc4f7d4a961125563c3d1c821ef644048",
+      "approved": true,
+      "non_production": true,
+      "active": true
+    }
+  ],
+  "deploy_targets": [
+    {
+      "id": 3,
+      "name": "Bad staging",
+      "target_kind": "staging",
+      "repository_id": [
+        1,
+        "PetSpot Odoo 19"
+      ],
+      "environment_id": [
+        246,
+        "GateD Fake Prod Env"
+      ],
+      "machine_id": [
+        1,
+        "master"
+      ],
+      "database_identifier": "pet_spot_elsahel_prod_fake_gated",
+      "module_allowlist": "dev_session_hub",
+      "runner_profile_reference": "/srv/devhub/runners/staging",
+      "backup_profile_reference": "/srv/devhub/runners/backup",
+      "required_protected_branch": "staging",
+      "soak_days_required": 7,
+      "approved": true,
+      "non_production": true,
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "PetSpot Test Staging Deploy",
+      "target_kind": "staging",
+      "repository_id": [
+        1,
+        "PetSpot Odoo 19"
+      ],
+      "environment_id": [
+        1,
+        "PetSpot Test"
+      ],
+      "machine_id": [
+        1,
+        "master"
+      ],
+      "database_identifier": "pet_spot_elsahel_test",
+      "module_allowlist": "dev_session_hub",
+      "runner_profile_reference": "/srv/devhub/runners/staging",
+      "backup_profile_reference": "/srv/devhub/runners/backup",
+      "required_protected_branch": "staging",
+      "soak_days_required": 7,
+      "approved": true,
+      "non_production": true,
+      "active": true
+    }
+  ],
+  "policies": [
+    {
+      "id": 71,
+      "name": "Al Shmoukh Workspace Policy",
+      "project_id": [
+        9,
+        "Al Shmoukh (Asasat)"
+      ],
+      "environment_id": [
+        279,
+        "Al Shmoukh Workspace"
+      ],
+      "production_access_policy": "denied",
+      "allowed_operations": "Open workspace on master mirror; read/edit custom addons; run local validation; use OP sync scripts; SSH to production only with human intent.",
+      "required_confirmation": true,
+      "branch_rules": "Prefer master branch on /opt/localaddons mirror. No force-push. Commit via OP sync tooling.",
+      "development_allowed": true,
+      "agent_write_permission": true,
+      "test_permission": true,
+      "deploy_permission": false,
+      "launch_allowed": true,
+      "active": true
+    },
+    {
+      "id": 72,
+      "name": "Al Shmoukh Production Deny",
+      "project_id": [
+        9,
+        "Al Shmoukh (Asasat)"
+      ],
+      "environment_id": [
+        280,
+        "Al Shmoukh Production"
+      ],
+      "production_access_policy": "denied",
+      "allowed_operations": "Read-only inspection via SSH with human approval. No automated launch/deploy.",
+      "required_confirmation": true,
+      "branch_rules": "No automated Git mutation on production.",
+      "development_allowed": false,
+      "agent_write_permission": false,
+      "test_permission": false,
+      "deploy_permission": false,
+      "launch_allowed": false,
+      "active": true
+    },
+    {
+      "id": 73,
+      "name": "CYCLEX Test MVP",
+      "project_id": [
+        10,
+        "Cycle X"
+      ],
+      "environment_id": [
+        281,
+        "Cycle X Test"
+      ],
+      "production_access_policy": "denied",
+      "allowed_operations": "read,analyze,test",
+      "required_confirmation": true,
+      "branch_rules": "No automatic branch switching. Prefer main; use feature/* for task work.",
+      "development_allowed": true,
+      "agent_write_permission": false,
+      "test_permission": true,
+      "deploy_permission": false,
+      "launch_allowed": true,
+      "active": true
+    },
+    {
+      "id": 74,
+      "name": "KAFAAT Workspace MVP",
+      "project_id": [
+        11,
+        "Kafaat (\u0643\u0641\u0627\u0621\u0627\u062a)"
+      ],
+      "environment_id": [
+        282,
+        "Kafaat Workspace"
+      ],
+      "production_access_policy": "denied",
+      "allowed_operations": "read,analyze,test",
+      "required_confirmation": true,
+      "branch_rules": "No automatic branch switching. Prefer feature/* for task work; sync via kafaat-update-op-package.py.",
+      "development_allowed": true,
+      "agent_write_permission": false,
+      "test_permission": true,
+      "deploy_permission": false,
+      "launch_allowed": false,
+      "active": true
+    },
+    {
+      "id": 75,
+      "name": "KAFAAT Production Deny",
+      "project_id": [
+        11,
+        "Kafaat (\u0643\u0641\u0627\u0621\u0627\u062a)"
+      ],
+      "environment_id": [
+        283,
+        "Kafaat Production"
+      ],
+      "production_access_policy": "denied",
+      "allowed_operations": "read",
+      "required_confirmation": true,
+      "branch_rules": "No automatic changes on production.",
+      "development_allowed": false,
+      "agent_write_permission": false,
+      "test_permission": false,
+      "deploy_permission": false,
+      "launch_allowed": false,
+      "active": true
+    }
+  ],
+  "devhub_groups": [
+    {
+      "id": 153,
+      "full_name": "Dev Hub / Dev Hub Scoped Outbox Service",
+      "name": "Dev Hub Scoped Outbox Service"
+    },
+    {
+      "id": 155,
+      "full_name": "Dev Hub / Dev Hub Scoped Draft Generation Service",
+      "name": "Dev Hub Scoped Draft Generation Service"
+    },
+    {
+      "id": 167,
+      "full_name": "Dev Hub / Dev Hub Scoped WhatsApp Intake Service",
+      "name": "Dev Hub Scoped WhatsApp Intake Service"
+    },
+    {
+      "id": 151,
+      "full_name": "Dev Hub / Dev Hub User",
+      "name": "Dev Hub User"
+    },
+    {
+      "id": 154,
+      "full_name": "Dev Hub / Dev Hub Plan and Communication Approver",
+      "name": "Dev Hub Plan and Communication Approver"
+    },
+    {
+      "id": 156,
+      "full_name": "Dev Hub / Dev Hub Deploy Approver",
+      "name": "Dev Hub Deploy Approver"
+    },
+    {
+      "id": 157,
+      "full_name": "Dev Hub / Dev Hub Production Approver",
+      "name": "Dev Hub Production Approver"
+    },
+    {
+      "id": 152,
+      "full_name": "Dev Hub / Dev Hub Manager",
+      "name": "Dev Hub Manager"
+    }
+  ],
+  "uat_work_items": [
+    {
+      "id": 3318,
+      "name": "DEVHUB-MODULAR-E2E-UAT-20260723T111508Z: harmless Test-only modular workflow documentation artifact",
+      "current_phase": "completed"
+    },
+    {
+      "id": 3319,
+      "name": "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114901Z: harmless Test-only documentation artifact for Git/GitHub/Deploy UAT",
+      "current_phase": "analyzing"
+    },
+    {
+      "id": 3320,
+      "name": "DEVHUB-GIT-GITHUB-DEPLOY-UAT-20260723T114946Z: harmless Test-only documentation artifact for Git/GitHub/Deploy UAT",
+      "current_phase": "completed"
+    },
+    {
+      "id": 3324,
+      "name": "DEVHUB-GOVERNED-MERGE-DEPLOY-UAT-20260723T122300Z: harmless docs-only governed merge + Test deploy",
+      "current_phase": "completed"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "reconciliation_state": "push_failed_review",
+  "expected_remote_head": "9e09c7656b349c2813a703b8d2af5baa9a5a4ef1",
+  "remote_head_after": false,
+  "approved_pre_refs_digest": "8c1baae5329b0fcc163ddae20efbe046045df37e6d9fc3f27a22e537e20fc47a",
+  "observed_post_refs_digest": "8c1baae5329b0fcc163ddae20efbe046045df37e6d9fc3f27a22e537e20fc47a",
+  "reconciliation_result": "Expected remote HEAD 9e09c7656b349c2813a703b8d2af5baa9a5a4ef1; observed absent. Push was not delivered as approved and requires human review. Local unchanged=True; main unchanged=True."
+}

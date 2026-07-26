@@ -1,0 +1,6 @@
+BACKUP_ROOT=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p4_shadow_pilot_20260723T113020Z
+db_dump_ok=0
+-rw-rw-r-- 1 sabry sabry 17M Jul 23 14:30 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p4_shadow_pilot_20260723T113020Z/pet_spot_elsahel.dump
+348M	/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore
+filestore_path=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore
+backup_ts=20260723T113020Z

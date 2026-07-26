@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/47
+- Message ID: 12245
+- Customer: Asta development
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-18 18:55:26 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** support
+**الأولوية:** medium
+**الثقة:** 0.65
+
+**الملخص:**
+User is experiencing issues with data visibility in production and suggests using test credentials for testing.
+
+**الإجراء المطلوب:**
+Advise user to switch to test credentials for data visibility during testing.
+
+## Original Message
+
+```
+طيب هي مش هتظهر معاك اي data طول مانت بتستخدم ال production 
+عاوز تعمل test بترجع لل test credentials
+```

@@ -1,0 +1,342 @@
+[
+  {
+    "id": 336,
+    "sample": "dn-canary-img-recent",
+    "bodies": [
+      "يا ريت نجرب تم الرفع علي قاعده البيانات التجريبية",
+      "تم الرفع لو في اي تعديل بلغني"
+    ],
+    "media_types": [
+      "image",
+      "image"
+    ],
+    "enrichment_excerpt": [
+      "Parent directory 7/25/2026 11:24:55 AM Name File folder 7/25/2026 11:24:55 AM Ee] File folder 7/25/2",
+      "أل Serhan‏ عط donne‏ تور شتف Gada‏ 7/25/2026 12:15:51 PM | ane 7/25/2026 12:06:46 PM rol 7/25/2026 1"
+    ],
+    "v23_class": "new_task",
+    "v24_class": "unclear",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "unclear_or_information (was new_task; conservative OK)",
+    "pass_fail": "PASS",
+    "reason": "new_task→unclear (conservative; no false-work inflation)",
+    "shadow_run_id": "3b6e4b81-7055-4a16-ba69-13251b1171a5"
+  },
+  {
+    "id": 337,
+    "sample": "dn-canary-img-mid",
+    "bodies": [
+      "[image]",
+      "[image]"
+    ],
+    "media_types": [
+      "image",
+      "image"
+    ],
+    "enrichment_excerpt": [
+      "A مم »د هن هع‎ ZY [New ] 55 PW Batch © Code SSPW1 End Date Nov 12 Name 55 PW Batch Start Date Jul 15",
+      "اله الى > 3:57 Create new document fo 0 G W : Share Favourite Al Edit Delete More 3 0"
+    ],
+    "v23_class": "noise",
+    "v24_class": "noise",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "noise_or_information",
+    "pass_fail": "PASS",
+    "reason": "stable/safe",
+    "shadow_run_id": "3406f4b5-d7fd-493e-9eb3-052079403e93"
+  },
+  {
+    "id": 338,
+    "sample": "dn-canary-img-weak",
+    "bodies": [
+      "[image]"
+    ],
+    "media_types": [
+      "image"
+    ],
+    "enrichment_excerpt": [
+      "Gemy +20 10 23297337‏ ~ انت كده حضرتك تمام مرحلة ال integeration‏ تمام كده . 11:41 pm Today 12:21 am"
+    ],
+    "v23_class": "noise",
+    "v24_class": "noise",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "noise_or_information",
+    "pass_fail": "PASS",
+    "reason": "stable/safe",
+    "shadow_run_id": "97fdda9c-eda3-4a7b-8bed-1df0ad1b9834"
+  },
+  {
+    "id": 339,
+    "sample": "dn-canary-aud-eg",
+    "bodies": [
+      "[audio]"
+    ],
+    "media_types": [
+      "audio"
+    ],
+    "enrichment_excerpt": [
+      "السلام عليكم ورحمة الله وبركاته هو شافع التست وبعتله يعني لو يتست ويجرب عليها فقال لي تعملوا مظبوطة "
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": 1,
+    "v23_conf": 1.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information_or_noise + project null/conf0",
+    "pass_fail": "PASS",
+    "reason": "overconfidence cleared; useful transcript → information",
+    "shadow_run_id": "4f11c645-ce51-40f1-8c31-e2e984b00890"
+  },
+  {
+    "id": 340,
+    "sample": "dn-canary-aud-mixed",
+    "bodies": [
+      "[audio]"
+    ],
+    "media_types": [
+      "audio"
+    ],
+    "enrichment_excerpt": [
+      "يوجد مشكل في الآنترينتري يوجد شيء غلط في اللمح الت Being called ؟ جاء شيء مختلف عن حقيقة كما شرحت لك"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information_or_unclear",
+    "pass_fail": "PASS",
+    "reason": "noise→information semantic upgrade",
+    "shadow_run_id": "903a80de-673f-45e9-95c4-3d0128f37dbb"
+  },
+  {
+    "id": 341,
+    "sample": "dn-canary-aud-short",
+    "bodies": [
+      "[audio]"
+    ],
+    "media_types": [
+      "audio"
+    ],
+    "enrichment_excerpt": [
+      "طب انا اكرر بفضل الله اطلع فى غيرك بس انا بصرحة شو ميحق اروح فى اين اوصل فى اين يعنى قول لي مجاني ال"
+    ],
+    "v23_class": "noise",
+    "v24_class": "noise",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "noise_or_information",
+    "pass_fail": "PASS",
+    "reason": "stable/safe",
+    "shadow_run_id": "1ff547be-c58e-46e5-b65b-f1b7dbe499b1"
+  },
+  {
+    "id": 348,
+    "sample": "dn-b2-img-recent",
+    "bodies": [
+      "[image]",
+      "هرفع"
+    ],
+    "media_types": [
+      "image",
+      "image"
+    ],
+    "enrichment_excerpt": [
+      "This branch is 3 commits ahead of main . OP Syne Add Gulf OP sync hooks and Odoo 19 install handoff ",
+      "8919 legacy_mixed_classic | 01 legacy_mixed_system"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information",
+    "pass_fail": "PASS",
+    "reason": "technical OCR/UI → information (was blanket noise)",
+    "shadow_run_id": "e20592ec-20d4-41be-83bd-200ed93e77bb"
+  },
+  {
+    "id": 349,
+    "sample": "dn-b2-img-cluster-a",
+    "bodies": [
+      "[image]",
+      "[image]"
+    ],
+    "media_types": [
+      "image",
+      "image"
+    ],
+    "enrichment_excerpt": [
+      "3:59 BPP x roe 8 fon 51 Middle Name Playwright Proof tine ae Lo 9 G w : Share Favourite Al Edit Dele",
+      "4:00 BPP x roe 8 fon 51 Middle Name Playwright Proof tine ae Lo 9 G w : Share Favourite Al Edit Dele"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information_or_unclear",
+    "pass_fail": "PASS",
+    "reason": "noise→information semantic upgrade",
+    "shadow_run_id": "59a2b3c8-7e81-47e3-9d3a-416d0efb8770"
+  },
+  {
+    "id": 350,
+    "sample": "dn-b2-img-cluster-b",
+    "bodies": [
+      "[image]",
+      "[image]"
+    ],
+    "media_types": [
+      "image",
+      "image"
+    ],
+    "enrichment_excerpt": [
+      "69 إلى 2 4:01 7 0 G W : Share Favourite Al Edit Delete More q 0",
+      "4:02 Sul © < @ i i i i i i i FLEE Eb ben beeeny fo 0 G W : Share Favourite Al Edit Delete More 3 0 o"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information_or_unclear",
+    "pass_fail": "PASS",
+    "reason": "noise→information semantic upgrade",
+    "shadow_run_id": "c600fea1-4ecb-4fc3-a911-d00def281099"
+  },
+  {
+    "id": 351,
+    "sample": "dn-b2-img-jul19",
+    "bodies": [
+      "[image]",
+      "[image]"
+    ],
+    "media_types": [
+      "image",
+      "image"
+    ],
+    "enrichment_excerpt": [
+      "2 O[TEST] Execution Worksp x — @ Professional Message Re x © Appointments: xO Sub-tasks x © Projects",
+      "<> Code © Issues 11 Pullrequests G Agents © Actions {6 Projects 1 wiki © Securityandquallty عا‎ insi"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information",
+    "pass_fail": "PASS",
+    "reason": "technical UI media-only → information",
+    "shadow_run_id": "ee5f516e-1706-4865-b4c2-498be0ca12c2"
+  },
+  {
+    "id": 352,
+    "sample": "dn-b2-aud-trgulf",
+    "bodies": [
+      "[audio]"
+    ],
+    "media_types": [
+      "audio"
+    ],
+    "enrichment_excerpt": [
+      "تم موضوع تستينا عملت سريعا نفس الموديولين على الـ TR Gulf اللي هو على البرودكشن هيشغلوا بنفس الطريقة"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "unclear_or_information",
+    "pass_fail": "PASS",
+    "reason": "TR Gulf mention → non-noise information (unclear preferred; information accepted as justified)",
+    "shadow_run_id": "d36b7e41-2758-4f18-a060-b77b5d6d69c5"
+  },
+  {
+    "id": 353,
+    "sample": "dn-b2-aud-client",
+    "bodies": [
+      "[audio]"
+    ],
+    "media_types": [
+      "audio"
+    ],
+    "enrichment_excerpt": [
+      "انا مش محتاج ان انا تست على اي داتا بيس على شغلك انا محتاج ان الكلاينت يشوف شغله اصلا على الداتا بيس"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information_or_unclear",
+    "pass_fail": "PASS",
+    "reason": "noise→information semantic upgrade",
+    "shadow_run_id": "7232facc-5bb4-4463-a4d7-6e4abdd47176"
+  },
+  {
+    "id": 354,
+    "sample": "dn-b2-aud-long",
+    "bodies": [
+      "[audio]"
+    ],
+    "media_types": [
+      "audio"
+    ],
+    "enrichment_excerpt": [
+      "السلام عليكم ورحمة الله وبركاته هناك تفاصيل كثيرة اريد ان اتحدث عنها اولا الموديولات لتدريب الاستا م"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information_or_unclear",
+    "pass_fail": "PASS",
+    "reason": "noise→information semantic upgrade",
+    "shadow_run_id": "ca7d95f4-1ef3-4355-bd3e-e3ead2219d33"
+  },
+  {
+    "id": 355,
+    "sample": "dn-b2-aud-short",
+    "bodies": [
+      "[audio]"
+    ],
+    "media_types": [
+      "audio"
+    ],
+    "enrichment_excerpt": [
+      "لا مش عارف كيفان تصبص انا بعملت الفيديو كده اتمنى كان ينبرح ايوة حاجة بعملت لاش دسقاية او مش عارف حا"
+    ],
+    "v23_class": "noise",
+    "v24_class": "information",
+    "v23_proj": null,
+    "v23_conf": 0.0,
+    "v24_proj": null,
+    "v24_conf": 0.0,
+    "expected": "information_or_unclear",
+    "pass_fail": "PASS",
+    "reason": "noise→information semantic upgrade",
+    "shadow_run_id": "e569dc68-b4a1-42c9-8a21-27c02a0e9a51"
+  }
+]

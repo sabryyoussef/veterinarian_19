@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/43
+- Message ID: 6557
+- Customer: Izone - Internal BIS
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-05 11:51:55 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** medium
+**الثقة:** 0.85
+
+**الملخص:**
+Variant import integrity check failed for Shopify product 8433749131460, indicating a mismatch between Shopify and Odoo counts.
+
+**الإجراء المطلوب:**
+Investigate the import logic for Shopify products and ensure counts match; review the import method for discrepancies.
+
+## Original Message
+
+```
+1
+Variant import integrity check failed for Shopify product 8433749131460 (template 7562): shopify_count=18, odoo_count...
+```

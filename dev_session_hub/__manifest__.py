@@ -1,33 +1,36 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Development Session Hub",
-    "version": "19.0.3.0.0",
+    "version": "19.0.9.1.0",
     "category": "Productivity",
-    "summary": "Development work lifecycle, artifacts, checkpoints, and sessions",
-    "description": """
-Development Session Hub
-=======================
-Canonical Odoo lifecycle and artifact records for OpenProject-backed
-development work. The module stores sanitized source references, versioned
-analysis and plans, exact approvals, immutable checkpoints, resume briefs,
-completion reports, and reviewed communication drafts. It reuses the guarded
-manual Cursor launcher and never changes branches, commits, pushes, deploys,
-or sends directly to WhatsApp.
-    """,
+    "summary": "Dev Hub compatibility meta-module (installs full modular stack)",
+    "description": "Compatibility bridge preserving Dev Hub XML IDs, menus, and seed data.",
     "author": "Sabry Youssef",
     "license": "LGPL-3",
-    "depends": ["base", "mail", "web", "project", "openproject_sync"],
+    "depends": [
+        "devhub_core",
+        "devhub_work",
+        "devhub_analysis",
+        "devhub_plan",
+        "devhub_approval",
+        "devhub_session",
+        "devhub_execution",
+        "devhub_outbox",
+        "devhub_generation",
+        "devhub_git",
+        "devhub_github",
+        "devhub_deploy",
+        "devhub_odoo_runtime",
+        "devhub_infrastructure",
+        "devhub_openproject",
+        "devhub_code_analysis",
+        "devhub_whatsapp",
+        "devhub_workflow",
+    ],
     "data": [
-        "security/dev_session_hub_security.xml",
+        "security/dev_session_hub_rules.xml",
         "security/ir.model.access.csv",
         "data/dev_session_hub_seed.xml",
-        "views/dev_dashboard_views.xml",
-        "views/dev_registry_views.xml",
-        "views/dev_work_views.xml",
-        "views/dev_integration_views.xml",
-        "views/dev_session_views.xml",
-        "views/dev_launch_wizard_views.xml",
-        "views/dev_resume_brief_wizard_views.xml",
         "views/dev_session_hub_menus.xml",
     ],
     "installable": True,

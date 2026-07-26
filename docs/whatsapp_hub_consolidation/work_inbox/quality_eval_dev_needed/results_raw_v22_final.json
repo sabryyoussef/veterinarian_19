@@ -1,0 +1,4922 @@
+[
+  {
+    "sample_id": "DN-01",
+    "analysis_id": 155,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "2a00e28d-1ebf-4fb6-a6c1-9493424ee622",
+    "n8n_execution_id": "52762",
+    "dify_workflow_run_id": "285188e9-5821-4c75-9bbf-1127da5fabb4",
+    "latency_ms": 10525,
+    "classification": "bug_report",
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The user is reporting two issues related to the ASTA Training project: an error when creating a new employee and a problem with vacation balance not being applied correctly.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 7,
+      "proposed_project_name": "ASTA Training",
+      "proposed_project_code": "ASTA",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [
+          "Errors are resolved and functionality works as expected."
+        ],
+        "business_request": "Report issues with employee creation and vacation balance.",
+        "current_state": "User is experiencing errors in the ASTA Training project.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [
+          "hr.employee"
+        ],
+        "likely_affected_modules": [
+          "hr",
+          "employee"
+        ],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [
+          "Investigate the RPC error and the vacation balance logic."
+        ],
+        "risks": [
+          "Potential data integrity issues with employee records."
+        ]
+      },
+      "classification": "bug_report",
+      "classification_v2": "bug",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "4115",
+          "source_type": "message",
+          "summary": "User reports an error when creating a new employee."
+        },
+        {
+          "evidence_status": "confirmed",
+          "reference": "4113",
+          "source_type": "message",
+          "summary": "User reports issues with vacation balance not being applied."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          "Matched alias 'أستا' in actionable statement (msg 4115)",
+          "Confirmed project context for ASTA Training"
+        ],
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "create_work",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 7,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        4115,
+        4114,
+        4113,
+        4112
+      ],
+      "summary": "The user is reporting two issues related to the ASTA Training project: an error when creating a new employee and a problem with vacation balance not being applied correctly.",
+      "technical_terms": [
+        "RPC_ERROR",
+        "Odoo Server Error",
+        "hr.employee"
+      ],
+      "work_description": "{\"business_request\": \"Report issues with employee creation and vacation balance.\", \"recommended_approach\": [\"Investigate the RPC error and the vacation balance logic.\"], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [
+        4112,
+        4113,
+        4114,
+        4115
+      ],
+      "work_title": "Report issues with employee creation and vacation balance."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 1.0,
+      "evidence": [
+        "Matched alias 'أستا' in actionable statement (msg 4115)",
+        "Confirmed project context for ASTA Training"
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 4115)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "add",
+        "ايرور"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "bug",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-02",
+    "analysis_id": 156,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "f3d8a853-06f2-4647-8f2b-268ac6ff9d6e",
+    "n8n_execution_id": "52767",
+    "dify_workflow_run_id": "fa2fabb6-5465-4e63-93f9-f45e7aad696a",
+    "latency_ms": 7667,
+    "classification": "new_dev_request",
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The user is discussing the testing of the General Ledger report in Odoo, providing detailed steps for testing and validation.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 7,
+      "proposed_project_name": "ASTA Training",
+      "proposed_project_code": "ASTA",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Testing the General Ledger report in Odoo.",
+        "current_state": "User has provided detailed testing steps for the report.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [
+          "Accounting",
+          "Reporting"
+        ],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "3818",
+          "source_type": "message",
+          "summary": "User provided detailed testing steps for the General Ledger report."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          "Matched alias 'أستا' (arabic_name)",
+          "alias in actionable statement (msg 3818)"
+        ],
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "create_work",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 7,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3812,
+        3813,
+        3814,
+        3815,
+        3816,
+        3817,
+        3818,
+        3819
+      ],
+      "summary": "The user is discussing the testing of the General Ledger report in Odoo, providing detailed steps for testing and validation.",
+      "technical_terms": [
+        "OCA",
+        "General Ledger",
+        "Export XLSX",
+        "Export PDF"
+      ],
+      "work_description": "{\"business_request\": \"Testing the General Ledger report in Odoo.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [
+        3812,
+        3813,
+        3814,
+        3815,
+        3816,
+        3817,
+        3818,
+        3819
+      ],
+      "work_title": "Testing the General Ledger report in Odoo."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 1.0,
+      "evidence": [
+        "Matched alias 'أستا' (arabic_name)",
+        "alias in actionable statement (msg 3818)"
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3818)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "اختبار"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-03",
+    "analysis_id": 157,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "f639de5f-af46-416e-9523-ba1692c3064e",
+    "n8n_execution_id": "52772",
+    "dify_workflow_run_id": "44342153-c709-4ef4-8efd-a6d5a3f1dfd2",
+    "latency_ms": 9181,
+    "classification": "new_dev_request",
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The user is reporting an Odoo server error after updating addons and is requesting a test database for the ASTA project.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 7,
+      "proposed_project_name": "ASTA Training",
+      "proposed_project_code": "ASTA",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Request for a test database and resolution of an Odoo server error.",
+        "current_state": "User is experiencing an error after updating addons.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "msg 3551",
+          "source_type": "message",
+          "summary": "User requested a test database for the ASTA project."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          "Matched alias 'أستا' in actionable statement (msg 3551)"
+        ],
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "create_work",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 7,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3547,
+        3548,
+        3549,
+        3550,
+        3551,
+        3552,
+        3553,
+        3554
+      ],
+      "summary": "The user is reporting an Odoo server error after updating addons and is requesting a test database for the ASTA project.",
+      "technical_terms": [
+        "Odoo",
+        "addons",
+        "test database"
+      ],
+      "work_description": "{\"business_request\": \"Request for a test database and resolution of an Odoo server error.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [
+        3547,
+        3548,
+        3549,
+        3550,
+        3551,
+        3552,
+        3553,
+        3554
+      ],
+      "work_title": "Request for a test database and resolution of an Odoo server error."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 1.0,
+      "evidence": [
+        "Matched alias 'أستا' in actionable statement (msg 3551)"
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3551)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 1.0,
+      "signals": [
+        "error",
+        "ايرور",
+        "محتاج"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-04",
+    "analysis_id": 158,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "ad1b3339-bd4f-4637-886b-a8036cd02ce7",
+    "n8n_execution_id": "52777",
+    "dify_workflow_run_id": "f45c4741-9c4d-433b-8791-9beb30c7af1f",
+    "latency_ms": 6489,
+    "classification": "new_dev_request",
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The user is discussing the need to review communication methods and task assignment for projects, indicating a desire for improvement in project management.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 7,
+      "proposed_project_name": "ASTA Training",
+      "proposed_project_code": "ASTA",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Review communication methods and task assignment for projects.",
+        "current_state": "User is seeking improvements in project management communication.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.project:7",
+          "source_type": "project_config",
+          "summary": "Canonical project ASTA Training (ASTA)"
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'أستا' (arabic_name)"
+          }
+        ],
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 7,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3386,
+        3387,
+        3388,
+        3389,
+        3390,
+        3391,
+        3392,
+        3393
+      ],
+      "summary": "The user is discussing the need to review communication methods and task assignment for projects, indicating a desire for improvement in project management.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"Review communication methods and task assignment for projects.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "Review communication methods and task assignment for projects."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "arabic_alias",
+          "value": "Matched alias 'أستا' (arabic_name)"
+        }
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.7
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "محتاج"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-05",
+    "analysis_id": 159,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "12e5cff4-6909-4f80-b875-bbc4cd5f1c78",
+    "n8n_execution_id": "52782",
+    "dify_workflow_run_id": "d7b99f28-0270-4536-ae6d-d1cce2fe2c1c",
+    "latency_ms": 6939,
+    "classification": "question",
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The user is inquiring about the server location for the ASTA project and requesting additional information about a database named FIX.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 7,
+      "proposed_project_name": "ASTA Training",
+      "proposed_project_code": "ASTA",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Inquire about server details and database information.",
+        "current_state": "User is seeking clarification on server and database.",
+        "database_considerations": [
+          "Database named FIX mentioned."
+        ],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "question",
+      "classification_v2": "question",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "msg 3082",
+          "source_type": "message",
+          "summary": "User asked about the server location for the ASTA project."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [
+        "Server location",
+        "Details about the database FIX"
+      ],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          "Matched alias 'أستا' in actionable statement (msg 3082)"
+        ],
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "reply",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 7,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3076,
+        3077,
+        3078,
+        3079,
+        3080,
+        3081,
+        3082,
+        3083
+      ],
+      "summary": "The user is inquiring about the server location for the ASTA project and requesting additional information about a database named FIX.",
+      "technical_terms": [
+        "FIX"
+      ],
+      "work_description": "{\"business_request\": \"Inquire about server details and database information.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "Inquire about server details and database information."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 1.0,
+      "evidence": [
+        "Matched alias 'أستا' in actionable statement (msg 3082)"
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3082)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "fix",
+        "upgrade"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "question",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-06",
+    "analysis_id": 160,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "0d2b8ccc-5e9a-4c32-b8d9-2a840e7f2280",
+    "n8n_execution_id": "52787",
+    "dify_workflow_run_id": "669bfd15-4206-4ea9-a55e-9ff69e6470f9",
+    "latency_ms": 7536,
+    "classification": "question",
+    "resolved_project_id": 11,
+    "resolved_project_name": "Kafaat (كفاءات)",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The messages discuss the status of competency models and access issues related to the Kafaat project.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 11,
+      "proposed_project_name": "Kafaat (كفاءات)",
+      "proposed_project_code": "KAFAAT",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Check if competency models have been uploaded.",
+        "current_state": "Awaiting confirmation on the status of competency models.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "question",
+      "classification_v2": "question",
+      "confidence": 0.7,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:4005",
+          "source_type": "message",
+          "summary": "Inquiry about the status of competency models."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Kafaat (كفاءات)",
+      "project_resolution": {
+        "candidate_ids": [
+          11
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'كفاءات' (arabic_name)"
+          }
+        ],
+        "project_id": 11,
+        "project_name": "Kafaat (كفاءات)",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "reply",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 11,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        4003,
+        4004,
+        4005
+      ],
+      "summary": "The messages discuss the status of competency models and access issues related to the Kafaat project.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"Check if competency models have been uploaded.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "Check if competency models have been uploaded."
+    },
+    "raw_project_resolution": {
+      "project_id": 11,
+      "project_name": "Kafaat (كفاءات)",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "arabic_alias",
+          "value": "Matched alias 'كفاءات' (arabic_name)"
+        }
+      ],
+      "candidate_ids": [
+        11
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.7
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.5,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "question",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-07",
+    "analysis_id": 161,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "10abd4e4-4eee-4111-b457-075920ba5df0",
+    "n8n_execution_id": "52792",
+    "dify_workflow_run_id": "f4141334-f252-47e1-98fa-26ac682c5a98",
+    "latency_ms": 9075,
+    "classification": "bug_report",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "unclear",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The user is reporting errors encountered when trying to create new employee records in two different databases, ASTA and Kafaat, and is requesting a meeting to resolve these issues.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "candidates_too_close",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [
+          "Errors resolved and new employee records can be created."
+        ],
+        "business_request": "Resolve errors in employee record creation.",
+        "current_state": "Errors reported in both ASTA and Kafaat databases.",
+        "database_considerations": [
+          "ASTA",
+          "Kafaat"
+        ],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [
+          "hr.employee"
+        ],
+        "likely_affected_views": [],
+        "questions_before_implementation": [
+          "What specific changes were made before the errors occurred?"
+        ],
+        "recommended_approach": [
+          "Investigate the RPC_ERROR in both databases."
+        ],
+        "risks": [
+          "Potential data loss or corruption if errors are not resolved."
+        ]
+      },
+      "classification": "bug_report",
+      "classification_v2": "bug",
+      "confidence": 0.8,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "msg 3447",
+          "source_type": "message",
+          "summary": "User reported an error when trying to create a new employee record in ASTA."
+        },
+        {
+          "evidence_status": "confirmed",
+          "reference": "msg 3448",
+          "source_type": "message",
+          "summary": "User reported a similar error in Kafaat when trying to create a new employee record."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7,
+          11
+        ],
+        "confidence": 0.8,
+        "evidence": [
+          "alias in actionable statement (msg 3447)",
+          "alias in actionable statement (msg 3447)",
+          {
+            "type": "odoo_selection_policy",
+            "value": "candidates_too_close"
+          }
+        ],
+        "project_id": null,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3447,
+        3448
+      ],
+      "summary": "The user is reporting errors encountered when trying to create new employee records in two different databases, ASTA and Kafaat, and is requesting a meeting to resolve these issues.",
+      "technical_terms": [
+        "RPC_ERROR",
+        "Odoo Server Error"
+      ],
+      "work_description": "{\"business_request\": \"Resolve errors in employee record creation.\", \"recommended_approach\": [\"Investigate the RPC_ERROR in both databases.\"], \"questions\": [\"What specific changes were made before the errors occurred?\"]}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "unclear",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "Resolve errors in employee record creation."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 0.8,
+      "evidence": [
+        "alias in actionable statement (msg 3447)",
+        "alias in actionable statement (msg 3447)"
+      ],
+      "candidate_ids": [
+        7,
+        11
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3447)",
+        "alias in actionable statement (msg 3448)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 1.0,
+      "signals": [
+        "ايرور",
+        "محتاج",
+        "مشاكل",
+        "مشكلة"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "bug",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-08",
+    "analysis_id": 162,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "1ea7d7b9-7109-4992-bb11-aae95dd475bb",
+    "n8n_execution_id": "52797",
+    "dify_workflow_run_id": "122dfce1-c1a9-488f-b33d-2a35292681e8",
+    "latency_ms": 6865,
+    "classification": "information",
+    "resolved_project_id": 11,
+    "resolved_project_name": "Kafaat (كفاءات)",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "(no actionable content)",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 11,
+      "proposed_project_name": "Kafaat (كفاءات)",
+      "proposed_project_code": "KAFAAT",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "information",
+      "classification_v2": "unclear",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.project:11",
+          "source_type": "project_config",
+          "summary": "Canonical project Kafaat (كفاءات) (KAFAAT)"
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Kafaat (كفاءات)",
+      "project_resolution": {
+        "candidate_ids": [
+          11
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'كفاءات' (arabic_name)"
+          }
+        ],
+        "project_id": 11,
+        "project_name": "Kafaat (كفاءات)",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "ignore",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 11,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        2228,
+        2229,
+        2230,
+        2231,
+        2232,
+        2233
+      ],
+      "summary": "(no actionable content)",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "(no actionable content)"
+    },
+    "raw_project_resolution": {
+      "project_id": 11,
+      "project_name": "Kafaat (كفاءات)",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "arabic_alias",
+          "value": "Matched alias 'كفاءات' (arabic_name)"
+        }
+      ],
+      "candidate_ids": [
+        11
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.7
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-09",
+    "analysis_id": 163,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "63af5cc8-e244-4c32-8380-4af4e19dde51",
+    "n8n_execution_id": "52802",
+    "dify_workflow_run_id": "ba409fd3-3af7-4771-8338-9948facbafb1",
+    "latency_ms": 7429,
+    "classification": "new_dev_request",
+    "resolved_project_id": 11,
+    "resolved_project_name": "Kafaat (كفاءات)",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The messages indicate a request to enter a meeting for reviewing competencies related to the Kafaat project.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 11,
+      "proposed_project_name": "Kafaat (كفاءات)",
+      "proposed_project_code": "KAFAAT",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Request to enter a meeting for reviewing competencies.",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "msg 1994",
+          "source_type": "message",
+          "summary": "Request to enter a meeting for reviewing competencies."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Kafaat (كفاءات)",
+      "project_resolution": {
+        "candidate_ids": [
+          11
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          "Matched alias 'كفاءات' in actionable statement (msg 1994)"
+        ],
+        "project_id": 11,
+        "project_name": "Kafaat (كفاءات)",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 11,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        1991,
+        1992,
+        1993,
+        1994,
+        1995
+      ],
+      "summary": "The messages indicate a request to enter a meeting for reviewing competencies related to the Kafaat project.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"Request to enter a meeting for reviewing competencies.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "Request to enter a meeting for reviewing competencies."
+    },
+    "raw_project_resolution": {
+      "project_id": 11,
+      "project_name": "Kafaat (كفاءات)",
+      "confidence": 1.0,
+      "evidence": [
+        "Matched alias 'كفاءات' in actionable statement (msg 1994)"
+      ],
+      "candidate_ids": [
+        11
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 1994)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "عايز"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-10",
+    "analysis_id": 164,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "b7594d01-3424-4edd-abb4-eae8a20ed5fc",
+    "n8n_execution_id": "52807",
+    "dify_workflow_run_id": "c1943d45-7c2b-425b-adfd-bd4bc521aec1",
+    "latency_ms": 7491,
+    "classification": "new_dev_request",
+    "resolved_project_id": 11,
+    "resolved_project_name": "Kafaat (كفاءات)",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The message discusses issues found during UAT regarding data mapping and field labels, specifically mentioning problems with the phone, specialty, and address fields. It also notes that a column for ID has been added to the trainees list and that the Family tab has been hidden as required. The remaining task is to review and fix the data binding for the specified fields.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 11,
+      "proposed_project_name": "Kafaat (كفاءات)",
+      "proposed_project_code": "KAFAAT",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [
+          "Data fields should correctly read and save data from the appropriate sources."
+        ],
+        "business_request": "Review and fix data binding for phone, specialty, and address fields.",
+        "current_state": "Issues found during UAT regarding data mapping.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [
+          "Investigate the data binding for the specified fields and implement necessary fixes."
+        ],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "1350",
+          "source_type": "message",
+          "summary": "Discussion of UAT results and data mapping issues."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Kafaat (كفاءات)",
+      "project_resolution": {
+        "candidate_ids": [
+          11
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'كفاءات' (arabic_name)"
+          }
+        ],
+        "project_id": 11,
+        "project_name": "Kafaat (كفاءات)",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "create_work",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 11,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        1343,
+        1344,
+        1345,
+        1346,
+        1347,
+        1348,
+        1349,
+        1350
+      ],
+      "summary": "The message discusses issues found during UAT regarding data mapping and field labels, specifically mentioning problems with the phone, specialty, and address fields. It also notes that a column for ID has been added to the trainees list and that the Family tab has been hidden as required. The remaining task is to review and fix the data binding for the specified fields.",
+      "technical_terms": [
+        "UAT",
+        "data mapping",
+        "field labels"
+      ],
+      "work_description": "{\"business_request\": \"Review and fix data binding for phone, specialty, and address fields.\", \"recommended_approach\": [\"Investigate the data binding for the specified fields and implement necessary fixes.\"], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [
+        1343,
+        1344,
+        1345,
+        1346,
+        1347,
+        1348,
+        1349,
+        1350
+      ],
+      "work_title": "Review and fix data binding for phone, specialty, and address fields."
+    },
+    "raw_project_resolution": {
+      "project_id": 11,
+      "project_name": "Kafaat (كفاءات)",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "arabic_alias",
+          "value": "Matched alias 'كفاءات' (arabic_name)"
+        }
+      ],
+      "candidate_ids": [
+        11
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.7
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "سجل",
+        "ممكن"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-11",
+    "analysis_id": 165,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "53356d78-537a-40b3-a0c0-3575eb71eda1",
+    "n8n_execution_id": "52812",
+    "dify_workflow_run_id": "8e43124d-fd57-429e-a4a9-0c890eed1b97",
+    "latency_ms": 11409,
+    "classification": "new_dev_request",
+    "resolved_project_id": 10,
+    "resolved_project_name": "Cycle X",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The message discusses a proposed solution to link the Workers Timesheet with the Labor Accrual logic, suggesting the creation of a Bridge Module to automate the process of pulling eligible worker lines. The sender requests confirmation before proceeding with the implementation.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 10,
+      "proposed_project_name": "Cycle X",
+      "proposed_project_code": "CYCLEX",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [
+          "The module should pull eligible worker lines based on specified criteria."
+        ],
+        "business_request": "Create a Bridge Module to link Workers Timesheet with Labor Accrual logic.",
+        "current_state": "The Workers Timesheet is not currently linked to the Labor Accrual logic.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [
+          "Is there approval to proceed with the proposed solution?"
+        ],
+        "recommended_approach": [
+          "Develop a small Bridge Module to automate the process."
+        ],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "3111",
+          "source_type": "message",
+          "summary": "Proposed solution to link Workers Timesheet with Labor Accrual logic."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Cycle X",
+      "project_resolution": {
+        "candidate_ids": [
+          10
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          {
+            "type": "canonical_name",
+            "value": "Matched alias 'Cycle X' (canonical)"
+          }
+        ],
+        "project_id": 10,
+        "project_name": "Cycle X",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "create_work",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 10,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3108,
+        3109,
+        3110,
+        3111,
+        3112,
+        3113,
+        3114
+      ],
+      "summary": "The message discusses a proposed solution to link the Workers Timesheet with the Labor Accrual logic, suggesting the creation of a Bridge Module to automate the process of pulling eligible worker lines. The sender requests confirmation before proceeding with the implementation.",
+      "technical_terms": [
+        "Bridge Module",
+        "Workers Timesheet",
+        "Labor Accrual"
+      ],
+      "work_description": "{\"business_request\": \"Create a Bridge Module to link Workers Timesheet with Labor Accrual logic.\", \"recommended_approach\": [\"Develop a small Bridge Module to automate the process.\"], \"questions\": [\"Is there approval to proceed with the proposed solution?\"]}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [
+        3108,
+        3109,
+        3110,
+        3111,
+        3112,
+        3113,
+        3114
+      ],
+      "work_title": "Create a Bridge Module to link Workers Timesheet with Labor Accrual logic."
+    },
+    "raw_project_resolution": {
+      "project_id": 10,
+      "project_name": "Cycle X",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "canonical_name",
+          "value": "Matched alias 'Cycle X' (canonical)"
+        }
+      ],
+      "candidate_ids": [
+        10
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.6
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "need",
+        "برجاء"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-12",
+    "analysis_id": 166,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "04ff497a-9f47-4c57-a6b7-3a4cbc373481",
+    "n8n_execution_id": "52817",
+    "dify_workflow_run_id": "50337604-a7cd-4309-9371-723bd3a55df5",
+    "latency_ms": 7932,
+    "classification": "new_dev_request",
+    "resolved_project_id": 10,
+    "resolved_project_name": "Cycle X",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The messages discuss various tasks and requests related to the Cycle X project, including a mention of needing requests in the application and a reference to GitHub.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 10,
+      "proposed_project_name": "Cycle X",
+      "proposed_project_code": "CYCLEX",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Requests needed in the application.",
+        "current_state": "Messages indicate a need for tasks related to the Cycle X project.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1567",
+          "source_type": "message",
+          "summary": "Mention of needing requests in the application."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Cycle X",
+      "project_resolution": {
+        "candidate_ids": [
+          10
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          {
+            "type": "canonical_name",
+            "value": "Matched alias 'Cycle X' (canonical)"
+          }
+        ],
+        "project_id": 10,
+        "project_name": "Cycle X",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 10,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        1564,
+        1565,
+        1566,
+        1567,
+        1568,
+        1569
+      ],
+      "summary": "The messages discuss various tasks and requests related to the Cycle X project, including a mention of needing requests in the application and a reference to GitHub.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"Requests needed in the application.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "Requests needed in the application."
+    },
+    "raw_project_resolution": {
+      "project_id": 10,
+      "project_name": "Cycle X",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "canonical_name",
+          "value": "Matched alias 'Cycle X' (canonical)"
+        }
+      ],
+      "candidate_ids": [
+        10
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.7
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "اعمل",
+        "محتاج"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "unclear",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-13",
+    "analysis_id": 167,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "ab307252-f212-4d35-ab05-b4135b5f351c",
+    "n8n_execution_id": "52822",
+    "dify_workflow_run_id": "be4a119a-c8dc-4557-b697-f248ba4173e4",
+    "latency_ms": 8283,
+    "classification": "question",
+    "resolved_project_id": 10,
+    "resolved_project_name": "Cycle X",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "User is experiencing access issues with the Edafa platform and has mentioned a specific user in the message. The conversation also includes a link to the Cycle X module endpoints and various audio messages.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 10,
+      "proposed_project_name": "Cycle X",
+      "proposed_project_code": "CYCLEX",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [
+          "User regains access to the Edafa platform."
+        ],
+        "business_request": "User needs assistance with access issues related to the Edafa platform.",
+        "current_state": "User is unable to access the platform.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [
+          "Cycle X"
+        ],
+        "likely_affected_views": [],
+        "questions_before_implementation": [
+          "What specific access issues is the user facing?"
+        ],
+        "recommended_approach": [
+          "Investigate the access issue reported by the user."
+        ],
+        "risks": [
+          "User dissatisfaction due to access issues"
+        ]
+      },
+      "classification": "question",
+      "classification_v2": "question",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "msg 1145",
+          "source_type": "message",
+          "summary": "User mentioned access issues with Edafa."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "en",
+      "missing_information": [
+        "Specific details about the access issue"
+      ],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Cycle X",
+      "project_resolution": {
+        "candidate_ids": [
+          10
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          "Matched alias 'cyclex' in actionable statement (msg 1145)"
+        ],
+        "project_id": 10,
+        "project_name": "Cycle X",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "reply",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 10,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        1143,
+        1144,
+        1145,
+        1146,
+        1147,
+        1148,
+        1149,
+        1150
+      ],
+      "summary": "User is experiencing access issues with the Edafa platform and has mentioned a specific user in the message. The conversation also includes a link to the Cycle X module endpoints and various audio messages.",
+      "technical_terms": [
+        "API",
+        "endpoints",
+        "module"
+      ],
+      "work_description": "{\"business_request\": \"User needs assistance with access issues related to the Edafa platform.\", \"recommended_approach\": [\"Investigate the access issue reported by the user.\"], \"questions\": [\"What specific access issues is the user facing?\"]}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "User needs assistance with access issues related to the Edafa platform."
+    },
+    "raw_project_resolution": {
+      "project_id": 10,
+      "project_name": "Cycle X",
+      "confidence": 1.0,
+      "evidence": [
+        "Matched alias 'cyclex' in actionable statement (msg 1145)"
+      ],
+      "candidate_ids": [
+        10
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 1145)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "update"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "unclear",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "question",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-14",
+    "analysis_id": 168,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "392ca091-85c7-4c29-be41-ad8f1fd9dbb2",
+    "n8n_execution_id": "52827",
+    "dify_workflow_run_id": "6c3a3b92-ce12-49ed-bbbc-129525024676",
+    "latency_ms": 6678,
+    "classification": "information",
+    "resolved_project_id": 10,
+    "resolved_project_name": "Cycle X",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The messages discuss various tasks and issues related to the Cycle X project, including access issues and the need for testing.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 10,
+      "proposed_project_name": "Cycle X",
+      "proposed_project_code": "CYCLEX",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "dominant_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "information",
+      "classification_v2": "unclear",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.project:10",
+          "source_type": "project_config",
+          "summary": "Canonical project Cycle X (CYCLEX)"
+        }
+      ],
+      "ignore_reason": null,
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Cycle X",
+      "project_resolution": {
+        "candidate_ids": [
+          10
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          {
+            "type": "canonical_name",
+            "value": "Matched alias 'Cycle X' (canonical)"
+          }
+        ],
+        "project_id": 10,
+        "project_name": "Cycle X",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 10,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        933,
+        934,
+        935,
+        936,
+        937,
+        938,
+        939,
+        940
+      ],
+      "summary": "The messages discuss various tasks and issues related to the Cycle X project, including access issues and the need for testing.",
+      "technical_terms": [
+        "ssh",
+        "login"
+      ],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages discuss various tasks and issues related to the Cycle X project, including access issues and the need for testing."
+    },
+    "raw_project_resolution": {
+      "project_id": 10,
+      "project_name": "Cycle X",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "canonical_name",
+          "value": "Matched alias 'Cycle X' (canonical)"
+        }
+      ],
+      "candidate_ids": [
+        10
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.7
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "unclear",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-15",
+    "analysis_id": 169,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "bff267e8-aca5-4dcf-bda0-f89f2dd69c52",
+    "n8n_execution_id": "52832",
+    "dify_workflow_run_id": "145b9229-9b4c-45e5-9a42-839869988b83",
+    "latency_ms": 8740,
+    "classification": "new_dev_request",
+    "resolved_project_id": 1,
+    "resolved_project_name": "PetSpot",
+    "work_item_decision": "existing",
+    "proposed_work_item_id": 3332,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The message discusses prioritizing solutions for issues related to HR and educational cycles, as well as a specific problem with journals in industrial projects.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 1,
+      "proposed_project_name": "PetSpot",
+      "proposed_project_code": "PETSPOT",
+      "proposed_confidence": 0.95,
+      "resolution_status": "proposed",
+      "selection_reason": "direct_source_message_link",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Resolve issues related to HR and educational cycles, and address the journal problem in industrial projects.",
+        "current_state": "Prioritizing solutions for the mentioned issues.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 0.95,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "3332",
+          "source_type": "work_item",
+          "summary": "Direct link to work item related to the current topic."
+        },
+        {
+          "evidence_status": "confirmed",
+          "reference": "3331",
+          "source_type": "work_item",
+          "summary": "Direct link to work item related to the current topic."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "PetSpot",
+      "project_resolution": {
+        "candidate_ids": [
+          1
+        ],
+        "confidence": 0.95,
+        "evidence": [
+          {
+            "type": "direct_source_message_link",
+            "value": "Message linked to WI 3332"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Message linked to WI 3331"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Project taken from linked Work Item 3332"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Project taken from linked Work Item 3332"
+          }
+        ],
+        "project_id": 1,
+        "project_name": "PetSpot",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "attach_existing",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 1,
+      "resolved_work_item_id": 3332,
+      "safe_to_attach_to_existing_work": true,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        4098,
+        4099,
+        4100,
+        4101
+      ],
+      "summary": "The message discusses prioritizing solutions for issues related to HR and educational cycles, as well as a specific problem with journals in industrial projects.",
+      "technical_terms": [
+        "HR",
+        "journals",
+        "industrial projects"
+      ],
+      "work_description": "Addressing additional UAT requirements.",
+      "work_item_resolution": {
+        "candidate_ids": [
+          3332
+        ],
+        "confidence": 1.0,
+        "decision": "existing",
+        "evidence": [
+          {
+            "type": "direct_source_message_link",
+            "value": "Direct WhatsApp source-message link"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Odoo boosted linked Work Item"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Odoo boosted linked Work Item"
+          }
+        ],
+        "requires_confirmation": true,
+        "work_item_id": 3332,
+        "work_item_title": "UAT additional"
+      },
+      "work_message_ids": [
+        4098,
+        4099,
+        4100,
+        4101
+      ],
+      "work_title": "UAT additional"
+    },
+    "raw_project_resolution": {
+      "project_id": 1,
+      "project_name": "PetSpot",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "type": "direct_source_message_link",
+          "value": "Message linked to WI 3332"
+        },
+        {
+          "type": "direct_source_message_link",
+          "value": "Message linked to WI 3331"
+        }
+      ],
+      "candidate_ids": [
+        1
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        {
+          "type": "direct_source_message_link",
+          "value": "Message linked to WI 3332"
+        },
+        {
+          "type": "direct_source_message_link",
+          "value": "Message linked to WI 3331"
+        }
+      ],
+      "confidence": 0.95
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "مشاكل",
+        "ممكن"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "existing",
+      "work_item_id": 3332,
+      "work_item_title": "UAT additional",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "direct_source_message_link",
+          "value": "Direct WhatsApp source-message link"
+        }
+      ],
+      "candidate_ids": [
+        3332
+      ],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-16",
+    "analysis_id": 170,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "e1ae3395-3ebf-4ba0-a37c-60f857b22a6e",
+    "n8n_execution_id": "52837",
+    "dify_workflow_run_id": "4996c1d0-b181-4a5e-acf4-9bf6367bb8af",
+    "latency_ms": 8417,
+    "classification": "follow_up_existing",
+    "resolved_project_id": 1,
+    "resolved_project_name": "PetSpot",
+    "work_item_decision": "existing",
+    "proposed_work_item_id": 3331,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The message discusses an ongoing error in the database related to the PetSpot project.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 1,
+      "proposed_project_name": "PetSpot",
+      "proposed_project_code": "PETSPOT",
+      "proposed_confidence": 0.95,
+      "resolution_status": "proposed",
+      "selection_reason": "direct_source_message_link",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Address the ongoing error in the database.",
+        "current_state": "Error still exists in the database.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "follow_up_existing",
+      "classification_v2": "existing_work_followup",
+      "confidence": 0.95,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.work.item:3331",
+          "source_type": "work_item",
+          "summary": "UAT: Work Inbox multi-message create"
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "PetSpot",
+      "project_resolution": {
+        "candidate_ids": [
+          1
+        ],
+        "confidence": 0.95,
+        "evidence": [
+          {
+            "type": "direct_source_message_link",
+            "value": "Message linked to WI 3331"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Project taken from linked Work Item 3331"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Project taken from linked Work Item 3331"
+          }
+        ],
+        "project_id": 1,
+        "project_name": "PetSpot",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "attach_existing",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 1,
+      "resolved_work_item_id": 3331,
+      "safe_to_attach_to_existing_work": true,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        4096
+      ],
+      "summary": "The message discusses an ongoing error in the database related to the PetSpot project.",
+      "technical_terms": [
+        "الايرور",
+        "داتا بيز"
+      ],
+      "work_description": "Address the ongoing error in the database.",
+      "work_item_resolution": {
+        "candidate_ids": [
+          3331
+        ],
+        "confidence": 1.0,
+        "decision": "existing",
+        "evidence": [
+          {
+            "type": "direct_source_message_link",
+            "value": "Direct WhatsApp source-message link"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Odoo boosted linked Work Item"
+          },
+          {
+            "type": "direct_source_message_link",
+            "value": "Odoo boosted linked Work Item"
+          }
+        ],
+        "requires_confirmation": true,
+        "work_item_id": 3331,
+        "work_item_title": "UAT: Work Inbox multi-message create"
+      },
+      "work_message_ids": [
+        4096
+      ],
+      "work_title": "UAT: Work Inbox multi-message create"
+    },
+    "raw_project_resolution": {
+      "project_id": 1,
+      "project_name": "PetSpot",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "type": "direct_source_message_link",
+          "value": "Message linked to WI 3331"
+        }
+      ],
+      "candidate_ids": [
+        1
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [],
+      "confidence": 0.95
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "ايرور"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "existing",
+      "work_item_id": 3331,
+      "work_item_title": "UAT: Work Inbox multi-message create",
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "type": "direct_source_message_link",
+          "value": "Direct WhatsApp source-message link"
+        }
+      ],
+      "candidate_ids": [
+        3331
+      ],
+      "requires_confirmation": true
+    },
+    "raw_classification": "existing_work_followup",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-17",
+    "analysis_id": 171,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "e6cb4f95-b7ae-4cbd-b420-90de6774d1b8",
+    "n8n_execution_id": "52842",
+    "dify_workflow_run_id": "5632e923-3792-4d6e-a08e-6f3a14cad681",
+    "latency_ms": 7852,
+    "classification": "noise",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "none",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages consist of various media types (images, audio, video) and a single Arabic word 'تمام' (meaning 'okay'). There are no actionable requests or specific project-related topics present.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "noise",
+      "classification_v2": "noise",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "messages",
+          "source_type": "message",
+          "summary": "The messages consist of various media types and a single Arabic word 'تمام'."
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "ignore",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": true,
+      "source_message_ids": [
+        4119,
+        4120,
+        4121,
+        4122,
+        4123,
+        4124,
+        4125,
+        4126
+      ],
+      "summary": "The messages consist of various media types (images, audio, video) and a single Arabic word 'تمام' (meaning 'okay'). There are no actionable requests or specific project-related topics present.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "none",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages consist of various media types (images, audio, video) and a single Arabic word 'تمام' (meaning 'okay'). There are no actionable requests or specific project-related topics present."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-18",
+    "analysis_id": 172,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "985b79e5-d946-4598-a45b-8cab3f4f4918",
+    "n8n_execution_id": "52847",
+    "dify_workflow_run_id": "1a1fc71a-bd19-492a-9917-f24502007799",
+    "latency_ms": 8458,
+    "classification": "new_dev_request",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "unclear",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The user is discussing the testing of a software module and has reported an Odoo server error. They also requested to install or update a module.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "ambiguous_requires_strong_score",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [
+          "Module installs without errors and functions as expected."
+        ],
+        "business_request": "The user is requesting to install or update a module and has reported an error.",
+        "current_state": "The user has tested a software module successfully but encountered an Odoo server error.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [
+          "gpc_worker_timesheet_labor_accrual_bridge"
+        ],
+        "likely_affected_views": [],
+        "questions_before_implementation": [
+          "What specific module needs to be installed or updated?"
+        ],
+        "recommended_approach": [
+          "Investigate the server error and ensure the module is correctly installed."
+        ],
+        "risks": [
+          "Potential server errors during module installation or updates."
+        ]
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 0.73,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.project:7",
+          "source_type": "project_config",
+          "summary": "Canonical project ASTA Training (ASTA)"
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "dev.whatsapp.analysis:138",
+          "source_type": "document",
+          "summary": "The user is discussing the testing of a software module and has reported an Odoo server error."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 0.73,
+        "evidence": [
+          {
+            "type": "english_alias",
+            "value": "Matched alias 'Asta' (english_name)"
+          },
+          {
+            "type": "arabic_alias",
+            "value": "Matched alias 'أستا' (arabic_name)"
+          },
+          {
+            "type": "odoo_selection_policy",
+            "value": "ambiguous_requires_strong_score"
+          }
+        ],
+        "project_id": null,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3100,
+        3101,
+        3102,
+        3103,
+        3104,
+        3105,
+        3106,
+        3107
+      ],
+      "summary": "The user is discussing the testing of a software module and has reported an Odoo server error. They also requested to install or update a module.",
+      "technical_terms": [
+        "Odoo",
+        "module",
+        "install",
+        "update"
+      ],
+      "work_description": "{\"business_request\": \"The user is requesting to install or update a module and has reported an error.\", \"recommended_approach\": [\"Investigate the server error and ensure the module is correctly installed.\"], \"questions\": [\"What specific module needs to be installed or updated?\"]}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "unclear",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The user is requesting to install or update a module and has reported an error."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 0.73,
+      "evidence": [
+        {
+          "type": "english_alias",
+          "value": "Matched alias 'Asta' (english_name)"
+        },
+        {
+          "type": "arabic_alias",
+          "value": "Matched alias 'أستا' (arabic_name)"
+        }
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.2
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 1.0,
+      "signals": [
+        "add",
+        "install",
+        "اختبار"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-19",
+    "analysis_id": 173,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "401a4684-61e2-4e75-ad4d-033dea5792a6",
+    "n8n_execution_id": "52852",
+    "dify_workflow_run_id": "be94c396-bfc1-40cc-8a0e-7695f817ca16",
+    "latency_ms": 7571,
+    "classification": "information",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "unclear",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages discuss a project but do not provide actionable requests or specific topics related to the PetSpot project.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "information",
+      "classification_v2": "unclear",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.project:1",
+          "source_type": "project_config",
+          "summary": "Canonical project PetSpot (PETSPOT)"
+        }
+      ],
+      "ignore_reason": null,
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "PetSpot",
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [
+          {
+            "evidence_status": "confirmed",
+            "reference": "dev.project:1",
+            "summary": "Canonical project PetSpot (PETSPOT)"
+          },
+          {
+            "type": "odoo_selection_policy",
+            "value": "no_candidates"
+          }
+        ],
+        "project_id": null,
+        "project_name": "PetSpot",
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        2265,
+        2266,
+        2267,
+        2268,
+        2269,
+        2270,
+        2271,
+        2272
+      ],
+      "summary": "The messages discuss a project but do not provide actionable requests or specific topics related to the PetSpot project.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "unclear",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages discuss a project but do not provide actionable requests or specific topics related to the PetSpot project."
+    },
+    "raw_project_resolution": {
+      "project_id": 1,
+      "project_name": "PetSpot",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.project:1",
+          "summary": "Canonical project PetSpot (PETSPOT)"
+        }
+      ],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        {
+          "evidence_status": "confirmed",
+          "reference": "dev.project:1",
+          "summary": "Canonical project PetSpot (PETSPOT)"
+        }
+      ],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "upgrade",
+        "مشكلة"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "unclear",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "unclear",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-20",
+    "analysis_id": 174,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "e8dcc02c-0007-4fb7-9fa8-989249ce133b",
+    "n8n_execution_id": "52857",
+    "dify_workflow_run_id": "0bfe373d-4942-433a-b95d-c597f37ee370",
+    "latency_ms": 10761,
+    "classification": "noise",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "none",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages contain various image files but do not present any actionable requests or specific project-related topics.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "noise",
+      "classification_v2": "noise",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1536",
+          "source_type": "message",
+          "summary": "The message 'ok' does not provide actionable content."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1535",
+          "source_type": "message",
+          "summary": "The message '01_student_list.png' is a media reference without actionable content."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1531",
+          "source_type": "message",
+          "summary": "The message '04b_registration_list.png' is a media reference without actionable content."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1532",
+          "source_type": "message",
+          "summary": "The message '02_student_list_filters.png' is a media reference without actionable content."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1533",
+          "source_type": "message",
+          "summary": "The message '03_trainee_form.png' is a media reference without actionable content."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1534",
+          "source_type": "message",
+          "summary": "The message '04_registration_form.png' is a media reference without actionable content."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1530",
+          "source_type": "message",
+          "summary": "The message '05_student_multi_select.png' is a media reference without actionable content."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:1529",
+          "source_type": "message",
+          "summary": "The message '@200244545478693' does not provide actionable content."
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "en",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "ignore",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": true,
+      "source_message_ids": [
+        1529,
+        1530,
+        1531,
+        1532,
+        1533,
+        1534,
+        1535,
+        1536
+      ],
+      "summary": "The messages contain various image files but do not present any actionable requests or specific project-related topics.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "none",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages contain various image files but do not present any actionable requests or specific project-related topics."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-21",
+    "analysis_id": 175,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "32d183ee-7ce9-4396-97ac-0e10bc9e154f",
+    "n8n_execution_id": "52862",
+    "dify_workflow_run_id": "24d1a42a-63e4-4f5b-9ea9-fcfa751eb953",
+    "latency_ms": 7909,
+    "classification": "bug_report",
+    "resolved_project_id": 7,
+    "resolved_project_name": "ASTA Training",
+    "work_item_decision": "new",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "proposed",
+    "summary": "The user is reporting an issue where a module is not appearing in the search field in the apps section.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": true,
+      "proposed_project_id": 7,
+      "proposed_project_name": "ASTA Training",
+      "proposed_project_code": "ASTA",
+      "proposed_confidence": 1.0,
+      "resolution_status": "proposed",
+      "selection_reason": "unique_strong_candidate",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "The user is experiencing an issue with a module not appearing in the search field.",
+        "current_state": "User reported a bug regarding module visibility in the apps section.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "bug_report",
+      "classification_v2": "bug",
+      "confidence": 1.0,
+      "contains_multiple_tasks": false,
+      "contains_work": true,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "msg 4094",
+          "source_type": "message",
+          "summary": "User reported that the module is not appearing in the search field."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 1.0,
+        "evidence": [
+          "Matched alias 'Asta' in actionable statement (msg 4091)"
+        ],
+        "project_id": 7,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "proposed"
+      },
+      "project_resolution_status": "proposed",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": 7,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": true,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        4089,
+        4090,
+        4091,
+        4092,
+        4093,
+        4094
+      ],
+      "summary": "The user is reporting an issue where a module is not appearing in the search field in the apps section.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"The user is experiencing an issue with a module not appearing in the search field.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "new",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The user is experiencing an issue with a module not appearing in the search field."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 1.0,
+      "evidence": [
+        "Matched alias 'Asta' in actionable statement (msg 4091)"
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 4091)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "bug",
+        "مش راضي"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "bug",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-22",
+    "analysis_id": 176,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "47b5c680-628d-4e46-98b4-1bbff627afe7",
+    "n8n_execution_id": "52867",
+    "dify_workflow_run_id": "7dfbe65a-73a6-4d62-bb07-b06c9a176ee3",
+    "latency_ms": 6865,
+    "classification": "information",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "unclear",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages are informal greetings and updates without any actionable requests or specific project-related topics.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "information",
+      "classification_v2": "unclear",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "3063",
+          "source_type": "message",
+          "summary": "Informal greeting message."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "3062",
+          "source_type": "message",
+          "summary": "Update about availability without actionable content."
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3062,
+        3063
+      ],
+      "summary": "The messages are informal greetings and updates without any actionable requests or specific project-related topics.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "unclear",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages are informal greetings and updates without any actionable requests or specific project-related topics."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-23",
+    "analysis_id": 177,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "d1532a3c-aa0e-494d-bc6b-4c678147e4cf",
+    "n8n_execution_id": "52872",
+    "dify_workflow_run_id": "1f295cdb-4815-47c3-9bc3-c81d0adf1ed1",
+    "latency_ms": 6309,
+    "classification": "noise",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "none",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The message is a meeting notification with no actionable content related to any project.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "noise",
+      "classification_v2": "noise",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:2645",
+          "source_type": "message",
+          "summary": "Meeting notification with no actionable content."
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "en",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "ignore",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": true,
+      "source_message_ids": [
+        2645
+      ],
+      "summary": "The message is a meeting notification with no actionable content related to any project.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "none",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The message is a meeting notification with no actionable content related to any project."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-24",
+    "analysis_id": 178,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "fa67e684-3993-4251-aefa-7feebc90c2a6",
+    "n8n_execution_id": "52877",
+    "dify_workflow_run_id": "06504a64-22d0-41b0-a934-24f3aa2e2974",
+    "latency_ms": 7525,
+    "classification": "noise",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "none",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages in the group chat do not contain actionable requests or specific project-related topics. They include greetings, confirmations, and a Zoom meeting invitation.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "noise",
+      "classification_v2": "noise",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "messages",
+          "source_type": "message",
+          "summary": "The messages include greetings and a Zoom meeting invitation, but no actionable content."
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "ignore",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": true,
+      "source_message_ids": [
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970
+      ],
+      "summary": "The messages in the group chat do not contain actionable requests or specific project-related topics. They include greetings, confirmations, and a Zoom meeting invitation.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "none",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages in the group chat do not contain actionable requests or specific project-related topics. They include greetings, confirmations, and a Zoom meeting invitation."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-25",
+    "analysis_id": 179,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "fe57a635-8568-4713-9996-fed3984d0ac5",
+    "n8n_execution_id": "52882",
+    "dify_workflow_run_id": "1b05c6b6-cffc-4618-ba76-aafc09122a71",
+    "latency_ms": 7803,
+    "classification": "new_dev_request",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "unclear",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The user is discussing the installation of components in the ASTA Training project and mentions the configuration of an API that should be in production.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "media_incidental_reference",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "The user is requesting to install components and configure an API for production.",
+        "current_state": "The user has both components installed in the ASTA test environment.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 0.8,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "msg 3324",
+          "source_type": "message",
+          "summary": "The user mentioned both components installed in the ASTA test."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "ASTA Training",
+      "project_resolution": {
+        "candidate_ids": [
+          7
+        ],
+        "confidence": 0.8,
+        "evidence": [
+          "alias in actionable statement (msg 3324)",
+          {
+            "type": "odoo_selection_policy",
+            "value": "media_incidental_reference"
+          }
+        ],
+        "project_id": null,
+        "project_name": "ASTA Training",
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3320,
+        3321,
+        3322,
+        3323,
+        3324,
+        3325,
+        3326,
+        3327
+      ],
+      "summary": "The user is discussing the installation of components in the ASTA Training project and mentions the configuration of an API that should be in production.",
+      "technical_terms": [
+        "API",
+        "production"
+      ],
+      "work_description": "{\"business_request\": \"The user is requesting to install components and configure an API for production.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "unclear",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [
+        3320,
+        3321,
+        3322,
+        3323,
+        3324,
+        3325,
+        3326,
+        3327
+      ],
+      "work_title": "The user is requesting to install components and configure an API for production."
+    },
+    "raw_project_resolution": {
+      "project_id": 7,
+      "project_name": "ASTA Training",
+      "confidence": 0.8,
+      "evidence": [
+        "alias in actionable statement (msg 3324)"
+      ],
+      "candidate_ids": [
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3324)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.6,
+      "signals": [
+        "install"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-26",
+    "analysis_id": 180,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "392e35f3-a384-4de5-bbd4-43794768cebe",
+    "n8n_execution_id": "52887",
+    "dify_workflow_run_id": "651bd65a-a238-481f-a75f-fcdb1d08857c",
+    "latency_ms": 7613,
+    "classification": "noise",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "none",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages contain closed requests related to visibility and family tab adjustments, but no actionable requests or specific project-related topics are present.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "noise",
+      "classification_v2": "noise",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "2509",
+          "source_type": "message",
+          "summary": "The messages include closed requests related to visibility and family tab adjustments, but no actionable requests or specific project-related topics are present."
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "en",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "ignore",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": true,
+      "source_message_ids": [
+        2507,
+        2508,
+        2509
+      ],
+      "summary": "The messages contain closed requests related to visibility and family tab adjustments, but no actionable requests or specific project-related topics are present.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "none",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages contain closed requests related to visibility and family tab adjustments, but no actionable requests or specific project-related topics are present."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-27",
+    "analysis_id": 181,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "17a8b4e9-69d6-4c9b-9267-d1887a936c8c",
+    "n8n_execution_id": "52892",
+    "dify_workflow_run_id": "982f0115-ea7f-4da9-985d-057e5135941b",
+    "latency_ms": 6583,
+    "classification": "information",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "unclear",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages discuss issues related to data visibility and project requirements, with a request for a meeting to clarify the situation.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "information",
+      "classification_v2": "unclear",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:3837",
+          "source_type": "message",
+          "summary": "Request for displaying project-related data."
+        },
+        {
+          "evidence_status": "inferred",
+          "reference": "message_id:3836",
+          "source_type": "message",
+          "summary": "Indication that data is not showing as expected."
+        }
+      ],
+      "ignore_reason": null,
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3834,
+        3835,
+        3836,
+        3837,
+        3838,
+        3839,
+        3840,
+        3841
+      ],
+      "summary": "The messages discuss issues related to data visibility and project requirements, with a request for a meeting to clarify the situation.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "unclear",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages discuss issues related to data visibility and project requirements, with a request for a meeting to clarify the situation."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "analy",
+        "ممكن"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "unclear",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "unclear",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-28",
+    "analysis_id": 182,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "1c0d1cf3-0f92-4381-81b4-daa7df40a3b2",
+    "n8n_execution_id": "52897",
+    "dify_workflow_run_id": "f201d0aa-9d20-4df3-a377-4590d7469222",
+    "latency_ms": 7946,
+    "classification": "new_dev_request",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "unclear",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages discuss an error related to the Kafaat project, specifically mentioning issues on the employee page and a module update. There is a request to access the server to check logs.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "candidates_too_close",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "Investigate the error on the employee page and check the logs.",
+        "current_state": "Error reported on the employee page.",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "new_dev_request",
+      "classification_v2": "new_task",
+      "confidence": 0.8,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "msg 3742",
+          "source_type": "message",
+          "summary": "و كفاءات برضوا نفس الايرور موجود"
+        }
+      ],
+      "ignore_reason": null,
+      "language": "ar",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": "Kafaat (كفاءات)",
+      "project_resolution": {
+        "candidate_ids": [
+          11,
+          7
+        ],
+        "confidence": 0.8,
+        "evidence": [
+          "Matched alias 'كفاءات' in actionable statement (msg 3742)",
+          {
+            "type": "odoo_selection_policy",
+            "value": "candidates_too_close"
+          }
+        ],
+        "project_id": null,
+        "project_name": "Kafaat (كفاءات)",
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "request_context",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": false,
+      "source_message_ids": [
+        3735,
+        3736,
+        3737,
+        3738,
+        3739,
+        3740,
+        3741,
+        3742
+      ],
+      "summary": "The messages discuss an error related to the Kafaat project, specifically mentioning issues on the employee page and a module update. There is a request to access the server to check logs.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"Investigate the error on the employee page and check the logs.\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "unclear",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [
+        3735,
+        3736,
+        3737,
+        3738,
+        3739,
+        3740,
+        3741,
+        3742
+      ],
+      "work_title": "Investigate the error on the employee page and check the logs."
+    },
+    "raw_project_resolution": {
+      "project_id": 11,
+      "project_name": "Kafaat (كفاءات)",
+      "confidence": 0.8,
+      "evidence": [
+        "Matched alias 'كفاءات' in actionable statement (msg 3742)"
+      ],
+      "candidate_ids": [
+        11,
+        7
+      ],
+      "requires_confirmation": true,
+      "resolution_status": "proposed"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": true,
+      "evidence": [
+        "alias in actionable statement (msg 3742)"
+      ],
+      "confidence": 0.8
+    },
+    "raw_actionability": {
+      "is_actionable": true,
+      "score": 0.8,
+      "signals": [
+        "ايرور",
+        "ممكن"
+      ],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "new",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "new_task",
+    "error_message": false
+  },
+  {
+    "sample_id": "DN-29",
+    "analysis_id": 183,
+    "state": "awaiting_review",
+    "prompt_version": "wa_project_aware_v2.2",
+    "provider": "dify_n8n",
+    "provider_model": "dify-gpt-4o-mini",
+    "schema_version": "2",
+    "correlation_id": "1e232b00-d950-4031-adfe-b305b89e5909",
+    "n8n_execution_id": "52902",
+    "dify_workflow_run_id": "fae8d9ff-863c-4e88-aa95-3187e742f8ed",
+    "latency_ms": 5487,
+    "classification": "noise",
+    "resolved_project_id": null,
+    "resolved_project_name": null,
+    "work_item_decision": "none",
+    "proposed_work_item_id": null,
+    "requires_project_confirmation": true,
+    "project_resolution_status": "unresolved",
+    "summary": "The messages include a request for information on how to access databases, but there are no actionable requests or specific project-related topics.",
+    "selection_policy": {
+      "eligible_for_proposed_selection": false,
+      "proposed_project_id": null,
+      "proposed_project_name": null,
+      "proposed_project_code": null,
+      "proposed_confidence": 0.0,
+      "resolution_status": "unresolved",
+      "selection_reason": "no_candidates",
+      "requires_project_confirmation": true,
+      "thresholds": {
+        "unique_candidate_min_score": 0.7,
+        "strong_candidate_min_score": 0.85,
+        "candidate_score_margin": 0.2,
+        "project_relevance_min_confidence": 0.5,
+        "media_dominant_ratio": 0.4
+      }
+    },
+    "validated": {
+      "analysis_detail": {
+        "acceptance_criteria": [],
+        "business_request": "",
+        "current_state": "",
+        "database_considerations": [],
+        "existing_relevant_functionality": [],
+        "integration_considerations": [],
+        "likely_affected_models": [],
+        "likely_affected_modules": [],
+        "likely_affected_views": [],
+        "questions_before_implementation": [],
+        "recommended_approach": [],
+        "risks": []
+      },
+      "classification": "noise",
+      "classification_v2": "noise",
+      "confidence": 0.0,
+      "contains_multiple_tasks": false,
+      "contains_work": false,
+      "evidence_used": [
+        {
+          "evidence_status": "inferred",
+          "reference": "dev.whatsapp.analysis:154",
+          "source_type": "document",
+          "summary": "The messages include a request for information on how to access databases, but there are no actionable requests or specific project-related topics."
+        }
+      ],
+      "ignore_reason": "Classified as noise/unclear",
+      "language": "mixed",
+      "missing_information": [],
+      "noise_message_ids": [],
+      "participants": [],
+      "priority": "2",
+      "project_reference": null,
+      "project_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "evidence": [],
+        "project_id": null,
+        "project_name": null,
+        "requires_confirmation": true,
+        "resolution_status": "unresolved"
+      },
+      "project_resolution_status": "unresolved",
+      "recommended_action": "ignore",
+      "requires_human_review": true,
+      "requires_project_confirmation": true,
+      "resolved_project_id": null,
+      "resolved_work_item_id": null,
+      "safe_to_attach_to_existing_work": false,
+      "safe_to_create_work": false,
+      "schema_version": "2",
+      "should_ignore": true,
+      "source_message_ids": [
+        3709,
+        3710,
+        3711,
+        3712,
+        3713,
+        3714
+      ],
+      "summary": "The messages include a request for information on how to access databases, but there are no actionable requests or specific project-related topics.",
+      "technical_terms": [],
+      "work_description": "{\"business_request\": \"\", \"recommended_approach\": [], \"questions\": []}",
+      "work_item_resolution": {
+        "candidate_ids": [],
+        "confidence": 0.0,
+        "decision": "none",
+        "evidence": [],
+        "requires_confirmation": true,
+        "work_item_id": null,
+        "work_item_title": null
+      },
+      "work_message_ids": [],
+      "work_title": "The messages include a request for information on how to access databases, but there are no actionable requests or specific project-related topics."
+    },
+    "raw_project_resolution": {
+      "project_id": null,
+      "project_name": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true,
+      "resolution_status": "unresolved"
+    },
+    "raw_project_relevance": {
+      "is_current_topic": false,
+      "evidence": [],
+      "confidence": 0.0
+    },
+    "raw_actionability": {
+      "is_actionable": false,
+      "score": 0.0,
+      "signals": [],
+      "missing_requirements": []
+    },
+    "raw_wi": {
+      "decision": "none",
+      "work_item_id": null,
+      "work_item_title": null,
+      "confidence": 0.0,
+      "evidence": [],
+      "candidate_ids": [],
+      "requires_confirmation": true
+    },
+    "raw_classification": "noise",
+    "error_message": false
+  }
+]

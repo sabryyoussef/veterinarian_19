@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/46
+- Message ID: 9732
+- Customer: Bright&I zone ( Odoo ERP )
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 11:20:03 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+User expresses concerns about communication style in a group chat.
+
+**الإجراء المطلوب:**
+No action required, monitor group communication.
+
+**نص مرفق مستخرج:**
+هو انا عايز اعرف حاجة بس هو يعني مين ال ادى لك الاحقية او مين اللي سمح لك ان حضرتك تدخل تتكلم بالاسلوب ده اخواننا ايه احنا مش قاعدين في الشارع اه استاذ علي بعد اذنك اي حد هيتواصل معانا على الجروب ده الجروب الناس اللي فيه كلها محترمة اي حد يتواصل معانا على الجروب يتعامل باحترام اي حد مش هيتعامل باحترام بعد اذنك انا مش هكون موجود في الجروب ولا مكمل شغل وفيه حد يتعامل فيه بطريقة مش محترمة. تماما استاذ علي? ننتظر ردك.
+
+## Original Message
+
+```
+Voice message: 3A3F30217E0F0B8E07C4.oga
+```

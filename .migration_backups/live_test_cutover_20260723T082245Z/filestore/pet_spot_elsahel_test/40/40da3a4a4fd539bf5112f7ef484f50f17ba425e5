@@ -1,0 +1,31 @@
+$ /home/sabry/server setup/cycle-x-odoo18/scripts/cyclex-api-smoke.sh --mock
+
+exit=0
+
+--- stdout ---
+=== Mock external API — http://127.0.0.1:18888 ===
+OK   mock health
+OK   mock WAAPI
+OK   mock SMS
+OK   mock FCM
+OK   captured 3 messages
+Mock: all passed
+
+--- stderr ---
+Traceback (most recent call last):
+  File "/home/sabry/server setup/cycle-x-odoo18/scripts/cyclex-mock-api-server.py", line 167, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/home/sabry/server setup/cycle-x-odoo18/scripts/cyclex-mock-api-server.py", line 153, in main
+    server = ThreadingHTTPServer((args.host, args.port), MockHandler)
+  File "/usr/lib/python3.14/socketserver.py", line 457, in __init__
+    self.server_bind()
+    ~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/http/server.py", line 148, in server_bind
+    socketserver.TCPServer.server_bind(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.14/socketserver.py", line 478, in server_bind
+    self.socket.bind(self.server_address)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 98] Address already in use
+

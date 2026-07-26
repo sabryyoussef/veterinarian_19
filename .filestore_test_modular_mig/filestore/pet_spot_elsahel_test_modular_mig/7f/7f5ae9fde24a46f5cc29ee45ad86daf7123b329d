@@ -1,0 +1,16 @@
+$ /home/sabry/server setup/cycle-x-odoo18/scripts/cyclex-api-smoke.sh --live
+
+exit=0
+
+--- stdout ---
+=== Live Odoo API — https://192.168.100.66:8171 ===
+OK   health — HTTP 200
+OK   governorates — HTTP 200
+OK   vehicle-types — HTTP 200
+OK   app_version — HTTP 200
+OK   terms_conditions — HTTP 200
+OK   categories — HTTP 200
+Live: 6 passed, 0 failed
+
+--- stderr ---
+

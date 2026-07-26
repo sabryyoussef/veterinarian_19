@@ -1,0 +1,57 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 6229
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-04 16:22:05 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** bug
+**الأولوية:** medium
+**الثقة:** 0.88
+
+**الملخص:**
+Issues with field labels and data mapping in the latest version of Kafa'at, and Family tab reappeared in Student Profile.
+
+**الإجراء المطلوب:**
+Investigate and fix data mapping for ID number, phone, specialization, and address fields. Also, ensure the Family tab is hidden in Student Profile.
+
+## Original Message
+
+```
+السلام عليكم،
+@165837629583434 
+بعد إعادة تنفيذ الـ UAT على آخر نسخة كفاءات ، نتائج المراجعة كالتالي:
+
+1. **Group By → Current Course**
+
+   * ✅ تم حل المشكلة، وخيار **Group By → Current Course** أصبح يعمل بشكل صحيح.
+
+2. **Field Labels & Data Mapping**
+
+   * ❌ ما زالت المشكلة موجودة.
+   * الحقول التالية ما زالت لا تقوم بقراءة/حفظ البيانات من الحقول المعتمدة الخاصة بها:
+
+     * رقم الهوية
+     * الهاتف
+     * التخصص
+     * العنوان
+   * بالإضافة إلى ذلك، **عمود رقم الهوية** غير موجود في قائمة المتدربين.
+
+3. **Hide Blood Group**
+
+   * ✅ تم إخفاء حقل **Blood Group** كما هو مطلوب.
+
+4. **Registration Number & Source Type**
+
+   * ✅ تم حل المشكلة، وأصبح كل من **Registration Number** و **Source Type** يتم حفظهما بشكل صحيح في **Student Profile**.
+
+5. **Family Tab**
+
+   * ❌ ظهرت مشكلة جديدة، وهي أن تبويب **Family** عاد للظهور مرة أخرى في **Student Profile**، بينما كان المطلوب إخفاؤه وقد تم إخفاؤه في النسخ السابقة.
+   * يرجى إعادة إخفاء هذا التبويب.
+
+يرجى معالجة الملاحظات المتبقية وإرسال نسخة جديدة لإعادة تنفيذ الـ UAT.
+```

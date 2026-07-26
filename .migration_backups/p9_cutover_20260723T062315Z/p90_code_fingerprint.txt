@@ -1,0 +1,12 @@
+branch=feature/devhub-modularization-whatsapp
+head_sha=4ce0387d45c13eae347e459d1683ee3886da57f4
+short=4ce0387
+required_pin=4ce0387d45c13eae347e459d1683ee3886da57f4
+contains_pin=YES
+dirty_count=92
+manifest_whatsapp_hub=19.0.1.0.1
+manifest_evolution_whatsapp_chat=19.0.1.10.1
+manifest_integration_bridge_core=19.0.1.1.1
+manifest_petspot_wa_intake=19.0.1.0.1
+manifest_petspot_clinic_portal=19.0.2.3.0
+manifest_social_media_connector=19.0.1.0.1

@@ -1,0 +1,26 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/49
+- Message ID: 6085
+- Customer: Dev Needed
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-04 06:36:06 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+The message is a greeting in Arabic and does not contain any actionable Odoo-related content.
+
+**الإجراء المطلوب:**
+none
+
+## Original Message
+
+```
+صباح الخير
+كفاءات
+```

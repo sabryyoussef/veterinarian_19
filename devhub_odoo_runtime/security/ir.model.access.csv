@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dev_odoo_runtime_user,dev.odoo.runtime user,model_dev_odoo_runtime,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_odoo_runtime_manager,dev.odoo.runtime manager,model_dev_odoo_runtime,devhub_core.group_dev_hub_manager,1,1,1,1
+access_dev_runtime_addon_source_user,dev.runtime.addon.source user,model_dev_runtime_addon_source,devhub_core.group_dev_hub_user,1,0,0,0
+access_dev_runtime_addon_source_manager,dev.runtime.addon.source manager,model_dev_runtime_addon_source,devhub_core.group_dev_hub_manager,1,1,1,1

@@ -1,0 +1,11 @@
+flag_before False
+A {'ok': True, 'duplicate': False, 'message_id': 7, 'outbound_id': 1, 'conversation_id': 6, 'state': 'sent', 'delivery_state': 'sent', 'evolution_message_id': 'UATP3-1', 'api': 'service_send_message'} calls 1
+A_detail unified_bridge sent UATP3-1 conv 6
+B True calls_delta 0
+C 8 same_conv True
+D_after_fail pending 1
+D_after_retry sent True 1
+E_legacy True LEGACYUAT2 http 1 unified_invoked 0
+E_mirror True True 10
+flag_blocks_when_off True
+UAT_OK True

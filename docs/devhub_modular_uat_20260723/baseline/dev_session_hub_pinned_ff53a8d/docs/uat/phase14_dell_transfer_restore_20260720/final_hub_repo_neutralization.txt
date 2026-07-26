@@ -1,0 +1,27 @@
+ id |          working_directory          |        canonical_remote_path        | default_branch |     head     
+----+-------------------------------------+-------------------------------------+----------------+--------------
+  1 | /home/sabry3/devhub/veterinarian_19 | /home/sabry3/devhub/veterinarian_19 | staging        | ff53a8d96ed1
+(1 row)
+
+ id |     name     | environment_type | is_production | machine_id | port  |          url           | data_sensitivity 
+----+--------------+------------------+---------------+------------+-------+------------------------+------------------
+  1 | PetSpot Test | test             | f             |         77 | 18028 | http://127.0.0.1:18028 | internal_test
+(1 row)
+
+ id |       hostname        | production | trust_zone  |        ssh_alias         | active |              prefixes               
+----+-----------------------+------------+-------------+--------------------------+--------+-------------------------------------
+ 77 | sabry3-Precision-5540 | f          | trusted_dev | sabry3-precision-5540-ts | t      | /home/sabry3/devhub/veterinarian_19
+(1 row)
+
+=== neutralization snapshot ===
+           item           | total | active 
+--------------------------+-------+--------
+ ir_mail_server           |     1 |      0
+ fetchmail_server         |     1 |      0
+ openproject_backend      |     1 |      0
+ payment_provider_enabled |     0 |      0
+ ir_cron_active           |    50 |     50
+ op_cron_active           |     0 |      0
+(6 rows)
+
+http=000

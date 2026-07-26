@@ -1,0 +1,14 @@
+ id |                              name                              | wa_outbound_mode |   state   | send_mode | lines 
+----+----------------------------------------------------------------+------------------+-----------+-----------+-------
+ 10 | PetSpot WA 2026-06-20 Sunday — PetSpot — Services Overview     | legacy           | scheduled | queue     |   125
+ 11 | PetSpot WA 2026-06-20 Monday — PetSpot — Book Appointment 📅   | legacy           | scheduled | queue     |   125
+ 12 | PetSpot WA 2026-06-20 Tuesday — PetSpot — Grooming ✂️           | legacy           | scheduled | queue     |   125
+ 13 | PetSpot WA 2026-06-20 Wednesday — PetSpot — Location & Directi | legacy           | scheduled | queue     |   125
+ 14 | PetSpot WA 2026-06-20 Thursday — PetSpot — Follow-up Check-in  | legacy           | scheduled | queue     |   125
+ 15 | [TEST DRAFT] Ready Partners - Afghanistan                      | legacy           | draft     | queue     |     4
+ 16 | P5C Controlled Campaign Shadow (PROD)                          | shadow           | completed | immediate |    10
+ 17 | P5D Controlled Campaign Hub Pilot (PROD)                       | shadow           | completed | immediate |     3
+ 18 | P5E Campaign Hub Soak A (PROD)                                 | shadow           | completed | immediate |     7
+ 19 | P5E Campaign Hub Soak B (PROD)                                 | shadow           | completed | immediate |     8
+(10 rows)
+

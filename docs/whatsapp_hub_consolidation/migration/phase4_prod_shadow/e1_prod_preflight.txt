@@ -1,0 +1,27 @@
+=== MODULE VERSIONS BEFORE ===
+evolution_whatsapp_chat|19.0.1.12.0|installed
+integration_bridge_core|19.0.1.1.2|installed
+whatsapp_hub|19.0.1.3.0|installed
+=== ICP ===
+whatsapp_hub.discuss_cutover_enabled|False
+whatsapp_hub.unified_outbound_enabled|False
+whatsapp_hub.unified_outbound_purposes|discuss
+=== CHANNELS ===
+ id |                 left                 |        wa_phone         | wa_outbound_mode 
+----+--------------------------------------+-------------------------+------------------
+  5 | WA: كريم ايهاب  الساحل 2022          | 201000059085            | shadow
+ 10 | WA Group: Testopenclow (openlowtest) | 120363411424964076@g.us | shadow
+(2 rows)
+
+=== INSTANCES ===
+ id | instance_name | unified_outbound_enabled | discuss_cutover_enabled 
+----+---------------+--------------------------+-------------------------
+  1 | sabry min     | f                        | f
+(1 row)
+
+=== HUB MODE COUNT ===
+0
+=== PENDING UNIFIED ===
+0
+=== SHADOW #5 matched ===
+=== SHADOW #10 ===

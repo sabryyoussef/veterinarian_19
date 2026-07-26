@@ -1,0 +1,29 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/64
+- Message ID: 5223
+- Customer: Egyptian pet veterinarians community
+- Provider: openai / gpt-4o-mini
+- Analyzed at: 2026-07-02 08:05:17 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.00
+
+**الملخص:**
+Request for exemption of pharmacy sign fees similar to another community.
+
+**الإجراء المطلوب:**
+Review the request and consider policy implications.
+
+## Original Message
+
+```
+اعفاء الصيدليات من رسوم اليفط علي وجهه الصيدلية
+
+ياريت النقابة عندنا تاخد نفس الخطوة بالمثل
+
+لان الاسباب عندهم متوفره عندنا وهي ان اليافطة شرط للترخيص
+```

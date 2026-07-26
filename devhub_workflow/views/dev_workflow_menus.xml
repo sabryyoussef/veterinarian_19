@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_devhub_workflow_root"
+              name="DH Workflow"
+              sequence="84"
+              web_icon="devhub_workflow,static/description/icon.png"
+              action="action_devhub_workflow_guide"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_workflow_guide"
+              name="Interactive Walkthrough"
+              parent="menu_devhub_workflow_root"
+              action="action_devhub_workflow_guide"
+              sequence="5"
+              groups="devhub_core.group_dev_hub_user"/>
+
+    <menuitem id="menu_devhub_workflow_board"
+              name="KPI Board"
+              parent="menu_devhub_workflow_root"
+              action="action_dev_workflow_board"
+              sequence="20"
+              groups="devhub_core.group_dev_hub_user"/>
+</odoo>

@@ -1,0 +1,25 @@
+model|before|after|delta
+dev_client|2|2|0
+dev_completion_report|5|5|0
+dev_environment|13|14|1
+dev_execution_workspace|0|0|0
+dev_external_outbox|8|8|0
+dev_machine|12|12|0
+dev_odoo_runtime|1|2|1
+dev_policy|9|10|1
+dev_project|7|7|0
+dev_repository|6|6|0
+dev_session|23|23|0
+dev_task_link|21|21|0
+dev_work_analysis|47|47|0
+dev_work_approval|21|21|0
+dev_work_checkpoint|18|18|0
+dev_work_communication|4|4|0
+dev_work_external_link|12|12|0
+dev_work_generation|32|32|0
+dev_work_item|45|45|0
+dev_work_lifecycle_event|271|271|0
+dev_work_plan|25|25|0
+dev_work_plan_step|87|87|0
+dev_work_source_message|45|45|0
+ZERO_LOSS FAIL

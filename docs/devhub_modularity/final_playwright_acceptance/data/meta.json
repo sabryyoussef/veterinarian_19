@@ -1,0 +1,14 @@
+{
+  "base": "http://127.0.0.1:8028",
+  "db": "pet_spot_elsahel_test",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "playwright": "1.59.0",
+  "browser": "chromium",
+  "git_sha": "4c1fc00555a3ede2ccf7582fdb87af6082a29195",
+  "test_service": "active",
+  "prod_service": "active",
+  "addons_path_canonical": true
+}

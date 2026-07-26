@@ -1,0 +1,108 @@
+# Development Plan — OP#355 / Odoo #46
+
+**Title:** Excel bulk assign trainees to sales staff  
+**Sprint:** S3 — Days 7–14  
+**Effort:** 5–7 days  
+**Module:** `edafaa_training_crm` or `edafaa_student_profile` (new wizard)
+
+---
+
+## Precondition (Day 0 — workshop 2h)
+
+Lock with client:
+
+| Decision | Options | Default proposal |
+|----------|---------|------------------|
+| Match trainee by | `id_number` / name / email | **`id_number`** |
+| Match staff by | email / login / emp code | **`res.users` login or email** |
+| Field on student | `assigned_user_id` / employee | **`assigned_user_id` (res.users)** |
+| Overwrite | yes / no | yes with warning |
+
+---
+
+## Steps & time
+
+| Step | Days | Action |
+|------|------|--------|
+| 1 | 0.5 | Add `assigned_user_id` on `op.student` + views |
+| 2 | 1 | Excel template (.xlsx) download action |
+| 3 | 2 | Import wizard: parse openpyxl, validate, apply |
+| 4 | 1 | Rejected rows CSV download |
+| 5 | 0.5 | Security (who can import) |
+| 6 | 1 | Tests + UAT sample file |
+| 7 | 0.5 | Docs AR/EN + OP/Odoo update |
+
+---
+
+## Code changes
+
+### 1. Field
+
+```python
+# edafaa_student_profile/models/student.py
+assigned_user_id = fields.Many2one(
+    'res.users',
+    string='موظف المبيعات المسؤول',
+    tracking=True,
+    index=True,
+)
+```
+
+### 2. Wizard model (new)
+
+```python
+# models/trainee_sales_assign_wizard.py
+class TraineeSalesAssignWizard(models.TransientModel):
+    _name = 'trainee.sales.assign.wizard'
+    _description = 'Excel assign trainees to sales staff'
+
+    data_file = fields.Binary(required=True)
+    filename = fields.Char()
+    line_ids = fields.One2many(...)  # preview optional
+
+    def action_import(self):
+        # parse xlsx → match op.student by id_number
+        # match res.users by login/email
+        # write assigned_user_id
+        # return rejected attachment
+```
+
+### 3. Template columns
+
+| Column | Required |
+|--------|----------|
+| `id_number` | yes |
+| `staff_login` or `staff_email` | yes |
+| `trainee_name` | optional (validation aid) |
+
+### 4. Dependencies
+
+Add `openpyxl` to module external dependency / server package.
+
+### 5. Security
+
+```csv
+access_trainee_sales_assign_wizard,...,model_trainee_sales_assign_wizard,sales_team.group_sale_manager,1,1,1,1
+```
+
+---
+
+## Tests
+
+- Valid 10-row Excel → 10 students updated  
+- Unknown ID → rejected row with reason  
+- Unknown staff → rejected  
+- Empty file → UserError  
+
+---
+
+## Acceptance
+
+- [ ] Template downloadable  
+- [ ] Import assigns sales staff  
+- [ ] Reject report works  
+- [ ] UAT on sabry-test  
+
+## Risk
+
+Do not start coding until column & target model signed off.

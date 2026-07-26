@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>تقرير التسليم — نموذج إجازات كفاءات</title>
+
+<style>
+  @page { size: A4; margin: 18mm 14mm; }
+  body {
+    font-family: "Noto Naskh Arabic", "Amiri", "DejaVu Sans", Tahoma, Arial, sans-serif;
+    direction: rtl; text-align: right;
+    line-height: 1.75; color: #1a1a1a; font-size: 15px;
+    max-width: 900px; margin: 24px auto; padding: 0 20px;
+  }
+  h1,h2,h3 { color: #0b3d5c; margin-top: 1.4em; }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #0b3d5c; padding-bottom: .35em; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th, td { border: 1px solid #c9d4de; padding: 8px 10px; vertical-align: top; }
+  th { background: #eef5fa; }
+  code, pre { font-family: Consolas, "DejaVu Sans Mono", monospace; direction: ltr; text-align: left; }
+  code { background: #f3f6f8; padding: 1px 5px; border-radius: 3px; font-size: .92em; }
+  pre { background: #f3f6f8; padding: 12px; border-radius: 6px; overflow-x: auto; }
+  a { color: #0b5cad; }
+  ul, ol { padding-right: 1.4em; padding-left: 0; }
+  hr { border: none; border-top: 1px solid #d5dde5; margin: 1.5em 0; }
+  .meta { color: #444; margin-bottom: 1em; }
+</style>
+
+</head>
+<body>
+<h1>تقرير التسليم (عربي) — نموذج طلب إجازة كفاءات WP #339 / #340</h1>
+<p><strong>التاريخ:</strong> 2026-07-15<br />
+<strong>العميل:</strong> كفاءات<br />
+<strong>الوحدة:</strong> <code>kafaat_hr_templates</code> <strong>الإصدار 19.0.1.1.1</strong><br />
+<strong>قواعد البيانات:</strong> <code>sabry-test</code> (اختبار) · <code>TR_K19</code> (فحص إنتاج للقراءة فقط)<br />
+<strong>حزم العمل:</strong> <a href="https://master.tailcf9988.ts.net:10081/work_packages/339">#339</a> · <a href="https://master.tailcf9988.ts.net:10081/work_packages/340">#340</a></p>
+<hr />
+<h2>1. الملخص التنفيذي</h2>
+<p>تم تسليم تحسينات نموذج طلب الإجازة في أودو 19 لكفاءات:</p>
+<table>
+<thead>
+<tr>
+<th>الحزمة</th>
+<th>النطاق</th>
+<th>الحالة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>#339</strong></td>
+<td>طباعة النموذج: شؤون الموظفين، القائم بالأعمال، ملاحظات المالية، توقيعات للطباعة فقط</td>
+<td><strong>مُسلَّم — اجتياز UAT</strong></td>
+</tr>
+<tr>
+<td><strong>#340</strong></td>
+<td>ربط أنواع الإجازة بالشركة، حقول دائمة على الإجازة، تاريخ مباشرة محسوب/قابل للتعديل، استيراد CSV مع ملف الرفض</td>
+<td><strong>مُسلَّم — اجتياز UAT</strong></td>
+</tr>
+</tbody>
+</table>
+<p>نتيجة Playwright: <strong>10/10 نجاح</strong>. فحص إنتاج <code>TR_K19</code>: <strong>نجاح</strong> (بدون إنشاء إجازات).</p>
+<hr />
+<h2>2. ما تم تسليمه</h2>
+<h3>2.1 الطباعة (#339)</h3>
+<p>أقسام PDF بالعربية حسب ترتيب المستند المرجعي، وتشمل:</p>
+<ul>
+<li>بيانات طالب الإجازة وبيانات الإجازة  </li>
+<li>القائم بالأعمال (ربط بموظف أودو؛ رفض اختيار طالب الإجازة نفسه)  </li>
+<li>ملاحظات شؤون الموظفين  </li>
+<li>ملاحظات قسم المالية (إن وجد)  </li>
+<li>اعتماد وموافقة الإدارة  </li>
+<li>خطوط توقيع فارغة للطباعة فقط  </li>
+</ul>
+<p><strong>أدلة:</strong> لقطات <code>06</code>–<code>09</code> وملف <code>evidence/pdfs/leave-form-filled.pdf</code></p>
+<h3>2.2 الربط والاستيراد (#340)</h3>
+<ul>
+<li><strong>الإعدادات → الموظفون → Kafaat Leave Form Mapping</strong><br />
+  ربط: اعتيادية / مرضي / بدون راتب (اختيار علائقي — بدون تثبيت أرقام أنواع ثابتة في الكود).</li>
+<li><strong>قوالب كفاءات للموارد البشرية → استيراد نموذج الإجازة</strong><br />
+  قالب: <code>evidence/leave_import_template.csv</code><br />
+  عند الأخطاء: تحميل CSV للصفوف المرفوضة مع السبب.</li>
+<li>حقول <code>kafaat_*</code> على سجل الإجازة (تاريخ المباشرة، القائم بالأعمال، الملاحظات، …).</li>
+</ul>
+<p><strong>أدلة:</strong> لقطات <code>05</code>، <code>17</code>–<code>25</code></p>
+<h3>2.3 سير الموافقة القياسي</h3>
+<ul>
+<li>استخدام حالات <strong>Time Off</strong> القياسية في أودو (بدون محرك موافقات مخصص).</li>
+</ul>
+<hr />
+<h2>3. طريقة الاستخدام السريعة</h2>
+<ol>
+<li>التأكد من الربط في الإعدادات (الأنواع الثلاثة).  </li>
+<li>الطباعة من قائمة <strong>Print Template</strong> واختيار <strong>نموذج طلب إجازة</strong>.  </li>
+<li>الاستيراد من <strong>Import Leave Form</strong> بالقالب المرفق.  </li>
+<li>فتح الإجازة من <strong>Time Off</strong> والموافقة بالأزرار القياسية.</li>
+</ol>
+<p>الدليل الكامل مع سيناريوهات الاستخدام: <a href="guides/USER_GUIDE_AR.md"><code>guides/USER_GUIDE_AR.md</code></a></p>
+<hr />
+<h2>4. خلاصة قبول الاختبار</h2>
+<table>
+<thead>
+<tr>
+<th>المجال</th>
+<th>النتيجة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الإصدار 19.0.1.1.1</td>
+<td>نجاح</td>
+</tr>
+<tr>
+<td>شاشة الربط</td>
+<td>نجاح</td>
+</tr>
+<tr>
+<td>PDF (ممتلئ / اختياري فارغ / نص عربي طويل)</td>
+<td>نجاح</td>
+</tr>
+<tr>
+<td>تاريخ المباشرة والقائم بالأعمال</td>
+<td>نجاح</td>
+</tr>
+<tr>
+<td>استيراد اعتيادية / مرضي / بدون راتب</td>
+<td>نجاح</td>
+</tr>
+<tr>
+<td>CSV الرفض</td>
+<td>نجاح</td>
+</tr>
+<tr>
+<td>مراحل سير العمل المتاحة</td>
+<td>نجاح (قيد مستخدم إداري واحد)</td>
+</tr>
+<tr>
+<td>فحص TR_K19</td>
+<td>نجاح</td>
+</tr>
+</tbody>
+</table>
+<p>التفاصيل: <a href="evidence/PLAYWRIGHT_UAT_REPORT.md"><code>evidence/PLAYWRIGHT_UAT_REPORT.md</code></a></p>
+<hr />
+<h2>5. القيود والمتابعات</h2>
+<ol>
+<li>اختبار موافقة مزدوجة (مدير + موارد بشرية) لم يُنفَّذ بالكامل بمستخدمين منفصلين.  </li>
+<li>نوع <strong>أخرى</strong> يحتاج ربط نوع إجازة في الإعدادات قبل الاستيراد.  </li>
+<li>تعليقات إغلاق OpenProject جاهزة في <code>op_comments/</code> للنشر بعد موافقتكم.</li>
+</ol>
+<hr />
+<h2>6. التوصية</h2>
+<pre><code class="language-text">WP #339: جاهز للإغلاق
+WP #340: جاهز للإغلاق
+</code></pre>
+</body>
+</html>

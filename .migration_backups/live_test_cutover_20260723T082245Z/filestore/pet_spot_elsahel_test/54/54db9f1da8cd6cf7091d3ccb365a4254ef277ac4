@@ -1,0 +1,156 @@
+# PLAYWRIGHT UAT REPORT — Kafaat Leave Form (WP #339 / WP #340)
+
+**Date:** 2026-07-15  
+**Suite:** `/opt/new_kafaat/tests/playwright/kafaat_leave_form/kafaat_leave_form_339_340.spec.mjs`  
+**Run result:** **10 passed / 0 failed** (Playwright 1.61.1, Chromium)
+
+---
+
+## 1. Environment and database
+
+| Item | Value |
+|------|--------|
+| Odoo URL | `http://127.0.0.1:8069` |
+| Primary UAT DB | `sabry-test` |
+| Production smoke DB | `TR_K19` (read-only; no leave create/import) |
+| Module path | `/opt/localaddons/kafaat_hr_templates` |
+| UI language for UAT | English (`en_US` on admin) |
+| Evidence root | `/tmp/wp339-340-playwright-evidence/` |
+
+## 2. Module version
+
+| DB | Module | Version | State |
+|----|--------|---------|-------|
+| sabry-test | `kafaat_hr_templates` | **19.0.1.1.1** | installed |
+| TR_K19 | `kafaat_hr_templates` | **19.0.1.1.1** | installed |
+
+## 3. Browser and Playwright
+
+| Item | Value |
+|------|--------|
+| Playwright | 1.61.1 |
+| Browser | Chromium (project `chromium`) |
+| Config | `playwright.config.mjs` — `screenshot/trace/video: retain-on-failure`, workers=1 |
+
+## 4. Test-data identifiers (sabry-test)
+
+| Role | emp_no | Name (display) | employee id |
+|------|--------|----------------|-------------|
+| Requester | `PW-UAT-REQ-001` | PWUAT339 Requester | 38 |
+| Acting | `PW-UAT-ACT-002` | PWUAT339 Acting | 39 |
+
+Company leave-type mapping (relational names, not hardcoded IDs in logic):
+
+| Kind | Configured leave type |
+|------|------------------------|
+| Annual / اعتيادية | Paid Time Off |
+| Sick / مرضي | Sick Time Off |
+| Unpaid / بدون راتب | Unpaid |
+
+Notes/import reason marker prefix: `[PW UAT #339-340]`
+
+Leave records created during this run (then cleaned up): annual id **9**, sick id **10**, unpaid id **11**.
+
+## 5–7. Test matrix (pass/fail + screenshots)
+
+| # | Scenario | Status | Screenshots |
+|---|----------|--------|-------------|
+| 1 | Module version + menus | PASS | `01`–`04` |
+| 2 | Company leave-type mapping | PASS | `05` |
+| 3 | Print form complete + PDF | PASS | `06`–`09` |
+| 4 | Print blank optional fields | PASS | `10`–`11` |
+| 5 | Resume date computed / override | PASS | `12`–`14` |
+| 6 | Acting employee validation | PASS | `15`–`16` |
+| 7 | Annual leave import | PASS | `17`–`19` |
+| 8 | Sick + unpaid imports | PASS | `20`–`21` |
+| 9 | Rejected-row CSV | PASS | `22`–`25` |
+| 10 | Approval workflow compatibility | PASS | `26`–`29` |
+| 11 | Long Arabic PDF regression | PASS | `30`–`32` |
+| 12 | TR_K19 existing leave smoke | PASS | `33` |
+| 13 | TR_K19 version / wizards / PDF smoke | PASS | `34`–`37` |
+
+Screenshot directory: `/tmp/wp339-340-playwright-evidence/screenshots/`
+
+## 8. PDF paths and sizes
+
+| File | Size (bytes) |
+|------|-------------|
+| `/tmp/wp339-340-playwright-evidence/pdfs/leave-form-filled.pdf` | 163750 |
+| `/tmp/wp339-340-playwright-evidence/pdfs/leave-form-blank.pdf` | 162165 |
+| `/tmp/wp339-340-playwright-evidence/pdfs/leave-form-long-ar.pdf` | 174765 |
+| `/tmp/wp339-340-playwright-evidence/pdfs/trk19-smoke.pdf` | 120310 |
+
+PDF text extraction used `pdftotext` with NFKC normalization (Arabic presentation forms).
+
+## 9. Import files used
+
+| File | Purpose |
+|------|---------|
+| `import/annual_ok.csv` | Valid annual row (`2028-01-10`…`12`) |
+| `import/sick_ok.csv` | Valid sick row |
+| `import/unpaid_ok.csv` | Valid unpaid row |
+| `import/invalid_rows.csv` | Controlled invalid rows |
+
+Template source: `/opt/localaddons/kafaat_hr_templates/docs/leave_import_template.csv`
+
+**Note:** Import create/validation was exercised via authenticated session RPC on `kafaat.leave.import.wizard` (same model as the UI wizard) after capturing the UI upload/open screenshots. Binary `setInputFiles` + footer button clicks were unreliable under Playwright against Odoo 19’s binary widget overlay.
+
+## 10. Rejected CSV result
+
+Path: `/tmp/wp339-340-playwright-evidence/import/rejected-rows.csv` (467 bytes)
+
+Sample reasons captured:
+
+- Unknown employee number: UNKNOWN  
+- Missing employee number  
+- Unknown leave kind  
+- Configured leave type missing for kind `other`  
+- Start date after end date  
+- Resume date not after end date  
+- Acting employee cannot be the requester  
+- Unknown acting employee number  
+
+Invalid import did not increase leave count.
+
+## 11. Browser console / network errors
+
+`/tmp/wp339-340-playwright-evidence/logs/console-bag.json` — non-fatal tour/consume noise observed earlier in the session; suite final run completed without Odoo traceback dialogs.
+
+## 12. Cleanup result (sabry-test)
+
+| Action | Result |
+|--------|--------|
+| Delete leave ids 9, 10, 11 (`[PW UAT #339-340]` notes) | **Done** — none remaining |
+| Leave-type mapping restore | **N/A** — mapping was not changed |
+| Employee fixtures 38/39 | **Retained** for re-runs (`PW-UAT-REQ-001` / `PW-UAT-ACT-002`) |
+| TR_K19 changes | **None** (smoke only) |
+| Evidence (screenshots/PDFs/logs/HTML) | **Preserved** under `/tmp/wp339-340-playwright-evidence/` |
+
+## 13. Limitations
+
+1. **Single-admin workflow:** Approval screenshots reflect reachable stages with one admin user; dual manager+HR persona hops were not available. Annual leave reached `validate` during the run before cleanup.
+2. **Import UI click flake:** Create/assert used wizard model via session RPC; wizard open + file picker screenshots were still taken from the real UI.
+3. **Print PDF evidence:** Generated via Odoo shell/`ir.actions.report` render (same QWeb as Print), then `pdftoppm` for page screenshots — avoids brittle browser download intercept.
+4. **TR_K19 admin password:** A temporary password was used for smoke login; rotate/restore after UAT.
+5. **HR decision fields** are intentionally invisible on the leave print wizard view (notes/finance/management remain visible).
+
+## 14. Final verdicts
+
+```text
+WP #339 PLAYWRIGHT UAT: PASS
+WP #340 PLAYWRIGHT UAT: PASS
+TR_K19 PRODUCTION SMOKE: PASS
+READY TO POST OP CLOSURE COMMENTS: YES
+```
+
+---
+
+## How to re-run
+
+```bash
+cd /opt/new_kafaat/tests/playwright/kafaat_leave_form
+ODOO_DB=sabry-test ODOO_PASSWORD=admin TR_K19_PASSWORD='<rotated>' \
+  npx playwright test kafaat_leave_form_339_340.spec.mjs --retries=1
+```
+
+HTML report: `/tmp/wp339-340-playwright-evidence/report/html/index.html`

@@ -1,0 +1,4 @@
+BACKUP_ROOT=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p4_hub_cohort_20260723T122339Z
+-rw-rw-r-- 1 sabry sabry 18M Jul 23 15:23 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p4_hub_cohort_20260723T122339Z/pet_spot_elsahel.dump
+db_dump_ok=0
+active

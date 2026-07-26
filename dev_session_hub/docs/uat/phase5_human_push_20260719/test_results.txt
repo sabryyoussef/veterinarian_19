@@ -1,0 +1,32 @@
+Phase 5 Human-Approved Git Push automated results
+Date: 2026-07-19
+
+Full dev_session_hub suite:
+- 85/85 tests passed
+- 0 failed, 0 errors
+- 70 post-tests; 91 framework test operations
+- Log: /tmp/dev_session_hub_push_full_postfix.log
+
+Push controls:
+- 8 dedicated Push test methods passed
+- Denial scenarios cover missing approval, wrong state, HEAD/commit/branch/hash
+  drift, unapproved/arbitrary remote, protected and release targets, dirty
+  worktree, active lease/concurrent writer, Production, remote advance,
+  non-fast-forward state, force Push, Push-all, and tag Push.
+- Positive control verifies one explicit branch refspec, exact remote
+  reconciliation, unchanged tags/other heads, and no PR/merge/deploy command.
+
+Security/regression class:
+- 20/20 tests passed
+- 0 failed, 0 errors
+- Log: /tmp/dev_session_hub_push_security.log
+
+Playwright:
+- 1/1 passed
+- Test: tests/playwright/phase5_human_push.spec.ts
+- Duration: 1.2 minutes
+- Seven required screenshots captured
+
+Worker Test contract:
+- Targeted: 2/2
+- Regression discovery: 2/2

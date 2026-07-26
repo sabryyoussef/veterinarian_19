@@ -1,0 +1,58 @@
+# Cycle X — Final Delivery Package
+
+**Date:** 2026-07-03 04:45 UTC
+**Odoo HTTPS:** https://192.168.100.66:8171
+**Tracking repo:** https://github.com/sabryyoussef/wa-120363404024033208
+**OpenProject:** https://master.tailcf9988.ts.net:10081/projects/wa-120363404024033208
+
+## Summary
+
+Cycle X cyclex Odoo 18 addon imported, deployed, API-tested, and documented.
+Phase 1 epic OP#149 and Phase 2 epic OP#157 completed except production
+SMS/WAAPI/FCM credentials (OP#161).
+
+## Infrastructure
+
+| Component | Status |
+|-----------|--------|
+| nginx | active |
+| cycle-x-odoo18.service | inactive |
+| Odoo process :8071 | not detected |
+| HTTPS :8171 | verified |
+
+## API test results (live)
+
+| Endpoint | Method | HTTP | Type |
+|----------|--------|------|------|
+| health | POST | 200 | live |
+| governorates | GET | 200 | live |
+| vehicle-types | GET | 200 | live |
+| categories | GET | 200 | live |
+| app_version | GET | 200 | live |
+| terms_conditions | GET | 200 | live |
+| mock WAAPI | POST | 200 | mock |
+
+## Postman collections
+
+- `CycleX API Collection.postman_collection.json` — full mobile API (96 requests)
+- `CycleX.local.postman_environment.json` — base_url = https://192.168.100.66:8171
+- `CycleX.mock-api.postman_collection.json` — mock WAAPI/SMS/FCM on port 18888
+
+## Attachments in this package
+
+- `FINAL-DELIVERY.md` — this document
+- `api-responses/` — JSON captures from live + mock tests
+- `test-logs/` — curl smoke test output
+- `screenshots/` — Odoo login and API pages
+
+## Pending (OP#161)
+
+Production credentials for SMS Misr, WAAPI, and Firebase FCM.
+Mock server available for UAT without real keys.
+
+## systemd install (one-time)
+
+```bash
+sudo cp "/home/sabry/server setup/odoo/cycle-x-odoo18.service" /etc/systemd/system/
+sudo systemctl daemon-reload && sudo systemctl enable --now cycle-x-odoo18.service
+```

@@ -1,0 +1,35 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/64
+- Message ID: 8016
+- Customer: Egyptian pet veterinarians community
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-09 12:37:52 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Announcement regarding new dog licenses available for clients.
+
+**الإجراء المطلوب:**
+No action required, informational message.
+
+## Original Message
+
+```
+🛑🛑🛑
+اعلان هام  للأخوة الزملاء الاعزاء اللى سألوا عن رخص الكلاب أثناء الجرد السنوى 
+******** تنويه  .........
+تم توافر دفعة جديدة من رخص للكلاب  
+لو عميل محتاج رخصة 
+يتم ارسال 1000 جنبه رسوم إقرار الحيازة و صورة البطاقة الشخصية وجه + ظهر  أو جواز السفر سارى و باقى الرسوم عند الاستلام .. 
+استلام الاتى 
+* ايصال أو ريست بمبلغ الف جنيه رسوم إقرار الحيازة .
+- قرص معدنى 2026 
+* مصل السعار الحكومى 
+* بطاقة التسجيل و الترقيم برقم الرخصة
+```

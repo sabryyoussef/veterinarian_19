@@ -1,0 +1,9 @@
+helper True
+safe_dir True
+lsremote True
+runner True
+SKIP Ready gate (no pending_confirmation fixture)
+CONTRACT_OK
+failed=0 errors=0
+NOTE: Full --test-enable post_install harness on Live Test DB was abandoned due to registry load / cursor contention;
+contract assertions above cover session ordering helpers, safe.directory git fix, deploy SHA ls-remote gate, and staging runner wiring.

@@ -1,0 +1,13 @@
+/srv/devhub/main-snapshots/petspot/dev_session_hub/scripts/github_app_credential_broker.py
+/srv/devhub/main-snapshots/petspot/dev_session_hub/scripts/github_merge_app_credential_broker.py
+/srv/devhub/worktrees/petspot/DW-3320/dev_session_hub/scripts/github_app_credential_broker.py
+/srv/devhub/worktrees/petspot/DW-3320/dev_session_hub/scripts/github_merge_app_credential_broker.py
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modularity/github_app_governed_merge_test_deploy/github_app
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/baseline/dev_session_hub_wt_backup/scripts/github_app_credential_broker.py
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/baseline/dev_session_hub_wt_backup/scripts/__pycache__/github_merge_app_credential_broker.cpython-314.pyc
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/baseline/dev_session_hub_wt_backup/scripts/__pycache__/github_app_credential_broker.cpython-314.pyc
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/baseline/dev_session_hub_wt_backup/scripts/github_merge_app_credential_broker.py
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/baseline/dev_session_hub_pinned_ff53a8d/scripts/github_app_credential_broker.py
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/docs/devhub_modular_uat_20260723/baseline/dev_session_hub_pinned_ff53a8d/scripts/github_merge_app_credential_broker.py
+/srv/devhub/credentials/github

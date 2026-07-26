@@ -1,0 +1,28 @@
+﻿# Chatwoot AI Analysis
+
+- Conversation: http://chatwoot_rails:3000/app/accounts/2/conversations/48
+- Message ID: 9776
+- Customer: Torz Trading - Qatar client internal
+- Provider: dify / gpt-4o-mini
+- Analyzed at: 2026-07-13 13:51:12 UTC
+
+## Odoo Developer Triage
+
+**التصنيف:** other
+**الأولوية:** low
+**الثقة:** 0.45
+
+**الملخص:**
+Voice message from client regarding a review meeting.
+
+**الإجراء المطلوب:**
+No action required, just note the message.
+
+**نص مرفق مستخرج:**
+باشا ما تغيرش حاجة يوم الاربع نراجع بس ماكن حاجة نبص عليها ونكرر يوم
+
+## Original Message
+
+```
+Voice message: 3AB0BCF8EEDD3A9FC9E5.oga
+```

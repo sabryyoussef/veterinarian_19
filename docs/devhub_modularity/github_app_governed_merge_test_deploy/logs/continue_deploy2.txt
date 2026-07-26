@@ -1,0 +1,8 @@
+[2026-07-23T15:34:10] deploy resume WS 1849 state=merged_reviewed merge=0b516d5af4ae24ab0d1575e3eff3b2682a5bb439
+[2026-07-23T15:34:20] shot 12_merged_reviewed.png :: merged_reviewed before deploy
+[2026-07-23T15:34:29] deploy {'ok': True, 'state': 'deployed_staging_reviewed', 'deploy_record_id': 1, 'approval_id': 1, 'target_id': 4, 'target_name': 'PetSpot Test Staging Deploy', 'non_production': True, 'database': 'pet_spot_elsahel_test', 'merge_sha': '0b516d5af4ae24ab0d1575e3eff3b2682a5bb439', 'result_state': 'succeeded', 'backup_ref': 'runner://staging/5d81cdc6f57b'}
+[2026-07-23T15:34:32] shot 13_deploy_request.png :: Deploy request / approval
+[2026-07-23T15:34:32] shot 14_test_deploy_success.png :: Test deploy success
+[2026-07-23T15:34:35] shot 15_workflow_final.png :: Final work item
+[2026-07-23T15:34:38] shot 15_workflow_final.png :: Workflow board final
+[2026-07-23T15:34:38] DEPLOY CONTINUE COMPLETE

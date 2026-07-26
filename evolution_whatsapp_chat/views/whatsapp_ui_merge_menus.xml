@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+      Safe UI merge: one WhatsApp home tile.
+      Keep integration_bridge_core installed; hide its root app tile by nesting
+      under whatsapp_hub (this module depends on both).
+    -->
+    <record id="integration_bridge_core.menu_integration_bridge_root" model="ir.ui.menu">
+        <field name="name">Integration Bridge</field>
+        <field name="parent_id" ref="whatsapp_hub.menu_whatsapp_hub_root"/>
+        <field name="web_icon" eval="False"/>
+        <field name="sequence">95</field>
+    </record>
+
+    <!-- Clear any leftover web_icon on Campaign root after parent change. -->
+    <record id="menu_whatsapp_root" model="ir.ui.menu">
+        <field name="web_icon" eval="False"/>
+    </record>
+</odoo>

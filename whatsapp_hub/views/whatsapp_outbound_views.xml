@@ -8,7 +8,9 @@
                 <field name="name"/>
                 <field name="destination"/>
                 <field name="state"/>
+                <field name="transport_mode"/>
                 <field name="purpose"/>
+                <field name="source_app"/>
                 <field name="retry_count"/>
                 <field name="sent_at"/>
             </list>
@@ -21,20 +23,40 @@
             <form>
                 <header>
                     <button name="action_send" type="object" string="Send Now" class="btn-primary"
-                            invisible="state == 'sent'"/>
-                    <field name="state" widget="statusbar"/>
+                            invisible="state in ('sent', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                             statusbar_visible="pending,processing,sent,failed"/>
                 </header>
                 <sheet>
                     <group>
                         <field name="name"/>
                         <field name="destination"/>
                         <field name="body"/>
+                        <field name="message_type"/>
                         <field name="purpose"/>
+                        <field name="transport_mode"/>
+                        <field name="source_app"/>
                         <field name="instance_id"/>
                         <field name="message_id"/>
                         <field name="conversation_id"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group string="Provenance / Trace">
+                        <field name="business_key"/>
+                        <field name="client_request_id"/>
+                        <field name="related_model"/>
+                        <field name="related_res_id"/>
+                        <field name="campaign_id"/>
+                        <field name="campaign_line_id"/>
+                        <field name="discuss_channel_id"/>
+                        <field name="bridge_instance_id"/>
+                        <field name="bridge_queue_id"/>
                         <field name="evolution_message_id"/>
+                        <field name="retry_count"/>
+                        <field name="max_retries"/>
+                        <field name="next_retry_at"/>
                         <field name="error_message"/>
+                        <field name="response_data"/>
                     </group>
                 </sheet>
             </form>

@@ -1,0 +1,5 @@
+BACKUP_ROOT=/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p4_e2_ch5_20260723T125424Z
+-rw-rw-r-- 1 sabry sabry 18M Jul 23 15:54 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.migration_backups/p4_e2_ch5_20260723T125424Z/pet_spot_elsahel.dump
+db_dump_ok=0
+prod_http=200
+LISTEN 0      16                         0.0.0.0:8027       0.0.0.0:*    users:(("python3",pid=3900080,fd=5),("python3",pid=3900079,fd=5),("python3",pid=3899813,fd=5))

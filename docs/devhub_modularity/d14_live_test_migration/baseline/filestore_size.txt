@@ -1,0 +1,1 @@
+346M	/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore

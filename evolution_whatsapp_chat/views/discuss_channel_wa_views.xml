@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_discuss_channel_wa_outbound_form" model="ir.ui.view">
+        <field name="name">discuss.channel.wa.outbound.form</field>
+        <field name="model">discuss.channel</field>
+        <field name="inherit_id" ref="mail.discuss_channel_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="WhatsApp Outbound (Phase 4)"
+                       groups="base.group_system">
+                    <field name="wa_phone" readonly="1"/>
+                    <field name="wa_partner_id" readonly="1"/>
+                    <field name="wa_outbound_mode"/>
+                    <button name="action_quarantine_hub_outbound"
+                            type="object"
+                            string="Quarantine Hub Outbound Jobs"
+                            class="btn-secondary"
+                            confirm="Cancel incomplete Hub unified_bridge jobs for this channel?"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

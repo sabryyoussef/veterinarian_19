@@ -21,6 +21,7 @@ CSRF_RE = re.compile(
     r'<input[^>]+name=["\']csrf_token["\'][^>]+value=["\']([^"\']+)["\']',
     re.IGNORECASE,
 )
+_STYLE_BLOCK_RE = re.compile(r"<style\b[^>]*>.*?</style>", re.IGNORECASE | re.DOTALL)
 
 
 def _extract_csrf(html: str) -> str:
@@ -28,6 +29,98 @@ def _extract_csrf(html: str) -> str:
     if not match:
         raise AssertionError("CSRF token input not found in HTML")
     return match.group(1)
+
+
+def _html_without_styles(html: str) -> str:
+    """Remove stylesheet blocks before scanning visible markup for #task_id refs."""
+    return _STYLE_BLOCK_RE.sub("", html or "")
+
+
+def task_id_exposure_findings(html: str, tid: int) -> list[str]:
+    """Return findings if a database task id is exposed in structured HTML ways.
+
+    Intentionally does **not** treat CSS hex colors such as ``#111827`` as
+    exposure when ``tid == 111``. Style blocks are stripped before visible
+    ``#<id>`` / label checks; attribute and ``/task/<id>`` checks use the
+    full document.
+    """
+    html = html or ""
+    tid_s = str(int(tid))
+    findings: list[str] = []
+
+    attr_re = re.compile(
+        rf"""(?ix)
+        (?:\bid|value|data-id|name)\s*=\s*
+        (["']?){re.escape(tid_s)}(?!\d)\1
+        """
+    )
+    if attr_re.search(html):
+        findings.append(f"attribute equals task id {tid_s}")
+
+    if re.search(rf"/task/{re.escape(tid_s)}\b", html):
+        findings.append(f"URL path /task/{tid_s}")
+
+    visible = _html_without_styles(html)
+    if re.search(
+        rf"""(?ix)href\s*=\s*["'][^"']*#{re.escape(tid_s)}(?![0-9A-Fa-f])""",
+        visible,
+    ):
+        findings.append(f"href fragment #{tid_s}")
+    if re.search(rf"(?i)\bTask\s*#{re.escape(tid_s)}\b", visible):
+        findings.append(f"visible Task #{tid_s} label")
+    # Standalone fragment/label #tid that is not a longer hex color token.
+    if re.search(rf"#{re.escape(tid_s)}(?![0-9A-Fa-f])", visible):
+        findings.append(f"standalone fragment #{tid_s}")
+
+    return findings
+
+
+def assert_no_task_id_exposure(html: str, tids) -> None:
+    """Fail if any tid is exposed via attributes, URLs, fragments, or labels."""
+    for tid in tids:
+        findings = task_id_exposure_findings(html, tid)
+        if findings:
+            raise AssertionError(
+                f"task id {tid} exposed in public HTML: {', '.join(findings)}"
+            )
+
+
+@tagged("post_install", "-at_install")
+class TestTaskIdExposureHelpers(TransactionCase):
+    """Regression for ID-leak helpers — synthetic HTML, no product changes."""
+
+    def test_css_hex_color_not_false_positive_for_task_id(self):
+        html = """
+        <html><head><style>:root { --text: #111827; } textarea { min-height: 110px; }</style></head>
+        <body><span class="subtask-name">HTTP Child Early</span></body></html>
+        """
+        self.assertEqual(task_id_exposure_findings(html, 111), [])
+        assert_no_task_id_exposure(html, [111])
+
+    def test_detects_attribute_url_fragment_and_label_exposure(self):
+        cases = [
+            ('<div data-id="111"></div>', "attribute"),
+            ('<input value="111"/>', "attribute"),
+            ('<a href="/task/111">x</a>', "URL path"),
+            ('<a href="#111">jump</a>', "href fragment"),
+            ("<p>Please review Task #111 tomorrow</p>", "visible Task #"),
+        ]
+        for html, kind in cases:
+            with self.subTest(kind=kind, html=html):
+                findings = task_id_exposure_findings(html, 111)
+                self.assertTrue(findings, f"expected detection for {kind}: {html!r}")
+                with self.assertRaises(AssertionError):
+                    assert_no_task_id_exposure(html, [111])
+
+    def test_style_stripped_before_visible_hash_checks(self):
+        # #111 only inside <style> must not count; same id in body label must.
+        styled_only = "<style>.x { color: #111; }</style><p>ok</p>"
+        # Note: #111 in CSS is a 3-digit hex color; after strip, no exposure.
+        # Use a non-hex-terminator case inside style that would otherwise match.
+        styled_fragment = "<style>/* #111 */</style><div>safe</div>"
+        self.assertEqual(task_id_exposure_findings(styled_fragment, 111), [])
+        mixed = styled_fragment + "<p>Task #111</p>"
+        self.assertTrue(any("Task #" in f for f in task_id_exposure_findings(mixed, 111)))
 
 
 @tagged("post_install", "-at_install")
@@ -392,15 +485,11 @@ class TestPublicTaskUpdateHttp(HttpCase):
         self.assertNotIn("HTTP Foreign Task", html)
         self.assertNotIn("SECRET_PARENT_DESCRIPTION", html)
         self.assertNotIn("SECRET_CHILD_DESCRIPTION", html)
-        # Opaque CSRF / capability tokens and CSS lengths may coincidentally
-        # contain digit substrings matching ids — check structured leaks only.
-        for tid in (self.child_early.id, self.child_late.id, self.parent.id):
-            self.assertNotRegex(
-                html,
-                rf'''(?ix)(?:\bid|value|data-id|name)\s*=\s*["']?{tid}["']?''',
-            )
-            self.assertNotIn(f"#{tid}", html)
-            self.assertNotRegex(html, rf"/task/{tid}\b")
+        # Structured ID-leak checks only (CSS hex like #111827 must not false-fail).
+        assert_no_task_id_exposure(
+            html,
+            (self.child_early.id, self.child_late.id, self.parent.id),
+        )
         self.assertNotIn("/odoo/project/", html)
         self.assertNotIn("openproject.example", html)
         self.assertNotIn("999001", html)

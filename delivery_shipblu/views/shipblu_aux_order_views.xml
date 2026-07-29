@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_shipblu_return_tree" model="ir.ui.view">
+        <field name="name">shipblu.return.order.list</field>
+        <field name="model">shipblu.return.order</field>
+        <field name="arch" type="xml">
+            <list create="0"><field name="name"/><field name="tracking_number"/><field name="raw_status"/><field name="shipblu_return_id"/></list>
+        </field>
+    </record>
+    <record id="action_shipblu_return" model="ir.actions.act_window">
+        <field name="name">Returns</field>
+        <field name="res_model">shipblu.return.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_shipblu_exchange_tree" model="ir.ui.view">
+        <field name="name">shipblu.exchange.order.list</field>
+        <field name="model">shipblu.exchange.order</field>
+        <field name="arch" type="xml">
+            <list create="0"><field name="name"/><field name="tracking_number"/><field name="raw_status"/><field name="shipblu_exchange_id"/></list>
+        </field>
+    </record>
+    <record id="action_shipblu_exchange" model="ir.actions.act_window">
+        <field name="name">Exchanges</field>
+        <field name="res_model">shipblu.exchange.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_shipblu_cc_tree" model="ir.ui.view">
+        <field name="name">shipblu.cash.collection.list</field>
+        <field name="model">shipblu.cash.collection</field>
+        <field name="arch" type="xml">
+            <list create="0"><field name="name"/><field name="tracking_number"/><field name="raw_status"/><field name="shipblu_cc_id"/></list>
+        </field>
+    </record>
+    <record id="action_shipblu_cash_collection" model="ir.actions.act_window">
+        <field name="name">Cash Collections</field>
+        <field name="res_model">shipblu.cash.collection</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

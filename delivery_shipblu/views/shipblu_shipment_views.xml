@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_shipblu_shipment_tree" model="ir.ui.view">
+        <field name="name">shipblu.shipment.list</field>
+        <field name="model">shipblu.shipment</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="state == 'error' or needs_matching"
+                  decoration-muted="state in ('done','cancelled')"
+                  create="0">
+                <field name="name"/>
+                <field name="tracking_number"/>
+                <field name="shipblu_status"/>
+                <field name="normalized_status"/>
+                <field name="customer_name"/>
+                <field name="cod_amount"/>
+                <field name="sale_order_id"/>
+                <field name="picking_id"/>
+                <field name="shopify_order_ref"/>
+                <field name="creation_source"/>
+                <field name="needs_matching"/>
+                <field name="last_sync_at"/>
+                <field name="state"/>
+                <field name="company_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_shipblu_shipment_form" model="ir.ui.view">
+        <field name="name">shipblu.shipment.form</field>
+        <field name="model">shipblu.shipment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_refresh_status" type="object" string="Sync Tracking"
+                            class="btn-primary"
+                            groups="petspot_shipblu_base.group_shipblu_user"/>
+                    <button name="action_download_label" type="object" string="Download Label"
+                            groups="petspot_shipblu_base.group_shipblu_user"
+                            invisible="not shipblu_order_id"/>
+                    <button name="action_request_pickup" type="object" string="Request Pickup"
+                            groups="petspot_shipblu_base.group_shipblu_manager"
+                            confirm="Request pickup on ShipBlu for this AWB?"
+                            invisible="not tracking_number"/>
+                    <button name="action_retry_match" type="object" string="Retry Match"
+                            invisible="not needs_matching"/>
+                    <button name="action_open_sale_order" type="object" string="Open Sale Order"
+                            invisible="not sale_order_id"/>
+                    <field name="state" widget="statusbar"
+                            statusbar_visible="draft,created,tracking,needs_matching,done,error"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_open_sale_order"
+                                icon="fa-shopping-cart" invisible="not sale_order_id">
+                            <field name="sale_order_id" widget="statinfo" string="Sale Order"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Needs Matching" bg_color="text-bg-warning"
+                            invisible="not needs_matching"/>
+                    <widget name="web_ribbon" title="Sync Error" bg_color="text-bg-danger"
+                            invisible="state != 'error'"/>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                        <h2>
+                            <field name="tracking_number" placeholder="AWB / Tracking"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="ShipBlu">
+                            <field name="shipblu_order_id"/>
+                            <field name="tracking_url" widget="url"/>
+                            <field name="shipblu_status"/>
+                            <field name="raw_status"/>
+                            <field name="normalized_status"/>
+                            <field name="cod_amount"/>
+                            <field name="creation_source"/>
+                            <field name="shipment_owner"/>
+                        </group>
+                        <group string="Links">
+                            <field name="backend_id"/>
+                            <field name="business_reference"/>
+                            <field name="shopify_order_ref"/>
+                            <field name="shopify_order_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="picking_id"/>
+                            <field name="needs_matching"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Customer &amp; Address">
+                        <group>
+                            <field name="customer_name"/>
+                            <field name="customer_phone"/>
+                            <field name="customer_email"/>
+                        </group>
+                        <group>
+                            <field name="address_line_1"/>
+                            <field name="address_line_2"/>
+                            <field name="zone_id"/>
+                            <field name="zone_name"/>
+                            <field name="package_summary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tracking Timeline" name="timeline">
+                            <field name="event_ids">
+                                <list create="0" delete="0">
+                                    <field name="event_at"/>
+                                    <field name="event_code"/>
+                                    <field name="event_label"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Packages" name="packages">
+                            <field name="packages_json" widget="text"/>
+                        </page>
+                        <page string="Sync / Actions" name="sync">
+                            <group>
+                                <group>
+                                    <field name="last_sync_at"/>
+                                    <field name="last_sync_result"/>
+                                    <field name="last_error"/>
+                                </group>
+                                <group>
+                                    <field name="last_action_user_id"/>
+                                    <field name="last_action_at"/>
+                                    <field name="last_action_name"/>
+                                    <field name="last_action_result"/>
+                                    <field name="label_attachment_id"/>
+                                </group>
+                            </group>
+                            <group string="Match candidates" invisible="not match_candidates">
+                                <field name="match_candidates" nolabel="1" colspan="2"/>
+                            </group>
+                        </page>
+                        <page string="Diagnostics" name="diag" groups="petspot_shipblu_base.group_shipblu_manager">
+                            <field name="payload_snapshot" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_shipblu_shipment_search" model="ir.ui.view">
+        <field name="name">shipblu.shipment.search</field>
+        <field name="model">shipblu.shipment</field>
+        <field name="arch" type="xml">
+            <search string="ShipBlu Shipments">
+                <field name="name"/>
+                <field name="tracking_number"/>
+                <field name="shipblu_order_id"/>
+                <field name="customer_name"/>
+                <field name="sale_order_id"/>
+                <field name="shopify_order_ref"/>
+                <field name="business_reference"/>
+                <separator/>
+                <filter name="f_created" string="Created"
+                        domain="[('shipblu_status','=','CREATED')]"/>
+                <filter name="f_pickup_req" string="Pickup requested"
+                        domain="[('shipblu_status','=','PICKUP_REQUESTED')]"/>
+                <filter name="f_picked" string="Picked up"
+                        domain="[('shipblu_status','=','PICKED_UP')]"/>
+                <filter name="f_transit" string="In transit"
+                        domain="[('shipblu_status','in',('IN_TRANSIT','EN_ROUTE'))]"/>
+                <filter name="f_ofd" string="Out for delivery"
+                        domain="[('shipblu_status','=','OUT_FOR_DELIVERY')]"/>
+                <filter name="f_attempted" string="Delivery attempted"
+                        domain="[('shipblu_status','=','DELIVERY_ATTEMPTED')]"/>
+                <filter name="f_delivered" string="Delivered"
+                        domain="[('shipblu_status','=','DELIVERED')]"/>
+                <filter name="f_rto" string="Return to origin"
+                        domain="[('shipblu_status','=','RETURN_TO_ORIGIN')]"/>
+                <filter name="f_returned" string="Returned"
+                        domain="[('shipblu_status','=','RETURNED')]"/>
+                <filter name="f_cancelled" string="Cancelled"
+                        domain="[('shipblu_status','=','CANCELLED')]"/>
+                <filter name="f_needs_match" string="Needs matching"
+                        domain="[('needs_matching','=',True)]"/>
+                <filter name="f_sync_error" string="Sync error"
+                        domain="[('state','=','error')]"/>
+                <filter name="f_shopify" string="Shopify source"
+                        domain="[('creation_source','=','shopify')]"/>
+                <group>
+                    <filter name="g_status" string="ShipBlu Status" context="{'group_by': 'shipblu_status'}"/>
+                    <filter name="g_norm" string="Normalized" context="{'group_by': 'normalized_status'}"/>
+                    <filter name="g_source" string="Source" context="{'group_by': 'creation_source'}"/>
+                    <filter name="g_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_shipblu_shipment_kanban" model="ir.ui.view">
+        <field name="name">shipblu.shipment.kanban</field>
+        <field name="model">shipblu.shipment</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" default_group_by="normalized_status" create="0">
+                <field name="name"/>
+                <field name="tracking_number"/>
+                <field name="customer_name"/>
+                <field name="normalized_status"/>
+                <field name="needs_matching"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card">
+                            <strong><field name="tracking_number"/></strong>
+                            <div><field name="name"/></div>
+                            <div><field name="customer_name"/></div>
+                            <div t-if="record.needs_matching.raw_value" class="text-warning">Needs matching</div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_shipblu_shipment" model="ir.actions.act_window">
+        <field name="name">ShipBlu Shipments</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No ShipBlu shipments yet</p>
+            <p>Use Import ShipBlu Orders to pull delivery orders from the API (read-only).</p>
+        </field>
+    </record>
+
+    <record id="action_shipblu_shipment_dashboard" model="ir.actions.act_window">
+        <field name="name">ShipBlu Dashboard</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_g_norm': 1}</field>
+    </record>
+
+    <record id="action_shipblu_shipment_needs_matching" model="ir.actions.act_window">
+        <field name="name">Needs Matching</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('needs_matching', '=', True)]</field>
+        <field name="context">{'search_default_f_needs_match': 1}</field>
+    </record>
+</odoo>

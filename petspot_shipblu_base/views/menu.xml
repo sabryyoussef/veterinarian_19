@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_shipblu_settings_root"
+              name="ShipBlu"
+              parent="base.menu_administration"
+              sequence="91"
+              groups="petspot_shipblu_base.group_shipblu_user"/>
+    <menuitem id="menu_shipblu_backend"
+              name="Backends"
+              parent="menu_shipblu_settings_root"
+              action="action_shipblu_backend"
+              sequence="10"/>
+    <menuitem id="menu_shipblu_api_log"
+              name="API Logs"
+              parent="menu_shipblu_settings_root"
+              action="action_shipblu_api_log"
+              sequence="20"/>
+</odoo>

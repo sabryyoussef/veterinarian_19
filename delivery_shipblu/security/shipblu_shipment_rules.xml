@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="shipblu_shipment_company_rule" model="ir.rule">
+        <field name="name">ShipBlu shipment multi-company</field>
+        <field name="model_id" ref="model_shipblu_shipment"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="shipblu_gov_company_rule" model="ir.rule">
+        <field name="name">ShipBlu governorate multi-company</field>
+        <field name="model_id" ref="model_shipblu_governorate"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="shipblu_city_company_rule" model="ir.rule">
+        <field name="name">ShipBlu city multi-company</field>
+        <field name="model_id" ref="model_shipblu_city"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="shipblu_zone_company_rule" model="ir.rule">
+        <field name="name">ShipBlu zone multi-company</field>
+        <field name="model_id" ref="model_shipblu_zone"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

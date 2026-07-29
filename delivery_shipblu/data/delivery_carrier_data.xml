@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="product_product_delivery_shipblu" model="product.product">
+            <field name="name">ShipBlu Delivery</field>
+            <field name="default_code">Delivery_ShipBlu</field>
+            <field name="type">service</field>
+            <field name="list_price">118.0</field>
+            <field name="invoice_policy">order</field>
+        </record>
+        <record id="delivery_carrier_shipblu" model="delivery.carrier">
+            <field name="name">ShipBlu</field>
+            <field name="delivery_type">shipblu</field>
+            <field name="product_id" ref="product_product_delivery_shipblu"/>
+            <field name="integration_level">rate</field>
+            <field name="prod_environment" eval="True"/>
+            <field name="fixed_price">118.0</field>
+        </record>
+    </data>
+</odoo>

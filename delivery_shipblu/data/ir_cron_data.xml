@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_shipblu_import_orders" model="ir.cron">
+        <field name="name">ShipBlu: Import delivery orders</field>
+        <field name="model_id" ref="petspot_shipblu_base.model_shipblu_backend"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_import_orders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="ir_cron_shipblu_sync_tracking" model="ir.cron">
+        <field name="name">ShipBlu: Sync tracking</field>
+        <field name="model_id" ref="petspot_shipblu_base.model_shipblu_backend"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_tracking()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

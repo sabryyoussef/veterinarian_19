@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_shipblu_gov_tree" model="ir.ui.view">
+        <field name="name">shipblu.governorate.list</field>
+        <field name="model">shipblu.governorate</field>
+        <field name="arch" type="xml">
+            <list create="0"><field name="shipblu_id"/><field name="name"/><field name="code"/></list>
+        </field>
+    </record>
+    <record id="action_shipblu_governorate" model="ir.actions.act_window">
+        <field name="name">Governorates</field>
+        <field name="res_model">shipblu.governorate</field>
+        <field name="view_mode">list</field>
+    </record>
+    <record id="view_shipblu_city_tree" model="ir.ui.view">
+        <field name="name">shipblu.city.list</field>
+        <field name="model">shipblu.city</field>
+        <field name="arch" type="xml">
+            <list create="0"><field name="shipblu_id"/><field name="name"/><field name="governorate_shipblu_id"/></list>
+        </field>
+    </record>
+    <record id="action_shipblu_city" model="ir.actions.act_window">
+        <field name="name">Cities</field>
+        <field name="res_model">shipblu.city</field>
+        <field name="view_mode">list</field>
+    </record>
+    <record id="view_shipblu_zone_tree" model="ir.ui.view">
+        <field name="name">shipblu.zone.list</field>
+        <field name="model">shipblu.zone</field>
+        <field name="arch" type="xml">
+            <list create="0"><field name="shipblu_id"/><field name="name"/><field name="city_shipblu_id"/></list>
+        </field>
+    </record>
+    <record id="action_shipblu_zone" model="ir.actions.act_window">
+        <field name="name">Zones</field>
+        <field name="res_model">shipblu.zone</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

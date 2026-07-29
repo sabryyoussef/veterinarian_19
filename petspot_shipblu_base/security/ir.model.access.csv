@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_shipblu_backend_user,shipblu.backend user,model_shipblu_backend,group_shipblu_user,1,0,0,0
+access_shipblu_backend_manager,shipblu.backend manager,model_shipblu_backend,group_shipblu_manager,1,1,1,1
+access_shipblu_api_log_user,shipblu.api.log user,model_shipblu_api_log,group_shipblu_user,1,0,0,0
+access_shipblu_api_log_manager,shipblu.api.log manager,model_shipblu_api_log,group_shipblu_manager,1,1,1,1

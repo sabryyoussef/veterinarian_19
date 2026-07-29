@@ -1,0 +1,18 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_shipblu_shipment_user,shipblu.shipment user,model_shipblu_shipment,petspot_shipblu_base.group_shipblu_user,1,1,1,0
+access_shipblu_shipment_manager,shipblu.shipment manager,model_shipblu_shipment,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_event_user,shipblu.shipment.event user,model_shipblu_shipment_event,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_event_manager,shipblu.shipment.event manager,model_shipblu_shipment_event,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_gov_user,shipblu.governorate user,model_shipblu_governorate,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_gov_manager,shipblu.governorate manager,model_shipblu_governorate,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_city_user,shipblu.city user,model_shipblu_city,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_city_manager,shipblu.city manager,model_shipblu_city,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_zone_user,shipblu.zone user,model_shipblu_zone,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_zone_manager,shipblu.zone manager,model_shipblu_zone,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_return_user,shipblu.return.order user,model_shipblu_return_order,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_return_manager,shipblu.return.order manager,model_shipblu_return_order,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_exchange_user,shipblu.exchange.order user,model_shipblu_exchange_order,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_exchange_manager,shipblu.exchange.order manager,model_shipblu_exchange_order,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_cc_user,shipblu.cash.collection user,model_shipblu_cash_collection,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_cc_manager,shipblu.cash.collection manager,model_shipblu_cash_collection,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_import_wizard_user,shipblu.import.wizard user,model_shipblu_import_wizard,petspot_shipblu_base.group_shipblu_user,1,1,1,1

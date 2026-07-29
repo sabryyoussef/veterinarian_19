@@ -22,5 +22,5 @@ Shopify app settings: https://admin.shopify.com/store/ucbah1-5e/apps/shipblu-2/S
 
 ## Verified live (API key)
 - Merchant: pet spot (#9040)
-- Default pickup zone: **204** (Sahel / North Coast)
-- Pickup point id: 10066
+- Default **drop-off** zone on TEST: **83** (Haram / الهرم) — for Giza deliveries (e.g. 451 Haram St, Nasr Eldin)
+- Merchant pickup point still: id **10066**, zone **204** (Sahel / North Coast) unless pickup is changed in ShipBlu

@@ -38,8 +38,26 @@ class TestVetutionShadowAssessment(TransactionCase):
                 "packaging_handling_status": "verified_zero",
                 "risk_return_allowance_status": "verified_zero",
                 "optional_fixed_cost_status": "verified_zero",
+                "supplier_shipping_mode": "included",
+                "tax_mode": "exempt",
+                "handling_status": "verified_zero",
+                "default_payment_method": "bank_transfer",
+                "default_packaging_type": "small_box",
             }
         )
+        Pkg = cls.env["petspot.vetution.packaging.cost"]
+        pkg = Pkg.search([("policy_id", "=", cls.policy.id), ("packaging_type", "=", "small_box")], limit=1)
+        if pkg:
+            pkg.write({"amount": 0.0, "status": "verified_zero"})
+        else:
+            Pkg.create({"policy_id": cls.policy.id, "packaging_type": "small_box", "amount": 0.0, "status": "verified_zero"})
+        Fee = cls.env["petspot.vetution.payment.fee"]
+        fee = Fee.search([("policy_id", "=", cls.policy.id), ("payment_method", "=", "bank_transfer")], limit=1)
+        if fee:
+            fee.write({"status": "verified_zero", "percent": 0.0, "fixed_amount": 0.0})
+        else:
+            Fee.create({"policy_id": cls.policy.id, "payment_method": "bank_transfer", "status": "verified_zero"})
+
         cls.connection = cls.env["vetution.connection"].sudo().search([], limit=1)
         if not cls.connection:
             cls.connection = cls.env["vetution.connection"].sudo().create(
@@ -85,6 +103,7 @@ class TestVetutionShadowAssessment(TransactionCase):
             "default_code": (product or self.product).default_code,
             "requested_qty": 1.0,
             "channel": "manual",
+            "requested_fulfillment": "store_pickup",
             "idempotency_key": f"test-shadow-{uuid.uuid4()}",
         }
         vals.update(extra)
@@ -109,13 +128,13 @@ class TestVetutionShadowAssessment(TransactionCase):
         self.assertGreaterEqual(margin, 20.0 - 1e-6)
 
     def test_missing_delivery_marks_incomplete(self):
-        self.policy.supplier_delivery_status = "unknown"
+        self.policy.supplier_shipping_mode = "unknown"
         inquiry = self._make_inquiry()
         a = self.env["petspot.vetution.shadow.assessment"].assess_inquiry(inquiry)
         self.assertTrue(a.landed_cost_incomplete)
-        self.assertIn("supplier_delivery", a.missing_cost_components or "")
+        self.assertIn("supplier_shipping", a.missing_cost_components or "")
         self.assertTrue(a.gate_block_auto_quotation)
-        self.policy.supplier_delivery_status = "verified_zero"
+        self.policy.supplier_shipping_mode = "included"
 
     def test_price_change_9_vs_11(self):
         # suggested for cost 50 is 100; set list 92 -> ~8.7% increase OK path

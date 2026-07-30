@@ -6,3 +6,5 @@ from . import mapping_review
 from . import automation_allowlist
 from . import shadow_assessment
 from . import availability_inquiry
+from . import packaging_cost
+from . import payment_fee

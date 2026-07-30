@@ -63,6 +63,45 @@
               <field name="optional_fixed_cost"/>
             </group>
           </group>
+          <group string="True landed-cost engine">
+            <field name="supplier_shipping_mode"/>
+            <field name="supplier_shipping_amount"/>
+            <field name="supplier_shipping_status"/>
+            <field name="tax_mode"/>
+            <field name="risk_mode"/>
+            <field name="risk_fixed_amount"/>
+            <field name="handling_status"/>
+            <field name="handling_amount"/>
+            <field name="default_packaging_type"/>
+            <field name="default_payment_method"/>
+            <field name="default_origin_governorate"/>
+            <field name="default_destination_governorate"/>
+            <field name="default_package_size_code"/>
+            <field name="default_weight_kg"/>
+          </group>
+          <group string="Packaging schedule">
+            <field name="packaging_cost_ids" nolabel="1" colspan="2">
+              <list editable="bottom">
+                <field name="packaging_type"/>
+                <field name="amount"/>
+                <field name="status"/>
+                <field name="source_note"/>
+                <field name="active"/>
+              </list>
+            </field>
+          </group>
+          <group string="Payment fee schedule">
+            <field name="payment_fee_ids" nolabel="1" colspan="2">
+              <list editable="bottom">
+                <field name="payment_method"/>
+                <field name="percent"/>
+                <field name="fixed_amount"/>
+                <field name="status"/>
+                <field name="source_note"/>
+                <field name="active"/>
+              </list>
+            </field>
+          </group>
           <group string="Pending / unknown inputs">
             <field name="pending_decisions" nolabel="1" colspan="2"/>
           </group>

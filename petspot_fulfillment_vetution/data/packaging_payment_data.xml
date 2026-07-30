@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+  <!-- Packaging schedule: all unknown until Sabry verifies amounts -->
+  <record id="pkg_envelope" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="packaging_type">envelope</field>
+    <field name="status">unknown</field>
+    <field name="source_note">Amount not verified</field>
+  </record>
+  <record id="pkg_flyer" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="packaging_type">flyer</field>
+    <field name="status">unknown</field>
+  </record>
+  <record id="pkg_small" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="packaging_type">small_box</field>
+    <field name="status">unknown</field>
+  </record>
+  <record id="pkg_medium" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="packaging_type">medium_box</field>
+    <field name="status">unknown</field>
+  </record>
+  <record id="pkg_large" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="packaging_type">large_box</field>
+    <field name="status">unknown</field>
+  </record>
+  <record id="pkg_custom" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="packaging_type">custom</field>
+    <field name="status">unknown</field>
+  </record>
+  <!-- Payment fees unknown until verified -->
+  <record id="fee_paymob" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="payment_method">paymob</field>
+    <field name="status">unknown</field>
+    <field name="source_note">Paymob fee schedule not verified for landed cost</field>
+  </record>
+  <record id="fee_card" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="payment_method">card</field>
+    <field name="status">unknown</field>
+  </record>
+  <record id="fee_wallet" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="payment_method">wallet</field>
+    <field name="status">unknown</field>
+  </record>
+  <record id="fee_bank" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="payment_method">bank_transfer</field>
+    <field name="status">unknown</field>
+  </record>
+  <record id="fee_cod" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="payment_method">cod</field>
+    <field name="status">verified_zero</field>
+    <field name="percent">0</field>
+    <field name="source_note">COD gateway fee N/A — use ShipBlu COD commission component</field>
+  </record>
+</odoo>

@@ -62,6 +62,16 @@ class PetspotVetutionShadowAssessment(models.Model):
     gate_block_supplier_purchase = fields.Boolean()
     eligible_future_automation = fields.Boolean()
     quotation_validity_hours = fields.Float()
+    completeness_percent = fields.Float()
+    pricing_confidence_percent = fields.Float()
+    pricing_confidence_label = fields.Char()
+    decision_code = fields.Char(index=True)
+    component_shipblu_shipping = fields.Float()
+    component_cod_commission = fields.Float()
+    component_handling = fields.Float()
+    landed_cost_report = fields.Text()
+    shipblu_estimate_json = fields.Text()
+    estimate_cost_components = fields.Char()
 
     state = fields.Selection(
         [
@@ -508,14 +518,18 @@ class PetspotVetutionShadowAssessment(models.Model):
         self, inquiry, product, offer, policy, snap_vals, resolved, assessed_at, age, is_fresh
     ):
         supplier_cost = float(snap_vals.get("purchase_price") or 0.0)
-        landed_br = policy.compute_landed_cost(supplier_cost)
-        sale_br = policy.compute_suggested_sale_price(
-            landed_br["landed_cost"] if not landed_br["landed_cost_incomplete"] else 0.0
-        )
-        # Still compute a worksheet price from known supplier+verified components only
-        # when incomplete: use partial landed for display but mark incomplete/block gates.
-        if landed_br["landed_cost_incomplete"]:
-            sale_br = policy.compute_suggested_sale_price(landed_br["landed_cost"])
+        ctx = {
+            "requested_fulfillment": inquiry.requested_fulfillment,
+            "payment_method": policy.default_payment_method,
+            "packaging_type": policy.default_packaging_type,
+            "destination_governorate": policy.default_destination_governorate,
+            "package_size_code": policy.default_package_size_code,
+            "weight_kg": policy.default_weight_kg,
+            "estimated_collect_amount": float(product.list_price or 0.0) or False,
+        }
+        landed_br = policy.compute_landed_cost(supplier_cost, context=ctx)
+        # Suggested price from partial or complete landed worksheet (never publish)
+        sale_br = policy.compute_suggested_sale_price(landed_br["landed_cost"] or 0.0)
 
         odoo_price = float(product.list_price or 0.0)
         shopify_price = self._read_shopify_price(product)
@@ -561,6 +575,7 @@ class PetspotVetutionShadowAssessment(models.Model):
         elif landed_br["landed_cost_incomplete"]:
             state = "blocked"
             next_action = "complete_landed_cost_inputs"
+            blockers = list(blockers) + ["landed_cost_incomplete"]
         elif gates.get("price_review_required"):
             state = "blocked"
             next_action = "price_review_required"
@@ -606,12 +621,26 @@ class PetspotVetutionShadowAssessment(models.Model):
             "landed_cost_incomplete": landed_br["landed_cost_incomplete"],
             "missing_cost_components": ",".join(landed_br["missing_components"]) or False,
             "component_supplier_cost": landed_br["supplier_cost"],
-            "component_delivery": landed_br["supplier_delivery_allocation"],
+            "component_delivery": landed_br.get("supplier_shipping", landed_br["supplier_delivery_allocation"]),
+            "component_shipblu_shipping": landed_br.get("shipblu_shipping", 0.0),
+            "component_cod_commission": landed_br.get("cod_commission", 0.0),
             "component_payment_fee": landed_br["payment_fee"],
             "component_packaging": landed_br["packaging_handling"],
             "component_nonrecoverable_tax": landed_br["non_recoverable_tax"],
             "component_risk_allowance": landed_br["risk_return_allowance"],
+            "component_handling": landed_br.get("handling", 0.0),
             "landed_formula": landed_br["formula"],
+            "completeness_percent": landed_br.get("completeness_percent", 0.0),
+            "pricing_confidence_percent": landed_br.get("pricing_confidence_percent", 0.0),
+            "pricing_confidence_label": landed_br.get("pricing_confidence_label") or False,
+            "decision_code": landed_br.get("decision_code") or False,
+            "landed_cost_report": "\n".join(landed_br.get("report_lines") or []),
+            "shipblu_estimate_json": (
+                __import__("json").dumps(landed_br.get("shipblu_breakdown"), default=str)
+                if landed_br.get("shipblu_breakdown")
+                else False
+            ),
+            "estimate_cost_components": ",".join(landed_br.get("estimate_components") or []) or False,
             "sell_formula": sale_br.get("sell_formula") or False,
             "suggested_price": sale_br["suggested_price"],
             "current_odoo_price": odoo_price,
@@ -627,11 +656,16 @@ class PetspotVetutionShadowAssessment(models.Model):
             "price_review_required": bool(gates.get("price_review_required")),
             "on_automation_allowlist": on_allowlist,
             "availability_wording": wording,
-            "gate_block_auto_quotation": True,
+            "gate_block_auto_quotation": True,  # Phase shadow: never auto-quote
             "gate_block_odoo_price_update": True,
             "gate_block_shopify_publish": True,
             "gate_block_supplier_purchase": True,
-            "eligible_future_automation": bool(gates.get("eligible_future_automation")),
+            "eligible_future_automation": bool(
+                gates.get("eligible_future_automation")
+                and landed_br.get("completeness_percent", 0) >= 100
+                and landed_br.get("decision_code") == "READY_FOR_AUTO_QUOTE"
+                and not landed_br.get("landed_cost_incomplete")
+            ),
             "quotation_validity_hours": policy.quotation_validity_hours,
             "company_id": inquiry.company_id.id,
             "note": (

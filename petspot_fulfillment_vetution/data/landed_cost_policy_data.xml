@@ -2,7 +2,7 @@
 <odoo noupdate="0">
   <record id="landed_cost_policy_default" model="petspot.vetution.landed.cost.policy">
     <field name="name">Phase 15A Provisional TEST Policy</field>
-    <field name="version">15A.2-TEST-PROVISIONAL</field>
+    <field name="version">15A.3-LANDED-COST</field>
     <field name="pricing_method">gross_margin</field>
     <field name="target_gross_margin_percent">25.0</field>
     <field name="min_gross_margin_percent">20.0</field>
@@ -32,5 +32,12 @@
     <field name="optional_fixed_cost_status">verified_zero</field>
     <field name="optional_fixed_cost">0.0</field>
     <field name="availability_wording">Available from supplier, subject to final confirmation</field>
+    <field name="supplier_shipping_mode">unknown</field>
+    <field name="supplier_shipping_status">unknown</field>
+    <field name="tax_mode">unknown</field>
+    <field name="handling_status">unknown</field>
+    <field name="default_payment_method">unknown</field>
+    <field name="default_origin_governorate">Giza</field>
+    <field name="version">15A.3-LANDED-COST</field>
   </record>
 </odoo>

@@ -76,6 +76,79 @@ class PetspotVetutionLandedCostPolicy(models.Model):
         help="Evidence note for delivery charge / free-delivery threshold.",
     )
 
+    # --- True landed-cost engine settings (Phase 15A.3) ---
+    supplier_shipping_mode = fields.Selection(
+        [
+            ("unknown", "Unknown"),
+            ("included", "Included in supplier price"),
+            ("fixed", "Fixed fee"),
+            ("calculated", "Calculated"),
+        ],
+        default="unknown",
+        required=True,
+    )
+    supplier_shipping_amount = fields.Float(default=0.0)
+    supplier_shipping_status = fields.Selection(COMPONENT_STATES, default="unknown", required=True)
+    supplier_shipping_source = fields.Char()
+
+    default_packaging_type = fields.Selection(
+        [
+            ("envelope", "Envelope"),
+            ("flyer", "Flyer"),
+            ("small_box", "Small box"),
+            ("medium_box", "Medium box"),
+            ("large_box", "Large box"),
+            ("custom", "Custom"),
+        ],
+    )
+    packaging_cost_ids = fields.One2many(
+        "petspot.vetution.packaging.cost", "policy_id", string="Packaging schedule"
+    )
+    payment_fee_ids = fields.One2many(
+        "petspot.vetution.payment.fee", "policy_id", string="Payment fee schedule"
+    )
+    default_payment_method = fields.Selection(
+        [
+            ("cod", "COD"),
+            ("paymob", "Paymob"),
+            ("card", "Card"),
+            ("wallet", "Wallet"),
+            ("bank_transfer", "Bank Transfer"),
+            ("unknown", "Unknown"),
+        ],
+        default="unknown",
+        required=True,
+    )
+    tax_mode = fields.Selection(
+        [
+            ("unknown", "Unknown"),
+            ("inclusive", "Inclusive"),
+            ("exclusive", "Exclusive"),
+            ("exempt", "Exempt"),
+        ],
+        default="unknown",
+        required=True,
+    )
+    risk_mode = fields.Selection(
+        [("percent", "Percentage"), ("fixed", "Fixed amount")],
+        default="percent",
+        required=True,
+    )
+    risk_fixed_amount = fields.Float(default=0.0)
+    handling_amount = fields.Float(default=0.0)
+    handling_status = fields.Selection(COMPONENT_STATES, default="unknown", required=True)
+    handling_source = fields.Char()
+
+    default_origin_governorate = fields.Char(default="Giza")
+    default_destination_governorate = fields.Char(
+        help="Required for ShipBlu estimate in shadow; leave empty → unknown shipping.",
+    )
+    default_package_size_code = fields.Char(
+        help="ShipBlu local package size code; empty → unknown package blocker.",
+    )
+    default_weight_kg = fields.Float(default=0.5)
+
+
     non_recoverable_tax_rate = fields.Float(default=0.0)
     non_recoverable_tax_status = fields.Selection(COMPONENT_STATES, default="unknown", required=True)
     non_recoverable_tax_source = fields.Char()
@@ -157,79 +230,49 @@ class PetspotVetutionLandedCostPolicy(models.Model):
             return 0.0, True
         return float(amount or 0.0), False
 
-    def compute_landed_cost(self, supplier_cost):
+    def compute_landed_cost(self, supplier_cost, context=None):
+        """Delegate to LandedCostEngine — returns dict compatible with shadow assessment."""
         self.ensure_one()
-        cost = float(supplier_cost or 0.0)
-        incomplete = False
-        missing = []
-
-        delivery, inc = self._component_amount(
-            self.supplier_delivery_status, self.supplier_delivery_allocation
+        from odoo.addons.petspot_fulfillment_vetution.services.landed_cost_engine import (
+            LandedCostEngine,
         )
-        if inc:
-            incomplete = True
-            missing.append("supplier_delivery")
 
-        tax_base, inc = self._component_amount(
-            self.non_recoverable_tax_status, self.non_recoverable_tax_rate
+        result = LandedCostEngine(self.env, self).compute(
+            supplier_cost=supplier_cost, context=context or {}
         )
-        tax = cost * (tax_base / 100.0) if self.non_recoverable_tax_status != "unknown" else 0.0
-        if inc:
-            incomplete = True
-            missing.append("non_recoverable_tax")
+        cmap = result.component_map()
 
-        fee_rate, inc_r = self._component_amount(self.payment_fee_status, self.payment_fee_rate)
-        fee_fixed, inc_f = self._component_amount(self.payment_fee_status, self.payment_fee_fixed)
-        # payment fee uses same status for rate+fixed
-        if self.payment_fee_status == "unknown":
-            payment = 0.0
-            incomplete = True
-            missing.append("payment_fee")
-        else:
-            payment = cost * (fee_rate / 100.0) + fee_fixed
+        def _amt(key):
+            c = cmap.get(key)
+            if not c or not c.is_known or c.amount is None:
+                return 0.0
+            return float(c.amount)
 
-        packaging, inc = self._component_amount(
-            self.packaging_handling_status, self.packaging_handling
-        )
-        if inc:
-            incomplete = True
-            missing.append("packaging_handling")
-
-        risk_rate, inc = self._component_amount(
-            self.risk_return_allowance_status, self.risk_return_allowance_rate
-        )
-        risk = cost * (risk_rate / 100.0) if self.risk_return_allowance_status != "unknown" else 0.0
-        if inc:
-            incomplete = True
-            missing.append("risk_return_allowance")
-
-        optional, inc = self._component_amount(
-            self.optional_fixed_cost_status, self.optional_fixed_cost
-        )
-        if inc:
-            incomplete = True
-            missing.append("optional_fixed_cost")
-
-        if cost <= 0:
-            incomplete = True
-            missing.append("supplier_cost")
-
-        landed = cost + delivery + payment + packaging + tax + risk + optional
         return {
-            "supplier_cost": cost,
-            "supplier_delivery_allocation": delivery,
-            "payment_fee": payment,
-            "packaging_handling": packaging,
-            "non_recoverable_tax": tax,
-            "risk_return_allowance": risk,
-            "optional_fixed_cost": optional,
-            "landed_cost": landed,
-            "landed_cost_incomplete": incomplete,
-            "missing_components": missing,
-            "formula": (
-                "landed_cost = supplier_cost + delivery + payment_fee + "
-                "packaging + nonrecoverable_tax + risk_allowance (+ optional_fixed)"
-            ),
+            "supplier_cost": _amt("supplier_cost") if cmap.get("supplier_cost") and cmap["supplier_cost"].is_known else float(supplier_cost or 0.0),
+            "supplier_delivery_allocation": _amt("supplier_shipping"),
+            "supplier_shipping": _amt("supplier_shipping"),
+            "shipblu_shipping": _amt("shipblu_shipping"),
+            "cod_commission": _amt("cod_commission"),
+            "payment_fee": _amt("payment_gateway_fee"),
+            "packaging_handling": _amt("packaging"),
+            "non_recoverable_tax": _amt("tax"),
+            "risk_return_allowance": _amt("return_risk"),
+            "optional_fixed_cost": _amt("handling"),
+            "handling": _amt("handling"),
+            "landed_cost": result.landed_cost if result.landed_cost is not None else 0.0,
+            "landed_cost_incomplete": result.landed_cost_incomplete,
+            "missing_components": list(result.missing_keys),
+            "estimate_components": list(result.estimate_keys),
+            "completeness_percent": result.completeness_percent,
+            "pricing_confidence_percent": result.pricing_confidence_percent,
+            "pricing_confidence_label": result.pricing_confidence_label,
+            "decision_code": result.decision_code,
+            "shipblu_breakdown": result.shipblu_breakdown,
+            "component_details": [c.to_dict() for c in result.components],
+            "report_lines": result.report_lines(),
+            "formula": result.formula,
+            "engine_result": result,
         }
 
     def _round_price(self, value):

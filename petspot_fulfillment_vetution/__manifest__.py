@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "PetSpot Fulfillment × Vetution Bridge",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.2.0",
     "category": "Sales/Sales",
     "summary": "Phase 15A: read-only Vetution shadow availability + suggested price for Availability Inquiries",
     "description": """
@@ -24,10 +24,12 @@ commercial crons.
     "depends": [
         "petspot_fulfillment",
         "vetution_supplier",
+        "petspot_shipblu_base",
     ],
     "data": [
         "security/ir.model.access.csv",
         "data/landed_cost_policy_data.xml",
+        "data/packaging_payment_data.xml",
         "data/automation_allowlist_data.xml",
         "data/ir_config_parameter_data.xml",
         "views/landed_cost_policy_views.xml",

@@ -55,6 +55,15 @@
             <field name="landed_formula"/>
             <field name="sell_formula"/>
             <field name="suggested_price"/>
+            <field name="completeness_percent"/>
+            <field name="pricing_confidence_percent"/>
+            <field name="pricing_confidence_label"/>
+            <field name="decision_code"/>
+            <field name="component_shipblu_shipping"/>
+            <field name="component_cod_commission"/>
+            <field name="component_handling"/>
+            <field name="estimate_cost_components"/>
+            <field name="landed_cost_report" colspan="2" nolabel="1"/>
             <field name="price_review_required"/>
             <field name="on_automation_allowlist"/>
             <field name="availability_wording"/>
@@ -94,6 +103,15 @@
         <field name="state"/>
         <field name="availability_normalized"/>
         <field name="suggested_price"/>
+            <field name="completeness_percent"/>
+            <field name="pricing_confidence_percent"/>
+            <field name="pricing_confidence_label"/>
+            <field name="decision_code"/>
+            <field name="component_shipblu_shipping"/>
+            <field name="component_cod_commission"/>
+            <field name="component_handling"/>
+            <field name="estimate_cost_components"/>
+            <field name="landed_cost_report" colspan="2" nolabel="1"/>
         <field name="is_fresh"/>
         <field name="assessed_at"/>
       </list>

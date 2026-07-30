@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="0">
   <record id="landed_cost_policy_default" model="petspot.vetution.landed.cost.policy">
-    <field name="name">Phase 15A Provisional TEST Policy</field>
-    <field name="version">15A.3-LANDED-COST</field>
+    <field name="name">Phase 15A.4 Giza Fulfillment TEST Policy</field>
+    <field name="version">15A.4-GIZA-COST-MODEL</field>
     <field name="pricing_method">gross_margin</field>
     <field name="target_gross_margin_percent">25.0</field>
     <field name="min_gross_margin_percent">20.0</field>
@@ -20,7 +20,7 @@
     <field name="allow_customer_message" eval="False"/>
     <field name="allow_supplier_po" eval="False"/>
     <field name="supplier_delivery_status">unknown</field>
-    <field name="supplier_delivery_source">Vetution delivery charge / free-delivery threshold not verified in Odoo sync payload.</field>
+    <field name="supplier_delivery_source">Vetution → Giza supplier shipping not verified in sync payload (never assume zero).</field>
     <field name="non_recoverable_tax_status">unknown</field>
     <field name="non_recoverable_tax_source">Supplier VAT treatment not verified.</field>
     <field name="payment_fee_status">unknown</field>
@@ -34,10 +34,20 @@
     <field name="availability_wording">Available from supplier, subject to final confirmation</field>
     <field name="supplier_shipping_mode">unknown</field>
     <field name="supplier_shipping_status">unknown</field>
+    <field name="supplier_shipping_source">Vetution → Giza supplier shipping unknown until verified.</field>
     <field name="tax_mode">unknown</field>
     <field name="handling_status">unknown</field>
     <field name="default_payment_method">unknown</field>
     <field name="default_origin_governorate">Giza</field>
-    <field name="version">15A.3-LANDED-COST</field>
+    <field name="default_destination_governorate">Giza</field>
+    <field name="default_package_size_code">small</field>
+    <field name="default_weight_kg">0.5</field>
+    <field name="customer_delivery_charge_amount">118.0</field>
+    <field name="customer_delivery_charge_status">configured</field>
+    <field name="customer_delivery_charge_source">Odoo delivery.carrier fixed_price / ShipBlu+Bosta+Standard product list_price=118 (read-only; order-level revenue).</field>
+    <field name="customer_pickup_fee_amount">0.0</field>
+    <field name="customer_pickup_fee_status">verified_zero</field>
+    <field name="customer_pickup_fee_source">Giza store pickup — no separate pickup fee approved.</field>
+    <field name="fulfillment_origin_note">Ecommerce origin: ShipBlu Haram clinic — 451 Haram Street Nasr Eldin, Giza. Odoo WH partner remains North Coast clinic (public); do not change. Giza→Giza/small/EGP95 is APPROVED_PROVISIONAL_ESTIMATE only.</field>
   </record>
 </odoo>

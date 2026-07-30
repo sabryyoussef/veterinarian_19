@@ -528,15 +528,18 @@ class PetspotVetutionShadowAssessment(models.Model):
             "estimated_collect_amount": float(product.list_price or 0.0) or False,
         }
         landed_br = policy.compute_landed_cost(supplier_cost, context=ctx)
-        # Suggested price from partial or complete landed worksheet (never publish)
-        sale_br = policy.compute_suggested_sale_price(landed_br["landed_cost"] or 0.0)
+        # Suggested price from product landed worksheet (excludes recovered ShipBlu when charge applies)
+        price_base = landed_br.get("product_landed_cost")
+        if price_base is None:
+            price_base = landed_br.get("landed_cost") or 0.0
+        sale_br = policy.compute_suggested_sale_price(price_base)
 
         odoo_price = float(product.list_price or 0.0)
         shopify_price = self._read_shopify_price(product)
         locked = bool(getattr(product.product_tmpl_id, "vetution_sale_price_locked", False))
         ok, blockers, metrics = policy.evaluate_price_guards(
             suggested_price=sale_br["suggested_price"],
-            landed_cost=landed_br["landed_cost"],
+            landed_cost=price_base,
             current_odoo_price=odoo_price,
             price_locked=locked,
             landed_cost_incomplete=landed_br["landed_cost_incomplete"],
@@ -617,7 +620,9 @@ class PetspotVetutionShadowAssessment(models.Model):
             "data_age_hours": age,
             "is_fresh": is_fresh,
             "supplier_cost": landed_br["supplier_cost"],
-            "landed_cost": landed_br["landed_cost"],
+            "landed_cost": landed_br.get("product_landed_cost")
+            if landed_br.get("product_landed_cost") is not None
+            else landed_br["landed_cost"],
             "landed_cost_incomplete": landed_br["landed_cost_incomplete"],
             "missing_cost_components": ",".join(landed_br["missing_components"]) or False,
             "component_supplier_cost": landed_br["supplier_cost"],
@@ -636,9 +641,17 @@ class PetspotVetutionShadowAssessment(models.Model):
             "decision_code": landed_br.get("decision_code") or False,
             "landed_cost_report": "\n".join(landed_br.get("report_lines") or []),
             "shipblu_estimate_json": (
-                __import__("json").dumps(landed_br.get("shipblu_breakdown"), default=str)
-                if landed_br.get("shipblu_breakdown")
-                else False
+                __import__("json").dumps(
+                    {
+                        "shipblu_breakdown": landed_br.get("shipblu_breakdown"),
+                        "customer_delivery_charge": landed_br.get("customer_delivery_charge"),
+                        "delivery_profit_or_subsidy": landed_br.get("delivery_profit_or_subsidy"),
+                        "delivery_shortfall": landed_br.get("delivery_shortfall"),
+                        "product_landed_cost": landed_br.get("product_landed_cost"),
+                        "notes": landed_br.get("notes"),
+                    },
+                    default=str,
+                )
             ),
             "estimate_cost_components": ",".join(landed_br.get("estimate_components") or []) or False,
             "sell_formula": sale_br.get("sell_formula") or False,

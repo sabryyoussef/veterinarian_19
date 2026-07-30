@@ -295,3 +295,87 @@ class TestCostValidation(TransactionCase):
         self.assertFalse(self.policy.allow_price_publish)
         self.assertFalse(self.policy.allow_customer_message)
         self.assertFalse(self.policy.allow_supplier_po)
+
+
+    def test_delivery_charge_not_in_product_landed(self):
+        """Giza→Giza prepaid: ShipBlu 95 recovered via 118 charge; product excludes full ShipBlu."""
+        self.policy.write({
+            "customer_delivery_charge_amount": 118.0,
+            "customer_delivery_charge_status": "configured",
+        })
+        fake = MagicMock()
+        fake.base_fee = 95.0
+        fake.size_surcharge = 0.0
+        fake.pickup_surcharge = 0.0
+        fake.discount = 0.0
+        fake.cod_fee = 0.0
+        fake.pricing_source = "contract"
+        fake.notes = []
+        fake.to_dict.return_value = {"base_fee": 95.0}
+        if not self.env["shipblu.backend"].sudo().search([], limit=1):
+            self.skipTest("no shipblu backend")
+        with patch(
+            "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
+            return_value=fake,
+        ):
+            res = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={
+                    "requested_fulfillment": "shipblu_delivery",
+                    "destination_governorate": "Giza",
+                    "package_size_code": "small",
+                    "payment_method": "paymob",
+                },
+            )
+        self.assertEqual(res.component_map()["shipblu_shipping"].amount, 95.0)
+        self.assertEqual(res.customer_delivery_charge, 118.0)
+        self.assertAlmostEqual(res.delivery_profit_or_subsidy, 23.0)
+        self.assertEqual(res.delivery_shortfall, 0.0)
+        # Product landed must NOT include 95
+        self.assertLess(res.product_landed_cost, 95.0)
+        self.assertIn("APPROVED_PROVISIONAL_ESTIMATE", " ".join(res.notes))
+
+    def test_delivery_shortfall_when_shipblu_exceeds_charge(self):
+        self.policy.write({
+            "customer_delivery_charge_amount": 118.0,
+            "customer_delivery_charge_status": "configured",
+        })
+        fake = MagicMock()
+        fake.base_fee = 196.0  # Giza→North Coast
+        fake.size_surcharge = 0.0
+        fake.pickup_surcharge = 0.0
+        fake.discount = 0.0
+        fake.cod_fee = 0.0
+        fake.pricing_source = "contract"
+        fake.notes = []
+        fake.to_dict.return_value = {"base_fee": 196.0}
+        if not self.env["shipblu.backend"].sudo().search([], limit=1):
+            self.skipTest("no shipblu backend")
+        with patch(
+            "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
+            return_value=fake,
+        ):
+            res = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={
+                    "requested_fulfillment": "shipblu_delivery",
+                    "destination_governorate": "North Coast",
+                    "package_size_code": "small",
+                    "payment_method": "bank_transfer",
+                },
+            )
+        self.assertAlmostEqual(res.delivery_profit_or_subsidy, 118.0 - 196.0)
+        self.assertAlmostEqual(res.delivery_shortfall, 78.0)
+        # Shortfall included in product landed; full 196 is not
+        self.assertGreaterEqual(res.product_landed_cost, 13.0 + 78.0 - 1e-6)
+        self.assertLess(res.product_landed_cost, 13.0 + 196.0)
+
+    def test_giza_pickup_delivery_revenue_zero(self):
+        res = LandedCostEngine(self.env, self.policy).compute(
+            supplier_cost=13.0,
+            context={"requested_fulfillment": "store_pickup"},
+        )
+        self.assertEqual(res.component_map()["shipblu_shipping"].status, "not_applicable")
+        self.assertEqual(res.component_map()["cod_commission"].status, "not_applicable")
+        self.assertEqual(res.customer_delivery_charge, 0.0)
+        self.assertEqual(res.delivery_shortfall, 0.0)

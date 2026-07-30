@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
     "name": "PetSpot Fulfillment × Vetution Bridge",
-    "version": "19.0.1.2.1",
+    "version": "19.0.1.3.0",
     "category": "Sales/Sales",
-    "summary": "Phase 15A: read-only Vetution shadow availability + suggested price for Availability Inquiries",
+    "summary": "Phase 15A.4: Giza-origin Vetution shadow landed cost (delivery charge separate from product price)",
     "description": """
 PetSpot Fulfillment × Vetution Bridge (Phase 15A)
 ================================================

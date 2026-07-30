@@ -3,6 +3,13 @@
 
 Reuses petspot_shipblu_base.services.cost_engine.CostEngine for ShipBlu
 estimates. Never invents unknown values. Never creates shipments/AWBs.
+
+Phase 15A.4 — Giza ecommerce origin:
+  Vetution → PetSpot Giza fulfillment → customer (ShipBlu) or Giza pickup.
+  Customer delivery charge (e.g. EGP 118) is order-level revenue, not a
+  product cost. Full ShipBlu cost is NOT added to product price when the
+  customer is charged for delivery; only delivery shortfall (if any) enters
+  product landed cost / order profitability.
 """
 
 from __future__ import annotations
@@ -21,6 +28,21 @@ MANDATORY_KEYS = (
     "return_risk",
     "handling",
 )
+
+# Keys that belong in product price worksheet when delivery is separately charged.
+PRODUCT_LANDED_KEYS = (
+    "supplier_cost",
+    "supplier_shipping",
+    "payment_gateway_fee",
+    "packaging",
+    "tax",
+    "return_risk",
+    "handling",
+    "delivery_shortfall",
+)
+
+# Recovered via customer delivery charge on shipblu_delivery (not product COGS).
+DELIVERY_RECOVERED_KEYS = ("shipblu_shipping", "cod_commission")
 
 STATUS_KNOWN = {"verified", "verified_zero", "configured", "estimated"}
 STATUS_CRITICAL_UNKNOWN = {
@@ -66,10 +88,16 @@ class LandedCostResult:
     estimate_keys: list
     shipblu_breakdown: dict | None = None
     notes: list = field(default_factory=list)
+    product_landed_cost: float | None = None
+    customer_delivery_charge: float | None = None
+    delivery_profit_or_subsidy: float | None = None
+    delivery_shortfall: float | None = None
     formula: str = (
-        "landed_cost = supplier_cost + supplier_shipping + shipblu_shipping "
-        "+ cod_commission + payment_gateway_fee + packaging + tax "
-        "+ return_risk + handling"
+        "product_landed = supplier_cost + supplier_shipping(Vetution→Giza) "
+        "+ payment_gateway_fee + packaging + tax + return_risk + handling "
+        "+ max(0, shipblu+cod - customer_delivery_charge); "
+        "delivery_PnL = customer_delivery_charge - shipblu_shipping - cod_commission "
+        "(order-level; charge is NOT product COGS)"
     )
 
     def component_map(self) -> dict:
@@ -85,7 +113,11 @@ class LandedCostResult:
         return {
             "formula": self.formula,
             "landed_cost": self.landed_cost,
+            "product_landed_cost": self.product_landed_cost,
             "landed_cost_incomplete": self.landed_cost_incomplete,
+            "customer_delivery_charge": self.customer_delivery_charge,
+            "delivery_profit_or_subsidy": self.delivery_profit_or_subsidy,
+            "delivery_shortfall": self.delivery_shortfall,
             "completeness_percent": self.completeness_percent,
             "pricing_confidence_percent": self.pricing_confidence_percent,
             "pricing_confidence_label": self.pricing_confidence_label,
@@ -104,7 +136,11 @@ class LandedCostResult:
             mark = "✓" if c.is_known else "✗"
             lines.append(f"{mark} {c.label}: {amt} [{c.status}]")
         total = "incomplete" if self.landed_cost_incomplete else f"{self.landed_cost:.2f}"
-        lines.append(f"--- Landed Cost: {total}")
+        lines.append(f"--- Product landed (price worksheet): {self.product_landed_cost}")
+        lines.append(f"--- Order delivery charge: {self.customer_delivery_charge}")
+        lines.append(f"--- Delivery profit/(subsidy): {self.delivery_profit_or_subsidy}")
+        lines.append(f"--- Delivery shortfall in product landed: {self.delivery_shortfall}")
+        lines.append(f"--- Gross component sum (incl. ShipBlu/COD): {total}")
         lines.append(f"Completeness: {self.completeness_percent:.0f}%")
         lines.append(
             f"Confidence: {self.pricing_confidence_percent:.0f}% ({self.pricing_confidence_label})"
@@ -172,7 +208,13 @@ class LandedCostEngine:
         # 9) Operational handling
         components.append(self._handling(notes))
 
-        return self._finalize(components, shipblu_bd, notes)
+        # 10–11) Customer delivery charge (order revenue) + shortfall into product landed
+        delivery_comps, delivery_meta = self._delivery_charge_and_shortfall(
+            ctx, components, notes
+        )
+        components.extend(delivery_comps)
+
+        return self._finalize(components, shipblu_bd, notes, delivery_meta=delivery_meta)
 
     # ------------------------------------------------------------------ pieces
     def _supplier_shipping(self, supplier_cost, ctx, notes):
@@ -220,7 +262,7 @@ class LandedCostEngine:
             None,
             "unknown",
             source=self.policy.supplier_shipping_source
-            or "Vetution delivery charge / free-delivery threshold not verified",
+            or "Vetution → Giza supplier shipping not verified (never assume zero)",
         )
 
     def _shipblu_and_cod(self, supplier_cost, ctx, notes):
@@ -344,12 +386,25 @@ class LandedCostEngine:
                     detail=bd_dict,
                 )
             else:
+                origin = self.policy.default_origin_governorate or "Giza"
+                source = f"CostEngine/{bd.pricing_source}"
+                if (
+                    origin == "Giza"
+                    and dest == "Giza"
+                    and (package_code or "") == "small"
+                    and abs(shipping_total - 95.0) < 1e-6
+                ):
+                    source = (
+                        "APPROVED_PROVISIONAL_ESTIMATE: Giza→Giza/small/EGP95 "
+                        f"(CostEngine/{bd.pricing_source}; not invoice/universal tariff)"
+                    )
+                    notes.append(source)
                 ship_comp = CostComponent(
                     "shipblu_shipping",
                     "ShipBlu Shipping",
                     round(shipping_total, 2),
                     "estimated",
-                    source=f"CostEngine/{bd.pricing_source}",
+                    source=source,
                     is_estimate=True,
                     detail=bd_dict,
                 )
@@ -645,8 +700,159 @@ class LandedCostEngine:
             source=self.policy.handling_source or "policy.handling_amount",
         )
 
+    def _delivery_charge_and_shortfall(self, ctx, components, notes):
+        """Order-level customer delivery revenue vs ShipBlu+COD; shortfall → product landed."""
+        fulfillment = ctx.get("requested_fulfillment") or "undecided"
+        cmap = {c.key: c for c in components}
+        extras = []
+
+        if fulfillment == "store_pickup":
+            pickup_fee = float(
+                ctx.get("customer_pickup_fee")
+                if ctx.get("customer_pickup_fee") is not None
+                else (getattr(self.policy, "customer_pickup_fee_amount", 0.0) or 0.0)
+            )
+            pickup_status = getattr(self.policy, "customer_pickup_fee_status", None) or "verified_zero"
+            if pickup_fee <= 0 or pickup_status in ("verified_zero", "unknown"):
+                charge_comp = CostComponent(
+                    "customer_delivery_charge",
+                    "Customer Delivery Charge",
+                    0.0,
+                    "not_applicable",
+                    source="Giza store pickup — delivery revenue zero unless approved pickup fee",
+                )
+                charge = 0.0
+            else:
+                charge_comp = CostComponent(
+                    "customer_delivery_charge",
+                    "Customer Delivery / Pickup Fee",
+                    pickup_fee,
+                    "configured",
+                    source=self.policy.customer_pickup_fee_source or "approved pickup fee",
+                )
+                charge = pickup_fee
+            extras.append(charge_comp)
+            extras.append(
+                CostComponent(
+                    "delivery_shortfall",
+                    "Delivery Shortfall (in product landed)",
+                    0.0,
+                    "not_applicable",
+                    source="pickup — no ShipBlu shortfall",
+                )
+            )
+            return extras, {
+                "customer_delivery_charge": charge,
+                "delivery_profit_or_subsidy": charge,  # no ShipBlu/COD on pickup
+                "delivery_shortfall": 0.0,
+                "separate_delivery_charge": False,
+            }
+
+        # Delivery scenarios
+        charge = ctx.get("customer_delivery_charge")
+        if charge is None:
+            charge = float(getattr(self.policy, "customer_delivery_charge_amount", 0.0) or 0.0)
+        else:
+            charge = float(charge)
+        charge_status = getattr(self.policy, "customer_delivery_charge_status", None) or "unknown"
+        if charge_status == "unknown" and charge <= 0:
+            extras.append(
+                CostComponent(
+                    "customer_delivery_charge",
+                    "Customer Delivery Charge",
+                    None,
+                    "unknown",
+                    source=self.policy.customer_delivery_charge_source
+                    or "customer delivery revenue not configured",
+                )
+            )
+            extras.append(
+                CostComponent(
+                    "delivery_shortfall",
+                    "Delivery Shortfall (in product landed)",
+                    None,
+                    "unknown",
+                    source="requires customer delivery charge + ShipBlu costs",
+                )
+            )
+            notes.append(
+                "Customer delivery charge unknown — cannot separate ShipBlu from product price."
+            )
+            return extras, {
+                "customer_delivery_charge": None,
+                "delivery_profit_or_subsidy": None,
+                "delivery_shortfall": None,
+                "separate_delivery_charge": False,
+            }
+
+        extras.append(
+            CostComponent(
+                "customer_delivery_charge",
+                "Customer Delivery Charge",
+                charge,
+                "configured" if charge_status != "verified" else "verified",
+                source=self.policy.customer_delivery_charge_source
+                or "order-level delivery revenue (not product COGS)",
+            )
+        )
+
+        ship = cmap.get("shipblu_shipping")
+        cod = cmap.get("cod_commission")
+        ship_known = bool(ship and ship.is_known and ship.amount is not None and ship.status != "not_applicable")
+        cod_known = bool(cod and cod.is_known and cod.amount is not None)
+        # N/A COD (prepaid) counts as known 0
+        if cod and cod.status == "not_applicable":
+            cod_known = True
+            cod_amt = 0.0
+        else:
+            cod_amt = float(cod.amount or 0.0) if cod_known else None
+        ship_amt = float(ship.amount or 0.0) if ship_known else None
+
+        if ship_amt is None or cod_amt is None:
+            extras.append(
+                CostComponent(
+                    "delivery_shortfall",
+                    "Delivery Shortfall (in product landed)",
+                    None,
+                    "unknown",
+                    source="ShipBlu/COD not fully known — shortfall unresolved",
+                )
+            )
+            return extras, {
+                "customer_delivery_charge": charge,
+                "delivery_profit_or_subsidy": None,
+                "delivery_shortfall": None,
+                "separate_delivery_charge": True,
+            }
+
+        pnl = round(charge - ship_amt - cod_amt, 2)
+        shortfall = round(max(0.0, -pnl), 2)
+        extras.append(
+            CostComponent(
+                "delivery_shortfall",
+                "Delivery Shortfall (in product landed)",
+                shortfall,
+                "estimated" if (ship and ship.is_estimate) or (cod and cod.is_estimate) else "configured",
+                source=(
+                    f"max(0, shipblu {ship_amt} + COD {cod_amt} - charge {charge}) "
+                    "= shortfall; full ShipBlu NOT in product price when customer charged"
+                ),
+                is_estimate=bool((ship and ship.is_estimate) or (cod and cod.is_estimate)),
+            )
+        )
+        notes.append(
+            f"delivery_profit_or_subsidy = {charge} - {ship_amt} - {cod_amt} = {pnl}"
+        )
+        return extras, {
+            "customer_delivery_charge": charge,
+            "delivery_profit_or_subsidy": pnl,
+            "delivery_shortfall": shortfall,
+            "separate_delivery_charge": True,
+        }
+
     # ------------------------------------------------------------------ finalize
-    def _finalize(self, components, shipblu_bd, notes):
+    def _finalize(self, components, shipblu_bd, notes, delivery_meta=None):
+        delivery_meta = delivery_meta or {}
         cmap = {c.key: c for c in components}
         missing = []
         estimates = []
@@ -696,15 +902,55 @@ class LandedCostEngine:
         else:
             decision = "INSUFFICIENT_COST_DATA"
 
-        landed = None
-        if not incomplete:
-            landed = round(sum(float(c.amount or 0.0) for c in components if c.status != "not_applicable"), 2)
-        else:
-            # Partial sum of known only for worksheet display — marked incomplete
-            landed = round(
-                sum(float(c.amount or 0.0) for c in components if c.is_known and c.status != "not_applicable"),
-                2,
+        # Gross sum of mandatory cost components (transparency)
+        def _sum_keys(keys, *, require_complete):
+            total = 0.0
+            for key in keys:
+                c = cmap.get(key)
+                if not c or c.status == "not_applicable":
+                    continue
+                if not c.is_known or c.amount is None:
+                    if require_complete:
+                        return None
+                    continue
+                total += float(c.amount)
+            return round(total, 2)
+
+        separate = bool(delivery_meta.get("separate_delivery_charge"))
+        if separate:
+            # Product price uses product keys + shortfall only (not full ShipBlu/COD)
+            product_keys = [
+                "supplier_cost",
+                "supplier_shipping",
+                "payment_gateway_fee",
+                "packaging",
+                "tax",
+                "return_risk",
+                "handling",
+                "delivery_shortfall",
+            ]
+            product_landed = _sum_keys(product_keys, require_complete=False)
+            # Legacy landed_cost field = product_landed for pricing (not gross ShipBlu stack)
+            landed = product_landed
+            # Also expose gross carrier stack for audits
+            gross = _sum_keys(MANDATORY_KEYS, require_complete=False)
+            notes.append(
+                f"Gross mandatory cost stack (incl. ShipBlu/COD, excl. delivery revenue): {gross}"
             )
+        else:
+            product_landed = _sum_keys(
+                [
+                    "supplier_cost",
+                    "supplier_shipping",
+                    "payment_gateway_fee",
+                    "packaging",
+                    "tax",
+                    "return_risk",
+                    "handling",
+                ],
+                require_complete=False,
+            )
+            landed = product_landed
 
         return LandedCostResult(
             components=components,
@@ -718,4 +964,8 @@ class LandedCostEngine:
             estimate_keys=estimates,
             shipblu_breakdown=shipblu_bd,
             notes=notes,
+            product_landed_cost=product_landed,
+            customer_delivery_charge=delivery_meta.get("customer_delivery_charge"),
+            delivery_profit_or_subsidy=delivery_meta.get("delivery_profit_or_subsidy"),
+            delivery_shortfall=delivery_meta.get("delivery_shortfall"),
         )

@@ -78,6 +78,15 @@
             <field name="default_destination_governorate"/>
             <field name="default_package_size_code"/>
             <field name="default_weight_kg"/>
+            <field name="fulfillment_origin_note" colspan="2"/>
+          </group>
+          <group string="Customer delivery revenue (order-level, not product COGS)">
+            <field name="customer_delivery_charge_amount"/>
+            <field name="customer_delivery_charge_status"/>
+            <field name="customer_delivery_charge_source"/>
+            <field name="customer_pickup_fee_amount"/>
+            <field name="customer_pickup_fee_status"/>
+            <field name="customer_pickup_fee_source"/>
           </group>
           <group string="Packaging schedule">
             <field name="packaging_cost_ids" nolabel="1" colspan="2">

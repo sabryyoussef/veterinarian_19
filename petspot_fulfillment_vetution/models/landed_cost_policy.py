@@ -139,7 +139,10 @@ class PetspotVetutionLandedCostPolicy(models.Model):
     handling_status = fields.Selection(COMPONENT_STATES, default="unknown", required=True)
     handling_source = fields.Char()
 
-    default_origin_governorate = fields.Char(default="Giza")
+    default_origin_governorate = fields.Char(
+        default="Giza",
+        help="Ecommerce fulfillment origin governorate (PetSpot Giza — not North Coast clinic).",
+    )
     default_destination_governorate = fields.Char(
         help="Required for ShipBlu estimate in shadow; leave empty → unknown shipping.",
     )
@@ -148,6 +151,31 @@ class PetspotVetutionLandedCostPolicy(models.Model):
     )
     default_weight_kg = fields.Float(default=0.5)
 
+    # Phase 15A.4 — customer delivery revenue (order-level, not product COGS)
+    customer_delivery_charge_amount = fields.Float(
+        default=118.0,
+        help="Order-level customer delivery charge (EGP). Not added into product COGS.",
+    )
+    customer_delivery_charge_status = fields.Selection(
+        COMPONENT_STATES, default="configured", required=True
+    )
+    customer_delivery_charge_source = fields.Char(
+        default="Odoo delivery.carrier fixed_price / ShipBlu+Bosta+Standard products list_price=118",
+    )
+    customer_pickup_fee_amount = fields.Float(default=0.0)
+    customer_pickup_fee_status = fields.Selection(
+        COMPONENT_STATES, default="verified_zero", required=True
+    )
+    customer_pickup_fee_source = fields.Char(
+        default="Giza store pickup — no separate pickup fee approved.",
+    )
+    fulfillment_origin_note = fields.Text(
+        default=(
+            "Ecommerce origin: ShipBlu Haram clinic pickup — "
+            "451 Haram Street Nasr Eldin, Giza (zone remote 83). "
+            "Odoo WH partner remains North Coast clinic; do not change public clinic address."
+        ),
+    )
 
     non_recoverable_tax_rate = fields.Float(default=0.0)
     non_recoverable_tax_status = fields.Selection(COMPONENT_STATES, default="unknown", required=True)
@@ -261,6 +289,14 @@ class PetspotVetutionLandedCostPolicy(models.Model):
             "optional_fixed_cost": _amt("handling"),
             "handling": _amt("handling"),
             "landed_cost": result.landed_cost if result.landed_cost is not None else 0.0,
+            "product_landed_cost": (
+                result.product_landed_cost
+                if result.product_landed_cost is not None
+                else (result.landed_cost if result.landed_cost is not None else 0.0)
+            ),
+            "customer_delivery_charge": result.customer_delivery_charge,
+            "delivery_profit_or_subsidy": result.delivery_profit_or_subsidy,
+            "delivery_shortfall": result.delivery_shortfall,
             "landed_cost_incomplete": result.landed_cost_incomplete,
             "missing_components": list(result.missing_keys),
             "estimate_components": list(result.estimate_keys),
@@ -273,6 +309,7 @@ class PetspotVetutionLandedCostPolicy(models.Model):
             "report_lines": result.report_lines(),
             "formula": result.formula,
             "engine_result": result,
+            "notes": list(result.notes or []),
         }
 
     def _round_price(self, value):

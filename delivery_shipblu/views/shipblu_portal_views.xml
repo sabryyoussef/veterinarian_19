@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_shipblu_pickup_point_list" model="ir.ui.view">
+        <field name="name">shipblu.pickup.point.list</field>
+        <field name="model">shipblu.pickup.point</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0">
+                <field name="is_default"/>
+                <field name="name"/>
+                <field name="shipblu_id"/>
+                <field name="line_1"/>
+                <field name="line_2"/>
+                <field name="zone_id"/>
+                <field name="zone_name"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_shipblu_pickup_point_form" model="ir.ui.view">
+        <field name="name">shipblu.pickup.point.form</field>
+        <field name="model">shipblu.pickup.point</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="shipblu_id"/>
+                        <field name="is_default"/>
+                        <field name="nickname"/>
+                        <field name="line_1"/>
+                        <field name="line_2"/>
+                        <field name="zone_id"/>
+                        <field name="zone_name"/>
+                        <field name="what3words"/>
+                        <field name="backend_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_pickup_point" model="ir.actions.act_window">
+        <field name="name">Pickup Points</field>
+        <field name="res_model">shipblu.pickup.point</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_shipblu_return_point_list" model="ir.ui.view">
+        <field name="name">shipblu.return.point.list</field>
+        <field name="model">shipblu.return.point</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0">
+                <field name="is_default"/>
+                <field name="name"/>
+                <field name="shipblu_id"/>
+                <field name="line_1"/>
+                <field name="zone_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_shipblu_return_point" model="ir.actions.act_window">
+        <field name="name">Return Points</field>
+        <field name="res_model">shipblu.return.point</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_shipblu_warehouse_list" model="ir.ui.view">
+        <field name="name">shipblu.warehouse.list</field>
+        <field name="model">shipblu.warehouse</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="shipblu_id"/>
+                <field name="address"/>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="is_virtual"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_shipblu_warehouse" model="ir.actions.act_window">
+        <field name="name">ShipBlu Hubs (Drop-off)</field>
+        <field name="res_model">shipblu.warehouse</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

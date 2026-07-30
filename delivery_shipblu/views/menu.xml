@@ -11,6 +11,38 @@
               parent="menu_delivery_shipblu_root"
               action="action_shipblu_shipment_dashboard"
               sequence="5"/>
+
+    <menuitem id="menu_delivery_shipblu_ops"
+              name="Operations"
+              parent="menu_delivery_shipblu_root"
+              sequence="8"
+              groups="petspot_shipblu_base.group_shipblu_manager"/>
+    <menuitem id="menu_delivery_shipblu_create_delivery"
+              name="Create Delivery"
+              parent="menu_delivery_shipblu_ops"
+              action="action_shipblu_create_delivery_wizard"
+              sequence="10"/>
+    <menuitem id="menu_delivery_shipblu_create_return"
+              name="Create Return"
+              parent="menu_delivery_shipblu_ops"
+              action="action_shipblu_create_return_wizard"
+              sequence="20"/>
+    <menuitem id="menu_delivery_shipblu_create_exchange"
+              name="Create Exchange"
+              parent="menu_delivery_shipblu_ops"
+              action="action_shipblu_create_exchange_wizard"
+              sequence="30"/>
+    <menuitem id="menu_delivery_shipblu_create_cash"
+              name="Create Cash Collection"
+              parent="menu_delivery_shipblu_ops"
+              action="action_shipblu_create_cash_wizard"
+              sequence="40"/>
+    <menuitem id="menu_delivery_shipblu_batch_ops"
+              name="Batch Labels / Pickup"
+              parent="menu_delivery_shipblu_ops"
+              action="action_shipblu_batch_ops_wizard"
+              sequence="50"/>
+
     <menuitem id="menu_delivery_shipblu_shipments"
               name="Shipments"
               parent="menu_delivery_shipblu_root"
@@ -32,12 +64,6 @@
               action="action_shipblu_import_wizard"
               sequence="20"
               groups="petspot_shipblu_base.group_shipblu_user"/>
-    <menuitem id="menu_delivery_shipblu_package_sizes"
-              name="Package Sizes"
-              parent="menu_delivery_shipblu_root"
-              action="petspot_shipblu_base.action_shipblu_backend"
-              sequence="55"
-              groups="petspot_shipblu_base.group_shipblu_manager"/>
 
     <menuitem id="menu_delivery_shipblu_returns"
               name="Returns"
@@ -54,6 +80,26 @@
               parent="menu_delivery_shipblu_root"
               action="action_shipblu_cash_collection"
               sequence="40"/>
+
+    <menuitem id="menu_delivery_shipblu_locations"
+              name="Locations"
+              parent="menu_delivery_shipblu_root"
+              sequence="45"/>
+    <menuitem id="menu_delivery_shipblu_pickup_points"
+              name="Pickup Points"
+              parent="menu_delivery_shipblu_locations"
+              action="action_shipblu_pickup_point"
+              sequence="10"/>
+    <menuitem id="menu_delivery_shipblu_return_points"
+              name="Return Points"
+              parent="menu_delivery_shipblu_locations"
+              action="action_shipblu_return_point"
+              sequence="20"/>
+    <menuitem id="menu_delivery_shipblu_hubs"
+              name="Drop-off Hubs"
+              parent="menu_delivery_shipblu_locations"
+              action="action_shipblu_warehouse"
+              sequence="30"/>
 
     <menuitem id="menu_delivery_shipblu_coverage"
               name="Coverage"

@@ -32,6 +32,33 @@ class StockPicking(models.Model):
     )
     shipblu_business_reference = fields.Char(related="shipblu_shipment_id.business_reference")
     shipblu_tracking_url = fields.Char(related="shipblu_shipment_id.tracking_url")
+    shipblu_canonical_key = fields.Char(copy=False, index=True)
+    shipblu_duplicate_guard_status = fields.Selection(
+        [
+            ("unchecked", "Unchecked"),
+            ("checking", "Checking"),
+            ("clear", "Clear to create"),
+            ("creating", "Creating"),
+            ("created", "Created"),
+            ("reconciled", "Reconciled existing"),
+            ("verification_required", "Verification Required"),
+            ("blocked", "Blocked"),
+            ("error", "Error"),
+        ],
+        copy=False,
+        index=True,
+    )
+    shipblu_duplicate_detection_source = fields.Selection(
+        [
+            ("local_awb", "Local AWB"),
+            ("imported_delivery", "Imported delivery"),
+            ("shopify_fulfillment", "Shopify fulfillment"),
+            ("remote_reference", "Remote merchant reference"),
+            ("remote_awb", "Remote AWB"),
+            ("verification_required", "Verification required"),
+        ],
+        copy=False,
+    )
 
     def _compute_shipblu_shipment(self):
         for picking in self:
@@ -39,9 +66,29 @@ class StockPicking(models.Model):
 
     def action_shipblu_create_shipment(self):
         service = ShipmentService(self.env)
+        messages = []
         for picking in self:
-            service.create_from_picking(picking)
-        return True
+            shipment = service.create_from_picking(picking)
+            if shipment.env.context.get("shipblu_reconciled"):
+                messages.append(
+                    shipment.env.context.get("shipblu_guard_message")
+                    or _("Existing ShipBlu AWB found and linked; no new delivery was created.")
+                )
+            else:
+                messages.append(
+                    _("ShipBlu delivery created — AWB %(awb)s")
+                    % {"awb": shipment.tracking_number or shipment.shipblu_order_id or shipment.name}
+                )
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("ShipBlu"),
+                "message": "\n".join(messages),
+                "type": "warning" if any("Existing" in m for m in messages) else "success",
+                "sticky": False,
+            },
+        }
 
     def action_shipblu_refresh_status(self):
         for picking in self:

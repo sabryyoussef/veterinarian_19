@@ -4,5 +4,6 @@ from . import shipblu_shipment
 from . import shipblu_event
 from . import shipblu_coverage
 from . import shipblu_aux_orders
+from . import shipblu_portal
 from . import stock_picking
 from . import shipblu_backend_ext

@@ -53,13 +53,14 @@ class ShipBluBackend(models.Model):
 
     default_zone_id = fields.Integer(
         string="Default Drop-off Zone ID",
-        default=204,
-        help="Pet Spot North Coast / Sahel zone verified as 204.",
+        default=83,
+        help="Pet Spot Haram clinic zone verified as 83.",
         tracking=True,
     )
     default_package_size = fields.Integer(
         string="Default Package Size ID",
-        help="Integer package_size from your ShipBlu account. Required before enabling create.",
+        default=1,
+        help="Integer package_size for create payloads. Pricing accepts 1+. Package-sizes list API returns 403 — set manually.",
         tracking=True,
     )
     fallback_line_2 = fields.Char(
@@ -123,9 +124,9 @@ class ShipBluBackend(models.Model):
                 _("ShipBlu backend is in Track Only mode — %(action)s is blocked.")
                 % {"action": action_label}
             )
-        if self._normalized_owner_mode() == "shopify_owned" and action_label == "create":
+        if self._normalized_owner_mode() == "shopify_owned" and str(action_label).startswith("create"):
             raise UserError(_("Shopify Owned mode: Odoo cannot create ShipBlu shipments."))
-        if action_label == "create" and not self.can_create_shipments():
+        if str(action_label).startswith("create") and not self.can_create_shipments():
             raise UserError(
                 _(
                     "Odoo ShipBlu create is disabled. Set owner mode to Odoo Owned, "

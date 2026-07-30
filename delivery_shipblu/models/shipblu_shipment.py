@@ -75,6 +75,7 @@ class ShipBluShipment(models.Model):
             ("error", "Error"),
             ("needs_matching", "Needs Matching"),
             ("manual_review", "Manual Review"),
+            ("verification_required", "Verification Required"),
         ],
         default="draft",
         required=True,
@@ -106,6 +107,44 @@ class ShipBluShipment(models.Model):
         tracking=True,
         index=True,
     )
+    # Duplicate AWB guard
+    canonical_shipment_key = fields.Char(
+        string="Canonical Shipment Key",
+        index=True,
+        copy=False,
+        help="Deterministic identity sent as merchant_order_reference.",
+    )
+    idempotency_key = fields.Char(copy=False, index=True)
+    duplicate_guard_status = fields.Selection(
+        [
+            ("unchecked", "Unchecked"),
+            ("checking", "Checking"),
+            ("clear", "Clear to create"),
+            ("creating", "Creating"),
+            ("created", "Created"),
+            ("reconciled", "Reconciled existing"),
+            ("verification_required", "Verification Required"),
+            ("blocked", "Blocked"),
+            ("error", "Error"),
+        ],
+        default="unchecked",
+        index=True,
+        copy=False,
+    )
+    duplicate_detection_source = fields.Selection(
+        [
+            ("local_awb", "Local AWB"),
+            ("imported_delivery", "Imported delivery"),
+            ("shopify_fulfillment", "Shopify fulfillment"),
+            ("remote_reference", "Remote merchant reference"),
+            ("remote_awb", "Remote AWB"),
+            ("verification_required", "Verification required"),
+        ],
+        copy=False,
+        index=True,
+    )
+    last_remote_precheck_at = fields.Datetime(copy=False)
+    reconciliation_notes = fields.Text(copy=False)
     last_error = fields.Text(copy=False)
     last_sync_at = fields.Datetime()
     last_sync_result = fields.Char()
@@ -131,6 +170,28 @@ class ShipBluShipment(models.Model):
         self.env.cr.execute(
             "ALTER TABLE IF EXISTS shipblu_shipment "
             "DROP CONSTRAINT IF EXISTS shipblu_shipment_picking_uniq"
+        )
+        # Partial uniques for non-empty canonical key / AWB
+        self.env.cr.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS shipblu_shipment_canonical_key_uniq
+            ON shipblu_shipment (canonical_shipment_key)
+            WHERE canonical_shipment_key IS NOT NULL AND canonical_shipment_key != ''
+            """
+        )
+        self.env.cr.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS shipblu_shipment_tracking_uniq
+            ON shipblu_shipment (tracking_number)
+            WHERE tracking_number IS NOT NULL AND tracking_number != ''
+            """
+        )
+        self.env.cr.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS shipblu_shipment_idempotency_uniq
+            ON shipblu_shipment (idempotency_key)
+            WHERE idempotency_key IS NOT NULL AND idempotency_key != ''
+            """
         )
 
     @api.model_create_multi

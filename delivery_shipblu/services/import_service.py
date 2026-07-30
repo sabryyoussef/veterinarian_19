@@ -143,6 +143,13 @@ class ImportService:
                             "last_error": _("AWB already linked to %s") % clash.name,
                         }
                     )
+            # Never downgrade an Odoo-owned create to shopify/imported on re-import
+            if existing.creation_source == "odoo" or existing.shipment_owner == "odoo_shipblu":
+                vals.pop("creation_source", None)
+                vals.pop("shipment_owner", None)
+                if existing.canonical_shipment_key:
+                    vals["business_reference"] = existing.canonical_shipment_key
+                    vals["canonical_shipment_key"] = existing.canonical_shipment_key
             existing.write(vals)
             shipment = existing
             updated = 1
@@ -202,11 +209,17 @@ class ImportService:
         }
 
     def _infer_source(self, order, merchant_ref):
-        # Heuristic: Shopify apps often put #1004 / gid-like refs; Odoo uses ODOO- prefix
-        ref = (merchant_ref or "") + " " + str(order.get("order_notes") or "")
-        if re.search(r"ODOO-\d+-", ref):
+        # Heuristic: Shopify apps often put #1004; Odoo uses ODOO- or shipblu: canonical keys.
+        # Do not treat "shopify-<id>" inside shipblu:… keys as Shopify-created.
+        merchant_ref = (merchant_ref or "").strip()
+        if merchant_ref.startswith("shipblu:") or re.search(r"ODOO-\d+-", merchant_ref):
             return "odoo"
-        if re.search(r"#\d+", ref) or "shopify" in ref.lower():
+        ref = merchant_ref + " " + str(order.get("order_notes") or "")
+        if re.search(r"ODOO-\d+-", ref) or "shipblu:" in ref:
+            return "odoo"
+        if re.search(r"#\d+", merchant_ref) or (
+            "shopify" in ref.lower() and not merchant_ref.startswith("shipblu:")
+        ):
             return "shopify"
         return "unknown"
 
@@ -411,6 +424,142 @@ class ImportService:
                         Zone.create(zvals)
                     z_count += 1
         return {"governorates": g_count, "cities": c_count, "zones": z_count}
+
+    def sync_merchant_profile(self, backend=None):
+        """Pull merchant wallet / pickup flags from GET /v1/merchants/."""
+        backend = backend or self._backend()
+        client = backend.get_client()
+        data = client.get_merchants()
+        results = data.get("results") if isinstance(data, dict) else data
+        merchant = (results or [None])[0] if isinstance(results, list) else None
+        if not isinstance(merchant, dict):
+            raise UserError(_("No merchant returned from ShipBlu."))
+        address = merchant.get("address") or {}
+        zone = address.get("zone") if isinstance(address, dict) else {}
+        zone_id = zone.get("id") if isinstance(zone, dict) else address.get("zone")
+        vals = {
+            "merchant_id": merchant.get("id") or 0,
+            "merchant_name": merchant.get("name") or False,
+            "merchant_status": merchant.get("status") or False,
+            "merchant_van_or_bike": merchant.get("van_or_bike") or False,
+            "merchant_is_self_signup": bool(merchant.get("is_self_signup")),
+            "merchant_store_phone": merchant.get("store_phone") or False,
+            "merchant_store_email": merchant.get("store_email") or False,
+            "merchant_pickup_fees": float(merchant.get("pickup_fees") or 0.0),
+            "merchant_pickup_time": int(merchant.get("pickup_time") or 0),
+            "merchant_wallet_balance": float(merchant.get("quickbooks_wallet_balance") or 0.0),
+            "merchant_cod_balance": float(merchant.get("quickbooks_cod_balance") or 0.0),
+            "merchant_refunds_balance": float(merchant.get("quickbooks_refunds_balance") or 0.0),
+            "merchant_customer_balance": float(merchant.get("quickbooks_customer_balance") or 0.0),
+            "merchant_transfer_days": merchant.get("transfer_days") or False,
+            "merchant_store_line_1": (address.get("line_1") if isinstance(address, dict) else False) or False,
+            "merchant_store_line_2": (address.get("line_2") if isinstance(address, dict) else False) or False,
+            "merchant_store_zone_id": int(zone_id or 0) or False,
+            "last_merchant_sync_at": fields.Datetime.now(),
+        }
+        if not backend.default_package_size:
+            vals["default_package_size"] = 1
+        backend.write(vals)
+        return vals
+
+    def sync_portal_locations(self, backend=None):
+        """Sync pickup points, return points, and ShipBlu hubs (drop-off warehouses)."""
+        backend = backend or self._backend()
+        client = backend.get_client()
+        company = backend.company_id.id
+        Pickup = self.env["shipblu.pickup.point"].sudo()
+        ReturnPt = self.env["shipblu.return.point"].sudo()
+        Wh = self.env["shipblu.warehouse"].sudo()
+
+        pickups = client.get_pickup_points(limit=100)
+        pickup_rows = pickups.get("results") if isinstance(pickups, dict) else (pickups or [])
+        p_count = 0
+        for row in pickup_rows or []:
+            sid = row.get("id")
+            if not sid:
+                continue
+            addr = row.get("address") or {}
+            zone = addr.get("zone")
+            zone_id = zone.get("id") if isinstance(zone, dict) else zone
+            name = addr.get("nickname") or addr.get("line_1") or f"Pickup {sid}"
+            vals = {
+                "name": name,
+                "backend_id": backend.id,
+                "company_id": company,
+                "shipblu_id": int(sid),
+                "is_default": bool(row.get("is_default")),
+                "nickname": addr.get("nickname") or False,
+                "line_1": addr.get("line_1") or False,
+                "line_2": addr.get("line_2") or False,
+                "zone_id": int(zone_id or 0) or False,
+                "zone_name": zone.get("name") if isinstance(zone, dict) else False,
+                "what3words": addr.get("what3words") or False,
+                "payload_json": json.dumps(redact_payload(row), ensure_ascii=False)[:8000],
+            }
+            existing = Pickup.search([("backend_id", "=", backend.id), ("shipblu_id", "=", int(sid))], limit=1)
+            if existing:
+                existing.write(vals)
+            else:
+                Pickup.create(vals)
+            p_count += 1
+
+        returns = client.get_return_points(limit=100)
+        return_rows = returns.get("results") if isinstance(returns, dict) else (returns or [])
+        r_count = 0
+        for row in return_rows or []:
+            sid = row.get("id")
+            if not sid:
+                continue
+            addr = row.get("address") or {}
+            zone = addr.get("zone")
+            zone_id = zone.get("id") if isinstance(zone, dict) else zone
+            name = addr.get("nickname") or addr.get("line_1") or f"Return {sid}"
+            vals = {
+                "name": name,
+                "backend_id": backend.id,
+                "company_id": company,
+                "shipblu_id": int(sid),
+                "is_default": bool(row.get("is_default")),
+                "nickname": addr.get("nickname") or False,
+                "line_1": addr.get("line_1") or False,
+                "line_2": addr.get("line_2") or False,
+                "zone_id": int(zone_id or 0) or False,
+                "payload_json": json.dumps(redact_payload(row), ensure_ascii=False)[:8000],
+            }
+            existing = ReturnPt.search([("backend_id", "=", backend.id), ("shipblu_id", "=", int(sid))], limit=1)
+            if existing:
+                existing.write(vals)
+            else:
+                ReturnPt.create(vals)
+            r_count += 1
+
+        warehouses = client.get_warehouses(limit=200)
+        wh_rows = warehouses.get("results") if isinstance(warehouses, dict) else (warehouses or [])
+        w_count = 0
+        for row in wh_rows or []:
+            sid = row.get("id")
+            if not sid:
+                continue
+            vals = {
+                "name": row.get("name") or f"Hub {sid}",
+                "backend_id": backend.id,
+                "company_id": company,
+                "shipblu_id": int(sid),
+                "code": row.get("code") or False,
+                "address": row.get("address") or False,
+                "latitude": float(row.get("latitude") or 0.0),
+                "longitude": float(row.get("longitude") or 0.0),
+                "is_virtual": bool(row.get("is_virtual")),
+                "payload_json": json.dumps(redact_payload(row), ensure_ascii=False)[:8000],
+            }
+            existing = Wh.search([("backend_id", "=", backend.id), ("shipblu_id", "=", int(sid))], limit=1)
+            if existing:
+                existing.write(vals)
+            else:
+                Wh.create(vals)
+            w_count += 1
+
+        return {"pickups": p_count, "return_points": r_count, "warehouses": w_count}
 
     def import_aux_orders(self, backend=None):
         """Import returns / exchanges / cash collections (read-only mirrors)."""

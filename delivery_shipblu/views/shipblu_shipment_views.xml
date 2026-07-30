@@ -46,7 +46,7 @@
                     <button name="action_open_sale_order" type="object" string="Open Sale Order"
                             invisible="not sale_order_id"/>
                     <field name="state" widget="statusbar"
-                            statusbar_visible="draft,created,tracking,needs_matching,done,error"/>
+                            statusbar_visible="draft,created,tracking,needs_matching,verification_required,done,error"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -59,6 +59,10 @@
                             invisible="not needs_matching"/>
                     <widget name="web_ribbon" title="Sync Error" bg_color="text-bg-danger"
                             invisible="state != 'error'"/>
+                    <widget name="web_ribbon" title="Verification Required" bg_color="text-bg-warning"
+                            invisible="state != 'verification_required'"/>
+                    <widget name="web_ribbon" title="Reconciled" bg_color="text-bg-info"
+                            invisible="duplicate_guard_status != 'reconciled'"/>
                     <div class="oe_title">
                         <h1><field name="name" readonly="1"/></h1>
                         <h2>
@@ -75,6 +79,14 @@
                             <field name="cod_amount"/>
                             <field name="creation_source"/>
                             <field name="shipment_owner"/>
+                        </group>
+                        <group string="Duplicate AWB Guard">
+                            <field name="canonical_shipment_key"/>
+                            <field name="idempotency_key"/>
+                            <field name="duplicate_guard_status"/>
+                            <field name="duplicate_detection_source"/>
+                            <field name="last_remote_precheck_at"/>
+                            <field name="reconciliation_notes"/>
                         </group>
                         <group string="Links">
                             <field name="backend_id"/>

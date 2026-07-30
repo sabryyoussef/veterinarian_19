@@ -6,6 +6,10 @@
         <field name="inherit_id" ref="petspot_shipblu_base.view_shipblu_backend_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header/button[@name='action_test_connection']" position="after">
+                <button name="action_sync_merchant_profile" type="object" string="Sync Merchant Profile"
+                        groups="petspot_shipblu_base.group_shipblu_user"/>
+                <button name="action_sync_portal_locations" type="object" string="Sync Locations"
+                        groups="petspot_shipblu_base.group_shipblu_user"/>
                 <button name="action_import_shipblu_orders" type="object" string="Import ShipBlu Orders"
                         groups="petspot_shipblu_base.group_shipblu_user"/>
                 <button name="action_sync_tracking" type="object" string="Sync Tracking"
@@ -14,6 +18,35 @@
                         groups="petspot_shipblu_base.group_shipblu_manager"/>
                 <button name="action_import_aux_orders" type="object" string="Import Returns/Exchanges/COD"
                         groups="petspot_shipblu_base.group_shipblu_manager"/>
+                <button name="action_push_store_address" type="object" string="Push Store Address"
+                        groups="petspot_shipblu_base.group_shipblu_manager"
+                        confirm="Update merchant store address on ShipBlu?"/>
+            </xpath>
+            <xpath expr="//group[@name='group_connection']" position="after">
+                <group string="Merchant Portal Profile" col="4" name="group_merchant_profile">
+                    <field name="merchant_status"/>
+                    <field name="merchant_van_or_bike"/>
+                    <field name="merchant_is_self_signup"/>
+                    <field name="merchant_pickup_fees"/>
+                    <field name="merchant_pickup_time"/>
+                    <field name="merchant_transfer_days"/>
+                    <field name="merchant_store_phone"/>
+                    <field name="merchant_store_email"/>
+                    <field name="merchant_wallet_balance"/>
+                    <field name="merchant_cod_balance"/>
+                    <field name="merchant_refunds_balance"/>
+                    <field name="merchant_customer_balance"/>
+                    <field name="merchant_store_line_1"/>
+                    <field name="merchant_store_line_2"/>
+                    <field name="merchant_store_zone_id"/>
+                    <field name="last_merchant_sync_at"/>
+                </group>
+                <group string="Push Store Address (Api-Key)" name="group_store_push">
+                    <field name="store_line_1_edit"/>
+                    <field name="store_line_2_edit"/>
+                    <field name="store_zone_id_edit"/>
+                    <field name="store_what3words_edit"/>
+                </group>
             </xpath>
         </field>
     </record>

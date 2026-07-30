@@ -38,7 +38,7 @@
                             <field name="shipment_creation_enabled"/>
                             <field name="default_zone_id"/>
                             <field name="default_package_size"
-                                      help="Required for Odoo Owned create. Package-sizes list API returns 403 for this merchant — set ID from ShipBlu portal."/>
+                                      help="Required for Odoo Owned create. Default 1 works with pricing API. Package-sizes list returns 403."/>
                             <field name="fallback_line_2"/>
                             <field name="tracking_url_template"/>
                             <field name="import_page_size"/>
@@ -46,7 +46,7 @@
                             <field name="max_retries"/>
                         </group>
                     </group>
-                    <group string="Connection">
+                    <group string="Connection" name="group_connection">
                         <field name="merchant_id"/>
                         <field name="merchant_name"/>
                         <field name="last_connection_ok"/>

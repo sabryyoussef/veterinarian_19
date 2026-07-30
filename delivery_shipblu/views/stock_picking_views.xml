@@ -10,7 +10,7 @@
                         string="Create ShipBlu Shipment"
                         class="btn-primary"
                         groups="petspot_shipblu_base.group_shipblu_user"
-                        invisible="picking_type_code != 'outgoing' or shipblu_order_id or state == 'cancel'"/>
+                        invisible="picking_type_code != 'outgoing' or shipblu_order_id or carrier_tracking_ref or state == 'cancel' or shipblu_duplicate_guard_status == 'verification_required'"/>
                 <button name="action_shipblu_refresh_status" type="object"
                         string="Refresh ShipBlu Status"
                         groups="petspot_shipblu_base.group_shipblu_user"
@@ -23,13 +23,20 @@
             <xpath expr="//page[@name='extra']" position="after">
                 <page string="ShipBlu" name="shipblu_shipping"
                       invisible="picking_type_code != 'outgoing'">
-                    <group>
+                    <group string="Duplicate AWB Guard">
+                        <group>
+                            <field name="shipblu_canonical_key"/>
+                            <field name="shipblu_duplicate_guard_status"/>
+                            <field name="shipblu_duplicate_detection_source"/>
+                        </group>
                         <group>
                             <field name="shipblu_shipment_owner"/>
                             <field name="shipblu_order_id"/>
                             <field name="shipblu_business_reference"/>
                             <field name="shipblu_tracking_url" widget="url"/>
                         </group>
+                    </group>
+                    <group>
                         <group>
                             <field name="shipblu_raw_status"/>
                             <field name="shipblu_normalized_status"/>
@@ -41,6 +48,7 @@
                             <field name="name"/>
                             <field name="tracking_number"/>
                             <field name="normalized_status"/>
+                            <field name="duplicate_guard_status"/>
                             <field name="state"/>
                             <field name="cod_amount"/>
                         </list>

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Pet Spot ShipBlu Base",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.4.0",
     "category": "Inventory/Delivery",
     "summary": "Shared ShipBlu API client, credentials, and audit logging for Pet Spot",
     "description": """
 Pet Spot ShipBlu Base
 =====================
 Company-scoped ShipBlu API configuration (Api-Key), HTTP client, sanitized
-request logging, connection tests, and coverage sync helpers.
+request logging, connection tests, filtered delivery lookup helpers.
 
 Docs: https://docs.shipblu.com/
     """,

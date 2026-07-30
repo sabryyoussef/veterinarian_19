@@ -1,26 +1,20 @@
 # ShipBlu ↔ Odoo (Pet Spot)
 
 ## Status
-Installed on **TEST** (`test.drpaws.ai` / :8028). Creation **OFF** by default.
+**TEST** (`test.drpaws.ai` / :8028): modules **19.0.1.3.0**, Duplicate AWB Guard active, Odoo Owned + creation ON.  
+**Production**: creation **OFF** — do not enable both Shopify and Odoo create.
 
-Official API: https://docs.shipblu.com/  
-Shopify app settings: https://admin.shopify.com/store/ucbah1-5e/apps/shipblu-2/Settings
+## Duplicate AWB Guard
+Canonical key: `shipblu:<store>:so:<shopify|odoo_so>:pick:<picking_id>`  
+Sent as `merchant_order_reference`. Pre-create checks local + Shopify markers + remote filter; reconciles instead of creating. Ambiguous timeout → `verification_required` (no blind retry).
+
+Verdict: **SAFE_ONLY_WITH_SINGLE_CREATION_OWNER** (ShipBlu has no verified server-side idempotency shared with Shopify).
+
+Evidence: `~/.cursor/evidence/shipblu-dup-guard-20260730/`
 
 ## Modules
-- `petspot_shipblu_base` — API key, client, logs
-- `delivery_shipblu` — carrier, Inventory → ShipBlu Shipping, picking actions
+- `petspot_shipblu_base` — API key, client, filtered delivery lookup
+- `delivery_shipblu` — Inventory → ShipBlu Shipping + Duplicate Guard
 
 ## Secrets
-`~/.cursor/secrets/shipblu-petspot.env` (mode 600): `SHIPBLU_API_KEY`, portal user/pass for Shopify app only.
-
-**Rotate the portal password** — it was pasted in chat.
-
-## Safety
-- Owner mode: `track_only` on TEST (import + sync only)
-- `shipment_creation_enabled=False`
-- Before enabling Odoo create: set owner to `odoo_owned`, set **Default Package Size ID**, disable Shopify app auto-create to avoid dual AWBs
-
-## Verified live (API key)
-- Merchant: pet spot (#9040)
-- Default **drop-off** zone on TEST: **83** (Haram / الهرم) — for Giza deliveries (e.g. 451 Haram St, Nasr Eldin)
-- Merchant pickup point still: id **10066**, zone **204** (Sahel / North Coast) unless pickup is changed in ShipBlu
+`~/.cursor/secrets/shipblu-petspot.env` (mode 600)

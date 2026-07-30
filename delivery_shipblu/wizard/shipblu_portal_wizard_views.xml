@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Create Delivery -->
+    <record id="view_shipblu_create_delivery_wizard" model="ir.ui.view">
+        <field name="name">shipblu.create.delivery.wizard.form</field>
+        <field name="model">shipblu.create.delivery.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create ShipBlu Delivery">
+                <group>
+                    <group>
+                        <field name="backend_id"/>
+                        <field name="picking_id"/>
+                        <field name="sale_order_id"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <field name="package_size"/>
+                        <field name="cash_amount"/>
+                        <field name="is_counter_dropoff"/>
+                        <field name="allow_open_package"/>
+                        <field name="fragile"/>
+                    </group>
+                </group>
+                <group string="Customer">
+                    <group>
+                        <field name="customer_name"/>
+                        <field name="customer_phone"/>
+                        <field name="customer_email"/>
+                    </group>
+                    <group>
+                        <field name="address_line_1"/>
+                        <field name="address_line_2"/>
+                        <field name="what3words"/>
+                        <field name="zone_id"/>
+                        <field name="zone_shipblu_id"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="merchant_order_reference"/>
+                    <field name="order_notes"/>
+                    <field name="declared_value"/>
+                </group>
+                <footer>
+                    <button name="action_quote" type="object" string="Price Quote" class="btn-secondary"/>
+                    <button name="action_create" type="object" string="Create on ShipBlu" class="btn-primary"
+                            confirm="This creates a live ShipBlu delivery order. Continue?"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_create_delivery_wizard" model="ir.actions.act_window">
+        <field name="name">Create Delivery</field>
+        <field name="res_model">shipblu.create.delivery.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Return -->
+    <record id="view_shipblu_create_return_wizard" model="ir.ui.view">
+        <field name="name">shipblu.create.return.wizard.form</field>
+        <field name="model">shipblu.create.return.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create ShipBlu Return">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="customer_name"/>
+                    <field name="customer_phone"/>
+                    <field name="customer_email"/>
+                    <field name="address_line_1"/>
+                    <field name="address_line_2"/>
+                    <field name="what3words"/>
+                    <field name="zone_shipblu_id"/>
+                    <field name="package_size"/>
+                    <field name="order_notes"/>
+                    <field name="cash_amount"/>
+                    <field name="merchant_order_reference"/>
+                    <field name="is_counter_dropoff"/>
+                </group>
+                <footer>
+                    <button name="action_create" type="object" string="Create Return" class="btn-primary"
+                            confirm="Create live ShipBlu return?"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_create_return_wizard" model="ir.actions.act_window">
+        <field name="name">Create Return</field>
+        <field name="res_model">shipblu.create.return.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Cash -->
+    <record id="view_shipblu_create_cash_wizard" model="ir.ui.view">
+        <field name="name">shipblu.create.cash.wizard.form</field>
+        <field name="model">shipblu.create.cash.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Cash Collection">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="customer_name"/>
+                    <field name="customer_phone"/>
+                    <field name="address_line_1"/>
+                    <field name="address_line_2"/>
+                    <field name="what3words"/>
+                    <field name="zone_shipblu_id"/>
+                    <field name="amount"/>
+                </group>
+                <footer>
+                    <button name="action_create" type="object" string="Create Cash Collection" class="btn-primary"
+                            confirm="Create live ShipBlu cash collection?"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_create_cash_wizard" model="ir.actions.act_window">
+        <field name="name">Create Cash Collection</field>
+        <field name="res_model">shipblu.create.cash.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Exchange -->
+    <record id="view_shipblu_create_exchange_wizard" model="ir.ui.view">
+        <field name="name">shipblu.create.exchange.wizard.form</field>
+        <field name="model">shipblu.create.exchange.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Exchange">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="customer_name"/>
+                    <field name="customer_phone"/>
+                    <field name="address_line_1"/>
+                    <field name="address_line_2"/>
+                    <field name="zone_shipblu_id"/>
+                    <field name="package_size"/>
+                    <field name="cash_amount"/>
+                    <field name="refund"/>
+                    <field name="refund_amount"/>
+                    <field name="order_notes"/>
+                    <field name="merchant_order_reference"/>
+                </group>
+                <footer>
+                    <button name="action_create" type="object" string="Create Exchange" class="btn-primary"
+                            confirm="Create live ShipBlu exchange?"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_create_exchange_wizard" model="ir.actions.act_window">
+        <field name="name">Create Exchange</field>
+        <field name="res_model">shipblu.create.exchange.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Batch ops -->
+    <record id="view_shipblu_batch_ops_wizard" model="ir.ui.view">
+        <field name="name">shipblu.batch.ops.wizard.form</field>
+        <field name="model">shipblu.batch.ops.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Batch Labels / Pickup">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="one_per_page"/>
+                    <field name="shipment_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button name="action_download_labels" type="object" string="Download PDF Labels" class="btn-primary"/>
+                    <button name="action_request_pickup" type="object" string="Request Pickup"
+                            class="btn-secondary"
+                            confirm="Request pickup for selected AWBs?"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_batch_ops_wizard" model="ir.actions.act_window">
+        <field name="name">Batch Labels / Pickup</field>
+        <field name="res_model">shipblu.batch.ops.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

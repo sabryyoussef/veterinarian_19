@@ -139,10 +139,30 @@ class ShipBluClient:
     def list_delivery_orders(self, limit=10, offset=0):
         return self.request("GET", "/v1/delivery-orders/", params={"limit": limit, "offset": offset})
 
+    def list_delivery_orders_filtered(self, limit=10, cursor=None, **filters):
+        """GET /v1/delivery-orders/ with documented filters (merchant_order_reference, tracking_number, …)."""
+        params = {"limit": int(limit)}
+        if cursor:
+            params["cursor"] = cursor
+        for key, value in filters.items():
+            if value is None or value is False or value == "":
+                continue
+            params[key] = value
+        return self.request("GET", "/v1/delivery-orders/", params=params)
+
+    def find_by_merchant_order_reference(self, merchant_order_reference, limit=20):
+        """Return first matching delivery or None. Filter is supported by public swagger."""
+        data = self.list_delivery_orders_filtered(
+            merchant_order_reference=merchant_order_reference, limit=limit
+        )
+        results = data.get("results") if isinstance(data, dict) else (data or [])
+        return (results or [None])[0]
+
     def get_delivery_order(self, order_id):
         return self.request("GET", f"/v1/delivery-orders/{order_id}/")
 
     def create_delivery_order(self, payload):
+        # allow_retry=False: never blindly re-POST after ambiguous network failure
         return self.request("POST", "/v1/delivery-orders/", payload=payload, allow_retry=False)
 
     def request_pickup(self, tracking_numbers):
@@ -202,6 +222,29 @@ class ShipBluClient:
 
     def get_return_points(self, limit=50, offset=0):
         return self.request("GET", "/v1/return-points/", params={"limit": limit, "offset": offset})
+
+    def get_warehouses(self, limit=100, offset=0, warehouse_id=None):
+        params = {"limit": limit, "offset": offset}
+        if warehouse_id:
+            params["id"] = int(warehouse_id)
+        return self.request("GET", "/v1/warehouses/", params=params)
+
+    def patch_merchant(self, merchant_id, payload):
+        return self.request("PATCH", f"/v1/merchants/{int(merchant_id)}/", payload=payload, allow_retry=False)
+
+    def get_pricing(self, order_type, payload, version="v1"):
+        """order_type: delivery | return | exchange | cash_collection | rto"""
+        path = f"/v{2 if version == 'v2' else 1}/pricing/orders/{order_type}/"
+        return self.request("POST", path, payload=payload, allow_retry=False)
+
+    def patch_delivery_order(self, order_id, payload):
+        """Best-effort update (tutorial mentions PATCH; public swagger lists GET only on detail)."""
+        return self.request(
+            "PATCH",
+            f"/v1/delivery-orders/{order_id}/",
+            payload=payload,
+            allow_retry=False,
+        )
 
     def request_raw(self, method, path, params=None, payload=None, allow_retry=True):
         """Like request(), but returns bytes when response is not JSON (e.g. PDF)."""

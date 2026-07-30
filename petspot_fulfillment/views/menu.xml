@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <menuitem id="menu_petspot_fulfillment_root"
+            name="PetSpot Fulfillment"
+            web_icon="petspot_fulfillment,static/description/icon.png"
+            sequence="45"
+            groups="petspot_fulfillment.group_fulfillment_user"/>
+
+  <menuitem id="menu_petspot_fulfillment_workspace"
+            name="Workspace"
+            parent="menu_petspot_fulfillment_root"
+            action="action_petspot_fulfillment_case"
+            sequence="10"/>
+
+  <menuitem id="menu_petspot_availability_inquiry"
+            name="Availability Inquiries"
+            parent="menu_petspot_fulfillment_root"
+            action="action_petspot_availability_inquiry"
+            sequence="20"/>
+</odoo>

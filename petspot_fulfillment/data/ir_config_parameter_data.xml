@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+  <record id="icp_ff_automation_enabled" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.automation_enabled</field>
+    <field name="value">False</field>
+  </record>
+  <record id="icp_ff_cutover_timestamp" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.cutover_timestamp</field>
+    <field name="value"></field>
+  </record>
+</odoo>

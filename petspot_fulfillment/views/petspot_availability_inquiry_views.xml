@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_petspot_availability_inquiry_tree" model="ir.ui.view">
+    <field name="name">petspot.availability.inquiry.list</field>
+    <field name="model">petspot.availability.inquiry</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="phone"/>
+        <field name="product_id"/>
+        <field name="requested_qty"/>
+        <field name="state"/>
+        <field name="channel"/>
+        <field name="sale_order_id"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_petspot_availability_inquiry_form" model="ir.ui.view">
+    <field name="name">petspot.availability.inquiry.form</field>
+    <field name="model">petspot.availability.inquiry</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_check_store" type="object" string="Check Store Availability"/>
+          <button name="action_source_supplier" type="object" string="Source from Supplier"/>
+          <button name="action_mark_unavailable" type="object" string="Mark Unavailable"/>
+          <button name="action_create_quotation" type="object" string="Create Odoo Quotation" class="btn-primary"/>
+          <button name="action_record_payment_link" type="object" string="Record Payment Link"/>
+          <button name="action_mark_paid_from_trusted" type="object" string="Confirm Trusted Payment"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="phone"/>
+              <field name="customer_name"/>
+              <field name="partner_id"/>
+              <field name="channel"/>
+            </group>
+            <group>
+              <field name="product_id"/>
+              <field name="default_code"/>
+              <field name="requested_qty"/>
+              <field name="product_url"/>
+              <field name="requested_fulfillment"/>
+            </group>
+          </group>
+          <group string="Shopify / Conversation">
+            <field name="shopify_product_id"/>
+            <field name="shopify_variant_id"/>
+            <field name="conversation_id"/>
+            <field name="message_id"/>
+            <field name="shopify_draft_order_id"/>
+            <field name="idempotency_key"/>
+          </group>
+          <group string="Confirmation">
+            <field name="confirmed_price"/>
+            <field name="confirmed_eta"/>
+            <field name="payment_link"/>
+            <field name="sale_order_id"/>
+            <field name="case_id"/>
+            <field name="note"/>
+            <field name="raw_message"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_petspot_availability_inquiry" model="ir.actions.act_window">
+    <field name="name">Availability Inquiries</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

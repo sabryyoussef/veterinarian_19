@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_petspot_fulfillment_transition_wizard" model="ir.ui.view">
+    <field name="name">petspot.fulfillment.transition.wizard.form</field>
+    <field name="model">petspot.fulfillment.transition.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Transition">
+        <group>
+          <field name="case_id" readonly="1"/>
+          <field name="target_state"/>
+          <field name="note"/>
+        </group>
+        <footer>
+          <button name="action_apply" type="object" string="Apply" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

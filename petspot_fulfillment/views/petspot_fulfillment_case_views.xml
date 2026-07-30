@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_petspot_fulfillment_case_tree" model="ir.ui.view">
+    <field name="name">petspot.fulfillment.case.list</field>
+    <field name="model">petspot.fulfillment.case</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="sale_order_id"/>
+        <field name="shopify_order_name"/>
+        <field name="partner_id"/>
+        <field name="path"/>
+        <field name="state"/>
+        <field name="payment_status"/>
+        <field name="delivery_method"/>
+        <field name="block_message" optional="hide"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_petspot_fulfillment_case_form" model="ir.ui.view">
+    <field name="name">petspot.fulfillment.case.form</field>
+    <field name="model">petspot.fulfillment.case</field>
+    <field name="arch" type="xml">
+      <form string="Fulfillment Case">
+        <header>
+          <button name="action_create_draft_rfq" type="object" string="Create Draft RFQ"
+                  class="btn-primary" groups="petspot_fulfillment.group_fulfillment_purchase"/>
+          <button name="action_record_supplier_confirmation" type="object" string="Supplier Confirm"/>
+          <button name="action_request_customer_approval" type="object" string="Need Customer Approval"/>
+          <button name="action_customer_approved" type="object" string="Customer Approved"/>
+          <button name="action_mark_paid_wizard" type="object" string="Mark Paid"
+                  groups="petspot_fulfillment.group_fulfillment_manager"/>
+          <button name="action_confirm_purchase" type="object" string="Confirm SO/PO"
+                  groups="petspot_fulfillment.group_fulfillment_manager"/>
+          <button name="action_mark_ready_for_delivery" type="object" string="Ready for Delivery"/>
+          <button name="action_create_shipblu" type="object" string="Create ShipBlu AWB"
+                  class="btn-secondary"/>
+          <button name="action_store_pickup_handover" type="object" string="Pickup Handover"/>
+          <button name="action_mark_unavailable" type="object" string="Unavailable / Exception"/>
+          <field name="state" widget="statusbar"
+                  statusbar_visible="new,availability_check,supplier_rfq,supplier_confirmed,payment_pending,paid,purchase_confirmed,awaiting_receipt,ready_for_delivery,shipping_created,completed"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_open_sale" type="object" class="oe_stat_button" icon="fa-shopping-cart"
+                    invisible="not sale_order_id">
+              <div class="o_stat_info"><span class="o_stat_text">Sale Order</span></div>
+            </button>
+            <button name="action_open_purchases" type="object" class="oe_stat_button" icon="fa-credit-card"
+                    invisible="purchase_order_count == 0">
+              <field name="purchase_order_count" widget="statinfo" string="RFQ/PO"/>
+            </button>
+            <button name="action_open_inquiry" type="object" class="oe_stat_button" icon="fa-whatsapp"
+                    invisible="not inquiry_id">
+              <div class="o_stat_info"><span class="o_stat_text">Inquiry</span></div>
+            </button>
+          </div>
+          <div class="alert alert-warning" role="alert" invisible="not block_message">
+            <field name="block_message" readonly="1"/>
+          </div>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="sale_order_id"/>
+              <field name="partner_id"/>
+              <field name="path"/>
+              <field name="delivery_method"/>
+              <field name="classification_source"/>
+            </group>
+            <group>
+              <field name="shopify_store_id"/>
+              <field name="shopify_order_id"/>
+              <field name="shopify_order_name"/>
+              <field name="idempotency_key"/>
+              <field name="shopify_financial_status"/>
+              <field name="payment_status"/>
+              <field name="payment_reference"/>
+              <field name="automation_enabled"/>
+              <field name="cutover_eligible"/>
+            </group>
+          </group>
+          <group string="Supplier / Approval">
+            <group>
+              <field name="supplier_confirmed"/>
+              <field name="supplier_cost"/>
+              <field name="supplier_eta"/>
+              <field name="supplier_reference"/>
+            </group>
+            <group>
+              <field name="customer_approval_required"/>
+              <field name="customer_approved"/>
+              <field name="customer_approval_note"/>
+              <field name="supplier_notes"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Lines">
+              <field name="line_ids">
+                <list editable="bottom">
+                  <field name="sale_line_id"/>
+                  <field name="product_id"/>
+                  <field name="product_uom_qty"/>
+                  <field name="source"/>
+                  <field name="vendor_id"/>
+                  <field name="purchase_line_id"/>
+                  <field name="note"/>
+                </list>
+              </field>
+              <field name="classification_note"/>
+            </page>
+            <page string="Transitions">
+              <field name="transition_ids" readonly="1">
+                <list>
+                  <field name="create_date"/>
+                  <field name="from_state"/>
+                  <field name="to_state"/>
+                  <field name="source"/>
+                  <field name="user_id"/>
+                  <field name="note"/>
+                </list>
+              </field>
+            </page>
+            <page string="Links">
+              <field name="purchase_order_ids" widget="many2many_tags"/>
+              <field name="inquiry_id"/>
+              <field name="company_id"/>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_petspot_fulfillment_case_search" model="ir.ui.view">
+    <field name="name">petspot.fulfillment.case.search</field>
+    <field name="model">petspot.fulfillment.case</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="shopify_order_id"/>
+        <field name="sale_order_id"/>
+        <filter name="new" string="New" domain="[('state','=','new')]"/>
+        <filter name="supplier" string="Waiting supplier" domain="[('state','in',('supplier_rfq','availability_check'))]"/>
+        <filter name="approval" string="Customer approval" domain="[('state','=','customer_approval_required')]"/>
+        <filter name="payment" string="Payment pending" domain="[('state','=','payment_pending')]"/>
+        <filter name="paid_ready" string="Paid / ready to purchase" domain="[('state','=','paid')]"/>
+        <filter name="receipt" string="Awaiting receipt" domain="[('state','=','awaiting_receipt')]"/>
+        <filter name="ship" string="Ready for ShipBlu" domain="[('state','=','ready_for_delivery')]"/>
+        <filter name="pickup" string="Store pickup ready" domain="[('state','=','store_pickup_ready')]"/>
+        <filter name="exception" string="Exceptions" domain="[('state','=','exception')]"/>
+        <filter name="cancelled" string="Unavailable/Cancelled" domain="[('state','in',('unavailable','cancelled'))]"/>
+        <group>
+          <filter name="groupby_state" string="State" context="{'group_by': 'state'}"/>
+          <filter name="groupby_path" string="Path" context="{'group_by': 'path'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_petspot_fulfillment_case" model="ir.actions.act_window">
+    <field name="name">Fulfillment Workspace</field>
+    <field name="res_model">petspot.fulfillment.case</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{'search_default_groupby_state': 1}</field>
+  </record>
+</odoo>

@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ff_case_user,petspot.fulfillment.case.user,model_petspot_fulfillment_case,group_fulfillment_user,1,1,1,0
+access_ff_case_manager,petspot.fulfillment.case.manager,model_petspot_fulfillment_case,group_fulfillment_manager,1,1,1,1
+access_ff_line_user,petspot.fulfillment.line.user,model_petspot_fulfillment_line,group_fulfillment_user,1,1,1,0
+access_ff_line_manager,petspot.fulfillment.line.manager,model_petspot_fulfillment_line,group_fulfillment_manager,1,1,1,1
+access_ff_transition_user,petspot.fulfillment.transition.user,model_petspot_fulfillment_transition,group_fulfillment_user,1,0,1,0
+access_ff_transition_manager,petspot.fulfillment.transition.manager,model_petspot_fulfillment_transition,group_fulfillment_manager,1,1,1,1
+access_inquiry_user,petspot.availability.inquiry.user,model_petspot_availability_inquiry,group_fulfillment_user,1,1,1,0
+access_inquiry_manager,petspot.availability.inquiry.manager,model_petspot_availability_inquiry,group_fulfillment_manager,1,1,1,1
+access_mark_paid_wizard,petspot.mark.paid.wizard,model_petspot_mark_paid_wizard,group_fulfillment_manager,1,1,1,1
+access_supplier_confirm_wizard,petspot.supplier.confirm.wizard,model_petspot_supplier_confirm_wizard,group_fulfillment_purchase,1,1,1,1
+access_transition_wizard,petspot.fulfillment.transition.wizard,model_petspot_fulfillment_transition_wizard,group_fulfillment_user,1,1,1,1

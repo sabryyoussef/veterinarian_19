@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_petspot_mark_paid_wizard" model="ir.ui.view">
+    <field name="name">petspot.mark.paid.wizard.form</field>
+    <field name="model">petspot.mark.paid.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Mark Paid">
+        <group>
+          <field name="case_id" readonly="1"/>
+          <field name="payment_reference"/>
+          <field name="journal_id"/>
+          <field name="note"/>
+        </group>
+        <footer>
+          <button name="action_confirm" type="object" string="Confirm" class="btn-primary"/>
+          <button string="Cancel" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

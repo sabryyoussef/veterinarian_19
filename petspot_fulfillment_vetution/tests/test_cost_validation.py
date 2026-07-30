@@ -296,29 +296,31 @@ class TestCostValidation(TransactionCase):
         self.assertFalse(self.policy.allow_customer_message)
         self.assertFalse(self.policy.allow_supplier_po)
 
+    def _fake_shipblu(self, base=95.0, cod_fee=0.0):
+        fake = MagicMock()
+        fake.base_fee = base
+        fake.size_surcharge = 0.0
+        fake.pickup_surcharge = 0.0
+        fake.discount = 0.0
+        fake.cod_fee = cod_fee
+        fake.pricing_source = "contract"
+        fake.notes = []
+        fake.to_dict.return_value = {"base_fee": base, "cod_fee": cod_fee}
+        return fake
 
-    def test_delivery_charge_not_in_product_landed(self):
-        """Giza→Giza prepaid: ShipBlu 95 recovered via 118 charge; product excludes full ShipBlu."""
+    def test_product_price_excludes_delivery_revenue(self):
+        """118 delivery charge must not inflate product landed / recommended price."""
         self.policy.write({
             "customer_delivery_charge_amount": 118.0,
             "customer_delivery_charge_status": "configured",
         })
-        fake = MagicMock()
-        fake.base_fee = 95.0
-        fake.size_surcharge = 0.0
-        fake.pickup_surcharge = 0.0
-        fake.discount = 0.0
-        fake.cod_fee = 0.0
-        fake.pricing_source = "contract"
-        fake.notes = []
-        fake.to_dict.return_value = {"base_fee": 95.0}
         if not self.env["shipblu.backend"].sudo().search([], limit=1):
             self.skipTest("no shipblu backend")
         with patch(
             "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
-            return_value=fake,
+            return_value=self._fake_shipblu(95.0),
         ):
-            res = LandedCostEngine(self.env, self.policy).compute(
+            delivery = LandedCostEngine(self.env, self.policy).compute(
                 supplier_cost=13.0,
                 context={
                     "requested_fulfillment": "shipblu_delivery",
@@ -327,33 +329,62 @@ class TestCostValidation(TransactionCase):
                     "payment_method": "paymob",
                 },
             )
-        self.assertEqual(res.component_map()["shipblu_shipping"].amount, 95.0)
-        self.assertEqual(res.customer_delivery_charge, 118.0)
-        self.assertAlmostEqual(res.delivery_profit_or_subsidy, 23.0)
-        self.assertEqual(res.delivery_shortfall, 0.0)
-        # Product landed must NOT include 95
-        self.assertLess(res.product_landed_cost, 95.0)
-        self.assertIn("APPROVED_PROVISIONAL_ESTIMATE", " ".join(res.notes))
+            pickup = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={"requested_fulfillment": "store_pickup"},
+            )
+        self.assertEqual(delivery.customer_delivery_charge, 118.0)
+        self.assertEqual(delivery.estimated_carrier_cost, 95.0)
+        self.assertAlmostEqual(delivery.delivery_margin, 23.0)
+        self.assertEqual(delivery.delivery_subsidy, 0.0)
+        # Product landed identical for pickup vs delivery (product costs only)
+        self.assertEqual(delivery.product_landed_cost, pickup.product_landed_cost)
+        self.assertEqual(delivery.recommended_product_price, pickup.recommended_product_price)
+        self.assertLess(delivery.product_landed_cost, 95.0)
+        self.assertNotIn(118.0, [delivery.product_landed_cost])
+        self.assertEqual(delivery.order_total, round(delivery.recommended_product_price + 118.0, 2))
+        self.assertIn("APPROVED_PROVISIONAL_ESTIMATE", " ".join(delivery.notes))
 
-    def test_delivery_shortfall_when_shipblu_exceeds_charge(self):
-        self.policy.write({
-            "customer_delivery_charge_amount": 118.0,
-            "customer_delivery_charge_status": "configured",
-        })
-        fake = MagicMock()
-        fake.base_fee = 196.0  # Giza→North Coast
-        fake.size_surcharge = 0.0
-        fake.pickup_surcharge = 0.0
-        fake.discount = 0.0
-        fake.cod_fee = 0.0
-        fake.pricing_source = "contract"
-        fake.notes = []
-        fake.to_dict.return_value = {"base_fee": 196.0}
+    def test_pickup_zero_delivery_charge(self):
+        res = LandedCostEngine(self.env, self.policy).compute(
+            supplier_cost=13.0,
+            context={"requested_fulfillment": "store_pickup"},
+        )
+        self.assertEqual(res.component_map()["shipblu_shipping"].status, "not_applicable")
+        self.assertEqual(res.component_map()["cod_commission"].status, "not_applicable")
+        self.assertEqual(res.customer_delivery_charge, 0.0)
+        self.assertEqual(res.estimated_carrier_cost, 0.0)
+        self.assertEqual(res.delivery_margin, 0.0)
+        self.assertEqual(res.delivery_subsidy, 0.0)
+
+    def test_shipblu_adds_118_to_order_total_not_product(self):
         if not self.env["shipblu.backend"].sudo().search([], limit=1):
             self.skipTest("no shipblu backend")
         with patch(
             "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
-            return_value=fake,
+            return_value=self._fake_shipblu(95.0),
+        ):
+            res = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={
+                    "requested_fulfillment": "shipblu_delivery",
+                    "destination_governorate": "Giza",
+                    "package_size_code": "small",
+                    "payment_method": "bank_transfer",
+                },
+            )
+        self.assertEqual(res.customer_delivery_charge, 118.0)
+        self.assertEqual(
+            res.order_total,
+            round((res.recommended_product_price or 0.0) + 118.0, 2),
+        )
+
+    def test_delivery_margin_separate_and_subsidy_when_carrier_above_charge(self):
+        if not self.env["shipblu.backend"].sudo().search([], limit=1):
+            self.skipTest("no shipblu backend")
+        with patch(
+            "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
+            return_value=self._fake_shipblu(196.0),
         ):
             res = LandedCostEngine(self.env, self.policy).compute(
                 supplier_cost=13.0,
@@ -364,18 +395,137 @@ class TestCostValidation(TransactionCase):
                     "payment_method": "bank_transfer",
                 },
             )
-        self.assertAlmostEqual(res.delivery_profit_or_subsidy, 118.0 - 196.0)
-        self.assertAlmostEqual(res.delivery_shortfall, 78.0)
-        # Shortfall included in product landed; full 196 is not
-        self.assertGreaterEqual(res.product_landed_cost, 13.0 + 78.0 - 1e-6)
-        self.assertLess(res.product_landed_cost, 13.0 + 196.0)
+        self.assertAlmostEqual(res.delivery_margin, 118.0 - 196.0)
+        self.assertAlmostEqual(res.delivery_subsidy, 78.0)
+        # Shortfall NOT in product landed
+        self.assertEqual(res.product_landed_cost, 13.0)  # other product costs unknown→skipped in sum
+        # Actually unknown components are skipped in require_complete=False sum — supplier 13 only
+        self.assertLess(res.product_landed_cost, 13.0 + 78.0)
 
-    def test_giza_pickup_delivery_revenue_zero(self):
+    def test_free_shipping_visible_subsidy(self):
+        if not self.env["shipblu.backend"].sudo().search([], limit=1):
+            self.skipTest("no shipblu backend")
+        with patch(
+            "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
+            return_value=self._fake_shipblu(95.0),
+        ):
+            res = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={
+                    "requested_fulfillment": "shipblu_delivery",
+                    "destination_governorate": "Giza",
+                    "package_size_code": "small",
+                    "payment_method": "paymob",
+                    "shipping_promotion": "free",
+                },
+            )
+        self.assertEqual(res.customer_delivery_charge, 0.0)
+        self.assertEqual(res.estimated_carrier_cost, 95.0)
+        self.assertAlmostEqual(res.delivery_subsidy, 95.0)
+        self.assertAlmostEqual(res.delivery_margin, -95.0)
+        self.assertEqual(res.scenario, "free_shipping")
+
+    def test_discounted_shipping_partial_subsidy(self):
+        if not self.env["shipblu.backend"].sudo().search([], limit=1):
+            self.skipTest("no shipblu backend")
+        with patch(
+            "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
+            return_value=self._fake_shipblu(95.0),
+        ):
+            res = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={
+                    "requested_fulfillment": "shipblu_delivery",
+                    "destination_governorate": "Giza",
+                    "package_size_code": "small",
+                    "payment_method": "paymob",
+                    "customer_delivery_charge": 60.0,
+                },
+            )
+        self.assertEqual(res.customer_delivery_charge, 60.0)
+        self.assertAlmostEqual(res.delivery_subsidy, 35.0)
+        self.assertAlmostEqual(res.delivery_margin, -35.0)
+
+    def test_missing_carrier_does_not_block_product_price(self):
         res = LandedCostEngine(self.env, self.policy).compute(
             supplier_cost=13.0,
+            context={
+                "requested_fulfillment": "shipblu_delivery",
+                # no destination → carrier unknown
+                "payment_method": "paymob",
+            },
+        )
+        self.assertEqual(res.recommended_product_price, 65.0)  # from product landed 13
+        self.assertEqual(res.product_decision_code, "INSUFFICIENT_PRODUCT_COST_DATA")  # other unknowns
+        # With only supplier known, product incomplete — but recommended still computed from partial sum
+        self.assertIsNotNone(res.recommended_product_price)
+
+    def test_missing_product_cost_blocks_product_pricing_base(self):
+        res = LandedCostEngine(self.env, self.policy).compute(
+            supplier_cost=0.0,
             context={"requested_fulfillment": "store_pickup"},
         )
-        self.assertEqual(res.component_map()["shipblu_shipping"].status, "not_applicable")
-        self.assertEqual(res.component_map()["cod_commission"].status, "not_applicable")
-        self.assertEqual(res.customer_delivery_charge, 0.0)
-        self.assertEqual(res.delivery_shortfall, 0.0)
+        self.assertEqual(res.component_map()["supplier_cost"].status, "unknown")
+        self.assertEqual(res.product_decision_code, "INSUFFICIENT_PRODUCT_COST_DATA")
+
+    def test_cod_not_double_counted_with_payment_fee(self):
+        if not self.env["shipblu.backend"].sudo().search([], limit=1):
+            self.skipTest("no shipblu backend")
+        with patch(
+            "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
+            return_value=self._fake_shipblu(95.0, cod_fee=0.33),
+        ):
+            res = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={
+                    "requested_fulfillment": "shipblu_delivery",
+                    "destination_governorate": "Giza",
+                    "package_size_code": "small",
+                    "payment_method": "cod",
+                    "estimated_collect_amount": 65.0,
+                },
+            )
+        self.assertEqual(res.component_map()["payment_gateway_fee"].status, "not_applicable")
+        self.assertEqual(res.delivery_specific_fees, 0.33)
+        self.assertAlmostEqual(res.delivery_margin, 118.0 - 95.0 - 0.33)
+
+    def test_rounding_applies_to_product_not_delivery(self):
+        sale = self.policy.compute_suggested_sale_price(13.0)
+        self.assertEqual(sale["suggested_price"], 65.0)
+        if not self.env["shipblu.backend"].sudo().search([], limit=1):
+            self.skipTest("no shipblu backend")
+        with patch(
+            "odoo.addons.petspot_shipblu_base.services.cost_engine.CostEngine.compute",
+            return_value=self._fake_shipblu(95.0),
+        ):
+            res = LandedCostEngine(self.env, self.policy).compute(
+                supplier_cost=13.0,
+                context={
+                    "requested_fulfillment": "shipblu_delivery",
+                    "destination_governorate": "Giza",
+                    "package_size_code": "small",
+                    "payment_method": "paymob",
+                },
+            )
+        self.assertEqual(res.customer_delivery_charge, 118.0)  # not rounded to 120
+        self.assertEqual(res.recommended_product_price % 5, 0)
+
+    def test_delivery_revenue_rule_configurable(self):
+        Rule = self.env["petspot.vetution.delivery.revenue.rule"]
+        rule = Rule.search([("policy_id", "=", self.policy.id)], limit=1)
+        if not rule:
+            rule = Rule.create({
+                "name": "t118",
+                "policy_id": self.policy.id,
+                "customer_charge": 118.0,
+                "status": "configured",
+            })
+        self.assertEqual(rule.customer_charge, 118.0)
+        amt, st, src, r = Rule.resolve_charge(self.policy, {"destination_governorate": "Giza"})
+        self.assertEqual(amt, 118.0)
+
+    def test_zero_side_effects_locks_corrected(self):
+        self.assertFalse(self.policy.allow_auto_quotation)
+        self.assertFalse(self.policy.allow_price_publish)
+        self.assertFalse(self.policy.allow_customer_message)
+        self.assertFalse(self.policy.allow_supplier_po)

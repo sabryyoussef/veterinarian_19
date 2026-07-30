@@ -1,53 +1,57 @@
-# Phase 15A.4 — Vetution Fulfillment Bridge (Shadow, Giza origin)
-
-Module: `petspot_fulfillment_vetution` 19.0.1.3.0
-
-Read-only assessments on Availability Inquiries. No quotes, PO, messages, or price publishes.
+# Phase 15A / 15A.4 — Vetution Shadow Assessment
 
 ## Operating model (ecommerce)
 
 ```
-Vetution supplier → PetSpot Giza fulfillment → customer via ShipBlu
-or customer pickup from the approved Giza location (Haram clinic)
+Vetution supplier → PetSpot Giza fulfillment (451 Haram St)
+  → customer via ShipBlu
+  OR customer pickup from approved Giza location
 ```
 
-North Coast remains the public clinic/Shopify entity address — **not** the ecommerce ShipBlu origin.
+Do **not** treat the North Coast clinic / Shopify store address as the ecommerce ShipBlu origin.
 
-## Product price worksheet (gross margin)
+## Separated economics
 
-When the customer is charged for delivery (order-level EGP 118):
+### Product selling price
 
 ```
 product_landed =
   supplier_cost
-  + supplier_shipping (Vetution → Giza; unknown until verified)
-  + payment_gateway_fee
-  + packaging + tax + return_risk + handling
-  + delivery_shortfall
+  + supplier_shipping (Vetution → Giza)
+  + payment_gateway_fee (non-COD)
+  + packaging
+  + tax
+  + return_risk
+  + handling
 
-delivery_profit_or_subsidy =
-  customer_delivery_charge - ShipBlu_cost - COD_fee
-
-delivery_shortfall = max(0, -delivery_profit_or_subsidy)
+recommended_product_price =
+  round_nearest_5( max(product_landed / 0.75, product_landed + 50) )
 ```
 
-Full ShipBlu cost is **not** added to product price when delivery is charged separately.
+Outbound ShipBlu cost and the customer delivery charge are **not** in product landed cost.
+
+### Delivery economics (order-level)
 
 ```
-selling_price = max(product_landed / (1 - 0.25), product_landed + 50)
+customer_delivery_charge = rule/policy (default 118 EGP) | 0 pickup | promo override
+estimated_carrier_cost   = ShipBlu CostEngine (Giza→dest / package)
+delivery_specific_fees   = COD commission (when COD)
+delivery_margin          = charge - carrier - fees
+delivery_subsidy         = max(0, carrier + fees - charge)
+order_total              = recommended_product_price + customer_delivery_charge
 ```
 
-then round nearest EGP 5. Final margin must remain >= 20%.
+Giza→Giza / package `small` / EGP **95** is labeled
+`APPROVED_PROVISIONAL_ESTIMATE` (not invoice / not universal tariff).
 
-### Store pickup (Giza)
+### Completeness
 
-- ShipBlu = NOT_APPLICABLE  
-- COD = NOT_APPLICABLE  
-- delivery revenue = 0 unless an approved pickup fee exists  
+- `product_cost_completeness` — product keys only
+- `delivery_cost_completeness` — ShipBlu + COD
+- `overall_completeness` — mean of both
 
-### TEST provisional ShipBlu baseline
+Missing carrier cost does **not** erase a product-price worksheet; delivery margin stays incomplete.
 
-`Giza → Giza` / package `small` / **EGP 95** = `APPROVED_PROVISIONAL_ESTIMATE`  
-(not a final invoice or universal tariff). Package-size IDs 1–4 remain unverified.
+## Locks (must remain OFF)
 
-Unknown landed-cost components set `landed_cost_incomplete` and block auto-quote / price publish / supplier purchase.
+auto quote · price publish · PO · customer message · Shopify writes · ShipBlu create

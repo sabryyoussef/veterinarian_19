@@ -107,6 +107,11 @@ class PetspotVetutionLandedCostPolicy(models.Model):
     payment_fee_ids = fields.One2many(
         "petspot.vetution.payment.fee", "policy_id", string="Payment fee schedule"
     )
+    delivery_revenue_rule_ids = fields.One2many(
+        "petspot.vetution.delivery.revenue.rule",
+        "policy_id",
+        string="Customer delivery revenue rules",
+    )
     default_payment_method = fields.Selection(
         [
             ("cod", "COD"),
@@ -295,8 +300,21 @@ class PetspotVetutionLandedCostPolicy(models.Model):
                 else (result.landed_cost if result.landed_cost is not None else 0.0)
             ),
             "customer_delivery_charge": result.customer_delivery_charge,
+            "estimated_carrier_cost": result.estimated_carrier_cost,
+            "delivery_specific_fees": result.delivery_specific_fees,
+            "delivery_margin": result.delivery_margin,
+            "delivery_subsidy": result.delivery_subsidy,
             "delivery_profit_or_subsidy": result.delivery_profit_or_subsidy,
             "delivery_shortfall": result.delivery_shortfall,
+            "recommended_product_price": result.recommended_product_price,
+            "order_total": result.order_total,
+            "product_cost_completeness": result.product_cost_completeness,
+            "delivery_cost_completeness": result.delivery_cost_completeness,
+            "overall_completeness": result.overall_completeness,
+            "product_decision_code": result.product_decision_code,
+            "delivery_decision_code": result.delivery_decision_code,
+            "scenario": result.scenario,
+            "evidence_source": result.evidence_source,
             "landed_cost_incomplete": result.landed_cost_incomplete,
             "missing_components": list(result.missing_keys),
             "estimate_components": list(result.estimate_keys),

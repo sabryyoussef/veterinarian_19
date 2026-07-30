@@ -38,8 +38,9 @@ PRODUCT_LANDED_KEYS = (
     "tax",
     "return_risk",
     "handling",
-    "delivery_shortfall",
 )
+
+DELIVERY_COST_KEYS = ("shipblu_shipping", "cod_commission")
 
 # Recovered via customer delivery charge on shipblu_delivery (not product COGS).
 DELIVERY_RECOVERED_KEYS = ("shipblu_shipping", "cod_commission")
@@ -90,14 +91,27 @@ class LandedCostResult:
     notes: list = field(default_factory=list)
     product_landed_cost: float | None = None
     customer_delivery_charge: float | None = None
-    delivery_profit_or_subsidy: float | None = None
-    delivery_shortfall: float | None = None
+    estimated_carrier_cost: float | None = None
+    delivery_specific_fees: float | None = None
+    delivery_margin: float | None = None
+    delivery_subsidy: float | None = None
+    delivery_profit_or_subsidy: float | None = None  # alias of delivery_margin
+    delivery_shortfall: float | None = None  # alias of delivery_subsidy (order PnL only)
+    recommended_product_price: float | None = None
+    order_total: float | None = None
+    product_cost_completeness: float = 0.0
+    delivery_cost_completeness: float = 0.0
+    overall_completeness: float = 0.0
+    product_decision_code: str = ""
+    delivery_decision_code: str = ""
+    scenario: str = ""
+    evidence_source: str = ""
     formula: str = (
-        "product_landed = supplier_cost + supplier_shipping(Vetution→Giza) "
-        "+ payment_gateway_fee + packaging + tax + return_risk + handling "
-        "+ max(0, shipblu+cod - customer_delivery_charge); "
-        "delivery_PnL = customer_delivery_charge - shipblu_shipping - cod_commission "
-        "(order-level; charge is NOT product COGS)"
+        "product_landed = supplier + supplier_shipping(Vetution→Giza) "
+        "+ payment_fee + packaging + tax + return_risk + handling "
+        "(NO outbound ShipBlu / NO customer delivery charge); "
+        "delivery_margin = customer_delivery_charge - carrier - delivery_fees; "
+        "order_total = recommended_product_price + customer_delivery_charge"
     )
 
     def component_map(self) -> dict:
@@ -116,8 +130,21 @@ class LandedCostResult:
             "product_landed_cost": self.product_landed_cost,
             "landed_cost_incomplete": self.landed_cost_incomplete,
             "customer_delivery_charge": self.customer_delivery_charge,
+            "estimated_carrier_cost": self.estimated_carrier_cost,
+            "delivery_specific_fees": self.delivery_specific_fees,
+            "delivery_margin": self.delivery_margin,
+            "delivery_subsidy": self.delivery_subsidy,
             "delivery_profit_or_subsidy": self.delivery_profit_or_subsidy,
             "delivery_shortfall": self.delivery_shortfall,
+            "recommended_product_price": self.recommended_product_price,
+            "order_total": self.order_total,
+            "product_cost_completeness": self.product_cost_completeness,
+            "delivery_cost_completeness": self.delivery_cost_completeness,
+            "overall_completeness": self.overall_completeness,
+            "product_decision_code": self.product_decision_code,
+            "delivery_decision_code": self.delivery_decision_code,
+            "scenario": self.scenario,
+            "evidence_source": self.evidence_source,
             "completeness_percent": self.completeness_percent,
             "pricing_confidence_percent": self.pricing_confidence_percent,
             "pricing_confidence_label": self.pricing_confidence_label,
@@ -136,11 +163,19 @@ class LandedCostResult:
             mark = "✓" if c.is_known else "✗"
             lines.append(f"{mark} {c.label}: {amt} [{c.status}]")
         total = "incomplete" if self.landed_cost_incomplete else f"{self.landed_cost:.2f}"
-        lines.append(f"--- Product landed (price worksheet): {self.product_landed_cost}")
-        lines.append(f"--- Order delivery charge: {self.customer_delivery_charge}")
-        lines.append(f"--- Delivery profit/(subsidy): {self.delivery_profit_or_subsidy}")
-        lines.append(f"--- Delivery shortfall in product landed: {self.delivery_shortfall}")
-        lines.append(f"--- Gross component sum (incl. ShipBlu/COD): {total}")
+        lines.append(f"--- PRODUCT landed (price worksheet): {self.product_landed_cost}")
+        lines.append(f"--- Recommended product price: {self.recommended_product_price}")
+        lines.append(f"--- DELIVERY charge (revenue): {self.customer_delivery_charge}")
+        lines.append(f"--- Estimated carrier cost: {self.estimated_carrier_cost}")
+        lines.append(f"--- Delivery-specific fees: {self.delivery_specific_fees}")
+        lines.append(f"--- Delivery margin: {self.delivery_margin}")
+        lines.append(f"--- Delivery subsidy: {self.delivery_subsidy}")
+        lines.append(f"--- Order total: {self.order_total}")
+        lines.append(
+            f"--- Completeness product/delivery/overall: "
+            f"{self.product_cost_completeness}/{self.delivery_cost_completeness}/{self.overall_completeness}"
+        )
+        lines.append(f"--- Gross mandatory stack (audit): {total}")
         lines.append(f"Completeness: {self.completeness_percent:.0f}%")
         lines.append(
             f"Confidence: {self.pricing_confidence_percent:.0f}% ({self.pricing_confidence_label})"
@@ -701,10 +736,15 @@ class LandedCostEngine:
         )
 
     def _delivery_charge_and_shortfall(self, ctx, components, notes):
-        """Order-level customer delivery revenue vs ShipBlu+COD; shortfall → product landed."""
+        """Order-level delivery revenue vs carrier cost — NEVER added to product landed.
+
+        Product catalog price excludes ShipBlu and customer delivery charge.
+        delivery_margin / delivery_subsidy are order-economics only.
+        """
         fulfillment = ctx.get("requested_fulfillment") or "undecided"
         cmap = {c.key: c for c in components}
         extras = []
+        scenario = fulfillment
 
         if fulfillment == "store_pickup":
             pickup_fee = float(
@@ -714,185 +754,219 @@ class LandedCostEngine:
             )
             pickup_status = getattr(self.policy, "customer_pickup_fee_status", None) or "verified_zero"
             if pickup_fee <= 0 or pickup_status in ("verified_zero", "unknown"):
-                charge_comp = CostComponent(
-                    "customer_delivery_charge",
-                    "Customer Delivery Charge",
-                    0.0,
-                    "not_applicable",
-                    source="Giza store pickup — delivery revenue zero unless approved pickup fee",
-                )
                 charge = 0.0
+                extras.append(
+                    CostComponent(
+                        "customer_delivery_charge",
+                        "Customer Delivery Charge",
+                        0.0,
+                        "not_applicable",
+                        source="Giza store pickup — delivery revenue zero unless approved pickup fee",
+                    )
+                )
             else:
-                charge_comp = CostComponent(
-                    "customer_delivery_charge",
-                    "Customer Delivery / Pickup Fee",
-                    pickup_fee,
-                    "configured",
-                    source=self.policy.customer_pickup_fee_source or "approved pickup fee",
-                )
                 charge = pickup_fee
-            extras.append(charge_comp)
-            extras.append(
-                CostComponent(
-                    "delivery_shortfall",
-                    "Delivery Shortfall (in product landed)",
-                    0.0,
-                    "not_applicable",
-                    source="pickup — no ShipBlu shortfall",
+                extras.append(
+                    CostComponent(
+                        "customer_delivery_charge",
+                        "Customer Delivery / Pickup Fee",
+                        pickup_fee,
+                        "configured",
+                        source=self.policy.customer_pickup_fee_source or "approved pickup fee",
+                    )
                 )
-            )
+            notes.append("Scenario A: Giza store pickup — ShipBlu/COD N/A; delivery revenue 0")
             return extras, {
+                "scenario": "store_pickup",
                 "customer_delivery_charge": charge,
-                "delivery_profit_or_subsidy": charge,  # no ShipBlu/COD on pickup
+                "estimated_carrier_cost": 0.0,
+                "delivery_specific_fees": 0.0,
+                "delivery_margin": 0.0,
+                "delivery_subsidy": 0.0,
+                "delivery_profit_or_subsidy": 0.0,
                 "delivery_shortfall": 0.0,
-                "separate_delivery_charge": False,
+                "evidence_source": "store_pickup",
             }
 
-        # Delivery scenarios
-        charge = ctx.get("customer_delivery_charge")
-        if charge is None:
-            charge = float(getattr(self.policy, "customer_delivery_charge_amount", 0.0) or 0.0)
-        else:
-            charge = float(charge)
-        charge_status = getattr(self.policy, "customer_delivery_charge_status", None) or "unknown"
-        if charge_status == "unknown" and charge <= 0:
+        # Resolve customer delivery revenue (rules → policy → context)
+        Rule = self.env["petspot.vetution.delivery.revenue.rule"]
+        charge, charge_status, charge_source, rule = Rule.resolve_charge(self.policy, ctx)
+        if charge_status == "unknown" and charge is None:
             extras.append(
                 CostComponent(
                     "customer_delivery_charge",
                     "Customer Delivery Charge",
                     None,
                     "unknown",
-                    source=self.policy.customer_delivery_charge_source
-                    or "customer delivery revenue not configured",
+                    source=charge_source,
                 )
             )
-            extras.append(
-                CostComponent(
-                    "delivery_shortfall",
-                    "Delivery Shortfall (in product landed)",
-                    None,
-                    "unknown",
-                    source="requires customer delivery charge + ShipBlu costs",
-                )
-            )
-            notes.append(
-                "Customer delivery charge unknown — cannot separate ShipBlu from product price."
-            )
+            notes.append("Customer delivery charge unknown — delivery economics incomplete")
             return extras, {
+                "scenario": scenario,
                 "customer_delivery_charge": None,
+                "estimated_carrier_cost": None,
+                "delivery_specific_fees": None,
+                "delivery_margin": None,
+                "delivery_subsidy": None,
                 "delivery_profit_or_subsidy": None,
                 "delivery_shortfall": None,
-                "separate_delivery_charge": False,
+                "evidence_source": charge_source,
             }
+
+        promo = (ctx.get("shipping_promotion") or "").lower()
+        if promo in ("free", "free_shipping"):
+            scenario = "free_shipping"
+        elif promo in ("discounted", "discount") or (
+            "customer_delivery_charge" in ctx
+            and ctx.get("customer_delivery_charge") is not None
+            and float(ctx.get("customer_delivery_charge")) < float(
+                getattr(self.policy, "customer_delivery_charge_amount", 118.0) or 118.0
+            )
+            and float(ctx.get("customer_delivery_charge")) > 0
+        ):
+            scenario = "discounted_shipping"
+        else:
+            scenario = "shipblu_delivery"
 
         extras.append(
             CostComponent(
                 "customer_delivery_charge",
                 "Customer Delivery Charge",
-                charge,
+                float(charge),
                 "configured" if charge_status != "verified" else "verified",
-                source=self.policy.customer_delivery_charge_source
-                or "order-level delivery revenue (not product COGS)",
+                source=charge_source
+                + (f" rule#{rule.id}" if rule else "")
+                + " (order revenue — NOT product COGS)",
             )
         )
 
         ship = cmap.get("shipblu_shipping")
         cod = cmap.get("cod_commission")
-        ship_known = bool(ship and ship.is_known and ship.amount is not None and ship.status != "not_applicable")
-        cod_known = bool(cod and cod.is_known and cod.amount is not None)
-        # N/A COD (prepaid) counts as known 0
+        ship_known = bool(
+            ship and ship.is_known and ship.amount is not None and ship.status != "not_applicable"
+        )
         if cod and cod.status == "not_applicable":
             cod_known = True
             cod_amt = 0.0
         else:
+            cod_known = bool(cod and cod.is_known and cod.amount is not None)
             cod_amt = float(cod.amount or 0.0) if cod_known else None
         ship_amt = float(ship.amount or 0.0) if ship_known else None
 
         if ship_amt is None or cod_amt is None:
-            extras.append(
-                CostComponent(
-                    "delivery_shortfall",
-                    "Delivery Shortfall (in product landed)",
-                    None,
-                    "unknown",
-                    source="ShipBlu/COD not fully known — shortfall unresolved",
-                )
-            )
+            notes.append("Carrier/COD incomplete — delivery margin unresolved (product price unaffected)")
             return extras, {
-                "customer_delivery_charge": charge,
+                "scenario": scenario,
+                "customer_delivery_charge": float(charge),
+                "estimated_carrier_cost": ship_amt,
+                "delivery_specific_fees": cod_amt,
+                "delivery_margin": None,
+                "delivery_subsidy": None,
                 "delivery_profit_or_subsidy": None,
                 "delivery_shortfall": None,
-                "separate_delivery_charge": True,
+                "evidence_source": charge_source,
             }
 
-        pnl = round(charge - ship_amt - cod_amt, 2)
-        shortfall = round(max(0.0, -pnl), 2)
-        extras.append(
-            CostComponent(
-                "delivery_shortfall",
-                "Delivery Shortfall (in product landed)",
-                shortfall,
-                "estimated" if (ship and ship.is_estimate) or (cod and cod.is_estimate) else "configured",
-                source=(
-                    f"max(0, shipblu {ship_amt} + COD {cod_amt} - charge {charge}) "
-                    "= shortfall; full ShipBlu NOT in product price when customer charged"
-                ),
-                is_estimate=bool((ship and ship.is_estimate) or (cod and cod.is_estimate)),
-            )
-        )
+        margin = round(float(charge) - ship_amt - cod_amt, 2)
+        subsidy = round(max(0.0, ship_amt + cod_amt - float(charge)), 2)
         notes.append(
-            f"delivery_profit_or_subsidy = {charge} - {ship_amt} - {cod_amt} = {pnl}"
+            f"delivery_margin = {charge} - carrier {ship_amt} - fees {cod_amt} = {margin}; "
+            f"delivery_subsidy = {subsidy}"
         )
+        if ship and ship.source:
+            notes.append(f"carrier_source={ship.source}")
         return extras, {
-            "customer_delivery_charge": charge,
-            "delivery_profit_or_subsidy": pnl,
-            "delivery_shortfall": shortfall,
-            "separate_delivery_charge": True,
+            "scenario": scenario,
+            "customer_delivery_charge": float(charge),
+            "estimated_carrier_cost": ship_amt,
+            "delivery_specific_fees": cod_amt,
+            "delivery_margin": margin,
+            "delivery_subsidy": subsidy,
+            "delivery_profit_or_subsidy": margin,
+            "delivery_shortfall": subsidy,
+            "evidence_source": charge_source,
         }
 
     # ------------------------------------------------------------------ finalize
     def _finalize(self, components, shipblu_bd, notes, delivery_meta=None):
         delivery_meta = delivery_meta or {}
         cmap = {c.key: c for c in components}
-        missing = []
-        estimates = []
-        known_count = 0
-        for key in MANDATORY_KEYS:
-            c = cmap.get(key)
-            if not c:
-                missing.append(key)
-                continue
-            if c.status == "not_applicable":
-                known_count += 1
-                continue
-            if c.is_known:
-                known_count += 1
-                if c.is_estimate or c.status == "estimated":
-                    estimates.append(key)
-            else:
-                missing.append(key)
 
-        completeness = round(100.0 * known_count / len(MANDATORY_KEYS), 2)
-        incomplete = bool(missing) or any(
-            cmap[k].status == "unknown" for k in MANDATORY_KEYS if k in cmap
-        )
+        def _layer_stats(keys):
+            missing = []
+            estimates = []
+            known = 0
+            for key in keys:
+                c = cmap.get(key)
+                if not c:
+                    missing.append(key)
+                    continue
+                if c.status == "not_applicable":
+                    known += 1
+                    continue
+                if c.is_known:
+                    known += 1
+                    if c.is_estimate or c.status == "estimated":
+                        estimates.append(key)
+                else:
+                    missing.append(key)
+            completeness = round(100.0 * known / max(len(keys), 1), 2)
+            return missing, estimates, completeness
 
-        # Confidence
-        critical_missing = [k for k in missing if k in STATUS_CRITICAL_UNKNOWN]
-        if critical_missing or completeness < 50:
-            conf_pct, conf_label = 40.0, "Critical costs missing"
-        elif len(estimates) >= 2:
+        product_missing, product_est, product_comp = _layer_stats(PRODUCT_LANDED_KEYS)
+        delivery_missing, delivery_est, delivery_comp = _layer_stats(DELIVERY_COST_KEYS)
+        # Overall = mean of layers (equal weight product + delivery)
+        overall = round((product_comp + delivery_comp) / 2.0, 2)
+
+        # Legacy mandatory completeness (includes all MANDATORY_KEYS)
+        missing, estimates, completeness = _layer_stats(MANDATORY_KEYS)
+        incomplete = bool(missing)
+
+        # Confidence uses product + delivery estimates (legacy field)
+        all_estimates = list(product_est) + list(delivery_est)
+        critical_missing = [k for k in product_missing if k in STATUS_CRITICAL_UNKNOWN]
+        if critical_missing or product_comp < 50:
+            conf_pct, conf_label = 40.0, "Critical product costs missing"
+        elif len(all_estimates) >= 2:
             conf_pct, conf_label = 60.0, "Multiple estimates"
-        elif len(estimates) == 1:
+        elif len(all_estimates) == 1:
             conf_pct, conf_label = 80.0, "One estimate"
-        elif completeness >= 100 and not estimates:
+        elif product_comp >= 100 and delivery_comp >= 100 and not all_estimates:
             conf_pct, conf_label = 100.0, "Verified"
         else:
-            conf_pct, conf_label = 80.0, "One estimate" if estimates else "Partial verified"
+            conf_pct, conf_label = 80.0, "Partial verified"
 
-        # Decision matrix (still shadow — callers enforce allow_auto_quotation=False)
-        if completeness >= 100 and conf_pct >= 100 and not incomplete:
-            decision = "READY_FOR_AUTO_QUOTE"
+        # Layer decisions
+        if product_comp >= 100 and not product_missing:
+            product_decision = "PRODUCT_PRICE_READY"
+        else:
+            product_decision = "INSUFFICIENT_PRODUCT_COST_DATA"
+
+        if delivery_comp >= 100 and not delivery_missing:
+            if delivery_meta.get("scenario") == "store_pickup":
+                delivery_decision = "ORDER_ECONOMICS_READY"
+            elif delivery_meta.get("delivery_margin") is not None:
+                delivery_decision = "ORDER_ECONOMICS_READY"
+            else:
+                delivery_decision = "DELIVERY_COST_INCOMPLETE"
+        else:
+            delivery_decision = "INSUFFICIENT_DELIVERY_COST_DATA"
+
+        # Combined decision — preserve READY_FOR_AUTO_QUOTE when both layers complete
+        # (Phase locks still prevent actual auto-quote.)
+        if product_decision == "PRODUCT_PRICE_READY" and delivery_decision == "ORDER_ECONOMICS_READY":
+            if conf_pct >= 100 and not incomplete:
+                decision = "READY_FOR_AUTO_QUOTE"
+            else:
+                decision = "READY_FOR_MANUAL_REVIEW"
+            notes.append(
+                "Layers: PRODUCT_PRICE_READY + ORDER_ECONOMICS_READY "
+                "(delivery revenue separate from product price)"
+            )
+        elif product_decision == "PRODUCT_PRICE_READY":
+            decision = "PRODUCT_PRICE_READY"
+            notes.append("Product recommendation READY; delivery economics incomplete/partial")
         elif completeness >= 90:
             decision = "READY_FOR_MANUAL_REVIEW"
         elif completeness >= 75:
@@ -902,7 +976,6 @@ class LandedCostEngine:
         else:
             decision = "INSUFFICIENT_COST_DATA"
 
-        # Gross sum of mandatory cost components (transparency)
         def _sum_keys(keys, *, require_complete):
             total = 0.0
             for key in keys:
@@ -916,41 +989,24 @@ class LandedCostEngine:
                 total += float(c.amount)
             return round(total, 2)
 
-        separate = bool(delivery_meta.get("separate_delivery_charge"))
-        if separate:
-            # Product price uses product keys + shortfall only (not full ShipBlu/COD)
-            product_keys = [
-                "supplier_cost",
-                "supplier_shipping",
-                "payment_gateway_fee",
-                "packaging",
-                "tax",
-                "return_risk",
-                "handling",
-                "delivery_shortfall",
-            ]
-            product_landed = _sum_keys(product_keys, require_complete=False)
-            # Legacy landed_cost field = product_landed for pricing (not gross ShipBlu stack)
-            landed = product_landed
-            # Also expose gross carrier stack for audits
-            gross = _sum_keys(MANDATORY_KEYS, require_complete=False)
-            notes.append(
-                f"Gross mandatory cost stack (incl. ShipBlu/COD, excl. delivery revenue): {gross}"
-            )
-        else:
-            product_landed = _sum_keys(
-                [
-                    "supplier_cost",
-                    "supplier_shipping",
-                    "payment_gateway_fee",
-                    "packaging",
-                    "tax",
-                    "return_risk",
-                    "handling",
-                ],
-                require_complete=False,
-            )
-            landed = product_landed
+        # Product landed NEVER includes ShipBlu, COD, or delivery shortfall
+        product_landed = _sum_keys(list(PRODUCT_LANDED_KEYS), require_complete=False)
+        landed = product_landed  # pricing base
+        gross = _sum_keys(list(MANDATORY_KEYS), require_complete=False)
+        notes.append(
+            f"Gross mandatory audit stack (incl. ShipBlu/COD; excl. delivery revenue): {gross}"
+        )
+        notes.append(
+            "Product landed excludes outbound carrier cost and customer delivery charge"
+        )
+
+        # Suggested product price from product landed only
+        sale = self.policy.compute_suggested_sale_price(product_landed or 0.0)
+        recommended = float(sale.get("suggested_price") or 0.0) or None
+        charge = delivery_meta.get("customer_delivery_charge")
+        order_total = None
+        if recommended is not None and charge is not None:
+            order_total = round(float(recommended) + float(charge), 2)
 
         return LandedCostResult(
             components=components,
@@ -966,6 +1022,19 @@ class LandedCostEngine:
             notes=notes,
             product_landed_cost=product_landed,
             customer_delivery_charge=delivery_meta.get("customer_delivery_charge"),
+            estimated_carrier_cost=delivery_meta.get("estimated_carrier_cost"),
+            delivery_specific_fees=delivery_meta.get("delivery_specific_fees"),
+            delivery_margin=delivery_meta.get("delivery_margin"),
+            delivery_subsidy=delivery_meta.get("delivery_subsidy"),
             delivery_profit_or_subsidy=delivery_meta.get("delivery_profit_or_subsidy"),
             delivery_shortfall=delivery_meta.get("delivery_shortfall"),
+            recommended_product_price=recommended,
+            order_total=order_total,
+            product_cost_completeness=product_comp,
+            delivery_cost_completeness=delivery_comp,
+            overall_completeness=overall,
+            product_decision_code=product_decision,
+            delivery_decision_code=delivery_decision,
+            scenario=delivery_meta.get("scenario") or "",
+            evidence_source=delivery_meta.get("evidence_source") or "",
         )

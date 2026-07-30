@@ -15,3 +15,5 @@ access_pkg_user,petspot.vetution.packaging.cost.user,model_petspot_vetution_pack
 access_pkg_manager,petspot.vetution.packaging.cost.manager,model_petspot_vetution_packaging_cost,petspot_fulfillment.group_fulfillment_manager,1,1,1,1
 access_payfee_user,petspot.vetution.payment.fee.user,model_petspot_vetution_payment_fee,petspot_fulfillment.group_fulfillment_user,1,0,0,0
 access_payfee_manager,petspot.vetution.payment.fee.manager,model_petspot_vetution_payment_fee,petspot_fulfillment.group_fulfillment_manager,1,1,1,1
+access_deliv_rev_user,petspot.vetution.delivery.revenue.rule.user,model_petspot_vetution_delivery_revenue_rule,petspot_fulfillment.group_fulfillment_user,1,0,0,0
+access_deliv_rev_manager,petspot.vetution.delivery.revenue.rule.manager,model_petspot_vetution_delivery_revenue_rule,petspot_fulfillment.group_fulfillment_manager,1,1,1,1

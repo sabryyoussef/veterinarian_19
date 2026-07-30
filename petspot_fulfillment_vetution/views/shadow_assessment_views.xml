@@ -10,7 +10,7 @@
         </header>
         <sheet>
           <div class="alert alert-warning" role="alert">
-            Phase 15A shadow only — stock is not reserved; no quote, message, price publish, or PO.
+            Phase 15A.4 shadow only — product price excludes delivery revenue; no quote, message, price publish, PO, or AWB.
           </div>
           <group>
             <group>
@@ -20,6 +20,7 @@
               <field name="case_id"/>
               <field name="active"/>
               <field name="assessed_at"/>
+              <field name="legacy_combined_cost_model"/>
             </group>
             <group>
               <field name="resolution_method"/>
@@ -40,7 +41,7 @@
             <field name="refresh_succeeded"/>
             <field name="eta_days"/>
           </group>
-          <group string="Pricing (suggested only)">
+          <group string="Product economics">
             <field name="policy_id"/>
             <field name="policy_version"/>
             <field name="supplier_cost"/>
@@ -49,21 +50,46 @@
             <field name="component_packaging"/>
             <field name="component_nonrecoverable_tax"/>
             <field name="component_risk_allowance"/>
+            <field name="component_handling"/>
+            <field name="product_landed_cost"/>
             <field name="landed_cost"/>
-            <field name="landed_cost_incomplete"/>
-            <field name="missing_cost_components"/>
-            <field name="landed_formula"/>
-            <field name="sell_formula"/>
+            <field name="recommended_product_price"/>
             <field name="suggested_price"/>
+            <field name="expected_gross_profit"/>
+            <field name="expected_gross_margin_percent"/>
+            <field name="product_cost_completeness"/>
+            <field name="product_decision_code"/>
+            <field name="sell_formula"/>
+            <field name="landed_formula"/>
+          </group>
+          <group string="Delivery economics (order-level)">
+            <field name="economics_scenario"/>
+            <field name="customer_delivery_charge"/>
+            <field name="estimated_carrier_cost"/>
+            <field name="component_shipblu_shipping"/>
+            <field name="delivery_specific_fees"/>
+            <field name="component_cod_commission"/>
+            <field name="delivery_margin"/>
+            <field name="delivery_subsidy"/>
+            <field name="delivery_cost_completeness"/>
+            <field name="delivery_decision_code"/>
+            <field name="economics_evidence_source"/>
+          </group>
+          <group string="Order summary">
+            <field name="recommended_product_price"/>
+            <field name="customer_delivery_charge"/>
+            <field name="order_total"/>
+            <field name="overall_completeness"/>
             <field name="completeness_percent"/>
             <field name="pricing_confidence_percent"/>
             <field name="pricing_confidence_label"/>
             <field name="decision_code"/>
-            <field name="component_shipblu_shipping"/>
-            <field name="component_cod_commission"/>
-            <field name="component_handling"/>
+            <field name="landed_cost_incomplete"/>
+            <field name="missing_cost_components"/>
             <field name="estimate_cost_components"/>
             <field name="landed_cost_report" colspan="2" nolabel="1"/>
+          </group>
+          <group string="Catalog / gates (unchanged)">
             <field name="price_review_required"/>
             <field name="on_automation_allowlist"/>
             <field name="availability_wording"/>
@@ -77,8 +103,6 @@
             <field name="current_shopify_price"/>
             <field name="price_delta_amount"/>
             <field name="price_delta_percent"/>
-            <field name="expected_gross_profit"/>
-            <field name="expected_gross_margin_percent"/>
           </group>
           <group string="Decision">
             <field name="blockers"/>
@@ -102,16 +126,12 @@
         <field name="product_id"/>
         <field name="state"/>
         <field name="availability_normalized"/>
-        <field name="suggested_price"/>
-            <field name="completeness_percent"/>
-            <field name="pricing_confidence_percent"/>
-            <field name="pricing_confidence_label"/>
-            <field name="decision_code"/>
-            <field name="component_shipblu_shipping"/>
-            <field name="component_cod_commission"/>
-            <field name="component_handling"/>
-            <field name="estimate_cost_components"/>
-            <field name="landed_cost_report" colspan="2" nolabel="1"/>
+        <field name="recommended_product_price"/>
+        <field name="customer_delivery_charge"/>
+        <field name="order_total"/>
+        <field name="decision_code"/>
+        <field name="product_decision_code"/>
+        <field name="delivery_decision_code"/>
         <field name="is_fresh"/>
         <field name="assessed_at"/>
       </list>

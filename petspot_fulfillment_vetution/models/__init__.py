@@ -8,3 +8,4 @@ from . import shadow_assessment
 from . import availability_inquiry
 from . import packaging_cost
 from . import payment_fee
+from . import delivery_revenue_rule

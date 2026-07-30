@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
     "name": "PetSpot Fulfillment × Vetution Bridge",
-    "version": "19.0.1.3.0",
+    "version": "19.0.1.3.1",
     "category": "Sales/Sales",
-    "summary": "Phase 15A.4: Giza-origin Vetution shadow landed cost (delivery charge separate from product price)",
+    "summary": "Phase 15A.4: separated product vs delivery economics (Giza origin)",
     "description": """
 PetSpot Fulfillment × Vetution Bridge (Phase 15A)
 ================================================
@@ -30,6 +30,7 @@ commercial crons.
         "security/ir.model.access.csv",
         "data/landed_cost_policy_data.xml",
         "data/packaging_payment_data.xml",
+        "data/delivery_revenue_rule_data.xml",
         "data/automation_allowlist_data.xml",
         "data/ir_config_parameter_data.xml",
         "views/landed_cost_policy_views.xml",

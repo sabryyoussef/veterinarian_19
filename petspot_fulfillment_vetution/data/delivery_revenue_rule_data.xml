@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+  <record id="delivery_revenue_rule_default_118" model="petspot.vetution.delivery.revenue.rule">
+    <field name="name">Standard customer delivery charge EGP 118</field>
+    <field name="policy_id" ref="landed_cost_policy_default"/>
+    <field name="sequence">10</field>
+    <field name="carrier">any</field>
+    <field name="payment_method">any</field>
+    <field name="customer_charge">118.0</field>
+    <field name="effective_from">2026-07-01</field>
+    <field name="status">configured</field>
+    <field name="source">Odoo delivery.carrier fixed_price (ShipBlu/Bosta/Standard list_price=118) — customer revenue, NOT carrier cost</field>
+    <field name="note">APPROVED_PROVISIONAL customer-facing delivery revenue. Estimated ShipBlu carrier cost is separate (e.g. Giza→Giza/small ≈ 95 APPROVED_PROVISIONAL_ESTIMATE).</field>
+  </record>
+</odoo>

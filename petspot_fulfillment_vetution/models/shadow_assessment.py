@@ -73,6 +73,27 @@ class PetspotVetutionShadowAssessment(models.Model):
     shipblu_estimate_json = fields.Text()
     estimate_cost_components = fields.Char()
 
+    # Phase 15A.4 — separated product vs delivery economics
+    legacy_combined_cost_model = fields.Boolean(
+        default=False,
+        help="True for assessments created before product/delivery separation.",
+    )
+    product_landed_cost = fields.Float()
+    recommended_product_price = fields.Float()
+    customer_delivery_charge = fields.Float()
+    estimated_carrier_cost = fields.Float()
+    delivery_specific_fees = fields.Float()
+    delivery_margin = fields.Float()
+    delivery_subsidy = fields.Float()
+    order_total = fields.Float()
+    product_cost_completeness = fields.Float()
+    delivery_cost_completeness = fields.Float()
+    overall_completeness = fields.Float()
+    product_decision_code = fields.Char()
+    delivery_decision_code = fields.Char()
+    economics_scenario = fields.Char()
+    economics_evidence_source = fields.Char()
+
     state = fields.Selection(
         [
             ("ok", "Actionable suggestion"),
@@ -645,9 +666,16 @@ class PetspotVetutionShadowAssessment(models.Model):
                     {
                         "shipblu_breakdown": landed_br.get("shipblu_breakdown"),
                         "customer_delivery_charge": landed_br.get("customer_delivery_charge"),
+                        "estimated_carrier_cost": landed_br.get("estimated_carrier_cost"),
+                        "delivery_specific_fees": landed_br.get("delivery_specific_fees"),
+                        "delivery_margin": landed_br.get("delivery_margin"),
+                        "delivery_subsidy": landed_br.get("delivery_subsidy"),
                         "delivery_profit_or_subsidy": landed_br.get("delivery_profit_or_subsidy"),
                         "delivery_shortfall": landed_br.get("delivery_shortfall"),
                         "product_landed_cost": landed_br.get("product_landed_cost"),
+                        "recommended_product_price": landed_br.get("recommended_product_price"),
+                        "order_total": landed_br.get("order_total"),
+                        "scenario": landed_br.get("scenario"),
                         "notes": landed_br.get("notes"),
                     },
                     default=str,
@@ -655,7 +683,31 @@ class PetspotVetutionShadowAssessment(models.Model):
             ),
             "estimate_cost_components": ",".join(landed_br.get("estimate_components") or []) or False,
             "sell_formula": sale_br.get("sell_formula") or False,
-            "suggested_price": sale_br["suggested_price"],
+            "suggested_price": (
+                landed_br.get("recommended_product_price")
+                if landed_br.get("recommended_product_price") is not None
+                else sale_br["suggested_price"]
+            ),
+            "product_landed_cost": landed_br.get("product_landed_cost") or 0.0,
+            "recommended_product_price": (
+                landed_br.get("recommended_product_price")
+                if landed_br.get("recommended_product_price") is not None
+                else sale_br["suggested_price"]
+            ),
+            "customer_delivery_charge": landed_br.get("customer_delivery_charge") or 0.0,
+            "estimated_carrier_cost": landed_br.get("estimated_carrier_cost") or 0.0,
+            "delivery_specific_fees": landed_br.get("delivery_specific_fees") or 0.0,
+            "delivery_margin": landed_br.get("delivery_margin") or 0.0,
+            "delivery_subsidy": landed_br.get("delivery_subsidy") or 0.0,
+            "order_total": landed_br.get("order_total") or 0.0,
+            "product_cost_completeness": landed_br.get("product_cost_completeness") or 0.0,
+            "delivery_cost_completeness": landed_br.get("delivery_cost_completeness") or 0.0,
+            "overall_completeness": landed_br.get("overall_completeness") or 0.0,
+            "product_decision_code": landed_br.get("product_decision_code") or False,
+            "delivery_decision_code": landed_br.get("delivery_decision_code") or False,
+            "economics_scenario": landed_br.get("scenario") or False,
+            "economics_evidence_source": landed_br.get("evidence_source") or False,
+            "legacy_combined_cost_model": False,
             "current_odoo_price": odoo_price,
             "current_shopify_price": shopify_price,
             "price_delta_amount": metrics["price_delta_amount"],

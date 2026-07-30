@@ -87,6 +87,23 @@
             <field name="customer_pickup_fee_amount"/>
             <field name="customer_pickup_fee_status"/>
             <field name="customer_pickup_fee_source"/>
+            <field name="delivery_revenue_rule_ids" nolabel="1" colspan="2">
+              <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="carrier"/>
+                <field name="destination_governorate"/>
+                <field name="payment_method"/>
+                <field name="min_order_value"/>
+                <field name="max_order_value"/>
+                <field name="customer_charge"/>
+                <field name="effective_from"/>
+                <field name="effective_to"/>
+                <field name="status"/>
+                <field name="source"/>
+                <field name="active"/>
+              </list>
+            </field>
           </group>
           <group string="Packaging schedule">
             <field name="packaging_cost_ids" nolabel="1" colspan="2">

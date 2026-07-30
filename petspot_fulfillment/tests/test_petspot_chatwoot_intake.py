@@ -171,6 +171,12 @@ class TestPetspotChatwootIntake(TransactionCase):
         ))
         self.assertTrue(res.get("ignored"))
         self.assertEqual(res.get("reason"), "not_availability_cta")
+        event = self.Event.browse(res["event_id"])
+        self.assertFalse(event.content_preview)
+        self.assertEqual(self.Inquiry.search_count([("message_id", "=", "1007")]), 0)
+        # Ordinary WA body must not be retained on ignored events
+        ev = self.Event.browse(res["event_id"])
+        self.assertFalse(ev.content_preview)
 
     def test_08_unknown_product_review(self):
         res = self._process(_payload(

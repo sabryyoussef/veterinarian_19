@@ -74,7 +74,7 @@ class PetspotChatwootWebhookEvent(models.Model):
         return self._cfg("petspot_fulfillment.chatwoot_intake_enabled", "False") == "True"
 
     @api.model
-    def validate_webhook_secret(self, headers):
+    def validate_webhook_secret(self, headers, params=None):
         secret = self._cfg("petspot_fulfillment.chatwoot_webhook_secret", "")
         if not secret:
             return False
@@ -88,6 +88,8 @@ class PetspotChatwootWebhookEvent(models.Model):
         auth = lowered.get("authorization") or ""
         if auth.lower().startswith("bearer "):
             provided = provided or auth[7:].strip()
+        params = params or {}
+        provided = provided or params.get("secret") or params.get("webhook_secret") or ""
         return bool(provided) and provided == secret
 
     @api.model
@@ -139,7 +141,7 @@ class PetspotChatwootWebhookEvent(models.Model):
             }
 
         content = payload.get("content") or ""
-        preview = (content or "")[:120].replace("\n", " ")
+        # Never retain ordinary WhatsApp body text: preview only after CTA marker matches.
         fingerprint = hashlib.sha256(
             json.dumps(
                 {
@@ -169,7 +171,7 @@ class PetspotChatwootWebhookEvent(models.Model):
             "direction": direction,
             "state": "received",
             "payload_fingerprint": fingerprint,
-            "content_preview": preview,
+            "content_preview": False,
             "attempt_count": 1,
         })
         _logger.info(
@@ -197,6 +199,9 @@ class PetspotChatwootWebhookEvent(models.Model):
                 "reason": "not_availability_cta",
                 "event_id": event.id,
             }
+
+        preview = (content or "")[:120].replace("\n", " ")
+        event.write({"content_preview": preview})
 
         try:
             inquiry = self.env["petspot.availability.inquiry"]._intake_from_chatwoot_cta(

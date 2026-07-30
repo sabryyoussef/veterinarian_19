@@ -28,7 +28,8 @@ class PetspotChatwootWebhookController(http.Controller):
     def chatwoot_webhook(self, **kwargs):
         Event = request.env["petspot.chatwoot.webhook.event"].sudo()
         headers = {k: v for k, v in request.httprequest.headers.items()}
-        if not Event.validate_webhook_secret(headers):
+        params = {k: v for k, v in request.httprequest.args.items()}
+        if not Event.validate_webhook_secret(headers, params=params):
             _logger.warning(
                 "petspot_ff chatwoot webhook unauthorized from %s",
                 request.httprequest.remote_addr,

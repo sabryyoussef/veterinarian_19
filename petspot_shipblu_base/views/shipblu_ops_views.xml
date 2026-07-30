@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pricing rules -->
+    <record id="view_shipblu_pricing_rule_list" model="ir.ui.view">
+        <field name="name">shipblu.pricing.rule.list</field>
+        <field name="model">shipblu.pricing.rule</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="origin_governorate"/>
+                <field name="destination_governorate"/>
+                <field name="base_price"/>
+                <field name="currency_id"/>
+                <field name="tax_included"/>
+                <field name="source"/>
+                <field name="active"/>
+                <field name="backend_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_shipblu_pricing_rule" model="ir.actions.act_window">
+        <field name="name">Pricing Rules</field>
+        <field name="res_model">shipblu.pricing.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Volume discounts -->
+    <record id="view_shipblu_volume_discount_list" model="ir.ui.view">
+        <field name="name">shipblu.volume.discount.list</field>
+        <field name="model">shipblu.volume.discount</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="min_shipments"/>
+                <field name="max_shipments"/>
+                <field name="discount_percent"/>
+                <field name="active"/>
+                <field name="backend_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_shipblu_volume_discount" model="ir.actions.act_window">
+        <field name="name">Volume Discounts</field>
+        <field name="res_model">shipblu.volume.discount</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Package sizes -->
+    <record id="view_shipblu_package_size_list" model="ir.ui.view">
+        <field name="name">shipblu.package.size.list</field>
+        <field name="model">shipblu.package.size</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="shipblu_size_id"/>
+                <field name="surcharge_percent"/>
+                <field name="note"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_shipblu_package_size" model="ir.actions.act_window">
+        <field name="name">Package Sizes</field>
+        <field name="res_model">shipblu.package.size</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- SLA -->
+    <record id="view_shipblu_sla_rule_list" model="ir.ui.view">
+        <field name="name">shipblu.sla.rule.list</field>
+        <field name="model">shipblu.sla.rule</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="region"/>
+                <field name="days_min"/>
+                <field name="days_max"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_shipblu_sla_rule" model="ir.actions.act_window">
+        <field name="name">SLA Rules</field>
+        <field name="res_model">shipblu.sla.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Settlements -->
+    <record id="view_shipblu_settlement_list" model="ir.ui.view">
+        <field name="name">shipblu.settlement.list</field>
+        <field name="model">shipblu.settlement</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="period_start"/>
+                <field name="period_end"/>
+                <field name="planned_transfer_date"/>
+                <field name="gross_cod"/>
+                <field name="transfer_fee"/>
+                <field name="net_settlement"/>
+                <field name="status"/>
+                <field name="reconciliation_state"/>
+                <field name="account_missing_warning"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_shipblu_settlement_form" model="ir.ui.view">
+        <field name="name">shipblu.settlement.form</field>
+        <field name="model">shipblu.settlement</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,expected,statement,transferred,reconciled"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not account_missing_warning">
+                        Bank/wallet details missing — settlement may defer past Saturday deadline.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="backend_id"/>
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                            <field name="statement_date"/>
+                            <field name="planned_transfer_date"/>
+                        </group>
+                        <group>
+                            <field name="transfer_method"/>
+                            <field name="bank_account"/>
+                            <field name="wallet_account"/>
+                            <field name="shipblu_external_ref"/>
+                            <field name="reconciliation_state"/>
+                            <field name="statement_attachment_id"/>
+                        </group>
+                    </group>
+                    <group string="Amounts">
+                        <group>
+                            <field name="gross_cod"/>
+                            <field name="shipping_fees"/>
+                            <field name="cod_commission"/>
+                            <field name="service_fees"/>
+                            <field name="return_fees"/>
+                        </group>
+                        <group>
+                            <field name="transfer_fee"/>
+                            <field name="tax"/>
+                            <field name="discounts"/>
+                            <field name="adjustments"/>
+                            <field name="net_settlement"/>
+                        </group>
+                    </group>
+                    <field name="notes"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_settlement" model="ir.actions.act_window">
+        <field name="name">Settlements</field>
+        <field name="res_model">shipblu.settlement</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

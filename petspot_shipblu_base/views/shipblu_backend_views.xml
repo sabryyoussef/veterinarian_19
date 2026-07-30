@@ -22,6 +22,8 @@
             <form string="ShipBlu Backend">
                 <header>
                     <button name="action_test_connection" type="object" string="Test Connection" class="btn-primary"/>
+                    <button name="action_seed_reference_config" type="object" string="Seed Reference Config"
+                            groups="petspot_shipblu_base.group_shipblu_manager"/>
                 </header>
                 <sheet>
                     <group>
@@ -38,7 +40,7 @@
                             <field name="shipment_creation_enabled"/>
                             <field name="default_zone_id"/>
                             <field name="default_package_size"
-                                      help="Required for Odoo Owned create. Default 1 works with pricing API. Package-sizes list returns 403."/>
+                                      help="Required for Odoo Owned create. Verify ID against Shopify UI."/>
                             <field name="fallback_line_2"/>
                             <field name="tracking_url_template"/>
                             <field name="import_page_size"/>
@@ -46,19 +48,101 @@
                             <field name="max_retries"/>
                         </group>
                     </group>
-                    <group string="Connection" name="group_connection">
-                        <field name="merchant_id"/>
-                        <field name="merchant_name"/>
-                        <field name="last_connection_ok"/>
-                        <field name="last_connection_at"/>
-                        <field name="last_connection_message"/>
-                    </group>
-                    <group string="Sync status">
-                        <field name="last_import_at"/>
-                        <field name="last_import_result"/>
-                        <field name="last_tracking_sync_at"/>
-                        <field name="last_tracking_sync_result"/>
-                    </group>
+                    <notebook>
+                        <page string="Connection" name="page_connection">
+                            <group>
+                                <field name="merchant_id"/>
+                                <field name="merchant_name"/>
+                                <field name="last_connection_ok"/>
+                                <field name="last_connection_at"/>
+                                <field name="last_connection_message"/>
+                            </group>
+                            <group string="Sync status">
+                                <field name="last_import_at"/>
+                                <field name="last_import_result"/>
+                                <field name="last_tracking_sync_at"/>
+                                <field name="last_tracking_sync_result"/>
+                            </group>
+                        </page>
+                        <page string="Cutoffs &amp; Limits" name="page_cutoffs"
+                              groups="petspot_shipblu_base.group_shipblu_ops">
+                            <group>
+                                <field name="company_timezone"/>
+                                <field name="pickup_cutoff_time" widget="float_time"/>
+                                <field name="flyer_cutoff_time" widget="float_time"/>
+                                <field name="min_shipments_per_pickup"/>
+                                <field name="low_volume_pickup_surcharge"/>
+                                <field name="max_shipment_weight_kg"/>
+                            </group>
+                        </page>
+                        <page string="Fees" name="page_fees"
+                              groups="petspot_shipblu_base.group_shipblu_ops">
+                            <group>
+                                <field name="cod_commission_rate"/>
+                                <field name="try_and_buy_fee"/>
+                                <field name="return_service_fee"/>
+                                <field name="return_refusal_charge_percent"/>
+                                <field name="inspection_fee"/>
+                                <field name="settlement_transfer_fee"/>
+                                <field name="large_package_surcharge_percent"/>
+                                <field name="xlarge_package_surcharge_percent"/>
+                            </group>
+                        </page>
+                        <page string="Controls" name="page_controls"
+                              groups="petspot_shipblu_base.group_shipblu_manager">
+                            <group>
+                                <field name="enable_pickup_automation"/>
+                                <field name="enable_pricing_estimation"/>
+                                <field name="enable_wallet_validation"/>
+                                <field name="enable_wallet_hard_block"/>
+                                <field name="enable_sla_alerts"/>
+                                <field name="enable_settlement_reconciliation"/>
+                                <field name="enable_flyer_management"/>
+                                <field name="enable_coverage_blocking"/>
+                                <field name="enable_package_weight_blocking"/>
+                                <field name="enable_automatic_label_retrieval"/>
+                                <field name="try_and_buy_shopify_only"/>
+                                <field name="try_and_buy_allow_non_shopify"/>
+                            </group>
+                        </page>
+                        <page string="Settlement" name="page_settlement"
+                              groups="petspot_shipblu_base.group_shipblu_accounting">
+                            <group>
+                                <field name="settlement_weekday"/>
+                                <field name="settlement_bank_deadline_weekday"/>
+                                <field name="settlement_method"/>
+                                <field name="settlement_bank_account"/>
+                                <field name="settlement_wallet"/>
+                                <field name="settlement_account_verified"/>
+                            </group>
+                            <group string="Wallet">
+                                <field name="wallet_balance_source"/>
+                                <field name="wallet_balance_manual"/>
+                                <field name="wallet_balance_manual_at"/>
+                                <button name="action_set_manual_wallet_balance" type="object"
+                                        string="Confirm Manual Wallet Balance"
+                                        groups="petspot_shipblu_base.group_shipblu_accounting"/>
+                            </group>
+                            <group string="Monthly volume (estimated discounts)">
+                                <field name="monthly_shipment_count"/>
+                                <field name="active_discount_tier_id"/>
+                                <field name="active_discount_percent"/>
+                                <field name="discount_status"/>
+                            </group>
+                        </page>
+                        <page string="Pricing Rules" name="page_pricing">
+                            <field name="pricing_rule_ids"/>
+                        </page>
+                        <page string="Volume Discounts" name="page_volume">
+                            <field name="volume_discount_ids"/>
+                        </page>
+                        <page string="Package Sizes" name="page_sizes">
+                            <field name="package_size_ids"/>
+                        </page>
+                        <page string="SLA Rules" name="page_sla">
+                            <field name="sla_rule_ids"/>
+                        </page>
+                    </notebook>
                 </sheet>
                 <chatter/>
             </form>

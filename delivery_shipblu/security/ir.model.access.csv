@@ -10,6 +10,7 @@ access_shipblu_city_manager,shipblu.city manager,model_shipblu_city,petspot_ship
 access_shipblu_zone_user,shipblu.zone user,model_shipblu_zone,petspot_shipblu_base.group_shipblu_user,1,0,0,0
 access_shipblu_zone_manager,shipblu.zone manager,model_shipblu_zone,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
 access_shipblu_return_user,shipblu.return.order user,model_shipblu_return_order,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_return_ops,shipblu.return.order ops,model_shipblu_return_order,petspot_shipblu_base.group_shipblu_ops,1,1,1,0
 access_shipblu_return_manager,shipblu.return.order manager,model_shipblu_return_order,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
 access_shipblu_exchange_user,shipblu.exchange.order user,model_shipblu_exchange_order,petspot_shipblu_base.group_shipblu_user,1,0,0,0
 access_shipblu_exchange_manager,shipblu.exchange.order manager,model_shipblu_exchange_order,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
@@ -27,3 +28,8 @@ access_shipblu_create_return_wiz,shipblu.create.return.wizard,model_shipblu_crea
 access_shipblu_create_cash_wiz,shipblu.create.cash.wizard,model_shipblu_create_cash_wizard,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
 access_shipblu_create_exchange_wiz,shipblu.create.exchange.wizard,model_shipblu_create_exchange_wizard,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
 access_shipblu_batch_ops_wiz,shipblu.batch.ops.wizard,model_shipblu_batch_ops_wizard,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_pickup_batch_user,shipblu.pickup.batch user,model_shipblu_pickup_batch,petspot_shipblu_base.group_shipblu_user,1,0,0,0
+access_shipblu_pickup_batch_ops,shipblu.pickup.batch ops,model_shipblu_pickup_batch,petspot_shipblu_base.group_shipblu_ops,1,1,1,0
+access_shipblu_pickup_batch_mgr,shipblu.pickup.batch mgr,model_shipblu_pickup_batch,petspot_shipblu_base.group_shipblu_manager,1,1,1,1
+access_shipblu_coverage_import_ops,shipblu.coverage.import.wizard ops,model_shipblu_coverage_import_wizard,petspot_shipblu_base.group_shipblu_ops,1,1,1,1
+access_shipblu_coverage_import_mgr,shipblu.coverage.import.wizard mgr,model_shipblu_coverage_import_wizard,petspot_shipblu_base.group_shipblu_manager,1,1,1,1

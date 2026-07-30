@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Delivery ShipBlu",
-    "version": "19.0.1.4.0",
+    "version": "19.0.1.5.0",
     "category": "Inventory/Delivery",
-    "summary": "ShipBlu merchant portal stand-in + Duplicate AWB Guard",
+    "summary": "ShipBlu ops: import, track, pricing, pickups, settlements, SLA",
     "description": """
 Delivery ShipBlu
 ================
 Odoo Inventory → ShipBlu Shipping mirrors the merchant portal for Api-Key-capable
-operations, with a production-grade Duplicate AWB Guard (canonical identity,
-remote pre-check, advisory locks, verification_required on ambiguous creates).
+operations, with Duplicate AWB Guard, operational pricing/cutoffs, pickup batches,
+returns financial estimates, SLA, and reporting.
 
+Live shipment creation and pickup submission remain gated off by default.
 Docs: https://docs.shipblu.com/
     """,
     "author": "Pet Spot",
@@ -33,6 +34,7 @@ Docs: https://docs.shipblu.com/
         "views/shipblu_aux_order_views.xml",
         "views/shipblu_portal_views.xml",
         "views/shipblu_shipment_views.xml",
+        "views/shipblu_ops_views.xml",
         "views/delivery_carrier_views.xml",
         "views/stock_picking_views.xml",
         "views/menu.xml",

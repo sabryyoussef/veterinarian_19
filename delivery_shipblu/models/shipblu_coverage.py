@@ -12,6 +12,14 @@ class ShipBluGovernorate(models.Model):
     shipblu_id = fields.Integer(required=True, index=True)
     company_id = fields.Many2one("res.company", required=True, index=True)
     backend_id = fields.Many2one("shipblu.backend", ondelete="cascade")
+    covered = fields.Boolean(default=True)
+    active = fields.Boolean(default=True)
+    service_level = fields.Char()
+    source = fields.Selection(
+        [("api", "API"), ("import", "Import"), ("manual", "Manual")],
+        default="api",
+    )
+    last_sync_at = fields.Datetime()
 
     _shipblu_gov_uniq = models.Constraint(
         "unique(company_id, shipblu_id)",
@@ -29,6 +37,14 @@ class ShipBluCity(models.Model):
     governorate_shipblu_id = fields.Integer(index=True)
     company_id = fields.Many2one("res.company", required=True, index=True)
     backend_id = fields.Many2one("shipblu.backend", ondelete="cascade")
+    covered = fields.Boolean(default=True)
+    active = fields.Boolean(default=True)
+    service_level = fields.Char()
+    source = fields.Selection(
+        [("api", "API"), ("import", "Import"), ("manual", "Manual")],
+        default="api",
+    )
+    last_sync_at = fields.Datetime()
 
     _shipblu_city_uniq = models.Constraint(
         "unique(company_id, shipblu_id)",
@@ -46,6 +62,14 @@ class ShipBluZone(models.Model):
     city_shipblu_id = fields.Integer(index=True)
     company_id = fields.Many2one("res.company", required=True, index=True)
     backend_id = fields.Many2one("shipblu.backend", ondelete="cascade")
+    covered = fields.Boolean(default=True)
+    active = fields.Boolean(default=True)
+    service_level = fields.Char()
+    source = fields.Selection(
+        [("api", "API"), ("import", "Import"), ("manual", "Manual")],
+        default="api",
+    )
+    last_sync_at = fields.Datetime()
 
     _shipblu_zone_uniq = models.Constraint(
         "unique(company_id, shipblu_id)",

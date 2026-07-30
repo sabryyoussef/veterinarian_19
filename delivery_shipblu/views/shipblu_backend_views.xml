@@ -22,7 +22,7 @@
                         groups="petspot_shipblu_base.group_shipblu_manager"
                         confirm="Update merchant store address on ShipBlu?"/>
             </xpath>
-            <xpath expr="//group[@name='group_connection']" position="after">
+            <xpath expr="//page[@name='page_connection']" position="inside">
                 <group string="Merchant Portal Profile" col="4" name="group_merchant_profile">
                     <field name="merchant_status"/>
                     <field name="merchant_van_or_bike"/>

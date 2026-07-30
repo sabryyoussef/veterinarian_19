@@ -56,12 +56,77 @@ class ShipmentService:
             return 0.0
         return residual
 
-    def assert_can_create(self, picking, backend):
+    def assert_can_create(self, picking, backend, overrides=None):
+        overrides = overrides or {}
         backend.assert_write_allowed("create")
-        if not backend.default_package_size:
-            raise UserError(_("Set Default Package Size ID on the ShipBlu backend before creating shipments."))
-        if not backend.default_zone_id:
+        package_size = int(overrides.get("package_size") or backend.default_package_size or 0)
+        if not package_size:
+            raise UserError(
+                _(
+                    "Package size ID unresolved. Set Default Package Size ID or pass an explicit "
+                    "verified package_size — never guess."
+                )
+            )
+        size_map = self.env["shipblu.package.size"].search(
+            [
+                ("backend_id", "=", backend.id),
+                ("shipblu_size_id", "=", package_size),
+                ("active", "=", True),
+            ],
+            limit=1,
+        )
+        if backend.package_size_ids and not size_map:
+            raise UserError(
+                _(
+                    "Package size ID %(id)s is not mapped on the backend. "
+                    "Map it under Package Sizes before live create."
+                )
+                % {"id": package_size}
+            )
+        if not backend.default_zone_id and not overrides.get("zone"):
             raise UserError(_("Set Default Drop-off Zone ID on the ShipBlu backend."))
+
+        weight = float(overrides.get("weight_kg") or 0.0)
+        if not weight and picking:
+            weight = sum(float(m.product_id.weight or 0.0) * float(m.quantity or m.product_uom_qty or 0.0)
+                         for m in picking.move_ids)
+        max_w = float(backend.max_shipment_weight_kg or 10.0)
+        if backend.enable_package_weight_blocking and weight > max_w:
+            if not overrides.get("weight_override"):
+                raise UserError(
+                    _("Shipment weight %(w).3f kg exceeds maximum %(m).3f kg. Apply an authorized override.")
+                    % {"w": weight, "m": max_w}
+                )
+
+        if backend.enable_coverage_blocking:
+            zone_id = int(overrides.get("zone") or backend.default_zone_id or 0)
+            zone = self.env["shipblu.zone"].search(
+                [
+                    ("backend_id", "=", backend.id),
+                    ("shipblu_id", "=", zone_id),
+                    ("active", "=", True),
+                    ("covered", "=", True),
+                ],
+                limit=1,
+            )
+            if not zone:
+                raise UserError(
+                    _("Destination zone %(z)s is unmapped or not covered. Refusing silent substitution.")
+                    % {"z": zone_id}
+                )
+
+        if backend.enable_wallet_validation:
+            cod = overrides.get("cash_amount")
+            if cod is None:
+                cod = self.compute_cod_amount(picking) if picking else 0.0
+            if float(cod or 0.0) == 0.0:
+                bal = backend.effective_wallet_balance()
+                # Soft warning by default; hard block only if configured
+                if backend.enable_wallet_hard_block and bal <= 0:
+                    raise UserError(
+                        _("Zero-COD shipment blocked: wallet balance %(b).2f is insufficient.")
+                        % {"b": bal}
+                    )
 
     def _partner_phone(self, partner):
         raw = getattr(partner, "mobile", None) or partner.phone or ""

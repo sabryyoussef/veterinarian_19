@@ -1,5 +1,21 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_shipblu_backend_user,shipblu.backend user,model_shipblu_backend,group_shipblu_user,1,0,0,0
+access_shipblu_backend_ops,shipblu.backend ops,model_shipblu_backend,group_shipblu_ops,1,1,0,0
 access_shipblu_backend_manager,shipblu.backend manager,model_shipblu_backend,group_shipblu_manager,1,1,1,1
 access_shipblu_api_log_user,shipblu.api.log user,model_shipblu_api_log,group_shipblu_user,1,0,0,0
 access_shipblu_api_log_manager,shipblu.api.log manager,model_shipblu_api_log,group_shipblu_manager,1,1,1,1
+access_shipblu_pricing_rule_user,shipblu.pricing.rule user,model_shipblu_pricing_rule,group_shipblu_user,1,0,0,0
+access_shipblu_pricing_rule_ops,shipblu.pricing.rule ops,model_shipblu_pricing_rule,group_shipblu_ops,1,1,1,0
+access_shipblu_pricing_rule_mgr,shipblu.pricing.rule mgr,model_shipblu_pricing_rule,group_shipblu_manager,1,1,1,1
+access_shipblu_volume_discount_user,shipblu.volume.discount user,model_shipblu_volume_discount,group_shipblu_user,1,0,0,0
+access_shipblu_volume_discount_ops,shipblu.volume.discount ops,model_shipblu_volume_discount,group_shipblu_ops,1,1,1,0
+access_shipblu_volume_discount_mgr,shipblu.volume.discount mgr,model_shipblu_volume_discount,group_shipblu_manager,1,1,1,1
+access_shipblu_package_size_user,shipblu.package.size user,model_shipblu_package_size,group_shipblu_user,1,0,0,0
+access_shipblu_package_size_ops,shipblu.package.size ops,model_shipblu_package_size,group_shipblu_ops,1,1,1,0
+access_shipblu_package_size_mgr,shipblu.package.size mgr,model_shipblu_package_size,group_shipblu_manager,1,1,1,1
+access_shipblu_sla_rule_user,shipblu.sla.rule user,model_shipblu_sla_rule,group_shipblu_user,1,0,0,0
+access_shipblu_sla_rule_ops,shipblu.sla.rule ops,model_shipblu_sla_rule,group_shipblu_ops,1,1,1,0
+access_shipblu_sla_rule_mgr,shipblu.sla.rule mgr,model_shipblu_sla_rule,group_shipblu_manager,1,1,1,1
+access_shipblu_settlement_user,shipblu.settlement user,model_shipblu_settlement,group_shipblu_user,1,0,0,0
+access_shipblu_settlement_acct,shipblu.settlement acct,model_shipblu_settlement,group_shipblu_accounting,1,1,1,0
+access_shipblu_settlement_mgr,shipblu.settlement mgr,model_shipblu_settlement,group_shipblu_manager,1,1,1,1

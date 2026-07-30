@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import api, SUPERUSER_ID
-
-
 def post_init_hook(env):
-    """Drop legacy unique(picking_id) if present; picking is optional for imports."""
+    """Drop legacy unique(picking_id) if present; seed reference config."""
     cr = env.cr
     cr.execute(
         """
@@ -15,3 +12,6 @@ def post_init_hook(env):
         cr.execute(
             "ALTER TABLE shipblu_shipment DROP CONSTRAINT IF EXISTS shipblu_shipment_picking_uniq"
         )
+    backends = env["shipblu.backend"].search([])
+    if backends and hasattr(backends, "_ensure_reference_config"):
+        backends._ensure_reference_config()

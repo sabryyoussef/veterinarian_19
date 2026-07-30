@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_shipblu_pickup_batch_list" model="ir.ui.view">
+        <field name="name">shipblu.pickup.batch.list</field>
+        <field name="model">shipblu.pickup.batch</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="planned_pickup_date"/>
+                <field name="shipment_count"/>
+                <field name="below_minimum"/>
+                <field name="estimated_low_volume_surcharge"/>
+                <field name="label_readiness"/>
+                <field name="validation_state"/>
+                <field name="request_status"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_shipblu_pickup_batch_form" model="ir.ui.view">
+        <field name="name">shipblu.pickup.batch.form</field>
+        <field name="model">shipblu.pickup.batch</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit_pickup" type="object" string="Submit Pickup (gated)"
+                            class="btn-primary"
+                            groups="petspot_shipblu_base.group_shipblu_ops"
+                            invisible="request_status == 'submitted'"/>
+                    <field name="request_status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not below_minimum">
+                        Below minimum shipments — confirm surcharge before submit.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="backend_id"/>
+                            <field name="pickup_point_id"/>
+                            <field name="planned_pickup_date"/>
+                            <field name="shipblu_pickup_ref"/>
+                        </group>
+                        <group>
+                            <field name="shipment_count"/>
+                            <field name="below_minimum"/>
+                            <field name="estimated_low_volume_surcharge"/>
+                            <field name="low_volume_confirmed"/>
+                            <field name="label_readiness"/>
+                            <field name="qr_readiness"/>
+                            <field name="validation_state"/>
+                        </group>
+                    </group>
+                    <field name="pickup_warning"/>
+                    <field name="shipment_ids" widget="many2many_tags"/>
+                    <field name="notes"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_pickup_batch" model="ir.actions.act_window">
+        <field name="name">Pickup Batches</field>
+        <field name="res_model">shipblu.pickup.batch</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_shipblu_coverage_import_wizard" model="ir.ui.view">
+        <field name="name">shipblu.coverage.import.wizard.form</field>
+        <field name="model">shipblu.coverage.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Coverage">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="data_file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                    <field name="dry_run"/>
+                </group>
+                <field name="result_log" readonly="1"/>
+                <footer>
+                    <button name="action_import" type="object" string="Run Import" class="btn-primary"/>
+                    <button string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_shipblu_coverage_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Coverage CSV/XLSX</field>
+        <field name="res_model">shipblu.coverage.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Shipment ops inherit: add pages to existing notebook -->
+    <record id="view_shipblu_shipment_form_ops" model="ir.ui.view">
+        <field name="name">shipblu.shipment.form.ops</field>
+        <field name="model">shipblu.shipment</field>
+        <field name="inherit_id" ref="delivery_shipblu.view_shipblu_shipment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='diag']" position="before">
+                <page string="Package" name="page_package">
+                    <group>
+                        <group>
+                            <field name="package_count"/>
+                            <field name="total_weight_kg"/>
+                            <field name="package_size_id"/>
+                            <field name="package_size_shipblu_id"/>
+                            <field name="fragile"/>
+                            <field name="fragile_api_supported"/>
+                        </group>
+                        <group>
+                            <field name="weight_override"/>
+                            <field name="weight_override_reason"/>
+                            <button name="action_apply_weight_override" type="object" string="Apply Weight Override"
+                                    groups="petspot_shipblu_base.group_shipblu_ops"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Services" name="page_services">
+                    <group string="Try &amp; Buy">
+                        <field name="try_and_buy_requested"/>
+                        <field name="try_and_buy_eligible"/>
+                        <field name="try_and_buy_eligibility_reason"/>
+                        <field name="try_and_buy_fee"/>
+                        <field name="try_and_buy_transmitted"/>
+                        <field name="source_platform"/>
+                        <field name="shopify_origin"/>
+                    </group>
+                    <group string="Inspection">
+                        <field name="inspection_requested"/>
+                        <field name="inspection_instructions"/>
+                        <field name="inspection_fee"/>
+                        <field name="inspection_transmitted"/>
+                        <field name="inspection_outcome"/>
+                        <div class="text-muted">The merchant remains responsible for product inspection and measurement instructions.</div>
+                    </group>
+                </page>
+                <page string="Cost Estimate" name="page_cost">
+                    <group>
+                        <button name="action_estimate_cost" type="object" string="Refresh Estimate" class="btn-secondary"/>
+                        <field name="cost_status"/>
+                        <field name="cost_pricing_source"/>
+                        <field name="cost_base_fee"/>
+                        <field name="cost_size_surcharge"/>
+                        <field name="cost_cod_fee"/>
+                        <field name="cost_try_and_buy_fee"/>
+                        <field name="cost_inspection_fee"/>
+                        <field name="cost_return_fee"/>
+                        <field name="cost_pickup_surcharge"/>
+                        <field name="cost_discount"/>
+                        <field name="cost_tax"/>
+                        <field name="cost_total"/>
+                        <field name="cost_currency"/>
+                        <field name="cost_notes"/>
+                    </group>
+                </page>
+                <page string="Pickup / SLA" name="page_pickup_sla">
+                    <group>
+                        <field name="pickup_cutoff_passed"/>
+                        <field name="same_day_pickup_possible"/>
+                        <field name="eligible_pickup_date"/>
+                        <field name="flyer_cutoff_passed"/>
+                        <field name="pickup_warning"/>
+                        <field name="coverage_status"/>
+                        <field name="destination_region"/>
+                        <field name="sla_rule_id"/>
+                        <field name="eta_start"/>
+                        <field name="eta_end"/>
+                        <field name="sla_overdue"/>
+                        <field name="sla_delay_days"/>
+                        <button name="action_compute_sla" type="object" string="Compute SLA"/>
+                    </group>
+                    <group string="Label / QR">
+                        <field name="label_status"/>
+                        <field name="label_ready"/>
+                        <field name="label_print_status"/>
+                        <field name="qr_present"/>
+                        <field name="courier_scan_status"/>
+                        <field name="ready_for_pickup"/>
+                        <button name="action_mark_label_printed" type="object" string="Mark Label Printed"/>
+                        <button name="action_confirm_courier_scan" type="object" string="Confirm Courier Scan (manual)"/>
+                    </group>
+                </page>
+                <page string="Return / Settlement" name="page_return_settlement">
+                    <group>
+                        <field name="return_status"/>
+                        <field name="return_collection_amount"/>
+                        <field name="settlement_status"/>
+                    </group>
+                </page>
+                <page string="Warnings" name="page_warnings">
+                    <field name="ops_warnings"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Reporting actions -->
+    <record id="action_shipblu_report_daily" model="ir.actions.act_window">
+        <field name="name">Daily Shipments</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_today': 1}</field>
+    </record>
+    <record id="action_shipblu_report_pending_pickup" model="ir.actions.act_window">
+        <field name="name">Pending Pickup</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('ready_for_pickup', '=', False), ('shipblu_order_id', '!=', False)]</field>
+    </record>
+    <record id="action_shipblu_report_delayed" model="ir.actions.act_window">
+        <field name="name">Delayed Shipments</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('sla_overdue', '=', True)]</field>
+    </record>
+    <record id="action_shipblu_report_unresolved_size" model="ir.actions.act_window">
+        <field name="name">Unresolved Package Sizes</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('package_size_shipblu_id', '=', 0)]</field>
+    </record>
+    <record id="action_shipblu_exceptions" model="ir.actions.act_window">
+        <field name="name">Exceptions</field>
+        <field name="res_model">shipblu.shipment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">['|', ('state', 'in', ('error', 'verification_required', 'manual_review')), ('sla_overdue', '=', True)]</field>
+    </record>
+</odoo>

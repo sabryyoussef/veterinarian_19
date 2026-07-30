@@ -18,4 +18,32 @@
         <field name="interval_type">minutes</field>
         <field name="active" eval="True"/>
     </record>
+    <!-- Dangerous / optional jobs — disabled by default -->
+    <record id="ir_cron_shipblu_sync_merchant" model="ir.cron">
+        <field name="name">ShipBlu: Sync merchant / wallet</field>
+        <field name="model_id" ref="petspot_shipblu_base.model_shipblu_backend"/>
+        <field name="state">code</field>
+        <field name="code">model.search([('active','=',True)]).action_sync_merchant_profile()</field>
+        <field name="interval_number">6</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="ir_cron_shipblu_detect_delayed" model="ir.cron">
+        <field name="name">ShipBlu: Detect delayed shipments</field>
+        <field name="model_id" ref="model_shipblu_shipment"/>
+        <field name="state">code</field>
+        <field name="code">model.search([])._compute_sla_overdue()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="ir_cron_shipblu_monthly_volume" model="ir.cron">
+        <field name="name">ShipBlu: Recalc monthly volume displays</field>
+        <field name="model_id" ref="petspot_shipblu_base.model_shipblu_backend"/>
+        <field name="state">code</field>
+        <field name="code">model.search([('active','=',True)])._compute_monthly_volume()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="False"/>
+    </record>
 </odoo>

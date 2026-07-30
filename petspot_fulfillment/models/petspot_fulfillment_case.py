@@ -49,7 +49,9 @@ class PetspotFulfillmentCase(models.Model):
         tracking=True,
     )
     partner_id = fields.Many2one(
-        related="sale_order_id.partner_id",
+        "res.partner",
+        string="Customer",
+        compute="_compute_partner_id",
         store=True,
         readonly=True,
     )
@@ -194,6 +196,14 @@ class PetspotFulfillmentCase(models.Model):
             "A fulfillment case for this Shopify store/order already exists.",
         ),
     ]
+
+    @api.depends("sale_order_id.partner_id", "inquiry_id.partner_id")
+    def _compute_partner_id(self):
+        for case in self:
+            case.partner_id = (
+                case.sale_order_id.partner_id
+                or case.inquiry_id.partner_id
+            )
 
     @api.depends("sale_order_id", "purchase_order_ids", "inquiry_id")
     def _compute_counts(self):
@@ -367,6 +377,47 @@ class PetspotFulfillmentCase(models.Model):
         case._sync_lines_from_sale()
         case._auto_classify(force=False)
         case.message_post(body=_("Fulfillment case created for %s") % sale_order.display_name)
+        return case
+
+    @api.model
+    def bind_inquiry_case(self, inquiry):
+        """Link/create orchestration case for Path B inquiry — no SO/RFQ/AWB."""
+        inquiry.ensure_one()
+        if inquiry.case_id:
+            return inquiry.case_id
+        existing = self.search([("inquiry_id", "=", inquiry.id)], limit=1)
+        if existing:
+            return existing
+        key = inquiry.idempotency_key or f"inquiry:{inquiry.id}"
+        by_key = self.search([("idempotency_key", "=", key)], limit=1)
+        if by_key:
+            if not by_key.inquiry_id:
+                by_key.inquiry_id = inquiry.id
+            return by_key
+        case = self.create({
+            "idempotency_key": key,
+            "inquiry_id": inquiry.id,
+            "path": "manual_whatsapp",
+            "state": "availability_check",
+            "classification_source": "inquiry",
+            "classification_note": _("Bound from availability inquiry %s") % inquiry.name,
+            "delivery_method": inquiry.requested_fulfillment
+            if inquiry.requested_fulfillment != "undecided"
+            else "undecided",
+            "payment_status": "unpaid",
+            "company_id": inquiry.company_id.id,
+            "automation_enabled": False,
+        })
+        if inquiry.product_id:
+            self.env["petspot.fulfillment.line"].create({
+                "case_id": case.id,
+                "product_id": inquiry.product_id.id,
+                "product_uom_qty": inquiry.requested_qty,
+                "source": "manual_whatsapp",
+            })
+        case.message_post(
+            body=_("Path B case from Chatwoot/manual inquiry (no quotation auto-created).")
+        )
         return case
 
     @api.model

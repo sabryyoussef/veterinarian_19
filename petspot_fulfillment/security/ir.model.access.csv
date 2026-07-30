@@ -10,3 +10,5 @@ access_inquiry_manager,petspot.availability.inquiry.manager,model_petspot_availa
 access_mark_paid_wizard,petspot.mark.paid.wizard,model_petspot_mark_paid_wizard,group_fulfillment_manager,1,1,1,1
 access_supplier_confirm_wizard,petspot.supplier.confirm.wizard,model_petspot_supplier_confirm_wizard,group_fulfillment_purchase,1,1,1,1
 access_transition_wizard,petspot.fulfillment.transition.wizard,model_petspot_fulfillment_transition_wizard,group_fulfillment_user,1,1,1,1
+access_cw_event_user,petspot.chatwoot.webhook.event.user,model_petspot_chatwoot_webhook_event,group_fulfillment_user,1,0,0,0
+access_cw_event_manager,petspot.chatwoot.webhook.event.manager,model_petspot_chatwoot_webhook_event,group_fulfillment_manager,1,1,1,1

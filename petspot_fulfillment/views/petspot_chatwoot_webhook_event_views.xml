@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_petspot_chatwoot_webhook_event_list" model="ir.ui.view">
+    <field name="name">petspot.chatwoot.webhook.event.list</field>
+    <field name="model">petspot.chatwoot.webhook.event</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="event_type"/>
+        <field name="direction"/>
+        <field name="state"/>
+        <field name="conversation_id"/>
+        <field name="message_id"/>
+        <field name="inquiry_id"/>
+        <field name="ack_sent"/>
+        <field name="ignore_reason"/>
+        <field name="processed_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_petspot_chatwoot_webhook_event_form" model="ir.ui.view">
+    <field name="name">petspot.chatwoot.webhook.event.form</field>
+    <field name="model">petspot.chatwoot.webhook.event</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_reprocess" type="object" string="Reprocess help"
+                  groups="petspot_fulfillment.group_fulfillment_manager"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="idempotency_key"/>
+              <field name="event_type"/>
+              <field name="direction"/>
+              <field name="ignore_reason"/>
+              <field name="error_message"/>
+            </group>
+            <group>
+              <field name="account_id"/>
+              <field name="inbox_id"/>
+              <field name="conversation_id"/>
+              <field name="contact_id"/>
+              <field name="message_id"/>
+              <field name="inquiry_id"/>
+              <field name="ack_sent"/>
+              <field name="payload_fingerprint"/>
+              <field name="content_preview"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_petspot_chatwoot_webhook_event" model="ir.actions.act_window">
+    <field name="name">Chatwoot Webhook Events</field>
+    <field name="res_model">petspot.chatwoot.webhook.event</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

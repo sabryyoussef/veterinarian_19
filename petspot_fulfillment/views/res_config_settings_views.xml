@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_res_config_settings_petspot_ff" model="ir.ui.view">
+    <field name="name">res.config.settings.petspot.fulfillment</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//form" position="inside">
+        <app string="PetSpot Fulfillment" name="petspot_fulfillment">
+          <block title="Chatwoot availability intake">
+            <setting string="Enable intake" help="Process Chatwoot webhooks into Availability Inquiries (TEST first).">
+              <field name="petspot_ff_chatwoot_intake_enabled"/>
+            </setting>
+            <setting string="Webhook secret">
+              <field name="petspot_ff_chatwoot_webhook_secret" password="True"/>
+            </setting>
+            <setting string="Account / Inbox">
+              <div class="content-group">
+                <div class="row mt16">
+                  <label for="petspot_ff_chatwoot_account_id" class="col-lg-3"/>
+                  <field name="petspot_ff_chatwoot_account_id" class="col-lg-2"/>
+                  <label for="petspot_ff_chatwoot_inbox_id" class="col-lg-3"/>
+                  <field name="petspot_ff_chatwoot_inbox_id" class="col-lg-2"/>
+                </div>
+              </div>
+            </setting>
+            <setting string="Acknowledgement">
+              <field name="petspot_ff_chatwoot_ack_enabled"/>
+              <field name="petspot_ff_chatwoot_test_mode"/>
+              <field name="petspot_ff_chatwoot_base_url" placeholder="http://chatwoot_rails:3000"/>
+              <field name="petspot_ff_chatwoot_api_token" password="True"/>
+            </setting>
+          </block>
+        </app>
+      </xpath>
+    </field>
+  </record>
+</odoo>

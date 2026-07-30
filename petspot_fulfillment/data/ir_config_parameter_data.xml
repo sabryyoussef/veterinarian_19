@@ -8,4 +8,28 @@
     <field name="key">petspot_fulfillment.cutover_timestamp</field>
     <field name="value"></field>
   </record>
+  <record id="icp_ff_cw_intake_enabled" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.chatwoot_intake_enabled</field>
+    <field name="value">False</field>
+  </record>
+  <record id="icp_ff_cw_account" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.chatwoot_account_id</field>
+    <field name="value">2</field>
+  </record>
+  <record id="icp_ff_cw_inbox" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.chatwoot_inbox_id</field>
+    <field name="value">2</field>
+  </record>
+  <record id="icp_ff_cw_ack" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.chatwoot_ack_enabled</field>
+    <field name="value">True</field>
+  </record>
+  <record id="icp_ff_cw_test_mode" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.chatwoot_test_mode</field>
+    <field name="value">True</field>
+  </record>
+  <record id="icp_ff_cw_base" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment.chatwoot_base_url</field>
+    <field name="value">http://127.0.0.1:3000</field>
+  </record>
 </odoo>

@@ -5,12 +5,14 @@
     <field name="model">petspot.availability.inquiry</field>
     <field name="arch" type="xml">
       <list>
+        <field name="review_required"/>
         <field name="name"/>
         <field name="phone"/>
         <field name="product_id"/>
         <field name="requested_qty"/>
         <field name="state"/>
         <field name="channel"/>
+        <field name="conversation_id"/>
         <field name="sale_order_id"/>
       </list>
     </field>
@@ -44,14 +46,22 @@
               <field name="default_code"/>
               <field name="requested_qty"/>
               <field name="product_url"/>
+              <field name="product_title_hint"/>
               <field name="requested_fulfillment"/>
+              <field name="review_required"/>
+              <field name="review_reason"/>
             </group>
           </group>
-          <group string="Shopify / Conversation">
+          <group string="Shopify / Chatwoot">
             <field name="shopify_product_id"/>
             <field name="shopify_variant_id"/>
+            <field name="chatwoot_account_id"/>
+            <field name="chatwoot_inbox_id"/>
+            <field name="chatwoot_contact_id"/>
             <field name="conversation_id"/>
             <field name="message_id"/>
+            <field name="ack_sent"/>
+            <field name="ack_sent_at"/>
             <field name="shopify_draft_order_id"/>
             <field name="idempotency_key"/>
           </group>

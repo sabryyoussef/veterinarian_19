@@ -17,4 +17,11 @@
             parent="menu_petspot_fulfillment_root"
             action="action_petspot_availability_inquiry"
             sequence="20"/>
+
+  <menuitem id="menu_petspot_chatwoot_events"
+            name="Chatwoot Webhook Events"
+            parent="menu_petspot_fulfillment_root"
+            action="action_petspot_chatwoot_webhook_event"
+            sequence="30"
+            groups="petspot_fulfillment.group_fulfillment_manager"/>
 </odoo>

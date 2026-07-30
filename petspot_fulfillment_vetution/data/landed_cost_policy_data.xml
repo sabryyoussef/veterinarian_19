@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+  <record id="landed_cost_policy_default" model="petspot.vetution.landed.cost.policy">
+    <field name="name">Phase 15A Provisional TEST Policy</field>
+    <field name="version">15A.2-TEST-PROVISIONAL</field>
+    <field name="pricing_method">gross_margin</field>
+    <field name="target_gross_margin_percent">25.0</field>
+    <field name="min_gross_margin_percent">20.0</field>
+    <field name="min_gross_profit_amount">50.0</field>
+    <field name="price_rounding">5.0</field>
+    <field name="rounding_mode">nearest</field>
+    <field name="max_price_increase_percent">10.0</field>
+    <field name="max_price_decrease_percent">10.0</field>
+    <field name="stale_after_hours_shadow">12.0</field>
+    <field name="stale_after_hours_auto_quote">2.0</field>
+    <field name="quotation_validity_hours">2.0</field>
+    <field name="allow_on_demand_refresh" eval="True"/>
+    <field name="allow_price_publish" eval="False"/>
+    <field name="allow_auto_quotation" eval="False"/>
+    <field name="allow_customer_message" eval="False"/>
+    <field name="allow_supplier_po" eval="False"/>
+    <field name="supplier_delivery_status">unknown</field>
+    <field name="supplier_delivery_source">Vetution delivery charge / free-delivery threshold not verified in Odoo sync payload.</field>
+    <field name="non_recoverable_tax_status">unknown</field>
+    <field name="non_recoverable_tax_source">Supplier VAT treatment not verified.</field>
+    <field name="payment_fee_status">unknown</field>
+    <field name="payment_fee_source">Paymob/Shopify gateway fee is order/gateway-specific; no single verified rate for landed cost.</field>
+    <field name="packaging_handling_status">unknown</field>
+    <field name="packaging_handling_source">No verified PetSpot packaging/handling cost recorded.</field>
+    <field name="risk_return_allowance_status">unknown</field>
+    <field name="risk_return_allowance_source">No verified return/risk allowance recorded.</field>
+    <field name="optional_fixed_cost_status">verified_zero</field>
+    <field name="optional_fixed_cost">0.0</field>
+    <field name="availability_wording">Available from supplier, subject to final confirmation</field>
+  </record>
+</odoo>

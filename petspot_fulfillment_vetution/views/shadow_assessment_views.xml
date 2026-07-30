@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_shadow_assessment_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.shadow.assessment.form</field>
+    <field name="model">petspot.vetution.shadow.assessment</field>
+    <field name="arch" type="xml">
+      <form create="0">
+        <header>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <div class="alert alert-warning" role="alert">
+            Phase 15A shadow only — stock is not reserved; no quote, message, price publish, or PO.
+          </div>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="inquiry_id"/>
+              <field name="product_id"/>
+              <field name="case_id"/>
+              <field name="active"/>
+              <field name="assessed_at"/>
+            </group>
+            <group>
+              <field name="resolution_method"/>
+              <field name="resolution_confidence"/>
+              <field name="vetution_drug_id"/>
+              <field name="vetution_size_id"/>
+              <field name="drug_slug"/>
+              <field name="mapping_review_id"/>
+            </group>
+          </group>
+          <group string="Freshness / availability">
+            <field name="snapshot_id"/>
+            <field name="availability_normalized"/>
+            <field name="source_sync_at"/>
+            <field name="data_age_hours"/>
+            <field name="is_fresh"/>
+            <field name="refresh_attempted"/>
+            <field name="refresh_succeeded"/>
+            <field name="eta_days"/>
+          </group>
+          <group string="Pricing (suggested only)">
+            <field name="policy_id"/>
+            <field name="policy_version"/>
+            <field name="supplier_cost"/>
+            <field name="component_delivery"/>
+            <field name="component_payment_fee"/>
+            <field name="component_packaging"/>
+            <field name="component_nonrecoverable_tax"/>
+            <field name="component_risk_allowance"/>
+            <field name="landed_cost"/>
+            <field name="landed_cost_incomplete"/>
+            <field name="missing_cost_components"/>
+            <field name="landed_formula"/>
+            <field name="sell_formula"/>
+            <field name="suggested_price"/>
+            <field name="price_review_required"/>
+            <field name="on_automation_allowlist"/>
+            <field name="availability_wording"/>
+            <field name="eligible_future_automation"/>
+            <field name="gate_block_auto_quotation"/>
+            <field name="gate_block_odoo_price_update"/>
+            <field name="gate_block_shopify_publish"/>
+            <field name="gate_block_supplier_purchase"/>
+            <field name="quotation_validity_hours"/>
+            <field name="current_odoo_price"/>
+            <field name="current_shopify_price"/>
+            <field name="price_delta_amount"/>
+            <field name="price_delta_percent"/>
+            <field name="expected_gross_profit"/>
+            <field name="expected_gross_margin_percent"/>
+          </group>
+          <group string="Decision">
+            <field name="blockers"/>
+            <field name="recommended_next_action"/>
+            <field name="payload_hash"/>
+            <field name="note"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="view_shadow_assessment_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.shadow.assessment.list</field>
+    <field name="model">petspot.vetution.shadow.assessment</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="active"/>
+        <field name="name"/>
+        <field name="inquiry_id"/>
+        <field name="product_id"/>
+        <field name="state"/>
+        <field name="availability_normalized"/>
+        <field name="suggested_price"/>
+        <field name="is_fresh"/>
+        <field name="assessed_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_shadow_assessment" model="ir.actions.act_window">
+    <field name="name">Shadow Assessments</field>
+    <field name="res_model">petspot.vetution.shadow.assessment</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

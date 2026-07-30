@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <menuitem id="menu_vetution_bridge_root"
+            name="Vetution Bridge"
+            parent="petspot_fulfillment.menu_petspot_fulfillment_root"
+            sequence="40"
+            groups="petspot_fulfillment.group_fulfillment_user"/>
+  <menuitem id="menu_shadow_assessments"
+            name="Shadow Assessments"
+            parent="menu_vetution_bridge_root"
+            action="action_shadow_assessment"
+            sequence="10"/>
+  <menuitem id="menu_mapping_reviews"
+            name="Mapping Reviews"
+            parent="menu_vetution_bridge_root"
+            action="action_mapping_review"
+            sequence="20"/>
+  <menuitem id="menu_supplier_snapshots"
+            name="Supplier Snapshots"
+            parent="menu_vetution_bridge_root"
+            action="action_supplier_snapshot"
+            sequence="30"
+            groups="petspot_fulfillment.group_fulfillment_manager"/>
+  <menuitem id="menu_automation_allowlist"
+            name="Automation Allowlist"
+            parent="menu_vetution_bridge_root"
+            action="action_automation_allowlist"
+            sequence="25"
+            groups="petspot_fulfillment.group_fulfillment_manager"/>
+  <menuitem id="menu_landed_cost_policy"
+            name="Landed Cost Policy"
+            parent="menu_vetution_bridge_root"
+            action="action_landed_cost_policy"
+            sequence="40"
+            groups="petspot_fulfillment.group_fulfillment_manager"/>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_automation_allowlist_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.automation.allowlist.form</field>
+    <field name="model">petspot.vetution.automation.allowlist</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="active"/>
+            <field name="product_id"/>
+            <field name="default_code"/>
+            <field name="vetution_size_id"/>
+            <field name="vetution_drug_id"/>
+            <field name="offer_id"/>
+            <field name="proof_note"/>
+            <field name="confirmed_by"/>
+            <field name="confirmed_at"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_automation_allowlist_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.automation.allowlist.list</field>
+    <field name="model">petspot.vetution.automation.allowlist</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="default_code"/>
+        <field name="vetution_size_id"/>
+        <field name="active"/>
+        <field name="confirmed_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_automation_allowlist" model="ir.actions.act_window">
+    <field name="name">Automation Allowlist</field>
+    <field name="res_model">petspot.vetution.automation.allowlist</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

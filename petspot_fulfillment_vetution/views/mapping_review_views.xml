@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_mapping_review_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.mapping.review.form</field>
+    <field name="model">petspot.vetution.mapping.review</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_confirm_mapping" type="object" string="Confirm Exact Mapping"
+                  class="btn-primary" invisible="state != 'pending'"/>
+          <button name="action_reject" type="object" string="Reject"
+                  invisible="state != 'pending'"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="product_id"/>
+              <field name="default_code"/>
+              <field name="shopify_variant_id"/>
+              <field name="reason"/>
+              <field name="inquiry_id"/>
+            </group>
+            <group>
+              <field name="current_vetution_id"/>
+              <field name="current_vetution_size_id"/>
+              <field name="proposed_vetution_drug_id"/>
+              <field name="proposed_vetution_size_id"/>
+              <field name="proposed_offer_id"/>
+              <field name="confirmed_by"/>
+              <field name="confirmed_at"/>
+            </group>
+          </group>
+          <group>
+            <field name="note"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="view_mapping_review_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.mapping.review.list</field>
+    <field name="model">petspot.vetution.mapping.review</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="default_code"/>
+        <field name="reason"/>
+        <field name="state"/>
+        <field name="proposed_vetution_size_id"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_mapping_review" model="ir.actions.act_window">
+    <field name="name">Mapping Reviews</field>
+    <field name="res_model">petspot.vetution.mapping.review</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

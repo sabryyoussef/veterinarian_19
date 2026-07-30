@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+  <record id="param_refresh_fail_count" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.refresh_fail_count</field>
+    <field name="value">0</field>
+  </record>
+  <record id="param_circuit_open_until" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.circuit_open_until</field>
+    <field name="value"></field>
+  </record>
+</odoo>

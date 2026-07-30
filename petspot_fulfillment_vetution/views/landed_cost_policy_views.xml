@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_landed_cost_policy_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.landed.cost.policy.form</field>
+    <field name="model">petspot.vetution.landed.cost.policy</field>
+    <field name="arch" type="xml">
+      <form string="Landed Cost Policy">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="version"/>
+              <field name="active"/>
+              <field name="company_id"/>
+              <field name="pricing_method"/>
+              <field name="availability_wording"/>
+            </group>
+            <group string="Phase hard locks">
+              <field name="allow_price_publish"/>
+              <field name="allow_auto_quotation"/>
+              <field name="allow_customer_message"/>
+              <field name="allow_supplier_po"/>
+            </group>
+          </group>
+          <group string="Gross margin / sell price">
+            <field name="target_gross_margin_percent"/>
+            <field name="min_gross_margin_percent"/>
+            <field name="min_gross_profit_amount"/>
+            <field name="price_rounding"/>
+            <field name="rounding_mode"/>
+            <field name="markup_percent" invisible="pricing_method != 'markup'"/>
+            <field name="max_price_increase_percent"/>
+            <field name="max_price_decrease_percent"/>
+            <field name="stale_after_hours_shadow"/>
+            <field name="stale_after_hours_auto_quote"/>
+            <field name="quotation_validity_hours"/>
+          </group>
+          <group string="Landed cost components (status required)">
+            <group string="Delivery">
+              <field name="supplier_delivery_status"/>
+              <field name="supplier_delivery_allocation"/>
+              <field name="supplier_delivery_source"/>
+            </group>
+            <group string="Tax">
+              <field name="non_recoverable_tax_status"/>
+              <field name="non_recoverable_tax_rate"/>
+              <field name="non_recoverable_tax_source"/>
+            </group>
+            <group string="Payment fee">
+              <field name="payment_fee_status"/>
+              <field name="payment_fee_rate"/>
+              <field name="payment_fee_fixed"/>
+              <field name="payment_fee_source"/>
+            </group>
+            <group string="Packaging / risk / optional">
+              <field name="packaging_handling_status"/>
+              <field name="packaging_handling"/>
+              <field name="packaging_handling_source"/>
+              <field name="risk_return_allowance_status"/>
+              <field name="risk_return_allowance_rate"/>
+              <field name="risk_return_allowance_source"/>
+              <field name="optional_fixed_cost_status"/>
+              <field name="optional_fixed_cost"/>
+            </group>
+          </group>
+          <group string="Pending / unknown inputs">
+            <field name="pending_decisions" nolabel="1" colspan="2"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_landed_cost_policy_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.landed.cost.policy.list</field>
+    <field name="model">petspot.vetution.landed.cost.policy</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="version"/>
+        <field name="pricing_method"/>
+        <field name="target_gross_margin_percent"/>
+        <field name="min_gross_margin_percent"/>
+        <field name="max_price_increase_percent"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_landed_cost_policy" model="ir.actions.act_window">
+    <field name="name">Landed Cost Policies</field>
+    <field name="res_model">petspot.vetution.landed.cost.policy</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_inquiry_form_vetution_bridge" model="ir.ui.view">
+    <field name="name">petspot.availability.inquiry.form.vetution.bridge</field>
+    <field name="model">petspot.availability.inquiry</field>
+    <field name="inherit_id" ref="petspot_fulfillment.view_petspot_availability_inquiry_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button name="action_assess_vetution_availability" type="object"
+                string="Assess Vetution Availability" class="btn-secondary"/>
+        <button name="action_refresh_and_reassess_vetution" type="object"
+                string="Refresh and Reassess"/>
+        <button name="action_open_vetution_mapping_review" type="object"
+                string="Open Mapping Review"/>
+      </xpath>
+      <xpath expr="//field[@name='sale_order_id']" position="before">
+        <field name="vetution_assessment_id"/>
+        <field name="vetution_assessment_state"/>
+        <field name="vetution_size_id_resolved"/>
+        <field name="vetution_resolution_method"/>
+      </xpath>
+      <xpath expr="//sheet" position="inside">
+        <field name="vetution_assessment_ids" nolabel="1">
+          <list>
+            <field name="active"/>
+            <field name="name"/>
+            <field name="state"/>
+            <field name="suggested_price"/>
+            <field name="availability_normalized"/>
+            <field name="assessed_at"/>
+          </list>
+        </field>
+      </xpath>
+    </field>
+  </record>
+</odoo>

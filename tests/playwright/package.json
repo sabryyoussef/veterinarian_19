@@ -9,6 +9,9 @@
     "test:intake": "playwright test appointment_intake.spec.ts --project=chromium --reporter=line,html",
     "test:gatec": "playwright test gate_c_regression.spec.ts --project=chromium --reporter=list",
     "test:odoo-partners": "playwright test odoo_partners_smoke.spec.ts --project=chromium --reporter=list",
+    "test:vetution:test": "ODOO_URL=http://127.0.0.1:8028 ODOO_DB=pet_spot_elsahel_test PETSPOT_PW_ENV=test playwright test --project=test-synthetic --reporter=list,html,json",
+    "test:vetution:prod": "ODOO_URL=http://127.0.0.1:8027 ODOO_DB=pet_spot_elsahel PETSPOT_PW_ENV=production playwright test --project=production-shadow --reporter=list,html,json",
+    "test:vetution:pickup": "ODOO_URL=http://127.0.0.1:8028 ODOO_DB=pet_spot_elsahel_test PETSPOT_PW_ENV=test playwright test --project=test-synthetic petspot_fulfillment_vetution/test-synthetic-pickup.spec.ts --reporter=list",
     "copy:screenshots": "node -e \"const fs=require('fs');const p=require('path');const s=p.join('screenshots');const d=p.join('..','..','docs','screenshots');fs.mkdirSync(d,{recursive:true});for(const f of fs.readdirSync(s)) if(f.endsWith('.png')) fs.copyFileSync(p.join(s,f),p.join(d,f));\"",
     "copy:petspot": "node -e \"const fs=require('fs');const p=require('path');const s=p.join('screenshots','petspot_clinic');const d=p.join('..','..','docs','screenshots','petspot_clinic');fs.mkdirSync(d,{recursive:true});if(fs.existsSync(s)) for(const f of fs.readdirSync(s)) fs.copyFileSync(p.join(s,f),p.join(d,f));\"",
     "install:browsers": "playwright install chromium"

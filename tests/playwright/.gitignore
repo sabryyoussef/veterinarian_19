@@ -4,3 +4,7 @@ test-results/
 report/
 playwright/.cache/
 .env
+evidence/
+**/auth*.json
+**/storageState*.json
+**/petspot_fulfillment_vetution/**/shell/*.json

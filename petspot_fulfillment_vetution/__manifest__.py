@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "PetSpot Fulfillment × Vetution Bridge",
-    "version": "19.0.1.2.0",
+    "version": "19.0.1.2.1",
     "category": "Sales/Sales",
     "summary": "Phase 15A: read-only Vetution shadow availability + suggested price for Availability Inquiries",
     "description": """

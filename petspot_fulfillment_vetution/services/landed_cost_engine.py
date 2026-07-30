@@ -354,7 +354,16 @@ class LandedCostEngine:
                     detail=bd_dict,
                 )
 
-            if payment_method == "cod":
+            if payment_method in ("unknown", False, None, ""):
+                # Cannot classify COD vs prepaid — leave COD unknown (do not invent N/A)
+                cod_comp = CostComponent(
+                    "cod_commission",
+                    "COD Commission",
+                    None,
+                    "unknown",
+                    source="payment_method unresolved — COD vs prepaid unknown",
+                )
+            elif payment_method == "cod":
                 if backend.cod_commission_rate is False or backend.cod_commission_rate is None:
                     cod_comp = CostComponent(
                         "cod_commission",

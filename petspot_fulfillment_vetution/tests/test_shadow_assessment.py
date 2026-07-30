@@ -120,8 +120,11 @@ class TestVetutionShadowAssessment(TransactionCase):
         self.assertFalse(inquiry.sale_order_id)
 
     def test_gross_margin_formula_and_rounding(self):
+        # Isolate supplier-only path (store pickup) so ShipBlu estimate does not inflate landed
         # cost 13 -> 13/0.75=17.333, max(17.333, 63)=63 -> nearest 5 = 65
-        br = self.policy.compute_landed_cost(13.0)
+        br = self.policy.compute_landed_cost(
+            13.0, context={"requested_fulfillment": "store_pickup"}
+        )
         sale = self.policy.compute_suggested_sale_price(br["landed_cost"])
         self.assertAlmostEqual(sale["suggested_price"], 65.0)
         margin = (sale["suggested_price"] - br["landed_cost"]) / sale["suggested_price"] * 100

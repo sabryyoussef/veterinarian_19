@@ -9,3 +9,4 @@ from . import test_message_transport
 from . import test_payment_trust
 from . import test_price_publish_queue
 from . import test_workflow_e2e
+from . import test_ops_activities

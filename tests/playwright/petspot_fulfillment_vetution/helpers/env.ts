@@ -78,6 +78,7 @@ export const ACTION_XML: Record<string, string> = {
   giza_receipts: "petspot_fulfillment_vetution.action_giza_receipt",
   auto_quote: "petspot_fulfillment_vetution.action_auto_quote",
   shipblu_backend: "petspot_shipblu_base.action_shipblu_backend",
+  my_work: "petspot_fulfillment_vetution.action_inquiry_my_work",
 };
 
 export const REQUIRED_PROD_ICPS: Record<string, string> = {

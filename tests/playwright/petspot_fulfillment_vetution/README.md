@@ -20,7 +20,7 @@ TEST mutations go through `helpers/shell_workflow.py` (odoo-bin shell) because
 ## Prerequisites
 
 1. Odoo services listening on 8027 / 8028.
-2. Modules installed: `petspot_fulfillment` `19.0.1.1.1`, `petspot_fulfillment_vetution` `19.0.1.4.0`.
+2. Modules installed: `petspot_fulfillment` `19.0.1.1.1`, `petspot_fulfillment_vetution` `19.0.1.5.0`.
 3. From `tests/playwright`:
 
 ```bash

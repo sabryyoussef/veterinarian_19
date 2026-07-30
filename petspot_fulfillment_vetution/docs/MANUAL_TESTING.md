@@ -55,6 +55,20 @@ Login as a user in **PetSpot Fulfillment User** (or Admin).
 
 ---
 
+## 1b. My Work operator queue (simplified)
+
+| # | Step | Expected | ☐ |
+|---|---|---|---|
+| 1b.1 | Open **PetSpot Fulfillment → Operations → My Work** | Kanban/list of inquiries with open managed activities | |
+| 1b.2 | Open one inquiry | Operator panel shows blocker, next action, owner, due date | |
+| 1b.3 | Click **Open Correct Action** | Opens exact related record (not a random list) | |
+| 1b.4 | Click **Mark Done and Reassess** | Managed activity closed; reassessment runs; next activity if needed | |
+| 1b.5 | Production: complete a mapping/review activity | No live Chatwoot / Shopify / ShipBlu / RFQ send | |
+
+Configure owners under **Settings → PetSpot Ops Owners** (company fields). See [OPERATOR_MY_WORK_AR.md](OPERATOR_MY_WORK_AR.md) and [MY_WORK_ACTIVITIES.md](MY_WORK_ACTIVITIES.md).
+
+---
+
 ## 2. Production — Shadow Mode manual tests
 
 ### 2.1 Landed-cost policy (read-only review)

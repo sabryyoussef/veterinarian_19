@@ -825,6 +825,10 @@ class PetspotVetutionShadowAssessment(models.Model):
                     "vetution_assessment_state": active.state,
                 }
             )
+            if hasattr(inquiry, "_petspot_ops_sync") and not self.env.context.get(
+                "petspot_ops_skip_sync"
+            ):
+                inquiry._petspot_ops_sync()
             return active
 
         if active:
@@ -848,4 +852,9 @@ class PetspotVetutionShadowAssessment(models.Model):
                 "vetution_resolution_method": assessment.resolution_method,
             }
         )
+        # Sync My Work managed activity (idempotent; no live side effects)
+        if hasattr(inquiry, "_petspot_ops_sync") and not self.env.context.get(
+            "petspot_ops_skip_sync"
+        ):
+            inquiry._petspot_ops_sync()
         return assessment

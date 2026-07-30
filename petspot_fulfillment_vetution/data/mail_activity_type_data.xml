@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+  <record id="mail_activity_type_mapping" model="mail.activity.type">
+    <field name="name">PetSpot: Product Mapping</field>
+    <field name="icon">fa-link</field>
+    <field name="decoration_type">warning</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+  <record id="mail_activity_type_purchasing" model="mail.activity.type">
+    <field name="name">PetSpot: Purchasing</field>
+    <field name="icon">fa-shopping-cart</field>
+    <field name="decoration_type">warning</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+  <record id="mail_activity_type_finance" model="mail.activity.type">
+    <field name="name">PetSpot: Finance / Cost</field>
+    <field name="icon">fa-money</field>
+    <field name="decoration_type">danger</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+  <record id="mail_activity_type_sales" model="mail.activity.type">
+    <field name="name">PetSpot: Sales / Customer</field>
+    <field name="icon">fa-comments</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+  <record id="mail_activity_type_shipping" model="mail.activity.type">
+    <field name="name">PetSpot: Shipping</field>
+    <field name="icon">fa-truck</field>
+    <field name="decoration_type">warning</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+  <record id="mail_activity_type_warehouse" model="mail.activity.type">
+    <field name="name">PetSpot: Giza Warehouse</field>
+    <field name="icon">fa-building</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+  <record id="mail_activity_type_store" model="mail.activity.type">
+    <field name="name">PetSpot: Store Pickup</field>
+    <field name="icon">fa-home</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+  <record id="mail_activity_type_manager" model="mail.activity.type">
+    <field name="name">PetSpot: Manager Review</field>
+    <field name="icon">fa-flag</field>
+    <field name="decoration_type">danger</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+  </record>
+</odoo>

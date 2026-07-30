@@ -87,7 +87,11 @@ export default defineConfig({
     },
     {
       name: "production-shadow",
-      testMatch: ["**/petspot_fulfillment_vetution/production-shadow.spec.ts"],
+      testMatch: [
+        "**/petspot_fulfillment_vetution/production-shadow.spec.ts",
+        "**/petspot_fulfillment_vetution/my-work.spec.ts",
+      ],
+      grep: /@production-shadow/,
       use: {
         browserName: "chromium",
         baseURL: process.env.ODOO_URL || "http://127.0.0.1:8027",
@@ -98,7 +102,9 @@ export default defineConfig({
       testMatch: [
         "**/petspot_fulfillment_vetution/test-synthetic-*.spec.ts",
         "**/petspot_fulfillment_vetution/exception-matrix.spec.ts",
+        "**/petspot_fulfillment_vetution/my-work.spec.ts",
       ],
+      grep: /@test-synthetic/,
       use: {
         browserName: "chromium",
         baseURL: process.env.ODOO_URL || "http://127.0.0.1:8028",

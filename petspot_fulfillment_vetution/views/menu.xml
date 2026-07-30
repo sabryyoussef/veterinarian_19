@@ -80,6 +80,18 @@
             groups="petspot_fulfillment.group_fulfillment_manager"/>
 
   <!-- Phase 15B workflow orchestration (quotation_ledger / payment_trust / price_publish_queue / message_template / data_health) -->
+  <menuitem id="menu_operations_root"
+            name="Operations"
+            parent="petspot_fulfillment.menu_petspot_fulfillment_root"
+            sequence="5"
+            groups="petspot_fulfillment.group_fulfillment_user"/>
+  <menuitem id="menu_my_work"
+            name="My Work"
+            parent="menu_operations_root"
+            action="action_inquiry_my_work"
+            sequence="1"
+            groups="petspot_fulfillment.group_fulfillment_user"/>
+
   <menuitem id="menu_quotation_ledger"
             name="Quotation Ledger"
             parent="menu_vetution_bridge_root"

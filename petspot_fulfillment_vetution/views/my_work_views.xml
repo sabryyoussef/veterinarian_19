@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Operator panel on inquiry form -->
+  <record id="view_inquiry_form_ops_panel" model="ir.ui.view">
+    <field name="name">petspot.availability.inquiry.form.ops.panel</field>
+    <field name="model">petspot.availability.inquiry</field>
+    <field name="inherit_id" ref="petspot_fulfillment.view_petspot_availability_inquiry_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button name="action_ops_mark_done_and_reassess" type="object"
+                string="Mark Done and Reassess" class="btn-primary"
+                invisible="not ops_action_code"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_next" type="object"
+                string="Open Correct Action" class="btn-secondary"
+                invisible="not ops_action_code"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_mapping" type="object"
+                string="Open Mapping Review" class="btn-secondary"
+                invisible="ops_action_code != 'MAPPING_REQUIRED'"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_assessment" type="object"
+                string="Open Assessment" class="btn-secondary"
+                invisible="ops_action_code not in ('NEGATIVE_MARGIN', 'PRICE_REVIEW_REQUIRED', 'DELIVERY_PRICE_REVIEW_REQUIRED', 'OOS_REVIEW', 'SUPPLIER_DATA_STALE')"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_policy" type="object"
+                string="Open Cost Policy" class="btn-secondary"
+                invisible="ops_action_code != 'INCOMPLETE_COST_PROFILE'"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_quotation" type="object"
+                string="Open Quotation" class="btn-secondary"
+                invisible="ops_action_code not in ('QUOTATION_READY', 'WAITING_CUSTOMER_ACCEPTANCE', 'QUOTATION_EXPIRED')"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_payment" type="object"
+                string="Open Payment" class="btn-secondary"
+                invisible="ops_action_code not in ('PAYMENT_PENDING', 'PAYMENT_REJECTED')"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_rfq_task" type="object"
+                string="Open RFQ Task" class="btn-secondary"
+                invisible="ops_action_code not in ('READY_FOR_RFQ', 'SUPPLIER_PRICE_CHANGED')"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_giza" type="object"
+                string="Open Giza Receipt" class="btn-secondary"
+                invisible="ops_action_code != 'WAITING_GIZA_RECEIPT'"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_shipment" type="object"
+                string="Open Shipment" class="btn-secondary"
+                invisible="ops_action_code not in ('READY_FOR_SHIPMENT', 'SHIPMENT_FAILED', 'PACKAGE_SIZE_REQUIRED')"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+        <button name="action_ops_open_case" type="object"
+                string="Open Case" class="btn-secondary"
+                invisible="ops_action_code != 'READY_FOR_PICKUP_HANDOVER'"
+                groups="petspot_fulfillment.group_fulfillment_user"/>
+      </xpath>
+      <xpath expr="//sheet" position="before">
+        <div class="alert alert-info" role="alert" invisible="not ops_action_code">
+          <strong>Operator Work</strong>
+          — resolve the blocker, then Mark Done and Reassess.
+        </div>
+      </xpath>
+      <xpath expr="//sheet" position="inside">
+        <group string="My Work — Current Blocker" name="petspot_ops_panel">
+          <group>
+            <field name="ops_environment"/>
+            <field name="ops_stage"/>
+            <field name="ops_priority"/>
+            <field name="ops_blocker_code"/>
+            <field name="ops_blocker_label"/>
+          </group>
+          <group>
+            <field name="ops_next_action_label"/>
+            <field name="ops_action_code"/>
+            <field name="ops_owner_id"/>
+            <field name="ops_due_date"/>
+            <field name="ops_overdue"/>
+            <field name="ops_activity_id"/>
+            <field name="ops_category"/>
+            <field name="vetution_assessment_id"/>
+          </group>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- My Work list -->
+  <record id="view_inquiry_my_work_list" model="ir.ui.view">
+    <field name="name">petspot.availability.inquiry.my.work.list</field>
+    <field name="model">petspot.availability.inquiry</field>
+    <field name="arch" type="xml">
+      <list decoration-danger="ops_overdue"
+            decoration-bf="ops_priority == '1'"
+            default_order="ops_due_date asc, id desc">
+        <field name="ops_priority"/>
+        <field name="name"/>
+        <field name="customer_name"/>
+        <field name="product_id"/>
+        <field name="default_code"/>
+        <field name="requested_fulfillment"/>
+        <field name="ops_stage"/>
+        <field name="ops_blocker_code"/>
+        <field name="ops_next_action_label"/>
+        <field name="ops_owner_id" widget="many2one_avatar_user"/>
+        <field name="ops_due_date"/>
+        <field name="ops_overdue"/>
+        <field name="ops_environment"/>
+        <field name="vetution_assessment_state"/>
+        <field name="ops_category" column_invisible="1"/>
+        <field name="ops_action_code" column_invisible="1"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_inquiry_my_work_kanban" model="ir.ui.view">
+    <field name="name">petspot.availability.inquiry.my.work.kanban</field>
+    <field name="model">petspot.availability.inquiry</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="ops_stage" class="o_kanban_small_column" sample="1">
+        <field name="name"/>
+        <field name="default_code"/>
+        <field name="ops_blocker_code"/>
+        <field name="ops_next_action_label"/>
+        <field name="ops_due_date"/>
+        <field name="ops_owner_id"/>
+        <field name="ops_priority"/>
+        <field name="ops_overdue"/>
+        <field name="ops_environment"/>
+        <field name="ops_stage"/>
+        <templates>
+          <t t-name="card">
+            <div class="oe_kanban_global_click">
+              <strong><field name="name"/></strong>
+              <div><field name="default_code"/></div>
+              <div class="text-muted"><field name="ops_blocker_code"/></div>
+              <div><field name="ops_next_action_label"/></div>
+              <div>Due: <field name="ops_due_date"/></div>
+              <div><field name="ops_owner_id" widget="many2one_avatar_user"/></div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="view_inquiry_my_work_search" model="ir.ui.view">
+    <field name="name">petspot.availability.inquiry.my.work.search</field>
+    <field name="model">petspot.availability.inquiry</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="default_code"/>
+        <field name="ops_blocker_code"/>
+        <field name="ops_owner_id"/>
+        <field name="ops_action_code"/>
+        <filter name="filter_my_work" string="My Work"
+                domain="[('ops_owner_id', '=', uid), ('ops_action_code', '!=', False)]"/>
+        <filter name="filter_overdue" string="Overdue"
+                domain="[('ops_overdue', '=', True)]"/>
+        <filter name="filter_due_today" string="Due Today"
+                domain="[('ops_due_date', '!=', False), ('ops_overdue', '=', False)]"/>
+        <filter name="filter_unassigned" string="Unassigned"
+                domain="[('ops_owner_id', '=', False), ('ops_action_code', '!=', False)]"/>
+        <filter name="filter_mapping" string="Product Mapping"
+                domain="[('ops_category', '=', 'product_mapping')]"/>
+        <filter name="filter_purchasing" string="Purchasing"
+                domain="[('ops_category', '=', 'purchasing')]"/>
+        <filter name="filter_finance" string="Finance/Payment"
+                domain="[('ops_category', '=', 'finance')]"/>
+        <filter name="filter_cs" string="Customer Follow-up"
+                domain="[('ops_category', '=', 'customer_followup')]"/>
+        <filter name="filter_shipping" string="Shipping"
+                domain="[('ops_category', '=', 'shipping')]"/>
+        <filter name="filter_giza" string="Giza Receipt"
+                domain="[('ops_category', '=', 'giza_receipt')]"/>
+        <filter name="filter_pickup" string="Store Pickup"
+                domain="[('ops_category', '=', 'store_pickup')]"/>
+        <filter name="filter_prod_shadow" string="Production Shadow"
+                domain="[('ops_environment', '=', 'production_shadow')]"/>
+        <filter name="filter_test" string="TEST Synthetic"
+                domain="[('ops_environment', '=', 'test_synthetic')]"/>
+        <filter name="filter_ready" string="Ready to Continue"
+                domain="[('ops_action_code', 'in', ['QUOTATION_READY', 'READY_FOR_RFQ', 'READY_FOR_SHIPMENT', 'READY_FOR_PICKUP_HANDOVER', 'WAITING_GIZA_RECEIPT'])]"/>
+        <filter name="filter_blocked" string="Blocked"
+                domain="[('ops_action_code', '!=', False), ('ops_stage', 'in', ['mapping', 'sourcing', 'commercial_review', 'blocked'])]"/>
+        <separator/>
+        <filter name="groupby_owner" string="Responsible" context="{'group_by': 'ops_owner_id'}"/>
+        <filter name="groupby_blocker" string="Blocker" context="{'group_by': 'ops_blocker_code'}"/>
+        <filter name="groupby_category" string="Next-action category" context="{'group_by': 'ops_category'}"/>
+        <filter name="groupby_stage" string="Operational stage" context="{'group_by': 'ops_stage'}"/>
+        <filter name="groupby_due" string="Due date" context="{'group_by': 'ops_due_date'}"/>
+        <filter name="groupby_fulfillment" string="Fulfillment method" context="{'group_by': 'requested_fulfillment'}"/>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_inquiry_my_work" model="ir.actions.act_window">
+    <field name="name">My Work</field>
+    <field name="res_model">petspot.availability.inquiry</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="search_view_id" ref="view_inquiry_my_work_search"/>
+    <field name="context" eval="{'search_default_filter_my_work': 1}"/>
+    <field name="domain">[('ops_action_code', '!=', False)]</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">No open fulfillment work assigned to you.</p>
+      <p>When a Vetution assessment finds a blocker, a managed activity appears here.</p>
+    </field>
+  </record>
+  <record id="action_inquiry_my_work_kanban" model="ir.actions.act_window.view">
+    <field name="sequence" eval="1"/>
+    <field name="view_mode">kanban</field>
+    <field name="view_id" ref="view_inquiry_my_work_kanban"/>
+    <field name="act_window_id" ref="action_inquiry_my_work"/>
+  </record>
+  <record id="action_inquiry_my_work_list" model="ir.actions.act_window.view">
+    <field name="sequence" eval="2"/>
+    <field name="view_mode">list</field>
+    <field name="view_id" ref="view_inquiry_my_work_list"/>
+    <field name="act_window_id" ref="action_inquiry_my_work"/>
+  </record>
+</odoo>

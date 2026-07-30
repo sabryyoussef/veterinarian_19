@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 {
     "name": "PetSpot Fulfillment × Vetution Bridge",
-    "version": "19.0.1.4.0",
+    "version": "19.0.1.5.0",
     "category": "Sales/Sales",
-    "summary": "Phase 15B: synthetic E2E workflow orchestration (locks OFF on Production)",
+    "summary": "Phase 15B + My Work operator activities (locks OFF on Production)",
     "description": """
 PetSpot Fulfillment × Vetution Bridge
 =====================================
-Shadow landed cost + TEST workflow orchestration:
+Shadow landed cost + TEST workflow orchestration + My Work activities:
 
 * Separated product vs delivery economics (Giza origin)
 * Synthetic TEST cost profile (NOT for commerce)
 * Auto-quote / messaging / payment / RFQ task / Giza receipt / mock AWB
 * Price publish queue (mocked)
+* Native Odoo Activities + My Work operator queue
 
 Production transactional flags remain OFF. Synthetic values must never
 be copied into Production commercial policy.
@@ -23,6 +24,7 @@ be copied into Production commercial policy.
         "petspot_fulfillment",
         "vetution_supplier",
         "petspot_shipblu_base",
+        "sale",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -34,19 +36,23 @@ be copied into Production commercial policy.
         "data/automation_allowlist_data.xml",
         "data/ir_config_parameter_data.xml",
         "data/ir_config_parameter_workflow.xml",
+        "data/mail_activity_type_data.xml",
         "data/ir_cron_data.xml",
+        "data/ir_cron_ops_activity.xml",
         "views/landed_cost_policy_views.xml",
         "views/supplier_snapshot_views.xml",
         "views/shadow_assessment_views.xml",
         "views/mapping_review_views.xml",
         "views/automation_allowlist_views.xml",
         "views/availability_inquiry_views.xml",
+        "views/my_work_views.xml",
         "views/message_template_views.xml",
         "views/quotation_ledger_views.xml",
         "views/payment_trust_views.xml",
         "views/price_publish_queue_views.xml",
         "views/data_health_views.xml",
         "views/workflow_views.xml",
+        "views/res_config_settings_views.xml",
         "views/menu.xml",
     ],
     "installable": True,

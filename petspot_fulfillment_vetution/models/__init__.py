@@ -21,3 +21,7 @@ from . import shipblu_mock_awb
 from . import ops_health
 from . import supplier_order_task
 from . import giza_receipt
+from . import mail_activity
+from . import res_company
+from . import res_config_settings
+from . import ops_activity

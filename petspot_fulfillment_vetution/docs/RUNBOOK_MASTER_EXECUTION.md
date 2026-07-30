@@ -7,9 +7,9 @@ end-to-end (E2E) workflow on the TEST database, read the resulting audit
 trail, and what to check before ever considering flipping a flag toward
 Production.
 
-See also: [`SYNTHETIC_POLICY.md`](SYNTHETIC_POLICY.md), [`CANARY_READINESS_CHECKLIST.md`](CANARY_READINESS_CHECKLIST.md) for the full safety
-model of the `TEST-SYNTHETIC-E2E-NOT-FOR-COMMERCE` policy, and
-[`PHASE15A_SHADOW.md`](PHASE15A_SHADOW.md) for the shadow landed-cost engine.
+See also: [`SYNTHETIC_POLICY.md`](SYNTHETIC_POLICY.md), [`CANARY_READINESS_CHECKLIST.md`](CANARY_READINESS_CHECKLIST.md),
+[`MANUAL_TESTING.md`](MANUAL_TESTING.md) for operator UAT checklists,
+and [`PHASE15A_SHADOW.md`](PHASE15A_SHADOW.md) for the shadow landed-cost engine.
 
 ## 1. Pipeline overview
 

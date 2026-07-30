@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_data_health_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.data.health.form</field>
+    <field name="model">petspot.vetution.data.health</field>
+    <field name="arch" type="xml">
+      <form string="Vetution Data Health">
+        <header>
+          <button name="action_take_snapshot_now" type="object" string="Take Snapshot Now"
+                  class="btn-primary"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="snapshot_at"/>
+              <field name="commercial_sync_age_hours"/>
+              <field name="shadow_stale_count"/>
+            </group>
+            <group>
+              <field name="circuit_breaker_state"/>
+              <field name="circuit_breaker_open_until"/>
+              <field name="allowlist_count"/>
+              <field name="mapping_pending_count"/>
+              <field name="last_refresh_failures"/>
+            </group>
+          </group>
+          <group>
+            <field name="note"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_data_health_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.data.health.list</field>
+    <field name="model">petspot.vetution.data.health</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="snapshot_at"/>
+        <field name="commercial_sync_age_hours"/>
+        <field name="shadow_stale_count"/>
+        <field name="circuit_breaker_state"/>
+        <field name="allowlist_count"/>
+        <field name="mapping_pending_count"/>
+        <field name="last_refresh_failures"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_data_health" model="ir.actions.act_window">
+    <field name="name">Vetution Data Health</field>
+    <field name="res_model">petspot.vetution.data.health</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{}</field>
+  </record>
+</odoo>

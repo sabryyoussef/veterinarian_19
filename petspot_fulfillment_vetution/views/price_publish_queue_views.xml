@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_price_publish_queue_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.price.publish.queue.form</field>
+    <field name="model">petspot.vetution.price.publish.queue</field>
+    <field name="arch" type="xml">
+      <form string="Price Publish Queue">
+        <header>
+          <button name="approve" type="object" string="Approve"
+                  class="btn-primary" invisible="state != 'pending'"/>
+          <button name="publish_mock" type="object" string="Publish (mock)"
+                  invisible="state != 'approved'"/>
+          <button name="rollback_mock" type="object" string="Rollback (mock)"
+                  invisible="state != 'published'"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="product_id"/>
+              <field name="shopify_variant_id"/>
+              <field name="current_price"/>
+              <field name="suggested_price"/>
+            </group>
+            <group>
+              <field name="approved_by"/>
+              <field name="published_at"/>
+              <field name="idempotency_key"/>
+            </group>
+          </group>
+          <group string="Audit trail">
+            <field name="audit" nolabel="1" colspan="2"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_price_publish_queue_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.price.publish.queue.list</field>
+    <field name="model">petspot.vetution.price.publish.queue</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="product_id"/>
+        <field name="current_price"/>
+        <field name="suggested_price"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_price_publish_queue" model="ir.actions.act_window">
+    <field name="name">Price Publish Queue</field>
+    <field name="res_model">petspot.vetution.price.publish.queue</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

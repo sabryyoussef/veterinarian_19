@@ -522,8 +522,16 @@ class PetspotFulfillmentCase(models.Model):
                 )
             if not self.env.user.has_group("petspot_fulfillment.group_fulfillment_user"):
                 raise AccessError(_("You cannot change fulfillment state."))
-            # Gate checks for specific targets
-            case._validate_transition_prereqs(new_state)
+            # Gate checks for specific targets (force skips hard prereqs that
+            # would otherwise block TEST synthetic FSM shortcuts).
+            if not force:
+                case._validate_transition_prereqs(new_state)
+            elif new_state == "shipping_created":
+                # Even forced mock AWB still requires trusted payment and forbids pickup.
+                if case.delivery_method == "store_pickup":
+                    raise UserError(_("Store pickup must not create ShipBlu AWB."))
+                if case.payment_status not in ("paid", "manual_paid"):
+                    raise UserError(_("Cannot create shipping: payment policy not satisfied."))
             old = case.state
             case.write({"state": new_state})
             self.env["petspot.fulfillment.transition"].create({

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="action_ops_health" model="ir.actions.act_window">
+    <field name="name">Ops Health</field>
+    <field name="res_model">petspot.vetution.ops.health</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_auto_quote" model="ir.actions.act_window">
+    <field name="name">Auto-Quote Runs</field>
+    <field name="res_model">petspot.vetution.auto.quote</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_message_log" model="ir.actions.act_window">
+    <field name="name">Message Log</field>
+    <field name="res_model">petspot.vetution.message.log</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_payment_event" model="ir.actions.act_window">
+    <field name="name">Payment Events</field>
+    <field name="res_model">petspot.vetution.payment.event</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_price_queue" model="ir.actions.act_window">
+    <field name="name">Price Publish Queue</field>
+    <field name="res_model">petspot.vetution.price.publish.queue</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_mock_awb" model="ir.actions.act_window">
+    <field name="name">Mock ShipBlu AWBs</field>
+    <field name="res_model">petspot.vetution.shipblu.mock.awb</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_giza_receipt" model="ir.actions.act_window">
+    <field name="name">Giza Receipts</field>
+    <field name="res_model">petspot.vetution.giza.receipt</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_supplier_task" model="ir.actions.act_window">
+    <field name="name">Supplier Order Tasks</field>
+    <field name="res_model">petspot.vetution.supplier.order.task</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="view_ops_health_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.ops.health.list</field>
+    <field name="model">petspot.vetution.ops.health</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="captured_at"/>
+        <field name="circuit_open"/>
+        <field name="refresh_fail_count"/>
+        <field name="shadow_stale_count"/>
+        <field name="mapping_pending_count"/>
+        <field name="allowlist_count"/>
+        <field name="shp139_blocked"/>
+      </list>
+    </field>
+  </record>
+</odoo>

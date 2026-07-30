@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_quotation_ledger_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.quotation.ledger.form</field>
+    <field name="model">petspot.vetution.quotation.ledger</field>
+    <field name="arch" type="xml">
+      <form string="Quotation Ledger">
+        <header>
+          <button name="action_accept" type="object" string="Accept"
+                  class="btn-primary" invisible="state not in ('draft', 'sent')"/>
+          <button name="action_mark_expired" type="object" string="Mark Expired"
+                  invisible="state not in ('draft', 'sent')"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="inquiry_id"/>
+              <field name="case_id"/>
+              <field name="sale_order_id"/>
+              <field name="assessment_id"/>
+              <field name="policy_id"/>
+              <field name="version"/>
+              <field name="source"/>
+            </group>
+            <group>
+              <field name="product_price"/>
+              <field name="delivery_charge"/>
+              <field name="order_total"/>
+              <field name="expires_at"/>
+              <field name="accepted_price_lock"/>
+              <field name="idempotency_key"/>
+            </group>
+          </group>
+          <group>
+            <field name="note"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+  <record id="view_quotation_ledger_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.quotation.ledger.list</field>
+    <field name="model">petspot.vetution.quotation.ledger</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="inquiry_id"/>
+        <field name="version"/>
+        <field name="source"/>
+        <field name="product_price"/>
+        <field name="delivery_charge"/>
+        <field name="order_total"/>
+        <field name="state"/>
+        <field name="expires_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_quotation_ledger" model="ir.actions.act_window">
+    <field name="name">Quotation Ledger</field>
+    <field name="res_model">petspot.vetution.quotation.ledger</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

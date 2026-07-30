@@ -197,3 +197,23 @@ class PetspotVetutionMappingReview(models.Model):
             "offers_unmapped": len(unmapped_offers),
             "mapping_reviews_pending": pending,
         }
+
+    @api.model
+    def action_export_coverage_report(self):
+        """Combined mapping + automation-allowlist coverage counters.
+
+        Read-only aggregation used by the Vetution Data Health dashboard and
+        by manual audits; never writes any commercial data.
+        """
+        report = self.build_coverage_report()
+        allowlist = self.env["petspot.vetution.automation.allowlist"].coverage_report()
+        report.update(
+            {
+                "allowlist_count": allowlist.get("allowlist_count", 0),
+                "allowlist_skus": allowlist.get("skus", []),
+                "allowlist_size_ids": allowlist.get("size_ids", []),
+                "mapping_reviews_confirmed": self.search_count([("state", "=", "confirmed")]),
+                "mapping_reviews_rejected": self.search_count([("state", "=", "rejected")]),
+            }
+        )
+        return report

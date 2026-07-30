@@ -17,7 +17,7 @@ class TestCostValidation(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.policy = cls.env["petspot.vetution.landed.cost.policy"].search(
-            [("active", "=", True)], limit=1
+            [("active", "=", True), ("is_synthetic_test", "=", False)], limit=1
         )
         if not cls.policy:
             cls.policy = cls.env["petspot.vetution.landed.cost.policy"].create(
@@ -38,6 +38,10 @@ class TestCostValidation(TransactionCase):
                 "allow_price_publish": False,
             }
         )
+        cls.env["petspot.vetution.landed.cost.policy"].search(
+            [("is_synthetic_test", "=", True)]
+        ).write({"active": False})
+
 
     def test_payment_unknown_keeps_cod_unknown(self):
         res = LandedCostEngine(self.env, self.policy).compute(

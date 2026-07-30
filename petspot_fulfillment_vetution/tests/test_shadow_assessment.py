@@ -13,7 +13,7 @@ class TestVetutionShadowAssessment(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.Policy = cls.env["petspot.vetution.landed.cost.policy"]
-        cls.policy = cls.Policy.search([("active", "=", True)], limit=1)
+        cls.policy = cls.Policy.search([("active", "=", True), ("is_synthetic_test", "=", False)], limit=1)
         if not cls.policy:
             cls.policy = cls.Policy.create({"name": "Test Policy", "version": "t"})
         # Complete costs for baseline happy path tests
@@ -57,6 +57,10 @@ class TestVetutionShadowAssessment(TransactionCase):
             fee.write({"status": "verified_zero", "percent": 0.0, "fixed_amount": 0.0})
         else:
             Fee.create({"policy_id": cls.policy.id, "payment_method": "bank_transfer", "status": "verified_zero"})
+
+        # Ensure assess_inquiry's get_active_policy() resolves to this policy
+        cls.Policy.search([("id", "!=", cls.policy.id), ("active", "=", True)]).write({"active": False})
+        cls.policy.active = True
 
         cls.connection = cls.env["vetution.connection"].sudo().search([], limit=1)
         if not cls.connection:

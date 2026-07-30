@@ -174,6 +174,20 @@ class PetspotVetutionLandedCostPolicy(models.Model):
     customer_pickup_fee_source = fields.Char(
         default="Giza store pickup — no separate pickup fee approved.",
     )
+
+    # Delivery profitability gate (order-level; never folded into product price)
+    max_automatic_delivery_subsidy = fields.Float(
+        default=0.0,
+        help="Maximum automatic delivery subsidy (EGP). Default 0 — negative margin requires review.",
+    )
+    is_synthetic_test_fixture = fields.Boolean(
+        default=False,
+        help="TRUE only for TEST-SYNTHETIC policies. Never copy to Production commerce.",
+    )
+    synthetic_warning = fields.Text(
+        default="SYNTHETIC TEST FIXTURE — NOT FOR COMMERCE / PRODUCTION / REAL CUSTOMERS.",
+    )
+
     fulfillment_origin_note = fields.Text(
         default=(
             "Ecommerce origin: ShipBlu Haram clinic pickup — "
@@ -224,6 +238,41 @@ class PetspotVetutionLandedCostPolicy(models.Model):
     )
     pending_decisions = fields.Text(compute="_compute_pending_decisions")
 
+    # --- Phase 15B — synthetic TEST / workflow orchestration guards ---
+    is_synthetic_test = fields.Boolean(
+        default=False,
+        string="Synthetic TEST policy (NOT FOR COMMERCE)",
+        help=(
+            "TRUE only for the synthetic end-to-end TEST fixture policy. "
+            "This policy must NEVER be used on Production: get_active_policy() "
+            "excludes it unless the current database is explicitly allowlisted "
+            "via ICP petspot_fulfillment_vetution.synthetic_policy_allowed_dbs."
+        ),
+    )
+    max_auto_delivery_subsidy = fields.Float(
+        default=0.0,
+        string="Max auto delivery subsidy (EGP)",
+        help=(
+            "Break-even gate: if delivery_subsidy exceeds this value, the "
+            "delivery decision is forced to DELIVERY_PRICE_REVIEW_REQUIRED "
+            "and automation must not auto-quote the delivery charge."
+        ),
+    )
+    policy_environment = fields.Selection(
+        [
+            ("test_only", "TEST only — never Production"),
+            ("production_shadow", "Production shadow (read-only assessments)"),
+            ("dormant", "Dormant — not used by any environment"),
+        ],
+        default="test_only",
+        required=True,
+        help=(
+            "Declared environment for this policy. Synthetic policies default "
+            "to test_only. Non-synthetic production policies should be set to "
+            "production_shadow once approved."
+        ),
+    )
+
     @api.depends(
         "supplier_delivery_status",
         "non_recoverable_tax_status",
@@ -246,15 +295,83 @@ class PetspotVetutionLandedCostPolicy(models.Model):
             rec.pending_decisions = "\n".join(lines) or "- All landed-cost components verified."
 
     @api.model
+    def _synthetic_test_allowed_here(self):
+        """True only when the current database is explicitly allowlisted for
+        the synthetic TEST fixture (ICP comma list). Never true by accident.
+        """
+        ICP = self.env["ir.config_parameter"].sudo()
+        allowed_raw = ICP.get_param(
+            "petspot_fulfillment_vetution.synthetic_policy_allowed_dbs", ""
+        ) or ""
+        allowed_dbs = {d.strip() for d in allowed_raw.split(",") if d.strip()}
+        return self.env.cr.dbname in allowed_dbs
+
+    @api.model
     def get_active_policy(self, company=None):
+        """Prefer a non-synthetic active policy for normal shadow/commercial
+        operations. Synthetic (is_synthetic_test=True) policies are only
+        returned as a last resort, and only when this database is explicitly
+        allowlisted (ICP synthetic_policy_allowed_dbs). Never on Production.
+        """
         company = company or self.env.company
         policy = self.search(
-            [("active", "=", True), ("company_id", "=", company.id)],
+            [
+                ("active", "=", True),
+                ("company_id", "=", company.id),
+                ("is_synthetic_test", "=", False),
+            ],
+            limit=1,
+            order="id desc",
+        )
+        if policy:
+            return policy
+        if self._synthetic_test_allowed_here():
+            synthetic = self.with_context(active_test=False).search(
+                [
+                    ("company_id", "=", company.id),
+                    ("is_synthetic_test", "=", True),
+                ],
+                limit=1,
+                order="id desc",
+            )
+            if synthetic:
+                if not synthetic.active:
+                    synthetic.active = True
+                return synthetic
+        raise UserError(
+            "No active PetSpot Vetution landed-cost policy found "
+            "(synthetic TEST policies are excluded unless this database is "
+            "explicitly allowlisted)."
+        )
+
+    @api.model
+    def get_synthetic_test_policy(self, company=None):
+        """Return the synthetic TEST fixture policy.
+
+        The fixture is stored inactive by default so get_active_policy never
+        accidentally selects it. This helper activates it only when the current
+        database is explicitly allowlisted.
+        """
+        company = company or self.env.company
+        if not self._synthetic_test_allowed_here():
+            raise UserError(
+                "Synthetic TEST policy is not allowed on this database "
+                f"({self.env.cr.dbname}). Set ICP "
+                "petspot_fulfillment_vetution.synthetic_policy_allowed_dbs to "
+                "explicitly allowlist TEST databases only."
+            )
+        policy = self.with_context(active_test=False).search(
+            [
+                ("company_id", "=", company.id),
+                ("is_synthetic_test", "=", True),
+            ],
             limit=1,
             order="id desc",
         )
         if not policy:
-            raise UserError("No active PetSpot Vetution landed-cost policy found.")
+            raise UserError("No synthetic TEST landed-cost policy found.")
+        if not policy.active:
+            policy.active = True
         return policy
 
     def _component_amount(self, status, amount):
@@ -306,6 +423,8 @@ class PetspotVetutionLandedCostPolicy(models.Model):
             "delivery_subsidy": result.delivery_subsidy,
             "delivery_profit_or_subsidy": result.delivery_profit_or_subsidy,
             "delivery_shortfall": result.delivery_shortfall,
+            "proposed_delivery_charge": result.proposed_delivery_charge,
+            "delivery_gate_passed": result.delivery_gate_passed,
             "recommended_product_price": result.recommended_product_price,
             "order_total": result.order_total,
             "product_cost_completeness": result.product_cost_completeness,
@@ -315,6 +434,8 @@ class PetspotVetutionLandedCostPolicy(models.Model):
             "delivery_decision_code": result.delivery_decision_code,
             "scenario": result.scenario,
             "evidence_source": result.evidence_source,
+            "proposed_delivery_charge": result.proposed_delivery_charge,
+            "delivery_review_required": result.delivery_review_required,
             "landed_cost_incomplete": result.landed_cost_incomplete,
             "missing_components": list(result.missing_keys),
             "estimate_components": list(result.estimate_keys),

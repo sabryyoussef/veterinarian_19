@@ -85,6 +85,8 @@ class PetspotVetutionShadowAssessment(models.Model):
     delivery_specific_fees = fields.Float()
     delivery_margin = fields.Float()
     delivery_subsidy = fields.Float()
+    proposed_delivery_charge = fields.Float()
+    delivery_gate_passed = fields.Boolean(default=True)
     order_total = fields.Float()
     product_cost_completeness = fields.Float()
     delivery_cost_completeness = fields.Float()
@@ -93,6 +95,8 @@ class PetspotVetutionShadowAssessment(models.Model):
     delivery_decision_code = fields.Char()
     economics_scenario = fields.Char()
     economics_evidence_source = fields.Char()
+    delivery_review_required = fields.Boolean(default=False)
+    proposed_delivery_charge = fields.Float()
 
     state = fields.Selection(
         [
@@ -427,9 +431,17 @@ class PetspotVetutionShadowAssessment(models.Model):
         policy = self.env["petspot.vetution.landed.cost.policy"].get_active_policy(
             inquiry.company_id
         )
-        if policy.allow_price_publish or policy.allow_auto_quotation or policy.allow_customer_message:
+        if policy.allow_price_publish:
             raise UserError(
-                "Phase 15A policy flags must keep publish/quote/message disabled."
+                "allow_price_publish must stay disabled — Shopify price writes "
+                "are never permitted from shadow assessment."
+            )
+        if not policy.is_synthetic_test and (
+            policy.allow_auto_quotation or policy.allow_customer_message
+        ):
+            raise UserError(
+                "Non-synthetic policy flags must keep auto-quotation/message "
+                "disabled (Phase 15A/B production shadow gate)."
             )
 
         connection = self.env["vetution.connection"].sudo().search(
@@ -585,27 +597,36 @@ class PetspotVetutionShadowAssessment(models.Model):
         if avail in ("out_of_stock",):
             state = "unavailable"
             next_action = "inform_unavailable_manual"
+            gates["eligible_future_automation"] = False
+            blockers = list(blockers) + ["out_of_stock"]
+            ok = False
         elif avail in ("stale",):
             state = "stale"
             next_action = "refresh_or_review"
+            gates["eligible_future_automation"] = False
         elif avail in ("sync_failed",):
             state = "sync_failed"
             next_action = "manual_review"
+            gates["eligible_future_automation"] = False
         elif avail in ("unknown",):
             state = "review"
             next_action = "manual_review"
             blockers = list(blockers) + ["availability_unknown"]
+            gates["eligible_future_automation"] = False
             ok = False
         elif landed_br["landed_cost_incomplete"]:
             state = "blocked"
             next_action = "complete_landed_cost_inputs"
             blockers = list(blockers) + ["landed_cost_incomplete"]
+            gates["eligible_future_automation"] = False
         elif gates.get("price_review_required"):
             state = "blocked"
             next_action = "price_review_required"
+            gates["eligible_future_automation"] = False
         elif not ok:
             state = "blocked"
             next_action = "policy_review"
+            gates["eligible_future_automation"] = False
         else:
             state = "ok"
             next_action = "shadow_only_no_quote"
@@ -699,6 +720,8 @@ class PetspotVetutionShadowAssessment(models.Model):
             "delivery_specific_fees": landed_br.get("delivery_specific_fees") or 0.0,
             "delivery_margin": landed_br.get("delivery_margin") or 0.0,
             "delivery_subsidy": landed_br.get("delivery_subsidy") or 0.0,
+            "proposed_delivery_charge": landed_br.get("proposed_delivery_charge") or 0.0,
+            "delivery_gate_passed": landed_br.get("delivery_gate_passed", True),
             "order_total": landed_br.get("order_total") or 0.0,
             "product_cost_completeness": landed_br.get("product_cost_completeness") or 0.0,
             "delivery_cost_completeness": landed_br.get("delivery_cost_completeness") or 0.0,
@@ -707,6 +730,8 @@ class PetspotVetutionShadowAssessment(models.Model):
             "delivery_decision_code": landed_br.get("delivery_decision_code") or False,
             "economics_scenario": landed_br.get("scenario") or False,
             "economics_evidence_source": landed_br.get("evidence_source") or False,
+            "delivery_review_required": bool(landed_br.get("delivery_review_required")),
+            "proposed_delivery_charge": landed_br.get("proposed_delivery_charge") or 0.0,
             "legacy_combined_cost_model": False,
             "current_odoo_price": odoo_price,
             "current_shopify_price": shopify_price,
@@ -726,10 +751,12 @@ class PetspotVetutionShadowAssessment(models.Model):
             "gate_block_shopify_publish": True,
             "gate_block_supplier_purchase": True,
             "eligible_future_automation": bool(
-                gates.get("eligible_future_automation")
+                state == "ok"
+                and gates.get("eligible_future_automation")
                 and landed_br.get("completeness_percent", 0) >= 100
                 and landed_br.get("decision_code") == "READY_FOR_AUTO_QUOTE"
                 and not landed_br.get("landed_cost_incomplete")
+                and on_allowlist
             ),
             "quotation_validity_hours": policy.quotation_validity_hours,
             "company_id": inquiry.company_id.id,

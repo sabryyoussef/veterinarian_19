@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+  <record id="msg_en_supplier_available" model="petspot.vetution.message.template">
+    <field name="key">supplier_available</field>
+    <field name="lang">en</field>
+    <field name="body_text">Good news — the item is available from our supplier (subject to confirmation). SKU: {sku}.</field>
+  </record>
+  <record id="msg_ar_supplier_available" model="petspot.vetution.message.template">
+    <field name="key">supplier_available</field>
+    <field name="lang">ar</field>
+    <field name="body_text">خبر سار — المنتج متوفر لدى المورد (بعد التأكيد). الكود: {sku}.</field>
+  </record>
+  <record id="msg_en_revised_product_price" model="petspot.vetution.message.template">
+    <field name="key">revised_product_price</field>
+    <field name="lang">en</field>
+    <field name="body_text">Updated product price: EGP {price}. Delivery is separate.</field>
+  </record>
+  <record id="msg_ar_revised_product_price" model="petspot.vetution.message.template">
+    <field name="key">revised_product_price</field>
+    <field name="lang">ar</field>
+    <field name="body_text">السعر المحدّث للمنتج: {price} ج.م. التوصيل منفصل.</field>
+  </record>
+  <record id="msg_en_delivery_revision" model="petspot.vetution.message.template">
+    <field name="key">delivery_charge_revision</field>
+    <field name="lang">en</field>
+    <field name="body_text">Delivery to your area requires EGP {price}. Please confirm.</field>
+  </record>
+  <record id="msg_ar_delivery_revision" model="petspot.vetution.message.template">
+    <field name="key">delivery_charge_revision</field>
+    <field name="lang">ar</field>
+    <field name="body_text">التوصيل لمنطقتك يتطلب {price} ج.م. يرجى التأكيد.</field>
+  </record>
+  <record id="msg_en_unavailable" model="petspot.vetution.message.template">
+    <field name="key">unavailable</field>
+    <field name="lang">en</field>
+    <field name="body_text">Sorry — this item is currently unavailable.</field>
+  </record>
+  <record id="msg_ar_unavailable" model="petspot.vetution.message.template">
+    <field name="key">unavailable</field>
+    <field name="lang">ar</field>
+    <field name="body_text">عذراً — هذا المنتج غير متوفر حالياً.</field>
+  </record>
+  <record id="msg_en_checking" model="petspot.vetution.message.template">
+    <field name="key">checking</field>
+    <field name="lang">en</field>
+    <field name="body_text">We are checking availability and will update you shortly.</field>
+  </record>
+  <record id="msg_ar_checking" model="petspot.vetution.message.template">
+    <field name="key">checking</field>
+    <field name="lang">ar</field>
+    <field name="body_text">نتحقق من التوفر وسنوافيكم بالنتيجة قريباً.</field>
+  </record>
+  <record id="msg_en_quotation_ready" model="petspot.vetution.message.template">
+    <field name="key">quotation_ready</field>
+    <field name="lang">en</field>
+    <field name="body_text">Your quotation is ready. Total EGP {price}. Order {order}.</field>
+  </record>
+  <record id="msg_ar_quotation_ready" model="petspot.vetution.message.template">
+    <field name="key">quotation_ready</field>
+    <field name="lang">ar</field>
+    <field name="body_text">عرض السعر جاهز. الإجمالي {price} ج.م. الطلب {order}.</field>
+  </record>
+  <record id="msg_en_quotation_expired" model="petspot.vetution.message.template">
+    <field name="key">quotation_expired</field>
+    <field name="lang">en</field>
+    <field name="body_text">Your quotation has expired. Reply if you still need the item.</field>
+  </record>
+  <record id="msg_ar_quotation_expired" model="petspot.vetution.message.template">
+    <field name="key">quotation_expired</field>
+    <field name="lang">ar</field>
+    <field name="body_text">انتهت صلاحية عرض السعر. راسلونا إذا ما زلتم بحاجة للمنتج.</field>
+  </record>
+  <record id="msg_en_payment_received" model="petspot.vetution.message.template">
+    <field name="key">payment_received</field>
+    <field name="lang">en</field>
+    <field name="body_text">Payment received. We will prepare your order.</field>
+  </record>
+  <record id="msg_ar_payment_received" model="petspot.vetution.message.template">
+    <field name="key">payment_received</field>
+    <field name="lang">ar</field>
+    <field name="body_text">تم استلام الدفع. سنجهّز طلبكم.</field>
+  </record>
+  <record id="msg_en_ready_pickup" model="petspot.vetution.message.template">
+    <field name="key">ready_for_pickup</field>
+    <field name="lang">en</field>
+    <field name="body_text">Your order is ready for pickup at PetSpot Giza (Haram clinic, 451 Haram St).</field>
+  </record>
+  <record id="msg_ar_ready_pickup" model="petspot.vetution.message.template">
+    <field name="key">ready_for_pickup</field>
+    <field name="lang">ar</field>
+    <field name="body_text">طلبكم جاهز للاستلام من فرع الجيزة (عيادة الهرم، 451 شارع الهرم).</field>
+  </record>
+  <record id="msg_en_tracking" model="petspot.vetution.message.template">
+    <field name="key">tracking_issued</field>
+    <field name="lang">en</field>
+    <field name="body_text">Your shipment tracking number is {tracking}.</field>
+  </record>
+  <record id="msg_ar_tracking" model="petspot.vetution.message.template">
+    <field name="key">tracking_issued</field>
+    <field name="lang">ar</field>
+    <field name="body_text">رقم تتبع الشحنة: {tracking}.</field>
+  </record>
+  <record id="msg_en_manual_review" model="petspot.vetution.message.template">
+    <field name="key">manual_review_required</field>
+    <field name="lang">en</field>
+    <field name="body_text">Your request needs a short manual review. We will follow up soon.</field>
+  </record>
+  <record id="msg_ar_manual_review" model="petspot.vetution.message.template">
+    <field name="key">manual_review_required</field>
+    <field name="lang">ar</field>
+    <field name="body_text">طلبكم يحتاج مراجعة يدوية قصيرة. سنتابع معكم قريباً.</field>
+  </record>
+</odoo>

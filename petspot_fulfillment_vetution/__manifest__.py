@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
 {
     "name": "PetSpot Fulfillment × Vetution Bridge",
-    "version": "19.0.1.3.1",
+    "version": "19.0.1.4.0",
     "category": "Sales/Sales",
-    "summary": "Phase 15A.4: separated product vs delivery economics (Giza origin)",
+    "summary": "Phase 15B: synthetic E2E workflow orchestration (locks OFF on Production)",
     "description": """
-PetSpot Fulfillment × Vetution Bridge (Phase 15A)
-================================================
-Connects petspot_fulfillment to vetution_import / vetution_supplier for
-shadow assessments only:
+PetSpot Fulfillment × Vetution Bridge
+=====================================
+Shadow landed cost + TEST workflow orchestration:
 
-* Resolve exact Vetution size mapping (never title-only)
-* Immutable sanitized supplier snapshots
-* Landed-cost worksheet + suggested_price with safety gates
-* Mapping review queue with audit history
+* Separated product vs delivery economics (Giza origin)
+* Synthetic TEST cost profile (NOT for commerce)
+* Auto-quote / messaging / payment / RFQ task / Giza receipt / mock AWB
+* Price publish queue (mocked)
 
-Does NOT create quotations, RFQ/PO, customer messages, Odoo/Shopify price
-writes, payments, deliveries, or ShipBlu AWBs. Does NOT enable Production
-commercial crons.
+Production transactional flags remain OFF. Synthetic values must never
+be copied into Production commercial policy.
     """,
     "author": "Pet Spot",
     "license": "LGPL-3",
@@ -31,14 +29,24 @@ commercial crons.
         "data/landed_cost_policy_data.xml",
         "data/packaging_payment_data.xml",
         "data/delivery_revenue_rule_data.xml",
+        "data/synthetic_test_policy_data.xml",
+        "data/message_template_data.xml",
         "data/automation_allowlist_data.xml",
         "data/ir_config_parameter_data.xml",
+        "data/ir_config_parameter_workflow.xml",
+        "data/ir_cron_data.xml",
         "views/landed_cost_policy_views.xml",
         "views/supplier_snapshot_views.xml",
         "views/shadow_assessment_views.xml",
         "views/mapping_review_views.xml",
         "views/automation_allowlist_views.xml",
         "views/availability_inquiry_views.xml",
+        "views/message_template_views.xml",
+        "views/quotation_ledger_views.xml",
+        "views/payment_trust_views.xml",
+        "views/price_publish_queue_views.xml",
+        "views/data_health_views.xml",
+        "views/workflow_views.xml",
         "views/menu.xml",
     ],
     "installable": True,

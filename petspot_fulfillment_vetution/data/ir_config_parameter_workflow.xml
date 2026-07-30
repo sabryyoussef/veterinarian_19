@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Phase 15B workflow orchestration ICP defaults.
+
+  EVERY transactional flag here defaults to OFF/mock. Flipping any of these
+  to a live/enabled value on Production is a manual, explicit, and
+  documented decision — never a side effect of installing/upgrading this
+  module.
+-->
+<odoo noupdate="1">
+  <record id="param_auto_quote_enabled" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.auto_quote_enabled</field>
+    <field name="value">False</field>
+  </record>
+  <record id="param_chatwoot_transport" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.chatwoot_transport</field>
+    <field name="value">mock</field>
+  </record>
+  <record id="param_shopify_publish_transport" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.shopify_publish_transport</field>
+    <field name="value">mock</field>
+  </record>
+  <record id="param_shipblu_create_transport" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.shipblu_create_transport</field>
+    <field name="value">mock</field>
+  </record>
+  <record id="param_shipblu_package_size_verified" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.shipblu_package_size_verified</field>
+    <field name="value">False</field>
+  </record>
+  <record id="param_synthetic_policy_allowed_dbs" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.synthetic_policy_allowed_dbs</field>
+    <field name="value">pet_spot_elsahel_test</field>
+  </record>
+  <record id="param_rfq_send_enabled" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.rfq_send_enabled</field>
+    <field name="value">False</field>
+  </record>
+  <record id="param_paymob_hmac_secret" model="ir.config_parameter">
+    <field name="key">petspot_fulfillment_vetution.paymob_hmac_secret</field>
+    <field name="value"></field>
+  </record>
+</odoo>

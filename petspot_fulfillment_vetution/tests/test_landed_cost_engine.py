@@ -19,7 +19,7 @@ class TestLandedCostEngine(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.policy = cls.env["petspot.vetution.landed.cost.policy"].search(
-            [("active", "=", True)], limit=1
+            [("active", "=", True), ("is_synthetic_test", "=", False)], limit=1
         )
         if not cls.policy:
             cls.policy = cls.env["petspot.vetution.landed.cost.policy"].create(

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_message_template_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.message.template.form</field>
+    <field name="model">petspot.vetution.message.template</field>
+    <field name="arch" type="xml">
+      <form string="Message Template">
+        <sheet>
+          <group>
+            <group>
+              <field name="key"/>
+              <field name="lang"/>
+              <field name="channel"/>
+              <field name="active"/>
+            </group>
+          </group>
+          <group string="Body (use {sku} {price} {delivery} {order} {tracking} {expires_at})">
+            <field name="body_text" nolabel="1" colspan="2"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="view_message_template_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.message.template.list</field>
+    <field name="model">petspot.vetution.message.template</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="key"/>
+        <field name="lang"/>
+        <field name="channel"/>
+        <field name="active"/>
+      </list>
+    </field>
+  </record>
+  <record id="action_message_template" model="ir.actions.act_window">
+    <field name="name">Message Templates</field>
+    <field name="res_model">petspot.vetution.message.template</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <record id="view_message_log_list" model="ir.ui.view">
+    <field name="name">petspot.vetution.message.log.list</field>
+    <field name="model">petspot.vetution.message.log</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="inquiry_id"/>
+        <field name="template_key"/>
+        <field name="transport"/>
+        <field name="state"/>
+        <field name="sent_at"/>
+      </list>
+    </field>
+  </record>
+  <record id="view_message_log_form" model="ir.ui.view">
+    <field name="name">petspot.vetution.message.log.form</field>
+    <field name="model">petspot.vetution.message.log</field>
+    <field name="arch" type="xml">
+      <form string="Message Log">
+        <sheet>
+          <group>
+            <group>
+              <field name="inquiry_id"/>
+              <field name="case_id"/>
+              <field name="template_key"/>
+              <field name="lang"/>
+              <field name="channel"/>
+              <field name="transport"/>
+              <field name="state"/>
+            </group>
+            <group>
+              <field name="external_message_id"/>
+              <field name="payload_hash"/>
+              <field name="idempotency_key"/>
+              <field name="sent_at"/>
+              <field name="error"/>
+            </group>
+          </group>
+          <group>
+            <field name="body_text" nolabel="1" colspan="2"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_message_log" model="ir.actions.act_window">
+    <field name="name">Message Log</field>
+    <field name="res_model">petspot.vetution.message.log</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

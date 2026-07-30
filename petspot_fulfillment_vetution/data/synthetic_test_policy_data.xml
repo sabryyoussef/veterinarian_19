@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SYNTHETIC TEST FIXTURE — NOT FOR COMMERCE.
+
+  This policy (TEST-SYNTHETIC-E2E-NOT-FOR-COMMERCE) exists ONLY to exercise the
+  full synthetic end-to-end workflow (shadow -> auto-quote -> payment trust ->
+  draft RFQ -> synthetic receipt -> pickup/AWB) on a TEST database.
+
+  DOCUMENTED SAFETY RULES:
+  * is_synthetic_test=True — get_active_policy() NEVER returns this policy for
+    normal operations; it is only reachable via get_synthetic_test_policy(),
+    which additionally requires the current database to be explicitly
+    allowlisted in ICP petspot_fulfillment_vetution.synthetic_policy_allowed_dbs.
+  * NEVER copy the values on this record into a non-synthetic Production
+    policy. Every amount here is an artificial TEST fixture value, not an
+    approved commercial figure.
+  * allow_auto_quotation/allow_customer_message/allow_supplier_po are True
+    ONLY on this synthetic record; workflow_engine.py and quotation_ledger.py
+    still gate every write behind ICP flags (auto_quote_enabled,
+    chatwoot_transport=mock, shipblu_create_transport=mock, rfq_send_enabled)
+    that default to disabled/mock everywhere, including this database, until a
+    human operator explicitly flips them for a TEST run.
+  * allow_price_publish stays False — this policy must NEVER publish a price
+    to Shopify, synthetic or otherwise.
+-->
+<odoo noupdate="0">
+  <record id="landed_cost_policy_synthetic_test" model="petspot.vetution.landed.cost.policy">
+    <field name="name">TEST-SYNTHETIC-E2E-NOT-FOR-COMMERCE</field>
+    <field name="active" eval="False"/>
+    <field name="is_synthetic_test" eval="True"/>
+    <field name="policy_environment">test_only</field>
+    <field name="version">TEST-SYNTHETIC-E2E</field>
+    <field name="pricing_method">gross_margin</field>
+    <field name="target_gross_margin_percent">25.0</field>
+    <field name="min_gross_margin_percent">20.0</field>
+    <field name="min_gross_profit_amount">50.0</field>
+    <field name="price_rounding">5.0</field>
+    <field name="rounding_mode">nearest</field>
+    <field name="max_price_increase_percent">10.0</field>
+    <field name="max_price_decrease_percent">10.0</field>
+    <field name="stale_after_hours_shadow">12.0</field>
+    <field name="stale_after_hours_auto_quote">2.0</field>
+    <field name="quotation_validity_hours">2.0</field>
+    <field name="allow_on_demand_refresh" eval="True"/>
+
+    <!-- Locks — synthetic TEST only; still gated by ICP flags in code. -->
+    <field name="allow_price_publish" eval="False"/>
+    <field name="allow_auto_quotation" eval="True"/>
+    <field name="allow_customer_message" eval="True"/>
+    <field name="allow_supplier_po" eval="True"/>
+
+    <!-- Supplier shipping: included in supplier price (synthetic). -->
+    <field name="supplier_shipping_mode">included</field>
+    <field name="supplier_shipping_amount">0.0</field>
+    <field name="supplier_shipping_status">verified_zero</field>
+    <field name="supplier_shipping_source">SYNTHETIC TEST fixture — supplier includes shipping — NOT FOR COMMERCE</field>
+
+    <field name="supplier_delivery_status">verified_zero</field>
+    <field name="supplier_delivery_source">SYNTHETIC TEST fixture — NOT FOR COMMERCE</field>
+
+    <!-- Packaging -->
+    <field name="default_packaging_type">small_box</field>
+
+    <!-- Payment -->
+    <field name="default_payment_method">paymob</field>
+
+    <!-- Tax -->
+    <field name="tax_mode">exempt</field>
+    <field name="non_recoverable_tax_status">verified_zero</field>
+    <field name="non_recoverable_tax_rate">0.0</field>
+    <field name="non_recoverable_tax_source">SYNTHETIC TEST fixture — tax exempt — NOT FOR COMMERCE</field>
+
+    <!-- Handling -->
+    <field name="handling_status">configured</field>
+    <field name="handling_amount">10.0</field>
+    <field name="handling_source">SYNTHETIC TEST fixture — NOT FOR COMMERCE</field>
+
+    <!-- Return / risk allowance -->
+    <field name="risk_mode">percent</field>
+    <field name="risk_return_allowance_status">configured</field>
+    <field name="risk_return_allowance_rate">3.0</field>
+    <field name="risk_return_allowance_source">SYNTHETIC</field>
+
+    <field name="optional_fixed_cost_status">verified_zero</field>
+    <field name="optional_fixed_cost">0.0</field>
+
+    <field name="availability_wording">SYNTHETIC TEST — Available from supplier, subject to final confirmation</field>
+
+    <!-- Origin / destination / package -->
+    <field name="default_origin_governorate">Giza</field>
+    <field name="default_destination_governorate">Giza</field>
+    <field name="default_package_size_code">small</field>
+    <field name="default_weight_kg">0.5</field>
+
+    <!-- Customer delivery revenue -->
+    <field name="customer_delivery_charge_amount">118.0</field>
+    <field name="customer_delivery_charge_status">configured</field>
+    <field name="customer_delivery_charge_source">SYNTHETIC TEST fixture EGP 118 — NOT FOR COMMERCE</field>
+    <field name="max_auto_delivery_subsidy">0.0</field>
+    <field name="customer_pickup_fee_amount">0.0</field>
+    <field name="customer_pickup_fee_status">verified_zero</field>
+    <field name="customer_pickup_fee_source">SYNTHETIC TEST fixture — Giza store pickup, no pickup fee — NOT FOR COMMERCE</field>
+
+    <field name="fulfillment_origin_note">SYNTHETIC / NOT FOR COMMERCE / NEVER COPY TO PRODUCTION — this policy exists only to exercise the full synthetic end-to-end TEST workflow (shadow, auto-quote, payment trust, draft RFQ, synthetic Giza receipt, pickup/AWB). Every amount is an artificial TEST fixture value.</field>
+  </record>
+
+  <!-- Packaging schedule: small_box for shipped orders, envelope for pickup -->
+  <record id="pkg_synth_small_box" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_synthetic_test"/>
+    <field name="packaging_type">small_box</field>
+    <field name="amount">10.0</field>
+    <field name="status">configured</field>
+    <field name="source_note">SYNTHETIC TEST fixture — shipped orders — NOT FOR COMMERCE</field>
+  </record>
+  <record id="pkg_synth_envelope" model="petspot.vetution.packaging.cost">
+    <field name="policy_id" ref="landed_cost_policy_synthetic_test"/>
+    <field name="packaging_type">envelope</field>
+    <field name="amount">5.0</field>
+    <field name="status">configured</field>
+    <field name="source_note">SYNTHETIC TEST fixture — store pickup — NOT FOR COMMERCE</field>
+  </record>
+
+  <!-- Payment fee schedule -->
+  <record id="fee_synth_paymob" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_synthetic_test"/>
+    <field name="payment_method">paymob</field>
+    <field name="percent">3.0</field>
+    <field name="fixed_amount">3.0</field>
+    <field name="status">configured</field>
+    <field name="source_note">SYNTHETIC TEST fixture — Paymob 3%+3 EGP — NOT FOR COMMERCE</field>
+  </record>
+  <record id="fee_synth_bank" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_synthetic_test"/>
+    <field name="payment_method">bank_transfer</field>
+    <field name="percent">0.0</field>
+    <field name="fixed_amount">0.0</field>
+    <field name="status">verified_zero</field>
+    <field name="source_note">SYNTHETIC TEST fixture — bank transfer, no fee — NOT FOR COMMERCE</field>
+  </record>
+  <record id="fee_synth_cod" model="petspot.vetution.payment.fee">
+    <field name="policy_id" ref="landed_cost_policy_synthetic_test"/>
+    <field name="payment_method">cod</field>
+    <field name="percent">0.0</field>
+    <field name="fixed_amount">0.0</field>
+    <field name="status">verified_zero</field>
+    <field name="source_note">SYNTHETIC TEST fixture — cash/COD pickup, no fee — NOT FOR COMMERCE</field>
+  </record>
+
+  <!-- Delivery revenue rule -->
+  <record id="delivery_revenue_rule_synth_118" model="petspot.vetution.delivery.revenue.rule">
+    <field name="name">SYNTHETIC TEST customer delivery charge EGP 118</field>
+    <field name="policy_id" ref="landed_cost_policy_synthetic_test"/>
+    <field name="sequence">10</field>
+    <field name="carrier">any</field>
+    <field name="payment_method">any</field>
+    <field name="customer_charge">118.0</field>
+    <field name="effective_from">2026-07-01</field>
+    <field name="status">configured</field>
+    <field name="source">SYNTHETIC TEST fixture — NOT FOR COMMERCE</field>
+    <field name="note">SYNTHETIC / NOT FOR COMMERCE / NEVER COPY TO PRODUCTION</field>
+  </record>
+</odoo>

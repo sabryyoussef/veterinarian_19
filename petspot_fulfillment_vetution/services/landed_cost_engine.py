@@ -97,6 +97,9 @@ class LandedCostResult:
     delivery_subsidy: float | None = None
     delivery_profit_or_subsidy: float | None = None  # alias of delivery_margin
     delivery_shortfall: float | None = None  # alias of delivery_subsidy (order PnL only)
+    proposed_delivery_charge: float | None = None
+    delivery_gate_passed: bool = True
+    delivery_review_required: bool = False
     recommended_product_price: float | None = None
     order_total: float | None = None
     product_cost_completeness: float = 0.0
@@ -136,6 +139,9 @@ class LandedCostResult:
             "delivery_subsidy": self.delivery_subsidy,
             "delivery_profit_or_subsidy": self.delivery_profit_or_subsidy,
             "delivery_shortfall": self.delivery_shortfall,
+            "proposed_delivery_charge": self.proposed_delivery_charge,
+            "delivery_gate_passed": self.delivery_gate_passed,
+            "delivery_review_required": self.delivery_review_required,
             "recommended_product_price": self.recommended_product_price,
             "order_total": self.order_total,
             "product_cost_completeness": self.product_cost_completeness,
@@ -170,6 +176,8 @@ class LandedCostResult:
         lines.append(f"--- Delivery-specific fees: {self.delivery_specific_fees}")
         lines.append(f"--- Delivery margin: {self.delivery_margin}")
         lines.append(f"--- Delivery subsidy: {self.delivery_subsidy}")
+        lines.append(f"--- Proposed break-even delivery charge: {self.proposed_delivery_charge}")
+        lines.append(f"--- Delivery gate passed: {self.delivery_gate_passed}")
         lines.append(f"--- Order total: {self.order_total}")
         lines.append(
             f"--- Completeness product/delivery/overall: "
@@ -953,6 +961,30 @@ class LandedCostEngine:
         else:
             delivery_decision = "INSUFFICIENT_DELIVERY_COST_DATA"
 
+        # --- Delivery price-review gate (Phase 15B) ---
+        # Never fold subsidy into product_landed; break-even proposed charge is
+        # informational only (estimated_carrier_cost + delivery_specific_fees +
+        # max_auto_delivery_subsidy).
+        max_auto_subsidy = float(getattr(self.policy, "max_auto_delivery_subsidy", 0.0) or 0.0)
+        carrier_cost = delivery_meta.get("estimated_carrier_cost")
+        delivery_fees = delivery_meta.get("delivery_specific_fees")
+        proposed_delivery_charge = None
+        if carrier_cost is not None and delivery_fees is not None:
+            proposed_delivery_charge = round(
+                float(carrier_cost) + float(delivery_fees) + max_auto_subsidy, 2
+            )
+        delivery_subsidy = delivery_meta.get("delivery_subsidy")
+        delivery_gate_passed = True
+        if delivery_meta.get("scenario") != "store_pickup" and delivery_subsidy is not None:
+            if float(delivery_subsidy) > max_auto_subsidy + 1e-9:
+                delivery_gate_passed = False
+                delivery_decision = "DELIVERY_PRICE_REVIEW_REQUIRED"
+                notes.append(
+                    f"Delivery gate FAILED: subsidy {delivery_subsidy} > "
+                    f"max_auto_delivery_subsidy {max_auto_subsidy} — "
+                    f"proposed break-even delivery charge = {proposed_delivery_charge}"
+                )
+
         # Combined decision — preserve READY_FOR_AUTO_QUOTE when both layers complete
         # (Phase locks still prevent actual auto-quote.)
         if product_decision == "PRODUCT_PRICE_READY" and delivery_decision == "ORDER_ECONOMICS_READY":
@@ -1028,6 +1060,9 @@ class LandedCostEngine:
             delivery_subsidy=delivery_meta.get("delivery_subsidy"),
             delivery_profit_or_subsidy=delivery_meta.get("delivery_profit_or_subsidy"),
             delivery_shortfall=delivery_meta.get("delivery_shortfall"),
+            proposed_delivery_charge=proposed_delivery_charge,
+            delivery_gate_passed=delivery_gate_passed,
+            delivery_review_required=not delivery_gate_passed,
             recommended_product_price=recommended,
             order_total=order_total,
             product_cost_completeness=product_comp,

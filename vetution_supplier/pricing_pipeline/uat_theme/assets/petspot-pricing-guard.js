@@ -55,4 +55,30 @@
     true
   );
   window.PetSpotPricingGuard = { isBlockedId, msgFor, WA };
+
+  function scrubCardLe1() {
+    try {
+      const nodes = document.querySelectorAll('.petspot-product-card__price');
+      const t = msgFor();
+      nodes.forEach((el) => {
+        const txt = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (/^LE\s*1([.,]00)?$/i.test(txt) || /^E£\s*1([.,]00)?$/i.test(txt) || /^\s*1([.,]00)?\s*LE$/i.test(txt)) {
+          el.innerHTML =
+            '<span class="petspot-price-unavailable__msg">' +
+            t.msg +
+            '</span> <a class="petspot-price-unavailable__wa" href="https://wa.me/' +
+            WA +
+            '" target="_blank" rel="noopener">' +
+            t.cta +
+            '</a>';
+          el.setAttribute('data-petspot-pricing-blocked', 'true');
+        }
+      });
+    } catch (e) {}
+  }
+  document.addEventListener('DOMContentLoaded', scrubCardLe1);
+  new MutationObserver(() => scrubCardLe1()).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+  });
 })();

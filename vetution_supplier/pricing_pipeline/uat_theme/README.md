@@ -5,6 +5,9 @@ Live theme `190407639321` must stay unchanged.
 
 ## Files added
 - `snippets/petspot-pricing-guard.liquid`
+- `snippets/petspot-card-price.liquid`
+- `sections/petspot-product-grid.liquid` (patched price)
+- `sections/petspot-collection-tabs.liquid` (patched price)
 - `snippets/petspot-price-unavailable.liquid`
 - `snippets/petspot-blocked-variants-boot.liquid`
 - `snippets/petspot-jsonld-offer-guard.liquid`
@@ -20,3 +23,6 @@ Live theme `190407639321` must stay unchanged.
 
 ## Server-side note
 Theme containment does **not** block `POST /cart/add.js`. Remaining purchasable blocked LE1 variants require a Shopify Cart Validation Function / app, or owner-approved inventory/unpublish.
+
+## Homepage LE1 fix (2026-07-31)
+Custom PetSpot sections used `{{ product.price | money }}` on `.petspot-product-card__price`, bypassing `snippets/price.liquid`. Replaced with `petspot-card-price` snippet + DOM scrubber.

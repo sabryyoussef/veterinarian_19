@@ -1,0 +1,21 @@
+{% comment %}
+  Card/list price for PetSpot custom sections.
+  Never emit LE1 / non-priced amounts; prefer first valid priced variant.
+{% endcomment %}
+{% liquid
+  assign display_variant = nil
+  if product != blank
+    for v in product.variants
+      assign st = v.metafields.petspot.pricing_status.value | default: ''
+      if st == 'priced' and v.price > 101
+        assign display_variant = v
+        break
+      endif
+    endfor
+  endif
+%}
+{% if display_variant %}
+  {{ display_variant.price | money }}
+{% else %}
+  {% render 'petspot-price-unavailable' %}
+{% endif %}

@@ -1,0 +1,15 @@
+{% liquid
+  assign wa = '201000059085'
+  assign locale = request.locale.iso_code | default: 'en' | downcase
+  if locale contains 'ar'
+    assign msg = 'السعر غير متاح حالياً'
+    assign cta = 'تواصل عبر واتساب'
+  else
+    assign msg = 'Price unavailable'
+    assign cta = 'Contact us on WhatsApp'
+  endif
+%}
+<div class="petspot-price-unavailable" data-petspot-pricing-blocked="true" role="status">
+  <p class="petspot-price-unavailable__msg">{{ msg }}</p>
+  <a class="petspot-price-unavailable__wa" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{{ cta }}</a>
+</div>

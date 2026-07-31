@@ -1,0 +1,25 @@
+{% if product %}
+  {% assign petspot_any_priced = false %}
+  {% for v in product.variants %}
+    {% assign st = v.metafields.petspot.pricing_status.value | default: '' %}
+    {% if st == 'priced' and v.price > 101 %}
+      {% assign petspot_any_priced = true %}
+    {% endif %}
+  {% endfor %}
+  {% unless petspot_any_priced %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/OutOfStock",
+      "priceCurrency": {{ cart.currency.iso_code | json }},
+      "price": "0",
+      "url": {{ shop.url | append: product.url | json }}
+    }
+  }
+  </script>
+  {% endunless %}
+{% endif %}

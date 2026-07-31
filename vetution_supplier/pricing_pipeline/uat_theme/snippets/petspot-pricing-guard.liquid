@@ -1,0 +1,22 @@
+{% comment %} PetSpot pricing guard {% endcomment %}
+{% liquid
+  assign petspot_blocked = false
+  assign petspot_status = ''
+  if variant == blank and product != blank
+    assign variant = product.selected_or_first_available_variant
+  endif
+  if variant == blank and product_resource != blank
+    assign variant = product_resource.selected_or_first_available_variant
+  endif
+  if variant
+    assign petspot_status = variant.metafields.petspot.pricing_status.value | default: ''
+    if petspot_status != 'priced'
+      assign petspot_blocked = true
+    endif
+    if variant.price <= 101
+      assign petspot_blocked = true
+    endif
+  else
+    assign petspot_blocked = true
+  endif
+%}

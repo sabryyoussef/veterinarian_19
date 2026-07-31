@@ -1,0 +1,17 @@
+<script>
+window.__PETSPOT_BLOCKED_VARIANT_IDS = window.__PETSPOT_BLOCKED_VARIANT_IDS || [];
+{% if product %}
+  {% for v in product.variants %}
+    {% assign st = v.metafields.petspot.pricing_status.value | default: '' %}
+    {% if st != 'priced' or v.price <= 101 %}
+      window.__PETSPOT_BLOCKED_VARIANT_IDS.push({{ v.id }});
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% for item in cart.items %}
+  {% assign st = item.variant.metafields.petspot.pricing_status.value | default: '' %}
+  {% if st != 'priced' or item.variant.price <= 101 %}
+    window.__PETSPOT_BLOCKED_VARIANT_IDS.push({{ item.variant.id }});
+  {% endif %}
+{% endfor %}
+</script>

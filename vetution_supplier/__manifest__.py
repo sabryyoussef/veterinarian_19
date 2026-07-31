@@ -2,7 +2,7 @@
 {
     "name": "Vet Supplier",
     "summary": "Authenticated commercial offers, supplierinfo mirror, and sync (no website/sale dependency)",
-    "version": "19.0.1.4.0",
+    "version": "19.0.1.5.0",
     "category": "Inventory/Purchase",
     "author": "Sabry Youssef",
     "license": "LGPL-3",

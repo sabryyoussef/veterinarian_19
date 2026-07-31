@@ -10,3 +10,4 @@ from . import test_reconciliation
 from . import test_pricing
 from . import test_pricing_multi
 from . import test_pricing_pipeline_equation
+from . import test_pricing_status

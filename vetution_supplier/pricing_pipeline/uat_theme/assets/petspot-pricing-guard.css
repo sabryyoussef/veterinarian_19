@@ -1,0 +1,11 @@
+body:has(.petspot-price-unavailable) button[name="add"],
+body:has(.petspot-price-unavailable) .shopify-payment-button,
+body:has(.petspot-price-unavailable) add-to-cart-component { display:none !important; }
+.petspot-price-unavailable{display:flex;flex-direction:column;gap:.35rem;margin:.35rem 0}
+.petspot-price-unavailable__msg{font-weight:600;color:#8a1c1c;margin:0}
+.petspot-price-unavailable__wa{text-decoration:underline}
+[data-petspot-hide-purchase="true"] button[name="add"],
+[data-petspot-hide-purchase="true"] .shopify-payment-button,
+[data-petspot-hide-purchase="true"] add-to-cart-component { display:none !important; }
+.product-card[data-petspot-blocked="true"] .price,
+.product-card[data-petspot-blocked="true"] .price-item__group { display:none !important; }

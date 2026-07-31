@@ -1,0 +1,24 @@
+# Example config for Vetution → Odoo → Shopify pricing repair jobs.
+# Copy to a private path and fill values. Never commit secrets.
+
+database: pet_spot_elsahel_test
+baseline_stamp: "20260731T124004Z"
+control_set_size: 2839
+
+pricing:
+  markup_percent: 20
+  min_margin_percent: 15
+  min_profit_egp: 50
+  rounding_egp: 5
+  placeholder_max: 1.01
+
+modes:
+  dry_run: true
+  apply: false
+  target_filter: unresolved_only  # unresolved_only | extreme_approved | all_non_control
+
+shopify:
+  shop: ucbah1-5e.myshopify.com
+  # token via env SHOPIFY_CLIENT_ID / SHOPIFY_CLIENT_SECRET or SHOPIFY_ADMIN_TOKEN
+
+artifacts_dir: /home/sabry/vetution-import/pricing-pipeline/artifacts

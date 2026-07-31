@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Vetution Supplier",
-    "summary": "Authenticated Vetution commercial offers, supplierinfo mirror, and sync (no website/sale dependency)",
-    "version": "19.0.1.3.0",
+    "name": "Vet Supplier",
+    "summary": "Authenticated commercial offers, supplierinfo mirror, and sync (no website/sale dependency)",
+    "version": "19.0.1.4.0",
     "category": "Inventory/Purchase",
     "author": "Sabry Youssef",
     "license": "LGPL-3",

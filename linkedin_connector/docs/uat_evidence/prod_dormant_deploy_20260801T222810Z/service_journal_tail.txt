@@ -1,0 +1,30 @@
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.correlation_id
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.idempotency_key
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.payload_json
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.requested_at
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.lease_version
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.max_attempts
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.next_attempt_at
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.primary_message_id
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.title
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,801 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.summary
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,802 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.post_create_inbox_state
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,802 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.dev_project_id
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,802 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.odoo_project_id
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,802 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.responsible_user_id
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,802 1406207 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.priority_cache
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,946 1406207 INFO pet_spot_elsahel odoo.registry: Registry loaded in 3.992s
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,947 1406207 INFO pet_spot_elsahel odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 1 connections
+Aug 02 01:29:38 master python3[1406207]: 2026-08-01 22:29:38,969 1406207 INFO pet_spot_elsahel odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 1 connections
+Aug 02 01:29:38 master python3[1406549]: 2026-08-01 22:29:38,984 1406549 INFO pet_spot_elsahel odoo.service.server: Worker WorkerHTTP (1406549) alive
+Aug 02 01:29:38 master python3[1406550]: 2026-08-01 22:29:38,989 1406550 INFO pet_spot_elsahel odoo.service.server: Worker WorkerHTTP (1406550) alive
+Aug 02 01:29:38 master python3[1406552]: 2026-08-01 22:29:38,995 1406552 INFO pet_spot_elsahel odoo.service.server: Worker WorkerHTTP (1406552) alive
+Aug 02 01:29:39 master python3[1406556]: 2026-08-01 22:29:39,004 1406556 INFO pet_spot_elsahel odoo.service.server: Worker WorkerHTTP (1406556) alive
+Aug 02 01:29:39 master python3[1406565]: 2026-08-01 22:29:39,018 1406565 INFO pet_spot_elsahel odoo.service.server: Worker WorkerCron (1406565) alive
+Aug 02 01:29:39 master python3[1406557]: 2026-08-01 22:29:39,853 1406557 INFO ? odoo: Odoo version 19.0
+Aug 02 01:29:39 master python3[1406557]: 2026-08-01 22:29:39,853 1406557 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf
+Aug 02 01:29:39 master python3[1406557]: 2026-08-01 22:29:39,854 1406557 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel'])
+Aug 02 01:29:39 master python3[1406557]: 2026-08-01 22:29:39,854 1406557 INFO ? odoo: database: odoo@localhost:5432
+Aug 02 01:29:40 master python3[1406557]: 2026-08-01 22:29:40,367 1406557 INFO ? odoo.service.server: Evented Service (longpolling) running on 0.0.0.0:8072
+Aug 02 01:29:42 master python3[1406552]: 2026-08-01 22:29:42,212 1406552 INFO pet_spot_elsahel odoo.addons.base.models.ir_http: Generating routing map for key 1
+Aug 02 01:29:43 master python3[1406552]: 2026-08-01 22:29:43,714 1406552 INFO pet_spot_elsahel werkzeug: 127.0.0.1 - - [01/Aug/2026 22:29:43] "GET /web/login HTTP/1.1" 200 - 119 0.187 1.379

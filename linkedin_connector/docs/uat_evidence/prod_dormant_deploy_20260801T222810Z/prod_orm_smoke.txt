@@ -1,0 +1,10 @@
+module 19.0.2.8.0 installed
+live_job_search_enabled False
+cron_count 0 active_any False
+account 1 PetSpot LinkedIn company org= 129944345 fallback= False
+account 2 PetSpot LinkedIn (Test) personal org=  fallback= False
+OK blocked company job_branding: Job branding posts must use a personal LinkedIn account. PetSpot/company accounts are for company marketing only.
+live_enabled_method False
+cv_versions 0
+applications 0
+SMOKE_OK

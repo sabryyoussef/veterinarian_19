@@ -1,0 +1,11 @@
+total 78780
+drwxrwxr-x 2 sabry sabry     4096 Aug  2 01:28 .
+drwxrwxr-x 4 sabry sabry   110592 Aug  2 01:28 ..
+-rw-rw-r-- 1 sabry sabry       88 Aug  2 01:28 dump.sha256
+-rw-rw-r-- 1 sabry sabry      204 Aug  2 01:28 dump_ls.txt
+-rw-rw-r-- 1 sabry sabry  2482668 Aug  2 01:28 dump_toc.txt
+-rw-rw-r-- 1 sabry sabry     1460 Aug  2 01:28 dump_toc_linkedin.txt
+-rw-rw-r-- 1 sabry sabry       16 Aug  2 01:28 dump_verify.txt
+-rw-rw-r-- 1 sabry sabry 78041515 Aug  2 01:28 pet_spot_elsahel.dump
+SAFE=/home/sabry/infra/ops/backups/postgres/pet_spot_elsahel_pre_linkedin_dormant_20260801T222810Z
+a7a6d6eee2177cf19fffba72cb176126e10e0364dca25621021f28ac444f448f  pet_spot_elsahel.dump

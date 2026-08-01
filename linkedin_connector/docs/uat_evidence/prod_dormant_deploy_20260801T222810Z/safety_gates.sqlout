@@ -1,0 +1,66 @@
+INSERT 0 0
+UPDATE 1
+UPDATE 0
+UPDATE 4
+ section 
+---------
+ CRONS
+(1 row)
+
+ id  |             cron_name             | active |      nextcall       
+-----+-----------------------------------+--------+---------------------
+  60 | LinkedIn: Publish Scheduled Posts | f      | 2026-07-16 03:51:22
+  61 | LinkedIn: Refresh Feed            | f      | 2026-07-16 03:51:22
+  62 | LinkedIn: Sync Messages           | f      | 2026-07-16 03:51:22
+ 112 | LinkedIn: Daily Job Digest        | f      | 2026-08-01 22:29:10
+(4 rows)
+
+ section 
+---------
+ PARAMS
+(1 row)
+
+                    key                     |                              value                               
+--------------------------------------------+------------------------------------------------------------------
+ linkedin_connector.job_score_threshold     | 50
+ linkedin_connector.job_search_locations    | Remote|Egypt|United Arab Emirates
+ linkedin_connector.job_search_queries      | Senior Odoo Developer|Odoo Developer|Odoo Consultant|Senior Odoo
+ linkedin_connector.live_job_search_enabled | False
+(4 rows)
+
+ section  
+----------
+ ACCOUNTS
+(1 row)
+
+ id |          name           | account_type | linkedin_organization_id | profile_url | fallback_personal_post | active | token_state | member_state 
+----+-------------------------+--------------+--------------------------+-------------+------------------------+--------+-------------+--------------
+  1 | PetSpot LinkedIn        | company      | 129944345                | (empty)     | f                      | t      | NO_TOKEN    | NO_MEMBER
+  2 | PetSpot LinkedIn (Test) | personal     |                          | (empty)     | f                      | t      | HAS_TOKEN   | HAS_MEMBER
+(2 rows)
+
+    section    
+---------------
+ POSTS_PURPOSE
+(1 row)
+
+ account_type | content_purpose | count 
+--------------+-----------------+-------
+ personal     | job_branding    |    10
+(1 row)
+
+ section  
+----------
+ CV_COUNT
+(1 row)
+
+ cv_versions 
+-------------
+           0
+(1 row)
+
+ applications 
+--------------
+            0
+(1 row)
+

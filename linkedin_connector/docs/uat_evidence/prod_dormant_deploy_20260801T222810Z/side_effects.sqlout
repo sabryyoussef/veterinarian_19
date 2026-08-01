@@ -1,0 +1,52 @@
+    section     
+----------------
+ POSTS_BY_STATE
+(1 row)
+
+ state  | count 
+--------+-------
+ posted |    10
+(1 row)
+
+      section       
+--------------------
+ RECENT_POST_WRITES
+(1 row)
+
+ id | account_id | state | content_purpose | write_date 
+----+------------+-------+-----------------+------------
+(0 rows)
+
+   section   
+-------------
+ JOBS_RECENT
+(1 row)
+
+ jobs_created_2h 
+-----------------
+               0
+(1 row)
+
+   section   
+-------------
+ APPS_RECENT
+(1 row)
+
+ apps_created_2h 
+-----------------
+               0
+(1 row)
+
+     section     
+-----------------
+ DIGEST_LASTCALL
+(1 row)
+
+ id  |             cron_name             | active |      lastcall       
+-----+-----------------------------------+--------+---------------------
+  60 | LinkedIn: Publish Scheduled Posts | f      | 2026-07-16 03:47:11
+  61 | LinkedIn: Refresh Feed            | f      | 2026-07-16 03:21:22
+  62 | LinkedIn: Sync Messages           | f      | 2026-07-16 03:47:11
+ 112 | LinkedIn: Daily Job Digest        | f      | 
+(4 rows)
+

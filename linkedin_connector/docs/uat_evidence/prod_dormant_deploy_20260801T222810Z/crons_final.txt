@@ -1,0 +1,8 @@
+ id  |             cron_name             | active 
+-----+-----------------------------------+--------
+  60 | LinkedIn: Publish Scheduled Posts | f
+  61 | LinkedIn: Refresh Feed            | f
+  62 | LinkedIn: Sync Messages           | f
+ 112 | LinkedIn: Daily Job Digest        | f
+(4 rows)
+

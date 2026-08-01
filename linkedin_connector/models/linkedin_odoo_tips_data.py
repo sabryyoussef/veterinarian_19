@@ -338,3 +338,87 @@ That is the level companies should hire for.
 #Odoo #ERPConsulting #OdooDeveloper #BusinessSystems #DigitalOperations""",
     },
 ]
+
+# Personal job-branding only — never schedule on PetSpot company account.
+SENIOR_POSITIONING_POSTS = [
+    {
+        "internal_title": "LinkedIn Senior Position 01",
+        "message": """I am open to senior Odoo developer and Odoo technical lead opportunities.
+
+What I bring:
+- production Odoo custom modules designed for upgrades
+- multi-company and access-control discipline
+- integrations with clear source-of-truth ownership
+- pragmatic delivery: configure first, customize when justified
+
+If your team needs someone who treats Odoo as an operational system — not a demo — let’s talk.
+
+#Odoo #OdooDeveloper #OpenToWork #ERP #Hiring""",
+    },
+    {
+        "internal_title": "LinkedIn Senior Position 02",
+        "message": """Multi-company Odoo is where many projects get expensive.
+
+Not because Odoo cannot handle it.
+Because ownership, sharing, and security rules were never designed clearly.
+
+Before coding:
+- which company owns the customer?
+- which company invoices?
+- what is shared vs isolated?
+- who can see what?
+
+Senior Odoo work often starts with those questions — then the technical model becomes obvious.
+
+#Odoo #MultiCompany #ERP #OdooArchitect #OdooDeveloper""",
+    },
+    {
+        "internal_title": "LinkedIn Senior Position 03",
+        "message": """A case study pattern I see often:
+
+A company wants “a small Shopify sync.”
+It becomes inventory truth conflicts, duplicate partners, and support tickets.
+
+The fix is rarely “more webhooks.”
+It is deciding:
+Odoo is master for X.
+Shopify is master for Y.
+Conflicts resolve by Z.
+
+Architecture before adapters.
+
+#Odoo #Shopify #SystemIntegration #OdooDeveloper #ERP""",
+    },
+    {
+        "internal_title": "LinkedIn Senior Position 04",
+        "message": """Performance in Odoo is a senior skill because the symptoms look random.
+
+Slow list views.
+Timeouts on confirm.
+Cron pileups.
+
+The disciplined approach:
+measure → find the hot path → fix the domain/index/compute → re-measure.
+
+Guessing module rewrites without evidence wastes weeks.
+
+#Odoo #Performance #PostgreSQL #Python #OdooDeveloper""",
+    },
+    {
+        "internal_title": "LinkedIn Senior Position 05",
+        "message": """Upgrades reward clean engineering.
+
+If your custom modules:
+- override too broadly
+- duplicate standard flows
+- ignore security
+- hardcode UI hacks
+
+…the upgrade bill grows every year.
+
+I design Odoo work so the next version is survivable.
+That is part of senior delivery, not a nice-to-have.
+
+#Odoo #ERPUpgrade #OdooMigration #SoftwareEngineering #OdooDeveloper""",
+    },
+]

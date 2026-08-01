@@ -1,107 +1,65 @@
-# Identity verification & personal UAT — 2026-08-02
+# Identity + Personal LinkedIn UAT Evidence — 2026-08-02
 
-## Verdict
+**DB:** `pet_spot_elsahel_test` only  
+**Production:** not upgraded, not deployed, not used  
+**Live LinkedIn:** no publish / search / apply / submit / profile edit / LinkedIn CV upload  
+**Verdict:** `PERSONAL_LINKEDIN_UAT_READY_FOR_APPROVAL`
 
-**`BLOCKED_DEFAULT_CV_UPLOAD_REQUIRED`**
+## Phase A — CV discovery (docs only)
 
-Identity and personal account configuration are complete on `pet_spot_elsahel_test`.  
-Bounded CV discovery found **zero** valid `Sabry_Youssef_CV.pdf` candidates on this host.  
-Offline UAT (Phase D) and full suite re-run are deferred until the CV is uploaded to the private staging path.
+| Field | Value |
+| --- | --- |
+| Path | `docs/Sabry_Youssef_CV.pdf` |
+| Size (bytes) | `76123` |
+| Pages | `2` |
+| SHA-256 | `29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539` |
+| Marker check | Sabry / Odoo / experience markers present (counts only; full text not logged) |
+| Git | Added to `.gitignore` as `docs/Sabry_Youssef_CV.pdf` — must not be committed |
 
----
+## Phase B — Private staging
 
-## Safety (unchanged / re-verified)
+- Staged under `/home/sabry/private/linkedin_cv/` (mode `0700`) for attach only.
+- Staging PDF removed after Odoo attach; source remains in `docs/` (gitignored).
 
-| Item | Value |
-|------|--------|
-| Database | `pet_spot_elsahel_test` only |
-| Branch | `feature/petspot-vendor-sell-through` |
-| HEAD (at this write) | `4e77d7e2fa26ec1edbb02bf53b28a5d8d3e867d8` (+ evidence commit after) |
-| Module | `linkedin_connector` `19.0.2.8.0` |
-| Production | Untouched |
-| Live search | `False` |
-| LinkedIn crons (publish/feed/messages/digest) | all **inactive** |
+## Phase C — Attach default CV (test DB)
 
-Not performed: live LinkedIn search, publish, apply open/submit, profile edit, LinkedIn document upload, CV text logging.
+| Record | ID / value |
+| --- | --- |
+| Personal account | `linkedin.account` **id=2** — `Sabry Youssef — Personal` |
+| Profile URL | `https://www.linkedin.com/in/sabry-youssef-56a878185/` |
+| Account type | `personal` |
+| Attachment | `ir.attachment` **id=19203** — `Sabry_Youssef_CV.pdf` |
+| CV version | `linkedin.cv.version` **id=3** — `Sabry Youssef — Senior Odoo CV` (default on account 2) |
+| PetSpot account | **id=1** company (`org_id=129944345`), disconnected — unused for personal UAT |
 
----
+## Phase D — Offline UAT fixtures (no live LinkedIn)
 
-## Identity + account (approved)
+| Item | Result |
+| --- | --- |
+| UAT jobs | ids **11**, **12** (fixtures) |
+| Application | **id=9** → shortlisted → pack_ready → approved (audit set) |
+| Pre-approve open | blocked |
+| Post-approve open | returned `act_url` only — URL not followed |
+| UAT posts | ids **19–21** scheduled, unpublished; purpose `job_branding` on personal account |
+| Isolation | create/write cross-purpose (personal↔company / job_branding↔company_marketing) **blocked** |
+| Code fix | `linkedin.post` `_assert_account_content_isolation` on create **and** write (purpose-only write was previously able to break isolation) |
+| Crons | LinkedIn job/publish crons forced inactive |
+| Live gate | `live_job_search_enabled=False` |
 
-User confirmation: `CONFIRM_ACCOUNT_2_IS_SABRY_PERSONAL` for OAuth while logged into  
-`https://www.linkedin.com/in/sabry-youssef-56a878185/`.
+## Phase E — Tests + evidence
 
-| Field | Account id=2 |
-|-------|----------------|
-| name | Sabry Youssef — Personal |
-| account_type | personal |
-| profile_url | `https://www.linkedin.com/in/sabry-youssef-56a878185/` |
-| org_id | absent |
-| fallback_personal_post | false |
-| author | member URN only |
+| Check | Result |
+| --- | --- |
+| Tests | **0 failed, 0 error(s) of 17 tests** |
+| Log | `linkedin_connector/docs/uat_evidence/test_run_20260802_personal_uat_b.log` |
+| Prior log | `test_run_20260802_personal_uat.log` (16 tests before write-isolation unit test) |
 
-Isolation previously proven: personal rejects company marketing; company rejects job branding.
+## Safety still in force
 
----
+- No Production upgrade/deploy
+- No live LinkedIn actions until Sabry explicitly approves go-live
+- Do not commit CV/PDF/filestore/secrets
 
-## Phase A — Bounded CV discovery (2026-08-02)
+## Approval gate
 
-Search roots (read-only): `/home/sabry` (with exclude prune for `.git`, filestore, `server-setup`, Odoo addons demos, secrets, browser, `.cursor`), plus explicit checks of:
-
-- `/home/sabry/Downloads`, `Desktop`, `Documents`, `docs`
-- `/home/sabry/odoo_base/base_odoo_19/projects/resume`
-- `/mnt/cluster/desktop`, `/mnt/cluster/precision`
-
-Filenames sought: `Sabry_Youssef_CV.pdf` and case/space equivalents.
-
-| Result | Value |
-|--------|--------|
-| Candidate count | **0** |
-| Prior path `/home/sabry3/Sabry_Youssef_CV.pdf` | not present (`/home/sabry3` does not exist on master) |
-| Ledger PDF excluded | yes (not used) |
-
-No selection ambiguity — no file to choose.
-
----
-
-## Phase B — Private staging directory prepared (empty)
-
-Created outside the git repository:
-
-```text
-/home/sabry/private/                 mode 0700
-/home/sabry/private/linkedin_cv/     mode 0700
-```
-
-- Not a git worktree (`NOT_A_GIT_REPO`)
-- Target filename when uploaded: `/home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf` (to be `0600`)
-- No PDF staged yet; nothing to hash/compare
-
-### Exact upload command (from the machine that has the file)
-
-```bash
-scp Sabry_Youssef_CV.pdf sabry@<master-host>:/home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf
-ssh sabry@<master-host> 'chmod 600 /home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf && ls -la /home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf && sha256sum /home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf'
-```
-
-Then reply in chat: `CV_UPLOADED_PRIVATE_STAGING_READY`
-
-Do **not** place the PDF under the git repo or `linkedin_connector/docs/`.
-
----
-
-## Phases C–E
-
-| Phase | Status |
-|-------|--------|
-| C Odoo attach default CV | blocked — no file |
-| D Controlled offline UAT | blocked |
-| E Full test suite + final approval verdict | blocked |
-
----
-
-## Git
-
-- Evidence-only updates; CV never committed.
-- Unrelated dirty tree preserved.
-- Push: not pushed unless separately authorized.
+Stop here for Sabry’s go-live approval before any live LinkedIn or production action.

@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="account_type"/>
                 <field name="connected"/>
                 <field name="linkedin_member_urn"/>
                 <field name="token_expires_at"/>
@@ -26,6 +27,9 @@
                             class="btn-primary" invisible="not connected"/>
                     <button name="action_test_post" type="object" string="Test Post" class="btn-secondary"
                             invisible="not connected"/>
+                    <button name="action_verify_personal_connection" type="object"
+                            string="Verify personal connection"
+                            invisible="account_type != 'personal'"/>
                     <button name="action_disconnect" type="object" string="Disconnect"
                             invisible="not connected"/>
                 </header>
@@ -47,9 +51,22 @@
                                 icon="fa-envelope">
                             <field name="conversation_count" string="Messages" widget="statinfo"/>
                         </button>
+                        <button name="%(action_linkedin_job_application)d" type="action"
+                                class="oe_stat_button" icon="fa-briefcase"
+                                invisible="account_type != 'personal'">
+                            <field name="application_count" string="Applications" widget="statinfo"/>
+                        </button>
+                        <button name="%(action_linkedin_cv_version)d" type="action"
+                                class="oe_stat_button" icon="fa-file-text-o"
+                                invisible="account_type != 'personal'">
+                            <field name="cv_version_count" string="CV versions" widget="statinfo"/>
+                        </button>
                     </div>
                     <group>
                         <field name="name"/>
+                        <field name="account_type"/>
+                        <field name="profile_url" widget="url"
+                               placeholder="https://www.linkedin.com/in/sabry-youssef-56a878185/"/>
                         <field name="active"/>
                     </group>
                     <group string="OAuth (Public URL)">
@@ -62,14 +79,22 @@
                         <field name="client_id" password="True"/>
                         <field name="client_secret" password="True"/>
                     </group>
-                    <group string="Company page (Odoo posts here — not personal feed)">
+                    <group string="Company page" invisible="account_type != 'company'">
                         <field name="linkedin_organization_id" placeholder="129944345"/>
                         <field name="linkedin_organization_urn" readonly="1"/>
-                        <field name="fallback_personal_post"/>
+                        <field name="fallback_personal_post" invisible="1"/>
+                    </group>
+                    <group string="Personal posting" invisible="account_type != 'personal'">
+                        <div colspan="2" class="text-muted">
+                            Posts as the connected member URN. Company page ID is forbidden.
+                            Do not use PetSpot as a fallback author.
+                        </div>
+                        <field name="fallback_personal_post" invisible="1"/>
+                        <field name="linkedin_organization_id" invisible="1"/>
                     </group>
                     <group string="Connection">
                         <field name="connected" readonly="1"/>
-                        <field name="linkedin_member_urn" readonly="1" string="Member URN (OAuth only)"/>
+                        <field name="linkedin_member_urn" readonly="1" string="Member URN"/>
                         <field name="token_expires_at" readonly="1"/>
                     </group>
                 </sheet>
@@ -123,6 +148,18 @@
               parent="menu_linkedin_jobs"
               action="action_linkedin_job_search_wizard"
               sequence="20"/>
+
+    <menuitem id="menu_linkedin_job_applications"
+              name="Applications"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_application"
+              sequence="30"/>
+
+    <menuitem id="menu_linkedin_cv_versions"
+              name="CV Versions"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_cv_version"
+              sequence="40"/>
 
     <menuitem id="menu_linkedin_resumes"
               name="Resumes"

@@ -16,6 +16,15 @@ class LinkedinPostBulkSchedule(models.Model):
         string="LinkedIn account",
         required=True,
     )
+    content_purpose = fields.Selection(
+        [
+            ("job_branding", "Job branding / personal"),
+            ("company_marketing", "Company marketing"),
+        ],
+        string="Content purpose",
+        required=True,
+        default="job_branding",
+    )
     start_date = fields.Date(
         string="Start date",
         default=fields.Date.context_today,
@@ -64,10 +73,42 @@ class LinkedinPostBulkSchedule(models.Model):
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
         if "account_id" in fields_list and not res.get("account_id"):
-            acc = self.env["linkedin.account"].search([], limit=1)
+            acc = self.env["linkedin.account"].get_personal_account()
+            if not acc:
+                acc = self.env["linkedin.account"].search(
+                    [("account_type", "=", "company")], limit=1
+                )
             if acc:
                 res["account_id"] = acc.id
+                if "content_purpose" in fields_list:
+                    res["content_purpose"] = (
+                        "company_marketing"
+                        if acc.account_type == "company"
+                        else "job_branding"
+                    )
         return res
+
+    @api.onchange("account_id")
+    def _onchange_account_purpose(self):
+        if self.account_id.account_type == "company":
+            self.content_purpose = "company_marketing"
+        elif self.account_id.account_type == "personal":
+            self.content_purpose = "job_branding"
+
+    @api.constrains("account_id", "content_purpose")
+    def _check_purpose_matches_account(self):
+        for rec in self:
+            if rec.content_purpose == "job_branding" and rec.account_id.account_type != "personal":
+                raise UserError(
+                    _("Job branding bulk posts require a personal account (not PetSpot).")
+                )
+            if (
+                rec.content_purpose == "company_marketing"
+                and rec.account_id.account_type != "company"
+            ):
+                raise UserError(
+                    _("Company marketing bulk posts require a company account.")
+                )
 
     @api.constrains("morning_hour", "evening_hour")
     def _check_hours(self):
@@ -121,7 +162,7 @@ class LinkedinPostBulkSchedule(models.Model):
         if self.recurrence_mode != "twice_daily":
             count_kw["schedule_count"] = self.schedule_count
 
-        created = Post.schedule_bulk_pasted_posts(
+        created = Post.with_context(bulk_content_purpose=self.content_purpose).schedule_bulk_pasted_posts(
             self.account_id,
             bodies,
             self.start_date,

@@ -10,3 +10,4 @@ class TestLinkedinBulkWizardSchema(TransactionCase):
         W = self.env["linkedin.post.bulk.schedule"]
         self.assertIn("recurrence_mode", W._fields, "Restart Odoo after code changes, then upgrade the module.")
         self.assertIn("schedule_count", W._fields, "Restart Odoo after code changes, then upgrade the module.")
+        self.assertIn("content_purpose", W._fields)

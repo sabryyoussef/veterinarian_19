@@ -6,6 +6,8 @@ from . import linkedin_post
 from . import linkedin_bulk_wizard
 from . import linkedin_stream_post
 from . import linkedin_job
+from . import linkedin_cv_version
+from . import linkedin_job_application
 from . import linkedin_resume
 from . import linkedin_message
 from . import linkedin_settings

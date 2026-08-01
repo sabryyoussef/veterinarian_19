@@ -8,6 +8,7 @@
             <form string="Bulk schedule posts">
                 <group>
                     <field name="account_id"/>
+                    <field name="content_purpose"/>
                     <field name="start_date"/>
                     <field name="recurrence_mode"/>
                     <field name="schedule_count" invisible="recurrence_mode == 'twice_daily'"/>

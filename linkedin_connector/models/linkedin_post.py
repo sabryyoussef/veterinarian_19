@@ -8,7 +8,7 @@ import requests
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -24,6 +24,20 @@ class LinkedinPost(models.Model):
 
     account_id = fields.Many2one(
         "linkedin.account", string="Account", required=True, ondelete="cascade", index=True
+    )
+    content_purpose = fields.Selection(
+        [
+            ("job_branding", "Job branding / personal"),
+            ("company_marketing", "Company marketing"),
+        ],
+        string="Content purpose",
+        required=True,
+        default="job_branding",
+        index=True,
+        help=(
+            "job_branding → personal account only. "
+            "company_marketing → PetSpot/company account only."
+        ),
     )
     internal_title = fields.Char(
         string="Internal title",
@@ -101,6 +115,64 @@ class LinkedinPost(models.Model):
         for rec in self:
             if rec.post_method == "scheduled" and not rec.scheduled_date:
                 raise UserError(_("Set a Scheduled Date when using Schedule method."))
+
+    @api.model
+    def _assert_account_content_isolation(self, account, content_purpose):
+        """Shared create/write guard — personal ↔ job_branding, company ↔ company_marketing."""
+        if not account:
+            raise ValidationError(_("LinkedIn account is required."))
+        atype = account.account_type
+        purpose = content_purpose or "job_branding"
+        if purpose == "job_branding" and atype != "personal":
+            raise ValidationError(
+                _(
+                    "Job branding posts must use a personal LinkedIn account. "
+                    "PetSpot/company accounts are for company marketing only."
+                )
+            )
+        if purpose == "company_marketing" and atype != "company":
+            raise ValidationError(
+                _(
+                    "Company marketing posts must use a company LinkedIn account. "
+                    "Do not post clinic content on the personal job-hunt account."
+                )
+            )
+
+    @api.constrains("account_id", "content_purpose")
+    def _check_account_content_isolation(self):
+        for rec in self:
+            rec._assert_account_content_isolation(rec.account_id, rec.content_purpose)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        Account = self.env["linkedin.account"]
+        for vals in vals_list:
+            account = Account.browse(vals.get("account_id")) if vals.get("account_id") else Account
+            purpose = vals.get("content_purpose") or "job_branding"
+            if account:
+                self._assert_account_content_isolation(account, purpose)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        vals = dict(vals)
+        Account = self.env["linkedin.account"]
+        for rec in self:
+            account = (
+                Account.browse(vals["account_id"])
+                if "account_id" in vals
+                else rec.account_id
+            )
+            purpose = vals["content_purpose"] if "content_purpose" in vals else rec.content_purpose
+            self._assert_account_content_isolation(account, purpose)
+        return super().write(vals)
+
+    @api.onchange("account_id")
+    def _onchange_account_id_purpose(self):
+        for rec in self:
+            if rec.account_id.account_type == "company":
+                rec.content_purpose = "company_marketing"
+            elif rec.account_id.account_type == "personal":
+                rec.content_purpose = "job_branding"
 
     def _li_headers(self):
         self.ensure_one()
@@ -348,30 +420,43 @@ class LinkedinPost(models.Model):
         start_date defaults to today in the user's timezone.
         Skips tips whose internal_title already exists for that account.
         """
-        from .linkedin_odoo_tips_data import ODOO_TIPS_POSTS
+        from .linkedin_odoo_tips_data import ODOO_TIPS_POSTS, SENIOR_POSITIONING_POSTS
 
         Account = self.env["linkedin.account"].sudo()
         if account_id:
             account = Account.browse(account_id)
+            if not account.exists():
+                raise UserError(_("LinkedIn account %s not found.") % account_id)
         else:
-            account = Account.search([], limit=1)
+            account = Account.get_personal_account()
         if not account:
-            raise UserError(_("Create or connect a LinkedIn account first."))
+            raise UserError(
+                _(
+                    "Create a personal LinkedIn account (account type = Personal) before "
+                    "scheduling Odoo tips. Never defaults to PetSpot/company."
+                )
+            )
+        if account.account_type != "personal":
+            raise UserError(
+                _("Odoo tips / senior positioning posts are personal job-branding only.")
+            )
 
         if start_date is None:
             start_date = fields.Date.context_today(self)
 
+        pack = list(ODOO_TIPS_POSTS) + list(SENIOR_POSITIONING_POSTS)
         created = self.env["linkedin.post"]
 
-        for idx, item in enumerate(ODOO_TIPS_POSTS):
+        for idx, item in enumerate(pack):
             if self.search_count([
                 ("account_id", "=", account.id),
                 ("internal_title", "=", item["internal_title"]),
             ]):
                 continue
 
-            current_day = start_date + timedelta(days=idx // 2)
-            prefer_morning = idx % 2 == 0
+            # Daily cadence: one post per calendar day (senior job branding).
+            current_day = start_date + timedelta(days=idx)
+            prefer_morning = True
 
             scheduled_utc = None
             for extra in range(21):
@@ -384,6 +469,7 @@ class LinkedinPost(models.Model):
 
             post = self.create({
                 "account_id": account.id,
+                "content_purpose": "job_branding",
                 "internal_title": item["internal_title"],
                 "message": item["message"],
                 "post_method": "scheduled",
@@ -430,6 +516,17 @@ class LinkedinPost(models.Model):
         if not clean_bodies:
             raise UserError(_("No post bodies to schedule."))
         account.ensure_one()
+        content_purpose = self.env.context.get("bulk_content_purpose")
+        if not content_purpose:
+            content_purpose = (
+                "company_marketing"
+                if account.account_type == "company"
+                else "job_branding"
+            )
+        if content_purpose == "job_branding" and account.account_type != "personal":
+            raise UserError(_("Job branding bulk schedule requires a personal account."))
+        if content_purpose == "company_marketing" and account.account_type != "company":
+            raise UserError(_("Company marketing bulk schedule requires a company account."))
         created = self.env["linkedin.post"]
         primary_am = (max(0, min(23, int(morning_h))), max(0, min(59, int(morning_m))))
         primary_pm = (max(0, min(23, int(evening_h))), max(0, min(59, int(evening_m))))
@@ -451,6 +548,7 @@ class LinkedinPost(models.Model):
             title = "%s %02d" % (title_prefix.strip() or "Scheduled paste", seq)
             return self.create({
                 "account_id": account.id,
+                "content_purpose": content_purpose,
                 "internal_title": title,
                 "message": msg,
                 "post_method": "scheduled",

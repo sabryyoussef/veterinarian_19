@@ -6,18 +6,26 @@
         <field name="name">linkedin.job.list</field>
         <field name="model">linkedin.job</field>
         <field name="arch" type="xml">
-            <list decoration-info="saved">
+            <list decoration-info="saved" decoration-muted="is_duplicate">
+                <field name="score"/>
                 <field name="title"/>
                 <field name="company"/>
                 <field name="location"/>
                 <field name="remote" widget="boolean_toggle" optional="show"/>
+                <field name="odoo_match" optional="show"/>
+                <field name="seniority_match" optional="show"/>
+                <field name="easy_apply_hint" optional="show"/>
+                <field name="is_duplicate" optional="hide"/>
+                <field name="application_count" optional="show"/>
                 <field name="employment_type" optional="show"/>
                 <field name="source" optional="hide"/>
                 <field name="listed_at"/>
                 <field name="saved" widget="boolean_toggle"/>
                 <field name="search_keywords" optional="hide"/>
-                <button name="action_open_apply" type="object" string="Apply"
-                        icon="fa-external-link" title="Apply"/>
+                <button name="action_create_application" type="object" string="Track"
+                        icon="fa-plus" title="Create application"/>
+                <button name="action_open_apply" type="object" string="Open (if approved)"
+                        icon="fa-external-link" title="Open via approved application only"/>
                 <button name="action_toggle_saved" type="object" string="Save/Unsave"
                         icon="fa-bookmark"/>
             </list>
@@ -31,8 +39,11 @@
         <field name="arch" type="xml">
             <form string="LinkedIn Job">
                 <header>
-                    <button name="action_open_apply" type="object" string="Apply on LinkedIn"
-                            class="btn-primary" invisible="not apply_url"/>
+                    <button name="action_create_application" type="object" string="Track application"
+                            class="btn-primary"/>
+                    <button name="action_open_apply" type="object"
+                            string="Open apply (approved only)"
+                            class="btn-secondary" invisible="not apply_url"/>
                     <button name="action_toggle_saved" type="object" string="Save / Unsave"/>
                 </header>
                 <sheet>
@@ -42,15 +53,34 @@
                             <field name="company"/>
                             <field name="location"/>
                             <field name="listed_at"/>
+                            <field name="remote"/>
                         </group>
                         <group>
+                            <field name="score"/>
+                            <field name="odoo_match"/>
+                            <field name="seniority_match"/>
+                            <field name="easy_apply_hint"/>
+                            <field name="is_duplicate"/>
+                            <field name="duplicate_of_id" invisible="not is_duplicate"/>
+                            <field name="fingerprint" readonly="1"/>
                             <field name="account_id"/>
                             <field name="search_keywords"/>
                             <field name="saved"/>
                             <field name="apply_url" widget="url"/>
+                            <field name="application_count"/>
                         </group>
                     </group>
+                    <group string="Score breakdown">
+                        <field name="score_breakdown" readonly="1" nolabel="1" colspan="2"/>
+                    </group>
                     <field name="description" widget="html"/>
+                    <field name="application_ids" readonly="1">
+                        <list>
+                            <field name="state"/>
+                            <field name="score"/>
+                            <field name="cv_version_id"/>
+                        </list>
+                    </field>
                 </sheet>
             </form>
         </field>
@@ -66,6 +96,9 @@
                 <field name="company"/>
                 <field name="location"/>
                 <filter name="saved_only" string="Saved" domain="[('saved','=',True)]"/>
+                <filter name="odoo_only" string="Odoo match" domain="[('odoo_match','=',True)]"/>
+                <filter name="senior" string="Seniority match" domain="[('seniority_match','=',True)]"/>
+                <filter name="not_dup" string="Not duplicates" domain="[('is_duplicate','=',False)]"/>
                 <separator/>
                 <filter name="group_company" string="Company" context="{'group_by': 'company'}"/>
                 <filter name="group_account" string="Account" context="{'group_by': 'account_id'}"/>

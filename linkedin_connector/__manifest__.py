@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "LinkedIn Connector",
-    "version": "19.0.2.7.0",
+    "version": "19.0.2.8.0",
     "category": "Marketing",
     "summary": "Full LinkedIn management: posts, schedule, feed, jobs, resumes, messages",
     "author": "Sabry Youssef, Resume project",
@@ -10,11 +10,16 @@
     "license": "LGPL-3",
     "depends": ["base", "web", "mail", "base_setup"],
     "data": [
+        "security/linkedin_security.xml",
         "security/ir.model.access.csv",
+        "security/linkedin_bulk_wizard_access.xml",
+        "data/ir_config_parameter_data.xml",
         "data/ir_cron_data.xml",
         "views/linkedin_post_views.xml",
         "views/linkedin_stream_post_views.xml",
         "views/linkedin_job_views.xml",
+        "views/linkedin_cv_version_views.xml",
+        "views/linkedin_job_application_views.xml",
         "views/linkedin_resume_views.xml",
         "views/linkedin_message_views.xml",
         "views/linkedin_account_views.xml",

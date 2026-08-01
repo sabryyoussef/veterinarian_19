@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_linkedin_job_application_list" model="ir.ui.view">
+        <field name="name">linkedin.job.application.list</field>
+        <field name="model">linkedin.job.application</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'rejected'"
+                  decoration-success="state in ('approved','applied','offer')"
+                  decoration-info="state in ('discovered','shortlisted','pack_ready')">
+                <field name="score"/>
+                <field name="job_title"/>
+                <field name="job_company"/>
+                <field name="job_location"/>
+                <field name="state" widget="badge"/>
+                <field name="cv_version_id" optional="show"/>
+                <field name="approved_at" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_linkedin_job_application_form" model="ir.ui.view">
+        <field name="name">linkedin.job.application.form</field>
+        <field name="model">linkedin.job.application</field>
+        <field name="arch" type="xml">
+            <form string="Job Application">
+                <header>
+                    <button name="action_shortlist" type="object" string="Shortlist"
+                            invisible="state != 'discovered'" class="btn-secondary"/>
+                    <button name="action_prepare_pack" type="object" string="Prepare pack"
+                            invisible="state not in ('discovered','shortlisted','pack_ready')"
+                            class="btn-primary"/>
+                    <button name="action_approve" type="object" string="Approve"
+                            invisible="state != 'pack_ready'" class="btn-primary"
+                            groups="linkedin_connector.group_linkedin_job_hunt"/>
+                    <button name="action_open_application" type="object" string="Open application"
+                            invisible="state != 'approved'" class="btn-primary"
+                            groups="linkedin_connector.group_linkedin_job_hunt"/>
+                    <button name="action_mark_applied" type="object" string="Mark applied"
+                            invisible="state != 'approved'" class="btn-secondary"/>
+                    <button name="action_mark_interview" type="object" string="Interview"
+                            invisible="state not in ('applied','interview')"/>
+                    <button name="action_mark_rejected" type="object" string="Rejected"
+                            invisible="state in ('rejected','offer')"/>
+                    <button name="action_mark_offer" type="object" string="Offer"
+                            invisible="state not in ('applied','interview')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="discovered,shortlisted,pack_ready,approved,applied,interview"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Job">
+                            <field name="job_id"/>
+                            <field name="account_id"/>
+                            <field name="score"/>
+                            <field name="job_title"/>
+                            <field name="job_company"/>
+                            <field name="job_location"/>
+                            <field name="apply_url" widget="url"/>
+                        </group>
+                        <group string="Approval">
+                            <field name="cv_version_id"/>
+                            <field name="approved_by" readonly="1"/>
+                            <field name="approved_at" readonly="1"/>
+                            <field name="applied_at" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Cover letter" name="cover">
+                            <field name="cover_letter" widget="text"/>
+                        </page>
+                        <page string="Screening" name="screening">
+                            <field name="screening_answers" widget="text"/>
+                        </page>
+                        <page string="Checklist" name="checklist">
+                            <field name="checklist" widget="text"/>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_linkedin_job_application_search" model="ir.ui.view">
+        <field name="name">linkedin.job.application.search</field>
+        <field name="model">linkedin.job.application</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="job_title"/>
+                <field name="job_company"/>
+                <filter name="discovered" string="Discovered" domain="[('state','=','discovered')]"/>
+                <filter name="pack_ready" string="Pack Ready" domain="[('state','=','pack_ready')]"/>
+                <filter name="approved" string="Approved" domain="[('state','=','approved')]"/>
+                <filter name="applied" string="Applied" domain="[('state','=','applied')]"/>
+                <group>
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_linkedin_job_application" model="ir.actions.act_window">
+        <field name="name">Applications</field>
+        <field name="res_model">linkedin.job.application</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_discovered': 1}</field>
+    </record>
+</odoo>

@@ -51,6 +51,8 @@
                     <group>
                         <group string="Post">
                             <field name="account_id"/>
+                            <field name="content_purpose"/>
+                            <field name="internal_title"/>
                             <field name="visibility"/>
                             <field name="post_method"/>
                             <!-- Always show date: set Method to “Schedule” to edit, then use header Schedule -->

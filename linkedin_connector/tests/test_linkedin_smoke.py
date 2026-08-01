@@ -14,6 +14,7 @@ class TestLinkedinConnectorSmoke(TransactionCase):
         acc = self.env["linkedin.account"].create(
             {
                 "name": "Test LI",
+                "account_type": "personal",
                 "client_id": "client-id",
                 "client_secret": "secret",
             }
@@ -26,6 +27,7 @@ class TestLinkedinConnectorSmoke(TransactionCase):
         acc = self.env["linkedin.account"].create(
             {
                 "name": "Disconnected",
+                "account_type": "personal",
                 "client_id": "x",
                 "client_secret": "y",
             }

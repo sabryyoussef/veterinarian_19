@@ -52,19 +52,24 @@ def main() -> int:
     accounts = client.search_read(
         "linkedin.account",
         [("name", "=", account_name)],
-        ["id", "name", "connected"],
+        ["id", "name", "connected", "account_type"],
         limit=1,
     )
     if not accounts:
         print(f"Account '{account_name}' not found", file=sys.stderr)
         return 1
     acc = accounts[0]
+    if acc.get("account_type") != "company":
+        print(
+            "Opening posts are company marketing only — use a company account_type (not personal).",
+            file=sys.stderr,
+        )
+        return 1
     if not acc.get("connected"):
         print("LinkedIn test account not connected — Connect first", file=sys.stderr)
         return 1
 
     acc_id = acc["id"]
-    client.write("linkedin.account", [acc_id], {"fallback_personal_post": True})
 
     # Remove prior opening batch (same internal_title prefix)
     prefix = "PetSpot Opening "
@@ -108,6 +113,7 @@ def main() -> int:
             "linkedin.post",
             {
                 "account_id": acc_id,
+                "content_purpose": "company_marketing",
                 "internal_title": title,
                 "message": post["message"],
                 "post_method": "scheduled",

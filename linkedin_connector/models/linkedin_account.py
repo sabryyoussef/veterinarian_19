@@ -9,11 +9,13 @@ from urllib.parse import quote, urlencode
 import requests
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 # Bumped when OAuth/profile logic changes (helps confirm running code vs stale workers).
-_CONNECTOR_REV = "19.0.2.7.0"
+_CONNECTOR_REV = "19.0.2.8.0"
+
+PERSONAL_PROFILE_URL_DEFAULT = "https://www.linkedin.com/in/sabry-youssef-56a878185/"
 
 
 class LinkedinAccount(models.Model):
@@ -22,6 +24,24 @@ class LinkedinAccount(models.Model):
 
     name = fields.Char(required=True, default="LinkedIn Account")
     active = fields.Boolean(default=True)
+    account_type = fields.Selection(
+        [
+            ("personal", "Personal (job branding)"),
+            ("company", "Company page (marketing)"),
+        ],
+        string="Account type",
+        required=True,
+        index=True,
+        help=(
+            "Personal: posts as the connected member; job hunt + thought leadership only.\n"
+            "Company: posts as the organization page; clinic/commercial marketing only.\n"
+            "Never mix the two — validation blocks cross-posting."
+        ),
+    )
+    profile_url = fields.Char(
+        string="Profile / page URL",
+        help="Personal LinkedIn profile URL, or company page URL for company accounts.",
+    )
 
     oauth_public_base_url = fields.Char(
         string="Public base URL",
@@ -63,9 +83,12 @@ class LinkedinAccount(models.Model):
         store=True,
     )
     fallback_personal_post = fields.Boolean(
-        string="Allow personal feed if no company page ID",
+        string="Legacy fallback (disabled)",
         default=False,
-        help="When company page ID is missing, post to the connected member profile instead.",
+        help=(
+            "Deprecated. Personal accounts always post as the member; "
+            "company accounts always post as the organization. Must stay False."
+        ),
     )
 
     connected = fields.Boolean(compute="_compute_connected")
@@ -74,6 +97,85 @@ class LinkedinAccount(models.Model):
     stream_post_count = fields.Integer(compute="_compute_counts")
     resume_count = fields.Integer(compute="_compute_counts")
     conversation_count = fields.Integer(compute="_compute_counts")
+    application_count = fields.Integer(compute="_compute_counts")
+    cv_version_count = fields.Integer(compute="_compute_counts")
+
+    @api.constrains(
+        "account_type",
+        "linkedin_organization_id",
+        "fallback_personal_post",
+        "oauth_scopes",
+    )
+    def _check_account_type_isolation(self):
+        for rec in self:
+            if not rec.account_type:
+                raise ValidationError(_("Account type is required (personal or company)."))
+            if rec.fallback_personal_post:
+                raise ValidationError(
+                    _(
+                        "fallback_personal_post is disabled. "
+                        "Use account type Personal (member URN) or Company (organization URN)."
+                    )
+                )
+            org = (rec.linkedin_organization_id or "").strip()
+            if rec.account_type == "personal":
+                if org:
+                    raise ValidationError(
+                        _(
+                            "Personal accounts must not set a Company page ID. "
+                            "Use a separate company account for PetSpot marketing."
+                        )
+                    )
+                scopes = set(rec._normalize_oauth_scopes().split())
+                if "w_organization_social" in scopes:
+                    raise ValidationError(
+                        _(
+                            "Personal accounts must not request w_organization_social. "
+                            "Use scopes: openid profile w_member_social"
+                        )
+                    )
+            elif rec.account_type == "company":
+                if not org:
+                    raise ValidationError(
+                        _("Company accounts require a Company page ID (e.g. 129944345).")
+                    )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        cleaned = []
+        for vals in vals_list:
+            v = dict(vals)
+            if v.get("account_type") == "personal":
+                v["fallback_personal_post"] = False
+                v.setdefault("profile_url", PERSONAL_PROFILE_URL_DEFAULT)
+                v["linkedin_organization_id"] = False
+            elif v.get("account_type") == "company":
+                v["fallback_personal_post"] = False
+            cleaned.append(v)
+        return super().create(cleaned)
+
+    def write(self, vals):
+        vals = dict(vals)
+        if vals.get("fallback_personal_post"):
+            raise ValidationError(
+                _(
+                    "fallback_personal_post is disabled. "
+                    "Use account type Personal or Company — never PetSpot as personal fallback."
+                )
+            )
+        becoming_personal = vals.get("account_type") == "personal"
+        if becoming_personal:
+            vals["linkedin_organization_id"] = False
+            vals["fallback_personal_post"] = False
+            vals.setdefault("profile_url", PERSONAL_PROFILE_URL_DEFAULT)
+        elif "linkedin_organization_id" in vals and vals["linkedin_organization_id"]:
+            for rec in self:
+                atype = vals.get("account_type") or rec.account_type
+                if atype == "personal":
+                    raise ValidationError(
+                        _("Cannot set Company page ID on a personal LinkedIn account.")
+                    )
+        return super().write(vals)
 
     @api.depends("linkedin_organization_id")
     def _compute_linkedin_organization_urn(self):
@@ -93,11 +195,15 @@ class LinkedinAccount(models.Model):
         Feed = self.env["linkedin.stream.post"]
         Resume = self.env["linkedin.resume"]
         Conv = self.env["linkedin.conversation"]
+        App = self.env["linkedin.job.application"]
+        Cv = self.env["linkedin.cv.version"]
         for rec in self:
             rec.post_count = Post.search_count([("account_id", "=", rec.id)])
             rec.stream_post_count = Feed.search_count([("account_id", "=", rec.id)])
             rec.resume_count = Resume.search_count([("account_id", "=", rec.id)])
             rec.conversation_count = Conv.search_count([("account_id", "=", rec.id)])
+            rec.application_count = App.search_count([("account_id", "=", rec.id)])
+            rec.cv_version_count = Cv.search_count([("account_id", "=", rec.id)])
 
     def _oauth_base_url(self):
         self.ensure_one()
@@ -129,26 +235,33 @@ class LinkedinAccount(models.Model):
         return re.sub(r"\s+", " ", raw)
 
     def _get_post_author_urn(self):
-        """Author for API posts — company page only (not personal feed)."""
+        """Author URN: member for personal accounts, organization for company accounts."""
         self.ensure_one()
         if not self.access_token or not self.linkedin_member_urn:
             raise UserError(_("Connect the LinkedIn account first."))
-        urn = (self.linkedin_organization_urn or "").strip()
-        if not urn:
-            if self.fallback_personal_post and self.linkedin_member_urn:
-                return self.linkedin_member_urn
-            raise UserError(
-                _(
-                    "Set Company page ID on this account (e.g. 129944345 from "
-                    "linkedin.com/company/129944345/). Odoo posts to the company page only, "
-                    "not your personal feed."
+        if self.account_type == "personal":
+            return self.linkedin_member_urn
+        if self.account_type == "company":
+            urn = (self.linkedin_organization_urn or "").strip()
+            if not urn:
+                raise UserError(
+                    _(
+                        "Set Company page ID on this company account "
+                        "(e.g. 129944345 from linkedin.com/company/129944345/)."
+                    )
                 )
-            )
-        return urn
+            return urn
+        raise UserError(_("Set Account type to Personal or Company before posting."))
 
     def _organization_post_error_hint(self, api_body):
+        if self.account_type == "personal":
+            return _(
+                "LinkedIn rejected a personal profile post.\n\n"
+                "Ensure scopes include w_member_social and reconnect.\n\n"
+                "API response: %s"
+            ) % (api_body or "")
         return _(
-            "LinkedIn rejected a company page post (personal feed is disabled in this connector).\n\n"
+            "LinkedIn rejected a company page post.\n\n"
             "Ensure your app has:\n"
             "  • Community Management API product (LinkedIn Developers → Products)\n"
             "  • Scope w_organization_social\n"
@@ -392,19 +505,68 @@ class LinkedinAccount(models.Model):
     def action_test_post(self):
         self.ensure_one()
         ts = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
-        self._post_text(
-            "PetSpot El Sahel — Odoo company page test post at %s." % ts
-        )
+        if self.account_type == "personal":
+            text = "Personal LinkedIn connector test post at %s." % ts
+            ok_msg = _("Test post sent to your personal feed.")
+        else:
+            text = "PetSpot El Sahel — Odoo company page test post at %s." % ts
+            ok_msg = _("Test post sent to the company page.")
+        self._post_text(text)
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
             "params": {
                 "title": _("LinkedIn"),
-                "message": _("Test post sent to the company page."),
+                "message": ok_msg,
                 "type": "success",
                 "sticky": False,
             },
         }
+
+    def action_verify_personal_connection(self):
+        """UAT helper: report whether this personal account is connected for job hunt."""
+        self.ensure_one()
+        expected = (self.profile_url or PERSONAL_PROFILE_URL_DEFAULT).rstrip("/")
+        lines = [
+            "Account: %s" % self.name,
+            "Type: %s" % (self.account_type or "(unset)"),
+            "Profile URL: %s" % expected,
+            "Connected: %s" % ("yes" if self.connected else "NO"),
+            "Member URN: %s" % (self.linkedin_member_urn or "(none)"),
+            "Org ID: %s" % (self.linkedin_organization_id or "(none)"),
+            "Scopes: %s" % self._normalize_oauth_scopes(),
+        ]
+        if self.account_type != "personal":
+            lines.append("RESULT: not a personal account — create/connect a separate personal record.")
+            level = "warning"
+        elif not self.connected:
+            lines.append(
+                "RESULT: personal account exists but is NOT connected. "
+                "Use Connect with scopes: openid profile w_member_social "
+                "(no w_organization_social)."
+            )
+            level = "warning"
+        else:
+            lines.append(
+                "RESULT: personal account is connected. "
+                "Confirm in LinkedIn that the OAuth user matches %s" % expected
+            )
+            level = "success"
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Personal LinkedIn verification"),
+                "message": "\n".join(lines),
+                "type": level,
+                "sticky": True,
+            },
+        }
+
+    @api.model
+    def get_personal_account(self):
+        """Return the (single) personal account or empty recordset."""
+        return self.search([("account_type", "=", "personal"), ("active", "=", True)], limit=1)
 
     def _post_text(self, text):
         self.ensure_one()

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="icp_live_job_search_enabled" model="ir.config_parameter">
+        <field name="key">linkedin_connector.live_job_search_enabled</field>
+        <field name="value">False</field>
+    </record>
+    <record id="icp_job_score_threshold" model="ir.config_parameter">
+        <field name="key">linkedin_connector.job_score_threshold</field>
+        <field name="value">50</field>
+    </record>
+    <record id="icp_job_search_queries" model="ir.config_parameter">
+        <field name="key">linkedin_connector.job_search_queries</field>
+        <field name="value">Senior Odoo Developer|Odoo Developer|Odoo Consultant|Senior Odoo</field>
+    </record>
+    <record id="icp_job_search_locations" model="ir.config_parameter">
+        <field name="key">linkedin_connector.job_search_locations</field>
+        <field name="value">Remote|Egypt|United Arab Emirates</field>
+    </record>
+</odoo>

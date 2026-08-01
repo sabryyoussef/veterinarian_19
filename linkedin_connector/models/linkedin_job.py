@@ -1,5 +1,9 @@
+import hashlib
+import json
 import logging
-from urllib.parse import urlencode
+import re
+from html import unescape
+from urllib.parse import urlencode, urlparse
 
 import requests
 
@@ -15,11 +19,23 @@ _LI_GUEST_URL = (
     "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
 )
 
+_SENIOR_RE = re.compile(
+    r"\b(senior|lead|principal|architect|staff|head of|technical lead)\b", re.I
+)
+_JUNIOR_RE = re.compile(r"\b(junior|intern|internship|entry[- ]level|graduate)\b", re.I)
+_ODOO_RE = re.compile(r"\bodoo\b", re.I)
+_STACK_RE = re.compile(r"\b(python|erp|implementation|postgresql|owl)\b", re.I)
+_EASY_APPLY_RE = re.compile(r"easy\s*apply", re.I)
+_UNRELATED_RE = re.compile(
+    r"\b(java developer|\.net developer|php only|react native only|ios developer|android developer)\b",
+    re.I,
+)
+
 
 class LinkedinJob(models.Model):
     _name = "linkedin.job"
     _description = "LinkedIn Job"
-    _order = "listed_at desc, id desc"
+    _order = "score desc, listed_at desc, id desc"
     _rec_name = "title"
 
     account_id = fields.Many2one(
@@ -39,15 +55,252 @@ class LinkedinJob(models.Model):
     search_keywords = fields.Char(string="Search Keywords")
     search_location = fields.Char(string="Search Location")
 
-    def action_open_apply(self):
+    score = fields.Float(string="Match score", default=0.0, index=True)
+    score_breakdown = fields.Text(string="Score breakdown", readonly=True)
+    seniority_match = fields.Boolean(string="Seniority match", default=False)
+    odoo_match = fields.Boolean(string="Odoo match", default=False)
+    easy_apply_hint = fields.Boolean(
+        string="Easy Apply hint",
+        default=False,
+        help="Informational only — detected from listing text. Never used for auto-submit.",
+    )
+    fingerprint = fields.Char(string="Fingerprint", index=True, copy=False)
+    is_duplicate = fields.Boolean(string="Duplicate", default=False, index=True)
+    duplicate_of_id = fields.Many2one(
+        "linkedin.job", string="Canonical job", ondelete="set null", index=True
+    )
+    application_ids = fields.One2many(
+        "linkedin.job.application", "job_id", string="Applications"
+    )
+    application_count = fields.Integer(compute="_compute_application_count")
+
+    def _compute_application_count(self):
+        for rec in self:
+            rec.application_count = len(rec.application_ids)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        if not self.env.context.get("skip_job_postprocess"):
+            records._score_and_dedupe()
+            records._maybe_create_applications()
+        return records
+
+    def write(self, vals):
+        res = super().write(vals)
+        if self.env.context.get("skip_job_postprocess"):
+            return res
+        watch = {
+            "title",
+            "company",
+            "description",
+            "apply_url",
+            "job_id",
+            "location",
+            "remote",
+        }
+        if watch.intersection(vals):
+            self._score_and_dedupe()
+            self._maybe_create_applications()
+        return res
+
+    def _plain_text_blob(self):
         self.ensure_one()
-        if not self.apply_url:
-            raise UserError(_("No apply URL for this job."))
-        return {"type": "ir.actions.act_url", "url": self.apply_url, "target": "new"}
+        html = self.description or ""
+        text = re.sub(r"<[^>]+>", " ", html)
+        text = unescape(text)
+        return "%s %s %s %s" % (
+            self.title or "",
+            self.company or "",
+            self.location or "",
+            text,
+        )
+
+    def _compute_fingerprint_value(self):
+        self.ensure_one()
+        company = re.sub(r"\s+", " ", (self.company or "").lower().strip())
+        title = re.sub(r"\s+", " ", (self.title or "").lower().strip())
+        key = (self.job_id or "").strip()
+        if not key and self.apply_url:
+            parsed = urlparse(self.apply_url)
+            key = (parsed.netloc + parsed.path).rstrip("/").lower()
+        raw = "%s|%s|%s" % (company, title, key)
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+    def _score_job_values(self):
+        """Return (score, breakdown_dict, flags)."""
+        self.ensure_one()
+        blob = self._plain_text_blob()
+        title = self.title or ""
+        breakdown = {}
+        score = 0.0
+
+        odoo_match = bool(_ODOO_RE.search(blob))
+        seniority_match = bool(_SENIOR_RE.search(title) or _SENIOR_RE.search(blob))
+        easy_hint = bool(_EASY_APPLY_RE.search(blob))
+
+        if odoo_match:
+            score += 30
+            breakdown["odoo"] = 30
+        if seniority_match:
+            score += 25
+            breakdown["seniority"] = 25
+        if _STACK_RE.search(blob):
+            score += 10
+            breakdown["stack"] = 10
+
+        loc = (self.location or "").lower()
+        preferred = self._preferred_geo_tokens()
+        if self.remote or "remote" in loc or any(t in loc for t in preferred):
+            score += 10
+            breakdown["geo_remote"] = 10
+        if easy_hint:
+            score += 5
+            breakdown["easy_apply_hint"] = 5
+
+        if _JUNIOR_RE.search(title) or _JUNIOR_RE.search(blob):
+            score -= 40
+            breakdown["junior_penalty"] = -40
+        if _UNRELATED_RE.search(blob) and not odoo_match:
+            score -= 40
+            breakdown["unrelated_stack"] = -40
+
+        return score, breakdown, {
+            "odoo_match": odoo_match,
+            "seniority_match": seniority_match,
+            "easy_apply_hint": easy_hint,
+        }
+
+    @api.model
+    def _preferred_geo_tokens(self):
+        raw = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
+                "linkedin_connector.job_preferred_geos",
+                "egypt,cairo,uae,dubai,remote,europe,eu,germany,netherlands,uk",
+            )
+        )
+        return [t.strip().lower() for t in (raw or "").split(",") if t.strip()]
+
+    @api.model
+    def _score_threshold(self):
+        raw = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("linkedin_connector.job_score_threshold", "50")
+        )
+        try:
+            return float(raw)
+        except (TypeError, ValueError):
+            return 50.0
+
+    def _score_and_dedupe(self):
+        for rec in self:
+            score, breakdown, flags = rec._score_job_values()
+            fp = rec._compute_fingerprint_value()
+            rec.with_context(skip_job_postprocess=True).write(
+                {
+                    "score": score,
+                    "score_breakdown": json.dumps(breakdown, sort_keys=True),
+                    "seniority_match": flags["seniority_match"],
+                    "odoo_match": flags["odoo_match"],
+                    "easy_apply_hint": flags["easy_apply_hint"],
+                    "fingerprint": fp,
+                }
+            )
+        self._mark_duplicates()
+
+    def _mark_duplicates(self):
+        for rec in self:
+            if not rec.fingerprint:
+                continue
+            twins = self.search(
+                [
+                    ("fingerprint", "=", rec.fingerprint),
+                    ("id", "!=", rec.id),
+                ]
+            )
+            if not twins:
+                if rec.is_duplicate:
+                    rec.with_context(skip_job_postprocess=True).write(
+                        {"is_duplicate": False, "duplicate_of_id": False}
+                    )
+                continue
+            group = twins | rec
+            canonical = group.sorted(key=lambda r: (r.score, r.id), reverse=True)[0]
+            for job in group:
+                vals = {
+                    "is_duplicate": job.id != canonical.id,
+                    "duplicate_of_id": False if job.id == canonical.id else canonical.id,
+                }
+                job.with_context(skip_job_postprocess=True).write(vals)
+
+    def _maybe_create_applications(self):
+        threshold = self._score_threshold()
+        App = self.env["linkedin.job.application"]
+        for rec in self:
+            if rec.is_duplicate or rec.score < threshold:
+                continue
+            if App.search_count([("job_id", "=", rec.id)]):
+                continue
+            if rec.account_id and rec.account_id.account_type == "personal":
+                personal = rec.account_id
+            else:
+                personal = self.env["linkedin.account"].get_personal_account()
+            if not personal:
+                continue
+            App.create(
+                {
+                    "job_id": rec.id,
+                    "account_id": personal.id,
+                    "state": "discovered",
+                }
+            )
+
+    def action_open_apply(self):
+        """Blocked: use approved application pipeline instead."""
+        self.ensure_one()
+        app = self.application_ids[:1]
+        if app:
+            return app.action_open_application()
+        raise UserError(
+            _(
+                "Direct apply from the job is disabled. "
+                "Open the related Application, prepare the pack, Approve, "
+                "then use Open application. (Review-first — no Easy Apply automation.)"
+            )
+        )
 
     def action_toggle_saved(self):
         for rec in self:
             rec.saved = not rec.saved
+
+    def action_create_application(self):
+        personal = self.env["linkedin.account"].get_personal_account()
+        if not personal:
+            raise UserError(_("Create a personal LinkedIn account first."))
+        App = self.env["linkedin.job.application"]
+        created = App
+        for rec in self:
+            existing = App.search([("job_id", "=", rec.id)], limit=1)
+            if existing:
+                created |= existing
+                continue
+            created |= App.create(
+                {
+                    "job_id": rec.id,
+                    "account_id": personal.id,
+                    "state": "discovered",
+                }
+            )
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Applications"),
+            "res_model": "linkedin.job.application",
+            "view_mode": "list,form",
+            "domain": [("id", "in", created.ids)],
+        }
 
     @api.model
     def action_open_linkedin_jobs_search(self, keywords="", location=""):
@@ -56,8 +309,122 @@ class LinkedinJob(models.Model):
             params["keywords"] = keywords
         if location:
             params["location"] = location
-        url = "https://www.linkedin.com/jobs/search/?" + urlencode(params) if params else "https://www.linkedin.com/jobs/"
+        url = (
+            "https://www.linkedin.com/jobs/search/?" + urlencode(params)
+            if params
+            else "https://www.linkedin.com/jobs/"
+        )
         return {"type": "ir.actions.act_url", "url": url, "target": "new"}
+
+    @api.model
+    def _job_search_queries(self):
+        raw = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
+                "linkedin_connector.job_search_queries",
+                "Senior Odoo Developer|Odoo Developer|Odoo Consultant|Senior Odoo",
+            )
+        )
+        return [q.strip() for q in (raw or "").split("|") if q.strip()]
+
+    @api.model
+    def _live_job_search_enabled(self):
+        raw = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("linkedin_connector.live_job_search_enabled", "False")
+            or ""
+        )
+        return str(raw).strip().lower() in ("1", "true", "yes")
+
+    @api.model
+    def _cron_daily_job_digest(self):
+        """Daily discovery + digest. Live LinkedIn calls gated by ICP flag."""
+        if not self._live_job_search_enabled():
+            _logger.info(
+                "linkedin.job digest skipped: linkedin_connector.live_job_search_enabled is False "
+                "(enable only after UAT approval)."
+            )
+            return
+
+        Wizard = self.env["linkedin.job.search"]
+        personal = self.env["linkedin.account"].get_personal_account()
+        locations_raw = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("linkedin_connector.job_search_locations", "Remote|Egypt|United Arab Emirates")
+        )
+        locations = [x.strip() for x in locations_raw.split("|") if x.strip()] or [""]
+        new_apps = self.env["linkedin.job.application"]
+
+        for keywords in self._job_search_queries():
+            for location in locations:
+                wiz = Wizard.create(
+                    {
+                        "account_id": personal.id if personal else False,
+                        "keywords": keywords,
+                        "location": location,
+                        "remote": location.lower() == "remote",
+                        "num_pages": 1,
+                        "source": "linkedin_guest",
+                    }
+                )
+                try:
+                    wiz.action_search()
+                except Exception:
+                    _logger.exception(
+                        "linkedin.job digest search failed keywords=%s location=%s",
+                        keywords,
+                        location,
+                    )
+
+        threshold = self._score_threshold()
+        apps = self.env["linkedin.job.application"].search(
+            [
+                ("state", "=", "discovered"),
+                ("score", ">=", threshold),
+                ("create_date", ">=", fields.Datetime.now().replace(hour=0, minute=0, second=0)),
+            ]
+        )
+        new_apps |= apps
+        self._send_job_digest(new_apps)
+
+    @api.model
+    def _send_job_digest(self, applications):
+        group = self.env.ref(
+            "linkedin_connector.group_linkedin_job_hunt", raise_if_not_found=False
+        )
+        if not group:
+            return
+        users = group.users
+        if not users:
+            return
+        lines = []
+        for app in applications[:50]:
+            lines.append(
+                "- [%.0f] %s @ %s (%s)"
+                % (app.score or 0, app.job_title or "?", app.job_company or "?", app.state)
+            )
+        if not lines:
+            body = _("Daily job digest: no new shortlist-threshold applications today.")
+        else:
+            body = _("Daily job digest (%s):\n%s") % (len(lines), "\n".join(lines))
+        for user in users:
+            if user.partner_id:
+                user.partner_id.message_post(
+                    body=body.replace("\n", "<br/>"),
+                    subject=_("LinkedIn job digest"),
+                    message_type="notification",
+                    subtype_xmlid="mail.mt_note",
+                )
+
+    @api.model
+    def score_job_dict_for_tests(self, vals):
+        """Helper for unit tests without persisting."""
+        rec = self.new(vals)
+        score, breakdown, flags = rec._score_job_values()
+        return score, breakdown, flags
 
 
 class LinkedinJobSearch(models.TransientModel):

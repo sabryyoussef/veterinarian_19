@@ -25,6 +25,17 @@
                             copy the X-RapidAPI-Key value shown in the API console.
                         </div>
                     </group>
+                    <group string="Senior Odoo job hunt">
+                        <field name="linkedin_live_job_search_enabled"/>
+                        <field name="linkedin_job_score_threshold"/>
+                        <field name="linkedin_job_search_queries"/>
+                        <field name="linkedin_job_search_locations"/>
+                        <field name="linkedin_job_preferred_geos"/>
+                        <div colspan="2" class="text-muted small">
+                            Keep live job search OFF until UAT evidence is approved.
+                            No Easy Apply automation — applications stay review-first.
+                        </div>
+                    </group>
                 </sheet>
             </form>
         </field>

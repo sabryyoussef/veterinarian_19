@@ -9,3 +9,6 @@ access_linkedin_conversation_user,linkedin.conversation user,model_linkedin_conv
 access_linkedin_message_user,linkedin.message user,model_linkedin_message,base.group_user,1,1,1,1
 access_linkedin_message_reply_user,linkedin.message.reply user,model_linkedin_message_reply,base.group_user,1,1,1,1
 access_linkedin_post_bulk_schedule_user,linkedin.post.bulk.schedule user,model_linkedin_post_bulk_schedule,base.group_user,1,1,1,1
+access_linkedin_cv_version_user,linkedin.cv.version user,model_linkedin_cv_version,base.group_user,1,1,1,1
+access_linkedin_job_application_user,linkedin.job.application user,model_linkedin_job_application,base.group_user,1,1,1,0
+access_linkedin_job_application_manager,linkedin.job.application manager,model_linkedin_job_application,group_linkedin_job_hunt,1,1,1,1

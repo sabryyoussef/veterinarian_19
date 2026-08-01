@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vst_rebuild_wizard_form" model="ir.ui.view">
+        <field name="name">view_vst_rebuild_wizard_form</field>
+        <field name="model">petspot.vendor.sell.through.rebuild.wizard</field>
+        <field name="arch" type="xml">
+<form string="Rebuild Sell-Through Allocations / إعادة بناء تخصيصات المبيعات">
+                <group>
+                    <field name="move_id"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="system_layer_count"/>
+                    <field name="system_alloc_count"/>
+                    <field name="legacy_alloc_count"/>
+                    <field name="approved_legacy_count"/>
+                    <field name="reason" placeholder="Why is a rebuild required?"/>
+                    <field name="confirm"/>
+                </group>
+                <div class="alert alert-warning" role="alert">
+                    System receipt layers and system allocations will be reconciled.
+                    approved_legacy and estimated_legacy allocations are preserved.
+                    This does not post payments or send notifications.
+                </div>
+                <footer>
+                    <button name="action_confirm_rebuild" type="object" string="Confirm rebuild" class="btn-primary" groups="petspot_vendor_sell_through.group_vst_allocation_manager"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

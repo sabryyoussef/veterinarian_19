@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_vst" model="ir.ui.view">
+        <field name="name">account.move.form.vst</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+<data><xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_vst_open_allocations" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="move_type not in ('in_invoice', 'in_refund') or state != 'posted'" groups="petspot_vendor_sell_through.group_vst_viewer">
+                    <field name="vst_sold_count" widget="statinfo" string="Sold Items"/>
+                </button>
+                <button name="action_vst_open_receipts" type="object" class="oe_stat_button" icon="fa-truck" invisible="move_type not in ('in_invoice', 'in_refund') or state != 'posted'" groups="petspot_vendor_sell_through.group_vst_viewer">
+                    <field name="vst_receipt_count" widget="statinfo" string="Source Receipts"/>
+                </button>
+                <button name="action_vst_open_sales" type="object" class="oe_stat_button" icon="fa-users" invisible="move_type not in ('in_invoice', 'in_refund') or state != 'posted'" groups="petspot_vendor_sell_through.group_vst_viewer">
+                    <field name="vst_sale_count" widget="statinfo" string="Customer Sales"/>
+                </button>
+                <button name="action_vst_recompute" type="object" class="oe_stat_button" icon="fa-refresh" string="Rebuild Sell-Through Allocations" invisible="move_type not in ('in_invoice', 'in_refund') or state != 'posted'" groups="petspot_vendor_sell_through.group_vst_allocation_manager"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button name="action_vst_register_payment" type="object" string="Register Sell-Through Payment / دفع قيمة المنتجات المباعة" class="btn-secondary" invisible="move_type != 'in_invoice' or state != 'posted' or payment_state in ('paid', 'in_payment', 'reversed')" groups="petspot_vendor_sell_through.group_vst_payment_manager"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Sold Items / المنتجات المباعة" name="vst_sold_items" invisible="move_type not in ('in_invoice', 'in_refund') or state != 'posted'" groups="petspot_vendor_sell_through.group_vst_viewer">
+                    <group>
+                        <group string="Bill sell-through">
+                            <field name="vst_total_bill"/>
+                            <field name="vst_eligible_amount"/>
+                            <field name="vst_already_paid"/>
+                            <field name="vst_suggested_payment"/>
+                            <field name="vst_bill_residual"/>
+                            <field name="vst_unallocated_qty"/>
+                            <field name="vst_last_recalculation"/>
+                            <field name="vst_rebuild_recommended" invisible="1"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-warning" role="alert" invisible="not vst_rebuild_recommended">
+                        Sell-through layers look incomplete. Ask an Inventory allocation manager to run
+                        Rebuild Sell-Through Allocations. Opening this tab does not rebuild data.
+                    </div>
+                    <field name="vst_sold_line_ids" readonly="1" nolabel="1">
+                        <list create="0" delete="0" edit="0">
+                            <field name="product_id"/>
+                            <field name="product_uom_id" string="Purchase/Bill UoM"/>
+                            <field name="vst_billed_qty" string="Billed quantity"/>
+                            <field name="vst_received_qty" string="Received quantity"/>
+                            <field name="vst_sold_qty" string="Sold quantity"/>
+                            <field name="vst_return_qty" string="Customer-returned quantity"/>
+                            <field name="vst_net_sold_qty" string="Net sold quantity"/>
+                            <field name="vst_unsold_qty" string="Unsold quantity"/>
+                            <field name="vst_unit_cost" string="Unit purchase cost"/>
+                            <field name="vst_sold_untaxed" string="Sold untaxed value"/>
+                            <field name="vst_sold_tax" string="Proportional tax"/>
+                            <field name="vst_sold_gross" string="Sold gross value"/>
+                            <field name="vst_tracking_confidence" string="Tracking confidence"/>
+                            <field name="vst_source_receipts" string="Source receipts"/>
+                            <field name="vst_source_sales" string="Source deliveries/POS sales"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </data>
+        </field>
+    </record>
+</odoo>

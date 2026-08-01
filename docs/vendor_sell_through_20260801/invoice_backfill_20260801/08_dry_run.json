@@ -1,0 +1,1238 @@
+{
+  "dry_run": true,
+  "cutoff": "2026-08-01",
+  "sources": [
+    {
+      "source_id": 1,
+      "source_key": "inv_line:303:product:102",
+      "invoice": "INV/2026/00037",
+      "invoice_line_id": 303,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 2,
+      "source_key": "inv_line:504:product:116",
+      "invoice": "INV/2026/00066",
+      "invoice_line_id": 504,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 3,
+      "source_key": "inv_line:434:product:119",
+      "invoice": "INV/2026/00057",
+      "invoice_line_id": 434,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 4,
+      "source_key": "inv_line:158:product:67",
+      "invoice": "INV/2026/00015",
+      "invoice_line_id": 158,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 35.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 5,
+      "source_key": "inv_line:379:product:67",
+      "invoice": "INV/2026/00049",
+      "invoice_line_id": 379,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 35.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 6,
+      "source_key": "inv_line:406:product:67",
+      "invoice": "INV/2026/00052",
+      "invoice_line_id": 406,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 35.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 7,
+      "source_key": "inv_line:464:product:128",
+      "invoice": "INV/2026/00060",
+      "invoice_line_id": 464,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 8,
+      "source_key": "inv_line:234:product:69",
+      "invoice": "INV/2026/00026",
+      "invoice_line_id": 234,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 1700.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 9,
+      "source_key": "inv_line:405:product:69",
+      "invoice": "INV/2026/00052",
+      "invoice_line_id": 405,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 1700.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 10,
+      "source_key": "inv_line:508:product:69",
+      "invoice": "INV/2026/00067",
+      "invoice_line_id": 508,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 1700.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 11,
+      "source_key": "inv_line:422:product:73",
+      "invoice": "INV/2026/00055",
+      "invoice_line_id": 422,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 235.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 12,
+      "source_key": "inv_line:378:product:74",
+      "invoice": "INV/2026/00049",
+      "invoice_line_id": 378,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 320.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 13,
+      "source_key": "inv_line:233:product:75",
+      "invoice": "INV/2026/00026",
+      "invoice_line_id": 233,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 252.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 14,
+      "source_key": "inv_line:336:product:75",
+      "invoice": "INV/2026/00043",
+      "invoice_line_id": 336,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 252.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 15,
+      "source_key": "inv_line:317:product:77",
+      "invoice": "INV/2026/00039",
+      "invoice_line_id": 317,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 16,
+      "source_key": "inv_line:318:product:133",
+      "invoice": "INV/2026/00039",
+      "invoice_line_id": 318,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 275.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 17,
+      "source_key": "inv_line:480:product:133",
+      "invoice": "INV/2026/00063",
+      "invoice_line_id": 480,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 275.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 18,
+      "source_key": "inv_line:231:product:90",
+      "invoice": "INV/2026/00026",
+      "invoice_line_id": 231,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 840.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 19,
+      "source_key": "inv_line:235:product:91",
+      "invoice": "INV/2026/00026",
+      "invoice_line_id": 235,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 885.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 20,
+      "source_key": "inv_line:157:product:66",
+      "invoice": "INV/2026/00015",
+      "invoice_line_id": 157,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 690.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 21,
+      "source_key": "inv_line:115:product:34",
+      "invoice": "INV/2026/00007",
+      "invoice_line_id": 115,
+      "qty_invoice_only_base": 20.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 20.0,
+      "eligible_amount": 1210.4,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 22,
+      "source_key": "inv_line:139:product:34",
+      "invoice": "INV/2026/00013",
+      "invoice_line_id": 139,
+      "qty_invoice_only_base": 10.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 10.0,
+      "eligible_amount": 605.2,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 23,
+      "source_key": "inv_line:310:product:34",
+      "invoice": "INV/2026/00038",
+      "invoice_line_id": 310,
+      "qty_invoice_only_base": 20.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 20.0,
+      "eligible_amount": 1210.4,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 24,
+      "source_key": "inv_line:370:product:34",
+      "invoice": "INV/2026/00047",
+      "invoice_line_id": 370,
+      "qty_invoice_only_base": 10.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 10.0,
+      "eligible_amount": 605.2,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 25,
+      "source_key": "inv_line:515:product:34",
+      "invoice": "INV/2026/00068",
+      "invoice_line_id": 515,
+      "qty_invoice_only_base": 9.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 9.0,
+      "eligible_amount": 544.68,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 26,
+      "source_key": "inv_line:73:product:23",
+      "invoice": "INV/2026/00004",
+      "invoice_line_id": 73,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 403.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 27,
+      "source_key": "inv_line:191:product:23",
+      "invoice": "INV/2026/00017",
+      "invoice_line_id": 191,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 403.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    },
+    {
+      "source_id": 28,
+      "source_key": "inv_line:335:product:23",
+      "invoice": "INV/2026/00043",
+      "invoice_line_id": 335,
+      "qty_invoice_only_base": 1.0,
+      "qty_stock_counted_base": 0.0,
+      "qty_refunded_base": 0.0,
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 403.0,
+      "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+    }
+  ],
+  "allocated_qty_base": 87.0,
+  "eligible_amount": 14613.880000000001,
+  "blocked": [],
+  "by_product": {
+    "210": {
+      "code": false,
+      "name": "adwizole",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "211": {
+      "code": false,
+      "name": "gentacure",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "212": {
+      "code": false,
+      "name": "fenpendazol",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "213": {
+      "code": false,
+      "name": "vetrimoxin",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "196": {
+      "code": false,
+      "name": "cardisure 1.25mg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "197": {
+      "code": false,
+      "name": "cardisure 5mg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "198": {
+      "code": false,
+      "name": "cardisure 10mg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "127": {
+      "code": false,
+      "name": "vet aquadent 250 ml",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "199": {
+      "code": false,
+      "name": "vet wrap 5cm",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "200": {
+      "code": false,
+      "name": "cardiosure 2.5 mg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "201": {
+      "code": false,
+      "name": "other ( clinical equipment )",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "102": {
+      "code": false,
+      "name": "MULTIBOOST",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": [
+        {
+          "source_id": 1,
+          "source_key": "inv_line:303:product:102",
+          "invoice": "INV/2026/00037",
+          "invoice_line_id": 303,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 0.0,
+          "eligible_amount": 0.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "103": {
+      "code": false,
+      "name": "petfido spray anti tick and fleas",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "104": {
+      "code": false,
+      "name": "fiprocare forvet 50ml",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "105": {
+      "code": false,
+      "name": "vetaminex 60 twist off capsules",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "106": {
+      "code": false,
+      "name": "nutri plus",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "107": {
+      "code": false,
+      "name": "immu max",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "108": {
+      "code": false,
+      "name": "slider",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "109": {
+      "code": false,
+      "name": "turbo max",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "110": {
+      "code": false,
+      "name": "enjoynt",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "111": {
+      "code": false,
+      "name": "dura max",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "112": {
+      "code": false,
+      "name": "prozyme",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "113": {
+      "code": false,
+      "name": "pan-tenex",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "114": {
+      "code": false,
+      "name": "bioprotect",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "115": {
+      "code": false,
+      "name": "liva max",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "116": {
+      "code": false,
+      "name": "salmon max",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": [
+        {
+          "source_id": 2,
+          "source_key": "inv_line:504:product:116",
+          "invoice": "INV/2026/00066",
+          "invoice_line_id": 504,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 0.0,
+          "eligible_amount": 0.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "117": {
+      "code": false,
+      "name": "renal K+",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "118": {
+      "code": false,
+      "name": "laxatone tuna paste 4.25 oz",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "119": {
+      "code": false,
+      "name": "vetoplex",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": [
+        {
+          "source_id": 3,
+          "source_key": "inv_line:434:product:119",
+          "invoice": "INV/2026/00057",
+          "invoice_line_id": 434,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 0.0,
+          "eligible_amount": 0.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "120": {
+      "code": false,
+      "name": "biocarp for dogs and cats 50 ml",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "121": {
+      "code": false,
+      "name": "vermi free for cats",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "122": {
+      "code": false,
+      "name": "metalix",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "123": {
+      "code": false,
+      "name": "salmon max",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "124": {
+      "code": false,
+      "name": "elite flex forte",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "125": {
+      "code": false,
+      "name": "dermazole spray",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "126": {
+      "code": false,
+      "name": "mento fresh 60 ml",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "67": {
+      "code": false,
+      "name": "tenizol",
+      "allocated_qty_base": 3.0,
+      "eligible_amount": 105.0,
+      "sources": [
+        {
+          "source_id": 4,
+          "source_key": "inv_line:158:product:67",
+          "invoice": "INV/2026/00015",
+          "invoice_line_id": 158,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 35.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 5,
+          "source_key": "inv_line:379:product:67",
+          "invoice": "INV/2026/00049",
+          "invoice_line_id": 379,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 35.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 6,
+          "source_key": "inv_line:406:product:67",
+          "invoice": "INV/2026/00052",
+          "invoice_line_id": 406,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 35.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "128": {
+      "code": false,
+      "name": "aurizon ear drops",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": [
+        {
+          "source_id": 7,
+          "source_key": "inv_line:464:product:128",
+          "invoice": "INV/2026/00060",
+          "invoice_line_id": 464,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 0.0,
+          "eligible_amount": 0.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "69": {
+      "code": "SHP-82-82",
+      "name": "[SHP-82-82] Bravecto Chew for Dogs >4.5-10 kg - Fluralaner 250 mg",
+      "allocated_qty_base": 3.0,
+      "eligible_amount": 5100.0,
+      "sources": [
+        {
+          "source_id": 8,
+          "source_key": "inv_line:234:product:69",
+          "invoice": "INV/2026/00026",
+          "invoice_line_id": 234,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 1700.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 9,
+          "source_key": "inv_line:405:product:69",
+          "invoice": "INV/2026/00052",
+          "invoice_line_id": 405,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 1700.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 10,
+          "source_key": "inv_line:508:product:69",
+          "invoice": "INV/2026/00067",
+          "invoice_line_id": 508,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 1700.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "70": {
+      "code": "SHP-83-83",
+      "name": "[SHP-83-83] Bravecto Chew for Dogs >10-20 kg - Fluralaner 500 mg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "71": {
+      "code": "SHP-84-84",
+      "name": "[SHP-84-84] Bravecto Chew for Dogs >20-40 kg - Fluralaner 1000 mg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "72": {
+      "code": "SHP-85-85",
+      "name": "[SHP-85-85] Bravecto Chew for Dogs >40-56 kg - Fluralaner 1400 mg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "73": {
+      "code": false,
+      "name": "Nobivac Rabies Vaccine",
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 235.0,
+      "sources": [
+        {
+          "source_id": 11,
+          "source_key": "inv_line:422:product:73",
+          "invoice": "INV/2026/00055",
+          "invoice_line_id": 422,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 235.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "74": {
+      "code": false,
+      "name": "Nobivac DHPPi Vaccine",
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 320.0,
+      "sources": [
+        {
+          "source_id": 12,
+          "source_key": "inv_line:378:product:74",
+          "invoice": "INV/2026/00049",
+          "invoice_line_id": 378,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 320.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "75": {
+      "code": false,
+      "name": "Evatri Dog Deworming Tablets - Pack Size Pending",
+      "allocated_qty_base": 2.0,
+      "eligible_amount": 504.0,
+      "sources": [
+        {
+          "source_id": 13,
+          "source_key": "inv_line:233:product:75",
+          "invoice": "INV/2026/00026",
+          "invoice_line_id": 233,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 252.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 14,
+          "source_key": "inv_line:336:product:75",
+          "invoice": "INV/2026/00043",
+          "invoice_line_id": 336,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 252.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "76": {
+      "code": false,
+      "name": "Inflevex Carprofen 100 mg Tablets for Dogs",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "77": {
+      "code": false,
+      "name": "Prednicortex 10 mg Tablets - Pack Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": [
+        {
+          "source_id": 15,
+          "source_key": "inv_line:317:product:77",
+          "invoice": "INV/2026/00039",
+          "invoice_line_id": 317,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 0.0,
+          "eligible_amount": 0.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "78": {
+      "code": false,
+      "name": "Synoquin Small Breed - Pack Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "79": {
+      "code": false,
+      "name": "Synoquin Large Breed - Pack Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "82": {
+      "code": false,
+      "name": "Promax Large - Pack Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "83": {
+      "code": false,
+      "name": "Cystaid - Pack Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "84": {
+      "code": false,
+      "name": "Vetsalve - Size and Pack Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "85": {
+      "code": false,
+      "name": "Coatex - Form and Pack Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "130": {
+      "code": false,
+      "name": "Samylin - large breed",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "133": {
+      "code": false,
+      "name": "flomarbidine",
+      "allocated_qty_base": 2.0,
+      "eligible_amount": 550.0,
+      "sources": [
+        {
+          "source_id": 16,
+          "source_key": "inv_line:318:product:133",
+          "invoice": "INV/2026/00039",
+          "invoice_line_id": 318,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 275.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 17,
+          "source_key": "inv_line:480:product:133",
+          "invoice": "INV/2026/00063",
+          "invoice_line_id": 480,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 275.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "88": {
+      "code": "SHP-101-101",
+      "name": "[SHP-101-101] Allermyl Dermatological Shampoo - Bottle Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "89": {
+      "code": false,
+      "name": "Sebolytic Dermatological Shampoo - Bottle Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "90": {
+      "code": false,
+      "name": "Pyoderm Dermatological Shampoo - Bottle Size Pending",
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 840.0,
+      "sources": [
+        {
+          "source_id": 18,
+          "source_key": "inv_line:231:product:90",
+          "invoice": "INV/2026/00026",
+          "invoice_line_id": 231,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 840.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "91": {
+      "code": false,
+      "name": "Cortavance Cutaneous Spray - Bottle Size Pending",
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 885.0,
+      "sources": [
+        {
+          "source_id": 19,
+          "source_key": "inv_line:235:product:91",
+          "invoice": "INV/2026/00026",
+          "invoice_line_id": 235,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 885.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "93": {
+      "code": false,
+      "name": "EpiOtic Ear Cleaner - Bottle Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "66": {
+      "code": false,
+      "name": "aquadent",
+      "allocated_qty_base": 1.0,
+      "eligible_amount": 690.0,
+      "sources": [
+        {
+          "source_id": 20,
+          "source_key": "inv_line:157:product:66",
+          "invoice": "INV/2026/00015",
+          "invoice_line_id": 157,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 690.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "94": {
+      "code": false,
+      "name": "Cat Digestive Support Veterinary Diet - Brand and Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "95": {
+      "code": false,
+      "name": "Cat Dermatology Support Veterinary Diet - Brand and Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "96": {
+      "code": false,
+      "name": "Cat Urology Dissolution Veterinary Diet - Brand and Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "97": {
+      "code": false,
+      "name": "Dog Dermatology Support Veterinary Diet - Brand and Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "98": {
+      "code": false,
+      "name": "Dog Digestive Support Veterinary Diet - 3 kg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "99": {
+      "code": false,
+      "name": "Dog Digestive Support Veterinary Diet - 1.5 kg",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "129": {
+      "code": false,
+      "name": "Synoquin medium Breed - Pack Size Pending",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "131": {
+      "code": false,
+      "name": "Samylin medium breed",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "132": {
+      "code": false,
+      "name": "Samylin small breed",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "36": {
+      "code": "SIMT-2.5-5",
+      "name": "[SIMT-2.5-5] Simparica Trio (2.5\u20135 kg)",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "39": {
+      "code": "SIMT-20-40",
+      "name": "[SIMT-20-40] Simparica Trio (20\u201340 kg)",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "42": {
+      "code": "REVC-45",
+      "name": "[REVC-45] Revolution (Cat) (2.5\u20137.5 kg (Blue, 45 mg))",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "34": {
+      "code": "APOQ-16",
+      "name": "[APOQ-16] Apoquel (16 mg)",
+      "allocated_qty_base": 69.0,
+      "eligible_amount": 4175.88,
+      "sources": [
+        {
+          "source_id": 21,
+          "source_key": "inv_line:115:product:34",
+          "invoice": "INV/2026/00007",
+          "invoice_line_id": 115,
+          "qty_invoice_only_base": 20.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 20.0,
+          "eligible_amount": 1210.4,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 22,
+          "source_key": "inv_line:139:product:34",
+          "invoice": "INV/2026/00013",
+          "invoice_line_id": 139,
+          "qty_invoice_only_base": 10.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 10.0,
+          "eligible_amount": 605.2,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 23,
+          "source_key": "inv_line:310:product:34",
+          "invoice": "INV/2026/00038",
+          "invoice_line_id": 310,
+          "qty_invoice_only_base": 20.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 20.0,
+          "eligible_amount": 1210.4,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 24,
+          "source_key": "inv_line:370:product:34",
+          "invoice": "INV/2026/00047",
+          "invoice_line_id": 370,
+          "qty_invoice_only_base": 10.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 10.0,
+          "eligible_amount": 605.2,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 25,
+          "source_key": "inv_line:515:product:34",
+          "invoice": "INV/2026/00068",
+          "invoice_line_id": 515,
+          "qty_invoice_only_base": 9.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 9.0,
+          "eligible_amount": 544.68,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "23": {
+      "code": "VAC-VP8",
+      "name": "[VAC-VP8] VANGUARD PLUS 8",
+      "allocated_qty_base": 3.0,
+      "eligible_amount": 1209.0,
+      "sources": [
+        {
+          "source_id": 26,
+          "source_key": "inv_line:73:product:23",
+          "invoice": "INV/2026/00004",
+          "invoice_line_id": 73,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 403.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 27,
+          "source_key": "inv_line:191:product:23",
+          "invoice": "INV/2026/00017",
+          "invoice_line_id": 191,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 403.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        },
+        {
+          "source_id": 28,
+          "source_key": "inv_line:335:product:23",
+          "invoice": "INV/2026/00043",
+          "invoice_line_id": 335,
+          "qty_invoice_only_base": 1.0,
+          "qty_stock_counted_base": 0.0,
+          "qty_refunded_base": 0.0,
+          "allocated_qty_base": 1.0,
+          "eligible_amount": 403.0,
+          "reason": "POSTED_INVOICE_WITHOUT_DONE_CUSTOMER_DELIVERY"
+        }
+      ]
+    },
+    "24": {
+      "code": "VAC-FC4",
+      "name": "[VAC-FC4] FELLOCELL 4",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    },
+    "25": {
+      "code": false,
+      "name": "REVOLUTION CAT",
+      "allocated_qty_base": 0.0,
+      "eligible_amount": 0.0,
+      "sources": []
+    }
+  }
+}

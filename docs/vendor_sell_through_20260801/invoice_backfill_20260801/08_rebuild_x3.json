@@ -1,0 +1,20 @@
+[
+  {
+    "i": 0,
+    "eligible_sum": 16433.88,
+    "alloc_count": 28,
+    "invoice_alloc_qty": 92.0
+  },
+  {
+    "i": 1,
+    "eligible_sum": 16433.88,
+    "alloc_count": 28,
+    "invoice_alloc_qty": 92.0
+  },
+  {
+    "i": 2,
+    "eligible_sum": 16433.88,
+    "alloc_count": 28,
+    "invoice_alloc_qty": 92.0
+  }
+]

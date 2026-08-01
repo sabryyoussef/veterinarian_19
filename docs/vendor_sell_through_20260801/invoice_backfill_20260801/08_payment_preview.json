@@ -1,0 +1,30 @@
+[
+  {
+    "bill": "BILL/2026/08/0002",
+    "partner": "dr paws hospital new cairo",
+    "eligible": 1205.0,
+    "cap": 1205.0,
+    "residual": 13016.0
+  },
+  {
+    "bill": "BILL/2026/08/0001",
+    "partner": "Vet 4 Ever",
+    "eligible": 9844.0,
+    "cap": 9844.0,
+    "residual": 192790.25
+  },
+  {
+    "bill": "BILL/2026/07/0002",
+    "partner": "INTERNATIONAL FREE TRADE IFT CORPORATION",
+    "eligible": 4175.88,
+    "cap": 4175.88,
+    "residual": 72371.1
+  },
+  {
+    "bill": "BILL/2026/07/0001",
+    "partner": "INTERNATIONAL FREE TRADE IFT CORPORATION",
+    "eligible": 1209.0,
+    "cap": 1209.0,
+    "residual": 19975.0
+  }
+]

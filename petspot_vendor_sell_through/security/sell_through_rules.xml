@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="vst_layer_company_rule" model="ir.rule">
+        <field name="name">VST layer multi-company</field>
+        <field name="model_id" ref="model_petspot_vendor_sell_through_layer"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="vst_alloc_company_rule" model="ir.rule">
+        <field name="name">VST allocation multi-company</field>
+        <field name="model_id" ref="model_petspot_vendor_sell_through_allocation"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="vst_commercial_source_company_rule" model="ir.rule">
+        <field name="name">VST commercial source multi-company</field>
+        <field name="model_id" ref="model_petspot_vendor_sell_through_commercial_source"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

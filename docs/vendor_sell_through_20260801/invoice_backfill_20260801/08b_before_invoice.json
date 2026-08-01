@@ -1,0 +1,32 @@
+[
+  {
+    "bill": "BILL/2026/08/0004",
+    "eligible": 0.0,
+    "invoice_alloc": 0
+  },
+  {
+    "bill": "BILL/2026/08/0003",
+    "eligible": 0.0,
+    "invoice_alloc": 0
+  },
+  {
+    "bill": "BILL/2026/08/0002",
+    "eligible": 1205.0,
+    "invoice_alloc": 7.0
+  },
+  {
+    "bill": "BILL/2026/08/0001",
+    "eligible": 9844.0,
+    "invoice_alloc": 13.0
+  },
+  {
+    "bill": "BILL/2026/07/0002",
+    "eligible": 3631.2,
+    "invoice_alloc": 60.0
+  },
+  {
+    "bill": "BILL/2026/07/0001",
+    "eligible": 1209.0,
+    "invoice_alloc": 3.0
+  }
+]

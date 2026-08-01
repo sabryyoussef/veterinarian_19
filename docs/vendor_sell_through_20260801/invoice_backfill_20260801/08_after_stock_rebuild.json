@@ -1,0 +1,256 @@
+[
+  {
+    "id": 223,
+    "name": "BILL/2026/08/0004",
+    "partner": "ahmed shaaban pharmacy",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 1050.0,
+    "allocs": []
+  },
+  {
+    "id": 222,
+    "name": "BILL/2026/08/0003",
+    "partner": "dr paws hospital new cairo",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 17310.0,
+    "allocs": []
+  },
+  {
+    "id": 221,
+    "name": "BILL/2026/08/0002",
+    "partner": "dr paws hospital new cairo",
+    "eligible": 1205.0,
+    "suggested": 1205.0,
+    "residual": 13016.0,
+    "allocs": [
+      {
+        "product": "MULTIBOOST",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00037"
+      },
+      {
+        "product": "salmon max",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00066"
+      },
+      {
+        "product": "vetoplex",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00057"
+      },
+      {
+        "product": "tenizol",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00015"
+      },
+      {
+        "product": "tenizol",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00049"
+      },
+      {
+        "product": "tenizol",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00052"
+      },
+      {
+        "product": "aurizon ear drops",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00060"
+      }
+    ]
+  },
+  {
+    "id": 220,
+    "name": "BILL/2026/08/0001",
+    "partner": "Vet 4 Ever",
+    "eligible": 9844.0,
+    "suggested": 9844.0,
+    "residual": 192790.25,
+    "allocs": [
+      {
+        "product": "SHP-82-82",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00026"
+      },
+      {
+        "product": "SHP-82-82",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00052"
+      },
+      {
+        "product": "SHP-82-82",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00067"
+      },
+      {
+        "product": "Nobivac Rabies Vaccine",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00055"
+      },
+      {
+        "product": "Nobivac DHPPi Vaccine",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00049"
+      },
+      {
+        "product": "Evatri Dog Deworming Tablets - Pack Size Pending",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00026"
+      },
+      {
+        "product": "Evatri Dog Deworming Tablets - Pack Size Pending",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00043"
+      },
+      {
+        "product": "Prednicortex 10 mg Tablets - Pack Size Pending",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00039"
+      },
+      {
+        "product": "flomarbidine",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00039"
+      },
+      {
+        "product": "flomarbidine",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00063"
+      },
+      {
+        "product": "Pyoderm Dermatological Shampoo - Bottle Size Pending",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00026"
+      },
+      {
+        "product": "Cortavance Cutaneous Spray - Bottle Size Pending",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00026"
+      },
+      {
+        "product": "aquadent",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00015"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "name": "BILL/2026/07/0002",
+    "partner": "INTERNATIONAL FREE TRADE IFT CORPORATION",
+    "eligible": 4175.88,
+    "suggested": 4175.88,
+    "residual": 72371.1,
+    "allocs": [
+      {
+        "product": "APOQ-16",
+        "qty_base": 20.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00007"
+      },
+      {
+        "product": "APOQ-16",
+        "qty_base": 10.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00013"
+      },
+      {
+        "product": "APOQ-16",
+        "qty_base": 20.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00038"
+      },
+      {
+        "product": "APOQ-16",
+        "qty_base": 10.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00047"
+      },
+      {
+        "product": "APOQ-16",
+        "qty_base": 9.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00068"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "name": "BILL/2026/07/0001",
+    "partner": "INTERNATIONAL FREE TRADE IFT CORPORATION",
+    "eligible": 1209.0,
+    "suggested": 1209.0,
+    "residual": 19975.0,
+    "allocs": [
+      {
+        "product": "VAC-VP8",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00004"
+      },
+      {
+        "product": "VAC-VP8",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00017"
+      },
+      {
+        "product": "VAC-VP8",
+        "qty_base": 1.0,
+        "source_kind": "invoice",
+        "status": "approved_invoice",
+        "invoice": "INV/2026/00043"
+      }
+    ]
+  }
+]

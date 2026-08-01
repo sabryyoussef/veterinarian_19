@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_vst_root"
+              name="Vendor Sell-Through"
+              parent="accountant.menu_accounting"
+              sequence="25"
+              groups="petspot_vendor_sell_through.group_vst_viewer"/>
+    <menuitem id="menu_vst_supplier_dashboard"
+              name="Supplier Sell-Through"
+              parent="menu_vst_root"
+              action="action_vst_supplier_dashboard"
+              sequence="5"
+              groups="petspot_vendor_sell_through.group_vst_viewer"/>
+    <menuitem id="menu_vst_layers"
+              name="Receipt Layers"
+              parent="menu_vst_root"
+              action="action_vst_layer"
+              sequence="10"/>
+    <menuitem id="menu_vst_allocations"
+              name="Allocations"
+              parent="menu_vst_root"
+              action="action_vst_allocation"
+              sequence="20"/>
+    <record id="action_vst_legacy_wizard" model="ir.actions.act_window">
+        <field name="name">Legacy Allocation</field>
+        <field name="res_model">petspot.vendor.sell.through.legacy.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_vst_legacy"
+              name="Legacy Allocation"
+              parent="menu_vst_root"
+              action="action_vst_legacy_wizard"
+              sequence="30"
+              groups="petspot_vendor_sell_through.group_vst_allocation_manager"/>
+    <menuitem id="menu_vst_invoice_backfill"
+              name="Invoice Commercial Backfill"
+              parent="menu_vst_root"
+              action="action_vst_invoice_backfill_wizard"
+              sequence="35"
+              groups="petspot_vendor_sell_through.group_vst_allocation_manager"/>
+    <menuitem id="menu_vst_multi_payment_log"
+              name="Combined Payment Audit"
+              parent="menu_vst_root"
+              action="action_vst_multi_payment_log"
+              sequence="40"
+              groups="petspot_vendor_sell_through.group_vst_payment_manager"/>
+
+    <!-- Also under Purchase Reporting when purchase menus exist -->
+    <menuitem id="menu_vst_supplier_dashboard_purchase"
+              name="Supplier Sell-Through"
+              parent="purchase.purchase_report_main"
+              action="action_vst_supplier_dashboard"
+              sequence="90"
+              groups="petspot_vendor_sell_through.group_vst_viewer"/>
+</odoo>

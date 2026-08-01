@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Disabled by default — report-only optional reconciliation. Do not enable in Production without approval. -->
+    <record id="ir_cron_vst_reconcile" model="ir.cron">
+        <field name="name">Vendor Sell-Through: optional reconciliation (disabled)</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">False</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

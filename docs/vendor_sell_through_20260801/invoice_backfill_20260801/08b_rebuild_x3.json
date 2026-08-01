@@ -1,0 +1,20 @@
+[
+  {
+    "i": 0,
+    "eligible_sum": 15889.2,
+    "invoice_qty": 83.0,
+    "source_count": 27
+  },
+  {
+    "i": 1,
+    "eligible_sum": 15889.2,
+    "invoice_qty": 83.0,
+    "source_count": 27
+  },
+  {
+    "i": 2,
+    "eligible_sum": 15889.2,
+    "invoice_qty": 83.0,
+    "source_count": 27
+  }
+]

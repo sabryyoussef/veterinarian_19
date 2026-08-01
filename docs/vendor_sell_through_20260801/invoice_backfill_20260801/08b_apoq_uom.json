@@ -1,0 +1,7 @@
+{
+  "product_base_uom": "Tablet",
+  "bill_uom": "Box (100 Tablets)",
+  "factor_1_bill_to_base": 100.0,
+  "tablets_60_as_bill_uom": 0.6,
+  "billed_qty": 3.0
+}

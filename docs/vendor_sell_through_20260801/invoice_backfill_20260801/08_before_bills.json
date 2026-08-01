@@ -1,0 +1,56 @@
+[
+  {
+    "id": 223,
+    "name": "BILL/2026/08/0004",
+    "partner": "ahmed shaaban pharmacy",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 1050.0,
+    "allocs": []
+  },
+  {
+    "id": 222,
+    "name": "BILL/2026/08/0003",
+    "partner": "dr paws hospital new cairo",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 17310.0,
+    "allocs": []
+  },
+  {
+    "id": 221,
+    "name": "BILL/2026/08/0002",
+    "partner": "dr paws hospital new cairo",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 13016.0,
+    "allocs": []
+  },
+  {
+    "id": 220,
+    "name": "BILL/2026/08/0001",
+    "partner": "Vet 4 Ever",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 192790.25,
+    "allocs": []
+  },
+  {
+    "id": 34,
+    "name": "BILL/2026/07/0002",
+    "partner": "INTERNATIONAL FREE TRADE IFT CORPORATION",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 72371.1,
+    "allocs": []
+  },
+  {
+    "id": 33,
+    "name": "BILL/2026/07/0001",
+    "partner": "INTERNATIONAL FREE TRADE IFT CORPORATION",
+    "eligible": 0.0,
+    "suggested": 0.0,
+    "residual": 19975.0,
+    "allocs": []
+  }
+]

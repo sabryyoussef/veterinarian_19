@@ -1,0 +1,92 @@
+<odoo>
+    <record id="view_vst_supplier_dashboard_list" model="ir.ui.view">
+        <field name="name">account.move.list.vst.supplier.dashboard</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <list string="Supplier Sell-Through" create="0" delete="0" multi_edit="0"
+                  decoration-muted="amount_residual &lt;= 0"
+                  decoration-danger="vst_sell_through_status == 'blocked'"
+                  decoration-warning="vst_sell_through_status == 'legacy_only'">
+                <field name="name" string="Vendor Bill"/>
+                <field name="partner_id" string="Supplier"/>
+                <field name="invoice_date" string="Bill date"/>
+                <field name="invoice_date_due" string="Due date"/>
+                <field name="currency_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                <field name="amount_total" string="Bill total" sum="Total"/>
+                <field name="amount_residual" string="Residual" sum="Residual"/>
+                <field name="vst_purchased_value" string="Purchased value" sum="Purchased"/>
+                <field name="vst_net_sold_value" string="Net sold value" sum="Sold"/>
+                <field name="vst_already_paid" string="Already paid" optional="show"/>
+                <field name="vst_eligible_amount" string="Sell-through eligible cumulative" sum="Eligible"/>
+                <field name="vst_payment_cap" string="Suggested payment now" sum="Suggested"/>
+                <field name="vst_allocation_confidence" string="Allocation confidence"/>
+                <field name="vst_blocking_warning" string="Blocking warning"/>
+                <field name="vst_sell_through_status" string="Sell-through status"/>
+                <field name="vst_unallocated_qty" string="Unallocated/Blocked qty" optional="hide"/>
+                <field name="payment_state" optional="hide"/>
+                <field name="state" column_invisible="1"/>
+                <field name="move_type" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vst_supplier_dashboard_search" model="ir.ui.view">
+        <field name="name">account.move.search.vst.supplier.dashboard</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <search string="Supplier Sell-Through">
+                <field name="partner_id" string="Supplier"/>
+                <field name="name"/>
+                <field name="ref"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id"/>
+                <filter string="Unpaid / Partial" name="open_residual" domain="[('amount_residual', '&gt;', 0)]"/>
+                <filter string="Eligible &gt; 0" name="eligible_positive" domain="[('vst_payment_cap', '&gt;', 0)]"/>
+                <filter string="Payable sell-through" name="status_payable" domain="[('vst_sell_through_status', '=', 'payable')]"/>
+                <filter string="Legacy/estimated only" name="status_legacy" domain="[('vst_sell_through_status', '=', 'legacy_only')]"/>
+                <filter string="Blocked" name="status_blocked" domain="[('vst_sell_through_status', '=', 'blocked')]"/>
+                <separator/>
+                <filter string="Bill date" name="filter_invoice_date" date="invoice_date"/>
+                <filter string="Due date" name="filter_due_date" date="invoice_date_due"/>
+                <group>
+                    <filter string="Supplier" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Currency" name="group_currency" context="{'group_by': 'currency_id'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    <filter string="Sell-through status" name="group_status" context="{'group_by': 'vst_sell_through_status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vst_supplier_dashboard" model="ir.actions.act_window">
+        <field name="name">Supplier Sell-Through</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_type', '=', 'in_invoice'), ('state', '=', 'posted')]</field>
+        <field name="context">{'search_default_open_residual': 1, 'search_default_eligible_positive': 1}</field>
+        <field name="search_view_id" ref="view_vst_supplier_dashboard_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No posted Vendor Bills match the filters.</p>
+            <p>Opening this dashboard is read-only and does not rebuild sell-through allocations.</p>
+        </field>
+    </record>
+    <record id="action_vst_supplier_dashboard_view_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_vst_supplier_dashboard_list"/>
+        <field name="act_window_id" ref="action_vst_supplier_dashboard"/>
+    </record>
+
+    <record id="action_vst_register_combined_payment" model="ir.actions.server">
+        <field name="name">Register Combined Sell-Through Payment / تسجيل دفعة مجمعة حسب المنتجات المباعة</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="group_ids" eval="[(4, ref('petspot_vendor_sell_through.group_vst_payment_manager'))]"/>
+        <field name="code">
+action = records.action_vst_register_combined_payment()
+        </field>
+    </record>
+</odoo>

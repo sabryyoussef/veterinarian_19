@@ -1,0 +1,52 @@
+{
+  "APOQ-16": {
+    "product_id": 34,
+    "approved": 60.0,
+    "invoice_only_allocated": 69.0,
+    "stock_allocated": 0,
+    "source_invoice_only_sum": 69.0,
+    "source_stock_counted_sum": 0.0,
+    "source_refunded_sum": 0.0,
+    "match_approved": false
+  },
+  "VAC-VP8": {
+    "product_id": 23,
+    "approved": 3.0,
+    "invoice_only_allocated": 3.0,
+    "stock_allocated": 0,
+    "source_invoice_only_sum": 3.0,
+    "source_stock_counted_sum": 0.0,
+    "source_refunded_sum": 0.0,
+    "match_approved": true
+  },
+  "SHP-82-82": {
+    "product_id": 69,
+    "approved": 3.0,
+    "invoice_only_allocated": 3.0,
+    "stock_allocated": 0,
+    "source_invoice_only_sum": 3.0,
+    "source_stock_counted_sum": 0.0,
+    "source_refunded_sum": 0.0,
+    "match_approved": true
+  },
+  "SIMT-2.5-5": {
+    "product_id": 36,
+    "invoice_allocated": 0,
+    "must_be_zero_on_bill_product": true
+  },
+  "SIMT-20-40": {
+    "product_id": 39,
+    "invoice_allocated": 0,
+    "must_be_zero_on_bill_product": true
+  },
+  "REVC-45": {
+    "product_id": 42,
+    "invoice_allocated": 0,
+    "must_be_zero_on_bill_product": true
+  },
+  "APOQ-3.6": {
+    "product_id": 32,
+    "invoice_allocated": 0,
+    "must_be_zero_on_bill_product": false
+  }
+}

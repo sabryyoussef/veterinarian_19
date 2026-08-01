@@ -1,0 +1,99 @@
+{
+  "APOQ-16": {
+    "approved": 60.0,
+    "invoice_only_allocated": 60.0,
+    "stock_allocated": 0,
+    "refunded_base": 0.0,
+    "qty_bill_uom": 6.0,
+    "match": true,
+    "eligible_amount": 3631.2000000000003,
+    "bills": [
+      "BILL/2026/07/0002"
+    ]
+  },
+  "VAC-VP8": {
+    "approved": 3.0,
+    "invoice_only_allocated": 3.0,
+    "stock_allocated": 0,
+    "refunded_base": 0.0,
+    "qty_bill_uom": 30.0,
+    "match": true,
+    "eligible_amount": 1209.0,
+    "bills": [
+      "BILL/2026/07/0001"
+    ]
+  },
+  "SHP-82-82": {
+    "approved": 3.0,
+    "invoice_only_allocated": 3.0,
+    "stock_allocated": 0,
+    "refunded_base": 0.0,
+    "qty_bill_uom": 30.0,
+    "match": true,
+    "eligible_amount": 5100.0,
+    "bills": [
+      "BILL/2026/08/0001"
+    ]
+  },
+  "SIMT-2.5-5": {
+    "invoice_allocated": 0
+  },
+  "SIMT-20-40": {
+    "invoice_allocated": 0
+  },
+  "REVC-45": {
+    "invoice_allocated": 0
+  },
+  "tenizol": {
+    "product_id": 1392,
+    "invoice_allocated": 0
+  },
+  "evatri": {
+    "product_id": 1398,
+    "invoice_allocated": 0
+  },
+  "flomarbidine": {
+    "product_id": 1971,
+    "invoice_allocated": 0
+  },
+  "aquadent": {
+    "product_id": 2148,
+    "invoice_allocated": 0
+  },
+  "nobivac_rabies": {
+    "product_id": 314,
+    "invoice_allocated": 0
+  },
+  "nobivac_dhppi": {
+    "product_id": 302,
+    "invoice_allocated": 0
+  },
+  "prednicortex": {
+    "product_id": 77,
+    "invoice_allocated": 1.0
+  },
+  "pyoderm": {
+    "product_id": 1568,
+    "invoice_allocated": 0
+  },
+  "cortavance": {
+    "product_id": 1627,
+    "invoice_allocated": 0
+  },
+  "multiboost": {
+    "product_id": 2106,
+    "invoice_allocated": 0
+  },
+  "salmon_max": {
+    "product_id": 116,
+    "invoice_allocated": 1.0
+  },
+  "vetoplex": {
+    "product_id": 2169,
+    "invoice_allocated": 0
+  },
+  "aurizon": {
+    "product_id": 1800,
+    "invoice_allocated": 0
+  }
+}

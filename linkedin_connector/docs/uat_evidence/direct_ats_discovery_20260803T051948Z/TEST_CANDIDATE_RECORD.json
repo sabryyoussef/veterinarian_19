@@ -1,0 +1,112 @@
+{
+  "record": {
+    "test_job_id": 40,
+    "title": "Software Developer",
+    "company": "Odoo",
+    "location": "Grand-Rosi\u00e8re (Farm 2), Belgium",
+    "apply_url": "https://www.odoo.com/jobs/apply/software-developer-1",
+    "apply_platform": "company_ats",
+    "score": 65.0,
+    "meta_keys": [
+      "discovery",
+      "employer",
+      "ats_platform",
+      "ats_detail",
+      "dify_score_gate_local",
+      "dify_match_decision",
+      "dify_exclusion_flags",
+      "dify_missing_facts",
+      "dify_risk_notes",
+      "dify_recommended_channel",
+      "dify_workflow_run_id",
+      "required_field_map",
+      "missing_candidate_facts",
+      "preflight_risk_result",
+      "score_breakdown"
+    ]
+  },
+  "meta": {
+    "discovery": "direct_ats_canary",
+    "employer": "Odoo S.A.",
+    "ats_platform": "company_ats",
+    "ats_detail": "odoo_website_recruitment",
+    "dify_score_gate_local": 65.0,
+    "dify_match_decision": "shortlist",
+    "dify_exclusion_flags": [],
+    "dify_missing_facts": {
+      "visa_sponsorship": null
+    },
+    "dify_risk_notes": [],
+    "dify_recommended_channel": "manual_linkedin",
+    "dify_workflow_run_id": "edf3760a-9ec3-4955-bc84-2bac79523a2e",
+    "required_field_map": {
+      "required_visible": [
+        {
+          "name": "partner_name",
+          "label": "Your Name *",
+          "type": "text"
+        },
+        {
+          "name": "email_from",
+          "label": "Your Email *",
+          "type": "email"
+        },
+        {
+          "name": "partner_phone",
+          "label": "Your Phone Number *",
+          "type": "tel"
+        }
+      ],
+      "optional": [
+        {
+          "name": "linkedin_profile",
+          "label": "LinkedIn Profile"
+        },
+        {
+          "name": "Resume",
+          "label": "Resume file OR LinkedIn",
+          "type": "file"
+        },
+        {
+          "name": "short_introduction",
+          "label": "Short Introduction"
+        }
+      ],
+      "resume_or_linkedin": true
+    },
+    "missing_candidate_facts": [
+      "visa_sponsorship"
+    ],
+    "preflight_risk_result": {
+      "risks": [],
+      "login_wall": false,
+      "captcha_before_form_access": false,
+      "turnstile_on_page": true,
+      "aggregator": false,
+      "form_access_without_auth": true,
+      "mutations_blocked": true,
+      "notes": "Listing requirements chip also shows: Any programming language; Business-level English; Junior or higher; Interest in R&D. Interpreted as inclusive seniority floor, not junior-only."
+    },
+    "score_breakdown": {
+      "odoo": 30,
+      "seniority": 25,
+      "stack": 10
+    }
+  },
+  "pack_summary": {
+    "match_decision": "shortlist",
+    "exclusion_flags": [],
+    "missing_facts": {
+      "visa_sponsorship": null
+    },
+    "risk_notes": [],
+    "recommended_channel": "manual_linkedin",
+    "screening_qa": [
+      {
+        "source": "missing",
+        "field": "visa_sponsorship",
+        "answer": null
+      }
+    ]
+  }
+}

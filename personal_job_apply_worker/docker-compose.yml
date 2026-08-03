@@ -1,0 +1,29 @@
+# personal-job-apply-worker — dry-run Playwright apply worker
+# Project source of truth:
+#   /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/personal_job_apply_worker/
+# Infra entrypoint (symlink):
+#   /home/sabry/infra/personal-job-apply-worker/ → this directory
+#
+# Do NOT reuse firefox-whatsapp.
+
+services:
+  personal-job-apply-worker:
+    container_name: personal-job-apply-worker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8095:8095"
+    environment:
+      - TZ=Africa/Cairo
+      - JOB_APPLY_ARTIFACTS_DIR=/artifacts
+    volumes:
+      # Screenshots / attempt artifacts (host private dir, mode 0700)
+      - /home/sabry/private/job_apply_worker/artifacts:/artifacts
+    # No secrets mounted. No real CV. Offline fixtures only.
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"

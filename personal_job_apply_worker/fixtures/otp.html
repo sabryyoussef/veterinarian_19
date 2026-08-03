@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>OTP Verification Fixture</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 420px; margin: 3rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: 1rem; }
+    input { width: 100%; padding: 0.5rem; letter-spacing: 0.3em; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Enter the code</h1>
+  <p>We sent a one-time passcode to your device. Worker must stop.</p>
+  <div data-testid="otp" id="otp">
+    <label>One-time code
+      <input type="text" name="otp" id="otp-input" autocomplete="one-time-code" maxlength="6" />
+    </label>
+  </div>
+</body>
+</html>

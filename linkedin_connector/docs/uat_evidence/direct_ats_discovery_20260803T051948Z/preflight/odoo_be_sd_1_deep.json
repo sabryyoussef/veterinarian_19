@@ -1,0 +1,143 @@
+{
+  "id": "odoo_be_sd_1",
+  "final": "https://www.odoo.com/jobs/apply/software-developer-1",
+  "status": 200,
+  "login_wall": false,
+  "form_access": true,
+  "captcha_widget": true,
+  "req_visible": [
+    {
+      "type": "text",
+      "name": "partner_name",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *"
+    },
+    {
+      "type": "email",
+      "name": "email_from",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *"
+    },
+    {
+      "type": "tel",
+      "name": "partner_phone",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *"
+    }
+  ],
+  "fields": [
+    {
+      "type": "text",
+      "name": "partner_name",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *"
+    },
+    {
+      "type": "email",
+      "name": "email_from",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *"
+    },
+    {
+      "type": "tel",
+      "name": "partner_phone",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *"
+    },
+    {
+      "type": "text",
+      "name": "linkedin_profile",
+      "required": false,
+      "visible": true,
+      "label": "LinkedIn Profile"
+    },
+    {
+      "type": "file",
+      "name": "Resume",
+      "required": false,
+      "visible": true,
+      "label": "Resume"
+    },
+    {
+      "type": "text",
+      "name": "passport_required",
+      "required": false,
+      "visible": false,
+      "label": "Passport Required"
+    },
+    {
+      "type": "checkbox",
+      "name": "not_eu_citizen",
+      "required": false,
+      "visible": true,
+      "label": "I'm not EU citizen"
+    },
+    {
+      "type": "text",
+      "name": "passport_number",
+      "required": true,
+      "visible": false,
+      "label": "Passport Number\n                   *"
+    },
+    {
+      "type": "file",
+      "name": "Passport copy",
+      "required": true,
+      "visible": false,
+      "label": "Passport\n                   *"
+    },
+    {
+      "type": "textarea",
+      "name": "short_introduction",
+      "required": false,
+      "visible": true,
+      "label": "Short Introduction"
+    },
+    {
+      "type": "hidden",
+      "name": "job_id",
+      "required": false,
+      "visible": false,
+      "label": "Job"
+    },
+    {
+      "type": "hidden",
+      "name": "department_id",
+      "required": false,
+      "visible": false,
+      "label": "Department"
+    },
+    {
+      "type": "hidden",
+      "name": "turnstile_captcha",
+      "required": false,
+      "visible": false,
+      "label": ""
+    },
+    {
+      "type": "text",
+      "name": "",
+      "required": true,
+      "visible": false,
+      "label": ""
+    }
+  ],
+  "blocked": 3,
+  "cf_blocked": [
+    {
+      "m": "POST",
+      "u": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/2855599091:1785729623:GB_Tnbv-DFec3SHhO8cIj_hwwSIIstyEgJPGw7ELtYM/a252e991da7ae1f1/vd36j36NX6rpfzaaS.xUK2Mv0ogb9"
+    },
+    {
+      "m": "POST",
+      "u": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/2855599091:1785729623:GB_Tnbv-DFec3SHhO8cIj_hwwSIIstyEgJPGw7ELtYM/a252e991da7ae1f1/vd36j36NX6rpfzaaS.xUK2Mv0ogb9"
+    }
+  ],
+  "excerpt": "Skip to Content Odoo Sign in Try it free Apps Industries Community Pricing Help Jobs Software Developer Fill out an application Your Name * Your Email * Your Phone Number * LinkedIn Profile Resume Provide either a resume file or a linkedin profile I'm not EU citizen Short Introduction Send my application Summary Job Software Developer Location Grand-Rosi\u00e8re (Farm 2), Belgium Department Research & Development Employment Type CDI Timing Time to Answer 2 open days Process 1 Phone Call 1 Onsite Interview Days to get an Offer 4 Days after Interview Community Tutorials Documentation Forum Open Source Download Github Runbot Translations Services Odoo.sh Hosting Support Upgrade Custom Developments Education Find an Accountant Find a Partner Become a Partner About us Our company Brand Assets Contact us Jobs Events Podcast Blog Customers Legal \u2022 Privacy Security English Odoo is a suite of open source business apps that cover all your company needs: CRM, eCommerce, accounting, inventory, point of"
+}

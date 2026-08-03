@@ -1,0 +1,9 @@
+linkedin_connector.job_score_threshold=50
+linkedin_connector.job_search_locations=Remote|Egypt|United Arab Emirates
+linkedin_connector.job_search_queries=Odoo Developer in UAE|Odoo Developer in Egypt|Remote Odoo Developer
+linkedin_connector.jsearch_daily_queries_json=[{"query": "Odoo Developer in UAE", "country": "ae", "remote": false}, {"query": "Odoo Developer in Egypt", "country": "
+linkedin_connector.jsearch_max_jobs_per_day=30
+linkedin_connector.jsearch_max_requests_per_day=3
+linkedin_connector.jsearch_max_requests_per_month=120
+linkedin_connector.jsearch_usage_json={"day": "2026-08-03", "day_count": 3, "day_jobs": 0, "month": "2026-08", "month_count": 3}
+linkedin_connector.live_job_search_enabled=True

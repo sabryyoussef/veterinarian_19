@@ -1,0 +1,5 @@
+=== INDEED HEAD/GET ===
+HTTP/2 403 
+FINAL_URL=https://indeed.com/viewjob?jk=50dea3e8b77b2e49
+HTTP_CODE=403
+REDIRECT_COUNT=0

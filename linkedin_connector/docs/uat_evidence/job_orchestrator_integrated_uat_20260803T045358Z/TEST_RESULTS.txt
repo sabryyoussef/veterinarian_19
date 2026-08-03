@@ -1,0 +1,11 @@
+dify_publish: OK app=61cb1d22-b6e9-4bde-ac3e-9190d5beeaab
+dify_smoke: OK run=6e0a1926-c02e-4240-99f8-83f0a6383833 missing_sensitive=OK
+dify_fixtures_validator: 3/3 PASS
+n8n_import: OK id=cITBnJ6mNZn2srQY active=false
+n8n_execute: OK execution=125613
+odoo_pack_attempt: OK app=30 pack_ready attempt=3 drafted dry_run
+idempotency_replay: OK idempotent=true count=1
+worker_submit: 403
+linkedin_reject: linkedin_blocked
+production: unchanged 19.0.2.9.1 jobs=12 apps=0 cron112/113
+secret_scan: 0 hits in evidence

@@ -1,0 +1,128 @@
+{
+  "steps": [
+    {
+      "name": "reject_bad_signature",
+      "status": 401,
+      "body": {
+        "ok": false,
+        "error": "unauthorized",
+        "code": "bad_signature"
+      }
+    },
+    {
+      "name": "fetch_payload",
+      "status": 200,
+      "account_id": 2,
+      "state": "pack_ready",
+      "platform": "bebee",
+      "sensitive_present": []
+    },
+    {
+      "name": "write_pack",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "application_id": 30,
+        "state": "pack_ready"
+      }
+    },
+    {
+      "name": "invented_facts_rejected",
+      "status": 422,
+      "body": {
+        "ok": false,
+        "error": "invented_facts_forbidden",
+        "code": "invented_facts_forbidden"
+      }
+    },
+    {
+      "name": "browser_bebee",
+      "status": 200,
+      "state": "drafted",
+      "stop_reason": "none",
+      "attempt_id": "e59da7d4-b52b-4bcf-baed-99861940105a",
+      "screenshots": 2,
+      "adapter_used": "bebee_like"
+    },
+    {
+      "name": "browser_greenhouse",
+      "status": 200,
+      "state": "drafted",
+      "stop_reason": "none",
+      "attempt_id": "fda7cb7a-de93-4220-9c2e-dc640c53bfd0",
+      "screenshots": 2,
+      "adapter_used": "greenhouse_like"
+    },
+    {
+      "name": "browser_unknown_q",
+      "status": 200,
+      "state": "stopped",
+      "stop_reason": "unknown_question",
+      "attempt_id": "af445a62-d31f-4fbc-814c-566cb0f5ed17",
+      "screenshots": 2,
+      "adapter_used": null
+    },
+    {
+      "name": "browser_captcha",
+      "status": 200,
+      "state": "stopped",
+      "stop_reason": "captcha",
+      "attempt_id": "c49f5fde-f1db-4586-9ec7-da0cfd3caf49",
+      "screenshots": 2,
+      "adapter_used": null
+    },
+    {
+      "name": "browser_otp",
+      "status": 200,
+      "state": "stopped",
+      "stop_reason": "otp",
+      "attempt_id": "ce7cd899-eb04-4370-b029-fb13dee09af8",
+      "screenshots": 2,
+      "adapter_used": null
+    },
+    {
+      "name": "linkedin_blocked",
+      "status": 200,
+      "state": "stopped",
+      "stop_reason": "linkedin_blocked",
+      "attempt_id": "4cc3edd6-d38e-41d1-8a28-472bbb5ff91a",
+      "screenshots": 0,
+      "adapter_used": null
+    },
+    {
+      "name": "submit_disabled",
+      "status": 403,
+      "stop_reason": "submit_disabled"
+    },
+    {
+      "name": "write_attempt",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "attempt_id": 2,
+        "state": "drafted",
+        "idempotent": false
+      }
+    },
+    {
+      "name": "attempt_idempotent",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "attempt_id": 2,
+        "state": "drafted",
+        "idempotent": true
+      }
+    },
+    {
+      "name": "live_submit_rejected",
+      "status": 403,
+      "body": {
+        "ok": false,
+        "error": "live_submit_disabled",
+        "code": "live_submit_disabled"
+      }
+    }
+  ],
+  "screenshots_copied": 2
+}

@@ -1,0 +1,177 @@
+{
+  "id": "oi_senior",
+  "final": "https://www.open-inside.com/jobs/apply/senior-engineer-technical-6",
+  "status": 200,
+  "host": "www.open-inside.com",
+  "forms": [
+    {
+      "action": "https://www.open-inside.com/website/search",
+      "method": "get",
+      "id": ""
+    },
+    {
+      "action": "https://www.open-inside.com/website/form/",
+      "method": "post",
+      "id": "hr_recruitment_form"
+    },
+    {
+      "action": "https://www.open-inside.com/website/search",
+      "method": "get",
+      "id": ""
+    }
+  ],
+  "fields": [
+    {
+      "type": "search",
+      "name": "search",
+      "required": false,
+      "visible": false,
+      "label": "",
+      "accept": ""
+    },
+    {
+      "type": "hidden",
+      "name": "order",
+      "required": false,
+      "visible": false,
+      "label": "",
+      "accept": ""
+    },
+    {
+      "type": "text",
+      "name": "partner_name",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *",
+      "accept": ""
+    },
+    {
+      "type": "email",
+      "name": "email_from",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *",
+      "accept": ""
+    },
+    {
+      "type": "tel",
+      "name": "partner_phone",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *",
+      "accept": ""
+    },
+    {
+      "type": "text",
+      "name": "linkedin_profile",
+      "required": false,
+      "visible": true,
+      "label": "LinkedIn Profile",
+      "accept": ""
+    },
+    {
+      "type": "file",
+      "name": "Resume",
+      "required": false,
+      "visible": true,
+      "label": "Resume",
+      "accept": ""
+    },
+    {
+      "type": "textarea",
+      "name": "short_introduction",
+      "required": false,
+      "visible": true,
+      "label": "Short Introduction",
+      "accept": ""
+    },
+    {
+      "type": "hidden",
+      "name": "job_id",
+      "required": false,
+      "visible": false,
+      "label": "Job",
+      "accept": ""
+    },
+    {
+      "type": "hidden",
+      "name": "department_id",
+      "required": false,
+      "visible": false,
+      "label": "Department",
+      "accept": ""
+    },
+    {
+      "type": "search",
+      "name": "search",
+      "required": false,
+      "visible": false,
+      "label": "",
+      "accept": ""
+    },
+    {
+      "type": "hidden",
+      "name": "order",
+      "required": false,
+      "visible": false,
+      "label": "",
+      "accept": ""
+    }
+  ],
+  "req_visible": [
+    {
+      "type": "text",
+      "name": "partner_name",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *",
+      "accept": ""
+    },
+    {
+      "type": "email",
+      "name": "email_from",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *",
+      "accept": ""
+    },
+    {
+      "type": "tel",
+      "name": "partner_phone",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *",
+      "accept": ""
+    }
+  ],
+  "login_wall": false,
+  "form_access": true,
+  "captcha_widget": false,
+  "captcha_before_access": false,
+  "overlay": {
+    "hasField": true,
+    "enabled": true,
+    "overlay": false,
+    "mid": "INPUT",
+    "turnstile": false,
+    "verifyHuman": false
+  },
+  "risks": [],
+  "nav": [
+    "https://www.open-inside.com/jobs/apply/senior-engineer-technical-6"
+  ],
+  "blocked": [
+    {
+      "m": "POST",
+      "u": "https://www.google-analytics.com/g/collect?v=2&tid=G-RLWXYEDGTX&gtm=45je67t1v898166825za20g&_p=1785734993290&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&_eu=AAAI&are=1&cid=2076502899.1785734994&frm=0&ngs=1&pscdl=noapi&rcb=2&sr",
+      "t": "fetch"
+    },
+    {
+      "m": "POST",
+      "u": "https://www.google.com/g/collect?v=2&tid=G-RLWXYEDGTX&gtm=45je67t1v898166825za20g&_p=1785734993290&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&_eu=AAAI&are=1&cid=2076502899.1785734994&frm=0&ngs=1&pscdl=noapi&rcb=2&sr=1280x720&",
+      "t": "fetch"
+    }
+  ],
+  "blocked_count": 2,
+  "body_excerpt": "Skip to Content Home About Us Open Source OdooApps Jobs Blog Home +973 7741 7777 Contact Us Jobs Senior Engineer - Technical Job Application Form Your Name * Your Email * Your Phone Number * LinkedIn Profile Resume Provide either a resume file or a linkedin profile Short Introduction I'm feeling lucky Job Description Job Senior Engineer - Technical Location Seef District, Bahrain Department Operation P.O Box 76069 Office 32, Building 662 (Impact Co. Building), Road 2811 Seef District 428 \u2022 Manama \u2022 Kingdom of Bahrain +973 7741 7777 info@open-inside.com Copyright \u00a9 Company name Copyright \u00a9 Openinside Co. W.L.L English (US) Powered by - Create a free website"
+}

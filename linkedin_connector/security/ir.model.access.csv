@@ -12,3 +12,9 @@ access_linkedin_post_bulk_schedule_user,linkedin.post.bulk.schedule user,model_l
 access_linkedin_cv_version_user,linkedin.cv.version user,model_linkedin_cv_version,base.group_user,1,1,1,1
 access_linkedin_job_application_user,linkedin.job.application user,model_linkedin_job_application,base.group_user,1,1,1,0
 access_linkedin_job_application_manager,linkedin.job.application manager,model_linkedin_job_application,group_linkedin_job_hunt,1,1,1,1
+access_linkedin_candidate_profile_user,linkedin.candidate.profile user,model_linkedin_candidate_profile,base.group_user,1,1,1,0
+access_linkedin_candidate_profile_manager,linkedin.candidate.profile manager,model_linkedin_candidate_profile,group_linkedin_job_hunt,1,1,1,1
+access_linkedin_apply_policy_user,linkedin.apply.policy user,model_linkedin_apply_policy,base.group_user,1,0,0,0
+access_linkedin_apply_policy_manager,linkedin.apply.policy manager,model_linkedin_apply_policy,group_linkedin_job_hunt,1,1,1,1
+access_linkedin_apply_attempt_user,linkedin.apply.attempt user,model_linkedin_apply_attempt,base.group_user,1,0,0,0
+access_linkedin_apply_attempt_manager,linkedin.apply.attempt manager,model_linkedin_apply_attempt,group_linkedin_job_hunt,1,1,1,1

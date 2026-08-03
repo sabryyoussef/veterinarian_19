@@ -1,0 +1,18 @@
+{
+  "task_id": "e2da55f8-bf4f-41a8-8344-aa6f9cd7cc6f",
+  "workflow_run_id": "479b72d5-1b98-4e7c-991d-af54d9c68bed",
+  "data": {
+    "id": "479b72d5-1b98-4e7c-991d-af54d9c68bed",
+    "workflow_id": "994f4415-bf6d-4956-931f-63068365ced7",
+    "status": "succeeded",
+    "outputs": {
+      "pack_json": "{\n  \"match_decision\": \"needs_human\",\n  \"exclusion_flags\": [],\n  \"selected_cv\": \"uat_fictional_cv.pdf\",\n  \"cover_letter\": null,\n  \"screening_qa\": [\n    {\n      \"source\": \"missing\",\n      \"field\": \"salary_expectation\",\n      \"answer\": null\n    },\n    {\n      \"source\": \"missing\",\n      \"field\": \"notice_period\",\n      \"answer\": null\n    },\n    {\n      \"source\": \"missing\",\n      \"field\": \"visa_sponsorship\",\n      \"answer\": null\n    },\n    {\n      \"source\": \"missing\",\n      \"field\": \"uae_relocation\",\n      \"answer\": null\n    }\n  ],\n  \"missing_facts\": [\n    \"salary_expectation\",\n    \"notice_period\",\n    \"visa_sponsorship\",\n    \"uae_relocation\"\n  ],\n  \"risk_notes\": [\n    \"Candidate requires visa sponsorship and does not have EU/Belgium work authorization.\"\n  ],\n  \"recommended_channel\": \"manual_linkedin\"\n}"
+    },
+    "error": null,
+    "elapsed_time": 13.370305,
+    "total_tokens": 997,
+    "total_steps": 3,
+    "created_at": 1785750505,
+    "finished_at": 1785750518
+  }
+}

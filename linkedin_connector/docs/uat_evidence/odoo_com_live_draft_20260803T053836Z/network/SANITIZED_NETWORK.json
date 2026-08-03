@@ -1,0 +1,40 @@
+{
+  "cv_bytes_transmitted": 0,
+  "successful_mutations_during_probe": [],
+  "blocked_mutations": [
+    {
+      "method": "POST",
+      "host": "www.odoo.com",
+      "path": "/mail/action",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "host": "challenges.cloudflare.com",
+      "path": "/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a25306615f9ce23a/bSvJTY7OTXcgm0NJymCV7AZghwDs8XS.WFb3qLN5.z",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "host": "challenges.cloudflare.com",
+      "path": "/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a25306615f9ce23a/bSvJTY7OTXcgm0NJymCV7AZghwDs8XS.WFb3qLN5.z",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "host": "challenges.cloudflare.com",
+      "path": "/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a25306615f9ce23a/bSvJTY7OTXcgm0NJymCV7AZghwDs8XS.WFb3qLN5.z",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "host": "www.odoo.com",
+      "path": "/web/webclient/version_info",
+      "type": "xhr"
+    }
+  ],
+  "offline_before_real_fill": true,
+  "containment_probe_ok": true,
+  "post_put_patch_delete_reached_network": false,
+  "submit_clicked": false
+}

@@ -1,0 +1,8 @@
+{
+  "kill_switch": true,
+  "browser_submit_enabled": false,
+  "email_submit_enabled": false,
+  "app_state": "pack_ready",
+  "attempt_state": "stopped",
+  "verdict": "ODOO_SA_REAL_APPLICATION_WAITING_FOR_TURNSTILE"
+}

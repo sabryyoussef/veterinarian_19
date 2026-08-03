@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Unknown Question Fixture</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: 1rem; }
+    input, textarea { width: 100%; padding: 0.4rem; }
+  </style>
+</head>
+<body>
+  <h1>Custom Application Form</h1>
+  <p>Contains a weird custom field the worker must not invent answers for.</p>
+  <form id="unknown-form" action="#" method="post" onsubmit="return false;">
+    <label>Full name
+      <input type="text" name="full_name" id="full_name" />
+    </label>
+    <label>Email
+      <input type="email" name="email" id="email" />
+    </label>
+    <div data-testid="unknown-question" data-unknown-question="true">
+      <label data-custom-question="zodiac_alignment">
+        Describe your preferred zodiac-alignment deployment strategy (required)
+        <textarea name="zodiac_alignment" id="zodiac_alignment" rows="3" required></textarea>
+      </label>
+    </div>
+    <button type="submit">Continue</button>
+  </form>
+</body>
+</html>

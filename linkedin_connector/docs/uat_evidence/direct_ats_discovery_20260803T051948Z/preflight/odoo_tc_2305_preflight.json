@@ -1,0 +1,216 @@
+{
+  "id": "odoo_tc_2305",
+  "start_url": "https://www.odoo.com/jobs/apply/2305",
+  "final_url": "https://www.odoo.com/jobs/apply/technical-consultant-education-2305",
+  "title": "Apply for: Technical Consultant - Education | Odoo",
+  "http_status": 200,
+  "host": "www.odoo.com",
+  "ats": "odoo_careers",
+  "forms": [
+    {
+      "action": "https://www.odoo.com/website/form/",
+      "method": "post",
+      "id": "hr_recruitment_form"
+    }
+  ],
+  "fields": [
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "partner_name",
+      "id": "recruitment1",
+      "placeholder": "",
+      "required": true,
+      "aria": "",
+      "accept": "",
+      "visible": true
+    },
+    {
+      "tag": "input",
+      "type": "email",
+      "name": "email_from",
+      "id": "recruitment2",
+      "placeholder": "",
+      "required": true,
+      "aria": "",
+      "accept": "",
+      "visible": true
+    },
+    {
+      "tag": "input",
+      "type": "tel",
+      "name": "partner_phone",
+      "id": "recruitment3",
+      "placeholder": "",
+      "required": true,
+      "aria": "",
+      "accept": "",
+      "visible": true
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "linkedin_profile",
+      "id": "recruitment4",
+      "placeholder": "e.g. https://www.linkedin.com/in/fpodoo",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": true
+    },
+    {
+      "tag": "input",
+      "type": "file",
+      "name": "Resume",
+      "id": "recruitment6",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": true
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "passport_required",
+      "id": "oxlifk8ce5q",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "checkbox",
+      "name": "not_eu_citizen",
+      "id": "o78ammz6b7w4",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "passport_number",
+      "id": "owqsr6xbvaer",
+      "placeholder": "",
+      "required": true,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "file",
+      "name": "Passport copy",
+      "id": "oblbzkukjr9f",
+      "placeholder": "",
+      "required": true,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "textarea",
+      "type": "textarea",
+      "name": "short_introduction",
+      "id": "recruitment5",
+      "placeholder": "Optional introduction, or any question you might have about the job\u2026",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": true
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "job_id",
+      "id": "recruitment7",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "department_id",
+      "id": "recruitment8",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "turnstile_captcha",
+      "id": "cf-chl-widget-galda_response",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "",
+      "id": "",
+      "placeholder": "",
+      "required": true,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    }
+  ],
+  "field_count": 14,
+  "has_password": false,
+  "has_file": true,
+  "form_visible_no_auth": false,
+  "login_wall": true,
+  "captcha": true,
+  "otp": false,
+  "spanish": false,
+  "german": false,
+  "risks": [
+    "login_wall",
+    "captcha_before_form"
+  ],
+  "blocked_mutations": [
+    {
+      "method": "POST",
+      "url": "https://www.odoo.com/mail/action",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a252e4767bba0c79/2scn3CTXHYeKyEn7kPGBXg_mdENlp1yVGeGP3s_Wlyc-17857",
+      "type": "xhr"
+    }
+  ],
+  "blocked_count": 2,
+  "nav_chain": [
+    {
+      "url": "https://www.odoo.com/jobs/apply/2305",
+      "status": 301,
+      "method": "GET"
+    },
+    {
+      "url": "https://www.odoo.com/jobs/apply/technical-consultant-education-2305",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/av0/rch/galda/0x4AAAAAAADwqVOUIWCeR_H8/auto/fbE/new/normal?lang=auto",
+      "status": 200,
+      "method": "GET"
+    }
+  ],
+  "body_excerpt": "Skip to Content Odoo Sign in Try it free Apps Industries Community Pricing Help Jobs Technical Consultant - Education Fill out an application Your Name * Your Email * Your Phone Number * LinkedIn Profile Resume Provide either a resume file or a linkedin profile Short Introduction Send my application Summary Job Technical Consultant - Education Location Dubai, DU, United Arab Emirates Department Marketing / Education Timing Time to Answer 2 open days Process 1 Phone Call 1 Onsite Interview Days to get an Offer 4 Days after Interview Community Tutorials Documentation Forum Open Source Download Github Runbot Translations Services Odoo.sh Hosting Support Upgrade Custom Developments Education Find an Accountant Find a Partner Become a Partner About us Our company Brand Assets Contact us Jobs Events Podcast Blog Customers Legal \u2022 Privacy Security English Odoo is a suite of open source business apps that cover all your company needs: CRM, eCommerce, accounting, inventory, point of sale, project management, etc. Odoo's unique value proposition is to be at the same time very easy to use and fully integrated. Website made with "
+}

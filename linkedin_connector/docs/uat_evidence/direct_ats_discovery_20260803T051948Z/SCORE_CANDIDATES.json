@@ -1,0 +1,37 @@
+[
+  {
+    "file": "JOB_OPENINSIDE_SENIOR.json",
+    "title": "Senior Engineer - Technical",
+    "company": "Openinside",
+    "score": -5.0,
+    "breakdown": {
+      "seniority": 25,
+      "stack": 10,
+      "junior_penalty": -40
+    },
+    "flags": {
+      "odoo_match": false,
+      "seniority_match": true,
+      "easy_apply_hint": false
+    },
+    "apply_url": "https://www.open-inside.com/jobs/apply/senior-engineer-technical-6"
+  },
+  {
+    "file": "JOB_ODOO_BE_SD_1.json",
+    "title": "Software Developer",
+    "company": "Odoo",
+    "score": 25.0,
+    "breakdown": {
+      "odoo": 30,
+      "seniority": 25,
+      "stack": 10,
+      "junior_penalty": -40
+    },
+    "flags": {
+      "odoo_match": true,
+      "seniority_match": true,
+      "easy_apply_hint": false
+    },
+    "apply_url": "https://www.odoo.com/jobs/apply/software-developer-1"
+  }
+]

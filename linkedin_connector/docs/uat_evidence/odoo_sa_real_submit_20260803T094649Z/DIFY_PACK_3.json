@@ -1,0 +1,10 @@
+{
+  "match_decision": "shortlist",
+  "exclusion_flags": [],
+  "selected_cv": "uat_fictional_cv.pdf",
+  "cover_letter": null,
+  "screening_qa": [],
+  "missing_facts": {},
+  "risk_notes": [],
+  "recommended_channel": "browser_dry_run"
+}

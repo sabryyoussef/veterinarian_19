@@ -1,0 +1,13 @@
+Q1: site:boards.greenhouse.io "Odoo Developer"
+q1_http=202 size=14313
+Q2: site:jobs.lever.co "Odoo Developer"
+q2_http=202 size=14299
+Q3: site:apply.workable.com Odoo Developer
+q3_http=202 size=14279
+Q4: site:jobs.ashbyhq.com Odoo
+q4_http=202 size=14255
+Q5: site:careers.smartrecruiters.com "Odoo Developer"
+q5_http=202 size=14327
+Q6: "Senior Odoo Developer" OR "Odoo Technical Consultant" (UAE OR Dubai OR Egypt OR Remote) (greenhouse.io OR lever.co OR workable.com OR ashbyhq.com)
+q6_http=202 size=14471
+queries_used=6

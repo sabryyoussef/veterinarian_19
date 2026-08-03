@@ -1,0 +1,18 @@
+{
+  "match_decision": "shortlist",
+  "exclusion_flags": [],
+  "selected_cv": "uat_fictional_cv.pdf",
+  "cover_letter": null,
+  "screening_qa": [
+    {
+      "source": "missing",
+      "field": "visa_sponsorship",
+      "answer": null
+    }
+  ],
+  "missing_facts": {
+    "visa_sponsorship": null
+  },
+  "risk_notes": [],
+  "recommended_channel": "browser_dry_run"
+}

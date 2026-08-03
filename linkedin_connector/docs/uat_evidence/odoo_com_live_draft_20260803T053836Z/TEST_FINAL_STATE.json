@@ -1,0 +1,149 @@
+{
+  "live_draft_state": "draft_ready",
+  "live_worker_attempt_id": "979f0291-6de6-40a1-b502-fca5d5339e2d",
+  "n8n_fixture_worker_attempt_id": "baf737ac-e8bf-4c6e-85cb-b1ac81c6442e",
+  "n8n_execution_id": "125827",
+  "dify_run_id_direct": "9b89b007-a5ed-42e3-aed7-ce5f20685346",
+  "dify_run_id_n8n": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+  "match_decision": "shortlist",
+  "missing_facts": [
+    "visa_sponsorship"
+  ],
+  "recommended_channel_override": "browser_dry_run",
+  "filled_fields": [
+    "partner_name",
+    "email_from",
+    "partner_phone",
+    "linkedin_profile_left_empty",
+    "Resume",
+    "short_introduction"
+  ],
+  "cv_bytes_transmitted": 0,
+  "containment_probe_ok": true,
+  "turnstile": {
+    "turnstile_present": true,
+    "verify_human_wall": false,
+    "overlay_blocked": false
+  },
+  "dom_verify_masked": {
+    "name_set": true,
+    "email_set": true,
+    "phone_set": true,
+    "linkedin_empty": true,
+    "resume_files": 1
+  },
+  "forms": [
+    {
+      "action": "https://www.odoo.com/website/form/",
+      "method": "post",
+      "id": "hr_recruitment_form"
+    }
+  ],
+  "required_fields": [
+    {
+      "name": "partner_name",
+      "type": "text",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *",
+      "id": "recruitment1",
+      "accept": ""
+    },
+    {
+      "name": "email_from",
+      "type": "email",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *",
+      "id": "recruitment2",
+      "accept": ""
+    },
+    {
+      "name": "partner_phone",
+      "type": "tel",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *",
+      "id": "recruitment3",
+      "accept": ""
+    }
+  ],
+  "optional_fields": [
+    {
+      "name": "linkedin_profile",
+      "type": "text",
+      "required": false,
+      "visible": true,
+      "label": "LinkedIn Profile",
+      "id": "recruitment4",
+      "accept": ""
+    },
+    {
+      "name": "Resume",
+      "type": "file",
+      "required": false,
+      "visible": true,
+      "label": "Resume",
+      "id": "recruitment6",
+      "accept": ""
+    },
+    {
+      "name": "passport_required",
+      "type": "text",
+      "required": false,
+      "visible": false,
+      "label": "Passport Required",
+      "id": "oxlifk8ce5q",
+      "accept": ""
+    },
+    {
+      "name": "not_eu_citizen",
+      "type": "checkbox",
+      "required": false,
+      "visible": true,
+      "label": "I'm not EU citizen",
+      "id": "o78ammz6b7w4",
+      "accept": ""
+    },
+    {
+      "name": "short_introduction",
+      "type": "textarea",
+      "required": false,
+      "visible": true,
+      "label": "Short Introduction",
+      "id": "recruitment5",
+      "accept": ""
+    },
+    {
+      "name": "job_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Job",
+      "id": "recruitment7",
+      "accept": ""
+    },
+    {
+      "name": "department_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Department",
+      "id": "recruitment8",
+      "accept": ""
+    },
+    {
+      "name": "turnstile_captcha",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "",
+      "id": "cf-chl-widget-x0ahf_response",
+      "accept": ""
+    }
+  ],
+  "blocked_mutations_count": 5,
+  "submit_clicked": false,
+  "linkedin_path_used": false,
+  "resume_path_used": true
+}

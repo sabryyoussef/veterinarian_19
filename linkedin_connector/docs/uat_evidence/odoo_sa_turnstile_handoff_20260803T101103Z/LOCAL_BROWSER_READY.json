@@ -1,0 +1,32 @@
+{
+  "status": "LOCAL_BROWSER_READY_FOR_HUMAN_TURNSTILE",
+  "ready_at": "2026-08-03T12:12:54Z",
+  "display": ":0",
+  "url": "https://www.odoo.com/jobs/apply/software-developer-1",
+  "records": {
+    "job_id": 40,
+    "application_id": 32,
+    "attempt_id": 5
+  },
+  "external_submissions": 0,
+  "submit_clicked_by_automation": false,
+  "cv_sha256": "29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539",
+  "live_state": {
+    "partner_name": "Sabry Youssef",
+    "email_from": "ab***",
+    "partner_phone": "+20 *00 *05 **85",
+    "linkedin": "",
+    "short_introduction": "Senior Odoo developer with 8+ years of experience (Python, PostgreSQL, Odoo). Available for on-site work in Belgium after a 1-month notice period and ready to relocate. I do not currently hold EU/Belgium work authorization and require visa/work-permit sponsorship.",
+    "resume_files_length": 1,
+    "resume_file_name": "Sabry_Youssef_CV.pdf",
+    "not_eu_citizen_checked": false,
+    "apply_disabled": false,
+    "body_has_turnstile_fail": false
+  },
+  "screenshot": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/odoo_sa_turnstile_handoff_20260803T101103Z/screenshots/local_browser_ready.png",
+  "human_steps": [
+    "Solve Cloudflare Turnstile yourself (do not use solvers)",
+    "When Send enables, click Send my application exactly once",
+    "Do not retry; report the result for attempt 5"
+  ]
+}

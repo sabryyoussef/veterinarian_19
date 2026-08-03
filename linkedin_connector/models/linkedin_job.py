@@ -57,6 +57,23 @@ class LinkedinJob(models.Model):
     employment_type = fields.Char(string="Type")
     description = fields.Html(string="Description")
     apply_url = fields.Char(string="Apply URL")
+    apply_platform = fields.Selection(
+        selection=[
+            ("linkedin", "LinkedIn"),
+            ("indeed", "Indeed"),
+            ("bebee", "BeBee"),
+            ("greenhouse", "Greenhouse"),
+            ("lever", "Lever"),
+            ("workday", "Workday"),
+            ("company_ats", "Company ATS"),
+            ("email", "Email"),
+            ("aggregator", "Aggregator"),
+            ("unknown", "Unknown"),
+        ],
+        string="Apply platform",
+        default="unknown",
+        index=True,
+    )
     source = fields.Char(string="Source", default="JSearch")
     listed_at = fields.Datetime(string="Listed At")
     saved = fields.Boolean(string="Saved", default=False, index=True)
@@ -88,6 +105,13 @@ class LinkedinJob(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        from odoo.addons.linkedin_connector.services.platform_classifier import (
+            classify_apply_url,
+        )
+
+        for vals in vals_list:
+            if not vals.get("apply_platform"):
+                vals["apply_platform"] = classify_apply_url(vals.get("apply_url"))
         records = super().create(vals_list)
         if not self.env.context.get("skip_job_postprocess"):
             records._score_and_dedupe()
@@ -96,6 +120,13 @@ class LinkedinJob(models.Model):
         return records
 
     def write(self, vals):
+        from odoo.addons.linkedin_connector.services.platform_classifier import (
+            classify_apply_url,
+        )
+
+        if "apply_url" in vals and "apply_platform" not in vals:
+            vals = dict(vals)
+            vals["apply_platform"] = classify_apply_url(vals.get("apply_url"))
         res = super().write(vals)
         if self.env.context.get("skip_job_postprocess"):
             return res

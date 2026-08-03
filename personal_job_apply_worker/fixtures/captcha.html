@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CAPTCHA Gate Fixture</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 3rem auto; text-align: center; }
+    #captcha { border: 2px dashed #c00; padding: 2rem; margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Security Check</h1>
+  <p>Verify you are human before continuing.</p>
+  <div id="captcha" data-testid="captcha" class="g-recaptcha" role="presentation">
+    <p><strong>CAPTCHA</strong></p>
+    <p>This is an offline captcha placeholder. Worker must stop.</p>
+    <div class="g-recaptcha" data-sitekey="fake-offline-key"></div>
+  </div>
+</body>
+</html>

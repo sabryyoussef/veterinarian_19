@@ -1,0 +1,21 @@
+{
+  "visa_sponsorship": "required",
+  "eu_work_authorization": false,
+  "belgium_work_authorization": false,
+  "sanitized_keys": [
+    "account_id",
+    "functional_skills",
+    "github_url",
+    "linkedin_url",
+    "name",
+    "notice_period",
+    "profile_id",
+    "salary_expectation",
+    "standard_answers_json",
+    "technical_skills",
+    "uae_relocation",
+    "visa_sponsorship",
+    "work_mode_preference",
+    "years_odoo_experience"
+  ]
+}

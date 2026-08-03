@@ -1,0 +1,32 @@
+=== HEAD ===
+HTTP/2 200 
+content-type: text/html; charset=utf-8
+date: Mon, 03 Aug 2026 05:13:23 GMT
+x-frame-options: DENY
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+x-xss-protection: 1; mode=block
+permissions-policy: camera=(), microphone=(self), geolocation=()
+content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' js.stripe.com *.sentry-cdn.com *.googletagmanager.com *.google-analytics.com *.googlesyndication.com www.google.com www.googleadservices.com pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' api.stripe.com checkout.stripe.com api.openai.com *.sentry.io media.bebee.com *.google-analytics.com *.analytics.google.com *.googletagmanager.com *.googlesyndication.com www.google.com www.googleadservices.com *.doubleclick.net *.google.es *.google.fr *.google.de *.google.pt *.google.it *.google.co.uk *.google.com.mx *.google.com.ar *.google.com.br *.google.com.co somos.bebee.com; media-src 'self' blob: media.bebee.com; frame-src 'self' js.stripe.com checkout.stripe.com hooks.stripe.com pay.google.com accounts.google.com somos.bebee.com; form-action 'self' accounts.google.com; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; worker-src 'self' blob:
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+cache-control: public, s-maxage=600, stale-while-revalidate=30
+x-bebee-job-existence-source: internal-api
+x-country: ae
+x-country-lang: ar
+x-pathname: /ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037
+vary: RSC,Next-Router-Prefetch,Accept-Encoding
+x-cache: Miss from cloudfront
+via: 1.1 52f6b28fbfd93a4ea2d1264800f372e4.cloudfront.net (CloudFront)
+x-amz-cf-pop: MRS53-P2
+alt-svc: h3=":443"; ma=86400
+x-amz-cf-id: I869xOZ_RgS5lnt--62nfwEqQ6utVgpHRqd6-mCOhZOFPy7HYrPd8g==
+
+
+FINAL_URL=https://bebee.com/ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037
+HTTP_CODE=200
+REDIRECT_COUNT=0
+=== GET redirect chain (headers only via -D) ===
+FINAL_URL=https://bebee.com/ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037
+HTTP_CODE=200
+REDIRECT_COUNT=0
+SIZE=612237

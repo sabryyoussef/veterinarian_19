@@ -1,0 +1,1 @@
+['/health', '/v1/apply/draft', '/v1/apply/submit', '/v1/apply/{attempt_id}']

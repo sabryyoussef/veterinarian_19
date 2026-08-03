@@ -1,0 +1,13 @@
+{
+  "application_id": 30,
+  "application_state": "pack_ready",
+  "odoo_attempt_id": 3,
+  "attempt_state": "drafted",
+  "idempotency_key": "uat-integrated-20260803-bebee-01",
+  "worker_attempt_id": "ae1a143b-b094-4f7d-b89e-c3ee68a8f7d2",
+  "dify_run_id": "6e0a1926-c02e-4240-99f8-83f0a6383833",
+  "n8n_execution_id": "125613",
+  "correlation_id": "uat-integrated-20260803-bebee-01",
+  "dify_app_id": "61cb1d22-b6e9-4bde-ac3e-9190d5beeaab",
+  "n8n_workflow_id": "cITBnJ6mNZn2srQY"
+}

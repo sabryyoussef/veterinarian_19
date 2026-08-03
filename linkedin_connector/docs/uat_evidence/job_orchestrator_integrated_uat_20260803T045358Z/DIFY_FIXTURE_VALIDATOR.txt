@@ -1,0 +1,3 @@
+PASS fixture_greenhouse_partial.json
+PASS fixture_linkedin_manual.json
+PASS fixture_malformed_invented.json (fail-closed: invented_facts_forbidden)

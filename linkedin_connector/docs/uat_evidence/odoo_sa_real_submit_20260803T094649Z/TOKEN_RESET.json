@@ -1,0 +1,4 @@
+{
+  "reset": true,
+  "reason": "previous_run_crashed_before_submit_click_selector_bug"
+}

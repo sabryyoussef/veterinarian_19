@@ -1,0 +1,33 @@
+{
+  "workflow_run_id": "7a1a74de-393f-41f2-b141-6f740f0e55b8",
+  "status": "succeeded",
+  "pack": {
+    "match_decision": "needs_human",
+    "exclusion_flags": [],
+    "selected_cv": "uat_fictional_cv.pdf",
+    "missing_facts": [
+      "employment_history",
+      "degrees",
+      "certifications"
+    ],
+    "risk_notes": [],
+    "recommended_channel": "browser_dry_run",
+    "screening_qa": [
+      {
+        "field_name": "employment_history",
+        "source": "missing",
+        "answer": null
+      },
+      {
+        "field_name": "degrees",
+        "source": "missing",
+        "answer": null
+      },
+      {
+        "field_name": "certifications",
+        "source": "missing",
+        "answer": null
+      }
+    ]
+  }
+}

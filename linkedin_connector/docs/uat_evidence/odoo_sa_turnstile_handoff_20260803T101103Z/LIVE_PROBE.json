@@ -1,0 +1,57 @@
+{
+  "ts": "2026-08-03T12:02:30Z",
+  "apply_disabled": true,
+  "has_turnstile": true,
+  "turnstile_failed_text": false,
+  "turnstile_success_hint": false,
+  "resume_files_length": 1,
+  "partner_name": "Sabry Youssef",
+  "url": "https://www.odoo.com/jobs/apply/software-developer-1",
+  "rects": [
+    {
+      "tag": "INPUT",
+      "cls": "s_website_form_input form-check-input",
+      "src": null,
+      "sitekey": null,
+      "x": 286,
+      "y": 199,
+      "w": 16,
+      "h": 16,
+      "visible": true
+    },
+    {
+      "tag": "TEXTAREA",
+      "cls": "form-control s_website_form_input",
+      "src": null,
+      "sitekey": null,
+      "x": 86,
+      "y": 269,
+      "w": 633,
+      "h": 146,
+      "visible": true
+    },
+    {
+      "tag": "DIV",
+      "cls": "s_turnstile s_turnstile_container cf-turnstile undefined",
+      "src": null,
+      "sitekey": "0x4AAAAAAADwqVOUIWCeR_H8",
+      "x": 86,
+      "y": 439,
+      "w": 633,
+      "h": 71,
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "cls": "btn btn-primary btn-lg s_website_form_send disabled cf_form_disabled",
+      "src": null,
+      "sitekey": null,
+      "x": 86,
+      "y": 510,
+      "w": 242.4375,
+      "h": 61,
+      "visible": true
+    }
+  ],
+  "send_clicked": false
+}

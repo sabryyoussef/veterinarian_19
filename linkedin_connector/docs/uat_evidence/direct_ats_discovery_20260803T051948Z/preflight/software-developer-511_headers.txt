@@ -1,0 +1,14 @@
+HTTP/2 200 
+server: nginx
+date: Mon, 03 Aug 2026 05:23:16 GMT
+content-type: text/html; charset=utf-8
+content-length: 77688
+set-cookie: frontend_lang=en_US; Expires=Tue, 03 Aug 2027 05:23:15 GMT; Path=/
+set-cookie: session_id=7MfANULvl_IwBsy4NfmzbpDNcivuGkFw3gL-JHfKmy6Gb3H8chujqgjfnIR0KHjlfg4EX1ox_HhpvG7z2HQP1g; Expires=Tue, 03 Aug 2027 05:23:16 GMT; Max-Age=604800; Secure; HttpOnly; Path=/
+x-content-type-options: nosniff
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+x-odoo-frontend: of36
+strict-transport-security: max-age=31536000
+x-xss-protection: 1; mode=block
+

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "LinkedIn Connector",
-    "version": "19.0.2.9.1",
+    "version": "19.0.2.11.0",
     "category": "Marketing",
     "summary": "Full LinkedIn management: posts, schedule, feed, jobs, resumes, messages",
     "author": "Sabry Youssef, Resume project",
@@ -25,6 +25,7 @@
         "views/linkedin_account_views.xml",
         "views/linkedin_bulk_wizard_views.xml",
         "views/linkedin_settings_views.xml",
+        "views/linkedin_orchestrator_views.xml",
     ],
     "installable": True,
     "application": True,

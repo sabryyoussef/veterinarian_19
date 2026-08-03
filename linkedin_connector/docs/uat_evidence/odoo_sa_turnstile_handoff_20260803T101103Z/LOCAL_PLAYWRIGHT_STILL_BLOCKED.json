@@ -1,0 +1,36 @@
+{
+  "status": "LOCAL_PLAYWRIGHT_STILL_BLOCKED",
+  "at": "2026-08-03T12:16:02Z",
+  "records": {
+    "job_id": 40,
+    "application_id": 32,
+    "attempt_id": 5
+  },
+  "external_submissions": 0,
+  "submit_clicked": false,
+  "what_happened": [
+    "Ran optional DISPLAY=:0 Playwright Chromium autofill; initially LOCAL_BROWSER_READY_FOR_HUMAN_TURNSTILE with fields filled.",
+    "Seat had Unlock Login Keyring dialog over the window.",
+    "Soon after, live probe showed form cleared (name/email/intro empty, resume_files_length=0) and Turnstile box 0x0; Send disabled.",
+    "Turnstile click request produced no usable verification; Send not clicked."
+  ],
+  "initial_ready_apply_disabled": false,
+  "last_probe": {
+    "ts": "2026-08-03T12:15:16Z",
+    "apply_disabled": true,
+    "resume_files_length": 0,
+    "partner_name": ""
+  },
+  "next": "Use a normal non-Playwright browser on laptop (Chrome/Firefox). Do not use Docker/Selkies/Playwright. Resume attempt 5 only.",
+  "manual_steps": [
+    "On your normal desktop browser (laptop Chrome/Firefox or master seat DISPLAY=:0 \u2014 not Docker/Selkies)",
+    "Open https://www.odoo.com/jobs/apply/software-developer-1",
+    "Name/email/phone from verified fill file; LinkedIn empty",
+    "Attach Sabry_Youssef_CV.pdf from private path above",
+    "Paste exact short introduction from intro_file",
+    "Leave I'm not EU citizen unchecked",
+    "Solve Turnstile yourself",
+    "Click Send my application once",
+    "Report success/unknown \u2014 do not retry"
+  ]
+}

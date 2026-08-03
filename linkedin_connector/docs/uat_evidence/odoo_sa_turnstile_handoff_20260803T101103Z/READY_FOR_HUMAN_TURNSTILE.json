@@ -1,0 +1,62 @@
+{
+  "ready_at": "2026-08-03T11:58:04Z",
+  "session_url": "https://100.76.217.35:5801/",
+  "session_url_master": "https://127.0.0.1:5801/",
+  "records": {
+    "job_id": 40,
+    "application_id": 32,
+    "attempt_id": 5
+  },
+  "external_submissions": 0,
+  "submit_clicked_by_automation": false,
+  "turnstile_automated": false,
+  "cv": {
+    "filename": "Sabry_Youssef_CV.pdf",
+    "sha256": "29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539",
+    "bytes": 76123,
+    "attached_to": "Resume"
+  },
+  "short_introduction": "Senior Odoo developer with 8+ years of experience (Python, PostgreSQL, Odoo). Available for on-site work in Belgium after a 1-month notice period and ready to relocate. I do not currently hold EU/Belgium work authorization and require visa/work-permit sponsorship.",
+  "values_masked": {
+    "name": "Sabry Youssef",
+    "email": "ab***@g***.com",
+    "phone": "201***85",
+    "linkedin": "",
+    "not_eu_citizen": false
+  },
+  "live_checks": {
+    "resume_files_length_1": true,
+    "resume_name_ok": true,
+    "visible_resume_mentions_cv": true,
+    "intro_has_sponsorship": true,
+    "linkedin_empty": true,
+    "not_eu_unchecked": true,
+    "name_ok": true,
+    "email_ok": true,
+    "phone_ok": true
+  },
+  "live_state": {
+    "url": "https://www.odoo.com/jobs/apply/software-developer-1",
+    "partner_name": "Sabry Youssef",
+    "linkedin": "",
+    "short_introduction": "Senior Odoo developer with 8+ years of experience (Python, PostgreSQL, Odoo). Available for on-site work in Belgium after a 1-month notice period and ready to relocate. I do not currently hold EU/Belgium work authorization and require visa/work-permit sponsorship.",
+    "not_eu_citizen_checked": false,
+    "resume_files_length": 1,
+    "resume_file_name": "Sabry_Youssef_CV.pdf",
+    "resume_visible_text": "Sabry_Youssef_CV.pdf",
+    "apply_disabled": true,
+    "apply_text": "Send my application",
+    "has_turnstile": true,
+    "turnstile_failed_text": false,
+    "turnstile_success_hint": false,
+    "email_from": "ab***@g***.com",
+    "partner_phone": "201***85",
+    "body_snip": "Skip to Content\nOdoo\nSign in\nTry it free\nApps Industries Community Pricing Help\nJobs\nSoftware Developer\nFill out an application\nYour Name *\nYour Email *\nYour Phone Number *\nLinkedIn Profile\nResume\nSabry_Youssef_CV.pdf\nProvide either a resume file or a linkedin profile\nI'm not EU citizen\nShort Introduction\nSend my application\nSummary\nJob\nSoftware Developer\nLocation\nGrand-Rosi\u00e8re (Farm 2), Belgium\nDepartment\nResearch & Development\nEmployment Type\nCDI\nTiming\n\nTime to Answer\n\n2 open days\n\nProcess\n\n1"
+  },
+  "screenshots": {
+    "page_full": "visible_proof_resume_and_intro.png",
+    "page_viewport": "visible_proof_resume_intro_viewport.png"
+  },
+  "root_cause_prior_mismatch": "Prior READY used Playwright page state in fill-container Chromium while human Selkies view was dominated by auto-started Firefox with an empty/failed form.",
+  "status": "READY_FOR_HUMAN_TURNSTILE"
+}

@@ -65,6 +65,33 @@ class LinkedinJobApplication(models.Model):
     job_company = fields.Char(related="job_id.company", store=True, readonly=True)
     job_location = fields.Char(related="job_id.location", store=True, readonly=True)
     apply_url = fields.Char(related="job_id.apply_url", readonly=True)
+    apply_platform = fields.Selection(
+        related="job_id.apply_platform", store=True, readonly=True
+    )
+
+    # Orchestrator pack / correlation fields
+    pack_json = fields.Text(string="Dify pack JSON")
+    match_decision = fields.Char()
+    exclusion_flags = fields.Text()
+    missing_facts = fields.Text()
+    risk_notes = fields.Text()
+    recommended_channel = fields.Char()
+    exception_reason = fields.Text()
+    receipt_attachment_ids = fields.Many2many(
+        "ir.attachment",
+        "linkedin_job_application_receipt_rel",
+        "application_id",
+        "attachment_id",
+        string="Receipts",
+    )
+    n8n_execution_id = fields.Char(index=True)
+    dify_run_id = fields.Char(index=True)
+    orchestrator_idempotency_key = fields.Char(index=True, copy=False)
+    manual_task = fields.Boolean(
+        default=False,
+        help="True when platform requires manual action (e.g. LinkedIn).",
+    )
+    attempt_ids = fields.One2many("linkedin.apply.attempt", "application_id", string="Attempts")
 
     @api.depends("job_id", "job_id.title", "job_id.company")
     def _compute_display_name(self):
@@ -80,6 +107,73 @@ class LinkedinJobApplication(models.Model):
                 raise ValidationError(
                     _("Applications must use a personal LinkedIn account, never PetSpot/company.")
                 )
+            if rec.account_id.id == 1:
+                raise ValidationError(_("Company account id=1 cannot own applications."))
+
+    def write_pack_from_orchestrator(self, pack):
+        """Apply Dify pack result via signed API — no invented facts written as truth."""
+        self.ensure_one()
+        if self.account_id.account_type != "personal" or self.account_id.id == 1:
+            raise UserError(_("Refusing pack write for non-personal/company account."))
+        if self.state not in ("discovered", "shortlisted", "pack_ready"):
+            raise UserError(
+                _("Unauthorized state transition for pack write (state=%s).") % self.state
+            )
+        import json
+
+        missing = pack.get("missing_facts") or []
+        vals = {
+            "pack_json": json.dumps(pack, ensure_ascii=False, sort_keys=True),
+            "match_decision": pack.get("match_decision") or "",
+            "exclusion_flags": json.dumps(pack.get("exclusion_flags") or []),
+            "missing_facts": json.dumps(missing),
+            "risk_notes": pack.get("risk_notes") or "",
+            "recommended_channel": pack.get("recommended_channel") or "",
+            "cover_letter": pack.get("cover_letter") or self.cover_letter,
+            "screening_answers": json.dumps(pack.get("screening_qa") or []),
+            "checklist": self.checklist
+            or "Review Dify pack; confirm missing_facts before approval.",
+            "dify_run_id": pack.get("dify_run_id") or self.dify_run_id,
+            "n8n_execution_id": pack.get("n8n_execution_id") or self.n8n_execution_id,
+            "state": "pack_ready",
+        }
+        if (self.job_id.apply_platform or "") == "linkedin":
+            vals["manual_task"] = True
+            vals["recommended_channel"] = vals["recommended_channel"] or "manual_linkedin"
+        self.write(vals)
+        return True
+
+    def to_orchestrator_payload(self):
+        """Scoped payload for n8n — personal applications only."""
+        self.ensure_one()
+        if self.account_id.account_type != "personal" or self.account_id.id == 1:
+            raise UserError(_("Payload refused for company/non-personal account."))
+        profile = self.env["linkedin.candidate.profile"].search(
+            [("account_id", "=", self.account_id.id), ("active", "=", True)], limit=1
+        )
+        policy = self.env["linkedin.apply.policy"].get_policy_for_account(self.account_id)
+        return {
+            "application_id": self.id,
+            "state": self.state,
+            "score": self.score,
+            "account_id": self.account_id.id,
+            "job": {
+                "id": self.job_id.id,
+                "title": self.job_id.title,
+                "company": self.job_id.company,
+                "location": self.job_id.location,
+                "apply_url": self.job_id.apply_url,
+                "apply_platform": self.job_id.apply_platform,
+                "listed_at": fields.Datetime.to_string(self.job_id.listed_at)
+                if self.job_id.listed_at
+                else None,
+                "description_excerpt": (self._plain_job_description() or "")[:2000],
+            },
+            "cv_version_id": self.cv_version_id.id if self.cv_version_id else None,
+            "candidate_profile": profile.to_sanitized_json() if profile else {},
+            "policy": policy.to_public_dict(),
+            "manual_task": self.manual_task,
+        }
 
     @api.constrains("cv_version_id", "account_id")
     def _check_cv_account(self):

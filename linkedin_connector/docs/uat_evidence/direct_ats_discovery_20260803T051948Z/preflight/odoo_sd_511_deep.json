@@ -1,0 +1,244 @@
+{
+  "id": "odoo_sd_511",
+  "start": "https://www.odoo.com/jobs/apply/511",
+  "final": "https://www.odoo.com/jobs/apply/software-developer-511",
+  "status": 200,
+  "host": "www.odoo.com",
+  "nav_chain": [
+    "https://www.odoo.com/jobs/apply/software-developer-511"
+  ],
+  "form_present": true,
+  "form_excerpt": "Your Name * Your Email * Your Phone Number * LinkedIn Profile Resume Provide either a resume file or a linkedin profile Short Introduction Send my application",
+  "has_app_fields": true,
+  "has_login_form": false,
+  "login_wall": false,
+  "visible_captcha_widgets": [
+    {
+      "sel": ".cf-turnstile",
+      "box": null,
+      "visible": false
+    },
+    {
+      "sel": "[data-sitekey]",
+      "box": null,
+      "visible": false
+    }
+  ],
+  "captcha_before_form_access": false,
+  "cloudflare_challenge_posts_blocked": [
+    {
+      "method": "POST",
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a252e6015c16e28d/EGVrvy0AsmS6JUQZy8ev.Ysj2ZcWtfEeIrvGY55ug0g-1785734692-1.2.1.1-FSK1lZ",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a252e6015c16e28d/EGVrvy0AsmS6JUQZy8ev.Ysj2ZcWtfEeIrvGY55ug0g-1785734692-1.2.1.1-FSK1lZ",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a252e6015c16e28d/EGVrvy0AsmS6JUQZy8ev.Ysj2ZcWtfEeIrvGY55ug0g-1785734692-1.2.1.1-FSK1lZ",
+      "type": "xhr"
+    }
+  ],
+  "form_access_without_auth": true,
+  "required_visible_fields": [
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "partner_name",
+      "id": "recruitment1",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "email",
+      "name": "email_from",
+      "id": "recruitment2",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "tel",
+      "name": "partner_phone",
+      "id": "recruitment3",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *",
+      "accept": ""
+    }
+  ],
+  "all_fields": [
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "partner_name",
+      "id": "recruitment1",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "email",
+      "name": "email_from",
+      "id": "recruitment2",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "tel",
+      "name": "partner_phone",
+      "id": "recruitment3",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "linkedin_profile",
+      "id": "recruitment4",
+      "required": false,
+      "visible": true,
+      "label": "LinkedIn Profile",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "file",
+      "name": "Resume",
+      "id": "recruitment6",
+      "required": false,
+      "visible": true,
+      "label": "Resume",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "passport_required",
+      "id": "oxlifk8ce5q",
+      "required": false,
+      "visible": false,
+      "label": "Passport Required",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "checkbox",
+      "name": "not_eu_citizen",
+      "id": "o78ammz6b7w4",
+      "required": false,
+      "visible": false,
+      "label": "I'm not EU citizen",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "passport_number",
+      "id": "owqsr6xbvaer",
+      "required": true,
+      "visible": false,
+      "label": "Passport Number\n                   *",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "file",
+      "name": "Passport copy",
+      "id": "oblbzkukjr9f",
+      "required": true,
+      "visible": false,
+      "label": "Passport\n                   *",
+      "accept": ""
+    },
+    {
+      "tag": "textarea",
+      "type": "textarea",
+      "name": "short_introduction",
+      "id": "recruitment5",
+      "required": false,
+      "visible": true,
+      "label": "Short Introduction",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "job_id",
+      "id": "recruitment7",
+      "required": false,
+      "visible": false,
+      "label": "Job",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "department_id",
+      "id": "recruitment8",
+      "required": false,
+      "visible": false,
+      "label": "Department",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "turnstile_captcha",
+      "id": "cf-chl-widget-uby4k_response",
+      "required": false,
+      "visible": false,
+      "label": "",
+      "accept": ""
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "",
+      "id": "",
+      "required": true,
+      "visible": false,
+      "label": "",
+      "accept": ""
+    }
+  ],
+  "blocked_mutations_count": 4,
+  "blocked_sample": [
+    {
+      "method": "POST",
+      "url": "https://www.odoo.com/mail/action",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a252e6015c16e28d/EGVrvy0AsmS6JUQZy8ev.Ysj2ZcWtfEeIrvGY55ug0g-1785734692-1.2.1.1-FSK1lZ",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a252e6015c16e28d/EGVrvy0AsmS6JUQZy8ev.Ysj2ZcWtfEeIrvGY55ug0g-1785734692-1.2.1.1-FSK1lZ",
+      "type": "xhr"
+    },
+    {
+      "method": "POST",
+      "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a252e6015c16e28d/EGVrvy0AsmS6JUQZy8ev.Ysj2ZcWtfEeIrvGY55ug0g-1785734692-1.2.1.1-FSK1lZ",
+      "type": "xhr"
+    }
+  ],
+  "body_has_send_application": true
+}

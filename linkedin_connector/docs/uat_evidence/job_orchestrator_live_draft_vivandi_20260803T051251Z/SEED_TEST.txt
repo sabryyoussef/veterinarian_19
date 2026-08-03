@@ -1,0 +1,2 @@
+platform bebee
+{"test_job_id": 39, "test_application_id": 31, "test_attempt_id": 4, "platform": "bebee", "stop_reason": "login_wall", "idempotency_key": "uat-live-draft-vivandi-bebee-20260803"}

@@ -1,0 +1,182 @@
+{
+  "final": "https://www.odoo.com/jobs/apply/software-developer-1",
+  "status": 200,
+  "title": "Apply for: Software Developer | Odoo",
+  "active": true,
+  "forms": [
+    {
+      "action": "https://www.odoo.com/website/form/",
+      "method": "post",
+      "id": "hr_recruitment_form"
+    }
+  ],
+  "fields": [
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "partner_name",
+      "id": "recruitment1",
+      "required": true,
+      "visible": true,
+      "checked": false,
+      "value": "",
+      "label": "Your Name *",
+      "context": "Your Name *"
+    },
+    {
+      "tag": "input",
+      "type": "email",
+      "name": "email_from",
+      "id": "recruitment2",
+      "required": true,
+      "visible": true,
+      "checked": false,
+      "value": "",
+      "label": "Your Email *",
+      "context": "Your Email *"
+    },
+    {
+      "tag": "input",
+      "type": "tel",
+      "name": "partner_phone",
+      "id": "recruitment3",
+      "required": true,
+      "visible": true,
+      "checked": false,
+      "value": "",
+      "label": "Your Phone Number *",
+      "context": "Your Phone Number *"
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "linkedin_profile",
+      "id": "recruitment4",
+      "required": false,
+      "visible": true,
+      "checked": false,
+      "value": "",
+      "label": "LinkedIn Profile",
+      "context": "LinkedIn Profile"
+    },
+    {
+      "tag": "input",
+      "type": "file",
+      "name": "Resume",
+      "id": "recruitment6",
+      "required": false,
+      "visible": true,
+      "checked": false,
+      "value": "",
+      "label": "Resume",
+      "context": "Resume"
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "passport_required",
+      "id": "oxlifk8ce5q",
+      "required": false,
+      "visible": false,
+      "checked": false,
+      "value": "",
+      "label": "Passport Required",
+      "context": "Passport Required"
+    },
+    {
+      "tag": "input",
+      "type": "checkbox",
+      "name": "not_eu_citizen",
+      "id": "o78ammz6b7w4",
+      "required": false,
+      "visible": false,
+      "checked": false,
+      "value": "false",
+      "label": "I'm not EU citizen",
+      "context": "I'm not EU citizen"
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": "passport_number",
+      "id": "owqsr6xbvaer",
+      "required": true,
+      "visible": false,
+      "checked": false,
+      "value": "",
+      "label": "Passport Number\n                   *",
+      "context": "Passport Number *"
+    },
+    {
+      "tag": "input",
+      "type": "file",
+      "name": "Passport copy",
+      "id": "oblbzkukjr9f",
+      "required": true,
+      "visible": false,
+      "checked": false,
+      "value": "",
+      "label": "Passport\n                   *",
+      "context": "Passport * Applications that are incomplete or do not match the provided applicant information will be declined."
+    },
+    {
+      "tag": "textarea",
+      "type": "textarea",
+      "name": "short_introduction",
+      "id": "recruitment5",
+      "required": false,
+      "visible": true,
+      "checked": false,
+      "value": "",
+      "label": "Short Introduction",
+      "context": "Short Introduction"
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "job_id",
+      "id": "recruitment7",
+      "required": false,
+      "visible": false,
+      "checked": false,
+      "value": "",
+      "label": "Job",
+      "context": "Job"
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "department_id",
+      "id": "recruitment8",
+      "required": false,
+      "visible": false,
+      "checked": false,
+      "value": "",
+      "label": "Department",
+      "context": "Department"
+    }
+  ],
+  "submit_controls": [
+    {
+      "tag": "A",
+      "type": "",
+      "text": "Send my application",
+      "id": "apply-btn",
+      "name": "",
+      "class": "btn btn-primary btn-lg s_website_form_send"
+    }
+  ],
+  "turnstile": {
+    "turnstile": false,
+    "sitekey": null,
+    "verify": false,
+    "nameVisible": true
+  },
+  "consent_text_hits": [
+    "Privacy"
+  ],
+  "blocked_count": 0,
+  "blocked_sample": [],
+  "salary_field_present": false,
+  "visa_field_present": true
+}

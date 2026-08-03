@@ -1,0 +1,18 @@
+{
+  "task_id": "9a2eea96-abd0-4117-b31a-bf29de958fc0",
+  "workflow_run_id": "41bde0f0-7776-4e86-a3dc-8c49bddc92e6",
+  "data": {
+    "id": "41bde0f0-7776-4e86-a3dc-8c49bddc92e6",
+    "workflow_id": "994f4415-bf6d-4956-931f-63068365ced7",
+    "status": "succeeded",
+    "outputs": {
+      "pack_json": "{\n  \"match_decision\": \"reject\",\n  \"exclusion_flags\": [\"no_belgium_work_authorization\"],\n  \"selected_cv\": \"uat_fictional_cv.pdf\",\n  \"cover_letter\": null,\n  \"screening_qa\": [\n    {\n      \"source\": \"missing\",\n      \"field\": \"belgium_work_authorization\",\n      \"answer\": null\n    }\n  ],\n  \"missing_facts\": {},\n  \"risk_notes\": [\"Candidate does not have Belgium work authorization.\"],\n  \"recommended_channel\": \"browser_dry_run\"\n}"
+    },
+    "error": null,
+    "elapsed_time": 3.055108,
+    "total_tokens": 747,
+    "total_steps": 3,
+    "created_at": 1785750469,
+    "finished_at": 1785750472
+  }
+}

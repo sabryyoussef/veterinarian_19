@@ -1,0 +1,18 @@
+{
+  "status": "TURNSTILE_VERIFICATION_FAILED",
+  "at": "2026-08-03T12:00:32Z",
+  "attempt_id": 5,
+  "application_id": 32,
+  "job_id": 40,
+  "external_submissions": 0,
+  "submit_clicked": false,
+  "apply_disabled": true,
+  "observed_ui": "Cloudflare Turnstile: Verification failed after click on Chromium in Selkies; Send stayed disabled",
+  "live_probe_ts": "2026-08-03T12:00:30Z",
+  "local_browser_alternative": {
+    "url": "https://www.odoo.com/jobs/apply/software-developer-1",
+    "cv": "/home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf",
+    "cv_sha256": "29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539",
+    "intro_file": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/odoo_sa_turnstile_handoff_20260803T101103Z/SHORT_INTRODUCTION.txt"
+  }
+}

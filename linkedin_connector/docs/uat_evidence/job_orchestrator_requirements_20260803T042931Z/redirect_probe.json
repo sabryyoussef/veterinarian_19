@@ -1,0 +1,10 @@
+[
+  {"job_id": 5, "http": 403, "hops": 0, "start_host": "ae.indeed.com", "final_host": "ae.indeed.com", "class": "indeed"},
+  {"job_id": 8, "http": 200, "hops": 0, "start_host": "bebee.com", "final_host": "bebee.com", "class": "bebee"},
+  {"job_id": 10, "http": 200, "hops": 0, "start_host": "bebee.com", "final_host": "bebee.com", "class": "bebee"},
+  {"job_id": 1, "http": 403, "hops": 0, "start_host": "ae.indeed.com", "final_host": "ae.indeed.com", "class": "indeed"},
+  {"job_id": 4, "http": 200, "hops": 0, "start_host": "ae.jobrapido.com", "final_host": "ae.jobrapido.com", "class": "jobrapido"},
+  {"job_id": 9, "http": 403, "hops": 0, "start_host": "www.glassdoor.com", "final_host": "www.glassdoor.com", "class": "glassdoor"},
+  {"job_id": 12, "http": 403, "hops": 0, "start_host": "himalayas.app", "final_host": "himalayas.app", "class": "himalayas"},
+  {"job_id": 11, "http": 200, "hops": 0, "start_host": "bebee.com", "final_host": "bebee.com", "class": "bebee"}
+]

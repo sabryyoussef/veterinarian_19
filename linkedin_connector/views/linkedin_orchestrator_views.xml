@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_linkedin_candidate_profile_form" model="ir.ui.view">
+        <field name="name">linkedin.candidate.profile.form</field>
+        <field name="model">linkedin.candidate.profile</field>
+        <field name="arch" type="xml">
+            <form string="Candidate Profile">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="account_id"/>
+                        <field name="active"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group string="Experience (confirmed only)">
+                        <field name="years_odoo_experience"/>
+                        <field name="technical_skills"/>
+                        <field name="functional_skills"/>
+                    </group>
+                    <group string="Preferences (leave unset if unconfirmed)">
+                        <field name="salary_expectation"/>
+                        <field name="notice_period"/>
+                        <field name="uae_relocation"/>
+                        <field name="visa_sponsorship"/>
+                        <field name="work_mode_preference"/>
+                    </group>
+                    <group string="Links">
+                        <field name="github_url"/>
+                        <field name="linkedin_url"/>
+                        <field name="portfolio_url"/>
+                        <field name="email"/>
+                        <field name="phone"/>
+                    </group>
+                    <group string="Standard answers JSON">
+                        <field name="standard_answers_json" colspan="2"/>
+                        <field name="notes" colspan="2"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_linkedin_candidate_profile_list" model="ir.ui.view">
+        <field name="name">linkedin.candidate.profile.list</field>
+        <field name="model">linkedin.candidate.profile</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="account_id"/>
+                <field name="years_odoo_experience"/>
+                <field name="work_mode_preference"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_linkedin_candidate_profile" model="ir.actions.act_window">
+        <field name="name">Candidate Profiles</field>
+        <field name="res_model">linkedin.candidate.profile</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_linkedin_candidate_profile"
+              name="Candidate Profiles"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_candidate_profile"
+              sequence="45"/>
+
+    <record id="view_linkedin_apply_policy_form" model="ir.ui.view">
+        <field name="name">linkedin.apply.policy.form</field>
+        <field name="model">linkedin.apply.policy</field>
+        <field name="arch" type="xml">
+            <form string="Apply Policy">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="account_id"/>
+                        <field name="kill_switch"/>
+                        <field name="auto_track_enabled"/>
+                        <field name="browser_submit_enabled"/>
+                        <field name="email_submit_enabled"/>
+                        <field name="allowed_platforms"/>
+                        <field name="min_score"/>
+                        <field name="max_submits_per_day"/>
+                        <field name="max_submits_per_month"/>
+                        <field name="company_cooldown_days"/>
+                    </group>
+                    <div class="text-muted">
+                        Submit flags default OFF. Kill switch default ON. LinkedIn auto-submit is always prohibited.
+                    </div>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_linkedin_apply_policy" model="ir.actions.act_window">
+        <field name="name">Apply Policies</field>
+        <field name="res_model">linkedin.apply.policy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_linkedin_apply_policy"
+              name="Apply Policies"
+              parent="menu_linkedin_config"
+              action="action_linkedin_apply_policy"
+              sequence="30"/>
+
+    <record id="view_linkedin_apply_attempt_list" model="ir.ui.view">
+        <field name="name">linkedin.apply.attempt.list</field>
+        <field name="model">linkedin.apply.attempt</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="application_id"/>
+                <field name="platform"/>
+                <field name="state"/>
+                <field name="dry_run"/>
+                <field name="stop_reason"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_linkedin_apply_attempt" model="ir.actions.act_window">
+        <field name="name">Apply Attempts</field>
+        <field name="res_model">linkedin.apply.attempt</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_linkedin_apply_attempt"
+              name="Apply Attempts"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_apply_attempt"
+              sequence="46"/>
+</odoo>

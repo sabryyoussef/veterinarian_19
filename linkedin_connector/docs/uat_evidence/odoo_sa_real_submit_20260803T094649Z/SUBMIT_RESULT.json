@@ -1,0 +1,41 @@
+{
+  "verdict": "ODOO_SA_REAL_APPLICATION_WAITING_FOR_TURNSTILE",
+  "message": "Send my application control is present but disabled with classes \"disabled cf_form_disabled\" \u2014 Cloudflare Turnstile/form protection blocks automated click. No Apply/Submit completed. Human interactive session required.",
+  "submit_clicked": false,
+  "external_side_effects": [
+    "page_loaded",
+    "form_fields_filled_locally_in_browser_context_before_failed_click",
+    "no_confirmed_application_post"
+  ],
+  "cf_form_disabled": true,
+  "short_introduction": "Senior Odoo developer with 8+ years of experience (Python, PostgreSQL, Odoo). Available for on-site work in Belgium after a 1-month notice period and ready to relocate. I do not currently hold EU/Belgium work authorization and require visa/work-permit sponsorship.",
+  "values_masked": {
+    "name": "Sabry Youssef",
+    "email": "ab***@g***.com",
+    "phone": "201***85",
+    "linkedin": "",
+    "resume": "Sabry_Youssef_CV.pdf"
+  },
+  "passport_handling": "left_optional_not_eu_unchecked_no_passport_docs; sponsorship_disclosed_in_short_introduction",
+  "consents": {
+    "required_privacy_processing": "implicit_website_form_no_checkbox",
+    "optional_marketing_checked": false,
+    "optional_marketing_present": false
+  },
+  "dify_run_id": "d5f721fe-14af-4528-8277-5951e5276f4f",
+  "dify_match_decision": "shortlist",
+  "token_fingerprint": "bd03213842cf302b",
+  "human_resume": {
+    "required": true,
+    "reason": "cf_form_disabled_turnstile",
+    "url": "https://www.odoo.com/jobs/apply/software-developer-1",
+    "instructions": [
+      "Open a secure interactive Chromium session on master (headed or noVNC).",
+      "Load the apply URL; Turnstile must be solved manually by Sabry.",
+      "Do not use CAPTCHA-solving services.",
+      "After Turnstile enables #apply-btn, confirm fields still match approved values, then click Send my application once.",
+      "Capture success/unknown evidence; then restore browser_submit_enabled=False and kill_switch=True."
+    ]
+  },
+  "started_at": "2026-08-03T09:53:03Z"
+}

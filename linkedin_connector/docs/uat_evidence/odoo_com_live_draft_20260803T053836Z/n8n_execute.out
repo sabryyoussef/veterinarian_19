@@ -1,0 +1,617 @@
+User settings loaded from: /home/node/.n8n/config
+Error tracking disabled because this release is older than 6 weeks.
+
+There is a deprecation related to your environment variables. Please take the recommended actions to update your configuration:
+ - N8N_RUNNERS_ENABLED -> Running n8n without task runners is deprecated. Task runners will be turned on by default in a future version. Please set `N8N_RUNNERS_ENABLED=true` to enable task runners now and avoid potential issues in the future. Learn more: https://docs.n8n.io/hosting/configuration/task-runners/
+
+{
+  "data": {
+    "startData": {},
+    "resultData": {
+      "runData": {
+        "Manual UAT Trigger": [
+          {
+            "startTime": 1785736158586,
+            "executionIndex": 0,
+            "source": [],
+            "hints": [],
+            "executionTime": 1,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {},
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "UAT Inputs": [
+          {
+            "startTime": 1785736158588,
+            "executionIndex": 1,
+            "source": [
+              {
+                "previousNode": "Manual UAT Trigger"
+              }
+            ],
+            "hints": [],
+            "executionTime": 5,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 32,
+                      "idempotency_key": "uat-odoo-com-live-draft-20260803",
+                      "cv_facts_json": "{\"name\": \"Sabry Youssef\", \"skills\": [\"Odoo\", \"Python\", \"PostgreSQL\", \"Docker\"], \"years_experience\": 8}"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Sign GET Payload Request": [
+          {
+            "startTime": 1785736158593,
+            "executionIndex": 2,
+            "source": [
+              {
+                "previousNode": "UAT Inputs"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 57,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 32,
+                      "idempotency_key": "uat-odoo-com-live-draft-20260803",
+                      "cv_facts_json": "{\"name\": \"Sabry Youssef\", \"skills\": [\"Odoo\", \"Python\", \"PostgreSQL\", \"Docker\"], \"years_experience\": 8}",
+                      "odoo_base": "https://test.drpaws.ai",
+                      "get_url": "https://test.drpaws.ai/linkedin/orchestrator/v1/applications/32",
+                      "ts": "1785736158",
+                      "signature": "sha256=2aca0fe03917c27adc68ed3b187c5727440f91671b0ab2eddbcaadc2853662cc",
+                      "n8n_execution_hint": "125827"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Fetch Application Payload": [
+          {
+            "startTime": 1785736158650,
+            "executionIndex": 3,
+            "source": [
+              {
+                "previousNode": "Sign GET Payload Request"
+              }
+            ],
+            "hints": [],
+            "executionTime": 389,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "data": {
+                        "application_id": 32,
+                        "state": "discovered",
+                        "score": 65,
+                        "account_id": 2,
+                        "job": {
+                          "id": 40,
+                          "title": "Software Developer",
+                          "company": "Odoo",
+                          "location": "Grand-Rosière (Farm 2), Belgium",
+                          "apply_url": "https://www.odoo.com/jobs/apply/software-developer-1",
+                          "apply_platform": "company_ats",
+                          "listed_at": null,
+                          "description_excerpt": "About the job We develop open source integrated business apps to help millions of employees save time in their day-to-day tasks. As a Software Developer in our Research & Development department at Odoo, you will take part in the design and development of new features and technologies that enhance our all-in-one business management software. You'll also help improve and maintain existing modules, with a strong focus on innovation, usability, and scalability. You'll never get bored! Working tools Programming languages: Python & JavaScript Database: PostgreSQL (with object-relational mapping) Collaboration platform: GitHub Development model: Open with external community Framework: Odoo (ORM, Workflows, Report Engine, BI, AI) Responsibilities Design, develop, and maintain Odoo features and applications Improve existing code to increase performance, usability, and reliability Ensure the quality and consistency of developments through testing and reviews Collaborate on innovative projects Be responsible for what you develop Work directly on the software you code for No customer deadlines Instead? More time to focus on quality, refactoring and testing. No monkey-coding Your input is valued in the process of improving our software. No solutions architect Streamlined process, providing real responsibilities and flexibility. No boring managers Only smart and experienced gurus. Relocation package Coming from abroad? Odoo's got you covered! We facilitate your relocation to Belgium by covering your first month's rent and flight ticket. Get ready to experience the Belgian way of life. It's learning to love rain, indulging in the world's best chocolate treats, or savoring authentic Belgian fries (they're the real deal!). About R&D teams Our development teams are working on a large scope of apps. At first, you'll start your onboarding as a \"generalist\", but after your 3 weeks of initial training (both functional and technical), the stage is yours. Choose a team that resonates with "
+                        },
+                        "cv_version_id": 3,
+                        "candidate_profile": {
+                          "profile_id": 2,
+                          "account_id": 2,
+                          "name": "Sabry Youssef — Personal candidate profile",
+                          "years_odoo_experience": 8,
+                          "technical_skills": "Python, Odoo, PostgreSQL, Docker",
+                          "functional_skills": "ERP implementation, techno-functional consulting",
+                          "work_mode_preference": "onsite",
+                          "github_url": "https://github.com/example-uat-candidate",
+                          "linkedin_url": "https://www.linkedin.com/in/sabry-youssef-56a878185/",
+                          "salary_expectation": "USD 1,000 per month",
+                          "notice_period": "1 month",
+                          "uae_relocation": "yes",
+                          "standard_answers_json": "{\"expected_salary_usd_per_month\": 1000, \"notice_period\": \"1 month\", \"ready_for_onsite_work\": true, \"ready_to_relocate\": true}"
+                        },
+                        "policy": {
+                          "id": 2,
+                          "kill_switch": true,
+                          "auto_track_enabled": false,
+                          "browser_submit_enabled": false,
+                          "email_submit_enabled": false,
+                          "allowed_platforms": [
+                            "aggregator",
+                            "bebee",
+                            "company_ats",
+                            "greenhouse",
+                            "lever",
+                            "unknown"
+                          ],
+                          "min_score": 50,
+                          "max_submits_per_day": 2,
+                          "max_submits_per_month": 20,
+                          "company_cooldown_days": 14
+                        },
+                        "manual_task": false
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Prepare Dify Inputs": [
+          {
+            "startTime": 1785736159039,
+            "executionIndex": 4,
+            "source": [
+              {
+                "previousNode": "Fetch Application Payload"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 18,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 32,
+                      "idempotency_key": "uat-odoo-com-live-draft-20260803",
+                      "odoo_base": "https://test.drpaws.ai",
+                      "account_id": 2,
+                      "apply_platform": "company_ats",
+                      "dify_url": "http://nginx/v1/workflows/run",
+                      "dify_key": "appYP6P1nfqaLnWyhgejAjHicq3",
+                      "dify_body": {
+                        "inputs": {
+                          "job_json": "{\"id\":40,\"title\":\"Software Developer\",\"company\":\"Odoo\",\"location\":\"Grand-Rosière (Farm 2), Belgium\",\"apply_url\":\"https://www.odoo.com/jobs/apply/software-developer-1\",\"apply_platform\":\"company_ats\",\"listed_at\":null,\"description_excerpt\":\"About the job We develop open source integrated business apps to help millions of employees save time in their day-to-day tasks. As a Software Developer in our Research & Development department at Odoo, you will take part in the design and development of new features and technologies that enhance our all-in-one business management software. You'll also help improve and maintain existing modules, with a strong focus on innovation, usability, and scalability. You'll never get bored! Working tools Programming languages: Python & JavaScript Database: PostgreSQL (with object-relational mapping) Collaboration platform: GitHub Development model: Open with external community Framework: Odoo (ORM, Workflows, Report Engine, BI, AI) Responsibilities Design, develop, and maintain Odoo features and applications Improve existing code to increase performance, usability, and reliability Ensure the quality and consistency of developments through testing and reviews Collaborate on innovative projects Be responsible for what you develop Work directly on the software you code for No customer deadlines Instead? More time to focus on quality, refactoring and testing. No monkey-coding Your input is valued in the process of improving our software. No solutions architect Streamlined process, providing real responsibilities and flexibility. No boring managers Only smart and experienced gurus. Relocation package Coming from abroad? Odoo's got you covered! We facilitate your relocation to Belgium by covering your first month's rent and flight ticket. Get ready to experience the Belgian way of life. It's learning to love rain, indulging in the world's best chocolate treats, or savoring authentic Belgian fries (they're the real deal!). About R&D teams Our development teams are working on a large scope of apps. At first, you'll start your onboarding as a \\\"generalist\\\", but after your 3 weeks of initial training (both functional and technical), the stage is yours. Choose a team that resonates with \"}",
+                          "candidate_profile_json": "{\"profile_id\":2,\"account_id\":2,\"name\":\"Sabry Youssef — Personal candidate profile\",\"years_odoo_experience\":8,\"technical_skills\":\"Python, Odoo, PostgreSQL, Docker\",\"functional_skills\":\"ERP implementation, techno-functional consulting\",\"work_mode_preference\":\"onsite\",\"github_url\":\"https://github.com/example-uat-candidate\",\"linkedin_url\":\"https://www.linkedin.com/in/sabry-youssef-56a878185/\",\"salary_expectation\":\"USD 1,000 per month\",\"notice_period\":\"1 month\",\"uae_relocation\":\"yes\",\"standard_answers_json\":\"{\\\"expected_salary_usd_per_month\\\": 1000, \\\"notice_period\\\": \\\"1 month\\\", \\\"ready_for_onsite_work\\\": true, \\\"ready_to_relocate\\\": true}\"}",
+                          "cv_facts_json": "{\"name\": \"Sabry Youssef\", \"skills\": [\"Odoo\", \"Python\", \"PostgreSQL\", \"Docker\"], \"years_experience\": 8}"
+                        },
+                        "response_mode": "blocking",
+                        "user": "n8n-job-orch-uat"
+                      },
+                      "policy": {
+                        "id": 2,
+                        "kill_switch": true,
+                        "auto_track_enabled": false,
+                        "browser_submit_enabled": false,
+                        "email_submit_enabled": false,
+                        "allowed_platforms": [
+                          "aggregator",
+                          "bebee",
+                          "company_ats",
+                          "greenhouse",
+                          "lever",
+                          "unknown"
+                        ],
+                        "min_score": 50,
+                        "max_submits_per_day": 2,
+                        "max_submits_per_month": 20,
+                        "company_cooldown_days": 14
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Call Dify Pack Generator UAT": [
+          {
+            "startTime": 1785736159057,
+            "executionIndex": 5,
+            "source": [
+              {
+                "previousNode": "Prepare Dify Inputs"
+              }
+            ],
+            "hints": [],
+            "executionTime": 2765,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "task_id": "544552e8-2053-4fad-9542-3f72d97dba85",
+                      "workflow_run_id": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+                      "data": {
+                        "id": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+                        "workflow_id": "994f4415-bf6d-4956-931f-63068365ced7",
+                        "status": "succeeded",
+                        "outputs": {
+                          "pack_json": "{\n  \"match_decision\": \"shortlist\",\n  \"exclusion_flags\": [],\n  \"selected_cv\": \"uat_fictional_cv.pdf\",\n  \"cover_letter\": null,\n  \"screening_qa\": [\n    {\n      \"source\": \"missing\",\n      \"field\": \"visa_sponsorship\",\n      \"answer\": null\n    }\n  ],\n  \"missing_facts\": {\n    \"visa_sponsorship\": null\n  },\n  \"risk_notes\": [],\n  \"recommended_channel\": \"browser_dry_run\"\n}"
+                        },
+                        "error": null,
+                        "elapsed_time": 2.612114,
+                        "total_tokens": 1058,
+                        "total_steps": 3,
+                        "created_at": 1785736159,
+                        "finished_at": 1785736161
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Validate Pack JSON Fail-Closed": [
+          {
+            "startTime": 1785736161822,
+            "executionIndex": 6,
+            "source": [
+              {
+                "previousNode": "Call Dify Pack Generator UAT"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 18,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 32,
+                      "idempotency_key": "uat-odoo-com-live-draft-20260803",
+                      "odoo_base": "https://test.drpaws.ai",
+                      "apply_platform": "company_ats",
+                      "pack": {
+                        "match_decision": "shortlist",
+                        "exclusion_flags": [],
+                        "selected_cv": "uat_fictional_cv.pdf",
+                        "cover_letter": null,
+                        "screening_qa": [
+                          {
+                            "source": "missing",
+                            "field": "visa_sponsorship",
+                            "answer": null
+                          }
+                        ],
+                        "missing_facts": [
+                          "visa_sponsorship",
+                          "salary_expectation",
+                          "notice_period",
+                          "uae_relocation"
+                        ],
+                        "risk_notes": [],
+                        "recommended_channel": "browser_dry_run"
+                      },
+                      "dify_run_id": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+                      "pack_url": "https://test.drpaws.ai/linkedin/orchestrator/v1/applications/32/pack",
+                      "pack_body": {
+                        "pack": {
+                          "match_decision": "shortlist",
+                          "exclusion_flags": [],
+                          "selected_cv": "uat_fictional_cv.pdf",
+                          "cover_letter": null,
+                          "screening_qa": [
+                            {
+                              "source": "missing",
+                              "field": "visa_sponsorship",
+                              "answer": null
+                            }
+                          ],
+                          "missing_facts": [
+                            "visa_sponsorship",
+                            "salary_expectation",
+                            "notice_period",
+                            "uae_relocation"
+                          ],
+                          "risk_notes": [],
+                          "recommended_channel": "browser_dry_run"
+                        },
+                        "n8n_execution_id": "125827",
+                        "dify_run_id": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8"
+                      },
+                      "pack_raw": "{\"pack\":{\"match_decision\":\"shortlist\",\"exclusion_flags\":[],\"selected_cv\":\"uat_fictional_cv.pdf\",\"cover_letter\":null,\"screening_qa\":[{\"source\":\"missing\",\"field\":\"visa_sponsorship\",\"answer\":null}],\"missing_facts\":[\"visa_sponsorship\",\"salary_expectation\",\"notice_period\",\"uae_relocation\"],\"risk_notes\":[],\"recommended_channel\":\"browser_dry_run\"},\"n8n_execution_id\":\"125827\",\"dify_run_id\":\"0c1b512b-5979-4cc2-98c3-aaa48066e5e8\"}",
+                      "ts": "1785736161",
+                      "signature": "sha256=d74edbd1be6e6622e93cec203f95d487070e58660e95876575b61bdc7b4dae33",
+                      "worker_url": "http://uat-job-worker:8095"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Write Pack to Odoo TEST": [
+          {
+            "startTime": 1785736161841,
+            "executionIndex": 7,
+            "source": [
+              {
+                "previousNode": "Validate Pack JSON Fail-Closed"
+              }
+            ],
+            "hints": [],
+            "executionTime": 298,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "application_id": 32,
+                      "state": "pack_ready"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Browser Worker Dry-Run": [
+          {
+            "startTime": 1785736162140,
+            "executionIndex": 8,
+            "source": [
+              {
+                "previousNode": "Write Pack to Odoo TEST"
+              }
+            ],
+            "hints": [],
+            "executionTime": 1317,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "attempt_id": "baf737ac-e8bf-4c6e-85cb-b1ac81c6442e",
+                      "state": "drafted",
+                      "stop_reason": "none",
+                      "dry_run": true,
+                      "final_url": "file:///app/fixtures/bebee_like.html",
+                      "screenshot_paths": [
+                        "/artifacts/baf737ac-e8bf-4c6e-85cb-b1ac81c6442e/01_loaded.png",
+                        "/artifacts/baf737ac-e8bf-4c6e-85cb-b1ac81c6442e/02_drafted.png"
+                      ],
+                      "adapter_used": "bebee_like",
+                      "filled_fields": [
+                        "full_name",
+                        "email",
+                        "cover_letter",
+                        "cv"
+                      ],
+                      "message": "bebee_like draft filled (dry-run; submit not clicked)",
+                      "created_at": "2026-08-03T05:49:22.184539Z",
+                      "updated_at": "2026-08-03T05:49:23.438464Z",
+                      "metadata": {
+                        "application_id": 32,
+                        "idempotency_key": "uat-odoo-com-live-draft-20260803"
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Prepare Attempt Write": [
+          {
+            "startTime": 1785736163457,
+            "executionIndex": 9,
+            "source": [
+              {
+                "previousNode": "Browser Worker Dry-Run"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 14,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 32,
+                      "idempotency_key": "uat-odoo-com-live-draft-20260803",
+                      "dify_run_id": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+                      "worker_attempt_id": "baf737ac-e8bf-4c6e-85cb-b1ac81c6442e",
+                      "attempt_url": "https://test.drpaws.ai/linkedin/orchestrator/v1/applications/32/attempts",
+                      "attempt_body": {
+                        "idempotency_key": "uat-odoo-com-live-draft-20260803",
+                        "dry_run": true,
+                        "state": "drafted",
+                        "stop_reason": "none",
+                        "stop_detail": "bebee_like draft filled (dry-run; submit not clicked)",
+                        "final_url": "file:///app/fixtures/bebee_like.html",
+                        "worker_attempt_id": "baf737ac-e8bf-4c6e-85cb-b1ac81c6442e",
+                        "n8n_execution_id": "125827",
+                        "dify_run_id": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+                        "response": {
+                          "sanitized": true,
+                          "state": "drafted",
+                          "stop_reason": "none",
+                          "adapter_used": "bebee_like",
+                          "filled_fields": [
+                            "full_name",
+                            "email",
+                            "cover_letter",
+                            "cv"
+                          ],
+                          "screenshot_count": 2
+                        }
+                      },
+                      "ts": "1785736163",
+                      "signature": "sha256=9af9749f8a7aad08334ad273f5708071e5842d3090ae1502136d023c8adee849",
+                      "worker_state": "drafted",
+                      "worker_stop_reason": "none"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Write Attempt to Odoo TEST": [
+          {
+            "startTime": 1785736163472,
+            "executionIndex": 10,
+            "source": [
+              {
+                "previousNode": "Prepare Attempt Write"
+              }
+            ],
+            "hints": [],
+            "executionTime": 281,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "attempt_id": 5,
+                      "state": "drafted",
+                      "idempotent": false
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Sanitized Summary": [
+          {
+            "startTime": 1785736163753,
+            "executionIndex": 11,
+            "source": [
+              {
+                "previousNode": "Write Attempt to Odoo TEST"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 13,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "application_id": 32,
+                      "attempt_id": 5,
+                      "attempt_state": "drafted",
+                      "idempotent": false,
+                      "idempotency_key": "uat-odoo-com-live-draft-20260803",
+                      "dify_run_id": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+                      "worker_attempt_id": "baf737ac-e8bf-4c6e-85cb-b1ac81c6442e",
+                      "worker_state": "drafted",
+                      "worker_stop_reason": "none",
+                      "n8n_execution_id": "125827"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "lastNodeExecuted": "Sanitized Summary"
+    },
+    "executionData": {
+      "contextData": {},
+      "nodeExecutionStack": [],
+      "metadata": {},
+      "waitingExecution": {},
+      "waitingExecutionSource": {}
+    }
+  },
+  "mode": "cli",
+  "startedAt": "2026-08-03T05:49:18.579Z",
+  "stoppedAt": "2026-08-03T05:49:23.767Z",
+  "status": "running",
+  "finished": true
+}

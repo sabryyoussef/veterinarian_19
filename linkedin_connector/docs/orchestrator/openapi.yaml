@@ -1,0 +1,161 @@
+openapi: 3.0.3
+info:
+  title: LinkedIn Job Orchestrator API (Odoo TEST)
+  version: 1.0.0-uat
+  description: |
+    Signed scoped API for n8n. No direct PostgreSQL access.
+    Company account id=1 and live submit states are rejected during UAT.
+servers:
+  - url: http://127.0.0.1:8028
+    description: PetSpot El Sahel TEST
+security:
+  - OrchestratorHMAC: []
+paths:
+  /linkedin/orchestrator/v1/health:
+    get:
+      summary: Health (no auth)
+      security: []
+      responses:
+        "200":
+          description: OK
+  /linkedin/orchestrator/v1/applications/{application_id}:
+    get:
+      summary: Read one approved/personal application payload
+      parameters:
+        - $ref: "#/components/parameters/ApplicationId"
+      responses:
+        "200":
+          description: Payload
+        "401":
+          description: Unauthorized
+        "403":
+          description: Company account forbidden
+        "404":
+          description: Not found
+  /linkedin/orchestrator/v1/applications/{application_id}/pack:
+    post:
+      summary: Write Dify pack result
+      parameters:
+        - $ref: "#/components/parameters/ApplicationId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pack]
+              properties:
+                pack:
+                  $ref: "#/components/schemas/ApplicationPack"
+                n8n_execution_id:
+                  type: string
+                dify_run_id:
+                  type: string
+      responses:
+        "200":
+          description: Pack stored; state=pack_ready
+        "401":
+          description: Unauthorized
+        "403":
+          description: Company forbidden
+        "409":
+          description: Unauthorized state transition
+        "422":
+          description: invented_facts_forbidden
+  /linkedin/orchestrator/v1/applications/{application_id}/attempts:
+    post:
+      summary: Create/update attempt receipt (dry_run forced true)
+      parameters:
+        - $ref: "#/components/parameters/ApplicationId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttemptUpsert"
+      responses:
+        "200":
+          description: Attempt upserted
+        "403":
+          description: live_submit_disabled / company forbidden
+        "409":
+          description: Conflict
+components:
+  securitySchemes:
+    OrchestratorHMAC:
+      type: apiKey
+      in: header
+      name: X-Orchestrator-Signature
+      description: |
+        sha256=HMAC_SHA256(secret, "{unix_ts}." + raw_body).
+        Also send X-Orchestrator-Timestamp (unix seconds, ±300s).
+  parameters:
+    ApplicationId:
+      name: application_id
+      in: path
+      required: true
+      schema:
+        type: integer
+  schemas:
+    ApplicationPack:
+      type: object
+      required:
+        - match_decision
+        - exclusion_flags
+        - selected_cv
+        - cover_letter
+        - screening_qa
+        - missing_facts
+        - risk_notes
+        - recommended_channel
+      properties:
+        match_decision:
+          type: string
+          enum: [shortlist, reject, needs_human]
+        exclusion_flags:
+          type: array
+          items:
+            type: string
+        selected_cv:
+          type: string
+        cover_letter:
+          type: string
+        screening_qa:
+          type: array
+          items:
+            type: object
+        missing_facts:
+          type: array
+          items:
+            type: string
+        risk_notes:
+          type: string
+        recommended_channel:
+          type: string
+        invented_facts:
+          type: boolean
+          description: If true, API returns 422
+    AttemptUpsert:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+        dry_run:
+          type: boolean
+          default: true
+        state:
+          type: string
+        stop_reason:
+          type: string
+        stop_detail:
+          type: string
+        final_url:
+          type: string
+        worker_attempt_id:
+          type: string
+        n8n_execution_id:
+          type: string
+        dify_run_id:
+          type: string
+        response:
+          type: object

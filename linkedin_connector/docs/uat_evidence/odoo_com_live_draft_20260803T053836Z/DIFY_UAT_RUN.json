@@ -1,0 +1,18 @@
+{
+  "task_id": "77a305bc-5c5c-432a-b419-50a1dfd944c2",
+  "workflow_run_id": "9b89b007-a5ed-42e3-aed7-ce5f20685346",
+  "data": {
+    "id": "9b89b007-a5ed-42e3-aed7-ce5f20685346",
+    "workflow_id": "994f4415-bf6d-4956-931f-63068365ced7",
+    "status": "succeeded",
+    "outputs": {
+      "pack_json": "{\n  \"match_decision\": \"shortlist\",\n  \"exclusion_flags\": [],\n  \"selected_cv\": \"uat_fictional_cv.pdf\",\n  \"cover_letter\": null,\n  \"screening_qa\": [\n    {\n      \"source\": \"missing\",\n      \"field\": \"visa_sponsorship\",\n      \"answer\": null\n    }\n  ],\n  \"missing_facts\": {\n    \"visa_sponsorship\": null\n  },\n  \"risk_notes\": [],\n  \"recommended_channel\": \"browser_dry_run\"\n}"
+    },
+    "error": null,
+    "elapsed_time": 2.148299,
+    "total_tokens": 683,
+    "total_steps": 3,
+    "created_at": 1785736125,
+    "finished_at": 1785736127
+  }
+}

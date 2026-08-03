@@ -1,0 +1,3 @@
+5|{"odoo": 30, "seniority": 25, "stack": 10}
+8|{"odoo": 30, "seniority": 25, "stack": 10}
+10|{"odoo": 30, "seniority": 25, "stack": 10}

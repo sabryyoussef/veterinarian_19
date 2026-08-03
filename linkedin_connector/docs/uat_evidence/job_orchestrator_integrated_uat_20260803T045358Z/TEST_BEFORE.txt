@@ -1,0 +1,5 @@
+ver=19.0.2.10.0
+secret=set
+apps_a1=0
+apps_a2=3
+policy=2|kill=true|browser=false|email=false

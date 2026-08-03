@@ -1,0 +1,6 @@
+cron=15|Digest Emails|active=true|last=2026-08-02 15:02:14
+cron=60|LinkedIn: Publish Scheduled Posts|active=false|last=2026-08-03 03:20:38
+cron=61|LinkedIn: Refresh Feed|active=false|last=2026-08-03 03:20:38
+cron=62|LinkedIn: Sync Messages|active=false|last=2026-08-03 03:20:39
+cron=112|LinkedIn: Daily Job Digest|active=true|last=2026-08-03 03:55:30
+cron=113|LinkedIn: Daily JSearch Job Search|active=true|last=2026-08-03 03:52:12

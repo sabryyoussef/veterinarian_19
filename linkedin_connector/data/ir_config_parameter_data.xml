@@ -6,7 +6,11 @@
     </record>
     <record id="icp_job_score_threshold" model="ir.config_parameter">
         <field name="key">linkedin_connector.job_score_threshold</field>
-        <field name="value">50</field>
+        <field name="value">65</field>
+    </record>
+    <record id="icp_live_submit_enabled" model="ir.config_parameter">
+        <field name="key">linkedin_connector.live_submit_enabled</field>
+        <field name="value">False</field>
     </record>
     <record id="icp_job_search_queries" model="ir.config_parameter">
         <field name="key">linkedin_connector.job_search_queries</field>
@@ -39,5 +43,9 @@
     <record id="icp_jsearch_daily_queries_json" model="ir.config_parameter">
         <field name="key">linkedin_connector.jsearch_daily_queries_json</field>
         <field name="value">[{"query":"Odoo Developer in UAE","country":"ae","remote":false},{"query":"Odoo Developer in Egypt","country":"eg","remote":false},{"query":"Remote Odoo Developer","country":"","remote":true}]</field>
+    </record>
+    <record id="icp_orchestrator_webhook_secret" model="ir.config_parameter">
+        <field name="key">linkedin_connector.orchestrator_webhook_secret</field>
+        <field name="value"></field>
     </record>
 </odoo>

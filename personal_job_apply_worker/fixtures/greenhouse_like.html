@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Greenhouse-like Apply (Offline Fixture)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 680px; margin: 2rem auto; padding: 0 1rem; }
+    .row { display: flex; gap: 1rem; }
+    .row label { flex: 1; }
+    label { display: block; margin-top: 1rem; }
+    input, textarea { width: 100%; padding: 0.4rem; box-sizing: border-box; }
+    button { margin-top: 1.5rem; padding: 0.6rem 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Job Application — Greenhouse-like Fixture</h1>
+  <p>Offline dry-run ATS form. Worker fills draft only.</p>
+  <form id="greenhouse-like-form" data-adapter="greenhouse_like" action="#" method="post" onsubmit="return false;">
+    <div class="row">
+      <label>First name
+        <input type="text" name="first_name" id="first_name" required />
+      </label>
+      <label>Last name
+        <input type="text" name="last_name" id="last_name" required />
+      </label>
+    </div>
+    <label>Email
+      <input type="email" name="email" id="email" required />
+    </label>
+    <label>Phone
+      <input type="tel" name="phone" id="phone" />
+    </label>
+    <label>Cover letter
+      <textarea name="cover_letter" id="cover_letter" rows="4"></textarea>
+    </label>
+    <label>Resume
+      <input type="file" name="resume" id="resume" accept=".pdf,application/pdf" />
+    </label>
+    <button type="submit" id="submit-application">Submit application</button>
+  </form>
+</body>
+</html>

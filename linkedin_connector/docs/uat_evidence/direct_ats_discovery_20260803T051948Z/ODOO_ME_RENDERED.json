@@ -1,0 +1,31 @@
+{
+  "final_url": "https://www.odoo.com/jobs?office_id=1887990",
+  "title": "Jobs - Odoo",
+  "jobs": [
+    {
+      "href": "https://www.odoo.com/jobs/technical-consultant-education-2305",
+      "text": "Technical Consultant - Education\n501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates\nMarketin"
+    },
+    {
+      "href": "https://www.odoo.com/jobs/education-program-consultant-1222",
+      "text": "Education Program Consultant\n501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates"
+    },
+    {
+      "href": "https://www.odoo.com/jobs/software-developer-511",
+      "text": "Software Developer\n501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates\nServices / Development"
+    }
+  ],
+  "blocked_mutations": [
+    {
+      "method": "POST",
+      "host": "www.odoo.com",
+      "path": "/mail/action"
+    },
+    {
+      "method": "POST",
+      "host": "www.odoo.com",
+      "path": "/web/webclient/version_info"
+    }
+  ],
+  "body_excerpt": "Skip to Content Odoo Sign in Try it free Apps Industries Community Pricing Help Want to have an impact while having fun? Your next adventure starts below! Countries All Countries Offices Odoo Middle East DWC-LLC Departments All Departments Job position Sales Internship 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Technical Consultant - Education 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Marketing / Education Sales Executive - Turkish Speaker (Dubai) 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Sales / Direct Sales Work on the full sales cycle including a large part of analysis Sales Executive - Uzbek/Russian Speaker (Dubai) 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Sales / Direct Sales Work on the full sales cycle including a large part of analysis Education Program Consultant 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Software Developer 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Services / Development Services A consultant role where you develop and customize specific solutions based on our clients' needs. Performance Marketing Executive/Media Buyer 1 open position 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Marketing SDR - Mid-Market & Corporate 501, Building A1-A2, Dubai South Business Park, Dubai DU, United Arab Emirates Sales "
+}

@@ -1,0 +1,33 @@
+{
+  "status": "LOCAL_BROWSER_HANDOFF_PREPARED",
+  "url": "https://www.odoo.com/jobs/apply/software-developer-1",
+  "records": {
+    "job_id": 40,
+    "application_id": 32,
+    "attempt_id": 5
+  },
+  "do_not_create_new_attempt": true,
+  "cv_path": "/home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf",
+  "cv_sha256": "29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539",
+  "cv_filename": "Sabry_Youssef_CV.pdf",
+  "intro_file": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/odoo_sa_turnstile_handoff_20260803T101103Z/SHORT_INTRODUCTION.txt",
+  "short_introduction": "Senior Odoo developer with 8+ years of experience (Python, PostgreSQL, Odoo). Available for on-site work in Belgium after a 1-month notice period and ready to relocate. I do not currently hold EU/Belgium work authorization and require visa/work-permit sponsorship.",
+  "fill_secrets_file": "/home/sabry/private/job_orchestrator/odoo_com_canary_fill.json",
+  "optional_local_autofill_script": "/home/sabry/private/job_orchestrator/odoo_sa_local_browser_handoff.py",
+  "steps_manual": [
+    "On your normal desktop browser (laptop Chrome/Firefox or master seat DISPLAY=:0 \u2014 not Docker/Selkies)",
+    "Open https://www.odoo.com/jobs/apply/software-developer-1",
+    "Name/email/phone from verified fill file; LinkedIn empty",
+    "Attach Sabry_Youssef_CV.pdf from private path above",
+    "Paste exact short introduction from intro_file",
+    "Leave I'm not EU citizen unchecked",
+    "Solve Turnstile yourself",
+    "Click Send my application once",
+    "Report success/unknown \u2014 do not retry"
+  ],
+  "steps_assisted_master_display": [
+    "DISPLAY=:0 /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/personal_job_apply_worker/.venv/bin/python /home/sabry/private/job_orchestrator/odoo_sa_local_browser_handoff.py",
+    "Script fills form on local Chromium and stops before Submit",
+    "You solve Turnstile and click Send once on that window"
+  ]
+}

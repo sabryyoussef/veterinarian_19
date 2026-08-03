@@ -1,0 +1,25 @@
+{
+  "status": "SUBMITTED_LOCAL_BROWSER_HUMAN",
+  "at": "2026-08-03T12:21:30Z",
+  "observed_ui": "Thank you for your application \u2014 recruitment officer will get in touch",
+  "url_observed": "odoo.com thank-you confirmation page",
+  "records": {
+    "job_id": 40,
+    "application_id": 32,
+    "attempt_id": 5
+  },
+  "external_submissions": 1,
+  "submit_clicked": true,
+  "submit_method": "human_local_browser_laptop",
+  "turnstile": "solved_by_human_outside_playwright_docker_selkies",
+  "automation": {
+    "submit_clicked_by_automation": false,
+    "turnstile_automated": false,
+    "n8n": "inactive"
+  },
+  "screenshot": "local_human_thank_you_20260803T1520.png",
+  "prior_blocks": [
+    "BLOCKED_TURNSTILE_ENVIRONMENT (Selkies/Docker)",
+    "LOCAL_PLAYWRIGHT_STILL_BLOCKED (DISPLAY=:0 Playwright Chromium)"
+  ]
+}

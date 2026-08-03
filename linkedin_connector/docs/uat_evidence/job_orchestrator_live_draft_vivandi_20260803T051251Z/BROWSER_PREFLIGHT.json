@@ -1,0 +1,124 @@
+{
+  "ts": "2026-08-03T05:15:11.708480+00:00",
+  "start_url": "https://bebee.com/ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037",
+  "final_url": "https://bebee.com/ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037",
+  "http_status": 200,
+  "title": "Odoo Techno Functional Consultant - Vivandi | BeBee",
+  "login_wall_detected": true,
+  "forms_on_page": [],
+  "applyish_controls": [
+    {
+      "tag": "A",
+      "text": "\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644",
+      "href": "/auth/login?callbackUrl=%2Fae%2Fjobs%2Fodoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "\u062a\u0642\u062f\u064a\u0645",
+      "href": null
+    },
+    {
+      "tag": "A",
+      "text": "\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644",
+      "href": "/auth/register?country=ae"
+    }
+  ],
+  "mutation_requests_blocked": [
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/traffic/view",
+      "resource_type": "ping"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/vitals",
+      "resource_type": "ping"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/job-views",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/analytics/funnel-event",
+      "resource_type": "ping"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "www.google-analytics.com",
+      "path": "/g/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "www.google-analytics.com",
+      "path": "/g/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "www.google.com",
+      "path": "/g/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "www.google.com",
+      "path": "/g/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect",
+      "resource_type": "fetch"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/vitals",
+      "resource_type": "ping"
+    }
+  ],
+  "mutation_count": 14,
+  "allowed_nav_count": 69,
+  "allowed_methods_only": true,
+  "offline_switched_before_fill": true,
+  "personal_data_entered": false,
+  "submit_clicked": false,
+  "stop_reason": "login_wall",
+  "platform": "bebee",
+  "underlying_source": "indeed",
+  "indeed_apply_url": "http://ae.indeed.com/job/odoo-techno-functional-consultant-50dea3e8b77b2e49",
+  "indeed_probe": "HTTP 403",
+  "body_excerpt_sanitized": "Skip to main content \u0648\u0638\u0627\u0626\u0641 \u0623\u0634\u062e\u0627\u0635 \u062e\u062f\u0645\u0627\u062a \u0633\u064a\u0631\u0629 \u0630\u0627\u062a\u064a\u0629 \u0627\u0644\u0645\u062f\u0648\u0646\u0629 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u0625\u0646\u0634\u0627\u0621 \u062d\u0633\u0627\u0628 \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0644\u0645\u062a\u062d\u062f\u0629 \u0648\u0638\u0627\u0626\u0641 Odoo Techno Functional Consultant \u0631\u062c\u0648\u0639 Odoo Techno Functional Consultant Technology Vivandi Dubai, \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0644\u0645\u062a\u062d\u062f\u0629 \u0645\u0646\u0630 1 \u0623\u0633\u0627\u0628\u064a\u0639 \u062d\u062a\u0649 22\u200f/9\u200f/2026 \u062f\u0648\u0627\u0645 \u0643\u0627\u0645\u0644 \u0641\u064a \u0627\u0644\u0645\u0648\u0642\u0639 \u062d\u0641\u0638 \u0642\u062f\u0651\u0645 \u0627\u0644\u0622\u0646 \u0643\u064a\u0651\u0641 \u0633\u064a\u0631\u062a\u064a \u0627\u0644\u0630\u0627\u062a\u064a\u0629 \u0645\u0639 \u0647\u0630\u0647 \u0627\u0644\u0648\u0638\u064a\u0641\u0629 \u0648\u0635\u0641 \u0627\u0644\u0648\u0638\u064a\u0641\u0629 Note: Immediate Joiners Only. Open for candidates outside the country available on an immediate basis Job description: We are seeking an experienced Odoo "
+}

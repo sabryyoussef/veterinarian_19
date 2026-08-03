@@ -1,0 +1,12 @@
+{
+  "before": {
+    "kill_switch": true,
+    "browser_submit_enabled": false,
+    "email_submit_enabled": false
+  },
+  "after": {
+    "kill_switch": false,
+    "browser_submit_enabled": true,
+    "email_submit_enabled": false
+  }
+}

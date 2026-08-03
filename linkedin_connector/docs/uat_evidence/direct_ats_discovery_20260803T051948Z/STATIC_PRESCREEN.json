@@ -1,0 +1,191 @@
+[
+  {
+    "name": "flatgigs_workable",
+    "bytes": 5423,
+    "title": "Flatgigs - Current Openings",
+    "markers": [
+      "captcha"
+    ],
+    "json_fields_sample": [],
+    "inputs_sample": [],
+    "odoo_excerpt": ""
+  },
+  {
+    "name": "roayatec",
+    "bytes": 29027,
+    "title": "Senior Odoo \u00a0Developer | roayatec.com",
+    "markers": [
+      "login",
+      "form",
+      "odoo",
+      "german_lang",
+      "junior"
+    ],
+    "json_fields_sample": [],
+    "inputs_sample": [
+      {
+        "tag": "input",
+        "name": "search",
+        "type": "search"
+      },
+      {
+        "tag": "input",
+        "name": "order",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "search",
+        "type": "search"
+      },
+      {
+        "tag": "input",
+        "name": "order",
+        "type": "hidden"
+      }
+    ],
+    "odoo_excerpt": "=\"viewport\" content=\"width=device-width, initial-scale=1\"/> <meta name=\"generator\" content=\"Odoo\"/> <meta property=\"og:type\" content=\"website\"/> <meta property=\"og:title\" content=\"Senior Odoo Developer | roayatec.com\"/> <meta property=\"og:site_name\" content=\"roayatec.com\"/> <meta property=\"og:url\" content=\"https://www.roayatec.com/jobs/senior-o"
+  },
+  {
+    "name": "qualysoft_lever_apply",
+    "bytes": 721517,
+    "title": "Qualysoft - Odoo-Entwickler/in (m/w/d)",
+    "markers": [
+      "login",
+      "captcha",
+      "file_upload",
+      "form",
+      "odoo",
+      "german_lang"
+    ],
+    "json_fields_sample": [],
+    "inputs_sample": [
+      {
+        "tag": "input",
+        "name": "resume",
+        "type": "file"
+      },
+      {
+        "tag": "input",
+        "name": "name",
+        "type": "text"
+      },
+      {
+        "tag": "input",
+        "name": "email",
+        "type": "email"
+      },
+      {
+        "tag": "input",
+        "name": "phone",
+        "type": "text"
+      },
+      {
+        "tag": "input",
+        "name": "location",
+        "type": "text"
+      },
+      {
+        "tag": "input",
+        "name": "selectedLocation",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "org",
+        "type": "text"
+      },
+      {
+        "tag": "input",
+        "name": "urls[LinkedIn]",
+        "type": "text"
+      },
+      {
+        "tag": "input",
+        "name": "cards[f226dea5-dc6a-4f8e-be7e-2992e5cf0ffd][baseTemplate]",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "cards[f226dea5-dc6a-4f8e-be7e-2992e5cf0ffd][field0]",
+        "type": "radio"
+      },
+      {
+        "tag": "input",
+        "name": "cards[f226dea5-dc6a-4f8e-be7e-2992e5cf0ffd][field0]",
+        "type": "radio"
+      },
+      {
+        "tag": "input",
+        "name": "cards[f226dea5-dc6a-4f8e-be7e-2992e5cf0ffd][field1]",
+        "type": "radio"
+      },
+      {
+        "tag": "input",
+        "name": "cards[f226dea5-dc6a-4f8e-be7e-2992e5cf0ffd][field1]",
+        "type": "radio"
+      },
+      {
+        "tag": "input",
+        "name": "accountId",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "linkedInData",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "origin",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "referer",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "timezone",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "socialReferralKey",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "socialSource",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "resumeStorageId",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "h-captcha-response",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "source",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "consent[marketing]",
+        "type": "hidden"
+      },
+      {
+        "tag": "input",
+        "name": "consent[marketing]",
+        "type": "checkbox"
+      }
+    ],
+    "odoo_excerpt": "rset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Qualysoft - Odoo-Entwickler/in (m/w/d)</title><meta name=\"twitter:card\" value=\"summary\"><meta name=\"twitter:title\" content=\"Qualysoft - Odoo-Entwickler/in (m/w/d)\"><meta name=\"twitter:description\" content=\"\"><meta name=\"twitter:label1\" value=\"Location\" /><meta name=\"twitter:data1\" value=\"Graz\" /><meta name=\"twi"
+  }
+]

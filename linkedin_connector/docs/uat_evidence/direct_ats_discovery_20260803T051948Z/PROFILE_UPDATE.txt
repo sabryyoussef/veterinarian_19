@@ -1,0 +1,1 @@
+{"profile_id": 2, "sanitized_keys": ["account_id", "functional_skills", "github_url", "linkedin_url", "name", "notice_period", "profile_id", "salary_expectation", "standard_answers_json", "technical_skills", "uae_relocation", "work_mode_preference", "years_odoo_experience"], "visa_in_sanitized": false}

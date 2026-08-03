@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BeBee-like Apply (Offline Fixture)</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: 1rem; }
+    input, textarea { width: 100%; padding: 0.4rem; }
+    button { margin-top: 1.5rem; padding: 0.6rem 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Apply — BeBee-like Fixture</h1>
+  <p>Offline dry-run form. Submit must never be clicked by the worker.</p>
+  <form id="bebee-like-form" data-adapter="bebee_like" action="#" method="post" onsubmit="return false;">
+    <label>Full name
+      <input type="text" name="full_name" id="full_name" required />
+    </label>
+    <label>Email
+      <input type="email" name="email" id="email" required />
+    </label>
+    <label>Cover letter
+      <textarea name="cover_letter" id="cover_letter" rows="5"></textarea>
+    </label>
+    <label>CV (PDF)
+      <input type="file" name="cv" id="cv" accept=".pdf,application/pdf" />
+    </label>
+    <button type="submit" id="submit-btn">Submit application</button>
+  </form>
+</body>
+</html>

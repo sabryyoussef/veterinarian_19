@@ -1,0 +1,643 @@
+User settings loaded from: /home/node/.n8n/config
+Error tracking disabled because this release is older than 6 weeks.
+
+There is a deprecation related to your environment variables. Please take the recommended actions to update your configuration:
+ - N8N_RUNNERS_ENABLED -> Running n8n without task runners is deprecated. Task runners will be turned on by default in a future version. Please set `N8N_RUNNERS_ENABLED=true` to enable task runners now and avoid potential issues in the future. Learn more: https://docs.n8n.io/hosting/configuration/task-runners/
+
+{
+  "data": {
+    "startData": {},
+    "resultData": {
+      "runData": {
+        "Manual UAT Trigger": [
+          {
+            "startTime": 1785733739141,
+            "executionIndex": 0,
+            "source": [],
+            "hints": [],
+            "executionTime": 1,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {},
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "UAT Inputs": [
+          {
+            "startTime": 1785733739144,
+            "executionIndex": 1,
+            "source": [
+              {
+                "previousNode": "Manual UAT Trigger"
+              }
+            ],
+            "hints": [],
+            "executionTime": 7,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 30,
+                      "idempotency_key": "uat-integrated-20260803-bebee-01",
+                      "cv_facts_json": "{\"name\":\"UAT Candidate\",\"skills\":[\"Odoo\",\"Python\"]}"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Sign GET Payload Request": [
+          {
+            "startTime": 1785733739151,
+            "executionIndex": 2,
+            "source": [
+              {
+                "previousNode": "UAT Inputs"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 82,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 30,
+                      "idempotency_key": "uat-integrated-20260803-bebee-01",
+                      "cv_facts_json": "{\"name\":\"UAT Candidate\",\"skills\":[\"Odoo\",\"Python\"]}",
+                      "odoo_base": "https://test.drpaws.ai",
+                      "get_url": "https://test.drpaws.ai/linkedin/orchestrator/v1/applications/30",
+                      "ts": "1785733739",
+                      "signature": "sha256=***",
+                      "n8n_execution_hint": "125613"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Fetch Application Payload": [
+          {
+            "startTime": 1785733739233,
+            "executionIndex": 3,
+            "source": [
+              {
+                "previousNode": "Sign GET Payload Request"
+              }
+            ],
+            "hints": [],
+            "executionTime": 411,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "data": {
+                        "application_id": 30,
+                        "state": "shortlisted",
+                        "score": 65,
+                        "account_id": 2,
+                        "job": {
+                          "id": 37,
+                          "title": "UAT Senior Odoo Developer",
+                          "company": "UAT Demo Co",
+                          "location": "Dubai, UAE",
+                          "apply_url": "https://bebee.com/ae/jobs/uat-odoo-demo",
+                          "apply_platform": "bebee",
+                          "listed_at": null,
+                          "description_excerpt": "Fictional UAT job for orchestrator dry-run. Odoo Python."
+                        },
+                        "cv_version_id": 3,
+                        "candidate_profile": {
+                          "profile_id": 2,
+                          "account_id": 2,
+                          "name": "UAT Fictional Candidate Profile",
+                          "years_odoo_experience": 8,
+                          "technical_skills": "Python, Odoo, PostgreSQL, Docker",
+                          "functional_skills": "ERP implementation",
+                          "work_mode_preference": "hybrid",
+                          "github_url": "https://github.com/example-uat-candidate",
+                          "linkedin_url": "https://www.linkedin.com/in/example-uat-candidate"
+                        },
+                        "policy": {
+                          "id": 2,
+                          "kill_switch": true,
+                          "auto_track_enabled": false,
+                          "browser_submit_enabled": false,
+                          "email_submit_enabled": false,
+                          "allowed_platforms": [
+                            "aggregator",
+                            "bebee",
+                            "company_ats",
+                            "greenhouse",
+                            "lever",
+                            "unknown"
+                          ],
+                          "min_score": 50,
+                          "max_submits_per_day": 2,
+                          "max_submits_per_month": 20,
+                          "company_cooldown_days": 14
+                        },
+                        "manual_task": false
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Prepare Dify Inputs": [
+          {
+            "startTime": 1785733739644,
+            "executionIndex": 4,
+            "source": [
+              {
+                "previousNode": "Fetch Application Payload"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 22,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 30,
+                      "idempotency_key": "uat-integrated-20260803-bebee-01",
+                      "odoo_base": "https://test.drpaws.ai",
+                      "account_id": 2,
+                      "apply_platform": "bebee",
+                      "dify_url": "http://nginx/v1/workflows/run",
+                      "dify_key": "appYP6P1nfqaLnWyhgejAjHicq3",
+                      "dify_body": {
+                        "inputs": {
+                          "job_json": "{\"id\":37,\"title\":\"UAT Senior Odoo Developer\",\"company\":\"UAT Demo Co\",\"location\":\"Dubai, UAE\",\"apply_url\":\"https://bebee.com/ae/jobs/uat-odoo-demo\",\"apply_platform\":\"bebee\",\"listed_at\":null,\"description_excerpt\":\"Fictional UAT job for orchestrator dry-run. Odoo Python.\"}",
+                          "candidate_profile_json": "{\"profile_id\":2,\"account_id\":2,\"name\":\"UAT Fictional Candidate Profile\",\"years_odoo_experience\":8,\"technical_skills\":\"Python, Odoo, PostgreSQL, Docker\",\"functional_skills\":\"ERP implementation\",\"work_mode_preference\":\"hybrid\",\"github_url\":\"https://github.com/example-uat-candidate\",\"linkedin_url\":\"https://www.linkedin.com/in/example-uat-candidate\"}",
+                          "cv_facts_json": "{\"name\":\"UAT Candidate\",\"skills\":[\"Odoo\",\"Python\"]}"
+                        },
+                        "response_mode": "blocking",
+                        "user": "n8n-job-orch-uat"
+                      },
+                      "policy": {
+                        "id": 2,
+                        "kill_switch": true,
+                        "auto_track_enabled": false,
+                        "browser_submit_enabled": false,
+                        "email_submit_enabled": false,
+                        "allowed_platforms": [
+                          "aggregator",
+                          "bebee",
+                          "company_ats",
+                          "greenhouse",
+                          "lever",
+                          "unknown"
+                        ],
+                        "min_score": 50,
+                        "max_submits_per_day": 2,
+                        "max_submits_per_month": 20,
+                        "company_cooldown_days": 14
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Call Dify Pack Generator UAT": [
+          {
+            "startTime": 1785733739666,
+            "executionIndex": 5,
+            "source": [
+              {
+                "previousNode": "Prepare Dify Inputs"
+              }
+            ],
+            "hints": [],
+            "executionTime": 4835,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "task_id": "aa5c405c-d2e3-4d49-a8a6-31357a4b7d83",
+                      "workflow_run_id": "6e0a1926-c02e-4240-99f8-83f0a6383833",
+                      "data": {
+                        "id": "6e0a1926-c02e-4240-99f8-83f0a6383833",
+                        "workflow_id": "994f4415-bf6d-4956-931f-63068365ced7",
+                        "status": "succeeded",
+                        "outputs": {
+                          "pack_json": "{\n  \"match_decision\": \"needs_human\",\n  \"exclusion_flags\": [],\n  \"selected_cv\": \"uat_fictional_cv.pdf\",\n  \"cover_letter\": null,\n  \"screening_qa\": [\n    {\n      \"source\": \"missing\",\n      \"field\": \"salary_expectation\",\n      \"answer\": null\n    },\n    {\n      \"source\": \"missing\",\n      \"field\": \"notice_period\",\n      \"answer\": null\n    },\n    {\n      \"source\": \"missing\",\n      \"field\": \"visa_sponsorship\",\n      \"answer\": null\n    },\n    {\n      \"source\": \"missing\",\n      \"field\": \"uae_relocation\",\n      \"answer\": null\n    }\n  ],\n  \"missing_facts\": [\n    \"salary_expectation\",\n    \"notice_period\",\n    \"visa_sponsorship\",\n    \"uae_relocation\"\n  ],\n  \"risk_notes\": [],\n  \"recommended_channel\": \"skip\"\n}"
+                        },
+                        "error": null,
+                        "elapsed_time": 4.714864,
+                        "total_tokens": 692,
+                        "total_steps": 3,
+                        "created_at": 1785733739,
+                        "finished_at": 1785733744
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Validate Pack JSON Fail-Closed": [
+          {
+            "startTime": 1785733744501,
+            "executionIndex": 6,
+            "source": [
+              {
+                "previousNode": "Call Dify Pack Generator UAT"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 25,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 30,
+                      "idempotency_key": "uat-integrated-20260803-bebee-01",
+                      "odoo_base": "https://test.drpaws.ai",
+                      "apply_platform": "bebee",
+                      "pack": {
+                        "match_decision": "needs_human",
+                        "exclusion_flags": [],
+                        "selected_cv": "uat_fictional_cv.pdf",
+                        "cover_letter": null,
+                        "screening_qa": [
+                          {
+                            "source": "missing",
+                            "field": "salary_expectation",
+                            "answer": null
+                          },
+                          {
+                            "source": "missing",
+                            "field": "notice_period",
+                            "answer": null
+                          },
+                          {
+                            "source": "missing",
+                            "field": "visa_sponsorship",
+                            "answer": null
+                          },
+                          {
+                            "source": "missing",
+                            "field": "uae_relocation",
+                            "answer": null
+                          }
+                        ],
+                        "missing_facts": [
+                          "salary_expectation",
+                          "notice_period",
+                          "visa_sponsorship",
+                          "uae_relocation"
+                        ],
+                        "risk_notes": [],
+                        "recommended_channel": "browser_dry_run"
+                      },
+                      "dify_run_id": "6e0a1926-c02e-4240-99f8-83f0a6383833",
+                      "pack_url": "https://test.drpaws.ai/linkedin/orchestrator/v1/applications/30/pack",
+                      "pack_body": {
+                        "pack": {
+                          "match_decision": "needs_human",
+                          "exclusion_flags": [],
+                          "selected_cv": "uat_fictional_cv.pdf",
+                          "cover_letter": null,
+                          "screening_qa": [
+                            {
+                              "source": "missing",
+                              "field": "salary_expectation",
+                              "answer": null
+                            },
+                            {
+                              "source": "missing",
+                              "field": "notice_period",
+                              "answer": null
+                            },
+                            {
+                              "source": "missing",
+                              "field": "visa_sponsorship",
+                              "answer": null
+                            },
+                            {
+                              "source": "missing",
+                              "field": "uae_relocation",
+                              "answer": null
+                            }
+                          ],
+                          "missing_facts": [
+                            "salary_expectation",
+                            "notice_period",
+                            "visa_sponsorship",
+                            "uae_relocation"
+                          ],
+                          "risk_notes": [],
+                          "recommended_channel": "browser_dry_run"
+                        },
+                        "n8n_execution_id": "125613",
+                        "dify_run_id": "6e0a1926-c02e-4240-99f8-83f0a6383833"
+                      },
+                      "pack_raw": "{\"pack\":{\"match_decision\":\"needs_human\",\"exclusion_flags\":[],\"selected_cv\":\"uat_fictional_cv.pdf\",\"cover_letter\":null,\"screening_qa\":[{\"source\":\"missing\",\"field\":\"salary_expectation\",\"answer\":null},{\"source\":\"missing\",\"field\":\"notice_period\",\"answer\":null},{\"source\":\"missing\",\"field\":\"visa_sponsorship\",\"answer\":null},{\"source\":\"missing\",\"field\":\"uae_relocation\",\"answer\":null}],\"missing_facts\":[\"salary_expectation\",\"notice_period\",\"visa_sponsorship\",\"uae_relocation\"],\"risk_notes\":[],\"recommended_channel\":\"browser_dry_run\"},\"n8n_execution_id\":\"125613\",\"dify_run_id\":\"6e0a1926-c02e-4240-99f8-83f0a6383833\"}",
+                      "ts": "1785733744",
+                      "signature": "sha256=***",
+                      "worker_url": "http://uat-job-worker:8095"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Write Pack to Odoo TEST": [
+          {
+            "startTime": 1785733744527,
+            "executionIndex": 7,
+            "source": [
+              {
+                "previousNode": "Validate Pack JSON Fail-Closed"
+              }
+            ],
+            "hints": [],
+            "executionTime": 267,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "application_id": 30,
+                      "state": "pack_ready"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Browser Worker Dry-Run": [
+          {
+            "startTime": 1785733744794,
+            "executionIndex": 8,
+            "source": [
+              {
+                "previousNode": "Write Pack to Odoo TEST"
+              }
+            ],
+            "hints": [],
+            "executionTime": 1745,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "attempt_id": "ae1a143b-b094-4f7d-b89e-c3ee68a8f7d2",
+                      "state": "drafted",
+                      "stop_reason": "none",
+                      "dry_run": true,
+                      "final_url": "file:///app/fixtures/bebee_like.html",
+                      "screenshot_paths": [
+                        "/artifacts/ae1a143b-b094-4f7d-b89e-c3ee68a8f7d2/01_loaded.png",
+                        "/artifacts/ae1a143b-b094-4f7d-b89e-c3ee68a8f7d2/02_drafted.png"
+                      ],
+                      "adapter_used": "bebee_like",
+                      "filled_fields": [
+                        "full_name",
+                        "email",
+                        "cover_letter",
+                        "cv"
+                      ],
+                      "message": "bebee_like draft filled (dry-run; submit not clicked)",
+                      "created_at": "2026-08-03T05:09:04.846834Z",
+                      "updated_at": "2026-08-03T05:09:06.519868Z",
+                      "metadata": {
+                        "application_id": 30,
+                        "idempotency_key": "uat-integrated-20260803-bebee-01"
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Prepare Attempt Write": [
+          {
+            "startTime": 1785733746539,
+            "executionIndex": 9,
+            "source": [
+              {
+                "previousNode": "Browser Worker Dry-Run"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 12,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "application_id": 30,
+                      "idempotency_key": "uat-integrated-20260803-bebee-01",
+                      "dify_run_id": "6e0a1926-c02e-4240-99f8-83f0a6383833",
+                      "worker_attempt_id": "ae1a143b-b094-4f7d-b89e-c3ee68a8f7d2",
+                      "attempt_url": "https://test.drpaws.ai/linkedin/orchestrator/v1/applications/30/attempts",
+                      "attempt_body": {
+                        "idempotency_key": "uat-integrated-20260803-bebee-01",
+                        "dry_run": true,
+                        "state": "drafted",
+                        "stop_reason": "none",
+                        "stop_detail": "bebee_like draft filled (dry-run; submit not clicked)",
+                        "final_url": "file:///app/fixtures/bebee_like.html",
+                        "worker_attempt_id": "ae1a143b-b094-4f7d-b89e-c3ee68a8f7d2",
+                        "n8n_execution_id": "125613",
+                        "dify_run_id": "6e0a1926-c02e-4240-99f8-83f0a6383833",
+                        "response": {
+                          "sanitized": true,
+                          "state": "drafted",
+                          "stop_reason": "none",
+                          "adapter_used": "bebee_like",
+                          "filled_fields": [
+                            "full_name",
+                            "email",
+                            "cover_letter",
+                            "cv"
+                          ],
+                          "screenshot_count": 2
+                        }
+                      },
+                      "ts": "1785733746",
+                      "signature": "sha256=***",
+                      "worker_state": "drafted",
+                      "worker_stop_reason": "none"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Write Attempt to Odoo TEST": [
+          {
+            "startTime": 1785733746551,
+            "executionIndex": 10,
+            "source": [
+              {
+                "previousNode": "Prepare Attempt Write"
+              }
+            ],
+            "hints": [],
+            "executionTime": 272,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "attempt_id": 3,
+                      "state": "drafted",
+                      "idempotent": false
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Sanitized Summary": [
+          {
+            "startTime": 1785733746823,
+            "executionIndex": 11,
+            "source": [
+              {
+                "previousNode": "Write Attempt to Odoo TEST"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 7,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "ok": true,
+                      "application_id": 30,
+                      "attempt_id": 3,
+                      "attempt_state": "drafted",
+                      "idempotent": false,
+                      "idempotency_key": "uat-integrated-20260803-bebee-01",
+                      "dify_run_id": "6e0a1926-c02e-4240-99f8-83f0a6383833",
+                      "worker_attempt_id": "ae1a143b-b094-4f7d-b89e-c3ee68a8f7d2",
+                      "worker_state": "drafted",
+                      "worker_stop_reason": "none",
+                      "n8n_execution_id": "125613"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "lastNodeExecuted": "Sanitized Summary"
+    },
+    "executionData": {
+      "contextData": {},
+      "nodeExecutionStack": [],
+      "metadata": {},
+      "waitingExecution": {},
+      "waitingExecutionSource": {}
+    }
+  },
+  "mode": "cli",
+  "startedAt": "2026-08-03T05:08:59.128Z",
+  "stoppedAt": "2026-08-03T05:09:06.831Z",
+  "status": "running",
+  "finished": true
+}

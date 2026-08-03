@@ -1,0 +1,13 @@
+{
+  "verdict": "ODOO_SA_TURNSTILE_HANDOFF_READY",
+  "prepared_at": "2026-08-03T10:48:41Z",
+  "secure_urls": {
+    "master_https": "https://127.0.0.1:5801/",
+    "tailscale_https": "https://100.76.217.35:5801/"
+  },
+  "note": "Selkies requires HTTPS; self-signed cert \u2014 accept browser warning",
+  "auth": {
+    "username": "sabry",
+    "password_file": "/home/sabry/private/job_orchestrator/handoff/vnc_password.txt"
+  }
+}

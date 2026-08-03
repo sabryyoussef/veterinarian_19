@@ -1,0 +1,39 @@
+{
+  "ts": "2026-08-03T12:15:16Z",
+  "display": ":0",
+  "apply_disabled": true,
+  "body_has_turnstile_fail": false,
+  "resume_files_length": 0,
+  "partner_name": "",
+  "rects": [
+    {
+      "tag": "TEXTAREA",
+      "cls": "form-control s_website_form_input",
+      "x": 86,
+      "y": 436,
+      "w": 633,
+      "h": 146,
+      "text": ""
+    },
+    {
+      "tag": "DIV",
+      "cls": "s_turnstile s_turnstile_container cf-turnstile undefined",
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "text": ""
+    },
+    {
+      "tag": "A",
+      "cls": "btn btn-primary btn-lg s_website_form_send disabled cf_form_disabled",
+      "x": 86,
+      "y": 606,
+      "w": 242.4375,
+      "h": 61,
+      "text": "Send my application"
+    }
+  ],
+  "send_clicked": false,
+  "url": "https://www.odoo.com/jobs/apply/software-developer-1"
+}

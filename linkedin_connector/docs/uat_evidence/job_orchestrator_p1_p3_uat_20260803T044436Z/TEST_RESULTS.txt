@@ -1,0 +1,6 @@
+odoo_unit: 0 failed, 0 error(s) of 8 tests (TestJobOrchestratorP1)
+worker_pytest: 18 passed
+dify_fixtures: 3/3 PASS (incl. invented_facts fail-closed)
+n8n_contract: PASS (active=false)
+e2e_test: PASS (see E2E_ORCHESTRATOR.json)
+production_unchanged: ver=19.0.2.9.1 jobs=12 apps=0 cron112/113 active

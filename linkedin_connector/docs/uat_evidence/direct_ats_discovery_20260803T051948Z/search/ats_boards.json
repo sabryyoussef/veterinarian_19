@@ -1,0 +1,122 @@
+[
+  {
+    "url": "https://boards.greenhouse.io/embed/job_board?for=odoo",
+    "code": 0,
+    "final": "https://boards.greenhouse.io/embed/job_board?for=odoo",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://boards.greenhouse.io/odoo",
+    "code": 0,
+    "final": "https://boards.greenhouse.io/odoo",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://jobs.lever.co/odoo",
+    "code": 0,
+    "final": "https://jobs.lever.co/odoo",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://apply.workable.com/odoo/",
+    "code": 200,
+    "final": "https://apply.workable.com/oops",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://jobs.ashbyhq.com/odoo",
+    "code": 200,
+    "final": "https://jobs.ashbyhq.com/odoo",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://careers.smartrecruiters.com/Odoo",
+    "code": 200,
+    "final": "https://jobs.smartrecruiters.com/",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://boards.greenhouse.io/camptocamp",
+    "code": 0,
+    "final": "https://boards.greenhouse.io/camptocamp",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://jobs.lever.co/camptocamp",
+    "code": 0,
+    "final": "https://jobs.lever.co/camptocamp",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://apply.workable.com/camptocamp/",
+    "code": 200,
+    "final": "https://apply.workable.com/oops",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://boards.greenhouse.io/vauxoo",
+    "code": 0,
+    "final": "https://boards.greenhouse.io/vauxoo",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://apply.workable.com/braintec/",
+    "code": 200,
+    "final": "https://apply.workable.com/oops",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://jobs.lever.co/braintec",
+    "code": 0,
+    "final": "https://jobs.lever.co/braintec",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://boards.greenhouse.io/openeducat",
+    "code": 0,
+    "final": "https://boards.greenhouse.io/openeducat",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://apply.workable.com/openeducat/",
+    "code": 200,
+    "final": "https://apply.workable.com/openeducat/",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  },
+  {
+    "url": "https://jobs.ashbyhq.com/openeducat",
+    "code": 200,
+    "final": "https://jobs.ashbyhq.com/openeducat",
+    "gh_titles": [],
+    "joblinks": [],
+    "title_hits": []
+  }
+]

@@ -1,0 +1,6 @@
+module=linkedin_connector ver=19.0.2.9.1 state=installed
+jobs=12
+apps=0
+ERROR:  column "name" does not exist
+LINE 5: SELECT 'cron='||id||'|'||name||'|active='||active||'|last='|...
+                                 ^

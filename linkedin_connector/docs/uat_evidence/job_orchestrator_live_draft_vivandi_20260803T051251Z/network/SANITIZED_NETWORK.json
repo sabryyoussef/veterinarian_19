@@ -1,0 +1,79 @@
+{
+  "mutations_aborted": [
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/traffic/view"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/vitals"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/job-views"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/analytics/funnel-event"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect"
+    },
+    {
+      "method": "POST",
+      "host": "www.google-analytics.com",
+      "path": "/g/collect"
+    },
+    {
+      "method": "POST",
+      "host": "www.google-analytics.com",
+      "path": "/g/collect"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect"
+    },
+    {
+      "method": "POST",
+      "host": "www.google.com",
+      "path": "/g/collect"
+    },
+    {
+      "method": "POST",
+      "host": "www.google.com",
+      "path": "/g/collect"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect"
+    },
+    {
+      "method": "POST",
+      "host": "pagead2.googlesyndication.com",
+      "path": "/ccm/collect"
+    },
+    {
+      "method": "POST",
+      "host": "bebee.com",
+      "path": "/api/vitals"
+    }
+  ],
+  "mutation_count": 14,
+  "get_head_options_count": 69,
+  "external_cv_upload": false,
+  "post_put_patch_delete_reached_network": false,
+  "containment_proven": true
+}

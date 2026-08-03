@@ -1,0 +1,95 @@
+{
+  "id": "tecnativa",
+  "start_url": "https://www.tecnativa.com/jobs/desarrollador-a-odoo-1",
+  "final_url": "https://www.tecnativa.com/jobs/desarrollador-a-odoo-1",
+  "title": "Desarrollador/a Odoo | Tecnativa - Expertos en Odoo",
+  "http_status": 200,
+  "host": "www.tecnativa.com",
+  "ats": "tecnativa",
+  "forms": [
+    {
+      "action": "https://www.tecnativa.com/website/search",
+      "method": "get",
+      "id": ""
+    },
+    {
+      "action": "https://www.tecnativa.com/website/search",
+      "method": "get",
+      "id": ""
+    }
+  ],
+  "fields": [
+    {
+      "tag": "input",
+      "type": "search",
+      "name": "search",
+      "id": "",
+      "placeholder": "Buscar\u2026",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "order",
+      "id": "",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "search",
+      "name": "search",
+      "id": "",
+      "placeholder": "Buscar\u2026",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    },
+    {
+      "tag": "input",
+      "type": "hidden",
+      "name": "order",
+      "id": "",
+      "placeholder": "",
+      "required": false,
+      "aria": "",
+      "accept": "",
+      "visible": false
+    }
+  ],
+  "field_count": 4,
+  "has_password": false,
+  "has_file": false,
+  "form_visible_no_auth": true,
+  "login_wall": false,
+  "captcha": false,
+  "otp": false,
+  "spanish": true,
+  "german": false,
+  "risks": [
+    "unsupported_language_es"
+  ],
+  "blocked_mutations": [
+    {
+      "method": "POST",
+      "url": "https://www.tecnativa.com/web_unsplash/get_app_id",
+      "type": "xhr"
+    }
+  ],
+  "blocked_count": 1,
+  "nav_chain": [
+    {
+      "url": "https://www.tecnativa.com/jobs/desarrollador-a-odoo-1",
+      "status": 200,
+      "method": "GET"
+    }
+  ],
+  "body_excerpt": "Ir al contenido Inicio Experiencia C\u00f3mo trabajamos Odoo Talento Kit Digital Kit consulting Iniciar sesi\u00f3n Cont\u00e1ctenos Todos los trabajos Desarrollador/a Odoo Remote \u00a1Solicitar ahora! Buscamos tu talento Un desarrollador/a residente en Espa\u00f1a con pasi\u00f3n por el Open Source y con ganas de seguir creciendo con un software en plena expansi\u00f3n internacional. Nos interesan candidatos/as honestos/as, \u00edntegros/as y responsables. Estamos seleccionando, por encima de todo lo dem\u00e1s, una persona confiable y resolutiva. Queremos ampliar el equipo de Tecnativa con profesionales con talento, capacidad de aprendizaje y con autonom\u00eda para marcarse sus propios objetivos y responsabilidades. Somos un equipo de alto rendimiento y nos comprometemos a que todo tu trabajo sea publicado y reconocido en la comunidad Odoo y los repositorios de contenido. En Tecnativa trabajar\u00e1s desde d\u00f3nde quieras, ya que es un empleo 100% en remoto y con una importante flexibilidad horaria. \u00c9chale un vistazo a nuestra oferta y an\u00edmate a formar parte de una empresa que est\u00e1 en el Top 3 mundial de los contribuidores de OCA y un equipo reconocido en 2017 como Mejor Contribuidor de Odoo a nivel internacional. S\u00famate al reto de Odoo y hazte experto en ayudar al \u00e9xito de cualquier negocio Estamos seguros de que puedes aportar mucho a nuestro equipo B\u00e1sico Perfil p\u00fablico de Github/Gitlab/Bitbucket/etc con proyectos revisables Conocimientos de programaci\u00f3n en Python Uso de sistemas de gesti\u00f3n de bases de datos relacionales como PostgreSQL Capacidad de resoluci\u00f3n algor\u00edtmica Muy interesante Dominio de sistema de control de versiones (preferiblement Git) Conocimiento pr\u00e1ctico funcional de sistemas ERP y e-commerce Capacidad para trabajar bajo supervisi\u00f3n limitada y en un equipo / entorno acelerado Perfil de dise\u00f1o+programa"
+}

@@ -1,0 +1,123 @@
+{
+  "final": "https://www.odoo.com/jobs/apply/software-developer-1",
+  "status": 200,
+  "title": "Apply for: Software Developer | Odoo",
+  "forms": [
+    {
+      "action": "https://www.odoo.com/website/form/",
+      "method": "post",
+      "id": "hr_recruitment_form"
+    }
+  ],
+  "fields": [
+    {
+      "name": "partner_name",
+      "type": "text",
+      "required": true,
+      "id": "recruitment1"
+    },
+    {
+      "name": "email_from",
+      "type": "email",
+      "required": true,
+      "id": "recruitment2"
+    },
+    {
+      "name": "partner_phone",
+      "type": "tel",
+      "required": true,
+      "id": "recruitment3"
+    },
+    {
+      "name": "linkedin_profile",
+      "type": "text",
+      "required": false,
+      "id": "recruitment4"
+    },
+    {
+      "name": "Resume",
+      "type": "file",
+      "required": false,
+      "id": "recruitment6"
+    },
+    {
+      "name": "passport_required",
+      "type": "text",
+      "required": false,
+      "id": "oxlifk8ce5q"
+    },
+    {
+      "name": "not_eu_citizen",
+      "type": "checkbox",
+      "required": false,
+      "id": "o78ammz6b7w4"
+    },
+    {
+      "name": "passport_number",
+      "type": "text",
+      "required": true,
+      "id": "owqsr6xbvaer"
+    },
+    {
+      "name": "Passport copy",
+      "type": "file",
+      "required": true,
+      "id": "oblbzkukjr9f"
+    },
+    {
+      "name": "short_introduction",
+      "type": "textarea",
+      "required": false,
+      "id": "recruitment5"
+    },
+    {
+      "name": "job_id",
+      "type": "hidden",
+      "required": false,
+      "id": "recruitment7"
+    },
+    {
+      "name": "department_id",
+      "type": "hidden",
+      "required": false,
+      "id": "recruitment8"
+    },
+    {
+      "name": "turnstile_captcha",
+      "type": "hidden",
+      "required": false,
+      "id": "cf-chl-widget-0nrc1_response"
+    },
+    {
+      "name": "",
+      "type": "text",
+      "required": true,
+      "id": ""
+    }
+  ],
+  "turnstile": {
+    "turnstile": true,
+    "verify": false,
+    "nameVisible": true
+  },
+  "blocked_count": 3,
+  "blocked_sample": [
+    {
+      "m": "POST",
+      "u": "https://www.odoo.com/mail/action",
+      "t": "xhr"
+    },
+    {
+      "m": "POST",
+      "u": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a25304d00e2ac0a0/UnJjucH_NA9iUH1sGMKGesi90GLOl",
+      "t": "xhr"
+    },
+    {
+      "m": "POST",
+      "u": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/fo/4241476001:1785733228:nWik-5KR0V67gv1uvq_u6xc_ifuJAs0ziBIl4cVQE1g/a25304d00e2ac0a0/UnJjucH_NA9iUH1sGMKGesi90GLOl",
+      "t": "xhr"
+    }
+  ],
+  "active_unchanged": true,
+  "body_excerpt": "Skip to Content Odoo Sign in Try it free Apps Industries Community Pricing Help Jobs Software Developer Fill out an application Your Name * Your Email * Your Phone Number * LinkedIn Profile Resume Provide either a resume file or a linkedin profile I'm not EU citizen Short Introduction Send my application Summary Job Software Developer Location Grand-Rosi\u00e8re (Farm 2), Belgium Department Research & Development Employment Type CDI Timing Time to Answer 2 open days Process 1 Phone Call 1 Onsite Inte"
+}

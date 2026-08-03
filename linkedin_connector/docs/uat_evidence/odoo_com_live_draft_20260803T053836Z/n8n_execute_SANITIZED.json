@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "application_id": 32,
+  "attempt_id": 5,
+  "n8n_execution_id": "125827",
+  "dify_run_id_from_n8n": "0c1b512b-5979-4cc2-98c3-aaa48066e5e8",
+  "fixture_worker_attempt_id": "baf737ac-e8bf-4c6e-85cb-b1ac81c6442e",
+  "note": "Raw n8n CLI output may contain stack traces; use this sanitized file in evidence pack."
+}

@@ -1,0 +1,149 @@
+{
+  "required": [
+    {
+      "name": "partner_name",
+      "type": "text",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *",
+      "id": "recruitment1",
+      "accept": ""
+    },
+    {
+      "name": "email_from",
+      "type": "email",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *",
+      "id": "recruitment2",
+      "accept": ""
+    },
+    {
+      "name": "partner_phone",
+      "type": "tel",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *",
+      "id": "recruitment3",
+      "accept": ""
+    },
+    {
+      "name": "passport_number",
+      "type": "text",
+      "required": true,
+      "visible": false,
+      "label": "Passport Number\n                   *",
+      "id": "owqsr6xbvaer",
+      "accept": ""
+    },
+    {
+      "name": "Passport copy",
+      "type": "file",
+      "required": true,
+      "visible": false,
+      "label": "Passport\n                   *",
+      "id": "oblbzkukjr9f",
+      "accept": ""
+    },
+    {
+      "name": "",
+      "type": "text",
+      "required": true,
+      "visible": false,
+      "label": "",
+      "id": "",
+      "accept": ""
+    }
+  ],
+  "optional": [
+    {
+      "name": "linkedin_profile",
+      "type": "text",
+      "required": false,
+      "visible": true,
+      "label": "LinkedIn Profile",
+      "id": "recruitment4",
+      "accept": ""
+    },
+    {
+      "name": "Resume",
+      "type": "file",
+      "required": false,
+      "visible": true,
+      "label": "Resume",
+      "id": "recruitment6",
+      "accept": ""
+    },
+    {
+      "name": "passport_required",
+      "type": "text",
+      "required": false,
+      "visible": false,
+      "label": "Passport Required",
+      "id": "oxlifk8ce5q",
+      "accept": ""
+    },
+    {
+      "name": "not_eu_citizen",
+      "type": "checkbox",
+      "required": false,
+      "visible": true,
+      "label": "I'm not EU citizen",
+      "id": "o78ammz6b7w4",
+      "accept": ""
+    },
+    {
+      "name": "short_introduction",
+      "type": "textarea",
+      "required": false,
+      "visible": true,
+      "label": "Short Introduction",
+      "id": "recruitment5",
+      "accept": ""
+    },
+    {
+      "name": "job_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Job",
+      "id": "recruitment7",
+      "accept": ""
+    },
+    {
+      "name": "department_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Department",
+      "id": "recruitment8",
+      "accept": ""
+    },
+    {
+      "name": "turnstile_captcha",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "",
+      "id": "cf-chl-widget-x0ahf_response",
+      "accept": ""
+    }
+  ],
+  "forms": [
+    {
+      "action": "https://www.odoo.com/website/form/",
+      "method": "post",
+      "id": "hr_recruitment_form"
+    }
+  ],
+  "filled_fields": [
+    "partner_name",
+    "email_from",
+    "partner_phone",
+    "linkedin_profile_left_empty",
+    "Resume",
+    "short_introduction"
+  ],
+  "resume_path": true,
+  "linkedin_path": false
+}

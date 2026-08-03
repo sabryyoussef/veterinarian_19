@@ -1,0 +1,16 @@
+{
+  "verdict": "JOB_ORCHESTRATOR_LIVE_DRAFT_BLOCKED",
+  "idempotency_key": "uat-live-draft-vivandi-bebee-20260803",
+  "prod_job_id": 10,
+  "test_job_id": 39,
+  "test_application_id": 31,
+  "test_attempt_id": 4,
+  "stop_reason": "login_wall",
+  "final_url": "https://bebee.com/ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037",
+  "platform": "bebee",
+  "underlying": "indeed",
+  "dify_run_id": "skipped-blocked-preflight",
+  "n8n_execution_id": "skipped-blocked-preflight",
+  "worker_attempt_id": null,
+  "mutations_blocked": 14
+}

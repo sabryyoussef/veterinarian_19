@@ -1,0 +1,77 @@
+{
+  "id": "oi_senior",
+  "start": "https://www.open-inside.com/jobs/detail/senior-engineer-technical-6",
+  "final": "https://www.open-inside.com/jobs/senior-engineer-technical-6",
+  "status": 200,
+  "title": "Senior Engineer - Technical | Openinside",
+  "applies": [
+    {
+      "href": "https://www.open-inside.com/jobs/apply/senior-engineer-technical-6",
+      "text": "Apply Now!"
+    },
+    {
+      "href": "https://www.open-inside.com/jobs/apply/senior-engineer-technical-6",
+      "text": "Apply Now!"
+    }
+  ],
+  "forms": [
+    {
+      "action": "https://www.open-inside.com/website/search",
+      "method": "get",
+      "id": ""
+    },
+    {
+      "action": "https://www.open-inside.com/website/search",
+      "method": "get",
+      "id": ""
+    }
+  ],
+  "fields": [
+    {
+      "type": "search",
+      "name": "search",
+      "required": false,
+      "visible": false,
+      "label": ""
+    },
+    {
+      "type": "hidden",
+      "name": "order",
+      "required": false,
+      "visible": false,
+      "label": ""
+    },
+    {
+      "type": "search",
+      "name": "search",
+      "required": false,
+      "visible": false,
+      "label": ""
+    },
+    {
+      "type": "hidden",
+      "name": "order",
+      "required": false,
+      "visible": false,
+      "label": ""
+    }
+  ],
+  "req_visible": [],
+  "login_wall": false,
+  "form_access": false,
+  "captcha": false,
+  "junior_signal": true,
+  "location_hit": "Bahrain Apply Now! As a Senior Engineer, you wi",
+  "blocked": [
+    {
+      "m": "POST",
+      "u": "https://www.google-analytics.com/g/collect?v=2&tid=G-RLWXYEDGTX&gtm=45je67u0h2v898166825za20g&_p=1785734964376&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&_eu=AAAI&are=1&cid=1468012195.1785734965&frm=0&ngs="
+    },
+    {
+      "m": "POST",
+      "u": "https://www.google.com/g/collect?v=2&tid=G-RLWXYEDGTX&gtm=45je67u0h2v898166825za20g&_p=1785734964376&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&_eu=AAAI&are=1&cid=1468012195.1785734965&frm=0&ngs=1&pscdl=no"
+    }
+  ],
+  "blocked_count": 2,
+  "body_excerpt": "Skip to Content Home About Us Open Source OdooApps Jobs Blog Home +973 7741 7777 Contact Us All Jobs Senior Engineer - Technical Seef District, Bahrain Apply Now! As a Senior Engineer, you will lead technical initiatives, mentor junior team members, and take ownership of solution design, deployment, and client engagement. You\u2019ll play a key role in ensuring project success and technical excellence. Key Responsibilities: Lead in-depth understanding, configuration, customization, and deployment of software products. Guide and mentor trainee and junior engineers in technical tasks and best practices. Take a leadership role in brainstorming sessions, bringing forward innovative ideas and solutions. Represent the technical team in multidisciplinary meetings and provide strategic technical input. Develop and own initial design concepts, transforming them into robust, scalable solutions. Evaluate product suitability and recommend optimal solutions for client requirements. Produce and review detailed technical specifications, ensuring high-quality implementation and testing standards. Oversee the preparation of training materials and lead client training sessions. Take ownership of troubleshooting and resolving complex technical challenges. Drive research initiatives into new technologies, processes, and emerging market requirements. Lead client presentations and demonstrations, playing a key role in pre-sales and project delivery discussions. Apply Now! P.O Box 76069 Office 32, Building 662 (Impact Co. Building), Road 2811 Seef District 428 \u2022 Manama \u2022 Kingdom of Bahrain +973 7741 7777 info@open-inside.com Copyright \u00a9 Company name Copyright \u00a9 Openinside Co. W.L.L English (US) Powered by - Create a free website"
+}

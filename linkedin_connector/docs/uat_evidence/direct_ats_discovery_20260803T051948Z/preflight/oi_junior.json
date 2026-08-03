@@ -1,0 +1,77 @@
+{
+  "id": "oi_junior",
+  "start": "https://www.open-inside.com/jobs/detail/junior-engineer-technical-5",
+  "final": "https://www.open-inside.com/jobs/junior-engineer-technical-5",
+  "status": 200,
+  "title": "Junior Engineer - Technical | Openinside",
+  "applies": [
+    {
+      "href": "https://www.open-inside.com/jobs/apply/junior-engineer-technical-5",
+      "text": "Apply Now!"
+    },
+    {
+      "href": "https://www.open-inside.com/jobs/apply/junior-engineer-technical-5",
+      "text": "Apply Now!"
+    }
+  ],
+  "forms": [
+    {
+      "action": "https://www.open-inside.com/website/search",
+      "method": "get",
+      "id": ""
+    },
+    {
+      "action": "https://www.open-inside.com/website/search",
+      "method": "get",
+      "id": ""
+    }
+  ],
+  "fields": [
+    {
+      "type": "search",
+      "name": "search",
+      "required": false,
+      "visible": false,
+      "label": ""
+    },
+    {
+      "type": "hidden",
+      "name": "order",
+      "required": false,
+      "visible": false,
+      "label": ""
+    },
+    {
+      "type": "search",
+      "name": "search",
+      "required": false,
+      "visible": false,
+      "label": ""
+    },
+    {
+      "type": "hidden",
+      "name": "order",
+      "required": false,
+      "visible": false,
+      "label": ""
+    }
+  ],
+  "req_visible": [],
+  "login_wall": false,
+  "form_access": false,
+  "captcha": false,
+  "junior_signal": true,
+  "location_hit": "Bahrain Apply Now! As a Junior Engineer, you wi",
+  "blocked": [
+    {
+      "m": "POST",
+      "u": "https://www.google-analytics.com/g/collect?v=2&tid=G-RLWXYEDGTX&gtm=45je67t1v898166825za20g&_p=1785734969162&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&_eu=AAAI&are=1&cid=687312112.1785734970&frm=0&ngs=1&p"
+    },
+    {
+      "m": "POST",
+      "u": "https://www.google.com/g/collect?v=2&tid=G-RLWXYEDGTX&gtm=45je67t1v898166825za20g&_p=1785734969162&gcs=G111&gcd=13r3r3r3r5l1&npa=0&dma=0&_eu=AAAI&are=1&cid=687312112.1785734970&frm=0&ngs=1&pscdl=noapi"
+    }
+  ],
+  "blocked_count": 2,
+  "body_excerpt": "Skip to Content Home About Us Open Source OdooApps Jobs Blog Home +973 7741 7777 Contact Us All Jobs Junior Engineer - Technical Seef District, Bahrain Apply Now! As a Junior Engineer, you will take on a more hands-on role in product configuration, deployment, and client-facing activities. You\u2019ll actively contribute to project execution while continuing to build technical expertise. Key Responsibilities: Gain a strong working knowledge of the assigned software products and apply it in real-world projects. Independently assist with configuration, customization, and deployment of solutions under the guidance of senior engineers. Participate in brainstorming and provide creative technical input during project discussions. Collaborate with multidisciplinary teams and contribute to meetings with actionable insights. Develop initial design ideas and translate them into workable solutions. Evaluate the suitability and availability of software products for specific business needs. Draft detailed specifications and support full product lifecycle tasks including installation, configuration, deployment, and testing. Prepare training manuals and deliver basic product training sessions to clients. Take ownership of assigned problem-solving tasks and contribute to resolving complex technical issues. Conduct research on technologies, processes, and market requirements to support innovation. Deliver professional presentations or demonstrations for clients and management. Apply Now! P.O Box 76069 Office 32, Building 662 (Impact Co. Building), Road 2811 Seef District 428 \u2022 Manama \u2022 Kingdom of Bahrain +973 7741 7777 info@open-inside.com Copyright \u00a9 Company name Copyright \u00a9 Openinside Co. W.L.L English (US) Powered by - Create a free website"
+}

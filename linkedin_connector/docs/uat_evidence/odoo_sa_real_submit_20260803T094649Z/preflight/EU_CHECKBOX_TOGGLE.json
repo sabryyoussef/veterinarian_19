@@ -1,0 +1,174 @@
+{
+  "before": [
+    {
+      "name": "partner_name",
+      "type": "text",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *"
+    },
+    {
+      "name": "email_from",
+      "type": "email",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *"
+    },
+    {
+      "name": "partner_phone",
+      "type": "tel",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *"
+    },
+    {
+      "name": "linkedin_profile",
+      "type": "text",
+      "required": false,
+      "visible": true,
+      "label": "LinkedIn Profile"
+    },
+    {
+      "name": "Resume",
+      "type": "file",
+      "required": false,
+      "visible": true,
+      "label": "Resume"
+    },
+    {
+      "name": "passport_required",
+      "type": "text",
+      "required": false,
+      "visible": false,
+      "label": "\n                  Passport Required\n                "
+    },
+    {
+      "name": "not_eu_citizen",
+      "type": "checkbox",
+      "required": false,
+      "visible": false,
+      "label": "\n                  I'm not EU citizen\n                "
+    },
+    {
+      "name": "passport_number",
+      "type": "text",
+      "required": true,
+      "visible": false,
+      "label": "\n                  Passport Number\n                   *\n                "
+    },
+    {
+      "name": "Passport copy",
+      "type": "file",
+      "required": true,
+      "visible": false,
+      "label": "\n                  Passport\n                   *\n                "
+    },
+    {
+      "name": "short_introduction",
+      "type": "textarea",
+      "required": false,
+      "visible": true,
+      "label": "Short Introduction"
+    },
+    {
+      "name": "job_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Job"
+    },
+    {
+      "name": "department_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Department"
+    }
+  ],
+  "after": [
+    {
+      "name": "partner_name",
+      "type": "text",
+      "required": true,
+      "visible": true,
+      "label": "Your Name *"
+    },
+    {
+      "name": "email_from",
+      "type": "email",
+      "required": true,
+      "visible": true,
+      "label": "Your Email *"
+    },
+    {
+      "name": "partner_phone",
+      "type": "tel",
+      "required": true,
+      "visible": true,
+      "label": "Your Phone Number *"
+    },
+    {
+      "name": "linkedin_profile",
+      "type": "text",
+      "required": false,
+      "visible": true,
+      "label": "LinkedIn Profile"
+    },
+    {
+      "name": "Resume",
+      "type": "file",
+      "required": false,
+      "visible": true,
+      "label": "Resume"
+    },
+    {
+      "name": "passport_required",
+      "type": "text",
+      "required": false,
+      "visible": false,
+      "label": "\n                  Passport Required\n                "
+    },
+    {
+      "name": "not_eu_citizen",
+      "type": "checkbox",
+      "required": false,
+      "visible": false,
+      "label": "\n                  I'm not EU citizen\n                "
+    },
+    {
+      "name": "passport_number",
+      "type": "text",
+      "required": true,
+      "visible": false,
+      "label": "\n                  Passport Number\n                   *\n                "
+    },
+    {
+      "name": "Passport copy",
+      "type": "file",
+      "required": true,
+      "visible": false,
+      "label": "\n                  Passport\n                   *\n                "
+    },
+    {
+      "name": "short_introduction",
+      "type": "textarea",
+      "required": false,
+      "visible": true,
+      "label": "Short Introduction"
+    },
+    {
+      "name": "job_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Job"
+    },
+    {
+      "name": "department_id",
+      "type": "hidden",
+      "required": false,
+      "visible": false,
+      "label": "Department"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 # JSearch secret installation (Production)
 
 **Status gate:** `JSEARCH_SECRET_INSTALLATION_INSTRUCTIONS_READY`  
+**Module:** `linkedin_connector` **19.0.2.8.1** (env-first key resolution; Production upgraded)  
 **Do not** paste the RapidAPI key into chat, Git, Odoo ICP, screenshots, or evidence.
 
 ## What the connector expects
@@ -58,7 +59,7 @@ systemctl --user restart pet_spot_elsahel.service
 
 ## Explicitly not done in this preflight
 
-- No JSearch HTTP call
+- No JSearch HTTP call from this agent
 - `live_job_search_enabled` left False
-- LinkedIn crons left inactive
+- All four LinkedIn crons forced inactive (XML now `noupdate` + default inactive so upgrades do not re-enable)
 - No job import / digest / publish / apply

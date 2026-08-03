@@ -1,0 +1,5 @@
+ id |             name             |      smtp_user       |     from_filter      | smtp_authentication | active | pass  
+----+------------------------------+----------------------+----------------------+---------------------+--------+-------
+  1 | Gmail - vetelsahel@gmail.com | vetelsahel@gmail.com | vetelsahel@gmail.com | login               | t      | empty
+(1 row)
+

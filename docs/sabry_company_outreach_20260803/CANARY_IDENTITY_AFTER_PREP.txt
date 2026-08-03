@@ -1,0 +1,6 @@
+ id |                   email_from                   |      reply_to       | state | company_id | mail_server_id 
+----+------------------------------------------------+---------------------+-------+------------+----------------
+  1 | "Sabry Odoo Development" <vendorah2@gmail.com> | vendorah2@gmail.com | draft |          3 |               
+  3 | "Sabry Odoo Development" <vendorah2@gmail.com> | vendorah2@gmail.com | draft |          3 |               
+(2 rows)
+

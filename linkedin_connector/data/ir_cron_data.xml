@@ -32,7 +32,18 @@
             <field name="active" eval="False"/>
         </record>
 
-        <!-- Inactive until live_job_search_enabled ICP is True after UAT approval -->
+        <!-- 07:00 Africa/Cairo — JSearch search-v2 only (activated after approval) -->
+        <record id="ir_cron_daily_jsearch" model="ir.cron">
+            <field name="name">LinkedIn: Daily JSearch Job Search</field>
+            <field name="model_id" ref="model_linkedin_job"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_daily_jsearch()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- 07:15 Africa/Cairo — internal digest only (no API, no email) -->
         <record id="ir_cron_daily_job_digest" model="ir.cron">
             <field name="name">LinkedIn: Daily Job Digest</field>
             <field name="model_id" ref="model_linkedin_job"/>

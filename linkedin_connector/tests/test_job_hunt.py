@@ -164,6 +164,9 @@ class TestLinkedinJobHunt(TransactionCase):
                 self.assertEqual(job.duplicate_of_id, canonical)
 
     def test_application_created_above_threshold(self):
+        self.env["ir.config_parameter"].sudo().set_param(
+            "linkedin_connector.auto_create_applications", "True"
+        )
         job = self.env["linkedin.job"].create(
             {
                 "account_id": self.personal.id,
@@ -181,7 +184,29 @@ class TestLinkedinJobHunt(TransactionCase):
         self.assertEqual(job.application_ids.state, "discovered")
         self.assertEqual(job.application_ids.account_id, self.personal)
 
+    def test_application_not_auto_created_when_disabled(self):
+        self.env["ir.config_parameter"].sudo().set_param(
+            "linkedin_connector.auto_create_applications", "False"
+        )
+        job = self.env["linkedin.job"].create(
+            {
+                "account_id": self.personal.id,
+                "title": "Senior Odoo Developer",
+                "company": "Acme",
+                "location": "Remote",
+                "remote": True,
+                "description": "<p>Odoo Python ERP Lead</p>",
+                "apply_url": "https://www.linkedin.com/jobs/view/998/",
+                "job_id": "li_998",
+            }
+        )
+        self.assertGreaterEqual(job.score, 50)
+        self.assertEqual(len(job.application_ids), 0)
+
     def test_application_approval_gate(self):
+        self.env["ir.config_parameter"].sudo().set_param(
+            "linkedin_connector.auto_create_applications", "True"
+        )
         job = self.env["linkedin.job"].create(
             {
                 "account_id": self.personal.id,

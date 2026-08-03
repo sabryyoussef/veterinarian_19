@@ -1,0 +1,30 @@
+Aug 03 06:52:12 master python3[2140557]: 2026-08-03 03:52:12,346 2140557 INFO pet_spot_elsahel odoo.addons.base.models.ir_cron: Job 'LinkedIn: Daily JSearch Job Search' (113) starting
+Aug 03 06:52:21 master python3[2140557]: 2026-08-03 03:52:21,072 2140557 INFO pet_spot_elsahel odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job.search-v2: page 1 returned 10 jobs query=Odoo Developer in UAE
+Aug 03 06:52:21 master python3[2140557]: 2026-08-03 03:52:21,089 2140557 ERROR pet_spot_elsahel odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job daily JSearch failed query=Odoo Developer in UAE country=ae
+Aug 03 06:52:21 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 583, in _cron_daily_jsearch
+Aug 03 06:52:21 master python3[2140557]:     created = Search._import_jsearch_v2(
+Aug 03 06:52:21 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 1295, in _import_jsearch_v2
+Aug 03 06:52:21 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 282, in _score_and_dedupe
+Aug 03 06:52:21 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 184, in _score_job_values
+Aug 03 06:52:21 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 243, in _cv_relevance_boost
+Aug 03 06:52:21 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 205, in _cv_text_tokens
+Aug 03 06:52:26 master python3[2140557]: 2026-08-03 03:52:26,397 2140557 INFO pet_spot_elsahel odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job.search-v2: page 1 returned 1 jobs query=Odoo Developer in Egypt
+Aug 03 06:52:26 master python3[2140557]: 2026-08-03 03:52:26,420 2140557 ERROR pet_spot_elsahel odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job daily JSearch failed query=Odoo Developer in Egypt country=eg
+Aug 03 06:52:26 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 583, in _cron_daily_jsearch
+Aug 03 06:52:26 master python3[2140557]:     created = Search._import_jsearch_v2(
+Aug 03 06:52:26 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 1334, in _import_jsearch_v2
+Aug 03 06:52:26 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 282, in _score_and_dedupe
+Aug 03 06:52:26 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 184, in _score_job_values
+Aug 03 06:52:26 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 243, in _cv_relevance_boost
+Aug 03 06:52:26 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 205, in _cv_text_tokens
+Aug 03 06:52:54 master python3[2140557]: 2026-08-03 03:52:54,336 2140557 INFO pet_spot_elsahel odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job.search-v2: page 1 returned 3 jobs query=Remote Odoo Developer
+Aug 03 06:52:54 master python3[2140557]: 2026-08-03 03:52:54,343 2140557 ERROR pet_spot_elsahel odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job daily JSearch failed query=Remote Odoo Developer country=
+Aug 03 06:52:54 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 583, in _cron_daily_jsearch
+Aug 03 06:52:54 master python3[2140557]:     created = Search._import_jsearch_v2(
+Aug 03 06:52:54 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 1334, in _import_jsearch_v2
+Aug 03 06:52:54 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 282, in _score_and_dedupe
+Aug 03 06:52:54 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 184, in _score_job_values
+Aug 03 06:52:54 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 243, in _cv_relevance_boost
+Aug 03 06:52:54 master python3[2140557]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 205, in _cv_text_tokens
+Aug 03 06:52:54 master python3[2140557]: 2026-08-03 03:52:54,347 2140557 INFO pet_spot_elsahel odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job daily JSearch done imported=0 account=2
+Aug 03 06:52:54 master python3[2140557]: 2026-08-03 03:52:54,354 2140557 INFO pet_spot_elsahel odoo.addons.base.models.ir_cron: Job 'LinkedIn: Daily JSearch Job Search' (113) fully done (#loop 1; done 0; remaining 0; duration 42.01s)

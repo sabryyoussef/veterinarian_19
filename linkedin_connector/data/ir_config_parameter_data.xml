@@ -10,10 +10,34 @@
     </record>
     <record id="icp_job_search_queries" model="ir.config_parameter">
         <field name="key">linkedin_connector.job_search_queries</field>
-        <field name="value">Senior Odoo Developer|Odoo Developer|Odoo Consultant|Senior Odoo</field>
+        <field name="value">Odoo Developer in UAE|Odoo Developer in Egypt|Remote Odoo Developer</field>
     </record>
     <record id="icp_job_search_locations" model="ir.config_parameter">
         <field name="key">linkedin_connector.job_search_locations</field>
-        <field name="value">Remote|Egypt|United Arab Emirates</field>
+        <field name="value">United Arab Emirates|Egypt|Remote</field>
+    </record>
+    <record id="icp_auto_create_applications" model="ir.config_parameter">
+        <field name="key">linkedin_connector.auto_create_applications</field>
+        <field name="value">False</field>
+    </record>
+    <record id="icp_jsearch_max_requests_day" model="ir.config_parameter">
+        <field name="key">linkedin_connector.jsearch_max_requests_per_day</field>
+        <field name="value">3</field>
+    </record>
+    <record id="icp_jsearch_max_jobs_day" model="ir.config_parameter">
+        <field name="key">linkedin_connector.jsearch_max_jobs_per_day</field>
+        <field name="value">30</field>
+    </record>
+    <record id="icp_jsearch_max_requests_month" model="ir.config_parameter">
+        <field name="key">linkedin_connector.jsearch_max_requests_per_month</field>
+        <field name="value">120</field>
+    </record>
+    <record id="icp_digest_top_n" model="ir.config_parameter">
+        <field name="key">linkedin_connector.digest_top_n</field>
+        <field name="value">10</field>
+    </record>
+    <record id="icp_jsearch_daily_queries_json" model="ir.config_parameter">
+        <field name="key">linkedin_connector.jsearch_daily_queries_json</field>
+        <field name="value">[{"query":"Odoo Developer in UAE","country":"ae","remote":false},{"query":"Odoo Developer in Egypt","country":"eg","remote":false},{"query":"Remote Odoo Developer","country":"","remote":true}]</field>
     </record>
 </odoo>

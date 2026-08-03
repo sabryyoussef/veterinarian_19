@@ -28,13 +28,17 @@
                     </group>
                     <group string="Senior Odoo job hunt">
                         <field name="linkedin_live_job_search_enabled"/>
+                        <field name="linkedin_auto_create_applications"/>
                         <field name="linkedin_job_score_threshold"/>
                         <field name="linkedin_job_search_queries"/>
                         <field name="linkedin_job_search_locations"/>
                         <field name="linkedin_job_preferred_geos"/>
+                        <field name="linkedin_jsearch_max_requests_per_day"/>
+                        <field name="linkedin_jsearch_max_jobs_per_day"/>
+                        <field name="linkedin_jsearch_max_requests_per_month"/>
                         <div colspan="2" class="text-muted small">
-                            Keep live job search OFF until UAT evidence is approved.
-                            No Easy Apply automation — applications stay review-first.
+                            Read-only daily mode: JSearch search-v2 only (3 queries/day),
+                            internal Odoo digest, applications OFF, no LinkedIn posting/messaging.
                         </div>
                     </group>
                 </sheet>

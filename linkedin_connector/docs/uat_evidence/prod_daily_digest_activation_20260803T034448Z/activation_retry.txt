@@ -1,0 +1,6 @@
+ENDPOINT https://jsearch.p.rapidapi.com/search-v2
+LIVE True
+FORCE_OFF LinkedIn: Publish Scheduled Posts []
+FORCE_OFF LinkedIn: Refresh Feed []
+FORCE_OFF LinkedIn: Sync Messages []
+JSEARCH None DIGEST None

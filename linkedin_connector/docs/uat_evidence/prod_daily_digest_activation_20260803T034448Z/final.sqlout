@@ -1,0 +1,44 @@
+MODULE
+        name        | latest_version |   state   
+--------------------+----------------+-----------
+ linkedin_connector | 19.0.2.9.1     | installed
+(1 row)
+
+CRONS
+ id  |             cron_name              | active |      lastcall       |      nextcall       
+-----+------------------------------------+--------+---------------------+---------------------
+  60 | LinkedIn: Publish Scheduled Posts  | f      | 2026-08-03 03:20:38 | 2026-08-03 03:21:22
+  61 | LinkedIn: Refresh Feed             | f      | 2026-08-03 03:20:38 | 2026-08-03 03:21:22
+  62 | LinkedIn: Sync Messages            | f      | 2026-08-03 03:20:39 | 2026-08-03 03:21:22
+ 112 | LinkedIn: Daily Job Digest         | t      | 2026-08-03 03:55:30 | 2026-08-04 04:15:00
+ 113 | LinkedIn: Daily JSearch Job Search | t      | 2026-08-03 03:52:12 | 2026-08-04 04:00:00
+(5 rows)
+
+ICP
+                        key                        |                                                           left                                                           
+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------
+ linkedin_connector.auto_create_applications       | False
+ linkedin_connector.digest_top_n                   | 10
+ linkedin_connector.job_score_threshold            | 50
+ linkedin_connector.job_search_locations           | Remote|Egypt|United Arab Emirates
+ linkedin_connector.job_search_queries             | Odoo Developer in UAE|Odoo Developer in Egypt|Remote Odoo Developer
+ linkedin_connector.jsearch_daily_queries_json     | [{"query": "Odoo Developer in UAE", "country": "ae", "remote": false}, {"query": "Odoo Developer in Egypt", "country": "
+ linkedin_connector.jsearch_max_jobs_per_day       | 30
+ linkedin_connector.jsearch_max_requests_per_day   | 3
+ linkedin_connector.jsearch_max_requests_per_month | 120
+ linkedin_connector.jsearch_usage_json             | {"day": "2026-08-03", "day_count": 3, "day_jobs": 0, "month": "2026-08", "month_count": 3}
+ linkedin_connector.live_job_search_enabled        | True
+(11 rows)
+
+COUNTS
+ jobs | apps 
+------+------
+   12 |    0
+(1 row)
+
+COMPANY_HASH
+480bd24a87cbe7707874cc72beb5a460
+HTTP
+http=200
+active
+LINKEDIN_JSEARCH_RAPIDAPI_KEY=***masked***

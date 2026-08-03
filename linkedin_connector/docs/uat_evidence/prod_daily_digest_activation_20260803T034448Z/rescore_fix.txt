@@ -1,0 +1,8 @@
+RESCORING 12
+TOP10 [(5, 65.0, 'Software Developer - Odoo', 'PREMA Consulting'), (8, 65.0, 'Odoo Developer (Specialized in API Integration & Workflow Automation)', 'Melya Cleaning Services'), (10, 65.0, 'Odoo Techno Functional Consultant', 'Vivandi')]
+APPS 0
+USAGE {'day': '2026-08-03', 'day_count': 3, 'day_jobs': 0, 'month': '2026-08', 'month_count': 3}
+DIGEST_BEFORE True False 2026-08-03 03:54:52.337110
+DIGEST_NEXTCALL 2026-08-03 03:55:26.860085
+JSEARCH_TOMORROW 2026-08-04 04:00:00
+RESCORE_OK

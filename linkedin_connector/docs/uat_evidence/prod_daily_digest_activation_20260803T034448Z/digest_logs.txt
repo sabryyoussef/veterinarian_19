@@ -1,0 +1,9 @@
+Aug 03 06:55:30 master python3[2176699]: 2026-08-03 03:55:30,363 2176699 INFO pet_spot_elsahel odoo.addons.base.models.ir_cron: Job 'LinkedIn: Daily Job Digest' (112) starting
+Aug 03 06:55:30 master python3[2176699]: 2026-08-03 03:55:30,393 2176699 ERROR pet_spot_elsahel odoo.addons.base.models.ir_cron: Job 'LinkedIn: Daily Job Digest' (112) server action #1565 failed
+Aug 03 06:55:30 master python3[2176699]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 655, in _cron_daily_job_digest
+Aug 03 06:55:30 master python3[2176699]:     self._send_job_digest(jobs)
+Aug 03 06:55:30 master python3[2176699]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 674, in _send_job_digest
+Aug 03 06:55:30 master python3[2176699]:     partners = self._digest_recipient_partners()
+Aug 03 06:55:30 master python3[2176699]:   File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py", line 665, in _digest_recipient_partners
+Aug 03 06:55:30 master python3[2176699]: 'model._cron_daily_job_digest()'
+Aug 03 06:55:30 master python3[2176699]: 2026-08-03 03:55:30,401 2176699 INFO pet_spot_elsahel odoo.addons.base.models.ir_cron: Job 'LinkedIn: Daily Job Digest' (112) failed (#loop 1; done 0; remaining 0; duration 0.04s)

@@ -1,0 +1,19 @@
+ENDPOINT https://jsearch.p.rapidapi.com/search-v2
+PERSONAL 2 Sabry Youssef — Personal
+CV 1 account 2 default True
+ICP linkedin_connector.live_job_search_enabled = True
+ICP linkedin_connector.auto_create_applications = False
+ICP linkedin_connector.job_score_threshold = 50
+ICP linkedin_connector.digest_top_n = 10
+ICP linkedin_connector.jsearch_max_requests_per_day = 3
+ICP linkedin_connector.jsearch_max_jobs_per_day = 30
+ICP linkedin_connector.jsearch_max_requests_per_month = 120
+ICP linkedin_connector.jsearch_daily_queries_json = [{"query": "Odoo Developer in UAE", "country": "ae", "remote": false}, {"query":...
+ICP linkedin_connector.job_search_queries = Odoo Developer in UAE|Odoo Developer in Egypt|Remote Odoo Developer
+ICP linkedin_connector.jsearch_usage_json = {"day": "2026-08-03", "day_count": 0, "day_jobs": 0, "month": "2026-08", "month_...
+NOW_CAIRO 2026-08-03T06:48:16.815631+03:00
+SEARCH_NEXTCALL_UTC 2026-08-03 04:00:00
+DIGEST_NEXTCALL_UTC 2026-08-03 04:15:00
+INACTIVE LinkedIn: Publish Scheduled Posts []
+INACTIVE LinkedIn: Refresh Feed []
+INACTIVE LinkedIn: Sync Messages []

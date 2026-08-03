@@ -1,0 +1,13 @@
+ENDPOINT https://jsearch.p.rapidapi.com/search-v2
+OFF linkedin_connector.ir_cron_publish_scheduled_posts 60 False
+OFF linkedin_connector.ir_cron_refresh_feed 61 False
+OFF linkedin_connector.ir_cron_sync_messages 62 False
+LIVE True
+AUTO_APPS False
+QUERIES [{'query': 'Odoo Developer in UAE', 'country': 'ae', 'remote': False}, {'query': 'Odoo Developer in Egypt', 'country': 'eg', 'remote': False}, {'query': 'Remote Odoo Developer', 'country': '', 'remote': True}]
+SEARCH 113 True 2026-08-03 03:51:52.337110
+DIGEST 112 True 2026-08-03 03:54:52.337110
+APPS 0
+JOBS_BEFORE 10
+NOW_CAIRO 2026-08-03T06:49:52.337110+03:00
+ACTIVATION_OK

@@ -1,0 +1,3 @@
+LIVE True
+SINCE 2026-08-02 21:00:00
+DIGEST_CANDIDATES [(5, 65.0, 'Software Developer - Odoo'), (8, 65.0, 'Odoo Developer (Specialized in API Integration & Workflow Automation)'), (10, 65.0, 'Odoo Techno Functional Consultant')]

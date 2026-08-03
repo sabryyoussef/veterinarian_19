@@ -30,30 +30,50 @@ class ResConfigSettings(models.TransientModel):
         string="Enable live job search (cron)",
         config_parameter="linkedin_connector.live_job_search_enabled",
         help=(
-            "When enabled, the daily digest cron calls LinkedIn/RemoteOK/JSearch. "
+            "When enabled, daily JSearch (search-v2) + internal digest crons may run. "
             "Keep OFF until UAT is approved. Default False."
         ),
     )
+    linkedin_auto_create_applications = fields.Boolean(
+        string="Auto-create applications above threshold",
+        config_parameter="linkedin_connector.auto_create_applications",
+        help="Keep OFF for read-only digest mode. Manual Track only.",
+    )
     linkedin_job_score_threshold = fields.Char(
-        string="Shortlist score threshold",
+        string="Shortlist / digest score threshold",
         config_parameter="linkedin_connector.job_score_threshold",
         default="50",
-        help="Minimum score to auto-create a Discovered application (default 50).",
+        help="Minimum score for digest inclusion (default 50). Applications stay manual.",
     )
     linkedin_job_search_queries = fields.Char(
         string="Job search queries (pipe-separated)",
         config_parameter="linkedin_connector.job_search_queries",
-        default="Senior Odoo Developer|Odoo Developer|Odoo Consultant|Senior Odoo",
+        default="Odoo Developer in UAE|Odoo Developer in Egypt|Remote Odoo Developer",
     )
     linkedin_job_search_locations = fields.Char(
         string="Job search locations (pipe-separated)",
         config_parameter="linkedin_connector.job_search_locations",
-        default="Remote|Egypt|United Arab Emirates",
+        default="United Arab Emirates|Egypt|Remote",
     )
     linkedin_job_preferred_geos = fields.Char(
         string="Preferred geo tokens (comma-separated)",
         config_parameter="linkedin_connector.job_preferred_geos",
         default="egypt,cairo,uae,dubai,remote,europe,eu,germany,netherlands,uk",
+    )
+    linkedin_jsearch_max_requests_per_day = fields.Char(
+        string="JSearch max requests / day",
+        config_parameter="linkedin_connector.jsearch_max_requests_per_day",
+        default="3",
+    )
+    linkedin_jsearch_max_jobs_per_day = fields.Char(
+        string="JSearch max imported jobs / day",
+        config_parameter="linkedin_connector.jsearch_max_jobs_per_day",
+        default="30",
+    )
+    linkedin_jsearch_max_requests_per_month = fields.Char(
+        string="JSearch max requests / month",
+        config_parameter="linkedin_connector.jsearch_max_requests_per_month",
+        default="120",
     )
 
     @api.depends_context("uid")

@@ -114,12 +114,8 @@ def evaluate_submit_authorization(
             human_required=True,
         )
 
-    try:
-        score = float(auth.get("score") if auth.get("score") is not None else -1)
-    except (TypeError, ValueError):
-        score = -1
-    if score < 65:
-        return SubmitGateResult(False, "score_below_floor", f"Score {score} < 65")
+    # Score is informational only (policy floor is 0). Never block submit on score.
+    _ = auth.get("score")
 
     bool_gates = [
         ("captcha_cleared", "captcha"),

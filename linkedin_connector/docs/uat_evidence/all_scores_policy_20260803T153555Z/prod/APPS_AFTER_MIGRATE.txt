@@ -1,0 +1,6 @@
+     state      | count 
+----------------+-------
+ human_required |    12
+ applied        |     1
+(2 rows)
+

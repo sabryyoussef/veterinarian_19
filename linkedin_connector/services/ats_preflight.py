@@ -103,24 +103,15 @@ def classify_preflight(
         "platform": platform,
         "preflight": {},
         "http_status": None,
+        # Score is informational only — never blocks classification.
+        "score": float(score or 0.0),
+        "role_relevant": bool(_RELEVANT_RE.search(f"{title} {description}")),
+        "junior_title": bool(_JUNIOR_ONLY_RE.search(title or "")),
     }
 
     if platform in ("linkedin", "indeed", "bebee", "aggregator", "email"):
         result["discovery_class"] = "ineligible"
         result["blocker"] = f"blocked_platform:{platform}"
-        return result
-
-    if score < 65:
-        result["blocker"] = f"score_below_65:{score}"
-        return result
-
-    if not _RELEVANT_RE.search(f"{title} {description}"):
-        result["blocker"] = "role_not_relevant"
-        return result
-
-    # Junior-only titles / hard junior requirements (mentoring language handled by scorer)
-    if _JUNIOR_ONLY_RE.search(title or ""):
-        result["blocker"] = "junior_title"
         return result
 
     ok_loc, loc_reason = location_allowed(location, description, remote)

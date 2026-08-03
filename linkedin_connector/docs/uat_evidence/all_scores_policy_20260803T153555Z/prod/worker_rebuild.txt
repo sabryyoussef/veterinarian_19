@@ -1,0 +1,54 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 717B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#2 DONE 1.7s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/9] FROM docker.io/library/python:3.12-slim-bookworm@sha256:d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b
+#4 resolve docker.io/library/python:3.12-slim-bookworm@sha256:d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 24.41kB done
+#5 DONE 0.0s
+
+#6 [3/9] RUN apt-get update && apt-get install -y --no-install-recommends       curl     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [4/9] COPY requirements.txt .
+#7 CACHED
+
+#8 [2/9] WORKDIR /app
+#8 CACHED
+
+#9 [5/9] RUN pip install --no-cache-dir -r requirements.txt     && playwright install --with-deps chromium
+#9 CACHED
+
+#10 [6/9] COPY app ./app
+#10 DONE 0.1s
+
+#11 [7/9] COPY fixtures ./fixtures
+#11 DONE 0.0s
+
+#12 [8/9] COPY tests ./tests
+#12 DONE 0.1s
+
+#13 [9/9] RUN mkdir -p /artifacts && chmod 0700 /artifacts
+#13 DONE 0.3s
+
+#14 exporting to image
+#14 exporting layers 0.1s done
+#14 exporting manifest sha256:1d91541591b2c0aee42978954e1f0c849e8f6154da651464343f4cfc6832fc96 0.0s done
+#14 exporting config sha256:0ee936a77acb91d90309c2cf90c77a6a1bede6fccbf7ec1b1dd2b0cf4cd40c39 0.0s done
+#14 exporting attestation manifest sha256:fb968f4ed496465fa1625d1f5b7fa19855d0d1d2a78e94070ea3262ac7d4b499 0.0s done
+#14 exporting manifest list sha256:edb8eac347f3792cb27b12855227fa944c27a51a788b975a4d247b043a1c0aae 0.0s done
+#14 naming to docker.io/library/personal-job-apply-worker:uat done
+#14 unpacking to docker.io/library/personal-job-apply-worker:uat 0.1s done
+#14 DONE 0.3s

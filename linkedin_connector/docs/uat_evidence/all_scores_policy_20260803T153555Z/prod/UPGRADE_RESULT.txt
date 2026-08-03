@@ -1,0 +1,2 @@
+72:2026-08-03 15:37:30,347 935716 INFO pet_spot_elsahel odoo.modules.migration: module linkedin_connector: Running migration [19.0.2.16.0>] post-migrate 
+561:2026-08-03 15:38:39,980 935716 INFO pet_spot_elsahel odoo.modules.loading: Modules loaded. 

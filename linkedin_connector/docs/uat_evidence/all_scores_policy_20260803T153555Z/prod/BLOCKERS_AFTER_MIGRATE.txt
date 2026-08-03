@@ -1,0 +1,11 @@
+    discovery_blocker     | count 
+--------------------------+-------
+ captcha_or_turnstile     |    12
+ unsupported_ats:unknown  |    12
+ location_unknown         |     9
+ location_out_of_policy   |     4
+ gulf_without_sponsorship |     2
+ score_below_65:30.0      |     1
+ eu_without_sponsorship   |     1
+(7 rows)
+

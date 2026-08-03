@@ -195,9 +195,12 @@ class TestCaughtJobsDashboard(TransactionCase):
         all_data = self.Dash.get_dashboard_data(period="all")
         self.assertGreaterEqual(all_data["kpis"]["safe_canary"], 1)
         self.assertGreaterEqual(all_data["kpis"]["ineligible"], 1)
+        self.assertGreaterEqual(all_data["kpis"]["hard_excluded"], 1)
         self.assertGreaterEqual(all_data["kpis"]["human_required"], 1)
         self.assertGreaterEqual(all_data["kpis"]["applied"], 1)
-        self.assertGreaterEqual(all_data["kpis"]["eligible"], 1)
+        self.assertGreaterEqual(all_data["kpis"]["auto_eligible"], 1)
+        self.assertEqual(all_data["kpis"]["eligible"], all_data["kpis"]["auto_eligible"])
+        self.assertTrue(all_data.get("score_informational_only"))
 
     def test_grouping_charts(self):
         data = self.Dash.get_dashboard_data(period="all")
@@ -262,8 +265,11 @@ class TestCaughtJobsDashboard(TransactionCase):
         self.assertEqual(action["res_id"], self.job_a.id)
 
     def test_smart_actions_preserve_account(self):
-        action = self.Dash.action_open_smart("eligible")
+        action = self.Dash.action_open_smart("auto_eligible")
         self.assertIn(("account_id", "=", PERSONAL_ACCOUNT_ID), action["domain"])
+        self.assertIn(
+            ("discovery_class", "=", "safe_canary_candidate"), action["domain"]
+        )
 
     def test_empty_dataset(self):
         data = self.Dash.get_dashboard_data(

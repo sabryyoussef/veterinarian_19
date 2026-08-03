@@ -1,0 +1,65 @@
+{
+  "verdict": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY",
+  "module_version": "19.0.2.16.0",
+  "policy": {
+    "min_score": 0.0,
+    "kill_switch": true,
+    "browser_submit_enabled": false,
+    "email_submit_enabled": false,
+    "max_submits_per_day": 2,
+    "max_submits_per_week": 15,
+    "min_minutes_between_submits": 30
+  },
+  "icp": {
+    "job_score_threshold": "0",
+    "live_submit_enabled": "False",
+    "last_discovery_run": "2026-08-03 15:40:46"
+  },
+  "kpis": {
+    "total_jobs": 41,
+    "new_jobs": 41,
+    "eligible": 0,
+    "auto_eligible": 0,
+    "queued": 0,
+    "safe_canary": 0,
+    "human_required": 12,
+    "ineligible": 17,
+    "hard_excluded": 17,
+    "unsupported_ats": 12,
+    "applied": 1,
+    "applied_today": 0,
+    "applied_total": 1,
+    "submission_unknown": 0,
+    "capacity_daily_remaining": 1,
+    "capacity_weekly_remaining": 14,
+    "average_score": 32.4,
+    "score_informational_only": true,
+    "ats_sources_checked": 9,
+    "last_discovery_run": "2026-08-03 15:40:46",
+    "next_discovery_run": "2026-08-03 21:40:46",
+    "last_discovery_run_display": "2026-08-03 15:40 UTC",
+    "next_discovery_run_display": "2026-08-03 21:40 UTC",
+    "company_account_apps": 0
+  },
+  "apps_by_state": {
+    "applied": 1,
+    "human_required": 12
+  },
+  "jobs_by_class": {
+    "human_required": 12,
+    "ineligible": 17,
+    "unsupported_ats": 12
+  },
+  "blockers": {
+    "captcha_or_turnstile": 12,
+    "eu_without_sponsorship": 1,
+    "gulf_without_sponsorship": 2,
+    "location_out_of_policy": 4,
+    "location_unknown": 9,
+    "score_below_65:30.0": 1,
+    "unsupported_ats:unknown": 12
+  },
+  "company_apps": 0,
+  "applied_total": 1,
+  "operating_state": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY"
+}

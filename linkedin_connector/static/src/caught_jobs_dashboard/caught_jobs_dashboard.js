@@ -43,6 +43,15 @@ const APP_STATE_OPTIONS = [
     { value: "applied", label: "Applied" },
 ];
 
+const ELIGIBILITY_OPTIONS = [
+    { value: "", label: "All eligibility" },
+    { value: "auto_eligible", label: "Auto eligible" },
+    { value: "queued", label: "Queued" },
+    { value: "human_required", label: "Human required" },
+    { value: "hard_excluded", label: "Hard excluded" },
+    { value: "unsupported", label: "Unsupported ATS" },
+];
+
 const REFRESH_MS = 5 * 60 * 1000;
 
 export class LinkedinCaughtJobsDashboard extends Component {
@@ -57,6 +66,7 @@ export class LinkedinCaughtJobsDashboard extends Component {
         this.classOptions = CLASS_OPTIONS;
         this.platformOptions = PLATFORM_OPTIONS;
         this.appStateOptions = APP_STATE_OPTIONS;
+        this.eligibilityOptions = ELIGIBILITY_OPTIONS;
 
         this.state = useState({
             period: "all",
@@ -65,8 +75,11 @@ export class LinkedinCaughtJobsDashboard extends Component {
             discoveryClass: "",
             platform: "",
             minScore: "0",
+            maxScore: "",
             search: "",
             appState: "",
+            eligibilityState: "",
+            hardExclusionReason: "",
             safeCanaryOnly: false,
             offset: 0,
             limit: 40,
@@ -150,6 +163,10 @@ export class LinkedinCaughtJobsDashboard extends Component {
                 }
             }
             const minScore = Number(this.state.minScore);
+            const maxScoreRaw = this.state.maxScore;
+            const maxScore = maxScoreRaw === "" || maxScoreRaw === null || maxScoreRaw === undefined
+                ? false
+                : Number(maxScoreRaw);
             const data = await this.orm.call(
                 "linkedin.caught.jobs.dashboard",
                 "get_dashboard_data",
@@ -161,8 +178,11 @@ export class LinkedinCaughtJobsDashboard extends Component {
                     discovery_class: this.state.discoveryClass || false,
                     platform: this.state.platform || false,
                     min_score: Number.isFinite(minScore) ? minScore : 0,
+                    max_score: Number.isFinite(maxScore) ? maxScore : false,
                     search: this.state.search || "",
                     app_state: this.state.appState || false,
+                    eligibility_state: this.state.eligibilityState || false,
+                    hard_exclusion_reason: this.state.hardExclusionReason || false,
                     safe_canary_only: !!this.state.safeCanaryOnly,
                     offset: this.state.offset,
                     limit: this.state.limit,

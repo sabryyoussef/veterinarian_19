@@ -1,0 +1,2 @@
+76:2026-08-03 15:36:14,241 930866 INFO pet_spot_elsahel_test odoo.modules.migration: module linkedin_connector: Running migration [19.0.2.16.0>] post-migrate 
+739:2026-08-03 15:36:32,410 930866 INFO pet_spot_elsahel_test odoo.tests.result: 0 failed, 0 error(s) of 55 tests when loading database 'pet_spot_elsahel_test' 

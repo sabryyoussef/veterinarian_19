@@ -1,0 +1,39 @@
+{
+  "verdict": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY",
+  "old_policy": {
+    "min_score": 65,
+    "job_score_threshold": "65"
+  },
+  "new_policy": {
+    "min_score": 0,
+    "job_score_threshold": "0",
+    "score_informational_only": true
+  },
+  "module_version": "19.0.2.16.0",
+  "reevaluated": 40,
+  "preserved_applied": 1,
+  "auto_eligible": 0,
+  "queued": 0,
+  "human_required": 12,
+  "hard_excluded": 17,
+  "hard_excluded_reasons": {
+    "captcha_or_turnstile": 12,
+    "eu_without_sponsorship": 1,
+    "gulf_without_sponsorship": 2,
+    "location_out_of_policy": 4,
+    "location_unknown": 9,
+    "score_below_65:30.0": 1,
+    "unsupported_ats:unknown": 12
+  },
+  "unsupported_ats": 12,
+  "canary_status": "none_safe_unattended",
+  "submission_workflow": {
+    "kill_switch": true,
+    "live_submit_enabled": "False",
+    "browser_submit_enabled": false
+  },
+  "external_submissions": 1,
+  "company_account_apps": 0,
+  "tests": "0 failed, 0 error(s) of 55 tests",
+  "backup": "dump=/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_all_scores_20260803T153555Z.dump size=79130267 sha256=07f1e6341f20803b7107f9667c80c17f1c77d000199dd43535594dc196881b60 toc=32449"
+}

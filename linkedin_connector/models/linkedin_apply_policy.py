@@ -37,7 +37,12 @@ class LinkedinApplyPolicy(models.Model):
         default="bebee,greenhouse,lever,company_ats,aggregator,unknown",
         help="linkedin is never auto-submitted; use manual task only.",
     )
-    min_score = fields.Float(default=65.0, tracking=True)
+    min_score = fields.Float(
+        default=0.0,
+        tracking=True,
+        help="Informational floor only. Score never blocks application submission "
+        "(personal account policy: 0 = apply all that pass hard safety gates).",
+    )
     max_submits_per_day = fields.Integer(default=2, tracking=True)
     max_submits_per_week = fields.Integer(default=15, tracking=True)
     max_submits_per_month = fields.Integer(default=20, tracking=True)
@@ -186,6 +191,41 @@ class LinkedinApplyPolicy(models.Model):
                 }
             )
         return policy
+
+    @api.model
+    def apply_all_scores_policy(self):
+        """Set personal (id=2) min_score=0 and reprocess existing jobs.
+
+        Company account id=1 is never modified. Does not enable live submit.
+        """
+        ICP = self.env["ir.config_parameter"].sudo()
+        old_threshold = ICP.get_param("linkedin_connector.job_score_threshold", "65")
+        ICP.set_param("linkedin_connector.job_score_threshold", "0")
+
+        personal = self.env["linkedin.account"].browse(2).exists()
+        if not personal or personal.account_type != "personal":
+            return {
+                "ok": False,
+                "error": "personal_account_missing",
+                "old_job_score_threshold": old_threshold,
+                "new_job_score_threshold": "0",
+            }
+
+        policy = self.get_policy_for_account(personal)
+        old_min = policy.min_score
+        policy.write({"min_score": 0.0})
+
+        reprocess = self.env["linkedin.job"].sudo().reprocess_personal_jobs_all_scores()
+        return {
+            "ok": True,
+            "account_id": personal.id,
+            "old_min_score": old_min,
+            "new_min_score": 0.0,
+            "old_job_score_threshold": old_threshold,
+            "new_job_score_threshold": "0",
+            "reprocess": reprocess,
+            "operating_state": self.env["linkedin.ats.source"]._operating_state({}),
+        }
 
     def allowed_platform_set(self):
         self.ensure_one()

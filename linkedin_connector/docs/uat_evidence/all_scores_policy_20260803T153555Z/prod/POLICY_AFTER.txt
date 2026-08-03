@@ -1,0 +1,11 @@
+ min_score | kill_switch | browser_submit_enabled | max_submits_per_day | min_minutes_between_submits 
+-----------+-------------+------------------------+---------------------+-----------------------------
+         0 | t           | f                      |                   2 |                          30
+(1 row)
+
+                  key                   | value 
+----------------------------------------+-------
+ linkedin_connector.live_submit_enabled | False
+ linkedin_connector.job_score_threshold | 0
+(2 rows)
+

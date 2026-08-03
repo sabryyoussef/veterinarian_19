@@ -53,17 +53,39 @@ class TestAtsDiscovery(TransactionCase):
         self.assertEqual(result["discovery_class"], "ineligible")
         self.assertIn("blocked_platform", result["blocker"])
 
-    def test_classify_score_floor(self):
+    def test_classify_score_informational_only(self):
+        """Score 0 must not block when hard gates would otherwise pass (mocked fetch)."""
+        from unittest.mock import patch
+
+        html = "<html><body><form><input name='partner_name'/><input name='email'/></form></body></html>"
+        with patch(
+            "odoo.addons.linkedin_connector.services.ats_preflight.fetch_job_detail",
+            return_value={"http_status": 200, "html": html, "final_url": "https://boards.greenhouse.io/x/jobs/1", "description": ""},
+        ):
+            result = classify_preflight(
+                title="Senior Odoo Developer",
+                location="Cairo",
+                description="Odoo Python PostgreSQL",
+                apply_url="https://boards.greenhouse.io/x/jobs/1",
+                remote=False,
+                score=0,
+            )
+        self.assertEqual(result["discovery_class"], "safe_canary_candidate")
+        self.assertFalse(result.get("blocker"))
+        self.assertEqual(result.get("score"), 0.0)
+
+    def test_classify_score_no_longer_blocks(self):
         result = classify_preflight(
             title="Senior Odoo Developer",
             location="Cairo",
             description="Odoo Python",
             apply_url="https://boards.greenhouse.io/x/jobs/1",
             remote=False,
-            score=64,
+            score=0,
         )
-        self.assertEqual(result["discovery_class"], "ineligible")
-        self.assertIn("score_below_65", result["blocker"])
+        # Without mocked fetch may human_required or safe — but never score_below_65
+        self.assertNotIn("score_below_65", result.get("blocker") or "")
+        self.assertFalse((result.get("blocker") or "").startswith("score_below"))
 
     def test_ats_source_model_and_isolation(self):
         personal = self.env["linkedin.account"].browse(2)
@@ -100,4 +122,4 @@ class TestAtsDiscovery(TransactionCase):
         self.assertEqual(after, 0)
         src.invalidate_recordset()
         self.assertTrue(src.last_check_at)
-        self.assertEqual(result.get("operating_state"), "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY")
+        self.assertEqual(result.get("operating_state"), "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY")

@@ -1,0 +1,7 @@
+ discovery_class | count 
+-----------------+-------
+ ineligible      |    17
+ human_required  |    12
+ unsupported_ats |    12
+(3 rows)
+

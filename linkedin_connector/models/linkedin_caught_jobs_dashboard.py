@@ -61,8 +61,11 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         discovery_class=False,
         platform=False,
         min_score=0.0,
+        max_score=False,
         search="",
         app_state=False,
+        eligibility_state=False,
+        hard_exclusion_reason=False,
         safe_canary_only=False,
         offset=0,
         limit=40,
@@ -72,6 +75,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
 
         Read-only: never creates/writes/unlinks. Enforces personal account id=2
         server-side. Company account id=1 is always excluded.
+        Score is informational only and never gates eligibility KPIs.
         """
         self._check_dashboard_access()
         period = (period or "all").strip()
@@ -92,8 +96,11 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                     discovery_class=discovery_class,
                     platform=platform,
                     min_score=min_score,
+                    max_score=max_score,
                     search=search,
                     app_state=app_state,
+                    eligibility_state=eligibility_state,
+                    hard_exclusion_reason=hard_exclusion_reason,
                     safe_canary_only=safe_canary_only,
                 ),
             ]
@@ -124,13 +131,18 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "read_only": True,
             "account_id": PERSONAL_ACCOUNT_ID,
             "company_account_excluded": COMPANY_ACCOUNT_ID,
+            "score_informational_only": True,
+            "min_application_score": 0.0,
             "period": period_meta,
             "filters": {
                 "discovery_class": discovery_class or False,
                 "platform": platform or False,
                 "min_score": float(min_score or 0.0),
+                "max_score": float(max_score) if max_score not in (False, None, "") else False,
                 "search": search or "",
                 "app_state": app_state or False,
+                "eligibility_state": eligibility_state or False,
+                "hard_exclusion_reason": hard_exclusion_reason or False,
                 "safe_canary_only": bool(safe_canary_only),
             },
             "kpis": kpis,
@@ -301,8 +313,11 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         discovery_class=False,
         platform=False,
         min_score=0.0,
+        max_score=False,
         search="",
         app_state=False,
+        eligibility_state=False,
+        hard_exclusion_reason=False,
         safe_canary_only=False,
     ):
         domain = []
@@ -320,6 +335,12 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             raise ValidationError(_("Invalid minimum score.")) from exc
         if min_score > 0:
             domain.append(("score", ">=", min_score))
+        if max_score not in (False, None, ""):
+            try:
+                max_score = float(max_score)
+            except (TypeError, ValueError) as exc:
+                raise ValidationError(_("Invalid maximum score.")) from exc
+            domain.append(("score", "<=", max_score))
         search = (search or "").strip()
         if search:
             domain = expression.AND(
@@ -343,6 +364,29 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                 ]
             ).mapped("job_id").ids
             domain.append(("id", "in", job_ids or [0]))
+        if eligibility_state:
+            elig = (eligibility_state or "").strip()
+            if elig == "auto_eligible":
+                domain.append(("discovery_class", "=", "safe_canary_candidate"))
+            elif elig == "human_required":
+                domain.append(("discovery_class", "=", "human_required"))
+            elif elig == "hard_excluded":
+                domain.append(("discovery_class", "=", "ineligible"))
+            elif elig == "unsupported":
+                domain.append(("discovery_class", "=", "unsupported_ats"))
+            elif elig == "queued":
+                App = self.env["linkedin.job.application"].sudo()
+                job_ids = App.search(
+                    [
+                        ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                        ("state", "in", ("discovered", "shortlisted", "pack_ready", "approved")),
+                    ]
+                ).mapped("job_id").ids
+                domain.append(("id", "in", job_ids or [0]))
+            else:
+                raise ValidationError(_("Invalid eligibility state."))
+        if hard_exclusion_reason:
+            domain.append(("discovery_blocker", "ilike", hard_exclusion_reason))
         return domain
 
     def _application_map(self, job_ids):
@@ -387,7 +431,9 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
     def _compute_kpis(self, domain, start_utc, end_utc):
         Job = self.env["linkedin.job"].sudo()
         App = self.env["linkedin.job.application"].sudo()
+        Attempt = self.env["linkedin.apply.attempt"].sudo()
         ICP = self.env["ir.config_parameter"].sudo()
+        Policy = self.env["linkedin.apply.policy"].sudo()
 
         total = Job.search_count(domain)
         # New jobs: create_date in period (or all matching if unbounded)
@@ -403,18 +449,22 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                 expression.AND([domain, [("discovery_class", "=", name)]])
             )
 
-        eligible = Job.search_count(
-            expression.AND([domain, [("score", ">=", 65.0)]])
-        )
-        safe = count_class("safe_canary_candidate")
+        # Auto eligible = hard gates passed (safe canary) — score ignored
+        auto_eligible = count_class("safe_canary_candidate")
+        safe = auto_eligible
         human = count_class("human_required")
-        ineligible = count_class("ineligible")
+        hard_excluded = count_class("ineligible")
         unsupported = count_class("unsupported_ats")
+        # Legacy alias: eligible no longer means score>=65
+        eligible = auto_eligible
 
         # Application KPIs for matching jobs
         job_ids = Job.search(domain).ids
         applied = 0
+        applied_today = 0
         submission_unknown = 0
+        queued = 0
+        human_apps = 0
         if job_ids:
             applied = App.search_count(
                 [
@@ -430,6 +480,65 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                     ("state", "=", "submission_unknown"),
                 ]
             )
+            queued = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("state", "in", ("discovered", "shortlisted", "pack_ready", "approved")),
+                ]
+            )
+            human_apps = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("state", "=", "human_required"),
+                ]
+            )
+
+        # Applied today (Cairo day) for personal account
+        now = fields.Datetime.now()
+        local = fields.Datetime.context_timestamp(self, now)
+        day_start_local = datetime.combine(local.date(), time.min).replace(
+            tzinfo=local.tzinfo
+        )
+        day_start_utc = self._local_to_utc_naive(day_start_local)
+        applied_today = App.search_count(
+            [
+                ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                ("state", "=", "applied"),
+                ("applied_at", ">=", day_start_utc),
+            ]
+        )
+        applied_total = App.search_count(
+            [("account_id", "=", PERSONAL_ACCOUNT_ID), ("state", "=", "applied")]
+        )
+
+        # Capacity remaining from policy
+        policy = Policy.search(
+            [("account_id", "=", PERSONAL_ACCOUNT_ID), ("active", "=", True)], limit=1
+        )
+        max_day = policy.max_submits_per_day if policy else 2
+        max_week = policy.max_submits_per_week if policy else 15
+        day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        from datetime import timedelta as _td
+
+        week_start = day_start - _td(days=day_start.weekday())
+        submits_today = Attempt.search_count(
+            [
+                ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                ("state", "in", ("submitted", "succeeded")),
+                ("create_date", ">=", day_start),
+            ]
+        )
+        submits_week = Attempt.search_count(
+            [
+                ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                ("state", "in", ("submitted", "succeeded")),
+                ("create_date", ">=", week_start),
+            ]
+        )
+        capacity_daily = max(0, int(max_day) - submits_today)
+        capacity_weekly = max(0, int(max_week or 15) - submits_week)
 
         # Average score via read_group
         avg_score = 0.0
@@ -451,13 +560,21 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "total_jobs": total,
             "new_jobs": new_jobs,
             "eligible": eligible,
+            "auto_eligible": auto_eligible,
+            "queued": queued,
             "safe_canary": safe,
-            "human_required": human,
-            "ineligible": ineligible,
+            "human_required": max(human, human_apps),
+            "ineligible": hard_excluded,
+            "hard_excluded": hard_excluded,
             "unsupported_ats": unsupported,
             "applied": applied,
+            "applied_today": applied_today,
+            "applied_total": applied_total,
             "submission_unknown": submission_unknown,
+            "capacity_daily_remaining": capacity_daily,
+            "capacity_weekly_remaining": capacity_weekly,
             "average_score": round(avg_score, 1),
+            "score_informational_only": True,
             "ats_sources_checked": sources_checked,
             "last_discovery_run": last_run or False,
             "next_discovery_run": next_run or False,
@@ -574,13 +691,22 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         aid = PERSONAL_ACCOUNT_ID
         return [
             {
-                "key": "eligible",
-                "label": _("Eligible Jobs"),
+                "key": "auto_eligible",
+                "label": _("Auto Eligible"),
                 "res_model": "linkedin.job",
                 "domain": [
                     ("account_id", "=", aid),
-                    ("score", ">=", 65),
+                    ("discovery_class", "=", "safe_canary_candidate"),
                     ("is_duplicate", "=", False),
+                ],
+            },
+            {
+                "key": "queued",
+                "label": _("Queued Applications"),
+                "res_model": "linkedin.job.application",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("state", "in", ("discovered", "shortlisted", "pack_ready", "approved")),
                 ],
             },
             {
@@ -590,6 +716,25 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                 "domain": [
                     ("account_id", "=", aid),
                     ("state", "=", "human_required"),
+                ],
+            },
+            {
+                "key": "hard_excluded",
+                "label": _("Hard Excluded"),
+                "res_model": "linkedin.job",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("discovery_class", "=", "ineligible"),
+                    ("is_duplicate", "=", False),
+                ],
+            },
+            {
+                "key": "unsupported",
+                "label": _("Unsupported ATS"),
+                "res_model": "linkedin.job",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("discovery_class", "=", "unsupported_ats"),
                 ],
             },
             {

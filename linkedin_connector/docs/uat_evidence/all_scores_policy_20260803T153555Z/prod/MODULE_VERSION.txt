@@ -1,0 +1,5 @@
+        name        | latest_version |   state   
+--------------------+----------------+-----------
+ linkedin_connector | 19.0.2.16.0    | installed
+(1 row)
+

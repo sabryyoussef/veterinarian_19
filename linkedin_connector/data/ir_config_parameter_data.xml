@@ -6,7 +6,7 @@
     </record>
     <record id="icp_job_score_threshold" model="ir.config_parameter">
         <field name="key">linkedin_connector.job_score_threshold</field>
-        <field name="value">65</field>
+        <field name="value">0</field>
     </record>
     <record id="icp_live_submit_enabled" model="ir.config_parameter">
         <field name="key">linkedin_connector.live_submit_enabled</field>

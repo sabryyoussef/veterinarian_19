@@ -1,0 +1,16 @@
+    discovery_blocker    | count 
+-------------------------+-------
+ score_below_65:40.0     |    14
+ score_below_65:0.0      |     5
+ score_below_65:25.0     |     5
+ location_unknown        |     3
+ unsupported_ats:unknown |     3
+ score_below_65:50.0     |     3
+ score_below_65:30.0     |     3
+ score_below_65:-20.0    |     1
+ score_below_65:5.0      |     1
+ score_below_65:-15.0    |     1
+ score_below_65:35.0     |     1
+ score_below_65:10.0     |     1
+(12 rows)
+

@@ -1,0 +1,6 @@
+dump=/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_all_scores_20260803T153555Z.dump size=79130267 sha256=07f1e6341f20803b7107f9667c80c17f1c77d000199dd43535594dc196881b60 toc=32449
+;
+; Archive created at 2026-08-03 18:36:54 EEST
+;     dbname: pet_spot_elsahel
+;     TOC Entries: 32438
+;     Compression: gzip

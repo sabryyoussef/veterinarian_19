@@ -44,11 +44,17 @@ def test_gate_requires_live_submit_flag(monkeypatch) -> None:
     assert gate.code == "live_submit_disabled"
 
 
-def test_gate_requires_score_65(monkeypatch) -> None:
+def test_gate_allows_score_zero(monkeypatch) -> None:
     monkeypatch.setenv("PERSONAL_JOB_APPLY_SUBMIT_ENABLED", "true")
-    gate = evaluate_submit_authorization(auth=_auth(score=64), adapter_used="greenhouse_like")
-    assert not gate.ok
-    assert gate.code == "score_below_floor"
+    gate = evaluate_submit_authorization(auth=_auth(score=0), adapter_used="greenhouse_like")
+    assert gate.ok
+
+
+def test_gate_score_does_not_block(monkeypatch) -> None:
+    monkeypatch.setenv("PERSONAL_JOB_APPLY_SUBMIT_ENABLED", "true")
+    gate = evaluate_submit_authorization(auth=_auth(score=1), adapter_used="greenhouse_like")
+    assert gate.ok
+    assert gate.code == "ok"
 
 
 def test_captcha_becomes_human_required(monkeypatch) -> None:

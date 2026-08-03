@@ -221,7 +221,7 @@ class LinkedinAtsSource(models.Model):
                     ).create(job_vals)
                     stats["new_jobs"] += 1
 
-                # Preflight / classify when score >= 65 or after scoring
+                # Preflight / classify after scoring (score is informational only)
                 job.invalidate_recordset()
                 score = job.score or 0.0
                 classification = classify_preflight(
@@ -330,16 +330,18 @@ class LinkedinAtsSource(models.Model):
 
     @api.model
     def _operating_state(self, canary_result):
-        if canary_result and canary_result.get("verdict") == "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_LIVE":
-            return "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_LIVE"
+        if canary_result and canary_result.get("verdict") == "ALL_SCORES_APPLICATION_POLICY_LIVE":
+            return "ALL_SCORES_APPLICATION_POLICY_LIVE"
+        if canary_result and canary_result.get("verdict") == "ALL_SCORES_APPLICATION_POLICY_BLOCKED":
+            return "ALL_SCORES_APPLICATION_POLICY_BLOCKED"
         live = (
             self.env["ir.config_parameter"]
             .sudo()
             .get_param("linkedin_connector.live_submit_enabled", "False")
         )
         if str(live).lower() in ("1", "true", "yes"):
-            return "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_LIVE"
-        return "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY"
+            return "ALL_SCORES_APPLICATION_POLICY_LIVE"
+        return "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY"
 
     @api.model
     def _post_discovery_digest(self, stats, personal):

@@ -1,0 +1,11 @@
+ id | min_score | kill_switch | browser_submit_enabled | account_id 
+----+-----------+-------------+------------------------+------------
+  1 |        65 | t           | f                      |          2
+(1 row)
+
+                  key                   | value 
+----------------------------------------+-------
+ linkedin_connector.job_score_threshold | 65
+ linkedin_connector.live_submit_enabled | False
+(2 rows)
+

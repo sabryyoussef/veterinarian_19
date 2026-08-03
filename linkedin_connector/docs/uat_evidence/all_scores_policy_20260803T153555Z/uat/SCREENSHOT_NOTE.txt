@@ -1,0 +1,7 @@
+url=http://127.0.0.1:8027/odoo/action-1590
+title=Caught Jobs Dashboard
+has_auto_eligible=True
+has_hard_excluded=True
+has_queued=True
+has_score_info=False
+len_body=7159

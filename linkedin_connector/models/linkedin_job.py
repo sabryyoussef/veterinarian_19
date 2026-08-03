@@ -326,15 +326,16 @@ class LinkedinJob(models.Model):
 
     @api.model
     def _score_threshold(self):
+        """Informational / digest threshold. Default 0 — score never blocks apply."""
         raw = (
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("linkedin_connector.job_score_threshold", "50")
+            .get_param("linkedin_connector.job_score_threshold", "0")
         )
         try:
             return float(raw)
         except (TypeError, ValueError):
-            return 50.0
+            return 0.0
 
     def _score_and_dedupe(self):
         for rec in self:
@@ -378,10 +379,24 @@ class LinkedinJob(models.Model):
                 job.with_context(skip_job_postprocess=True).write(vals)
 
     def _maybe_create_applications(self):
+        """Create applications for jobs that pass hard gates (score is informational)."""
         threshold = self._score_threshold()
         App = self.env["linkedin.job.application"]
         for rec in self:
-            if rec.is_duplicate or rec.score < threshold:
+            if rec.is_duplicate:
+                continue
+            if rec.account_id and rec.account_id.account_type == "company":
+                continue
+            dc = rec.discovery_class or "unchecked"
+            if dc in ("ineligible", "unsupported_ats"):
+                continue
+            if dc in ("safe_canary_candidate", "human_required"):
+                pass
+            elif dc in ("unchecked", False) or not dc:
+                # Legacy path before preflight: informational threshold only
+                if rec.score < threshold:
+                    continue
+            else:
                 continue
             if App.search_count([("job_id", "=", rec.id)]):
                 continue
@@ -391,11 +406,12 @@ class LinkedinJob(models.Model):
                 personal = self.env["linkedin.account"].get_personal_account()
             if not personal:
                 continue
+            state = "human_required" if dc == "human_required" else "discovered"
             App.create(
                 {
                     "job_id": rec.id,
                     "account_id": personal.id,
-                    "state": "discovered",
+                    "state": state,
                 }
             )
 
@@ -767,6 +783,170 @@ class LinkedinJob(models.Model):
         return score, breakdown, flags
 
     @api.model
+    def reprocess_personal_jobs_all_scores(self):
+        """Re-evaluate account id=2 jobs after score floor removed.
+
+        Preserves applied / submission_unknown. Reclassifies score-only blockers.
+        Creates applications for jobs that pass hard gates. Does not submit.
+        Never touches company account id=1.
+        """
+        from odoo.addons.linkedin_connector.services.ats_preflight import (
+            classify_preflight,
+        )
+
+        personal = self.env["linkedin.account"].browse(2).exists()
+        if not personal or personal.account_type != "personal":
+            return {"ok": False, "error": "personal_account_missing"}
+
+        App = self.env["linkedin.job.application"].sudo()
+        company_before = App.search_count([("account_id", "=", 1)])
+
+        jobs = self.sudo().search(
+            [
+                ("account_id", "=", personal.id),
+                ("is_duplicate", "=", False),
+            ]
+        )
+        stats = {
+            "reevaluated": 0,
+            "score_only_reconsidered": 0,
+            "safe_canary": 0,
+            "human_required": 0,
+            "ineligible": 0,
+            "unsupported_ats": 0,
+            "apps_created": 0,
+            "apps_updated": 0,
+            "preserved_applied": 0,
+            "preserved_submission_unknown": 0,
+            "skipped_prior_apply": 0,
+            "hard_excluded_reasons": {},
+        }
+        now = fields.Datetime.now()
+        blocked_urls = {
+            "https://www.odoo.com/jobs/apply/software-developer-1",
+        }
+
+        for job in jobs:
+            apps = App.search(
+                [("job_id", "=", job.id), ("account_id", "=", personal.id)],
+                order="id desc",
+            )
+            terminal = apps.filtered(
+                lambda a: a.state in ("applied", "submission_unknown")
+            )
+            if terminal.filtered(lambda a: a.state == "applied"):
+                stats["preserved_applied"] += 1
+                continue
+            if terminal.filtered(lambda a: a.state == "submission_unknown"):
+                stats["preserved_submission_unknown"] += 1
+                continue
+
+            canon = self._canonical_apply_url(job.apply_url or "")
+            if canon in blocked_urls or "software-developer-1" in (job.apply_url or ""):
+                # Preserve Odoo S.A. duplicate suppression even without local app link
+                sibling_applied = App.search_count(
+                    [
+                        ("account_id", "=", personal.id),
+                        ("state", "in", ("applied", "submission_unknown")),
+                        ("job_id.apply_url", "ilike", "software-developer-1"),
+                    ]
+                )
+                if sibling_applied:
+                    stats["skipped_prior_apply"] += 1
+                    continue
+
+            prior_blocker = job.discovery_blocker or ""
+            was_score_only = prior_blocker.startswith("score_below_65") or prior_blocker.startswith(
+                "role_not_relevant"
+            ) or prior_blocker == "junior_title"
+
+            classification = classify_preflight(
+                title=job.title or "",
+                location=job.location or "",
+                description=job._plain_text_blob()
+                if hasattr(job, "_plain_text_blob")
+                else (job.description or ""),
+                apply_url=job.apply_url or "",
+                remote=bool(job.remote),
+                score=job.score if job.score is not None else 0.0,
+                ats_hint=job.apply_platform or "",
+            )
+            job.write(
+                {
+                    "discovery_class": classification["discovery_class"],
+                    "discovery_blocker": classification.get("blocker") or "",
+                    "last_preflight_at": now,
+                    "preflight_json": json.dumps(
+                        {
+                            "preflight": classification.get("preflight") or {},
+                            "http_status": classification.get("http_status"),
+                            "platform": classification.get("platform"),
+                            "score": classification.get("score"),
+                            "role_relevant": classification.get("role_relevant"),
+                            "reprocess": "all_scores_policy",
+                        },
+                        sort_keys=True,
+                    ),
+                }
+            )
+            stats["reevaluated"] += 1
+            if was_score_only:
+                stats["score_only_reconsidered"] += 1
+
+            dc = classification["discovery_class"]
+            blocker = classification.get("blocker") or ""
+            if dc == "safe_canary_candidate":
+                stats["safe_canary"] += 1
+            elif dc == "human_required":
+                stats["human_required"] += 1
+            elif dc == "unsupported_ats":
+                stats["unsupported_ats"] += 1
+            else:
+                stats["ineligible"] += 1
+                if blocker:
+                    stats["hard_excluded_reasons"][blocker] = (
+                        stats["hard_excluded_reasons"].get(blocker, 0) + 1
+                    )
+
+            if dc not in ("safe_canary_candidate", "human_required"):
+                continue
+
+            target_state = (
+                "human_required" if dc == "human_required" else "discovered"
+            )
+            if apps:
+                # Do not demote approved packs; upgrade discovered→human when needed
+                for app in apps:
+                    if app.state in (
+                        "applied",
+                        "submission_unknown",
+                        "approved",
+                        "pack_ready",
+                    ):
+                        continue
+                    if app.state != target_state:
+                        app.write({"state": target_state})
+                        stats["apps_updated"] += 1
+            else:
+                App.create(
+                    {
+                        "job_id": job.id,
+                        "account_id": personal.id,
+                        "state": target_state,
+                    }
+                )
+                stats["apps_created"] += 1
+
+        company_after = App.search_count([("account_id", "=", 1)])
+        return {
+            "ok": True,
+            "account_id": personal.id,
+            "company_apps_unchanged": company_before == company_after,
+            "company_apps": company_after,
+            "stats": stats,
+        }
+
+    @api.model
     def try_execute_safe_canary(self):
         """One-shot Production canary when a safe_canary_candidate exists.
 
@@ -805,7 +985,7 @@ class LinkedinJob(models.Model):
             [
                 ("account_id", "=", personal.id),
                 ("discovery_class", "=", "safe_canary_candidate"),
-                ("score", ">=", 65),
+                ("score", ">=", 0),
                 ("is_duplicate", "=", False),
             ],
             order="score desc, id desc",
@@ -843,7 +1023,7 @@ class LinkedinJob(models.Model):
         if not job:
             return {
                 "ok": True,
-                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "verdict": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY",
                 "message": "no_safe_canary_candidate",
             }
 
@@ -904,7 +1084,7 @@ class LinkedinJob(models.Model):
         if classification["discovery_class"] != "safe_canary_candidate":
             return {
                 "ok": True,
-                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "verdict": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY",
                 "reclassified": classification,
                 "job_id": job.id,
             }
@@ -1005,7 +1185,7 @@ class LinkedinJob(models.Model):
             )
             return {
                 "ok": True,
-                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "verdict": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY",
                 "human_required": True,
                 "job_id": job.id,
                 "application_id": app.id,
@@ -1052,7 +1232,7 @@ class LinkedinJob(models.Model):
             ICP.set_param("linkedin_connector.pending_canary_job_id", str(job.id))
             return {
                 "ok": True,
-                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "verdict": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY",
                 "pending_canary": True,
                 "application_id": app.id,
                 "job_id": job.id,
@@ -1065,7 +1245,8 @@ class LinkedinJob(models.Model):
             "live_submit_enabled": True,
             "one_time_token": token,
             "approved_adapter": draft.get("adapter_used") or adapter,
-            "score": job.score or 65,
+            "score": job.score if job.score is not None else 0.0,
+            "min_score": 0.0,
             "captcha_cleared": True,
             "login_cleared": True,
             "otp_cleared": True,
@@ -1087,7 +1268,7 @@ class LinkedinJob(models.Model):
             ICP.set_param("linkedin_connector.live_submit_enabled", "False")
             return {
                 "ok": False,
-                "verdict": "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_BLOCKED",
+                "verdict": "ALL_SCORES_APPLICATION_POLICY_BLOCKED",
                 "error": "submit_transport_failed",
                 "detail": str(exc)[:200],
             }
@@ -1129,7 +1310,7 @@ class LinkedinJob(models.Model):
             )
             return {
                 "ok": True,
-                "verdict": "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_LIVE",
+                "verdict": "ALL_SCORES_APPLICATION_POLICY_LIVE",
                 "application_id": app.id,
                 "job_id": job.id,
                 "attempt_worker_id": attempt_id,
@@ -1149,7 +1330,7 @@ class LinkedinJob(models.Model):
             )
             return {
                 "ok": True,
-                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "verdict": "ALL_SCORES_POLICY_ACTIVE_WAITING_FOR_SAFE_CANARY",
                 "human_required": True,
                 "application_id": app.id,
             }
@@ -1172,7 +1353,7 @@ class LinkedinJob(models.Model):
         ICP.set_param("linkedin_connector.live_submit_enabled", "False")
         return {
             "ok": False,
-            "verdict": "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_BLOCKED",
+            "verdict": "ALL_SCORES_APPLICATION_POLICY_BLOCKED",
             "error": "submission_unknown",
             "application_id": app.id,
             "response_state": state,

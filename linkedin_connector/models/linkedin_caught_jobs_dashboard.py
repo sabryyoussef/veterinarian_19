@@ -415,6 +415,29 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
 
     def _serialize_job(self, job, app):
         discovered = job.listed_at or job.create_date
+        app_extra = {}
+        if app and app.get("id"):
+            full = (
+                self.env["linkedin.job.application"]
+                .sudo()
+                .browse(app["id"])
+                .exists()
+            )
+            if full:
+                app_extra = {
+                    "submission_channel": full.submission_channel or "unknown",
+                    "blocker": (full.next_required_action or job.discovery_blocker or "")[:240],
+                    "attempt_count": full.attempt_count or 0,
+                    "cv_sha": full.cv_sha256 or (full.cv_version_id.name if full.cv_version_id else ""),
+                    "confirmation": full.confirmation_reference
+                    or full.confirmation_url
+                    or full.email_rfc_message_id
+                    or "",
+                    "last_action_at": fields.Datetime.to_string(full.last_action_at)
+                    if full.last_action_at
+                    else False,
+                    "next_required_action": full.next_required_action or "",
+                }
         return {
             "id": job.id,
             "title": job.title or "",
@@ -424,7 +447,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "platform": job.apply_platform or "unknown",
             "discovery_class": job.discovery_class or "unchecked",
             "score": job.score if job.score is not None else None,
-            "blocker": (job.discovery_blocker or "")[:240],
+            "blocker": app_extra.get("blocker") or (job.discovery_blocker or "")[:240],
             "apply_url": job.apply_url or "",
             "safe_canary": job.discovery_class == "safe_canary_candidate",
             "app_state": app["state"] if app else False,
@@ -432,6 +455,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "discovered_at": fields.Datetime.to_string(discovered) if discovered else False,
             "discovered_at_display": self._format_user_dt(discovered) if discovered else "—",
             "ats_source": job.ats_source_id.name if job.ats_source_id else "",
+            **app_extra,
         }
 
     def _compute_kpis(self, domain, start_utc, end_utc):
@@ -470,6 +494,12 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         submission_unknown = 0
         queued = 0
         human_apps = 0
+        pack_ready = 0
+        drafted = 0
+        missing_fact = 0
+        delivery_failed = 0
+        email_apps = 0
+        browser_apps = 0
         terminal_job_ids = []
         if job_ids:
             applied = App.search_count(
@@ -498,6 +528,48 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                     ("account_id", "=", PERSONAL_ACCOUNT_ID),
                     ("job_id", "in", job_ids),
                     ("state", "=", "human_required"),
+                ]
+            )
+            pack_ready = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("state", "=", "pack_ready"),
+                ]
+            )
+            drafted = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("state", "=", "drafted"),
+                ]
+            )
+            missing_fact = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("state", "=", "missing_fact"),
+                ]
+            )
+            delivery_failed = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("state", "=", "delivery_failed"),
+                ]
+            )
+            email_apps = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("submission_channel", "=", "email"),
+                ]
+            )
+            browser_apps = App.search_count(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("submission_channel", "=", "browser"),
                 ]
             )
             terminal_job_ids = App.search(
@@ -583,12 +655,20 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
 
         return {
             "total_jobs": total,
+            "all_caught_jobs": total,
             "new_jobs": new_jobs,
             "eligible": eligible,
             "auto_eligible": auto_eligible,
             "queued": queued,
+            "pack_ready": pack_ready,
+            "drafted": drafted,
+            "missing_fact": missing_fact,
+            "delivery_failed": delivery_failed,
+            "email_applications": email_apps,
+            "browser_applications": browser_apps,
             "safe_canary": safe,
             "human_required": human_required_kpi,
+            "awaiting_human_challenge": human_required_kpi,
             "ineligible": hard_excluded,
             "hard_excluded": hard_excluded,
             "unsupported_ats": unsupported,
@@ -726,21 +806,60 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                 ],
             },
             {
+                "key": "pack_ready",
+                "label": str(_("Pack Ready")),
+                "res_model": "linkedin.job.application",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("state", "=", "pack_ready"),
+                ],
+            },
+            {
                 "key": "queued",
                 "label": str(_("Queued Applications")),
                 "res_model": "linkedin.job.application",
                 "domain": [
                     ("account_id", "=", aid),
-                    ("state", "in", ("discovered", "shortlisted", "pack_ready", "approved")),
+                    ("state", "in", ("discovered", "shortlisted", "pack_ready", "approved", "queued")),
                 ],
             },
             {
+                "key": "drafted",
+                "label": str(_("Drafted")),
+                "res_model": "linkedin.job.application",
+                "domain": [("account_id", "=", aid), ("state", "=", "drafted")],
+            },
+            {
                 "key": "human_required",
-                "label": str(_("Human Required")),
+                "label": str(_("Awaiting Human Challenge")),
                 "res_model": "linkedin.job.application",
                 "domain": [
                     ("account_id", "=", aid),
                     ("state", "=", "human_required"),
+                ],
+            },
+            {
+                "key": "missing_fact",
+                "label": str(_("Missing Fact")),
+                "res_model": "linkedin.job.application",
+                "domain": [("account_id", "=", aid), ("state", "=", "missing_fact")],
+            },
+            {
+                "key": "email_apps",
+                "label": str(_("Email Applications")),
+                "res_model": "linkedin.job.application",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("submission_channel", "=", "email"),
+                ],
+            },
+            {
+                "key": "browser_apps",
+                "label": str(_("Browser Applications")),
+                "res_model": "linkedin.job.application",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("submission_channel", "=", "browser"),
                 ],
             },
             {
@@ -772,10 +891,25 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                 ],
             },
             {
+                "key": "delivery_failed",
+                "label": str(_("Delivery Failed")),
+                "res_model": "linkedin.job.application",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("state", "=", "delivery_failed"),
+                ],
+            },
+            {
                 "key": "applied",
                 "label": str(_("Applied Applications")),
                 "res_model": "linkedin.job.application",
                 "domain": [("account_id", "=", aid), ("state", "=", "applied")],
+            },
+            {
+                "key": "answer_library",
+                "label": str(_("Answer Library")),
+                "res_model": "linkedin.answer.library",
+                "domain": [("account_id", "=", aid)],
             },
             {
                 "key": "policy",

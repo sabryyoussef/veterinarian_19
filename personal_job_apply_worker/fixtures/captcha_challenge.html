@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CAPTCHA Challenge Fixture</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; }
+    label { display: block; margin-top: 1rem; }
+    input, textarea { width: 100%; padding: 0.4rem; box-sizing: border-box; }
+    #challenge { border: 2px dashed #c00; padding: 1rem; margin-top: 1rem; }
+    #challenge.solved { border-color: #080; }
+    button { margin-top: 1.5rem; padding: 0.6rem 1.2rem; }
+    button:disabled { opacity: 0.4; }
+  </style>
+</head>
+<body>
+  <h1>Apply — CAPTCHA Fixture</h1>
+  <form id="captcha-form" action="thank_you.html" method="get">
+    <label>Full name <input type="text" name="full_name" id="full_name" required /></label>
+    <label>Email <input type="email" name="email" id="email" required /></label>
+    <label>Cover letter <textarea name="cover_letter" id="cover_letter" rows="3"></textarea></label>
+    <label>Resume <input type="file" name="resume" id="resume" accept=".pdf" /></label>
+    <div id="challenge" data-challenge="captcha">
+      <p>Verify you are human (fixture)</p>
+      <label><input type="checkbox" id="challenge_solved" /> I am not a robot</label>
+    </div>
+    <button type="submit" id="submit-application" disabled>Submit application</button>
+  </form>
+  <script>
+    const box = document.getElementById('challenge_solved');
+    const btn = document.getElementById('submit-application');
+    const wrap = document.getElementById('challenge');
+    box.addEventListener('change', () => {
+      btn.disabled = !box.checked;
+      wrap.classList.toggle('solved', box.checked);
+      wrap.setAttribute('data-solved', box.checked ? '1' : '0');
+    });
+  </script>
+</body>
+</html>

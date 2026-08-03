@@ -1,0 +1,6 @@
+                  key                   | value 
+----------------------------------------+-------
+ linkedin_connector.job_score_threshold | 0
+ linkedin_connector.live_submit_enabled | False
+(2 rows)
+

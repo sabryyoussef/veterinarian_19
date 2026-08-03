@@ -1,0 +1,6 @@
+ id |     state      |       next_required_action       
+----+----------------+----------------------------------
+  2 | human_required | solve_challenge_then_auto_resume
+(1 row)
+
+UPDATE 1

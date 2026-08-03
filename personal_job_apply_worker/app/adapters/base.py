@@ -33,11 +33,13 @@ def get_adapter(hint: Optional[str] = None) -> list[BaseApplyAdapter]:
     """Return adapters in try-order. Hint narrows to a single adapter when known."""
     from app.adapters.ashby_like import AshbyLikeAdapter
     from app.adapters.bebee_like import BebeeLikeAdapter
+    from app.adapters.generic_form import GenericFormAdapter
     from app.adapters.greenhouse_like import GreenhouseLikeAdapter
     from app.adapters.lever_like import LeverLikeAdapter
     from app.adapters.odoo_careers import OdooCareersAdapter
     from app.adapters.workable_like import WorkableLikeAdapter
 
+    # Known ATS first; GenericFormAdapter is last-resort DOM mapping.
     all_adapters: list[BaseApplyAdapter] = [
         OdooCareersAdapter(),
         GreenhouseLikeAdapter(),
@@ -45,6 +47,7 @@ def get_adapter(hint: Optional[str] = None) -> list[BaseApplyAdapter]:
         WorkableLikeAdapter(),
         AshbyLikeAdapter(),
         BebeeLikeAdapter(),
+        GenericFormAdapter(),
     ]
     if not hint or hint == "auto":
         return all_adapters

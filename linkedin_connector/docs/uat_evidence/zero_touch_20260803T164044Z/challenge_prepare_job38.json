@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "token": "***REDACTED***",
+  "fingerprint": "ee407d5d1713fd3d",
+  "expires_at": 1785777302.707716,
+  "attempt_id": "8cab0011-8a82-40b5-9520-4e6086790e1a",
+  "application_id": 2,
+  "filled_summary": {
+    "full_name": "Sabry Youssef",
+    "email": "vendorah2@gmail.com",
+    "note": "Form fields auto-filled; solve CAPTCHA only"
+  },
+  "message": "Solve challenge only; worker will auto-resume submit once."
+}

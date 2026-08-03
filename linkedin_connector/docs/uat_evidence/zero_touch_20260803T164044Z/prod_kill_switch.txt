@@ -1,0 +1,6 @@
+ id | kill_switch | browser_submit_enabled | email_submit_enabled | min_score | max_submits_per_day 
+----+-------------+------------------------+----------------------+-----------+---------------------
+  1 | t           | f                      | f                    |         0 |                   2
+(1 row)
+
+UPDATE 1

@@ -30,6 +30,16 @@ from app.submit_policy import (
     verify_one_time_token,
 )
 from app.worker import ensure_artifacts_dir, run_draft, run_gated_submit
+from app.evidence import evidence_from_email, evidence_from_page
+from app.challenge_resume import (
+    issue_challenge_token,
+    verify_and_consume_challenge_token,
+    load_challenge_token,
+)
+from app.email_apply import send_application_email, validate_application_email
+from app.answer_mapper import map_schema_to_answers
+from pydantic import BaseModel, Field
+from typing import Any, Optional
 
 app = FastAPI(
     title="Personal Job Apply Worker",
@@ -220,3 +230,193 @@ async def get_attempt(attempt_id: str) -> ApplyAttemptResponse:
     if not attempt:
         raise HTTPException(status_code=404, detail="attempt not found")
     return attempt
+
+
+class ChallengePrepareRequest(BaseModel):
+    attempt_id: str
+    application_id: int
+    job_id: int
+    apply_url: str = ""
+    challenge_type: str = "captcha"
+    ttl_seconds: int = 1800
+    filled_summary: dict[str, Any] = Field(default_factory=dict)
+
+
+class ChallengeResumeRequest(BaseModel):
+    attempt_id: str
+    token: str
+    application_id: Optional[int] = None
+    challenge_solved: bool = False
+    page_url: str = ""
+    page_text: str = ""
+    confirm_submit: bool = False
+
+
+class EmailApplyRequest(BaseModel):
+    recipient: str
+    subject: str
+    body: str
+    cv_path: str
+    cv_filename: str = "CV.pdf"
+    job_url: str = ""
+    job_id: Optional[int] = None
+    application_id: Optional[int] = None
+    dry_run: bool = True
+    idempotency_key: str = ""
+
+
+class MapSchemaRequest(BaseModel):
+    fields_schema: list[dict[str, Any]] = Field(default_factory=list, alias="schema")
+    extra_facts: dict[str, Any] = Field(default_factory=dict)
+    applicant: Optional[dict[str, Any]] = None
+
+    model_config = {"populate_by_name": True}
+
+
+class EvidenceClassifyRequest(BaseModel):
+    url: str = ""
+    text: str = ""
+    html: str = ""
+
+
+@app.post("/v1/challenge/prepare")
+async def challenge_prepare(body: ChallengePrepareRequest) -> JSONResponse:
+    """Issue a single-use resume token after form fill; CAPTCHA never solved here."""
+    tok = issue_challenge_token(
+        attempt_id=body.attempt_id,
+        application_id=body.application_id,
+        job_id=body.job_id,
+        apply_url=body.apply_url,
+        ttl_seconds=body.ttl_seconds,
+        challenge_type=body.challenge_type,
+    )
+    return JSONResponse(
+        content={
+            "ok": True,
+            "token": tok.token,
+            "fingerprint": tok.to_dict()["fingerprint"],
+            "expires_at": tok.expires_at,
+            "attempt_id": body.attempt_id,
+            "application_id": body.application_id,
+            "filled_summary": body.filled_summary,
+            "message": "Solve challenge only; worker will auto-resume submit once.",
+        }
+    )
+
+
+@app.post("/v1/challenge/resume")
+async def challenge_resume(body: ChallengeResumeRequest) -> JSONResponse:
+    """Consume one-time token after human challenge; submit at most once."""
+    ok, code, data = verify_and_consume_challenge_token(
+        attempt_id=body.attempt_id,
+        token=body.token,
+        expected_application_id=body.application_id,
+    )
+    if not ok:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "ok": False,
+                "code": code,
+                "state": ApplyState.human_required.value,
+                "message": f"challenge_token:{code}",
+            },
+        )
+    if not body.challenge_solved:
+        return JSONResponse(
+            status_code=409,
+            content={
+                "ok": False,
+                "code": "challenge_not_solved",
+                "state": ApplyState.human_required.value,
+                "message": "Challenge not marked solved; no submit.",
+                "token_consumed": True,
+            },
+        )
+    if not body.confirm_submit:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "ok": False,
+                "code": "confirm_required",
+                "state": ApplyState.submit_disabled.value,
+                "message": "confirm_submit=true required for auto-resume submit",
+                "token_consumed": True,
+            },
+        )
+    # Evidence classification — never mark applied without strong signal
+    ev = evidence_from_page(url=body.page_url, text=body.page_text)
+    state = ApplyState.succeeded if ev.ok else (
+        ApplyState.submission_unknown if ev.ambiguous else ApplyState.human_required
+    )
+    return JSONResponse(
+        content={
+            "ok": ev.ok,
+            "code": "resume_submit_authorized" if ev.ok else ("ambiguous" if ev.ambiguous else "no_evidence"),
+            "state": state.value,
+            "token_consumed": True,
+            "submit_once": True,
+            "evidence": ev.to_dict(),
+            "challenge": {k: data.get(k) for k in ("attempt_id", "application_id", "job_id", "fingerprint")},
+        }
+    )
+
+
+@app.post("/v1/email/apply")
+async def email_apply(body: EmailApplyRequest) -> JSONResponse:
+    valid, reason = validate_application_email(body.recipient)
+    if not valid:
+        return JSONResponse(
+            status_code=400,
+            content={"ok": False, "code": reason, "recipient": body.recipient},
+        )
+    # Idempotency: same key returns prior dry-run result marker
+    if body.idempotency_key:
+        existing = store.get_token(f"email:{body.idempotency_key}")
+        if existing and existing.get("result"):
+            return JSONResponse(content={**existing["result"], "idempotent_replay": True})
+    result = send_application_email(
+        recipient=body.recipient,
+        subject=body.subject,
+        body=body.body,
+        cv_path=body.cv_path,
+        cv_filename=body.cv_filename,
+        job_url=body.job_url,
+        job_id=body.job_id,
+        dry_run=body.dry_run,
+    )
+    payload = result.to_dict()
+    payload["application_id"] = body.application_id
+    if body.idempotency_key:
+        store.put_token(
+            f"email:{body.idempotency_key}",
+            {"result": payload, "consumed": True, "expires_at": time.time() + 86400 * 30},
+        )
+    status = 200 if result.ok else 409
+    return JSONResponse(status_code=status, content=payload)
+
+
+@app.post("/v1/schema/map")
+async def schema_map(body: MapSchemaRequest) -> JSONResponse:
+    from app.models import ApplicantFixture
+
+    applicant = None
+    if body.applicant:
+        applicant = ApplicantFixture(**body.applicant)
+    answers, missing = map_schema_to_answers(
+        body.fields_schema, applicant=applicant, extra_facts=body.extra_facts
+    )
+    return JSONResponse(
+        content={
+            "ok": not missing,
+            "answers": answers,
+            "missing_required": missing,
+            "code": "ok" if not missing else "missing_fact",
+        }
+    )
+
+
+@app.post("/v1/evidence/classify")
+async def evidence_classify(body: EvidenceClassifyRequest) -> JSONResponse:
+    ev = evidence_from_page(url=body.url, text=body.text, html=body.html)
+    return JSONResponse(content=ev.to_dict())

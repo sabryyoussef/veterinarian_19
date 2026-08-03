@@ -6,13 +6,19 @@
         <field name="arch" type="xml">
             <list decoration-muted="state == 'rejected'"
                   decoration-success="state in ('approved','applied','offer')"
-                  decoration-info="state in ('discovered','shortlisted','pack_ready')">
+                  decoration-warning="state in ('human_required','missing_fact','submission_unknown','delivery_failed')"
+                  decoration-info="state in ('discovered','shortlisted','pack_ready','queued','drafted')">
                 <field name="score"/>
                 <field name="job_title"/>
                 <field name="job_company"/>
                 <field name="job_location"/>
+                <field name="submission_channel" optional="show"/>
                 <field name="state" widget="badge"/>
+                <field name="attempt_count" optional="show"/>
+                <field name="confirmation_reference" optional="hide"/>
+                <field name="next_required_action" optional="show"/>
                 <field name="cv_version_id" optional="show"/>
+                <field name="last_action_at" optional="hide"/>
                 <field name="approved_at" optional="hide"/>
             </list>
         </field>
@@ -32,12 +38,33 @@
                     <button name="action_approve" type="object" string="Approve"
                             invisible="state != 'pack_ready'" class="btn-primary"
                             groups="linkedin_connector.group_linkedin_job_hunt"/>
-                    <button name="action_open_application" type="object" string="Open application"
-                            invisible="state != 'approved'" class="btn-primary"
+                    <button name="action_open_job_url" type="object" string="Open Job"
+                            invisible="not apply_url" class="btn-secondary"/>
+                    <button name="action_open_application" type="object" string="Open Approved Apply"
+                            invisible="state != 'approved'" class="btn-secondary"
                             groups="linkedin_connector.group_linkedin_job_hunt"/>
-                    <button name="action_mark_applied" type="object" string="Mark applied"
-                            invisible="state not in ('approved', 'human_required', 'discovered', 'shortlisted', 'pack_ready')"
-                            class="btn-secondary"/>
+                    <button name="action_open_human_challenge" type="object"
+                            string="Open Human Challenge"
+                            invisible="state not in ('human_required','drafted','approved')"
+                            class="btn-primary"
+                            groups="linkedin_connector.group_linkedin_job_hunt"/>
+                    <button name="action_retry_preflight" type="object" string="Retry Preflight"
+                            invisible="state in ('applied','submitting','submission_unknown')"
+                            class="btn-secondary"
+                            groups="linkedin_connector.group_linkedin_job_hunt"/>
+                    <button name="action_mark_confirmed_applied" type="object"
+                            string="Mark Confirmed Applied"
+                            invisible="state == 'applied'"
+                            class="btn-secondary"
+                            groups="linkedin_connector.group_linkedin_job_hunt"/>
+                    <button name="action_resolve_submission_unknown" type="object"
+                            string="Resolve Submission Unknown"
+                            invisible="state != 'submission_unknown'"
+                            class="btn-secondary"
+                            groups="linkedin_connector.group_linkedin_job_hunt"/>
+                    <button name="action_open_confirmation" type="object"
+                            string="Open Confirmation"
+                            invisible="not confirmation_url" class="btn-secondary"/>
                     <button name="action_mark_interview" type="object" string="Interview"
                             invisible="state not in ('applied','interview')"/>
                     <button name="action_mark_rejected" type="object" string="Rejected"
@@ -45,7 +72,7 @@
                     <button name="action_mark_offer" type="object" string="Offer"
                             invisible="state not in ('applied','interview')"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="discovered,shortlisted,pack_ready,approved,applied,interview"/>
+                           statusbar_visible="discovered,pack_ready,queued,drafted,human_required,applied"/>
                 </header>
                 <sheet>
                     <group>
@@ -57,12 +84,23 @@
                             <field name="job_company"/>
                             <field name="job_location"/>
                             <field name="apply_url" widget="url"/>
+                            <field name="submission_channel"/>
+                            <field name="next_required_action"/>
                         </group>
-                        <group string="Approval">
+                        <group string="Evidence / Approval">
                             <field name="cv_version_id"/>
+                            <field name="cv_sha256"/>
+                            <field name="attempt_count"/>
+                            <field name="confirmation_url" widget="url"/>
+                            <field name="confirmation_reference"/>
+                            <field name="evidence_kind"/>
+                            <field name="email_rfc_message_id"/>
+                            <field name="email_provider_message_id"/>
+                            <field name="email_recipient"/>
                             <field name="approved_by" readonly="1"/>
                             <field name="approved_at" readonly="1"/>
                             <field name="applied_at" readonly="1"/>
+                            <field name="last_action_at" readonly="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -71,6 +109,9 @@
                         </page>
                         <page string="Screening" name="screening">
                             <field name="screening_answers" widget="text"/>
+                        </page>
+                        <page string="Filled summary" name="filled">
+                            <field name="filled_summary_json" widget="text"/>
                         </page>
                         <page string="Checklist" name="checklist">
                             <field name="checklist" widget="text"/>
@@ -94,10 +135,18 @@
                 <field name="job_company"/>
                 <filter name="discovered" string="Discovered" domain="[('state','=','discovered')]"/>
                 <filter name="pack_ready" string="Pack Ready" domain="[('state','=','pack_ready')]"/>
-                <filter name="approved" string="Approved" domain="[('state','=','approved')]"/>
+                <filter name="queued" string="Queued" domain="[('state','=','queued')]"/>
+                <filter name="drafted" string="Drafted" domain="[('state','=','drafted')]"/>
+                <filter name="human_required" string="Awaiting Human Challenge" domain="[('state','=','human_required')]"/>
+                <filter name="missing_fact" string="Missing Fact" domain="[('state','=','missing_fact')]"/>
+                <filter name="email_channel" string="Email Applications" domain="[('submission_channel','=','email')]"/>
+                <filter name="browser_channel" string="Browser Applications" domain="[('submission_channel','=','browser')]"/>
                 <filter name="applied" string="Applied" domain="[('state','=','applied')]"/>
+                <filter name="submission_unknown" string="Submission Unknown" domain="[('state','=','submission_unknown')]"/>
+                <filter name="delivery_failed" string="Delivery Failed" domain="[('state','=','delivery_failed')]"/>
                 <group>
                     <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                    <filter name="group_channel" string="Channel" context="{'group_by': 'submission_channel'}"/>
                 </group>
             </search>
         </field>

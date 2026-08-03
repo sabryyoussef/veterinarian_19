@@ -1,0 +1,35 @@
+ discovery_class | count 
+-----------------+-------
+ ineligible      |    17
+ human_required  |    12
+ unsupported_ats |    12
+(3 rows)
+
+ id |                        left                        |                  company                  | discovery_class |          left           |                                       left                                       | apply_platform |   app_state    
+----+----------------------------------------------------+-------------------------------------------+-----------------+-------------------------+----------------------------------------------------------------------------------+----------------+----------------
+ 22 | Jobs - Odoo                                        | Odoo                                      | human_required  | captcha_or_turnstile    | https://www.odoo.com/jobs/page/16                                                | company_ats    | human_required
+ 23 | Jobs - Odoo                                        | Odoo                                      | human_required  | captcha_or_turnstile    | https://www.odoo.com/jobs/page/2                                                 | company_ats    | human_required
+ 24 | Jobs - Odoo                                        | Odoo                                      | human_required  | captcha_or_turnstile    | https://www.odoo.com/jobs/page/3                                                 | company_ats    | human_required
+ 25 | Jobs - Odoo                                        | Odoo                                      | human_required  | captcha_or_turnstile    | https://www.odoo.com/jobs/page/4                                                 | company_ats    | human_required
+ 29 | Sales Internship                                   | Odoo                                      | human_required  | captcha_or_turnstile    | https://www.odoo.com/jobs/sales-internship-2506                                  | company_ats    | human_required
+ 31 | Technical Consultant - Education                   | Odoo                                      | human_required  | captcha_or_turnstile    | https://www.odoo.com/jobs/technical-consultant-education-2305                    | company_ats    | human_required
+ 36 | Apply Job                                          | Softhealer                                | human_required  | captcha_or_turnstile    | https://softhealer.com/jobs/apply/business-development-executive-b2b-software-sa | company_ats    | applied
+ 37 | Apply Job                                          | Softhealer                                | human_required  | captcha_or_turnstile    | https://softhealer.com/jobs/apply/digital-marketing-manager-team-lead-291        | company_ats    | human_required
+ 38 | Apply Job                                          | Softhealer                                | human_required  | captcha_or_turnstile    | https://softhealer.com/jobs/apply/odoo-functional-consultant-uk-362              | company_ats    | human_required
+ 39 | Apply for Business Development Intern              | OpenEduCat                                | human_required  | captcha_or_turnstile    | https://www.openeducat.org/jobs/apply/business-development-intern/               | company_ats    | human_required
+ 40 | Apply for Digital Marketing Intern                 | OpenEduCat                                | human_required  | captcha_or_turnstile    | https://www.openeducat.org/jobs/apply/digital-marketing-intern/                  | company_ats    | human_required
+ 41 | Apply for Python Developer Intern                  | OpenEduCat                                | human_required  | captcha_or_turnstile    | https://www.openeducat.org/jobs/apply/python-developer-intern/                   | company_ats    | human_required
+  1 | Odoo Developer                                     | Voxtron                                   | unsupported_ats | unsupported_ats:unknown | https://ae.indeed.com/viewjob?jk=807d54d3ba8461bf                                | unknown        | 
+  2 | Odoo Developer cum Mobile Application Developer    | ADDONS TECHNOLOGIES LLC                   | unsupported_ats | unsupported_ats:unknown | https://ae.indeed.com/m/viewjob?jk=d26917e97ed470f5&from=serp&tk=1ju8debi3jcn580 | unknown        | 
+  3 | Odoo Developer                                     | Sukoon Agricultural Services LLC          | unsupported_ats | unsupported_ats:unknown | https://ae.indeed.com/viewjob?jk=0267ac951cd1d865                                | unknown        | 
+  4 | Remote Python & Odoo ERP Developer                 | StairwaySoft, Ltd.                        | unsupported_ats | unsupported_ats:unknown | https://ae.jobrapido.com/jobpreview/1484844185776291840                          | unknown        | 
+  5 | Software Developer - Odoo                          | PREMA Consulting                          | unsupported_ats | unsupported_ats:unknown | https://ae.indeed.com/viewjob?jk=600faeb8b3d80ac6                                | unknown        | 
+  6 | Software & Odoo Developer                          | ITD Innovation Information Technology LLC | unsupported_ats | unsupported_ats:unknown | https://ae.indeed.com/viewjob?jk=e63d9db70d4a6e81                                | unknown        | 
+  7 | Python Developer / Odoo Developer (Owl and Python) | EMP GoWin                                 | unsupported_ats | unsupported_ats:unknown | https://ae.indeed.com/viewjob?jk=ad5deeaaa6f4e9ad                                | unknown        | 
+  8 | Odoo Developer (Specialized in API Integration & W | Melya Cleaning Services                   | unsupported_ats | unsupported_ats:unknown | https://bebee.com/ae/jobs/odoo-developer-specialized-in-api-integration-workflow | unknown        | 
+  9 | Odoo Developer                                     | Sukoon Agricultural Services LLC          | unsupported_ats | unsupported_ats:unknown | https://www.glassdoor.com/job-listing/odoo-developer-sukoon-agricultural-service | unknown        | 
+ 10 | Odoo Techno Functional Consultant                  | Vivandi                                   | unsupported_ats | unsupported_ats:unknown | https://bebee.com/ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk- | unknown        | 
+ 11 | Odoo ERP Senior Salesperson                        | Variety IT                                | unsupported_ats | unsupported_ats:unknown | https://bebee.com/eg/jobs/odoo-erp-senior-salesperson-variety-it-6th-of-october- | unknown        | 
+ 12 | Junior Odoo Solutions Consultant - Remote & Growth | Eureco Software Solutions                 | unsupported_ats | unsupported_ats:unknown | https://himalayas.app/companies/eureco-software-solutions/jobs/junior-odoo-solut | unknown        | 
+(24 rows)
+

@@ -1,0 +1,24 @@
+        name        | latest_version |   state   
+--------------------+----------------+-----------
+ linkedin_connector | 19.0.2.17.0    | installed
+(1 row)
+
+ answer_rows 
+-------------
+          17
+(1 row)
+
+    name    |        left         
+------------+---------------------
+ legal_name | Sabry Youssef
+ email      | vendorah2@gmail.com
+ phone      | +20
+ location   | Egypt
+ years_odoo | 8+
+(5 rows)
+
+ company_apps | personal_apps 
+--------------+---------------
+            0 |            11
+(1 row)
+

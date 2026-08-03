@@ -241,6 +241,13 @@ class TestLinkedinJobHunt(TransactionCase):
         action = app.action_open_application()
         self.assertEqual(action["type"], "ir.actions.act_url")
         self.assertIn("linkedin.com", action["url"])
+        app.write(
+            {
+                "confirmation_url": "https://example.test/thank-you",
+                "confirmation_reference": "TEST-REF-001",
+                "evidence_kind": "browser_thank_you_text",
+            }
+        )
         app.action_mark_applied()
         self.assertEqual(app.state, "applied")
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Multi-step Generic Form Fixture</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; }
+    label { display: block; margin-top: 1rem; }
+    input, select { width: 100%; padding: 0.4rem; box-sizing: border-box; }
+    .step { display: none; }
+    .step.active { display: block; }
+    button { margin-top: 1.5rem; padding: 0.6rem 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Multi-step Apply</h1>
+  <form id="multi-step-form" action="thank_you.html" method="get">
+    <div class="step active" id="step1" data-step="1">
+      <label>Full name <input type="text" name="full_name" required /></label>
+      <label>Email <input type="email" name="email" required /></label>
+      <button type="button" id="next1">Next</button>
+    </div>
+    <div class="step" id="step2" data-step="2">
+      <label>EU work authorization?
+        <select name="eu_auth" required>
+          <option value="">Select…</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label>
+      <label id="visa_wrap" style="display:none">Visa sponsorship required?
+        <select name="visa_sponsorship">
+          <option value="">Select…</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label>
+      <button type="button" id="back2">Back</button>
+      <button type="submit" id="submit-application">Submit application</button>
+    </div>
+  </form>
+  <script>
+    document.getElementById('next1').onclick = () => {
+      document.getElementById('step1').classList.remove('active');
+      document.getElementById('step2').classList.add('active');
+    };
+    document.getElementById('back2').onclick = () => {
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step1').classList.add('active');
+    };
+    document.querySelector('[name=eu_auth]').onchange = (e) => {
+      document.getElementById('visa_wrap').style.display =
+        e.target.value === 'No' ? 'block' : 'none';
+      const vs = document.querySelector('[name=visa_sponsorship]');
+      vs.required = e.target.value === 'No';
+    };
+  </script>
+</body>
+</html>

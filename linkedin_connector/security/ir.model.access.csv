@@ -21,3 +21,5 @@ access_linkedin_apply_attempt_manager,linkedin.apply.attempt manager,model_linke
 access_linkedin_ats_source_user,linkedin.ats.source user,model_linkedin_ats_source,base.group_user,1,0,0,0
 access_linkedin_ats_source_manager,linkedin.ats.source manager,model_linkedin_ats_source,group_linkedin_job_hunt,1,1,1,1
 access_linkedin_caught_jobs_dashboard_user,linkedin.caught.jobs.dashboard user,model_linkedin_caught_jobs_dashboard,base.group_user,1,0,0,0
+access_linkedin_answer_library_user,linkedin.answer.library user,model_linkedin_answer_library,base.group_user,1,1,1,0
+access_linkedin_answer_library_manager,linkedin.answer.library manager,model_linkedin_answer_library,group_linkedin_job_hunt,1,1,1,1

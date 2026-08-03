@@ -1,0 +1,6 @@
+ id |  state  | confirmation_reference | confirmation_url | evidence_kind | submission_channel |        left        |  company   
+----+---------+------------------------+------------------+---------------+--------------------+--------------------+------------
+  1 | applied |                        |                  |               | unknown            | Software Developer | Odoo
+  4 | applied |                        |                  |               | unknown            | Apply Job          | Softhealer
+(2 rows)
+

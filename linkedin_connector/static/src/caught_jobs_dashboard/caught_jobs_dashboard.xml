@@ -121,16 +121,22 @@
 
                 <section class="o_lcj_kpis">
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.total_jobs"/><div class="o_lcj_kpi_l">All Caught Jobs</div></div>
-                    <div class="o_lcj_kpi o_lcj_kpi_ok"><div class="o_lcj_kpi_v" t-esc="kpis.auto_eligible"/><div class="o_lcj_kpi_l">Auto Eligible</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.pack_ready"/><div class="o_lcj_kpi_l">Pack Ready</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.queued"/><div class="o_lcj_kpi_l">Queued</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.drafted"/><div class="o_lcj_kpi_l">Drafted</div></div>
+                    <div class="o_lcj_kpi o_lcj_kpi_warn"><div class="o_lcj_kpi_v" t-esc="kpis.awaiting_human_challenge"/><div class="o_lcj_kpi_l">Awaiting Human Challenge</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.missing_fact"/><div class="o_lcj_kpi_l">Missing Fact</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.email_applications"/><div class="o_lcj_kpi_l">Email Applications</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.browser_applications"/><div class="o_lcj_kpi_l">Browser Applications</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.applied_today"/><div class="o_lcj_kpi_l">Applied Today</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.applied_total"/><div class="o_lcj_kpi_l">Applied Total</div></div>
-                    <div class="o_lcj_kpi o_lcj_kpi_warn"><div class="o_lcj_kpi_v" t-esc="kpis.human_required"/><div class="o_lcj_kpi_l">Human Required</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.hard_excluded"/><div class="o_lcj_kpi_l">Hard Excluded</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.unsupported_ats"/><div class="o_lcj_kpi_l">Unsupported ATS</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.submission_unknown"/><div class="o_lcj_kpi_l">Submission Unknown</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.delivery_failed"/><div class="o_lcj_kpi_l">Delivery Failed</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.unsupported_ats"/><div class="o_lcj_kpi_l">Unsupported ATS</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.hard_excluded"/><div class="o_lcj_kpi_l">Hard Excluded</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.capacity_daily_remaining"/><div class="o_lcj_kpi_l">Daily Cap Left</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.capacity_weekly_remaining"/><div class="o_lcj_kpi_l">Weekly Cap Left</div></div>
+                    <div class="o_lcj_kpi o_lcj_kpi_ok"><div class="o_lcj_kpi_v" t-esc="kpis.auto_eligible"/><div class="o_lcj_kpi_l">Auto Eligible</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.average_score"/><div class="o_lcj_kpi_l">Avg Score (info)</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.safe_canary"/><div class="o_lcj_kpi_l">Safe Canary</div></div>
                     <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.ats_sources_checked"/><div class="o_lcj_kpi_l">ATS Sources Checked</div></div>

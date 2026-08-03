@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Generic Employer Form Fixture</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; }
+    label { display: block; margin-top: 1rem; }
+    input, textarea, select { width: 100%; padding: 0.4rem; box-sizing: border-box; }
+    .group { margin-top: 1rem; }
+    button { margin-top: 1.5rem; padding: 0.6rem 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Apply — Generic Form</h1>
+  <form id="generic-apply" action="thank_you.html" method="get">
+    <label>Full name <input type="text" name="full_name" id="full_name" required /></label>
+    <label>Email <input type="email" name="email" id="email" required /></label>
+    <label>Phone <input type="tel" name="phone" id="phone" /></label>
+    <label>Years of Odoo experience
+      <input type="text" name="years_odoo" id="years_odoo" required />
+    </label>
+    <label>Salary expectation
+      <input type="text" name="salary" id="salary" required />
+    </label>
+    <label>Notice period
+      <select name="notice_period" id="notice_period" required>
+        <option value="">Select…</option>
+        <option value="Immediate">Immediate</option>
+        <option value="1 month">1 month</option>
+        <option value="2 months">2 months</option>
+      </select>
+    </label>
+    <div class="group">
+      <span>Willing to relocate?</span>
+      <label><input type="radio" name="relocation" value="Yes" required /> Yes</label>
+      <label><input type="radio" name="relocation" value="No" /> No</label>
+    </div>
+    <label><input type="checkbox" name="onsite" id="onsite" value="yes" /> Available for on-site work</label>
+    <label>About yourself
+      <textarea name="intro" id="intro" rows="3" required></textarea>
+    </label>
+    <label>Resume <input type="file" name="resume" id="resume" accept=".pdf" /></label>
+    <button type="submit" id="submit-application">Submit application</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_linkedin_answer_library_list" model="ir.ui.view">
+        <field name="name">linkedin.answer.library.list</field>
+        <field name="model">linkedin.answer.library</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="answer_text"/>
+                <field name="account_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_linkedin_answer_library_form" model="ir.ui.view">
+        <field name="name">linkedin.answer.library.form</field>
+        <field name="model">linkedin.answer.library</field>
+        <field name="arch" type="xml">
+            <form string="Verified Answer">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="account_id"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="is_mandatory_known"/>
+                        </group>
+                        <group>
+                            <field name="answer_text"/>
+                        </group>
+                    </group>
+                    <group string="Question variants">
+                        <field name="question_variants" nolabel="1" placeholder="One phrase per line"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_linkedin_answer_library" model="ir.actions.act_window">
+        <field name="name">Answer Library</field>
+        <field name="res_model">linkedin.answer.library</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2)]</field>
+        <field name="context">{'default_account_id': 2}</field>
+    </record>
+</odoo>

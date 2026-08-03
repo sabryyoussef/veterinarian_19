@@ -1,0 +1,3 @@
+ERROR:  column "live_browser_submit" does not exist
+LINE 2: SELECT id, account_id, kill_switch, live_browser_submit, liv...
+                                            ^

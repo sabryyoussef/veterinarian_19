@@ -1,0 +1,21 @@
+        name        | latest_version |   state   
+--------------------+----------------+-----------
+ linkedin_connector | 19.0.2.17.0    | installed
+(1 row)
+
+ answer_rows 
+-------------
+          17
+(1 row)
+
+ company_apps | personal_apps 
+--------------+---------------
+            0 |            13
+(1 row)
+
+                  key                   | value 
+----------------------------------------+-------
+ linkedin_connector.job_score_threshold | 0
+ linkedin_connector.live_submit_enabled | False
+(2 rows)
+

@@ -3,6 +3,7 @@
 from app.adapters.ashby_like import AshbyLikeAdapter
 from app.adapters.base import AdapterResult, BaseApplyAdapter, get_adapter
 from app.adapters.bebee_like import BebeeLikeAdapter
+from app.adapters.generic_form import GenericFormAdapter
 from app.adapters.greenhouse_like import GreenhouseLikeAdapter
 from app.adapters.lever_like import LeverLikeAdapter
 from app.adapters.odoo_careers import OdooCareersAdapter
@@ -14,6 +15,7 @@ __all__ = [
     "get_adapter",
     "AshbyLikeAdapter",
     "BebeeLikeAdapter",
+    "GenericFormAdapter",
     "GreenhouseLikeAdapter",
     "LeverLikeAdapter",
     "OdooCareersAdapter",

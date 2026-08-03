@@ -287,7 +287,14 @@ async def _run_offline_fixture(
             screenshot_paths.append(str(shot1))
 
             stop = await detect_stop_reason_on_page(page)
-            if stop is not None:
+            # CAPTCHA/OTP/login: still fill safe fields for human-challenge handoff,
+            # then stop before submit (never bypass the challenge).
+            pre_challenge_stop = stop if stop in (
+                StopReason.captcha,
+                StopReason.otp,
+                StopReason.login_wall,
+            ) else None
+            if stop is not None and pre_challenge_stop is None:
                 shot2 = attempt_dir / f"02_stop_{stop.value}.png"
                 await page.screenshot(path=str(shot2), full_page=True)
                 screenshot_paths.append(str(shot2))
@@ -318,7 +325,11 @@ async def _run_offline_fixture(
                 filled = result.filled_fields
                 adapter_name = result.adapter_name
                 message = result.message or message
-                if result.stop_reason:
+                if result.stop_reason and result.stop_reason not in (
+                    StopReason.captcha,
+                    StopReason.otp,
+                    StopReason.login_wall,
+                ):
                     shot2 = attempt_dir / f"02_stop_{result.stop_reason.value}.png"
                     await page.screenshot(path=str(shot2), full_page=True)
                     screenshot_paths.append(str(shot2))
@@ -335,21 +346,26 @@ async def _run_offline_fixture(
                         metadata=meta,
                     )  # type: ignore[return-value]
 
-            stop = await detect_stop_reason_on_page(page)
+            stop = pre_challenge_stop or await detect_stop_reason_on_page(page)
             if stop is not None:
                 shot2 = attempt_dir / f"02_stop_{stop.value}.png"
                 await page.screenshot(path=str(shot2), full_page=True)
                 screenshot_paths.append(str(shot2))
                 await browser.close()
+                state = (
+                    ApplyState.human_required
+                    if stop in (StopReason.captcha, StopReason.otp, StopReason.login_wall)
+                    else ApplyState.stopped
+                )
                 return store.update(
                     attempt_id,
-                    state=ApplyState.stopped,
+                    state=state,
                     stop_reason=stop,
                     final_url=page.url,
                     screenshot_paths=screenshot_paths,
                     adapter_used=adapter_name,
                     filled_fields=filled,
-                    message=f"Stopped after fill: {stop.value}",
+                    message=f"Filled then paused for {stop.value}" if filled else f"Stopped after fill: {stop.value}",
                     metadata=meta,
                 )  # type: ignore[return-value]
 

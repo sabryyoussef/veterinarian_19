@@ -1,3 +1,3 @@
-"""Personal job-apply dry-run worker (Playwright + FastAPI)."""
+"""Personal job-apply worker (Playwright + FastAPI) — zero-touch 0.3.0."""
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"

@@ -458,7 +458,6 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         # Auto eligible = hard gates passed (safe canary) — score ignored
         auto_eligible = count_class("safe_canary_candidate")
         safe = auto_eligible
-        human = count_class("human_required")
         hard_excluded = count_class("ineligible")
         unsupported = count_class("unsupported_ats")
         # Legacy alias: eligible no longer means score>=65
@@ -471,6 +470,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         submission_unknown = 0
         queued = 0
         human_apps = 0
+        terminal_job_ids = []
         if job_ids:
             applied = App.search_count(
                 [
@@ -500,6 +500,25 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                     ("state", "=", "human_required"),
                 ]
             )
+            terminal_job_ids = App.search(
+                [
+                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                    ("job_id", "in", job_ids),
+                    ("state", "in", ("applied", "submission_unknown")),
+                ]
+            ).mapped("job_id").ids
+
+        # Open human-required work: captcha/login jobs not yet applied
+        human_job_domain = expression.AND(
+            [domain, [("discovery_class", "=", "human_required")]]
+        )
+        if terminal_job_ids:
+            human_job_domain = expression.AND(
+                [human_job_domain, [("id", "not in", terminal_job_ids)]]
+            )
+        human = Job.search_count(human_job_domain)
+        # Application-state count is the actionable queue; fall back to open jobs
+        human_required_kpi = human_apps if human_apps else human
 
         # Applied today (Cairo day) for personal account
         now = fields.Datetime.now()
@@ -569,7 +588,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "auto_eligible": auto_eligible,
             "queued": queued,
             "safe_canary": safe,
-            "human_required": max(human, human_apps),
+            "human_required": human_required_kpi,
             "ineligible": hard_excluded,
             "hard_excluded": hard_excluded,
             "unsupported_ats": unsupported,

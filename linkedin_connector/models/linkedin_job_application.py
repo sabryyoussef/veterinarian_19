@@ -306,6 +306,13 @@ class LinkedinJobApplication(models.Model):
                     "manual_task": True,
                 }
             )
+            # Keep dashboard / discovery counts in sync: applied jobs leave the open queue
+            if rec.job_id and rec.job_id.discovery_class == "human_required":
+                rec.job_id.sudo().write(
+                    {
+                        "discovery_blocker": "manually_applied",
+                    }
+                )
             rec.message_post(
                 body=_("Marked applied (manual confirmation). Orchestrator will not resubmit.")
             )

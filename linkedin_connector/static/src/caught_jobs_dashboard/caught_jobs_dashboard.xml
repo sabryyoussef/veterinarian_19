@@ -12,7 +12,7 @@
                 </div>
                 <div class="o_lcj_toolbar">
                     <div class="o_lcj_periods" role="group" aria-label="Period">
-                        <t t-foreach="periods" t-as="p" t-key="p.value">
+                        <t t-foreach="periods" t-as="p" t-key="p_index">
                             <button type="button"
                                     class="o_lcj_period_btn"
                                     t-att-data-period="p.value"
@@ -49,7 +49,7 @@
                     <label class="o_lcj_field">
                         <span>Discovery class</span>
                         <select class="o_input" t-model="state.discoveryClass">
-                            <t t-foreach="classOptions" t-as="opt" t-key="opt.value">
+                            <t t-foreach="classOptions" t-as="opt" t-key="opt_index">
                                 <option t-att-value="opt.value" t-esc="opt.label"/>
                             </t>
                         </select>
@@ -57,7 +57,7 @@
                     <label class="o_lcj_field">
                         <span>Platform / ATS</span>
                         <select class="o_input" t-model="state.platform">
-                            <t t-foreach="platformOptions" t-as="opt" t-key="opt.value">
+                            <t t-foreach="platformOptions" t-as="opt" t-key="opt_index">
                                 <option t-att-value="opt.value" t-esc="opt.label"/>
                             </t>
                         </select>
@@ -73,7 +73,7 @@
                     <label class="o_lcj_field">
                         <span>Eligibility</span>
                         <select class="o_input" t-model="state.eligibilityState">
-                            <t t-foreach="eligibilityOptions" t-as="opt" t-key="opt.value">
+                            <t t-foreach="eligibilityOptions" t-as="opt" t-key="opt_index">
                                 <option t-att-value="opt.value" t-esc="opt.label"/>
                             </t>
                         </select>
@@ -86,7 +86,7 @@
                     <label class="o_lcj_field">
                         <span>Application state</span>
                         <select class="o_input" t-model="state.appState">
-                            <t t-foreach="appStateOptions" t-as="opt" t-key="opt.value">
+                            <t t-foreach="appStateOptions" t-as="opt" t-key="opt_index">
                                 <option t-att-value="opt.value" t-esc="opt.label"/>
                             </t>
                         </select>

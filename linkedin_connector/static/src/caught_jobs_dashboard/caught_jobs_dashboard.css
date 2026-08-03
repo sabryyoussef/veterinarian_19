@@ -2,7 +2,9 @@
     padding: 16px 20px 32px;
     max-width: 1400px;
     margin: 0 auto;
-    color: var(--o-gray-900, #1f1f1f);
+    min-height: 60vh;
+    background: #fff;
+    color: #1f1f1f;
 }
 
 .o_lcj_header {
@@ -330,13 +332,15 @@
 .o_lcj_error,
 .o_lcj_empty,
 .o_lcj_empty_inline {
-    padding: 16px;
-    color: var(--o-gray-600, #5a5a5a);
+    padding: 24px 16px;
+    color: #5a5a5a;
+    font-size: 1rem;
 }
 
 .o_lcj_error {
     color: #a94442;
     background: #f8e8e8;
+    border: 1px solid #f0c8c8;
     border-radius: 6px;
     margin-bottom: 12px;
 }

@@ -692,7 +692,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         return [
             {
                 "key": "auto_eligible",
-                "label": _("Auto Eligible"),
+                "label": str(_("Auto Eligible")),
                 "res_model": "linkedin.job",
                 "domain": [
                     ("account_id", "=", aid),
@@ -702,7 +702,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             },
             {
                 "key": "queued",
-                "label": _("Queued Applications"),
+                "label": str(_("Queued Applications")),
                 "res_model": "linkedin.job.application",
                 "domain": [
                     ("account_id", "=", aid),
@@ -711,7 +711,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             },
             {
                 "key": "human_required",
-                "label": _("Human Required"),
+                "label": str(_("Human Required")),
                 "res_model": "linkedin.job.application",
                 "domain": [
                     ("account_id", "=", aid),
@@ -720,7 +720,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             },
             {
                 "key": "hard_excluded",
-                "label": _("Hard Excluded"),
+                "label": str(_("Hard Excluded")),
                 "res_model": "linkedin.job",
                 "domain": [
                     ("account_id", "=", aid),
@@ -730,7 +730,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             },
             {
                 "key": "unsupported",
-                "label": _("Unsupported ATS"),
+                "label": str(_("Unsupported ATS")),
                 "res_model": "linkedin.job",
                 "domain": [
                     ("account_id", "=", aid),
@@ -739,7 +739,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             },
             {
                 "key": "submission_unknown",
-                "label": _("Submission Unknown"),
+                "label": str(_("Submission Unknown")),
                 "res_model": "linkedin.job.application",
                 "domain": [
                     ("account_id", "=", aid),
@@ -748,19 +748,19 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             },
             {
                 "key": "applied",
-                "label": _("Applied Applications"),
+                "label": str(_("Applied Applications")),
                 "res_model": "linkedin.job.application",
                 "domain": [("account_id", "=", aid), ("state", "=", "applied")],
             },
             {
                 "key": "policy",
-                "label": _("Application Policy"),
+                "label": str(_("Application Policy")),
                 "res_model": "linkedin.apply.policy",
                 "domain": [("account_id", "=", aid)],
             },
             {
                 "key": "profile",
-                "label": _("Personal Profile"),
+                "label": str(_("Personal Profile")),
                 "res_model": "linkedin.candidate.profile",
                 "domain": [("account_id", "=", aid)],
             },

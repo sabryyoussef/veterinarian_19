@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_wa_consent" model="ir.ui.view">
+        <field name="name">res.partner.form.wa.consent</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="WhatsApp marketing consent" name="wa_marketing_consent_group">
+                    <field name="wa_marketing_opt_in"/>
+                    <button name="action_open_staff_wa_consent_wizard" type="object" string="Record explicit WA consent" class="btn-primary"/>
+                    <button name="action_check_wa_marketing_eligibility" type="object" string="Check marketing eligibility" class="btn-secondary"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

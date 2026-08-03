@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_staff_consent_wizard_form" model="ir.ui.view">
+        <field name="name">petspot.wa.staff.consent.wizard.form</field>
+        <field name="model">petspot.wa.staff.consent.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Record WhatsApp marketing consent">
+                <group>
+                    <field name="partner_id"/>
+                    <field name="mobile_raw"/>
+                    <field name="wording_id"/>
+                    <field name="wording_preview" readonly="1"/>
+                    <field name="customer_explicitly_agreed"/>
+                    <field name="evidence_ref"/>
+                    <field name="notes"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_opt_in" type="object" string="Save explicit opt-in" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

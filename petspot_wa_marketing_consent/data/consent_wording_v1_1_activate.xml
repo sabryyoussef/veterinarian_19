@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Re-runnable on -u: activate Sabry-approved v1.1; archive v1 and candidate draft v1.1. -->
+<odoo noupdate="0">
+    <record id="wording_clinic_v1" model="petspot.wa.consent.wording">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="wording_staff_v1" model="petspot.wa.consent.wording">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="wording_clinic_v1_1" model="petspot.wa.consent.wording">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="wording_staff_v1_1" model="petspot.wa.consent.wording">
+        <field name="active" eval="False"/>
+    </record>
+    <record id="wording_clinic_v1_1_approved" model="petspot.wa.consent.wording">
+        <field name="active" eval="True"/>
+    </record>
+    <record id="wording_staff_v1_1_approved" model="petspot.wa.consent.wording">
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

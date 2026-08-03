@@ -1,0 +1,39 @@
+{
+  "module_version": "19.0.2.13.0",
+  "registry_count": 11,
+  "enabled_sources": 11,
+  "jobs_account2": 35,
+  "discovery_classes": {
+    "ineligible": 22,
+    "unchecked": 13
+  },
+  "safe_canary": 0,
+  "apps_account1": 0,
+  "apps_account2": 1,
+  "policy": {
+    "kill_switch": true,
+    "min_score": 65,
+    "browser_submit_enabled": false,
+    "email_submit_enabled": false,
+    "live_submit_icp": false
+  },
+  "cron_id": 114,
+  "cron": "every 6 hours",
+  "lastcall": "2026-08-03 13:52:57",
+  "nextcall": "2026-08-03 19:51:28",
+  "icp_last_run": "2026-08-03 13:54:20",
+  "icp_next_run": "2026-08-03 19:54:20",
+  "menus": [
+    "ATS Sources",
+    "Safe Canary Candidates",
+    "Application Policy"
+  ],
+  "publish_cron_inactive": true,
+  "messages_cron_inactive": true,
+  "n8n_hunter": "caweLvPrZEBjBfku",
+  "n8n_submit": "5X4dygwEwzNPalNc",
+  "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+  "commit": "3fbb6c66e45e11e035476621a96632100b58022a",
+  "branch": "feature/personal-job-application-orchestrator",
+  "note": "Screenshots: menus verified in DB (ids 1141/1142/1135). Cloudflare 1010 blocked public API status from this host; evidence from local Postgres + n8n MCP."
+}

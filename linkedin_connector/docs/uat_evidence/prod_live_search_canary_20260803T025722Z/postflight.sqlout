@@ -1,0 +1,23 @@
+ live_job_search_enabled 
+-------------------------
+ False
+(1 row)
+
+ id  |             cron_name             | active 
+-----+-----------------------------------+--------
+  60 | LinkedIn: Publish Scheduled Posts | f
+  61 | LinkedIn: Refresh Feed            | f
+  62 | LinkedIn: Sync Messages           | f
+ 112 | LinkedIn: Daily Job Digest        | f
+(4 rows)
+
+ jobs | apps 
+------+------
+    0 |    0
+(1 row)
+
+           company_hash           
+----------------------------------
+ 480bd24a87cbe7707874cc72beb5a460
+(1 row)
+

@@ -1,0 +1,22 @@
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:35:**LinkedIn API product required:** Share on LinkedIn (`w_member_social`) — already working ✅
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:61:**LinkedIn API product required:** Share on LinkedIn (`w_member_social`) ✅
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:78:**LinkedIn API product required:** Jobs Search API (separate product request in LinkedIn Developers)
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:102:**LinkedIn API product required:** Share on LinkedIn + Documents API (`w_member_social`) ✅
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:147:| 1 | Posts + Schedule + Draft | Medium | `w_member_social` ✅ |
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:148:| 2 | Feed / Stream | Medium | `w_member_social` ✅ |
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:149:| 3 | Job Search | Low–Medium | Jobs Search (request needed) |
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:150:| 4 | Resume Upload | Medium | Documents API (`w_member_social`) ✅ |
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/PLAN.md:160:- LinkedIn OAuth scopes currently on account: `openid profile w_member_social`
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:15:_JSEARCH_HOST = "jsearch.p.rapidapi.com"
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:18:_LI_GUEST_URL = (
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:370:                        "source": "linkedin_guest",
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:447:            ("linkedin_guest", "LinkedIn Public (free, no key needed)"),
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:458:    def _get_rapidapi_key(self):
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:460:            "linkedin_connector.rapidapi_key", ""
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:549:    def _search_linkedin_guest(self, keywords, location="", remote=False, pages=3):
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:579:                    _LI_GUEST_URL, headers=headers, params=params, timeout=20
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:715:        api_key = self._get_rapidapi_key()
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:719:            source = "linkedin_guest"
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:724:        if source == "linkedin_guest":
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:726:            created, updated = self._search_linkedin_guest(
+/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_job.py:819:                      "Sign up free at https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch")

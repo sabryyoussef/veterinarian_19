@@ -16,6 +16,7 @@ class PetspotWaConsentWording(models.Model):
             ("qr_landing_page", "QR / Landing Page"),
             ("staff_recorded", "Staff Recorded"),
             ("whatsapp_inbound", "WhatsApp Inbound"),
+            ("post_visit_survey", "Post-Visit Feedback Survey"),
         ],
         required=True,
     )

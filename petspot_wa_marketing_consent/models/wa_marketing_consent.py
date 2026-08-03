@@ -64,6 +64,7 @@ class PetspotWaMarketingConsent(models.Model):
     status = fields.Selection(
         [
             ("pending", "Pending"),
+            ("pending_review", "Pending Sabry Review"),
             ("opted_in", "Opted In"),
             ("opted_out", "Opted Out"),
             ("wrong_number", "Wrong Number"),
@@ -83,8 +84,30 @@ class PetspotWaMarketingConsent(models.Model):
             ("staff_recorded", "Staff Recorded"),
             ("whatsapp_inbound", "WhatsApp Inbound"),
             ("import_with_evidence", "Import With Evidence"),
+            ("post_visit_survey", "Post-Visit Feedback Survey"),
         ],
         string="Consent Source",
+    )
+    survey_user_input_id = fields.Integer(
+        string="Survey User Input ID",
+        index=True,
+        copy=False,
+    )
+    visit_id = fields.Integer(
+        string="Medical Visit ID",
+        index=True,
+        copy=False,
+    )
+    checkbox_explicit = fields.Boolean(
+        string="Checkbox Explicitly Ticked",
+        default=False,
+        help="True only when the customer actively ticked the optional consent checkbox.",
+    )
+    technical_submission_id = fields.Char(
+        string="Technical Submission ID",
+        index=True,
+        copy=False,
+        help="Survey answer access_token or equivalent submission identifier.",
     )
     wording_id = fields.Many2one(
         "petspot.wa.consent.wording",
@@ -307,3 +330,129 @@ class PetspotWaMarketingConsent(models.Model):
             consent.write(vals)
             return consent
         return self.create(vals)
+
+    def _assert_sabry_reviewer(self):
+        """Only Sabry/admin (uid=2) may confirm pending survey consents."""
+        admin = self.env.ref("base.user_admin")
+        if self.env.user.id != admin.id:
+            raise UserError(
+                self.env._("Only Sabry (admin) can confirm pending marketing consent reviews.")
+            )
+
+    def action_confirm_pending_review(self):
+        """Sabry confirms pending_review → opted_in."""
+        self._assert_sabry_reviewer()
+        for rec in self:
+            if rec.status != "pending_review":
+                raise UserError(
+                    self.env._("Only pending_review consents can be confirmed (got %s).")
+                    % rec.status
+                )
+            if not rec.checkbox_explicit:
+                raise UserError(self.env._("Cannot confirm: checkbox was not explicitly ticked."))
+            rec.write(
+                {
+                    "status": "opted_in",
+                    "consent_source": rec.consent_source or "post_visit_survey",
+                    "staff_explicit_confirm": True,
+                    "consent_timestamp": rec.consent_timestamp or fields.Datetime.now(),
+                    "captured_by": self.env.user.id,
+                    "notes": (rec.notes or "")
+                    + "\nConfirmed by Sabry after post-visit survey pending_review.",
+                }
+            )
+            rec._append_log("confirm_pending_review", note="Sabry confirmed pending_review → opted_in")
+        return True
+
+    @api.model
+    def register_pending_from_post_visit_survey(
+        self,
+        partner,
+        mobile_raw,
+        wording,
+        *,
+        survey_user_input_id=None,
+        visit_id=None,
+        technical_submission_id="",
+        evidence_ref="",
+        checkbox_explicit=True,
+    ):
+        """Create/update a pending_review consent from an explicit survey checkbox.
+
+        Fail-closed: invalid/duplicate phone, company, opted_out, wrong_number → no write.
+        Duplicate submits for same mobile keep a single consent row.
+        Never upgrades existing opted_in; never overrides opted_out/wrong_number.
+        """
+        if not checkbox_explicit:
+            return self.browse()
+        if not partner or not partner.exists() or partner.is_company:
+            return self.browse()
+        mobile = normalize_eg_mobile(mobile_raw or partner.phone_sanitized or partner.phone)
+        if not mobile:
+            return self.browse()
+
+        # Ambiguous duplicate phones → block
+        local = "0" + mobile[3:]
+        candidates = self.env["res.partner"].sudo().search(
+            ["|", ("phone", "ilike", local[-9:]), ("phone_sanitized", "ilike", local[-9:])],
+            limit=40,
+        )
+        owners = [
+            p.id
+            for p in candidates
+            if normalize_eg_mobile(p.phone_sanitized or p.phone) == mobile
+        ]
+        if len(set(owners)) > 1:
+            return self.browse()
+
+        consent = self.search(
+            [
+                ("mobile_normalized", "=", mobile),
+                ("channel", "=", "whatsapp"),
+                ("purpose", "=", "marketing"),
+            ],
+            limit=1,
+        )
+        if consent and consent.status in ("opted_out", "wrong_number", "revoked"):
+            return self.browse()
+        if consent and consent.status == "opted_in":
+            # Already final opt-in — do not create duplicate / do not regress
+            return consent
+
+        wording_text = ""
+        wording_version = "post_visit_v1_1"
+        wording_id = False
+        if wording:
+            wording_id = wording.id
+            wording_version = wording.version or wording_version
+            wording_text = wording.body_ar or wording.body_en or ""
+        vals = {
+            "partner_id": partner.id,
+            "mobile_normalized": mobile,
+            "mobile_raw": mobile_raw or partner.phone,
+            "channel": "whatsapp",
+            "purpose": "marketing",
+            "status": "pending_review",
+            "consent_source": "post_visit_survey",
+            "consent_timestamp": fields.Datetime.now(),
+            "wording_id": wording_id,
+            "wording_version": wording_version,
+            "wording_text": wording_text,
+            "checkbox_explicit": True,
+            "survey_user_input_id": survey_user_input_id or False,
+            "visit_id": visit_id or False,
+            "technical_submission_id": technical_submission_id or "",
+            "evidence_ref": evidence_ref or "",
+            "staff_explicit_confirm": False,
+            "captured_by": False,
+        }
+        if consent:
+            consent.write(vals)
+            consent._append_log(
+                "survey_resubmit",
+                note="Duplicate survey submit refreshed pending_review evidence",
+                extra={"technical_submission_id": technical_submission_id},
+            )
+            return consent
+        return self.create(vals)
+

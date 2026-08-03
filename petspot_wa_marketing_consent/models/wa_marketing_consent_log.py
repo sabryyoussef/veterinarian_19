@@ -24,7 +24,13 @@ class PetspotWaMarketingConsentLog(models.Model):
     purpose = fields.Char()
     status = fields.Char(index=True)
     event_type = fields.Selection(
-        [("create", "Create"), ("write", "Write"), ("system", "System")],
+        [
+            ("create", "Create"),
+            ("write", "Write"),
+            ("system", "System"),
+            ("survey_resubmit", "Survey Resubmit"),
+            ("confirm_pending_review", "Confirm Pending Review"),
+        ],
         default="write",
         required=True,
     )

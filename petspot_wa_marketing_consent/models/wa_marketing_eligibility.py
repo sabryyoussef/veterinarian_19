@@ -97,6 +97,12 @@ class PetspotWaMarketingEligibility(models.TransientModel):
             return {"eligible": False, "reason": "revoked", "mobile_normalized": mobile}
         if consent.status == "pending":
             return {"eligible": False, "reason": "consent_pending", "mobile_normalized": mobile}
+        if consent.status == "pending_review":
+            return {
+                "eligible": False,
+                "reason": "consent_pending_review",
+                "mobile_normalized": mobile,
+            }
         if consent.status != "opted_in":
             return {
                 "eligible": False,

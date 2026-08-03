@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Optional marketing consent checkbox (OFF by default / not mandatory). noupdate=0 so TEST upgrade installs it. -->
+    <data noupdate="0">
+        <record id="vet_feedback_q_wa_marketing_consent" model="survey.question">
+            <field name="survey_id" ref="vet_feedback_survey"/>
+            <field name="sequence">90</field>
+            <field name="title">موافقة اختيارية على رسائل واتساب التسويقية / Optional WhatsApp marketing consent</field>
+            <field name="description" type="html">
+                <p>أوافق بشكل اختياري على استلام رسائل واتساب تسويقية من عيادة Pet Spot عن خدمات العيادة والمتجر والعروض. رفضي لن يؤثر على خدمات العيادة أو الشراء، ويمكنني الإلغاء في أي وقت بالرد وقف.</p>
+                <p><em>Optional. Leave unticked if you do not want marketing WhatsApp messages. Care and any coupon are independent of this choice.</em></p>
+            </field>
+            <field name="question_type">multiple_choice</field>
+            <field name="constr_mandatory" eval="False"/>
+        </record>
+        <record id="vet_feedback_q_wa_marketing_consent_yes" model="survey.question.answer">
+            <field name="question_id" ref="vet_feedback_q_wa_marketing_consent"/>
+            <field name="sequence">1</field>
+            <field name="value">أوافق اختيارياً / I optionally agree</field>
+        </record>
+    </data>
+</odoo>

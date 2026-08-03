@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Pet Spot WhatsApp Marketing Consent",
-    "version": "19.0.1.0.1",
+    "version": "19.0.1.0.2",
     "category": "Marketing",
     "summary": "Explicit WhatsApp marketing consent + eligibility (fail-closed)",
     "description": """
@@ -24,6 +24,7 @@ Install on TEST/UAT first. Do not enable outbound marketing queues in this modul
         "security/ir.model.access.csv",
         "data/consent_wording_data.xml",
         "data/consent_wording_v1_1_activate.xml",
+        "data/consent_wording_post_visit_v1_1.xml",
         "views/wa_marketing_consent_views.xml",
         "views/res_partner_views.xml",
         "views/menu.xml",

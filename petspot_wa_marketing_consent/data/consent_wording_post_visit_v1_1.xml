@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="wording_post_visit_v1_1" model="petspot.wa.consent.wording">
+        <field name="name">Post-visit survey v1.1 (approved)</field>
+        <field name="version">post_visit_v1_1</field>
+        <field name="route">post_visit_survey</field>
+        <field name="body_ar">أوافق بشكل اختياري على استلام رسائل واتساب تسويقية من عيادة Pet Spot عن خدمات العيادة والمتجر والعروض. رفضي لن يؤثر على خدمات العيادة أو الشراء، ويمكنني الإلغاء في أي وقت بالرد وقف.</field>
+        <field name="body_en">I optionally agree to receive marketing WhatsApp messages from Pet Spot clinic about clinic services, the store, and offers. Refusing will not affect clinic care or purchases, and I can opt out anytime by replying STOP / وقف.</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

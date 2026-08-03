@@ -1,42 +1,25 @@
-# RELEASE MANIFEST — PetSpot WA marketing consent
+# RELEASE MANIFEST — PetSpot WA survey consent (post-visit)
 
-**Status:** Phase 0 hygiene complete. Phase 1 production install **NOT approved**.
+**Status:** Production deploy of survey-consent route (collection only). Marketing remains paused.
 
 ## Dedicated release branch
 
 | Item | Value |
 |------|--------|
-| Branch | `feature/petspot-wa-marketing-consent` |
-| Base (origin/main) | `66344b2e09e2049c39942114029253e919bc6709` |
-| Branch tip (at publish) | `9832a771fffa9102f652ca994139d2eee928e839` |
-| Cherry-picked source | `2d2bb58808000d4f0d8d0f7aea81d067329c0e1a` |
-| Module version | `19.0.1.0.1` |
-| Remote | `origin` (`git@github.com:sabryyoussef/veterinarian_19.git`) |
-| Pushed | Yes — `origin/feature/petspot-wa-marketing-consent` |
-
-Canonical module commit on this branch: `8f16e3db0b8a2ac2288af279ad009ba3c41bf28f` (cherry-pick of `2d2bb588`).
+| Branch | `feature/petspot-wa-survey-consent` |
+| Base | `feature/petspot-wa-marketing-queue` @ `54d7f74be484f4bb6cf04cbd8ad3fdf5202c0b6e` |
+| Module versions | consent `19.0.1.0.2` · feedback `19.0.1.1.0` |
+| UAT evidence | `/home/sabry/.cursor/evidence/petspot-wa-survey-consent-uat-20260803/` |
+| UAT verdict | `SURVEY_CONSENT_UAT_READY_FOR_APPROVAL` |
 
 ## Scope
 
-Only `petspot_wa_marketing_consent/` (module + docs). No LinkedIn/job-orchestrator, dumps, secrets, or evidence packs.
-
-## Inspection of source commit `2d2bb588`
-
-- 20 files, all under `petspot_wa_marketing_consent/`
-- No secrets / LinkedIn / dumps / evidence
-- Clean cherry-pick onto `origin/main` → `8f16e3db0b8a2ac2288af279ad009ba3c41bf28f` then manifest commits
-
-## Environments
-
-| Env | State |
-|-----|--------|
-| TEST `pet_spot_elsahel_test` :8028 | Installed (collection-only); regression 21/21 PASS |
-| Production `pet_spot_elsahel` :8027 | **Not installed** |
-
-## Approved wording
-
-Active: `clinic_v1_1_approved` / `staff_v1_1_approved`. Historical v1 unchanged/inactive.
+- `petspot_wa_marketing_consent/` — `pending_review`, Sabry confirm, wording `post_visit_v1_1`
+- `petspot_vet_feedback/` — optional unticked survey checkbox; capture after coupon; invitation unchanged
 
 ## Non-actions
 
-No production install/upgrade/restart, no group assignment, no sends, no backfill.
+- No campaign schedule/send
+- Global pause ON, mock send ON, Warm Pilot draft
+- No consent backfill; no historic survey → consent
+- Operations WhatsApp / `sabry min` untouched

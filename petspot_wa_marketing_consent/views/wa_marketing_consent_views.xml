@@ -22,9 +22,13 @@
         <field name="arch" type="xml">
             <form string="WhatsApp Marketing Consent">
                 <header>
+                    <button name="action_confirm_pending_review" type="object" string="Confirm Opt-In (Sabry)"
+                            class="btn-primary"
+                            invisible="status != 'pending_review'"
+                            groups="petspot_wa_marketing_consent.group_wa_consent_manager"/>
                     <button name="action_opt_out" type="object" string="Opt Out" class="btn-secondary"/>
                     <button name="action_mark_wrong_number" type="object" string="Wrong Number" class="btn-secondary"/>
-                    <field name="status" widget="statusbar" statusbar_visible="pending,opted_in,opted_out,wrong_number,revoked"/>
+                    <field name="status" widget="statusbar" statusbar_visible="pending,pending_review,opted_in,opted_out,wrong_number,revoked"/>
                 </header>
                 <sheet>
                     <group>
@@ -49,6 +53,10 @@
                         <field name="wording_text" colspan="2"/>
                         <field name="evidence_ref"/>
                         <field name="notes"/>
+                        <field name="checkbox_explicit"/>
+                        <field name="technical_submission_id"/>
+                        <field name="survey_user_input_id"/>
+                        <field name="visit_id"/>
                     </group>
                     <group string="Revocation">
                         <field name="revoked_timestamp"/>
@@ -117,5 +125,16 @@
         <field name="name">WA Consent Audit Log</field>
         <field name="res_model">petspot.wa.marketing.consent.log</field>
         <field name="view_mode">list</field>
+    </record>
+    <record id="action_wa_consent_pending_review" model="ir.actions.act_window">
+        <field name="name">Pending Consent Review</field>
+        <field name="res_model">petspot.wa.marketing.consent</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status', '=', 'pending_review')]</field>
+        <field name="context">{'search_default_pending_review': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No pending survey consents to review.</p>
+            <p>Post-visit survey checkbox submissions appear here for Sabry confirmation before opted_in.</p>
+        </field>
     </record>
 </odoo>

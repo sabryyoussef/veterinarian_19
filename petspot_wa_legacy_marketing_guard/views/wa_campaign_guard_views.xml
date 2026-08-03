@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hide runnable marketing actions; keep form readable for history. -->
+    <record id="view_wa_campaign_form_marketing_guard" model="ir.ui.view">
+        <field name="name">wa.campaign.form.legacy.marketing.guard</field>
+        <field name="model">wa.campaign</field>
+        <field name="inherit_id" ref="evolution_whatsapp_chat.view_wa_campaign_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_start_campaign']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_resume_campaign']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_load_recipients']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_generate_lines']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_retry_failed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_clone_campaign']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-warning" role="alert">
+                    Legacy marketing campaigns are read-only. Use
+                    <strong>WA Marketing Queue</strong> for customer marketing.
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_wa_campaign_recipient_wizard_guard" model="ir.ui.view">
+        <field name="name">wa.campaign.recipient.wizard.legacy.guard</field>
+        <field name="model">wa.campaign.recipient.wizard</field>
+        <field name="inherit_id" ref="evolution_whatsapp_chat.view_wa_campaign_recipient_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_add_recipients']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_whatsapp_bulk_wizard_form_guard" model="ir.ui.view">
+        <field name="name">whatsapp.bulk.wizard.form.legacy.guard</field>
+        <field name="model">whatsapp.bulk.wizard</field>
+        <field name="inherit_id" ref="evolution_whatsapp_chat.view_whatsapp_bulk_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_send_bulk']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-danger" role="alert">
+                    Bulk WhatsApp marketing is disabled. Use
+                    <strong>WA Marketing Queue</strong> instead.
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -16,13 +16,14 @@
                 <sheet>
                     <h2>LinkedIn Connector</h2>
                     <group string="Job Search (JSearch API via RapidAPI)">
-                        <field name="linkedin_rapidapi_key"
-                               placeholder="Paste your X-RapidAPI-Key here"
-                               password="True"/>
+                        <field name="linkedin_jsearch_env_configured"/>
+                        <field name="linkedin_jsearch_env_name"
+                               invisible="not linkedin_jsearch_env_configured"/>
                         <div colspan="2" class="text-muted small">
-                            Free tier: 200 requests/month. Sign up at
-                            rapidapi.com → search "JSearch" → subscribe (free plan) →
-                            copy the X-RapidAPI-Key value shown in the API console.
+                            The RapidAPI key must come from the Odoo process environment
+                            (systemd EnvironmentFile → LINKEDIN_JSEARCH_RAPIDAPI_KEY).
+                            Do not paste keys into Odoo settings, Git, or evidence files.
+                            See linkedin_connector/docs/JSEARCH_SECRET_INSTALL.md.
                         </div>
                     </group>
                     <group string="Senior Odoo job hunt">

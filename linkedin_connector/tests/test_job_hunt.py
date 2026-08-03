@@ -239,6 +239,28 @@ class TestLinkedinJobHunt(TransactionCase):
         # Must not raise / call network
         self.env["linkedin.job"]._cron_daily_job_digest()
 
+    def test_jsearch_key_prefers_environment_over_icp(self):
+        import os
+        from unittest.mock import patch
+
+        Search = self.env["linkedin.job.search"]
+        self.env["ir.config_parameter"].sudo().set_param(
+            "linkedin_connector.rapidapi_key", "icp-should-not-win"
+        )
+        with patch.dict(os.environ, {"LINKEDIN_JSEARCH_RAPIDAPI_KEY": "env-key-value"}, clear=False):
+            self.assertEqual(Search._get_rapidapi_key(), "env-key-value")
+        with patch.dict(
+            os.environ,
+            {
+                "LINKEDIN_JSEARCH_RAPIDAPI_KEY": "",
+                "JSEARCH_RAPIDAPI_KEY": "",
+                "RAPIDAPI_KEY": "",
+            },
+            clear=False,
+        ):
+            # Empty env falls back to deprecated ICP
+            self.assertEqual(Search._get_rapidapi_key(), "icp-should-not-win")
+
     def test_personal_post_ok(self):
         post = self.env["linkedin.post"].create(
             {

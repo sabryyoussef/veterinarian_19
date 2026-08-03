@@ -456,9 +456,34 @@ class LinkedinJobSearch(models.TransientModel):
     result_count = fields.Integer(string="Results found", readonly=True)
 
     def _get_rapidapi_key(self):
-        return self.env["ir.config_parameter"].sudo().get_param(
-            "linkedin_connector.rapidapi_key", ""
+        """Resolve JSearch RapidAPI key from process environment first.
+
+        Preferred (Production): systemd EnvironmentFile → LINKEDIN_JSEARCH_RAPIDAPI_KEY.
+        Never log the key. ICP ``linkedin_connector.rapidapi_key`` is deprecated fallback only.
+        """
+        import os
+
+        for env_name in (
+            "LINKEDIN_JSEARCH_RAPIDAPI_KEY",
+            "JSEARCH_RAPIDAPI_KEY",
+            "RAPIDAPI_KEY",
+        ):
+            val = (os.environ.get(env_name) or "").strip()
+            if val:
+                return val
+        icp = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("linkedin_connector.rapidapi_key", "")
+            or ""
         ).strip()
+        if icp:
+            _logger.warning(
+                "linkedin_connector.rapidapi_key is set in ir.config_parameter; "
+                "prefer LINKEDIN_JSEARCH_RAPIDAPI_KEY via systemd EnvironmentFile "
+                "and clear the ICP value."
+            )
+        return icp
 
     # ------------------------------------------------------------------
     # RemoteOK — free, no key, remote jobs only

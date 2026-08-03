@@ -1,0 +1,45 @@
+ id |           name           | account_type | linkedin_organization_id |                     profile_url                      |      oauth_base       |          oauth_scopes          | active | fallback_personal_post |   token   |   member   
+----+--------------------------+--------------+--------------------------+------------------------------------------------------+-----------------------+--------------------------------+--------+------------------------+-----------+------------
+  1 | PetSpot LinkedIn         | company      | 129944345                | (empty)                                              | http://127.0.0.1:8027 | openid profile w_member_social | t      | f                      | NO_TOKEN  | NO_MEMBER
+  2 | Sabry Youssef — Personal | personal     |                          | https://www.linkedin.com/in/sabry-youssef-56a878185/ | https://drpaws.ai     | openid profile w_member_social | t      | f                      | HAS_TOKEN | HAS_MEMBER
+(2 rows)
+
+ id |              name              | account_id | is_default |         att          | has_checksum | file_size 
+----+--------------------------------+------------+------------+----------------------+--------------+-----------
+  1 | Sabry Youssef — Senior Odoo CV |          2 | t          | Sabry_Youssef_CV.pdf |           40 |     76123
+  2 | bad                            |          1 | f          | Sabry_Youssef_CV.pdf |           40 |     76123
+(2 rows)
+
+ id  |             cron_name             | active |      lastcall       
+-----+-----------------------------------+--------+---------------------
+  60 | LinkedIn: Publish Scheduled Posts | f      | 2026-07-16 03:47:11
+  61 | LinkedIn: Refresh Feed            | f      | 2026-07-16 03:21:22
+  62 | LinkedIn: Sync Messages           | f      | 2026-07-16 03:47:11
+ 112 | LinkedIn: Daily Job Digest        | f      | 
+(4 rows)
+
+                    key                     | value 
+--------------------------------------------+-------
+ linkedin_connector.live_job_search_enabled | False
+(1 row)
+
+ jobs 
+------
+    0
+(1 row)
+
+ apps 
+------
+    0
+(1 row)
+
+ state  | count 
+--------+-------
+ posted |    10
+(1 row)
+
+ posts_written_1h 
+------------------
+                0
+(1 row)
+

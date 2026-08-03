@@ -1,0 +1,6 @@
+BAD_BEFORE [(2, 1, 'bad')]
+COMPANY_CVS [(2, 'bad')]
+OK_BLOCKED_CV_ON_COMPANY_SAVEPOINT
+LEFTOVER_BAD []
+CVS_FINAL [(1, 'Sabry Youssef — Senior Odoo CV', 2, True)]
+GATES_REINFORCED

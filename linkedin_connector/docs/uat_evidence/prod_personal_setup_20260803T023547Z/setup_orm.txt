@@ -1,0 +1,24 @@
+CV_SHA_OK 29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539 size 76123
+COMPANY_BEFORE {'name': 'PetSpot LinkedIn', 'account_type': 'company', 'org': '129944345', 'org_urn': 'urn:li:organization:129944345', 'scopes': 'openid profile w_member_social', 'oauth_base': 'http://127.0.0.1:8027', 'active': True, 'fallback': False, 'profile_url': '', 'has_token': False, 'member': ''} client_len 14
+PERSONAL_CONFIGURED 2 Sabry Youssef — Personal personal
+PERSONAL_PROFILE https://www.linkedin.com/in/sabry-youssef-56a878185/
+PERSONAL_OAUTH_BASE https://drpaws.ai
+PERSONAL_SCOPES openid profile w_member_social
+PERSONAL_CONNECTED True
+PERSONAL_HAS_MEMBER True
+PERSONAL_HAS_TOKEN True
+PERSONAL_ORG (none)
+REDIRECT_URI https://drpaws.ai/linkedin_connector/callback?db=pet_spot_elsahel
+ATTACHMENT 11383 sha 29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539 readable True
+CV_VERSION 1 default True account 2
+OK_BLOCKED_COMPANY_JOB_BRANDING
+OK_BLOCKED_PERSONAL_COMPANY_MARKETING
+OK_BLOCKED_CV_ON_COMPANY
+LIVE False
+CRONS [(112, 'LinkedIn: Daily Job Digest', False), (60, 'LinkedIn: Publish Scheduled Posts', False), (61, 'LinkedIn: Refresh Feed', False), (62, 'LinkedIn: Sync Messages', False)]
+COMPANY_UNCHANGED_OK
+VERIFY_MSG Account: Sabry Youssef — Personal | Type: personal | Profile URL: https://www.linkedin.com/in/sabry-youssef-56a878185 | Connected: yes | Member URN: urn:li:person:<redacted> | Org ID: (none) | Scopes: openid profile w_member_social | RESULT: personal account is connected. Confirm in LinkedIn that the OAuth user matches https://www.linkedin.com/in/sabry-youssef-56a878185
+POSTS 10
+JOBS 0
+APPS 0
+SETUP_OK

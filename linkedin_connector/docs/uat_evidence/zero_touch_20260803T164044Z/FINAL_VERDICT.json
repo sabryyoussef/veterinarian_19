@@ -1,0 +1,28 @@
+{
+  "verdict": "ZERO_TOUCH_READY_FOR_HUMAN_CHALLENGE",
+  "module_version": "19.0.2.17.0",
+  "worker_version": "0.3.0",
+  "branch": "feature/personal-job-application-orchestrator",
+  "commit": "f3db001",
+  "worker_tests": {"passed": 38, "failed": 0},
+  "odoo_tests": {"passed": 55, "failed": 0, "errors": 0},
+  "backup": {
+    "path": "/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_zero_touch_20260803-164143.dump",
+    "sha256": "349c78e19f2ccfdbb2c88ac576c9342db7620c8f96e5a4fc3ee013d3b0de448d"
+  },
+  "inventory": {
+    "human_required": 12,
+    "unsupported_ats": 12,
+    "ineligible": 17,
+    "safe_canary": 0,
+    "browser_ready": 0,
+    "email_eligible": 0,
+    "human_challenge_handoff_app_id": 2,
+    "human_challenge_job_id": 38
+  },
+  "kill_switch": true,
+  "live_submit_enabled": false,
+  "company_account_apps": 0,
+  "external_submissions_this_deploy": 0,
+  "evidence_dir": "linkedin_connector/docs/uat_evidence/zero_touch_20260803T164044Z/"
+}

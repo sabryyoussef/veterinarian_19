@@ -41,8 +41,16 @@ _AUTH_NO_SPONSOR_RE = re.compile(
     r"no visa sponsorship|without sponsorship|candidates must be (eligible|authorized)",
     re.I,
 )
+# Require an actual challenge widget — ignore Odoo session keys like recaptcha_public_key.
 _CAPTCHA_RE = re.compile(
-    r"cf-turnstile|turnstile|g-recaptcha|hcaptcha|recaptcha|data-sitekey|captcha", re.I
+    r"cf-turnstile|"
+    r"class=[\"'][^\"']*g-recaptcha|"
+    r"g-recaptcha-response|"
+    r"\bh-captcha\b|hcaptcha-box|h-captcha-response|"
+    r"iframe[^>]+(?:recaptcha|hcaptcha|challenges\.cloudflare|turnstile)|"
+    r"data-sitekey=[\"'][^\"']+[\"'][^>]*(?:g-recaptcha|cf-turnstile|h-captcha)|"
+    r"(?:g-recaptcha|cf-turnstile|h-captcha)[^>]*data-sitekey",
+    re.I,
 )
 _LOGIN_RE = re.compile(
     r"type=[\"']password[\"']|sign in to (continue|apply)|log in to apply|create an account",

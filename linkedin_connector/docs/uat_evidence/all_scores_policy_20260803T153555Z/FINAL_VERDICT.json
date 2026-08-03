@@ -35,5 +35,8 @@
   "external_submissions": 1,
   "company_account_apps": 0,
   "tests": "0 failed, 0 error(s) of 55 tests",
-  "backup": "dump=/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_all_scores_20260803T153555Z.dump size=79130267 sha256=07f1e6341f20803b7107f9667c80c17f1c77d000199dd43535594dc196881b60 toc=32449"
+  "backup": "dump=/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_all_scores_20260803T153555Z.dump size=79130267 sha256=07f1e6341f20803b7107f9667c80c17f1c77d000199dd43535594dc196881b60 toc=32449",
+  "commit": "2b60a46fbb5c1d02349d056613cf7d88cf594e63",
+  "worker_version": "0.2.1",
+  "evidence_path": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/all_scores_policy_20260803T153555Z"
 }

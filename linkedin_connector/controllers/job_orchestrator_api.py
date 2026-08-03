@@ -39,7 +39,7 @@ def _assert_live_submit_allowed(app):
     Policy = request.env["linkedin.apply.policy"].sudo()
     try:
         policy = Policy.get_policy_for_account(app.account_id)
-        platform = getattr(app.job_id, "platform", None) or None
+        platform = getattr(app.job_id, "apply_platform", None) or getattr(app.job_id, "platform", None) or None
         policy.assert_orchestration_allowed(platform=platform, for_submit=True)
         policy.assert_submit_caps()
         company = ""

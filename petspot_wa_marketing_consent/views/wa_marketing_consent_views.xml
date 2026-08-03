@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wa_marketing_consent_tree" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.consent.list</field>
+        <field name="model">petspot.wa.marketing.consent</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="partner_id"/>
+                <field name="mobile_normalized"/>
+                <field name="status"/>
+                <field name="consent_source"/>
+                <field name="consent_timestamp"/>
+                <field name="wording_version"/>
+                <field name="captured_by"/>
+                <field name="active_for_eligibility"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_wa_marketing_consent_form" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.consent.form</field>
+        <field name="model">petspot.wa.marketing.consent</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Marketing Consent">
+                <header>
+                    <button name="action_opt_out" type="object" string="Opt Out" class="btn-secondary"/>
+                    <button name="action_mark_wrong_number" type="object" string="Wrong Number" class="btn-secondary"/>
+                    <field name="status" widget="statusbar" statusbar_visible="pending,opted_in,opted_out,wrong_number,revoked"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="mobile_raw"/>
+                            <field name="mobile_normalized"/>
+                            <field name="channel"/>
+                            <field name="purpose"/>
+                        </group>
+                        <group>
+                            <field name="consent_source"/>
+                            <field name="consent_timestamp"/>
+                            <field name="wording_id"/>
+                            <field name="wording_version"/>
+                            <field name="staff_explicit_confirm"/>
+                            <field name="captured_by"/>
+                            <field name="active_for_eligibility"/>
+                        </group>
+                    </group>
+                    <group string="Wording &amp; evidence">
+                        <field name="wording_text" colspan="2"/>
+                        <field name="evidence_ref"/>
+                        <field name="notes"/>
+                    </group>
+                    <group string="Revocation">
+                        <field name="revoked_timestamp"/>
+                        <field name="revocation_source"/>
+                    </group>
+                    <group string="Technical (web routes only)">
+                        <field name="ip_address"/>
+                        <field name="user_agent"/>
+                        <field name="last_marketing_contact_at"/>
+                    </group>
+                    <notebook>
+                        <page string="Audit log">
+                            <field name="log_ids" readonly="1">
+                                <list>
+                                    <field name="create_date"/>
+                                    <field name="event_type"/>
+                                    <field name="status"/>
+                                    <field name="consent_source"/>
+                                    <field name="notes"/>
+                                    <field name="captured_by"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_wa_marketing_consent" model="ir.actions.act_window">
+        <field name="name">WA Marketing Consents</field>
+        <field name="res_model">petspot.wa.marketing.consent</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_wa_consent_wording" model="ir.actions.act_window">
+        <field name="name">Consent Wording Versions</field>
+        <field name="res_model">petspot.wa.consent.wording</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_wa_consent_wording_tree" model="ir.ui.view">
+        <field name="name">petspot.wa.consent.wording.list</field>
+        <field name="model">petspot.wa.consent.wording</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="version"/>
+                <field name="route"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_wa_consent_log_tree" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.consent.log.list</field>
+        <field name="model">petspot.wa.marketing.consent.log</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0">
+                <field name="create_date"/>
+                <field name="partner_id"/>
+                <field name="mobile_normalized"/>
+                <field name="status"/>
+                <field name="event_type"/>
+                <field name="notes"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_wa_consent_log" model="ir.actions.act_window">
+        <field name="name">WA Consent Audit Log</field>
+        <field name="res_model">petspot.wa.marketing.consent.log</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

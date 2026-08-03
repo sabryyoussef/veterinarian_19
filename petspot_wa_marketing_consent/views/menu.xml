@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_wa_consent_root" name="WA Consent" parent="contacts.menu_contacts" sequence="90" groups="petspot_wa_marketing_consent.group_wa_consent_user"/>
+    <menuitem id="menu_wa_consent_records" name="Consents" parent="menu_wa_consent_root" action="action_wa_marketing_consent" sequence="10"/>
+    <menuitem id="menu_wa_consent_logs" name="Audit log" parent="menu_wa_consent_root" action="action_wa_consent_log" sequence="20"/>
+    <menuitem id="menu_wa_consent_wording" name="Wording versions" parent="menu_wa_consent_root" action="action_wa_consent_wording" sequence="30" groups="petspot_wa_marketing_consent.group_wa_consent_manager"/>
+</odoo>

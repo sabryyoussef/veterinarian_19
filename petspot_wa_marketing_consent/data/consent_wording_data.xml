@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="wording_clinic_v1" model="petspot.wa.consent.wording">
+        <field name="name">Clinic reception v1</field>
+        <field name="version">clinic_v1</field>
+        <field name="route">clinic_form</field>
+        <field name="body_ar">أوافق على استلام رسائل واتساب تسويقية من عيادة Pet Spot حول العروض والمتجر والخدمات. يمكنني الإلغاء في أي وقت بالرد وقف.</field>
+        <field name="body_en">I agree to receive marketing WhatsApp messages from Pet Spot clinic about offers, the online store, and services. I can opt out anytime by replying STOP / وقف.</field>
+    </record>
+    <record id="wording_staff_v1" model="petspot.wa.consent.wording">
+        <field name="name">Staff recorded v1</field>
+        <field name="version">staff_v1</field>
+        <field name="route">staff_recorded</field>
+        <field name="body_ar">أوافق على استلام رسائل واتساب تسويقية من عيادة Pet Spot حول العروض والمتجر والخدمات. يمكنني الإلغاء في أي وقت بالرد وقف.</field>
+        <field name="body_en">I agree to receive marketing WhatsApp messages from Pet Spot clinic about offers, the online store, and services. I can opt out anytime by replying STOP / وقف.</field>
+    </record>
+    <record id="wording_shopify_v1" model="petspot.wa.consent.wording">
+        <field name="name">Shopify checkbox v1</field>
+        <field name="version">shopify_v1</field>
+        <field name="route">shopify</field>
+        <field name="body_ar">أريد استلام رسائل واتساب تسويقية اختيارية من Pet Spot (عروض/المتجر). غير مطلوب للشراء. للإلغاء: رد وقف.</field>
+        <field name="body_en">I want optional marketing WhatsApp messages from Pet Spot (offers/store). Not required to purchase. To opt out: reply STOP / وقف.</field>
+    </record>
+    <record id="wording_qr_v1" model="petspot.wa.consent.wording">
+        <field name="name">QR landing v1</field>
+        <field name="version">qr_v1</field>
+        <field name="route">qr_landing_page</field>
+        <field name="body_ar">أوافق اختيارياً على رسائل واتساب تسويقية من Pet Spot. لم يتم تحديد الموافقة مسبقاً. للإلغاء لاحقاً: رد وقف على نفس الرقم.</field>
+        <field name="body_en">I optionally agree to marketing WhatsApp messages from Pet Spot. Consent is not pre-selected. To opt out later: reply STOP / وقف to the same number.</field>
+    </record>
+
+    <!-- Candidate draft v1.1 (pre-approval text). Bodies must remain unchanged; archived via activate file. -->
+    <record id="wording_clinic_v1_1" model="petspot.wa.consent.wording">
+        <field name="name">Clinic reception v1.1 (candidate draft)</field>
+        <field name="version">clinic_v1_1</field>
+        <field name="route">clinic_form</field>
+        <field name="body_ar">أوافق اختيارياً على استلام رسائل واتساب تسويقية من عيادة Pet Spot حول العروض والمتجر والخدمات. الموافقة غير مطلوبة للحصول على الخدمة الطبية أو الشراء. رسائل المواعيد/التشغيل منفصلة وليست تسويقاً. يمكنني الإلغاء في أي وقت بالرد وقف أو STOP.</field>
+        <field name="body_en">I optionally agree to receive marketing WhatsApp messages from Pet Spot clinic about offers, the online store, and services. Consent is not required for clinic care or purchase. Appointment/operational messages are separate and are not marketing. I can opt out anytime by replying STOP / وقف.</field>
+    </record>
+    <record id="wording_staff_v1_1" model="petspot.wa.consent.wording">
+        <field name="name">Staff recorded v1.1 (candidate draft)</field>
+        <field name="version">staff_v1_1</field>
+        <field name="route">staff_recorded</field>
+        <field name="body_ar">أوافق اختيارياً على استلام رسائل واتساب تسويقية من عيادة Pet Spot حول العروض والمتجر والخدمات. الموافقة غير مطلوبة للحصول على الخدمة الطبية أو الشراء. رسائل المواعيد/التشغيل منفصلة وليست تسويقاً. يمكنني الإلغاء في أي وقت بالرد وقف أو STOP.</field>
+        <field name="body_en">I optionally agree to receive marketing WhatsApp messages from Pet Spot clinic about offers, the online store, and services. Consent is not required for clinic care or purchase. Appointment/operational messages are separate and are not marketing. I can opt out anytime by replying STOP / وقف.</field>
+    </record>
+
+    <!-- Sabry-approved clinic/staff v1.1 (2026-08-03). New version keys — do not mutate v1 or candidate draft bodies. -->
+    <record id="wording_clinic_v1_1_approved" model="petspot.wa.consent.wording">
+        <field name="name">Clinic reception v1.1 (approved)</field>
+        <field name="version">clinic_v1_1_approved</field>
+        <field name="route">clinic_form</field>
+        <field name="body_ar">أوافق اختياريًا على استلام رسائل واتساب تسويقية من عيادة Pet Spot عن العروض والمتجر والخدمات. عدم الموافقة لن يؤثر على خدمات العيادة أو الشراء. يمكنني إلغاء الموافقة في أي وقت بالرد بكلمة وقف. رسائل الحجز والطلبات التشغيلية منفصلة.</field>
+        <field name="body_en">I voluntarily agree to receive marketing WhatsApp messages from Pet Spot clinic about offers, the online store, and services. Refusing will not affect clinic care or purchases. I can opt out anytime by replying STOP / وقف. Booking and order-related messages are handled separately.</field>
+    </record>
+    <record id="wording_staff_v1_1_approved" model="petspot.wa.consent.wording">
+        <field name="name">Staff recorded v1.1 (approved)</field>
+        <field name="version">staff_v1_1_approved</field>
+        <field name="route">staff_recorded</field>
+        <field name="body_ar">أوافق اختياريًا على استلام رسائل واتساب تسويقية من عيادة Pet Spot عن العروض والمتجر والخدمات. عدم الموافقة لن يؤثر على خدمات العيادة أو الشراء. يمكنني إلغاء الموافقة في أي وقت بالرد بكلمة وقف. رسائل الحجز والطلبات التشغيلية منفصلة.</field>
+        <field name="body_en">I voluntarily agree to receive marketing WhatsApp messages from Pet Spot clinic about offers, the online store, and services. Refusing will not affect clinic care or purchases. I can opt out anytime by replying STOP / وقف. Booking and order-related messages are handled separately.</field>
+    </record>
+</odoo>

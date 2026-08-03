@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wa_consent_user,petspot.wa.marketing.consent user,model_petspot_wa_marketing_consent,group_wa_consent_user,1,0,0,0
+access_wa_consent_manager,petspot.wa.marketing.consent manager,model_petspot_wa_marketing_consent,group_wa_consent_manager,1,1,1,0
+access_wa_consent_log_user,petspot.wa.marketing.consent.log user,model_petspot_wa_marketing_consent_log,group_wa_consent_user,1,0,0,0
+access_wa_consent_log_manager,petspot.wa.marketing.consent.log manager,model_petspot_wa_marketing_consent_log,group_wa_consent_manager,1,0,0,0
+access_wa_wording_user,petspot.wa.consent.wording user,model_petspot_wa_consent_wording,group_wa_consent_user,1,0,0,0
+access_wa_wording_manager,petspot.wa.consent.wording manager,model_petspot_wa_consent_wording,group_wa_consent_manager,1,1,1,0
+access_wa_eligibility_user,petspot.wa.marketing.eligibility user,model_petspot_wa_marketing_eligibility,group_wa_consent_user,1,1,1,1
+access_wa_staff_wizard_user,petspot.wa.staff.consent.wizard user,model_petspot_wa_staff_consent_wizard,group_wa_consent_user,1,1,1,1
+access_wa_staff_wizard_manager,petspot.wa.staff.consent.wizard manager,model_petspot_wa_staff_consent_wizard,group_wa_consent_manager,1,1,1,1

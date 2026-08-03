@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mkt_settings_form" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.settings.form</field>
+        <field name="model">petspot.wa.marketing.settings</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_approve_tier_increase" type="object" string="Approve Tier Increase" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="global_pause"/>
+                        <field name="mock_send"/>
+                        <field name="evolution_instance" readonly="1"/>
+                        <field name="evolution_base_url"/>
+                        <field name="tier"/>
+                        <field name="tier_active_day_count"/>
+                        <field name="daily_cairo_date"/>
+                        <field name="daily_sent_count"/>
+                        <field name="daily_reserved_count"/>
+                        <field name="window_start_hour"/>
+                        <field name="window_end_hour"/>
+                        <field name="spacing_min_minutes"/>
+                        <field name="spacing_max_minutes"/>
+                    </group>
+                    <group string="Internal test allowlist">
+                        <field name="allowlist_test_mobiles" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_mkt_settings" model="ir.actions.act_window">
+        <field name="name">Marketing Queue Settings</field>
+        <field name="res_model">petspot.wa.marketing.settings</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="marketing_queue_settings_default"/>
+    </record>
+</odoo>

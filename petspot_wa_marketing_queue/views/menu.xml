@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_wa_marketing_queue_root"
+              name="WA Marketing Queue"
+              parent="contacts.menu_contacts"
+              sequence="95"
+              groups="petspot_wa_marketing_queue.group_wa_marketing_queue_manager"/>
+    <menuitem id="menu_mkt_campaign" name="Campaigns" parent="menu_wa_marketing_queue_root" action="action_mkt_campaign" sequence="10"/>
+    <menuitem id="menu_mkt_template" name="Templates" parent="menu_wa_marketing_queue_root" action="action_mkt_template" sequence="20"/>
+    <menuitem id="menu_mkt_queue" name="Queue" parent="menu_wa_marketing_queue_root" action="action_mkt_queue" sequence="30"/>
+    <menuitem id="menu_mkt_event" name="Audit Events" parent="menu_wa_marketing_queue_root" action="action_mkt_event" sequence="40"/>
+    <menuitem id="menu_mkt_settings" name="Settings" parent="menu_wa_marketing_queue_root" action="action_mkt_settings" sequence="50"/>
+</odoo>

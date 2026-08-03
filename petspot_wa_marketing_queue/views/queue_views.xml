@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mkt_queue_tree" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.queue.item.list</field>
+        <field name="model">petspot.wa.marketing.queue.item</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="campaign_id"/>
+                <field name="partner_id"/>
+                <field name="mobile_normalized"/>
+                <field name="state"/>
+                <field name="scheduled_at"/>
+                <field name="sent_at"/>
+                <field name="skip_reason"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_mkt_queue" model="ir.actions.act_window">
+        <field name="name">Marketing Queue</field>
+        <field name="res_model">petspot.wa.marketing.queue.item</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

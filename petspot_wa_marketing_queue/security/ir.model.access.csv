@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mkt_template_user,petspot.wa.marketing.template user,model_petspot_wa_marketing_template,group_wa_marketing_queue_user,1,0,0,0
+access_mkt_template_manager,petspot.wa.marketing.template manager,model_petspot_wa_marketing_template,group_wa_marketing_queue_manager,1,1,1,1
+access_mkt_campaign_user,petspot.wa.marketing.campaign user,model_petspot_wa_marketing_campaign,group_wa_marketing_queue_user,1,0,0,0
+access_mkt_campaign_manager,petspot.wa.marketing.campaign manager,model_petspot_wa_marketing_campaign,group_wa_marketing_queue_manager,1,1,1,1
+access_mkt_queue_user,petspot.wa.marketing.queue.item user,model_petspot_wa_marketing_queue_item,group_wa_marketing_queue_user,1,0,0,0
+access_mkt_queue_manager,petspot.wa.marketing.queue.item manager,model_petspot_wa_marketing_queue_item,group_wa_marketing_queue_manager,1,1,1,1
+access_mkt_event_user,petspot.wa.marketing.event user,model_petspot_wa_marketing_event,group_wa_marketing_queue_user,1,0,0,0
+access_mkt_event_manager,petspot.wa.marketing.event manager,model_petspot_wa_marketing_event,group_wa_marketing_queue_manager,1,0,1,0
+access_mkt_settings_manager,petspot.wa.marketing.settings manager,model_petspot_wa_marketing_settings,group_wa_marketing_queue_manager,1,1,1,0

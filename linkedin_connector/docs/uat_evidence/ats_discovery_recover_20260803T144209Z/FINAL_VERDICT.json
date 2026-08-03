@@ -73,5 +73,6 @@
   "canary": null,
   "rollback": "Restore dump: pg_restore -c -d pet_spot_elsahel /home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_ats_recover_20260803T144209Z.dump ; deactivate n8n hunter caweLvPrZEBjBfku; keep submit WF inactive; set live_submit_enabled=False; kill_switch=True.",
   "evidence_dir": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/ats_discovery_recover_20260803T144209Z",
-  "timestamp_utc": "20260803T144937Z"
+  "timestamp_utc": "20260803T144937Z",
+  "commit": "b303d2e86339be542467dde4c7e885032b194688"
 }

@@ -58,5 +58,6 @@
   ],
   "evidence_dir": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/caught_jobs_dashboard_20260803T151237Z",
   "rollback": "pg_restore -c -d pet_spot_elsahel /home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_caught_jobs_dash_20260803T151237Z.dump; module rollback to 19.0.2.14.0 if needed",
-  "timestamp_utc": "20260803T152346Z"
+  "timestamp_utc": "20260803T152346Z",
+  "commit": "c7a39508b97fd0e7a107055baa227a21234e37e1"
 }

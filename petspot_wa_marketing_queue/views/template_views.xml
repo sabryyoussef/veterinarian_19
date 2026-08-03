@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mkt_template_tree" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.template.list</field>
+        <field name="model">petspot.wa.marketing.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="version"/>
+                <field name="state"/>
+                <field name="approved_by"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_mkt_template_form" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.template.form</field>
+        <field name="model">petspot.wa.marketing.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_approve" type="object" string="Approve Template" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_retire" type="object" string="Retire" invisible="state == 'retired'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="version"/>
+                        <field name="url"/>
+                        <field name="approved_by" readonly="1"/>
+                        <field name="approved_at" readonly="1"/>
+                    </group>
+                    <group string="Arabic body (must include exact opt-out phrase)">
+                        <field name="body_ar" nolabel="1" placeholder="... لو مش حابب تستقبل رسائل، رد وقف"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_mkt_template" model="ir.actions.act_window">
+        <field name="name">Marketing Templates</field>
+        <field name="res_model">petspot.wa.marketing.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

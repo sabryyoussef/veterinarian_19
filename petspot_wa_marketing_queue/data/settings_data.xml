@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="marketing_queue_settings_default" model="petspot.wa.marketing.settings">
+        <field name="name">Marketing Queue Settings</field>
+        <field name="global_pause" eval="True"/>
+        <field name="evolution_instance">petspot-marketing</field>
+        <field name="evolution_base_url">http://127.0.0.1:8199</field>
+        <field name="mock_send" eval="True"/>
+        <field name="tier">1</field>
+        <field name="allowlist_test_mobiles">+201097949900
++201003670502</field>
+    </record>
+</odoo>

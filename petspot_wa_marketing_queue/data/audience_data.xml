@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="audience_sahel_tagged_clients_2020_2026" model="petspot.wa.marketing.audience">
+        <field name="name">Sahel Tagged Clients 2020–2026</field>
+        <field name="code">SAHEL_TAGGED_CLIENTS_2020_2026</field>
+        <field name="required_tag_names_json">["Sahel Client", "Sahel 2020", "Sahel 2021", "Sahel 2022", "Sahel 2023", "Sahel 2024", "Sahel 2025", "Sahel 2026"]</field>
+    </record>
+</odoo>

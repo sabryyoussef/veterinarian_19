@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mkt_campaign_tree" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.campaign.list</field>
+        <field name="model">petspot.wa.marketing.campaign</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="template_id"/>
+                <field name="audience_id"/>
+                <field name="state"/>
+                <field name="preview_count"/>
+                <field name="approved_by"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_mkt_campaign_form" model="ir.ui.view">
+        <field name="name">petspot.wa.marketing.campaign.form</field>
+        <field name="model">petspot.wa.marketing.campaign</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_load_sahel_tagged_audience" type="object" string="Load Sahel Tagged Audience" invisible="state != 'draft'"/>
+                    <button name="action_preview" type="object" string="Preview Count / Exclusions" invisible="state != 'draft'"/>
+                    <button name="action_mark_internal_test_ok" type="object" string="Mark Internal Test OK" invisible="state != 'draft' or internal_test_ok"/>
+                    <button name="action_approve_and_schedule" type="object" string="Approve and Schedule" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_pause" type="object" string="Pause" invisible="state not in ('approved_scheduled','sending')"/>
+                    <button name="action_resume" type="object" string="Resume" invisible="state != 'paused'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('completed','cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved_scheduled,sending,completed,paused,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="template_id"/>
+                        <field name="audience_id"/>
+                        <field name="partner_domain"/>
+                        <field name="internal_test_ok"/>
+                        <field name="approved_by" readonly="1"/>
+                        <field name="approved_at" readonly="1"/>
+                        <field name="queue_count"/>
+                    </group>
+                    <group string="Preview">
+                        <field name="preview_count"/>
+                        <field name="preview_sample_body"/>
+                        <field name="preview_exclusion_json"/>
+                        <field name="preview_audit_json"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_mkt_campaign" model="ir.actions.act_window">
+        <field name="name">Marketing Campaigns</field>
+        <field name="res_model">petspot.wa.marketing.campaign</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

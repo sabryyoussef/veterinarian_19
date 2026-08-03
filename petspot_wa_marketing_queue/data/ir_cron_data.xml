@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_marketing_dispatch" model="ir.cron">
+        <field name="name">PetSpot WA Marketing: Process Queue</field>
+        <field name="model_id" ref="model_petspot_wa_marketing_dispatcher"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_queue()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="ir_cron_marketing_health" model="ir.cron">
+        <field name="name">PetSpot WA Marketing: Evolution Health</field>
+        <field name="model_id" ref="model_petspot_wa_marketing_dispatcher"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_health_check()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

@@ -169,10 +169,11 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             raise AccessError(_("Job not found for personal account."))
         return {
             "type": "ir.actions.act_window",
-            "name": _("Job"),
+            "name": str(_("Job")),
             "res_model": "linkedin.job",
             "res_id": job.id,
             "view_mode": "form",
+            "views": [[False, "form"]],
             "target": "current",
             "context": {"default_account_id": PERSONAL_ACCOUNT_ID},
         }
@@ -185,11 +186,16 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         if key not in defs:
             raise UserError(_("Unknown smart action: %s") % key)
         spec = defs[key]
+        view_mode = spec.get("view_mode", "list,form")
+        views = [[False, vt.strip()] for vt in view_mode.split(",") if vt.strip()]
+        if not views:
+            views = [[False, "list"], [False, "form"]]
         return {
             "type": "ir.actions.act_window",
             "name": spec["label"],
             "res_model": spec["res_model"],
-            "view_mode": spec.get("view_mode", "list,form"),
+            "view_mode": view_mode,
+            "views": views,
             "domain": spec["domain"],
             "context": {"default_account_id": PERSONAL_ACCOUNT_ID},
             "target": "current",

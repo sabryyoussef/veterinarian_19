@@ -263,6 +263,7 @@ class TestCaughtJobsDashboard(TransactionCase):
             self.Dash.action_open_job(self.company_job.id)
         action = self.Dash.action_open_job(self.job_a.id)
         self.assertEqual(action["res_id"], self.job_a.id)
+        self.assertEqual(action["views"], [[False, "form"]])
 
     def test_smart_actions_preserve_account(self):
         action = self.Dash.action_open_smart("auto_eligible")
@@ -270,6 +271,9 @@ class TestCaughtJobsDashboard(TransactionCase):
         self.assertIn(
             ("discovery_class", "=", "safe_canary_candidate"), action["domain"]
         )
+        self.assertTrue(action.get("views"))
+        self.assertEqual(action["views"][0], [False, "list"])
+        self.assertIn([False, "form"], action["views"])
 
     def test_empty_dataset(self):
         data = self.Dash.get_dashboard_data(

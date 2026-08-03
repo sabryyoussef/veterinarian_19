@@ -1,0 +1,42 @@
+ live  
+-------
+ False
+(1 row)
+
+ id  |             cron_name             | active 
+-----+-----------------------------------+--------
+  60 | LinkedIn: Publish Scheduled Posts | f
+  61 | LinkedIn: Refresh Feed            | f
+  62 | LinkedIn: Sync Messages           | f
+ 112 | LinkedIn: Daily Job Digest        | f
+(4 rows)
+
+ jobs | jobs_acct2 | canary_jobs 
+------+------------+-------------
+   10 |         10 |          10
+(1 row)
+
+ apps 
+------
+    0
+(1 row)
+
+ id |                                 title                                 |                  company                  |                  location                  | score | is_duplicate |                             url                              
+----+-----------------------------------------------------------------------+-------------------------------------------+--------------------------------------------+-------+--------------+--------------------------------------------------------------
+  5 | Software Developer - Odoo                                             | PREMA Consulting                          | دبي     •  عبر Indeed                      |    65 | f            | https://ae.indeed.com/viewjob?jk=600faeb8b3d80ac6
+  8 | Odoo Developer (Specialized in API Integration & Workflow Automation) | Melya Cleaning Services                   | أبو ظبي     •  عبر BeBee                   |    65 | f            | https://bebee.com/ae/jobs/odoo-developer-specialized-in-api-
+ 10 | Odoo Techno Functional Consultant                                     | Vivandi                                   | دبي     •  عبر BeBee                       |    65 | f            | https://bebee.com/ae/jobs/odoo-techno-functional-consultant-
+  1 | Odoo Developer                                                        | Voxtron                                   | دبي     •  عبر Indeed                      |    40 | f            | https://ae.indeed.com/viewjob?jk=807d54d3ba8461bf
+  2 | Odoo Developer cum Mobile Application Developer                       | ADDONS TECHNOLOGIES LLC                   | الإمارات العربية المتحدة     •  عبر Indeed |    40 | f            | https://ae.indeed.com/m/viewjob?jk=d26917e97ed470f5&from=ser
+  4 | Remote Python & Odoo ERP Developer                                    | StairwaySoft, Ltd.                        | دبي     •  عبر Jobrapido.com               |    40 | f            | https://ae.jobrapido.com/jobpreview/1484844185776291840
+  6 | Software & Odoo Developer                                             | ITD Innovation Information Technology LLC | دبي     •  عبر Indeed                      |    40 | f            | https://ae.indeed.com/viewjob?jk=e63d9db70d4a6e81
+  7 | Python Developer / Odoo Developer (Owl and Python)                    | EMP GoWin                                 | دبي     •  عبر Indeed                      |    40 | f            | https://ae.indeed.com/viewjob?jk=ad5deeaaa6f4e9ad
+  3 | Odoo Developer                                                        | Sukoon Agricultural Services LLC          | أبو ظبي     •  عبر Indeed                  |    30 | f            | https://ae.indeed.com/viewjob?jk=0267ac951cd1d865
+  9 | Odoo Developer                                                        | Sukoon Agricultural Services LLC          | أبو ظبي     •  عبر Glassdoor               |    30 | f            | https://www.glassdoor.com/job-listing/odoo-developer-sukoon-
+(10 rows)
+
+           company_hash           
+----------------------------------
+ 480bd24a87cbe7707874cc72beb5a460
+(1 row)
+

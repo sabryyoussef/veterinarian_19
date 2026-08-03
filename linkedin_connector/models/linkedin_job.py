@@ -13,7 +13,7 @@ from odoo.exceptions import UserError
 _logger = logging.getLogger(__name__)
 
 _JSEARCH_HOST = "jsearch.p.rapidapi.com"
-_JSEARCH_URL = "https://%s/search" % _JSEARCH_HOST
+_JSEARCH_URL = "https://%s/search-v2" % _JSEARCH_HOST
 
 _LI_GUEST_URL = (
     "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
@@ -852,7 +852,14 @@ class LinkedinJobSearch(models.TransientModel):
                 raise UserError(_("JSearch API error (HTTP %s): %s") % (resp.status_code, resp.text[:300]))
 
             data = resp.json()
-            jobs = data.get("data", [])
+            payload = data.get("data", [])
+            # JSearch search-v2 wraps jobs under data.jobs; legacy /search used data as list.
+            if isinstance(payload, dict):
+                jobs = payload.get("jobs") or payload.get("data") or []
+            else:
+                jobs = payload or []
+            if not isinstance(jobs, list):
+                jobs = []
             _logger.info("linkedin.job.search: page %d returned %d jobs", page, len(jobs))
 
             for item in jobs:
@@ -872,15 +879,25 @@ class LinkedinJobSearch(models.TransientModel):
                     or ""
                 )
                 source = item.get("job_publisher") or "JSearch"
+                loc = (
+                    item.get("job_location")
+                    or ", ".join(
+                        [
+                            x
+                            for x in (
+                                item.get("job_city") or "",
+                                item.get("job_country") or "",
+                            )
+                            if x
+                        ]
+                    )
+                )
 
                 vals = {
                     "job_id": job_id,
                     "title": item.get("job_title") or "",
                     "company": item.get("employer_name") or "",
-                    "location": "%s, %s" % (
-                        item.get("job_city") or "",
-                        item.get("job_country") or "",
-                    ),
+                    "location": loc,
                     "remote": bool(item.get("job_is_remote")),
                     "employment_type": item.get("job_employment_type") or "",
                     "description": desc_html,

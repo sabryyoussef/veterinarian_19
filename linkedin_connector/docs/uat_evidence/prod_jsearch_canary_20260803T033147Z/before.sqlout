@@ -1,0 +1,53 @@
+   s    
+--------
+ COUNTS
+(1 row)
+
+ jobs | apps | posts | digest_notes_1d 
+------+------+-------+-----------------
+    0 |    0 |    10 |               0
+(1 row)
+
+   s   
+-------
+ CRONS
+(1 row)
+
+ id  |             cron_name             | active 
+-----+-----------------------------------+--------
+  60 | LinkedIn: Publish Scheduled Posts | f
+  61 | LinkedIn: Refresh Feed            | f
+  62 | LinkedIn: Sync Messages           | f
+ 112 | LinkedIn: Daily Job Digest        | f
+(4 rows)
+
+  s   
+------
+ LIVE
+(1 row)
+
+ value 
+-------
+ False
+(1 row)
+
+      s       
+--------------
+ COMPANY_HASH
+(1 row)
+
+               md5                
+----------------------------------
+ 480bd24a87cbe7707874cc72beb5a460
+(1 row)
+
+ s  
+----
+ CV
+(1 row)
+
+ id | account_id | attachment_id | is_default 
+----+------------+---------------+------------
+  1 |          2 |         11383 | t
+(1 row)
+

@@ -1,0 +1,11 @@
+KEY_LEN 50 KEY_PREFIX ***
+BEFORE {'jobs': 0, 'apps': 0, 'posts': 10, 'posts_posted': 10}
+COMPANY_HASH 480bd24a87cbe7707874cc72beb5a460
+CV_SHA_OK True size 76123
+LIVE_TEMP_TRUE
+REQUEST {'query': 'Odoo Developer in UAE', 'page': '1', 'num_pages': '1', 'country': 'ae', 'date_posted': 'week'}
+HTTP 404
+ERROR_BODY {"message":"Endpoint '\/search' does not exist"}
+EXCEPTION RuntimeError JSearch HTTP 404
+ROLLBACK_GATES_AND_IMPORTS_DONE
+VERDICT FAILED_WITH_ROLLBACK_COMPLETE

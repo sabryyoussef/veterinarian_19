@@ -1,0 +1,14 @@
+JSearch Production canary INTERNAL digest preview
+Query: Odoo Developer in UAE | country=ae | date_posted=week | page=1 | endpoint=search-v2
+API requests this canary: 1 successful search-v2 (plus earlier failed /search 404 during endpoint discovery)
+Imported: 10 (cap 10) | Applications: 0 | CV local only (not uploaded)
+- [65] Odoo Techno Functional Consultant @ Vivandi | دبي     •  عبر BeBee | https://bebee.com/ae/jobs/odoo-techno-functional-consultant-vivandi-dubai--t7xk-773739037
+- [65] Odoo Developer (Specialized in API Integration & Workflow Automation) @ Melya Cleaning Services | أبو ظبي     •  عبر BeBee | https://bebee.com/ae/jobs/odoo-developer-specialized-in-api-integration-workflow-automatio
+- [65] Software Developer - Odoo @ PREMA Consulting | دبي     •  عبر Indeed | https://ae.indeed.com/viewjob?jk=600faeb8b3d80ac6
+- [40] Python Developer / Odoo Developer (Owl and Python) @ EMP GoWin | دبي     •  عبر Indeed | https://ae.indeed.com/viewjob?jk=ad5deeaaa6f4e9ad
+- [40] Software & Odoo Developer @ ITD Innovation Information Technology LLC | دبي     •  عبر Indeed | https://ae.indeed.com/viewjob?jk=e63d9db70d4a6e81
+- [40] Remote Python & Odoo ERP Developer @ StairwaySoft, Ltd. | دبي     •  عبر Jobrapido.com | https://ae.jobrapido.com/jobpreview/1484844185776291840
+- [40] Odoo Developer cum Mobile Application Developer @ ADDONS TECHNOLOGIES LLC | الإمارات العربية المتحدة     •  عبر Indeed | https://ae.indeed.com/m/viewjob?jk=d26917e97ed470f5&from=serp&tk=1ju8debi3jcn5801&xkcb=SoC
+- [40] Odoo Developer @ Voxtron | دبي     •  عبر Indeed | https://ae.indeed.com/viewjob?jk=807d54d3ba8461bf
+- [30] Odoo Developer @ Sukoon Agricultural Services LLC | أبو ظبي     •  عبر Glassdoor | https://www.glassdoor.com/job-listing/odoo-developer-sukoon-agricultural-services-llc-JV_I
+- [30] Odoo Developer @ Sukoon Agricultural Services LLC | أبو ظبي     •  عبر Indeed | https://ae.indeed.com/viewjob?jk=0267ac951cd1d865

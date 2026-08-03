@@ -44,7 +44,7 @@
                   "url": "/sabry",
                   "email": "abhorya@gmail.com",
                   "sameAs": [
-                    "https://www.linkedin.com/in/sabry-youssef",
+                    "https://www.linkedin.com/in/sabry-youssef-56a878185/",
                     "https://github.com/sabryyoussef"
                   ]
                 }
@@ -90,7 +90,7 @@
                 <a href="/sabry/portfolio" class="btn btn-primary">View Portfolio</a>
                 <a href="/sabry/cv/download" class="btn btn-outline-primary">Download CV</a>
                 <a href="/sabry/contact" class="btn btn-outline-secondary">Contact Sabry</a>
-                <a href="https://www.linkedin.com/in/sabry-youssef" class="btn btn-link" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/sabry-youssef-56a878185/" class="btn btn-link" target="_blank" rel="noopener">LinkedIn</a>
                 <a href="https://github.com/sabryyoussef" class="btn btn-link" target="_blank" rel="noopener">GitHub</a>
             </p>
         </t>
@@ -163,7 +163,7 @@
             <p>Senior Odoo Developer — Sabry Youssef. Last updated: 3 August 2026.</p>
             <p>
                 <a href="/sabry/cv/download" class="btn btn-primary">Download CV (PDF)</a>
-                <a href="https://www.linkedin.com/in/sabry-youssef" class="btn btn-outline-primary" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/sabry-youssef-56a878185/" class="btn btn-outline-primary" target="_blank" rel="noopener">LinkedIn</a>
                 <a href="https://github.com/sabryyoussef" class="btn btn-outline-secondary" target="_blank" rel="noopener">GitHub</a>
                 <a href="/sabry/contact" class="btn btn-link">Contact</a>
             </p>

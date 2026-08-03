@@ -77,7 +77,7 @@ class SabryOutreachSetupWizard(models.TransientModel):
   <p>I am available for full-time or subcontracting engagements. My CV is attached.</p>
   <p>
     Portfolio: available on the Sabry Odoo Development website<br/>
-    LinkedIn: https://www.linkedin.com/in/sabry-youssef<br/>
+    LinkedIn: https://www.linkedin.com/in/sabry-youssef-56a878185/<br/>
     Email: abhorya@gmail.com
   </p>
   <p>Thank you for your time.</p>

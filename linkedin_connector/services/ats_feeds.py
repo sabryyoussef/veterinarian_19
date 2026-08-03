@@ -254,17 +254,28 @@ def fetch_company_career_links(jobs_index_url: str) -> tuple[int, list[dict[str,
         )
     if not out:
         for path in detail_paths[:40]:
-            if "apply" in path.lower():
+            low = path.lower()
+            if "apply" in low:
+                continue
+            # Skip pagination / index noise (/jobs/page/2, bare /jobs)
+            if re.search(r"/jobs/?$", path) or "/jobs/page/" in low or re.search(
+                r"/jobs/\d+/?$", path
+            ):
+                continue
+            slug = path.rstrip("/").split("/")[-1]
+            if slug.isdigit() or slug in ("jobs", "page", "careers", "career"):
                 continue
             url = urljoin(base, path)
-            slug = path.rstrip("/").split("/")[-1]
             out.append(
                 {
                     "external_id": slug,
                     "title": slug.replace("-", " ").title(),
                     "company": "",
                     "location": "",
-                    "apply_url": urljoin(base, path.replace("/detail/", "/apply/") if "/detail/" in path else path),
+                    "apply_url": urljoin(
+                        base,
+                        path.replace("/detail/", "/apply/") if "/detail/" in path else path,
+                    ),
                     "description": "",
                     "remote": False,
                     "ats": "company_ats",

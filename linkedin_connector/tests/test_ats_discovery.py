@@ -38,6 +38,8 @@ class TestAtsDiscovery(TransactionCase):
         self.assertTrue(location_allowed("Cairo, Egypt", "Odoo", False)[0])
         self.assertTrue(location_allowed("Dubai", "Odoo Developer", False)[0])
         self.assertTrue(location_allowed("Anywhere", "Fully remote Odoo", True)[0])
+        self.assertTrue(location_allowed("دبي", "Odoo", False)[0])
+        self.assertTrue(location_allowed("أبو ظبي", "Odoo Developer", False)[0])
 
     def test_classify_ineligible_linkedin(self):
         result = classify_preflight(

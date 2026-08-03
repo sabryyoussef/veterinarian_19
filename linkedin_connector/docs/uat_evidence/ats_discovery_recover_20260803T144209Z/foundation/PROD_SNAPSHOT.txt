@@ -1,0 +1,77 @@
+   k    | latest_version |   state   
+--------+----------------+-----------
+ module | 19.0.2.13.0    | installed
+(1 row)
+
+ ?column? | id |             ?column?              
+----------+----+-----------------------------------
+ account  | 1  | PetSpot LinkedIn/company
+ account  | 2  | Sabry Youssef — Personal/personal
+(2 rows)
+
+ ?column? | kill_switch |                   ?column?                   
+----------+-------------+----------------------------------------------
+ policy   | true        | 65|day=2|kill=true|browser=false|email=false
+(1 row)
+
+ ?column? | count | ?column? 
+----------+-------+----------
+ apps1    | 0     | 
+(1 row)
+
+ ?column? | count | string_agg 
+----------+-------+------------
+ apps2    | 1     | 1:applied
+(1 row)
+
+ ?column? | count | string_agg  
+----------+-------+-------------
+ attempts | 1     | 1:succeeded
+(1 row)
+
+ ?column? | id |                     ?column?                      
+----------+----+---------------------------------------------------
+ cv       | 1  | Sabry Youssef — Senior Odoo CV|def=true|att=11383
+(1 row)
+
+ ?column? | value | ?column? 
+----------+-------+----------
+ icp_live | False | 
+(1 row)
+
+ ?column? |        value        | ?column? 
+----------+---------------------+----------
+ icp_last | 2026-08-03 14:42:43 | 
+(1 row)
+
+ ?column? |        value        | ?column? 
+----------+---------------------+----------
+ icp_next | 2026-08-03 20:42:43 | 
+(1 row)
+
+ ?column?  |                                                               value                                                                | ?column? 
+-----------+------------------------------------------------------------------------------------------------------------------------------------+----------
+ icp_stats | {"errors": 0, "human_required": 0, "ineligible": 22, "new_jobs": 0, "safe_canary": 0, "sources_checked": 11, "unsupported_ats": 0} | 
+(1 row)
+
+ ?column? | id |                                                             ?column?                                                             
+----------+----+----------------------------------------------------------------------------------------------------------------------------------
+ odoo_sa  | 13 | Software Developer|applied|https://www.odoo.com/jobs/apply/software-developer-1
+ odoo_sa  | 16 | Odoo Business Analyst Africa|no-app|https://www.odoo.com/jobs/business-analyst-french-speaker-733
+ odoo_sa  | 17 | Business Development Executive Job in India|no-app|https://www.odoo.com/jobs/business-development-executive-1548
+ odoo_sa  | 18 | Customer Support Analyst Jobs in Gandhinagar [Hiri|no-app|https://www.odoo.com/jobs/business-support-analyst-1315
+ odoo_sa  | 19 | Odoo Business Analyst Jobs for Freshers in Gandhin|no-app|https://www.odoo.com/jobs/business-support-analyst-intern-20-000-00-mo
+ odoo_sa  | 20 | Fullstack Developer|no-app|https://www.odoo.com/jobs/fullstack-developer-698
+ odoo_sa  | 21 | Offshore Software Developer Job in Gandhinagar [Hi|no-app|https://www.odoo.com/jobs/odoo-experience-developer-688
+ odoo_sa  | 22 | Jobs - Odoo|no-app|https://www.odoo.com/jobs/page/16
+ odoo_sa  | 23 | Jobs - Odoo|no-app|https://www.odoo.com/jobs/page/2
+ odoo_sa  | 24 | Jobs - Odoo|no-app|https://www.odoo.com/jobs/page/3
+ odoo_sa  | 25 | Jobs - Odoo|no-app|https://www.odoo.com/jobs/page/4
+ odoo_sa  | 26 | Partner Manager - Africa (French Speaker)|no-app|https://www.odoo.com/jobs/partner-manager-africa-french-speaker-1629
+ odoo_sa  | 27 | Partner Recruiter (French Speaker)|no-app|https://www.odoo.com/jobs/partner-recruiter-french-speaker-1981
+ odoo_sa  | 28 | Sales: Business Advisor Job in India|no-app|https://www.odoo.com/jobs/sales-business-advisor-695
+ odoo_sa  | 29 | Sales Internship|no-app|https://www.odoo.com/jobs/sales-internship-2506
+ odoo_sa  | 30 | Best Software Sales Internship for Freshers in Gan|no-app|https://www.odoo.com/jobs/summer-internship-field-sales-1922
+ odoo_sa  | 31 | Technical Consultant - Education|no-app|https://www.odoo.com/jobs/technical-consultant-education-2305
+(17 rows)
+

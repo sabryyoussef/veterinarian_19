@@ -1,0 +1,621 @@
+2026-08-03 14:47:15,154 738673 INFO ? odoo: Odoo version 19.0 
+2026-08-03 14:47:15,155 738673 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel.conf 
+2026-08-03 14:47:15,155 738673 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-08-03 14:47:15,155 738673 INFO ? odoo: database: odoo@localhost:5432 
+2026-08-03 14:47:15,580 738673 INFO ? odoo.service.server: HTTP service (werkzeug) running on 0.0.0.0:8027 
+2026-08-03 14:47:15,651 738673 INFO pet_spot_elsahel odoo.modules.loading: loading 1 modules... 
+2026-08-03 14:47:15,661 738673 INFO pet_spot_elsahel odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-08-03 14:47:15,748 738673 INFO pet_spot_elsahel odoo.modules.loading: updating modules list 
+2026-08-03 14:47:15,755 738673 INFO pet_spot_elsahel odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-08-03 14:47:19,042 738673 WARNING pet_spot_elsahel odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-03 14:47:19,044 738673 WARNING pet_spot_elsahel odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-03 14:47:20,419 738673 INFO pet_spot_elsahel odoo.addons.base.models.ir_module: ALLOW access to module.button_upgrade on ['LinkedIn Connector'] to user __system__ #1 via n/a 
+2026-08-03 14:47:20,419 738673 INFO pet_spot_elsahel odoo.addons.base.models.ir_module: ALLOW access to module.update_list on ['LinkedIn Connector'] to user __system__ #1 via n/a 
+2026-08-03 14:47:23,391 738673 WARNING pet_spot_elsahel odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-03 14:47:24,425 738673 INFO pet_spot_elsahel odoo.addons.base.models.ir_module: ALLOW access to module.button_install on [] to user __system__ #1 via n/a 
+2026-08-03 14:47:24,544 738673 INFO pet_spot_elsahel odoo.modules.loading: loading 384 modules... 
+2026-08-03 14:47:24,562 738673 WARNING pet_spot_elsahel odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-08-03 14:47:24,962 738673 INFO pet_spot_elsahel odoo.modules.loading: Loading module linkedin_connector (54/384) 
+2026-08-03 14:47:25,256 738673 INFO pet_spot_elsahel odoo.registry: module linkedin_connector: creating or updating database tables 
+2026-08-03 14:47:25,529 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/security/linkedin_security.xml 
+2026-08-03 14:47:25,657 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/security/ir.model.access.csv 
+2026-08-03 14:47:26,446 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/security/linkedin_bulk_wizard_access.xml 
+2026-08-03 14:47:26,447 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/data/ir_config_parameter_data.xml 
+2026-08-03 14:47:26,457 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/data/ir_cron_data.xml 
+2026-08-03 14:47:26,462 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/data/ats_source_data.xml 
+2026-08-03 14:47:26,481 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_post_views.xml 
+2026-08-03 14:47:26,526 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_stream_post_views.xml 
+2026-08-03 14:47:26,565 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_job_views.xml 
+2026-08-03 14:47:26,621 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_cv_version_views.xml 
+2026-08-03 14:47:26,646 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_job_application_views.xml 
+2026-08-03 14:47:26,683 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_resume_views.xml 
+2026-08-03 14:47:26,714 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_message_views.xml 
+2026-08-03 14:47:26,782 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_account_views.xml 
+2026-08-03 14:47:26,907 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_bulk_wizard_views.xml 
+2026-08-03 14:47:26,935 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_settings_views.xml 
+2026-08-03 14:47:26,971 738673 INFO pet_spot_elsahel odoo.modules.loading: loading linkedin_connector/views/linkedin_orchestrator_views.xml 
+2026-08-03 14:47:27,201 738673 INFO pet_spot_elsahel odoo.addons.base.models.ir_module: module linkedin_connector: no translation for language ar_001 
+2026-08-03 14:47:27,254 738673 INFO pet_spot_elsahel odoo.modules.loading: Module linkedin_connector loaded in 2.29s, 936 queries (+936 other) 
+2026-08-03 14:47:27,271 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:27,353 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:27,415 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:27,950 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/main.py:17: DeprecationWarning: Since 19.0, @route(type='json') is a deprecated alias to @route(type='jsonrpc')
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 456, in load_modules
+    load_module_graph(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 170, in load_module_graph
+    load_openerp_module(package.name)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/module.py", line 505, in load_openerp_module
+    __import__(qualname)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/__init__.py", line 2, in <module>
+    from . import controllers
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/__init__.py", line 1, in <module>
+    from . import main
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/main.py", line 17, in <module>
+    class PaymobController(http.Controller):
+ 
+2026-08-03 14:47:28,385 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:28,987 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/__init__.py:4: DeprecationWarning: Since 19.0, odoo.osv is deprecated use odoo.fields.Domain
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 456, in load_modules
+    load_module_graph(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 170, in load_module_graph
+    load_openerp_module(package.name)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/module.py", line 505, in load_openerp_module
+    __import__(qualname)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_whatsapp/__init__.py", line 2, in <module>
+    from . import wizards
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_whatsapp/wizards/__init__.py", line 2, in <module>
+    from . import dev_whatsapp_hub_backfill
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/devhub_whatsapp/wizards/dev_whatsapp_hub_backfill.py", line 7, in <module>
+    from odoo.osv import expression
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/__init__.py", line 4, in <module>
+    warnings.warn("Since 19.0, odoo.osv is deprecated use odoo.fields.Domain", DeprecationWarning)
+ 
+2026-08-03 14:47:29,058 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,059 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,059 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,059 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,059 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,060 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,062 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,062 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,063 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,063 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,063 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,086 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,086 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,087 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,259 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,259 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,260 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,260 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,261 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,261 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,261 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,262 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,264 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,265 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,272 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,272 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,387 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,387 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,388 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,388 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,392 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,420 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,450 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,450 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,451 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,451 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,451 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,451 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,451 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,452 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,452 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,452 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,452 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,452 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,452 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,476 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,476 738673 WARNING pet_spot_elsahel odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-03 14:47:29,476 738673 INFO pet_spot_elsahel odoo.modules.loading: 384 modules loaded in 4.93s, 936 queries (+936 extra) 
+2026-08-03 14:47:29,811 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.shopify_import_order_status: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:29,812 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.shopify_tax_behavior: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:29,812 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.shopify_stock_type: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:29,812 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.export_stock_interval_type: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:30,155 738673 WARNING pet_spot_elsahel odoo.fields: stock.picking.shipblu_normalized_status: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:30,467 738673 WARNING pet_spot_elsahel odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-03 14:47:30,600 738673 WARNING pet_spot_elsahel odoo.fields: Translated stored related field (shopify.public.category.map.public_categ_name) will not be computed correctly in all languages 
+2026-08-03 14:47:30,852 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.shopify_import_order_status: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:30,853 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.shopify_tax_behavior: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:30,853 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.shopify_stock_type: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:30,853 738673 WARNING pet_spot_elsahel odoo.fields: res.config.settings.export_stock_interval_type: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:31,089 738673 WARNING pet_spot_elsahel odoo.fields: stock.picking.shipblu_normalized_status: selection attribute will be ignored as the field is related 
+2026-08-03 14:47:31,394 738673 WARNING pet_spot_elsahel odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-03 14:47:31,504 738673 WARNING pet_spot_elsahel odoo.fields: Translated stored related field (shopify.public.category.map.public_categ_name) will not be computed correctly in all languages 
+2026-08-03 14:47:32,817 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_raw_status should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.raw_status is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,817 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_normalized_status should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.normalized_status is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,818 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_business_reference should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.business_reference is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,818 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_tracking_url should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.tracking_url is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,837 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'sale.order.petspot_fulfillment_case_id' in dependency of sale.order.petspot_fulfillment_state should be searchable. This is necessary to determine which records to recompute when petspot.fulfillment.case.state is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,837 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'sale.order.petspot_fulfillment_case_id' in dependency of sale.order.petspot_fulfillment_path should be searchable. This is necessary to determine which records to recompute when petspot.fulfillment.case.path is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,863 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,864 738673 WARNING pet_spot_elsahel py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1151, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-03 14:47:32,868 738673 INFO pet_spot_elsahel odoo.registry: verifying fields for every extended model 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Models have no table: dev.whatsapp.analysis.job, dev.whatsapp.analysis, dev.project.alias, dev.whatsapp.inbox.event, dev.whatsapp.media, dev.whatsapp.create.work.wizard, dev.whatsapp.media.job, dev.whatsapp.analysis.eval, whatsapp.ingestion.health. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.whatsapp.analysis.job. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.whatsapp.analysis. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.project.alias. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.whatsapp.inbox.event. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.whatsapp.media. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.whatsapp.create.work.wizard. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.whatsapp.media.job. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model dev.whatsapp.analysis.eval. 
+2026-08-03 14:47:33,252 738673 INFO pet_spot_elsahel odoo.registry: Recreate table of model whatsapp.ingestion.health. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.whatsapp.analysis has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.whatsapp.analysis.job has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.whatsapp.media has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.project.alias has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.whatsapp.create.work.wizard has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.whatsapp.inbox.event has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model whatsapp.ingestion.health has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.whatsapp.analysis.eval has no table. 
+2026-08-03 14:47:33,257 738673 ERROR pet_spot_elsahel odoo.registry: Model dev.whatsapp.media.job has no table. 
+2026-08-03 14:47:35,819 738673 INFO pet_spot_elsahel odoo.modules.loading: Modules loaded. 
+2026-08-03 14:47:35,866 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on whatsapp.ingestion.health.conversation_id 
+2026-08-03 14:47:35,866 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on whatsapp.ingestion.health.recovery_state 
+2026-08-03 14:47:35,866 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on whatsapp.ingestion.health.health_status 
+2026-08-03 14:47:35,873 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.work.item.source_type 
+2026-08-03 14:47:35,873 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.project.alias.name 
+2026-08-03 14:47:35,873 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.project.alias.normalized_name 
+2026-08-03 14:47:35,873 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.project.alias.dev_project_id 
+2026-08-03 14:47:35,874 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.project.alias.alias_type 
+2026-08-03 14:47:35,874 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.project.alias.language 
+2026-08-03 14:47:35,878 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.source.project_mapping_state 
+2026-08-03 14:47:35,878 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.source.historical_review_lane 
+2026-08-03 14:47:35,878 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.inbox.event.message_id 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.inbox.event.event_type 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.inbox.event.user_id 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.name 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.group_jid 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.source_id 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.dev_project_id 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.correlation_id 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.batch_fingerprint 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.analysis_mode 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.schema_version 
+2026-08-03 14:47:35,879 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.prompt_version 
+2026-08-03 14:47:35,880 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.state 
+2026-08-03 14:47:35,880 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.requested_at 
+2026-08-03 14:47:35,880 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.analysis_id 
+2026-08-03 14:47:35,880 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.kind 
+2026-08-03 14:47:35,880 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.state 
+2026-08-03 14:47:35,880 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.payload_json 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.requested_at 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.lease_version 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.max_attempts 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.analysis.job.next_attempt_at 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.whatsapp_message_id 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.company_id 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.source_provider 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.source_media_id 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.media_asset_index 
+2026-08-03 14:47:35,881 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.media_type 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.retrieval_state 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.enrichment_state 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.media_id 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.kind 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.state 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.correlation_id 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.idempotency_key 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.payload_json 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.requested_at 
+2026-08-03 14:47:35,882 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.lease_version 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.max_attempts 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.media.job.next_attempt_at 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.primary_message_id 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.title 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.summary 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.post_create_inbox_state 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.dev_project_id 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.odoo_project_id 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.responsible_user_id 
+2026-08-03 14:47:35,883 738673 WARNING pet_spot_elsahel odoo.schema: Missing not-null constraint on dev.whatsapp.create.work.wizard.priority_cache 
+2026-08-03 14:47:35,891 738673 INFO pet_spot_elsahel odoo.registry: Registry changed, signaling through the database 
+2026-08-03 14:47:35,893 738673 INFO pet_spot_elsahel odoo.registry: Registry loaded in 20.313s 
+2026-08-03 14:47:35,893 738673 INFO pet_spot_elsahel odoo.service.server: Stopping workers gracefully 

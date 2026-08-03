@@ -15,8 +15,15 @@ SUPPORTED_AUTO_ATS = frozenset({"greenhouse", "lever", "ashby", "workable", "com
 _SPONSOR_RE = re.compile(
     r"\b(visa|sponsorship|sponsor|relocation|relocate|work permit|immigration)\b", re.I
 )
-_EGYPT_RE = re.compile(r"\b(egypt|cairo|giza|alexandria|eg\b)\b", re.I)
-_UAE_RE = re.compile(r"\b(uae|dubai|abu\s*dhabi|sharjah|united arab emirates)\b", re.I)
+_EGYPT_RE = re.compile(
+    r"\b(egypt|cairo|giza|alexandria|eg\b)\b|مصر|القاهرة|الجيزة|الإسكندرية|الاسكندرية",
+    re.I,
+)
+_UAE_RE = re.compile(
+    r"\b(uae|dubai|abu\s*dhabi|sharjah|united arab emirates)\b|"
+    r"الإمارات|الامارات|دبي|أبو\s*ظبي|ابو\s*ظبي|الشارقة",
+    re.I,
+)
 _GULF_RE = re.compile(
     r"\b(saudi|riyadh|jeddah|qatar|doha|kuwait|bahrain|oman|muscat|manama)\b", re.I
 )

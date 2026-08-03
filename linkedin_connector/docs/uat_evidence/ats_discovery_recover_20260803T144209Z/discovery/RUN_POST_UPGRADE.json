@@ -1,0 +1,1 @@
+{"ok": true, "data": {"ok": true, "stats": {"sources_checked": 15, "new_jobs": 6, "safe_canary": 0, "human_required": 0, "ineligible": 34, "unsupported_ats": 3, "errors": 0}, "account_id": 2, "canary": {}, "operating_state": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY"}}

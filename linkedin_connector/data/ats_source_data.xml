@@ -55,6 +55,41 @@
             <field name="notes">Discovery cycle skips API calls; daily JSearch cron imports separately.</field>
         </record>
 
+        <!-- Additional employer-owned public career indexes (read-only) -->
+        <record id="ats_src_webkul_careers" model="linkedin.ats.source">
+            <field name="name">Webkul careers</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://webkul.com/careers/</field>
+            <field name="company">Webkul</field>
+            <field name="region">remote|india</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Public employer careers; location/sponsorship gates still apply.</field>
+        </record>
+        <record id="ats_src_vauxoo_jobs" model="linkedin.ats.source">
+            <field name="name">Vauxoo jobs</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://www.vauxoo.com/en_US/jobs</field>
+            <field name="company">Vauxoo</field>
+            <field name="region">remote|latam</field>
+            <field name="enabled" eval="True"/>
+        </record>
+        <record id="ats_src_softhealer_jobs" model="linkedin.ats.source">
+            <field name="name">Softhealer jobs</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://softhealer.com/jobs</field>
+            <field name="company">Softhealer</field>
+            <field name="region">remote|india</field>
+            <field name="enabled" eval="True"/>
+        </record>
+        <record id="ats_src_openeducat_jobs" model="linkedin.ats.source">
+            <field name="name">OpenEduCat jobs page</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://www.openeducat.org/jobs/</field>
+            <field name="company">OpenEduCat</field>
+            <field name="region">remote</field>
+            <field name="enabled" eval="True"/>
+        </record>
+
         <record id="ir_cron_direct_ats_discovery" model="ir.cron">
             <field name="name">LinkedIn: Direct ATS Discovery (6h)</field>
             <field name="model_id" ref="model_linkedin_ats_source"/>

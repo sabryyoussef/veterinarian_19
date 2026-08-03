@@ -139,6 +139,10 @@ class LinkedinAtsSource(models.Model):
                         )
                 if src.company:
                     item["company"] = src.company
+                # Region hint: treat empty-location postings from remote boards as remote
+                region = (src.region or "").lower()
+                if "remote" in region and not (item.get("location") or "").strip():
+                    item["remote"] = True
                 enriched.append(item)
             jobs = enriched
 
@@ -249,6 +253,39 @@ class LinkedinAtsSource(models.Model):
                     stats[dc] = stats.get(dc, 0) + 1
                 elif dc == "safe_canary_candidate":
                     stats["safe_canary"] += 1
+
+        # Reclassify existing personal jobs not touched this cycle (e.g. JSearch imports)
+        untouched = Job.search(
+            [
+                ("account_id", "=", personal.id),
+                ("is_duplicate", "=", False),
+                ("discovery_class", "in", (False, "unchecked")),
+            ]
+        )
+        for job in untouched:
+            classification = classify_preflight(
+                title=job.title or "",
+                location=job.location or "",
+                description=job._plain_text_blob()
+                if hasattr(job, "_plain_text_blob")
+                else (job.description or ""),
+                apply_url=job.apply_url or "",
+                remote=bool(job.remote),
+                score=job.score or 0.0,
+                ats_hint=job.apply_platform or "",
+            )
+            job.write(
+                {
+                    "discovery_class": classification["discovery_class"],
+                    "discovery_blocker": classification.get("blocker") or "",
+                    "last_preflight_at": now,
+                }
+            )
+            dc = classification["discovery_class"]
+            if dc == "safe_canary_candidate":
+                stats["safe_canary"] = stats.get("safe_canary", 0) + 1
+            elif dc in stats:
+                stats[dc] = stats.get(dc, 0) + 1
 
         # Persist run stats on policy KPIs via ICP
         ICP = self.env["ir.config_parameter"].sudo()

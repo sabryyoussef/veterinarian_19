@@ -283,10 +283,32 @@ class LinkedinJobApplication(models.Model):
         return {"type": "ir.actions.act_url", "url": self.apply_url, "target": "new"}
 
     def action_mark_applied(self):
+        """Record a completed submission (manual or orchestrated)."""
+        allowed = (
+            "approved",
+            "human_required",
+            "discovered",
+            "shortlisted",
+            "pack_ready",
+            "submission_unknown",
+        )
         for rec in self:
-            if rec.state != "approved":
-                raise UserError(_("Mark Applied only after Approved (and after you submit on LinkedIn)."))
-            rec.write({"state": "applied", "applied_at": fields.Datetime.now()})
+            if rec.state == "applied":
+                continue
+            if rec.state not in allowed:
+                raise UserError(
+                    _("Cannot mark applied from state %s.") % (rec.state or "")
+                )
+            rec.write(
+                {
+                    "state": "applied",
+                    "applied_at": fields.Datetime.now(),
+                    "manual_task": True,
+                }
+            )
+            rec.message_post(
+                body=_("Marked applied (manual confirmation). Orchestrator will not resubmit.")
+            )
         return True
 
     def action_mark_interview(self):

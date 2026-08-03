@@ -36,7 +36,8 @@
                             invisible="state != 'approved'" class="btn-primary"
                             groups="linkedin_connector.group_linkedin_job_hunt"/>
                     <button name="action_mark_applied" type="object" string="Mark applied"
-                            invisible="state != 'approved'" class="btn-secondary"/>
+                            invisible="state not in ('approved', 'human_required', 'discovered', 'shortlisted', 'pack_ready')"
+                            class="btn-secondary"/>
                     <button name="action_mark_interview" type="object" string="Interview"
                             invisible="state not in ('applied','interview')"/>
                     <button name="action_mark_rejected" type="object" string="Rejected"

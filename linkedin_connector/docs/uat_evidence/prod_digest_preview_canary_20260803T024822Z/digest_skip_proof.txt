@@ -1,0 +1,17 @@
+BEFORE {'jobs': 0, 'apps': 0, 'cvs': 1, 'posts': 10, 'mail_notes_1h': 0}
+CV 1 att 11383 size 76123 sha 29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539 match True pdf True
+COMPANY 1 company 129944345
+PERSONAL 2 Sabry Youssef — Personal personal
+LIVE_ENABLED False
+USEFUL_DIGEST_WITH_LIVE_FALSE False
+REASON cron returns immediately; discovery sources require live HTTP
+LOCAL_JOBS 0 LOCAL_APPS 0
+MISSING ['local linkedin.job rows (0)', 'local linkedin.job.application rows (0)', 'live_job_search_enabled must stay False under this approval (cannot fetch LinkedIn/RemoteOK/JSearch)']
+AFTER {'jobs': 0, 'apps': 0, 'cvs': 1, 'posts': 10, 'mail_notes_1h': 0}
+SIDE_EFFECTS_NONE
+OK_ISOLATION_COMPANY_JOB_BRANDING
+CRONS [(112, 'LinkedIn: Daily Job Digest', False, False), (60, 'LinkedIn: Publish Scheduled Posts', False, datetime.datetime(2026, 7, 16, 3, 47, 11)), (61, 'LinkedIn: Refresh Feed', False, datetime.datetime(2026, 7, 16, 3, 21, 22)), (62, 'LinkedIn: Sync Messages', False, datetime.datetime(2026, 7, 16, 3, 47, 11))]
+DIGEST_LOG
+linkedin.job digest skipped: linkedin_connector.live_job_search_enabled is False (enable only after UAT approval).
+
+VERDICT_CANDIDATE BLOCKED_MISSING_JOB_SOURCE_OR_CONFIGURATION

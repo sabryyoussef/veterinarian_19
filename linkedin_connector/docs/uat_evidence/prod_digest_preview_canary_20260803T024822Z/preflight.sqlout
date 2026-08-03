@@ -1,0 +1,67 @@
+ section 
+---------
+ COUNTS
+(1 row)
+
+ jobs | apps | cvs | posts 
+------+------+-----+-------
+    0 |    0 |   1 |    10
+(1 row)
+
+ section 
+---------
+ CV
+(1 row)
+
+ id |              name              | account_id | is_default | attachment_id | file_size |                 checksum                 
+----+--------------------------------+------------+------------+---------------+-----------+------------------------------------------
+  1 | Sabry Youssef — Senior Odoo CV |          2 | t          |         11383 |     76123 | 23e37967913808b7184e1b897b0baaa87a533098
+(1 row)
+
+ section 
+---------
+ GATES
+(1 row)
+
+                    key                     |                              value                               
+--------------------------------------------+------------------------------------------------------------------
+ linkedin_connector.job_score_threshold     | 50
+ linkedin_connector.job_search_locations    | Remote|Egypt|United Arab Emirates
+ linkedin_connector.job_search_queries      | Senior Odoo Developer|Odoo Developer|Odoo Consultant|Senior Odoo
+ linkedin_connector.live_job_search_enabled | False
+(4 rows)
+
+ id  |             cron_name             | active |      lastcall       
+-----+-----------------------------------+--------+---------------------
+  60 | LinkedIn: Publish Scheduled Posts | f      | 2026-07-16 03:47:11
+  61 | LinkedIn: Refresh Feed            | f      | 2026-07-16 03:21:22
+  62 | LinkedIn: Sync Messages           | f      | 2026-07-16 03:47:11
+ 112 | LinkedIn: Daily Job Digest        | f      | 
+(4 rows)
+
+     section     
+-----------------
+ RECIPIENT_GROUP
+(1 row)
+
+                   xmlid                    | gid |             name              
+--------------------------------------------+-----+-------------------------------
+ linkedin_connector.group_linkedin_job_hunt | 181 | {"en_US": "Job Hunt Manager"}
+(1 row)
+
+ id | login | email_state 
+----+-------+-------------
+  2 | admin | HAS_EMAIL
+(1 row)
+
+ section  
+----------
+ ACCOUNTS
+(1 row)
+
+ id |           name           | account_type | linkedin_organization_id |   token   
+----+--------------------------+--------------+--------------------------+-----------
+  1 | PetSpot LinkedIn         | company      | 129944345                | NO_TOKEN
+  2 | Sabry Youssef — Personal | personal     |                          | HAS_TOKEN
+(2 rows)
+

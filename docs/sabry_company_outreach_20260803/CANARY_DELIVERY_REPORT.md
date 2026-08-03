@@ -41,11 +41,13 @@ Production mailing id=1 remains **draft**; 864-partner list was not used.
 
 - Odoo chatter: successfully sent to both addresses
 - Gmail Sent Mail: both messages present with correct From/Reply-To; no vetelsahel
-- vendorah2 INBOX: self-addressed canary present (see CANARY_INBOX2.json)
+- vendorah2 INBOX: self-addressed canary present with `Sabry_Youssef_CV.pdf` attached
 - abhorya: accepted by Gmail (Sent To header); inbox not directly readable from this host
-- CV download `/sabry/cv/download` HTTP 200 PDF
+- CV download `/sabry/cv/download` HTTP 200 PDF; attachment present on received mail
 - `/sabry/*` links HTTP 200; no PetSpot footer / vetelsahel on pages
+- Unsubscribe: `List-Unsubscribe` + `List-Unsubscribe-Post` one-click headers present on delivered message (points at `/mailing/3/unsubscribe...`)
 - No partner audience send
+- No duplicate same-day Sent rows beyond the two intended recipients
 
 ## Next action
 

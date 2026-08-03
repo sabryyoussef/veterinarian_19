@@ -1,0 +1,7 @@
+ id |              name               | company_id 
+----+---------------------------------+------------
+  1 | pet.spot                        |          1
+  2 | sabry_youssef_resume (archived) |          3
+  3 | Sabry Odoo Development          |          3
+(3 rows)
+

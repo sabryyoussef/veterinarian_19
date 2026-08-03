@@ -1,0 +1,8 @@
+200 /web/login
+000 /sabry
+000 /sabry/about
+000 /sabry/services
+000 /sabry/portfolio
+000 /sabry/experience
+000 /sabry/cv
+000 /sabry/contact

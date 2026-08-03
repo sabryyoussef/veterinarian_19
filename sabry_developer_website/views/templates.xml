@@ -1,43 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Independent chrome: shared host still resolves request.website=pet.spot, so avoid website.layout. -->
+    <template id="sabry_layout" name="Sabry Clean Layout">
+        <html lang="en">
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <t t-if="additional_title">
+                    <title><t t-esc="additional_title"/> | Sabry Odoo Development</title>
+                    <meta name="description" t-att-content="meta_description or additional_title"/>
+                    <meta property="og:title" t-att-content="additional_title"/>
+                    <meta property="og:site_name" content="Sabry Odoo Development"/>
+                    <meta property="og:type" content="website"/>
+                </t>
+                <t t-else="">
+                    <title>Sabry Odoo Development</title>
+                </t>
+                <link rel="stylesheet" href="/web/static/lib/bootstrap/dist/css/bootstrap.css"/>
+                <style>
+                    :root { --sabry-ink:#14213d; --sabry-accent:#0b6e4f; --sabry-bg:#f7f5f0; }
+                    body { margin:0; font-family: Georgia, "Times New Roman", serif; background: linear-gradient(180deg,#eef3ef 0%, var(--sabry-bg) 40%, #fff 100%); color: var(--sabry-ink); }
+                    .sabry-nav { display:flex; flex-wrap:wrap; gap:1rem; padding:1rem 1.25rem; border-bottom:1px solid #d7ddd8; background:rgba(255,255,255,.85); }
+                    .sabry-nav a { color: var(--sabry-ink); text-decoration:none; font-family: system-ui, sans-serif; font-size:.95rem; }
+                    .sabry-nav a:hover { color: var(--sabry-accent); }
+                    .sabry-brand { font-weight:700; letter-spacing:.02em; margin-right:auto; }
+                    .sabry-main { max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+                    .sabry-main h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom:.5rem; }
+                    .sabry-main .lead { font-size:1.2rem; color:#334; }
+                    .sabry-footer { border-top:1px solid #d7ddd8; padding:1.5rem; text-align:center; font-family: system-ui, sans-serif; font-size:.9rem; color:#445; }
+                    .btn { display:inline-block; padding:.55rem 1rem; border-radius:4px; text-decoration:none; font-family: system-ui, sans-serif; margin:.25rem .35rem .25rem 0; }
+                    .btn-primary { background: var(--sabry-accent); color:#fff; }
+                    .btn-outline-primary { border:1px solid var(--sabry-accent); color: var(--sabry-accent); }
+                    .btn-outline-secondary { border:1px solid #667; color:#334; }
+                    .btn-link { color: var(--sabry-accent); }
+                    ul { line-height:1.6; }
+                </style>
+                <script type="application/ld+json">
+                {
+                  "@context": "https://schema.org",
+                  "@type": "Person",
+                  "name": "Sabry Youssef",
+                  "jobTitle": "Senior Odoo Developer",
+                  "url": "/sabry",
+                  "email": "abhorya@gmail.com",
+                  "sameAs": [
+                    "https://www.linkedin.com/in/sabry-youssef",
+                    "https://github.com/sabryyoussef"
+                  ]
+                }
+                </script>
+            </head>
+            <body>
+                <nav class="sabry-nav" aria-label="Sabry navigation">
+                    <a class="sabry-brand" href="/sabry">Sabry Odoo Development</a>
+                    <a href="/sabry">Home</a>
+                    <a href="/sabry/about">About</a>
+                    <a href="/sabry/services">Services</a>
+                    <a href="/sabry/portfolio">Portfolio</a>
+                    <a href="/sabry/experience">Experience</a>
+                    <a href="/sabry/cv">CV</a>
+                    <a href="/sabry/contact">Contact</a>
+                </nav>
+                <main class="sabry-main">
+                    <t t-out="0"/>
+                </main>
+                <footer class="sabry-footer">
+                    Sabry Odoo Development — Senior Odoo Developer — abhorya@gmail.com
+                </footer>
+            </body>
+        </html>
+    </template>
+
     <template id="page_home" name="Sabry Home">
-        <t t-call="website.layout">
-            <div id="wrap" class="oe_structure">
-                <section class="container py-5">
-                    <h1>Sabry Youssef</h1>
-                    <p class="lead">Odoo Developer — integrations, CRM outreach, and custom apps.</p>
-                    <p>
-                        <a href="/sabry/cv" class="btn btn-primary">CV</a>
-                        <a href="/sabry/contact" class="btn btn-secondary">Contact</a>
-                    </p>
-                </section>
-            </div>
+        <t t-call="sabry_developer_website.sabry_layout">
+            <t t-set="additional_title">Senior Odoo Developer | Sabry Youssef</t>
+            <t t-set="meta_description">Senior Odoo Developer Egypt / UAE — Odoo 16–19 implementation, customization, integration and automation.</t>
+            <p class="text-uppercase small">Sabry Odoo Development</p>
+            <h1>Sabry Youssef</h1>
+            <p class="lead">Senior Odoo Developer — Implementation, Customization, Integration and Automation</p>
+            <p>8+ years building on Odoo 16–19 with Python, PostgreSQL, OWL, XML/QWeb, Docker and Linux.
+               Available for full-time and subcontracting. On-site and relocation available; visa sponsorship required where applicable.</p>
+            <ul>
+                <li>Custom module development and API integrations</li>
+                <li>Shopify–Odoo integration</li>
+                <li>WhatsApp, Chatwoot, and n8n automation</li>
+                <li>Deployment, migration, testing, and UAT</li>
+            </ul>
+            <p>
+                <a href="/sabry/portfolio" class="btn btn-primary">View Portfolio</a>
+                <a href="/sabry/cv/download" class="btn btn-outline-primary">Download CV</a>
+                <a href="/sabry/contact" class="btn btn-outline-secondary">Contact Sabry</a>
+                <a href="https://www.linkedin.com/in/sabry-youssef" class="btn btn-link" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/sabryyoussef" class="btn btn-link" target="_blank" rel="noopener">GitHub</a>
+            </p>
+        </t>
+    </template>
+
+    <template id="page_about" name="Sabry About">
+        <t t-call="sabry_developer_website.sabry_layout">
+            <t t-set="additional_title">About | Senior Odoo Developer Egypt</t>
+            <h1>About</h1>
+            <p>I am a Senior Odoo Developer focused on reliable implementations, clean customizations,
+               and practical integrations for partners and end customers.</p>
+            <p>Stack: Python, PostgreSQL, OWL, XML/QWeb, Docker, Linux, REST APIs.</p>
+        </t>
+    </template>
+
+    <template id="page_services" name="Sabry Services">
+        <t t-call="sabry_developer_website.sabry_layout">
+            <t t-set="additional_title">Odoo Services | Implementation and Customization</t>
+            <h1>Services</h1>
+            <ul>
+                <li>Odoo implementation</li>
+                <li>Custom module development</li>
+                <li>Third-party API integration</li>
+                <li>Migration and upgrade</li>
+                <li>Performance optimization</li>
+                <li>Bug fixing</li>
+                <li>Workflow automation</li>
+                <li>Shopify–Odoo integration</li>
+                <li>WhatsApp and Chatwoot integration</li>
+                <li>Reporting and dashboards</li>
+                <li>Server deployment</li>
+                <li>Technical support</li>
+            </ul>
+        </t>
+    </template>
+
+    <template id="page_portfolio" name="Sabry Portfolio">
+        <t t-call="sabry_developer_website.sabry_layout">
+            <t t-set="additional_title">Portfolio | Odoo Integration Developer</t>
+            <h1>Portfolio</h1>
+            <p>Selected non-confidential project summaries:</p>
+            <ul>
+                <li>Veterinary clinic ERP</li>
+                <li>Shopify–Odoo catalog integration</li>
+                <li>WhatsApp order notifications</li>
+                <li>Supplier sell-through management</li>
+                <li>Inventory reconciliation</li>
+                <li>Job application orchestrator</li>
+                <li>Student information system</li>
+                <li>Vehicle warranty automation</li>
+            </ul>
+        </t>
+    </template>
+
+    <template id="page_experience" name="Sabry Experience">
+        <t t-call="sabry_developer_website.sabry_layout">
+            <t t-set="additional_title">Experience | Odoo 19 Developer</t>
+            <h1>Experience</h1>
+            <p>8+ years delivering Odoo projects across implementation, customization, integrations,
+               automation, migration, and UAT for partners and businesses.</p>
+            <p>Comfortable with Odoo 16–19 Community and Enterprise, multi-company setups,
+               and production operations on Linux/Docker.</p>
         </t>
     </template>
 
     <template id="page_cv" name="Sabry CV">
-        <t t-call="website.layout">
-            <div id="wrap" class="oe_structure">
-                <section class="container py-5">
-                    <h1>Curriculum Vitae</h1>
-                    <p>Odoo 19 Enterprise — CRM integrations, WhatsApp, Gmail, clinic systems.</p>
-                    <a href="/sabry/contact" class="btn btn-primary">Contact for opportunities</a>
-                </section>
-            </div>
+        <t t-call="sabry_developer_website.sabry_layout">
+            <t t-set="additional_title">CV | Freelance Odoo Developer</t>
+            <h1>Curriculum Vitae</h1>
+            <p>Senior Odoo Developer — Sabry Youssef. Last updated: 3 August 2026.</p>
+            <p>
+                <a href="/sabry/cv/download" class="btn btn-primary">Download CV (PDF)</a>
+                <a href="https://www.linkedin.com/in/sabry-youssef" class="btn btn-outline-primary" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/sabryyoussef" class="btn btn-outline-secondary" target="_blank" rel="noopener">GitHub</a>
+                <a href="/sabry/contact" class="btn btn-link">Contact</a>
+            </p>
         </t>
     </template>
 
     <template id="page_contact" name="Sabry Contact">
-        <t t-call="website.layout">
-            <div id="wrap" class="oe_structure">
-                <section class="container py-5">
-                    <h1>Contact</h1>
-                    <p>Use the website contact form or email for Odoo partner / employment outreach.</p>
-                    <p>
-                        <a href="/contactus" class="btn btn-primary">Open contact form</a>
-                    </p>
-                </section>
-            </div>
+        <t t-call="sabry_developer_website.sabry_layout">
+            <t t-set="additional_title">Contact | Odoo Developer UAE / Egypt</t>
+            <h1>Contact</h1>
+            <p>For Odoo partner subcontracting or full-time opportunities, email
+               <a href="mailto:abhorya@gmail.com">abhorya@gmail.com</a> or use the form below.</p>
+            <form action="/sabry/contact/submit" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="mb-3">
+                    <label>Your Name</label>
+                    <input type="text" class="form-control" name="contact_name" required="required"/>
+                </div>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email_from" required="required"/>
+                </div>
+                <div class="mb-3">
+                    <label>Company</label>
+                    <input type="text" class="form-control" name="partner_name"/>
+                </div>
+                <div class="mb-3">
+                    <label>Message</label>
+                    <textarea class="form-control" name="description" rows="5" required="required"/>
+                </div>
+                <input type="hidden" name="name" value="Sabry website contact"/>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+            <t t-if="request.params.get('sent')">
+                <p class="mt-3">Thank you — your message was recorded for Sabry Odoo Development.</p>
+            </t>
         </t>
     </template>
 </odoo>

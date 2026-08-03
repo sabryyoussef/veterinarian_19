@@ -1,0 +1,5 @@
+ empty_emails | empty_company | petspot_company_outreach | self_on_prod_list | junk_local | excluded_domain_hits | prod_list_members | test_list_members | mailing_state |   mailing_from    | mailing_company | list_company 
+--------------+---------------+--------------------------+-------------------+------------+----------------------+-------------------+-------------------+---------------+-------------------+-----------------+--------------
+            0 |             0 |                        0 |                 0 |          0 |                    0 |               864 |                 2 | draft         | abhorya@gmail.com |               3 |            3
+(1 row)
+

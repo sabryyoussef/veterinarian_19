@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="partner_sabry_odoo_development" model="res.partner">
+            <field name="name">Sabry Odoo Development</field>
+            <field name="is_company" eval="True"/>
+            <field name="email">abhorya@gmail.com</field>
+            <field name="website">https://drpaws.ai</field>
+            <field name="country_id" ref="base.eg"/>
+            <field name="company_type">company</field>
+        </record>
+
+        <record id="company_sabry_odoo_development" model="res.company">
+            <field name="name">Sabry Odoo Development</field>
+            <field name="partner_id" ref="partner_sabry_odoo_development"/>
+            <field name="currency_id" ref="base.USD"/>
+            <field name="email">abhorya@gmail.com</field>
+            <field name="is_sabry_outreach_company" eval="True"/>
+        </record>
+    </data>
+</odoo>

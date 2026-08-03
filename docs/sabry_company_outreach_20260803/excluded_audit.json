@@ -1,0 +1,132 @@
+{
+  "sync_excluded": [
+    {
+      "id": 1701,
+      "email": "info@archer.solutions",
+      "reason": "excluded_name:Archer Solutions"
+    },
+    {
+      "id": 4045,
+      "email": "snyc_comercial@arnaldocastro.com.uy",
+      "reason": "excluded_website_domain"
+    },
+    {
+      "id": 1928,
+      "email": "info@camptocamp.com",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 1109,
+      "email": "epa@deardigital.com",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 1705,
+      "email": "info@de.com.eg",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 1431,
+      "email": "sales@einfo-tech.com",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 3706,
+      "email": "sales@kaizenae.com",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 4043,
+      "email": "info@nexit.com.uy",
+      "reason": "excluded_website_domain"
+    },
+    {
+      "id": 3818,
+      "email": "odoo@novobi.com",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 1700,
+      "email": "sales@rabtek.net",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 2019,
+      "email": "vertrieb@digitalstarten.de",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 3302,
+      "email": "bapps@smart.sa",
+      "reason": "excluded_name:Smart Technology Solutions"
+    },
+    {
+      "id": 2580,
+      "email": "odoo@tecomsa.me",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 3143,
+      "email": "jack.biteng@topc.ph",
+      "reason": "excluded_domain"
+    },
+    {
+      "id": 3162,
+      "email": "odoo@trilab.pl",
+      "reason": "excluded_domain"
+    }
+  ],
+  "list_rejected": [],
+  "blacklisted_added": [
+    "abhorya@gmail.com",
+    "vendorah2@gmail.com",
+    "noreply@allnetworks.com",
+    "noreply@aumet.com",
+    "noreply@auspicate.com.au",
+    "noreply@axtesys.at",
+    "noreply@compllexus.com",
+    "noreply@deardigital.com",
+    "noreply@kaizenae.com",
+    "noreply@novobi.com",
+    "noreply@resultance.eu",
+    "noreply@sulivam.com.br",
+    "noreply@tecomsa.me",
+    "noreply@topc.ph",
+    "noreply@trilab.pl",
+    "noreply@akko.com.tr",
+    "noreply@de.com.eg",
+    "noreply@ritsol.com",
+    "noreply@rabtek.net",
+    "noreply@digitalstarten.de",
+    "noreply@nalios.be",
+    "noreply@auxincs.com",
+    "noreply@techbackersitsol.com",
+    "noreply@bdrinformatica.com",
+    "noreply@phranakornsoft.com",
+    "noreply@lailio.com",
+    "noreply@odoo.technology",
+    "noreply@sdh.ar",
+    "noreply@metanow.com",
+    "noreply@poditservices.com",
+    "noreply@archer-sols.odoo.com",
+    "noreply@fidenum.at",
+    "noreply@attsystemsgroup.com",
+    "noreply@sincpro.com.bo",
+    "noreply@einfo-tech.com",
+    "noreply@camptocamp.com",
+    "noreply@brazengroup.com",
+    "noreply@flydoo.eu",
+    "noreply@penghuothgroup.com",
+    "noreply@fpt.com",
+    "noreply@easytech-africa.com",
+    "noreply@integratec.com.gt",
+    "noreply@integrall.solutions",
+    "noreply@m.uy",
+    "noreply@tavanbogd.com",
+    "noreply@ridagroup.com",
+    "noreply@indeed.com",
+    "noreply@talentlyft.com",
+    "noreply@workable.com"
+  ],
+  "ts": "2026-08-03T20:02:19.308810Z"
+}

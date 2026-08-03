@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
     <record id="website_sabry_developer" model="website">
-        <field name="name">Sabry / Odoo Developer</field>
+        <field name="name">Sabry Odoo Development</field>
         <field name="sequence">20</field>
     </record>
 </odoo>

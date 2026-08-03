@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+{
+    "name": "Sabry Odoo Company Isolation",
+    "version": "19.0.1.0.0",
+    "category": "Marketing",
+    "summary": "Multi-company isolation for Sabry Odoo Development outreach and website",
+    "author": "Sabry Youssef",
+    "license": "LGPL-3",
+    "depends": [
+        "base",
+        "mail",
+        "mass_mailing",
+        "crm",
+        "website",
+        "website_crm",
+        "odoo_partners",
+        "mass_mailing_partner",
+        "mail_partner_opt_out",
+    ],
+    "data": [
+        "security/ir.model.access.csv",
+        "data/exclusion_data.xml",
+        "data/company_data.xml",
+        "views/res_partner_views.xml",
+        "views/mailing_views.xml",
+        "wizard/sabry_outreach_setup_wizard_views.xml",
+    ],
+    "demo": [],
+    "installable": True,
+    "application": False,
+    "post_init_hook": "post_init_hook",
+}

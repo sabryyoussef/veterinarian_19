@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Exclusion artifact is JSON under data/outreach_exclusions.json; loaded by OutreachService. -->
+    <data noupdate="1">
+        <record id="partner_category_already_contacted" model="res.partner.category">
+            <field name="name">Already Contacted — Job Outreach</field>
+            <field name="color">9</field>
+        </record>
+    </data>
+</odoo>

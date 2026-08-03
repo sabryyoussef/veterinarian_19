@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Sabry Developer Website',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Website',
     'summary': 'Personal Odoo developer Multi-Website (portfolio, CV, contact)',
     'author': 'Sabry Youssef',

@@ -1,0 +1,6 @@
+ id |          name          |        email         | currency_id 
+----+------------------------+----------------------+-------------
+  1 | pet.spot               | vetelsahel@gmail.com |          74
+  3 | Sabry Odoo Development | abhorya@gmail.com    |           1
+(2 rows)
+

@@ -1,0 +1,23 @@
+{
+  "kpis": {
+    "total_jobs": 26,
+    "new_jobs": 26,
+    "eligible": 7,
+    "safe_canary": 0,
+    "human_required": 0,
+    "ineligible": 22,
+    "unsupported_ats": 0,
+    "applied": 1,
+    "submission_unknown": 0,
+    "average_score": 35.6,
+    "ats_sources_checked": 10,
+    "last_discovery_run": "2026-08-03 13:52:49",
+    "next_discovery_run": "2026-08-03 19:52:49",
+    "last_discovery_run_display": "2026-08-03 16:52 EEST",
+    "next_discovery_run_display": "2026-08-03 22:52 EEST",
+    "company_account_apps": 0
+  },
+  "empty": 0,
+  "custom_total": 26,
+  "menu": "LinkedIn/Reporting/Caught Jobs Dashboard"
+}

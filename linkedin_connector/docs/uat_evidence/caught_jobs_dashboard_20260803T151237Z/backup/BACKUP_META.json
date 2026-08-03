@@ -1,0 +1,7 @@
+{
+  "path": "/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_caught_jobs_dash_20260803T151237Z.dump",
+  "size": 79124740,
+  "sha256": "8ead2de54f20213520efbd7d1f5aa4206b9d934f941e29784cef877bd4501574",
+  "toc_entries": 32449,
+  "validated": "pg_restore -l ok"
+}

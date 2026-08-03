@@ -12,6 +12,7 @@ from . import linkedin_candidate_profile
 from . import linkedin_apply_policy
 from . import linkedin_apply_attempt
 from . import linkedin_ats_source
+from . import linkedin_caught_jobs_dashboard
 from . import linkedin_resume
 from . import linkedin_message
 from . import linkedin_settings

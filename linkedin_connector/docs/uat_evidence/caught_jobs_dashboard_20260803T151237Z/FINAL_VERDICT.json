@@ -1,0 +1,62 @@
+{
+  "verdict": "LIVE_CAUGHT_JOBS_ODOO_DASHBOARD_DEPLOYED",
+  "module_version": "19.0.2.15.0",
+  "branch": "feature/personal-job-application-orchestrator",
+  "menu": "LinkedIn \u2192 Reporting \u2192 Caught Jobs Dashboard",
+  "tests": "0 failed, 0 errors of 47 tests (linkedin_connector suite; 57 module stats)",
+  "upgrade_test": "ok",
+  "upgrade_prod": "ok",
+  "backup": {
+    "path": "/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_caught_jobs_dash_20260803T151237Z.dump",
+    "size": 79124740,
+    "sha256": "8ead2de54f20213520efbd7d1f5aa4206b9d934f941e29784cef877bd4501574",
+    "toc_entries": 32449,
+    "validated": "pg_restore -l ok"
+  },
+  "prod_kpis": {
+    "total_jobs": 41,
+    "new_jobs": 41,
+    "eligible": 6,
+    "safe_canary": 0,
+    "human_required": 0,
+    "ineligible": 38,
+    "unsupported_ats": 3,
+    "applied": 1,
+    "submission_unknown": 0,
+    "average_score": 32.4,
+    "ats_sources_checked": 9,
+    "last_discovery_run": "2026-08-03 14:47:58",
+    "next_discovery_run": "2026-08-03 20:47:58",
+    "last_discovery_run_display": "2026-08-03 14:47 UTC",
+    "next_discovery_run_display": "2026-08-03 20:47 UTC",
+    "company_account_apps": 0
+  },
+  "account1_apps_before_after": [
+    0,
+    0
+  ],
+  "gates": {
+    "kill_switch": true,
+    "live_submit_enabled": "False",
+    "browser_submit": false,
+    "email_submit": false,
+    "n8n_hunter_active": true,
+    "n8n_submit_active": false,
+    "worker_submit_enabled": false,
+    "discovery_cron_active": true,
+    "publish_cron_active": false,
+    "messages_cron_active": false
+  },
+  "screenshots": [
+    "01_all_time.png",
+    "02_last_7_days.png",
+    "03_custom_ineligible.png",
+    "04_platform_company_ats.png",
+    "05_job_table.png",
+    "06_empty.png",
+    "07_mobile_all_time.png"
+  ],
+  "evidence_dir": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/caught_jobs_dashboard_20260803T151237Z",
+  "rollback": "pg_restore -c -d pet_spot_elsahel /home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_caught_jobs_dash_20260803T151237Z.dump; module rollback to 19.0.2.14.0 if needed",
+  "timestamp_utc": "20260803T152346Z"
+}

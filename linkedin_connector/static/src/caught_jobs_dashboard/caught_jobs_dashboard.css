@@ -1,0 +1,360 @@
+.o_linkedin_caught_jobs_dashboard {
+    padding: 16px 20px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    color: var(--o-gray-900, #1f1f1f);
+}
+
+.o_lcj_header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.o_lcj_kicker {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--o-gray-500, #6c6c6c);
+}
+
+.o_lcj_title {
+    margin: 4px 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.o_lcj_sub {
+    margin: 0;
+    color: var(--o-gray-600, #5a5a5a);
+    font-size: 0.9rem;
+}
+
+.o_lcj_toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.o_lcj_periods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.o_lcj_period_btn,
+.o_lcj_btn,
+.o_lcj_chip,
+.o_lcj_link_btn {
+    border: 1px solid var(--o-gray-300, #d0d0d0);
+    background: #fff;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.o_lcj_period_btn.is-active,
+.o_lcj_btn_primary {
+    background: var(--o-brand-primary, #714B67);
+    border-color: var(--o-brand-primary, #714B67);
+    color: #fff;
+}
+
+.o_lcj_meta {
+    font-size: 0.8rem;
+    color: var(--o-gray-600, #5a5a5a);
+    margin-bottom: 12px;
+}
+
+.o_lcj_filters {
+    background: var(--o-gray-100, #f5f5f5);
+    border: 1px solid var(--o-gray-200, #e6e6e6);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.o_lcj_filter_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+.o_lcj_field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: var(--o-gray-600, #5a5a5a);
+}
+
+.o_lcj_field .o_input,
+.o_lcj_field select,
+.o_lcj_field input[type="date"],
+.o_lcj_field input[type="number"],
+.o_lcj_field input[type="search"] {
+    height: 32px;
+    border: 1px solid var(--o-gray-300, #d0d0d0);
+    border-radius: 4px;
+    padding: 0 8px;
+    background: #fff;
+}
+
+.o_lcj_field_check {
+    justify-content: flex-end;
+}
+
+.o_lcj_search_row {
+    display: flex;
+    gap: 6px;
+}
+
+.o_lcj_search_row .o_input {
+    flex: 1;
+}
+
+.o_lcj_smart {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.o_lcj_chip:hover {
+    background: var(--o-gray-200, #e6e6e6);
+}
+
+.o_lcj_kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.o_lcj_kpi {
+    border: 1px solid var(--o-gray-200, #e6e6e6);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: #fff;
+}
+
+.o_lcj_kpi_ok {
+    border-color: #86b88a;
+}
+
+.o_lcj_kpi_warn {
+    border-color: #d4a017;
+}
+
+.o_lcj_kpi_v {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.o_lcj_kpi_l {
+    font-size: 0.72rem;
+    color: var(--o-gray-600, #5a5a5a);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.o_lcj_kpi_s {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+}
+
+.o_lcj_kpi_wide {
+    grid-column: span 2;
+}
+
+.o_lcj_charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.o_lcj_chart_card {
+    border: 1px solid var(--o-gray-200, #e6e6e6);
+    border-radius: 8px;
+    padding: 12px;
+    background: #fff;
+}
+
+.o_lcj_chart_card h2 {
+    font-size: 0.95rem;
+    margin: 0 0 10px;
+}
+
+.o_lcj_bar_row {
+    display: grid;
+    grid-template-columns: 110px 1fr 36px;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.o_lcj_bar_label {
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.o_lcj_bar_track {
+    height: 10px;
+    background: var(--o-gray-200, #e6e6e6);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.o_lcj_bar_fill {
+    height: 100%;
+    background: var(--o-brand-primary, #714B67);
+    border-radius: 999px;
+}
+
+.o_lcj_bar_alt {
+    background: #4a7c9b;
+}
+
+.o_lcj_bar_val {
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+.o_lcj_table_wrap {
+    border: 1px solid var(--o-gray-200, #e6e6e6);
+    border-radius: 8px;
+    background: #fff;
+    padding: 12px;
+}
+
+.o_lcj_table_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.o_lcj_table_head h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.o_lcj_muted {
+    color: var(--o-gray-500, #6c6c6c);
+    font-weight: 400;
+}
+
+.o_lcj_pager {
+    display: flex;
+    gap: 6px;
+}
+
+.o_lcj_table_scroll {
+    overflow-x: auto;
+}
+
+.o_lcj_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.o_lcj_table th {
+    text-align: left;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--o-gray-300, #d0d0d0);
+    cursor: pointer;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    background: #fff;
+}
+
+.o_lcj_table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--o-gray-100, #f0f0f0);
+    vertical-align: top;
+}
+
+.o_lcj_row {
+    cursor: pointer;
+}
+
+.o_lcj_row:hover {
+    background: var(--o-gray-100, #f5f5f5);
+}
+
+.o_lcj_title_cell {
+    max-width: 220px;
+}
+
+.o_lcj_blocker {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.o_lcj_badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: var(--o-gray-200, #e6e6e6);
+    font-size: 0.7rem;
+}
+
+.o_lcj_badge_ok {
+    background: #d9f0dc;
+}
+
+.o_lcj_badge_warn {
+    background: #f7e7b5;
+}
+
+.o_lcj_badge_info {
+    background: #d6e8f5;
+}
+
+.o_lcj_loading,
+.o_lcj_error,
+.o_lcj_empty,
+.o_lcj_empty_inline {
+    padding: 16px;
+    color: var(--o-gray-600, #5a5a5a);
+}
+
+.o_lcj_error {
+    color: #a94442;
+    background: #f8e8e8;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+    .o_linkedin_caught_jobs_dashboard {
+        padding: 12px;
+    }
+
+    .o_lcj_kpi_wide {
+        grid-column: span 1;
+    }
+
+    .o_lcj_bar_row {
+        grid-template-columns: 80px 1fr 28px;
+    }
+
+    .o_lcj_title {
+        font-size: 1.3rem;
+    }
+}

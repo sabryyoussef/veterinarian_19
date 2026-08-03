@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "LinkedIn Connector",
-    "version": "19.0.2.14.0",
+    "version": "19.0.2.15.0",
     "category": "Marketing",
     "summary": "Full LinkedIn management: posts, schedule, feed, jobs, resumes, messages",
     "author": "Sabry Youssef, Resume project",
@@ -27,7 +27,15 @@
         "views/linkedin_bulk_wizard_views.xml",
         "views/linkedin_settings_views.xml",
         "views/linkedin_orchestrator_views.xml",
+        "views/linkedin_caught_jobs_dashboard_views.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "linkedin_connector/static/src/caught_jobs_dashboard/caught_jobs_dashboard.css",
+            "linkedin_connector/static/src/caught_jobs_dashboard/caught_jobs_dashboard.js",
+            "linkedin_connector/static/src/caught_jobs_dashboard/caught_jobs_dashboard.xml",
+        ],
+    },
     "installable": True,
     "application": True,
 }

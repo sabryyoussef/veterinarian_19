@@ -1,0 +1,10 @@
+                  key                   | value 
+----------------------------------------+-------
+ linkedin_connector.live_submit_enabled | False
+(1 row)
+
+ kill_switch | browser_submit_enabled | email_submit_enabled 
+-------------+------------------------+----------------------
+ t           | f                      | f
+(1 row)
+

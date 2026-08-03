@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_linkedin_caught_jobs_dashboard" model="ir.actions.client">
+        <field name="name">Caught Jobs Dashboard</field>
+        <field name="tag">linkedin_caught_jobs_dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_linkedin_reporting"
+              name="Reporting"
+              parent="menu_linkedin_connector_root"
+              sequence="55"/>
+
+    <menuitem id="menu_linkedin_caught_jobs_dashboard"
+              name="Caught Jobs Dashboard"
+              parent="menu_linkedin_reporting"
+              action="action_linkedin_caught_jobs_dashboard"
+              sequence="10"/>
+</odoo>

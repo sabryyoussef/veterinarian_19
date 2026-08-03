@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="linkedin_connector.CaughtJobsDashboard">
+        <div class="o_linkedin_caught_jobs_dashboard">
+            <header class="o_lcj_header">
+                <div class="o_lcj_brand">
+                    <span class="o_lcj_kicker">LinkedIn Connector · Reporting</span>
+                    <h1 class="o_lcj_title">Caught Jobs Dashboard</h1>
+                    <p class="o_lcj_sub">
+                        Live personal account (id=2) · read-only · company account excluded
+                    </p>
+                </div>
+                <div class="o_lcj_toolbar">
+                    <div class="o_lcj_periods" role="group" aria-label="Period">
+                        <t t-foreach="periods" t-as="p" t-key="p.value">
+                            <button type="button"
+                                    class="o_lcj_period_btn"
+                                    t-att-data-period="p.value"
+                                    t-att-class="{'is-active': state.period === p.value}"
+                                    t-on-click="onPeriodClick"
+                                    t-esc="p.label"/>
+                        </t>
+                    </div>
+                    <button type="button" class="o_lcj_btn o_lcj_btn_primary"
+                            t-on-click="onRefresh"
+                            t-att-disabled="state.loading">
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <div class="o_lcj_meta">
+                <span t-if="state.lastRefreshed">Last refreshed: <t t-esc="state.lastRefreshed"/></span>
+                <span t-if="periodMeta.user_tz"> · TZ <t t-esc="periodMeta.user_tz"/></span>
+                <span t-if="periodMeta.display_from"> · Range <t t-esc="periodMeta.display_from"/> → <t t-esc="periodMeta.display_to"/></span>
+                <span> · Auto-refresh 5 min</span>
+            </div>
+
+            <section class="o_lcj_filters" t-on-change="onFilterChange">
+                <div class="o_lcj_filter_grid">
+                    <label class="o_lcj_field" t-if="state.period === 'custom'">
+                        <span>From</span>
+                        <input type="date" class="o_input" t-model="state.dateFrom"/>
+                    </label>
+                    <label class="o_lcj_field" t-if="state.period === 'custom'">
+                        <span>To</span>
+                        <input type="date" class="o_input" t-model="state.dateTo"/>
+                    </label>
+                    <label class="o_lcj_field">
+                        <span>Discovery class</span>
+                        <select class="o_input" t-model="state.discoveryClass">
+                            <t t-foreach="classOptions" t-as="opt" t-key="opt.value">
+                                <option t-att-value="opt.value" t-esc="opt.label"/>
+                            </t>
+                        </select>
+                    </label>
+                    <label class="o_lcj_field">
+                        <span>Platform / ATS</span>
+                        <select class="o_input" t-model="state.platform">
+                            <t t-foreach="platformOptions" t-as="opt" t-key="opt.value">
+                                <option t-att-value="opt.value" t-esc="opt.label"/>
+                            </t>
+                        </select>
+                    </label>
+                    <label class="o_lcj_field">
+                        <span>Min score</span>
+                        <input type="number" class="o_input" t-model="state.minScore" min="0" max="100" step="1"/>
+                    </label>
+                    <label class="o_lcj_field">
+                        <span>Application state</span>
+                        <select class="o_input" t-model="state.appState">
+                            <t t-foreach="appStateOptions" t-as="opt" t-key="opt.value">
+                                <option t-att-value="opt.value" t-esc="opt.label"/>
+                            </t>
+                        </select>
+                    </label>
+                    <label class="o_lcj_field o_lcj_field_check">
+                        <span>Safe canary only</span>
+                        <input type="checkbox" t-model="state.safeCanaryOnly"/>
+                    </label>
+                    <form class="o_lcj_field o_lcj_field_search" t-on-submit="onSearchSubmit">
+                        <span>Search</span>
+                        <div class="o_lcj_search_row">
+                            <input type="search" class="o_input" t-model="state.search"
+                                   placeholder="Title, company, location…"/>
+                            <button type="submit" class="o_lcj_btn">Go</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <div t-if="state.loading" class="o_lcj_loading">Loading dashboard…</div>
+            <div t-if="state.error" class="o_lcj_error" t-esc="state.error"/>
+
+            <t t-if="state.data and !state.error">
+                <section class="o_lcj_smart">
+                    <t t-foreach="state.data.smart_actions or []" t-as="sa" t-key="sa.key">
+                        <button type="button" class="o_lcj_chip"
+                                t-att-data-key="sa.key"
+                                t-on-click="openSmart"
+                                t-esc="sa.label"/>
+                    </t>
+                </section>
+
+                <section class="o_lcj_kpis">
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.total_jobs"/><div class="o_lcj_kpi_l">Total Jobs</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.new_jobs"/><div class="o_lcj_kpi_l">New Jobs</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.eligible"/><div class="o_lcj_kpi_l">Eligible (≥65)</div></div>
+                    <div class="o_lcj_kpi o_lcj_kpi_ok"><div class="o_lcj_kpi_v" t-esc="kpis.safe_canary"/><div class="o_lcj_kpi_l">Safe Canary</div></div>
+                    <div class="o_lcj_kpi o_lcj_kpi_warn"><div class="o_lcj_kpi_v" t-esc="kpis.human_required"/><div class="o_lcj_kpi_l">Human Required</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.ineligible"/><div class="o_lcj_kpi_l">Ineligible</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.unsupported_ats"/><div class="o_lcj_kpi_l">Unsupported ATS</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.applied"/><div class="o_lcj_kpi_l">Applied</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.submission_unknown"/><div class="o_lcj_kpi_l">Submission Unknown</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.average_score"/><div class="o_lcj_kpi_l">Avg Score</div></div>
+                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.ats_sources_checked"/><div class="o_lcj_kpi_l">ATS Sources Checked</div></div>
+                    <div class="o_lcj_kpi o_lcj_kpi_wide">
+                        <div class="o_lcj_kpi_l">Last Discovery</div>
+                        <div class="o_lcj_kpi_s" t-esc="kpis.last_discovery_run_display"/>
+                        <div class="o_lcj_kpi_l">Next Discovery</div>
+                        <div class="o_lcj_kpi_s" t-esc="kpis.next_discovery_run_display"/>
+                    </div>
+                </section>
+
+                <section class="o_lcj_charts">
+                    <div class="o_lcj_chart_card">
+                        <h2>Jobs by discovery class</h2>
+                        <t t-if="!(charts.by_class or []).length">
+                            <p class="o_lcj_empty_inline">No data</p>
+                        </t>
+                        <t t-foreach="charts.by_class or []" t-as="row" t-key="row.label">
+                            <div class="o_lcj_bar_row">
+                                <span class="o_lcj_bar_label" t-esc="row.label"/>
+                                <div class="o_lcj_bar_track">
+                                    <div class="o_lcj_bar_fill"
+                                         t-att-style="'width:' + barWidth(row.value, charts.by_class)"/>
+                                </div>
+                                <span class="o_lcj_bar_val" t-esc="row.value"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="o_lcj_chart_card">
+                        <h2>Jobs by platform / ATS</h2>
+                        <t t-foreach="charts.by_platform or []" t-as="row" t-key="row.label">
+                            <div class="o_lcj_bar_row">
+                                <span class="o_lcj_bar_label" t-esc="row.label"/>
+                                <div class="o_lcj_bar_track">
+                                    <div class="o_lcj_bar_fill o_lcj_bar_alt"
+                                         t-att-style="'width:' + barWidth(row.value, charts.by_platform)"/>
+                                </div>
+                                <span class="o_lcj_bar_val" t-esc="row.value"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="o_lcj_chart_card">
+                        <h2>Jobs discovered per day</h2>
+                        <t t-foreach="charts.by_day or []" t-as="row" t-key="row.label">
+                            <div class="o_lcj_bar_row">
+                                <span class="o_lcj_bar_label" t-esc="row.label"/>
+                                <div class="o_lcj_bar_track">
+                                    <div class="o_lcj_bar_fill"
+                                         t-att-style="'width:' + barWidth(row.value, charts.by_day)"/>
+                                </div>
+                                <span class="o_lcj_bar_val" t-esc="row.value"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="o_lcj_chart_card">
+                        <h2>Score distribution</h2>
+                        <t t-foreach="charts.by_score or []" t-as="row" t-key="row.label">
+                            <div class="o_lcj_bar_row">
+                                <span class="o_lcj_bar_label" t-esc="row.label"/>
+                                <div class="o_lcj_bar_track">
+                                    <div class="o_lcj_bar_fill o_lcj_bar_alt"
+                                         t-att-style="'width:' + barWidth(row.value, charts.by_score)"/>
+                                </div>
+                                <span class="o_lcj_bar_val" t-esc="row.value"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="o_lcj_chart_card" t-if="(charts.by_app_state or []).length">
+                        <h2>Application-state distribution</h2>
+                        <t t-foreach="charts.by_app_state or []" t-as="row" t-key="row.label">
+                            <div class="o_lcj_bar_row">
+                                <span class="o_lcj_bar_label" t-esc="row.label"/>
+                                <div class="o_lcj_bar_track">
+                                    <div class="o_lcj_bar_fill"
+                                         t-att-style="'width:' + barWidth(row.value, charts.by_app_state)"/>
+                                </div>
+                                <span class="o_lcj_bar_val" t-esc="row.value"/>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+
+                <section class="o_lcj_table_wrap">
+                    <div class="o_lcj_table_head">
+                        <h2>Jobs <span class="o_lcj_muted" t-esc="pageLabel"/></h2>
+                        <div class="o_lcj_pager">
+                            <button type="button" class="o_lcj_btn" t-on-click="prevPage"
+                                    t-att-disabled="!canPrev">Prev</button>
+                            <button type="button" class="o_lcj_btn" t-on-click="nextPage"
+                                    t-att-disabled="!canNext">Next</button>
+                        </div>
+                    </div>
+
+                    <div t-if="!(table.rows or []).length" class="o_lcj_empty">
+                        No jobs match this period and filters.
+                    </div>
+
+                    <div t-else="" class="o_lcj_table_scroll">
+                        <table class="o_lcj_table">
+                            <thead>
+                                <tr>
+                                    <th data-sort="discovered_at" t-on-click="onSort">Discovered</th>
+                                    <th data-sort="title" t-on-click="onSort">Title</th>
+                                    <th data-sort="company" t-on-click="onSort">Company</th>
+                                    <th>Location</th>
+                                    <th data-sort="apply_platform" t-on-click="onSort">Platform</th>
+                                    <th data-sort="discovery_class" t-on-click="onSort">Class</th>
+                                    <th data-sort="score" t-on-click="onSort">Score</th>
+                                    <th>App state</th>
+                                    <th>Blocker</th>
+                                    <th>Safe</th>
+                                    <th>URL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="table.rows" t-as="row" t-key="row.id">
+                                    <tr class="o_lcj_row"
+                                        t-att-data-job-id="row.id"
+                                        t-on-click="openJob">
+                                        <td t-esc="row.discovered_at_display"/>
+                                        <td class="o_lcj_title_cell" t-esc="row.title"/>
+                                        <td t-esc="row.company"/>
+                                        <td t-esc="row.location or (row.remote and 'Remote' or '—')"/>
+                                        <td t-esc="row.platform"/>
+                                        <td>
+                                            <span t-att-class="classBadge(row.discovery_class)"
+                                                  t-esc="row.discovery_class"/>
+                                        </td>
+                                        <td t-esc="row.score == null ? '—' : row.score"/>
+                                        <td t-esc="row.app_state or '—'"/>
+                                        <td class="o_lcj_blocker" t-esc="row.blocker or '—'"/>
+                                        <td t-esc="row.safe_canary ? 'yes' : 'no'"/>
+                                        <td>
+                                            <button t-if="row.apply_url" type="button"
+                                                    class="o_lcj_link_btn"
+                                                    t-att-data-url="row.apply_url"
+                                                    t-on-click="openApplyUrl">Open</button>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </t>
+        </div>
+    </t>
+</templates>

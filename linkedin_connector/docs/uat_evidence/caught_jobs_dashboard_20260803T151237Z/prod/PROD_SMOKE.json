@@ -1,0 +1,33 @@
+{
+  "module": "19.0.2.15.0",
+  "menu": "LinkedIn/Reporting/Caught Jobs Dashboard",
+  "kpis": {
+    "total_jobs": 41,
+    "new_jobs": 41,
+    "eligible": 6,
+    "safe_canary": 0,
+    "human_required": 0,
+    "ineligible": 38,
+    "unsupported_ats": 3,
+    "applied": 1,
+    "submission_unknown": 0,
+    "average_score": 32.4,
+    "ats_sources_checked": 9,
+    "last_discovery_run": "2026-08-03 14:47:58",
+    "next_discovery_run": "2026-08-03 20:47:58",
+    "last_discovery_run_display": "2026-08-03 14:47 UTC",
+    "next_discovery_run_display": "2026-08-03 20:47 UTC",
+    "company_account_apps": 0
+  },
+  "table_total": 41,
+  "empty_total": 0,
+  "apps1_before": 0,
+  "apps1_after": 0,
+  "live_submit": "False",
+  "kill_switch": true,
+  "browser_submit": false,
+  "email_submit": false,
+  "cron_discovery_active": true,
+  "publish_cron_active": false,
+  "messages_cron_active": false
+}

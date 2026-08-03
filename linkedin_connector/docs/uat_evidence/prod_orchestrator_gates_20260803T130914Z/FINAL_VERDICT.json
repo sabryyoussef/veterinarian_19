@@ -1,0 +1,108 @@
+{
+  "verdict": "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_BLOCKED",
+  "blocker_code": "BLOCKED_NO_SAFE_CANARY",
+  "timestamp_utc": "20260803T133123Z",
+  "deployed_module_version": "19.0.2.12.0",
+  "branch": "feature/personal-job-application-orchestrator",
+  "commit": "aef000b460392b8ccaa99ef80469b7ddc09e98d9",
+  "worker": {
+    "image": "personal-job-apply-worker:uat",
+    "version": "0.2.0",
+    "submit_enabled": false,
+    "dry_run_only": true,
+    "port": 8095
+  },
+  "tests": {
+    "worker_unit_and_policy": "13 passed (non-playwright)",
+    "worker_playwright": "4 passed",
+    "odoo_linkedin_connector": "27 tests, 0 failed"
+  },
+  "dify_production": {
+    "app_name": "Job Application Pack Generator \u2014 Production",
+    "app_id": "7fdf6db3-fe5d-4f82-8c33-e7bdc1223feb",
+    "workflow_id": "34fcdf46-1682-4dfc-b239-0f554a8b4dcf",
+    "status": "completed-with-warnings",
+    "published": true,
+    "immutable_pin": true,
+    "api_key_len": 27,
+    "api_key_prefix": "app6LV..."
+  },
+  "n8n_production": {
+    "id": "5X4dygwEwzNPalNc",
+    "name": "Personal Job Application Orchestrator \u2014 Production",
+    "active": false,
+    "nodes": 12,
+    "note": "Imported and left inactive; contract validated via Odoo HMAC health+GET"
+  },
+  "policy": {
+    "kill_switch": true,
+    "live_submit_enabled": false,
+    "browser_submit_enabled": false,
+    "email_submit_enabled": false,
+    "max_per_day": 2,
+    "max_per_week": 15,
+    "min_minutes_between": 30
+  },
+  "account_isolation": {
+    "id1_apps": 0,
+    "id2_apps": 1,
+    "odoo_sa_ledger_applied": true
+  },
+  "canary": null,
+  "external_submission_count": 0,
+  "ui": {
+    "menus": [
+      "Jobs (Personal)",
+      "Applications",
+      "Attempts",
+      "Human Required",
+      "Submission Unknown",
+      "Applied Today",
+      "Application Policy (KPIs)",
+      "Application Profile"
+    ],
+    "single_odoo_user": "admin/existing \u2014 no extra user required"
+  },
+  "discovery": {
+    "verdict_candidate": "BLOCKED_NO_SAFE_CANARY",
+    "near_misses": [
+      {
+        "url": "https://www.open-inside.com/jobs/apply/senior-engineer-technical-6",
+        "ats": "company_ats/odoo_careers",
+        "captcha": false,
+        "passport": false,
+        "blocker": "location=Bahrain without listing visa/relocation offer; policy target Egypt/UAE/Remote only otherwise"
+      },
+      {
+        "url": "https://www.odoo.com/jobs/apply/full-stack-developer-559",
+        "ats": "odoo_careers",
+        "captcha": "turnstile",
+        "passport": true,
+        "blocker": "Turnstile + passport fields"
+      },
+      {
+        "url": "https://jobs.lever.co/iCodde/...",
+        "ats": "lever",
+        "captcha": "hcaptcha",
+        "blocker": "CAPTCHA on Lever apply"
+      },
+      {
+        "existing_ge65": [
+          "bebee Vivandi",
+          "bebee Melya",
+          "indeed"
+        ],
+        "blocker": "aggregator/login-protected routes blocked by policy"
+      }
+    ],
+    "external_submission_count_this_session": 0
+  },
+  "rollback": [
+    "Keep kill_switch True and live_submit_enabled False (current)",
+    "systemctl --user stop pet_spot_elsahel.service",
+    "pg_restore -h localhost -U odoo -d pet_spot_elsahel --clean --if-exists /home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_orch_golive_20260803T124224Z.dump",
+    "Deactivate n8n workflow 5X4dygwEwzNPalNc if ever activated",
+    "systemctl --user start pet_spot_elsahel.service"
+  ],
+  "evidence_dir": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/prod_orchestrator_gates_20260803T130914Z"
+}

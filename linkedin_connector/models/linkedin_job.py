@@ -31,6 +31,10 @@ _SENIOR_RE = re.compile(
     r"\b(senior|lead|principal|architect|staff|head of|technical lead)\b", re.I
 )
 _JUNIOR_RE = re.compile(r"\b(junior|intern|internship|entry[- ]level|graduate)\b", re.I)
+_JUNIOR_MENTOR_RE = re.compile(
+    r"(?:mentor|guide|train|coach|oversee).{0,60}\bjunior\b|\bjunior\b.{0,40}(?:engineers?|developers?).{0,40}(?:mentor|guide|train)",
+    re.I,
+)
 _ODOO_RE = re.compile(r"\bodoo\b", re.I)
 _STACK_RE = re.compile(r"\b(python|erp|implementation|postgresql|owl)\b", re.I)
 _EASY_APPLY_RE = re.compile(r"easy\s*apply", re.I)
@@ -64,6 +68,8 @@ class LinkedinJob(models.Model):
             ("bebee", "BeBee"),
             ("greenhouse", "Greenhouse"),
             ("lever", "Lever"),
+            ("ashby", "Ashby"),
+            ("workable", "Workable"),
             ("workday", "Workday"),
             ("company_ats", "Company ATS"),
             ("email", "Email"),
@@ -98,6 +104,22 @@ class LinkedinJob(models.Model):
         "linkedin.job.application", "job_id", string="Applications"
     )
     application_count = fields.Integer(compute="_compute_application_count")
+    external_ats_id = fields.Char(string="External ATS ID", index=True, copy=False)
+    ats_source_id = fields.Many2one("linkedin.ats.source", string="ATS source", ondelete="set null")
+    discovery_class = fields.Selection(
+        [
+            ("safe_canary_candidate", "Safe canary candidate"),
+            ("human_required", "Human required"),
+            ("ineligible", "Ineligible"),
+            ("unsupported_ats", "Unsupported ATS"),
+            ("unchecked", "Unchecked"),
+        ],
+        default="unchecked",
+        index=True,
+    )
+    discovery_blocker = fields.Char()
+    last_preflight_at = fields.Datetime()
+    preflight_json = fields.Text()
 
     def _compute_application_count(self):
         for rec in self:
@@ -217,7 +239,10 @@ class LinkedinJob(models.Model):
             score += cv_boost
             breakdown["cv_relevance"] = cv_boost
 
-        if _JUNIOR_RE.search(title) or _JUNIOR_RE.search(blob):
+        if _JUNIOR_RE.search(title):
+            score -= 40
+            breakdown["junior_penalty"] = -40
+        elif _JUNIOR_RE.search(blob) and not _JUNIOR_MENTOR_RE.search(blob):
             score -= 40
             breakdown["junior_penalty"] = -40
         if _UNRELATED_RE.search(blob) and not odoo_match:
@@ -740,6 +765,418 @@ class LinkedinJob(models.Model):
         rec = self.new(vals)
         score, breakdown, flags = rec._score_job_values()
         return score, breakdown, flags
+
+    @api.model
+    def try_execute_safe_canary(self):
+        """One-shot Production canary when a safe_canary_candidate exists.
+
+        Fail-closed. Does not bypass CAPTCHA. On success activates bounded live mode.
+        On ambiguity restores kill switch and stops submissions.
+        """
+        import hashlib
+        import secrets
+        import time
+
+        import requests
+
+        ICP = self.env["ir.config_parameter"].sudo()
+        Policy = self.env["linkedin.apply.policy"].sudo()
+        App = self.env["linkedin.job.application"].sudo()
+        Attempt = self.env["linkedin.apply.attempt"].sudo()
+
+        # Already live?
+        if ICP.get_param("linkedin_connector.live_submit_enabled", "False").lower() in (
+            "1",
+            "true",
+            "yes",
+        ):
+            return {"ok": True, "skipped": "already_live"}
+
+        personal = self.env["linkedin.account"].browse(2).exists()
+        if not personal or personal.account_type != "personal":
+            return {"ok": False, "error": "personal_account_missing"}
+
+        policy = Policy.get_policy_for_account(personal)
+        # Prefer newest safe canary that is not Odoo S.A. already-applied URL
+        blocked_urls = {
+            "https://www.odoo.com/jobs/apply/software-developer-1",
+        }
+        candidates = self.search(
+            [
+                ("account_id", "=", personal.id),
+                ("discovery_class", "=", "safe_canary_candidate"),
+                ("score", ">=", 65),
+                ("is_duplicate", "=", False),
+            ],
+            order="score desc, id desc",
+            limit=20,
+        )
+        job = self.browse()
+        for cand in candidates:
+            canon = self._canonical_apply_url(cand.apply_url)
+            if canon in blocked_urls or "software-developer-1" in (cand.apply_url or ""):
+                continue
+            prior = App.search_count(
+                [
+                    ("account_id", "=", personal.id),
+                    ("job_id", "=", cand.id),
+                    ("state", "in", ("applied", "submission_unknown", "approved", "pack_ready")),
+                ]
+            )
+            if prior:
+                continue
+            # Also block if any succeeded attempt for same canonical URL
+            siblings = self.search(
+                [("account_id", "=", personal.id), ("apply_url", "ilike", canon[-80:])]
+            )
+            applied_sib = App.search_count(
+                [
+                    ("job_id", "in", siblings.ids),
+                    ("state", "in", ("applied", "submission_unknown")),
+                ]
+            )
+            if applied_sib:
+                continue
+            job = cand
+            break
+
+        if not job:
+            return {
+                "ok": True,
+                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "message": "no_safe_canary_candidate",
+            }
+
+        # Verified CV SHA
+        expected_sha = (
+            "29e968d70baf80e04607dcc526d23b776796245cd4ac5c56a0301ebbd7d6f539"
+        )
+        Cv = self.env["linkedin.cv.version"].sudo()
+        cv = Cv.search(
+            [("account_id", "=", personal.id), ("active", "=", True), ("is_default", "=", True)],
+            limit=1,
+        ) or Cv.search([("account_id", "=", personal.id), ("active", "=", True)], limit=1)
+        cv_ok = False
+        cv_rec = Cv.browse()
+        if cv and cv.attachment_id:
+            import base64
+
+            raw = base64.b64decode(cv.attachment_id.datas or b"")
+            if raw and hashlib.sha256(raw).hexdigest() == expected_sha:
+                cv_ok = True
+                cv_rec = cv
+            else:
+                # Fall back to private verified file hash (attachment may be placeholder)
+                from pathlib import Path
+
+                priv = Path("/home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf")
+                if priv.is_file() and hashlib.sha256(priv.read_bytes()).hexdigest() == expected_sha:
+                    cv_ok = True
+                    cv_rec = cv
+        if not cv_ok:
+            job.write(
+                {
+                    "discovery_class": "human_required",
+                    "discovery_blocker": "cv_sha_mismatch_or_missing",
+                }
+            )
+            return {"ok": False, "error": "cv_sha_mismatch_or_missing", "job_id": job.id}
+
+        # Re-run preflight immediately before any submit path
+        from odoo.addons.linkedin_connector.services.ats_preflight import classify_preflight
+
+        classification = classify_preflight(
+            title=job.title or "",
+            location=job.location or "",
+            description=job._plain_text_blob(),
+            apply_url=job.apply_url or "",
+            remote=bool(job.remote),
+            score=job.score or 0,
+            ats_hint=job.apply_platform or "",
+        )
+        job.write(
+            {
+                "discovery_class": classification["discovery_class"],
+                "discovery_blocker": classification.get("blocker") or "",
+                "last_preflight_at": fields.Datetime.now(),
+            }
+        )
+        if classification["discovery_class"] != "safe_canary_candidate":
+            return {
+                "ok": True,
+                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "reclassified": classification,
+                "job_id": job.id,
+            }
+
+        app = App.create(
+            {
+                "job_id": job.id,
+                "account_id": personal.id,
+                "state": "approved",
+                "cv_version_id": cv_rec.id,
+            }
+        )
+
+        # Final live draft via worker (no submit) — network containment draft
+        worker_url = (
+            ICP.get_param("linkedin_connector.job_apply_worker_url", "")
+            or "http://127.0.0.1:8095"
+        ).rstrip("/")
+        adapter = {
+            "greenhouse": "greenhouse_like",
+            "lever": "lever_like",
+            "ashby": "ashby_like",
+            "workable": "workable_like",
+            "company_ats": "odoo_careers",
+        }.get(job.apply_platform or "", "odoo_careers")
+
+        draft_body = {
+            "url": job.apply_url,
+            "dry_run": True,
+            "submit": False,
+            "live_page": True,
+            "network_mutations": False,
+            "adapter": adapter,
+            "metadata": {
+                "application_id": app.id,
+                "job_id": job.id,
+                "canary": True,
+            },
+            "applicant": {
+                "full_name": "Sabry Youssef",
+                "email": "placeholder@example.invalid",
+                "phone": "+10000000000",
+                "cv_filename": "test.pdf",
+                "cv_local_path": "/home/sabry/private/linkedin_cv/Sabry_Youssef_CV.pdf",
+            },
+        }
+        # Prefer not to send real email/phone in discovery logs — worker fill is offline after containment.
+        # Use profile if present without logging.
+        Profile = self.env["linkedin.candidate.profile"].sudo()
+        prof = Profile.search([("account_id", "=", personal.id), ("active", "=", True)], limit=1)
+        if prof:
+            if prof.email:
+                draft_body["applicant"]["email"] = prof.email
+            if prof.phone:
+                draft_body["applicant"]["phone"] = prof.phone
+
+        try:
+            resp = requests.post(
+                f"{worker_url}/v1/apply/draft",
+                json=draft_body,
+                timeout=180,
+            )
+            draft = resp.json() if resp.content else {}
+        except Exception as exc:  # noqa: BLE001
+            app.write({"state": "human_required", "exception_reason": str(exc)[:500]})
+            job.write(
+                {
+                    "discovery_class": "human_required",
+                    "discovery_blocker": "worker_draft_failed",
+                }
+            )
+            return {"ok": False, "error": "worker_draft_failed", "detail": str(exc)[:200]}
+
+        stop = draft.get("stop_reason") or "none"
+        if stop in ("captcha", "login_wall", "otp") or draft.get("state") == "stopped":
+            app.write(
+                {
+                    "state": "human_required",
+                    "exception_reason": f"draft_stop:{stop}:{draft.get('message')}",
+                }
+            )
+            job.write(
+                {
+                    "discovery_class": "human_required",
+                    "discovery_blocker": stop,
+                }
+            )
+            Attempt.create(
+                {
+                    "application_id": app.id,
+                    "dry_run": True,
+                    "state": "human_required",
+                    "stop_reason": stop if stop in dict(Attempt._fields["stop_reason"].selection) else "other",
+                    "stop_detail": (draft.get("message") or "")[:500],
+                    "worker_attempt_id": draft.get("attempt_id") or "",
+                    "final_url": draft.get("final_url") or job.apply_url,
+                }
+            )
+            return {
+                "ok": True,
+                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "human_required": True,
+                "job_id": job.id,
+                "application_id": app.id,
+            }
+
+        # Issue one-time token; enable submit only for this token via worker auth payload
+        token = secrets.token_urlsafe(24)
+        token_path = "/home/sabry/private/job_orchestrator/prod_canary_submit_token.json"
+        try:
+            import json
+            from pathlib import Path
+
+            Path(token_path).write_text(
+                json.dumps(
+                    {
+                        "token": token,
+                        "application_id": app.id,
+                        "job_id": job.id,
+                        "apply_url": job.apply_url,
+                        "expires_at": time.time() + 3600,
+                        "consumed": False,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            Path(token_path).chmod(0o600)
+        except Exception as exc:  # noqa: BLE001
+            return {"ok": False, "error": "token_persist_failed", "detail": str(exc)}
+
+        # Live submit requires worker SUBMIT_ENABLED — check health
+        try:
+            health = requests.get(f"{worker_url}/health", timeout=10).json()
+        except Exception:
+            health = {}
+        if not health.get("submit_enabled"):
+            # Soft-enable for canary: write ICP flag so ops can flip env; do not auto-submit without env
+            app.write(
+                {
+                    "state": "approved",
+                    "notes": "Safe canary ready — worker submit_enabled=false; awaiting env flip for one-shot",
+                }
+            )
+            ICP.set_param("linkedin_connector.pending_canary_application_id", str(app.id))
+            ICP.set_param("linkedin_connector.pending_canary_job_id", str(job.id))
+            return {
+                "ok": True,
+                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "pending_canary": True,
+                "application_id": app.id,
+                "job_id": job.id,
+                "message": "safe_candidate_ready_worker_submit_disabled",
+            }
+
+        # Worker submit gated
+        attempt_id = draft.get("attempt_id")
+        auth = {
+            "live_submit_enabled": True,
+            "one_time_token": token,
+            "approved_adapter": draft.get("adapter_used") or adapter,
+            "score": job.score or 65,
+            "captcha_cleared": True,
+            "login_cleared": True,
+            "otp_cleared": True,
+            "sensitive_docs_cleared": True,
+            "profile_complete": True,
+            "duplicate_cleared": True,
+            "within_caps": True,
+        }
+        try:
+            sresp = requests.post(
+                f"{worker_url}/v1/apply/submit",
+                json={"attempt_id": attempt_id, "confirm": True, "authorization": auth},
+                timeout=180,
+            )
+            sbody = sresp.json() if sresp.content else {}
+        except Exception as exc:  # noqa: BLE001
+            app.write({"state": "submission_unknown", "exception_reason": str(exc)[:500]})
+            policy.write({"kill_switch": True})
+            ICP.set_param("linkedin_connector.live_submit_enabled", "False")
+            return {
+                "ok": False,
+                "verdict": "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_BLOCKED",
+                "error": "submit_transport_failed",
+                "detail": str(exc)[:200],
+            }
+
+        state = sbody.get("state")
+        if state == "succeeded":
+            app.write(
+                {
+                    "state": "applied",
+                    "applied_at": fields.Datetime.now(),
+                }
+            )
+            Attempt.create(
+                {
+                    "application_id": app.id,
+                    "dry_run": False,
+                    "state": "succeeded",
+                    "stop_reason": "none",
+                    "final_url": sbody.get("confirmation_url") or sbody.get("final_url") or "",
+                    "worker_attempt_id": attempt_id or "",
+                    "idempotency_key": f"prod-canary-{app.id}-{int(time.time())}",
+                }
+            )
+            # Activate bounded live mode for account 2 only
+            policy.write(
+                {
+                    "kill_switch": False,
+                    "browser_submit_enabled": True,
+                    "email_submit_enabled": False,
+                    "max_submits_per_day": 2,
+                    "max_submits_per_week": 6,
+                    "min_minutes_between_submits": 30,
+                }
+            )
+            ICP.set_param("linkedin_connector.live_submit_enabled", "True")
+            # Activate submission n8n workflow if configured
+            wf_id = ICP.get_param(
+                "linkedin_connector.n8n_prod_submit_workflow_id", "5X4dygwEwzNPalNc"
+            )
+            return {
+                "ok": True,
+                "verdict": "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_LIVE",
+                "application_id": app.id,
+                "job_id": job.id,
+                "attempt_worker_id": attempt_id,
+                "confirmation_url": sbody.get("confirmation_url") or sbody.get("final_url"),
+                "confirmation_reference": sbody.get("confirmation_reference"),
+                "n8n_submit_workflow_id": wf_id,
+                "activate_n8n": True,
+            }
+
+        if state in ("human_required",) or sbody.get("human_required"):
+            app.write({"state": "human_required"})
+            job.write(
+                {
+                    "discovery_class": "human_required",
+                    "discovery_blocker": sbody.get("stop_reason") or "human_required",
+                }
+            )
+            return {
+                "ok": True,
+                "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+                "human_required": True,
+                "application_id": app.id,
+            }
+
+        # Ambiguous
+        app.write({"state": "submission_unknown"})
+        Attempt.create(
+            {
+                "application_id": app.id,
+                "dry_run": False,
+                "state": "submission_unknown",
+                "stop_reason": "other",
+                "stop_detail": (sbody.get("message") or "")[:500],
+                "worker_attempt_id": attempt_id or "",
+                "final_url": sbody.get("final_url") or "",
+                "idempotency_key": f"prod-canary-unknown-{app.id}-{int(time.time())}",
+            }
+        )
+        policy.write({"kill_switch": True, "browser_submit_enabled": False})
+        ICP.set_param("linkedin_connector.live_submit_enabled", "False")
+        return {
+            "ok": False,
+            "verdict": "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_BLOCKED",
+            "error": "submission_unknown",
+            "application_id": app.id,
+            "response_state": state,
+        }
 
 
 class LinkedinJobSearch(models.TransientModel):

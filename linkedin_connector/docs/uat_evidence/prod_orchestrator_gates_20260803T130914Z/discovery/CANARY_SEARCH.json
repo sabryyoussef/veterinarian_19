@@ -1,0 +1,34 @@
+{
+  "verdict_candidate": "BLOCKED_NO_SAFE_CANARY",
+  "near_misses": [
+    {
+      "url": "https://www.open-inside.com/jobs/apply/senior-engineer-technical-6",
+      "ats": "company_ats/odoo_careers",
+      "captcha": false,
+      "passport": false,
+      "blocker": "location=Bahrain without listing visa/relocation offer; policy target Egypt/UAE/Remote only otherwise"
+    },
+    {
+      "url": "https://www.odoo.com/jobs/apply/full-stack-developer-559",
+      "ats": "odoo_careers",
+      "captcha": "turnstile",
+      "passport": true,
+      "blocker": "Turnstile + passport fields"
+    },
+    {
+      "url": "https://jobs.lever.co/iCodde/...",
+      "ats": "lever",
+      "captcha": "hcaptcha",
+      "blocker": "CAPTCHA on Lever apply"
+    },
+    {
+      "existing_ge65": [
+        "bebee Vivandi",
+        "bebee Melya",
+        "indeed"
+      ],
+      "blocker": "aggregator/login-protected routes blocked by policy"
+    }
+  ],
+  "external_submission_count_this_session": 0
+}

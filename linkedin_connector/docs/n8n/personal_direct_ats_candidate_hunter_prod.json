@@ -1,0 +1,133 @@
+{
+  "name": "Personal Direct ATS Candidate Hunter — Production",
+  "nodes": [
+    {
+      "id": "sched",
+      "name": "Every 6h Africa/Cairo",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "manual",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 520],
+      "parameters": {}
+    },
+    {
+      "id": "sign",
+      "name": "Sign Discovery Run",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 400],
+      "parameters": {
+        "jsCode": "\nconst crypto = require('crypto');\nconst base = String($env.ODOO_PROD_ORCH_BASE_URL || 'https://drpaws.ai').replace(/\\/$/, '');\nconst secret = String($env.ODOO_ORCH_WEBHOOK_SECRET_PROD || $env.ODOO_ORCH_WEBHOOK_SECRET || '');\nif (!base || !secret) throw new Error('missing_odoo_prod_discovery_env');\nconst bodyObj = { try_canary: true, source: 'n8n-direct-ats-hunter' };\nconst raw = Buffer.from(JSON.stringify(bodyObj));\nconst ts = Math.floor(Date.now()/1000).toString();\nconst sig = crypto.createHmac('sha256', secret).update(ts + '.').update(raw).digest('hex');\nreturn [{\n  json: {\n    url: `${base}/linkedin/orchestrator/v1/discovery/run`,\n    status_url: `${base}/linkedin/orchestrator/v1/discovery/status`,\n    body: bodyObj,\n    raw: raw.toString(),\n    ts,\n    signature: `sha256=${sig}`\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "run",
+      "name": "Run Discovery Cycle",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [520, 400],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "Content-Type", "value": "application/json"},
+            {"name": "X-Orchestrator-Timestamp", "value": "={{ $json.ts }}"},
+            {"name": "X-Orchestrator-Signature", "value": "={{ $json.signature }}"}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body }}",
+        "options": {
+          "timeout": 300000,
+          "response": {"response": {"neverError": true}}
+        }
+      }
+    },
+    {
+      "id": "sign_status",
+      "name": "Sign Status GET",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 400],
+      "parameters": {
+        "jsCode": "\nconst crypto = require('crypto');\nconst prev = $('Sign Discovery Run').first().json;\nconst run = $input.first().json;\nconst secret = String($env.ODOO_ORCH_WEBHOOK_SECRET_PROD || $env.ODOO_ORCH_WEBHOOK_SECRET || '');\nconst raw = Buffer.from('');\nconst ts = Math.floor(Date.now()/1000).toString();\nconst sig = crypto.createHmac('sha256', secret).update(ts + '.').update(raw).digest('hex');\nreturn [{\n  json: {\n    run,\n    status_url: prev.status_url,\n    ts,\n    signature: `sha256=${sig}`\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "status",
+      "name": "Fetch Discovery Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 400],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.status_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "X-Orchestrator-Timestamp", "value": "={{ $json.ts }}"},
+            {"name": "X-Orchestrator-Signature", "value": "={{ $json.signature }}"}
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "response": {"response": {"neverError": true}}
+        }
+      }
+    },
+    {
+      "id": "maybe_activate",
+      "name": "Maybe Activate Submit Workflow",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1240, 400],
+      "parameters": {
+        "jsCode": "\nconst runWrap = $('Sign Status GET').first().json.run || {};\nconst run = runWrap.data || runWrap;\nconst status = $input.first().json;\nconst canary = (run.data && run.data.canary) || run.canary || {};\nconst operating = (status.data && status.data.operating_state) || run.operating_state || 'ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY';\nconst out = {\n  ok: true,\n  operating_state: operating,\n  account1_apps: (status.data && status.data.account1_apps) || 0,\n  safe_canary_jobs: (status.data && status.data.safe_canary_jobs) || 0,\n  stats: (run.data && run.data.stats) || run.stats || {},\n  canary,\n  activate_submit_workflow: !!(canary && canary.activate_n8n),\n  submit_workflow_id: String($env.N8N_JOB_ORCH_SUBMIT_WORKFLOW_ID || '5X4dygwEwzNPalNc'),\n  note: 'Discovery never submits without safe canary gates. CAPTCHA is never bypassed.'\n};\nif (out.account1_apps !== 0) throw new Error('company_account_isolation_broken');\nreturn [{ json: out }];\n"
+      }
+    }
+  ],
+  "connections": {
+    "Every 6h Africa/Cairo": {
+      "main": [[{"node": "Sign Discovery Run", "type": "main", "index": 0}]]
+    },
+    "Manual Trigger": {
+      "main": [[{"node": "Sign Discovery Run", "type": "main", "index": 0}]]
+    },
+    "Sign Discovery Run": {
+      "main": [[{"node": "Run Discovery Cycle", "type": "main", "index": 0}]]
+    },
+    "Run Discovery Cycle": {
+      "main": [[{"node": "Sign Status GET", "type": "main", "index": 0}]]
+    },
+    "Sign Status GET": {
+      "main": [[{"node": "Fetch Discovery Status", "type": "main", "index": 0}]]
+    },
+    "Fetch Discovery Status": {
+      "main": [[{"node": "Maybe Activate Submit Workflow", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Africa/Cairo"
+  },
+  "staticData": null
+}

@@ -43,15 +43,86 @@ def test_draft_blocks_linkedin() -> None:
     assert body["dry_run"] is True
 
 
-def test_submit_always_403() -> None:
+def test_submit_disabled_by_default() -> None:
     r = client.post(
         "/v1/apply/submit",
         json={"attempt_id": "does-not-exist", "dry_run": True, "confirm": True},
     )
     assert r.status_code == 403
     body = r.json()
-    assert body["stop_reason"] == "submit_disabled"
-    assert body["state"] == "submit_disabled"
+    assert body["stop_reason"] in ("submit_disabled", "policy")
+    assert body["state"] in ("submit_disabled", "human_required")
+
+
+def test_submit_gated_success_offline(monkeypatch) -> None:
+    monkeypatch.setenv("PERSONAL_JOB_APPLY_SUBMIT_ENABLED", "true")
+    draft = client.post(
+        "/v1/apply/draft",
+        json={
+            "url": "greenhouse_like.html",
+            "dry_run": True,
+            "adapter": "greenhouse_like",
+        },
+    )
+    assert draft.status_code == 200
+    attempt_id = draft.json()["attempt_id"]
+    if draft.json()["state"] != "drafted":
+        pytest.skip("playwright/browser unavailable")
+    auth = {
+        "live_submit_enabled": True,
+        "one_time_token": "tok-test-1",
+        "approved_adapter": "greenhouse_like",
+        "score": 70,
+        "captcha_cleared": True,
+        "login_cleared": True,
+        "otp_cleared": True,
+        "sensitive_docs_cleared": True,
+        "profile_complete": True,
+        "duplicate_cleared": True,
+        "within_caps": True,
+    }
+    r = client.post(
+        "/v1/apply/submit",
+        json={"attempt_id": attempt_id, "confirm": True, "authorization": auth},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["state"] == "succeeded"
+    # second submit must fail (token consumed)
+    r2 = client.post(
+        "/v1/apply/submit",
+        json={"attempt_id": attempt_id, "confirm": True, "authorization": auth},
+    )
+    assert r2.status_code == 403
+
+
+def test_submit_captcha_human_required(monkeypatch) -> None:
+    monkeypatch.setenv("PERSONAL_JOB_APPLY_SUBMIT_ENABLED", "true")
+    draft = client.post(
+        "/v1/apply/draft",
+        json={"url": "captcha.html", "dry_run": True},
+    )
+    assert draft.status_code == 200
+    attempt_id = draft.json()["attempt_id"]
+    auth = {
+        "live_submit_enabled": True,
+        "one_time_token": "tok-captcha",
+        "approved_adapter": "greenhouse_like",
+        "score": 70,
+        "captcha_cleared": False,
+        "login_cleared": True,
+        "otp_cleared": True,
+        "sensitive_docs_cleared": True,
+        "profile_complete": True,
+        "duplicate_cleared": True,
+        "within_caps": True,
+    }
+    r = client.post(
+        "/v1/apply/submit",
+        json={"attempt_id": attempt_id, "confirm": True, "authorization": auth},
+    )
+    assert r.status_code == 403
+    assert r.json().get("human_required") is True
 
 
 @pytest.mark.playwright
@@ -77,7 +148,7 @@ def test_draft_bebee_like_playwright() -> None:
         g = client.get(f"/v1/apply/{attempt_id}")
         assert g.status_code == 200
         assert g.json()["attempt_id"] == attempt_id
-        # submit still 403 after draft
+        # submit still 403 after draft when env flag off
         s = client.post(
             "/v1/apply/submit",
             json={"attempt_id": attempt_id, "dry_run": True, "confirm": True},

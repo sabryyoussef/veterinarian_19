@@ -5,7 +5,7 @@ from __future__ import annotations
 import threading
 import uuid
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Any, Optional
 
 from app.models import ApplyAttemptResponse, ApplyState, StopReason
 
@@ -18,7 +18,25 @@ class AttemptStore:
     def __init__(self) -> None:
         self._lock = threading.Lock()
         self._items: dict[str, ApplyAttemptResponse] = {}
+        self._tokens: dict[str, dict[str, Any]] = {}
 
+    def put_token(self, attempt_id: str, token_record: dict[str, Any]) -> None:
+        with self._lock:
+            self._tokens[attempt_id] = dict(token_record)
+
+    def get_token(self, attempt_id: str) -> Optional[dict[str, Any]]:
+        with self._lock:
+            rec = self._tokens.get(attempt_id)
+            return dict(rec) if rec else None
+
+    def consume_token(self, attempt_id: str) -> bool:
+        with self._lock:
+            rec = self._tokens.get(attempt_id)
+            if not rec or rec.get("consumed"):
+                return False
+            rec["consumed"] = True
+            self._tokens[attempt_id] = rec
+            return True
     def create(
         self,
         *,

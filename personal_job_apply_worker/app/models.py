@@ -16,6 +16,10 @@ class ApplyState(str, Enum):
     stopped = "stopped"
     failed = "failed"
     submit_disabled = "submit_disabled"
+    submitted = "submitted"
+    succeeded = "succeeded"
+    submission_unknown = "submission_unknown"
+    human_required = "human_required"
 
 
 class StopReason(str, Enum):
@@ -29,6 +33,8 @@ class StopReason(str, Enum):
     dry_run_required = "dry_run_required"
     invalid_url = "invalid_url"
     network_mutation = "network_mutation"
+    policy = "policy"
+    sensitive_docs = "sensitive_docs"
     none = "none"
 
 
@@ -99,12 +105,29 @@ class ApplyDraftRequest(BaseModel):
         return self
 
 
+class SubmitAuthorization(BaseModel):
+    """Fail-closed gates required for unattended submit."""
+
+    live_submit_enabled: bool = False
+    one_time_token: str = Field(default="", max_length=200)
+    approved_adapter: str = Field(default="", max_length=64)
+    score: float = Field(default=-1)
+    captcha_cleared: bool = False
+    login_cleared: bool = False
+    otp_cleared: bool = False
+    sensitive_docs_cleared: bool = False
+    profile_complete: bool = False
+    duplicate_cleared: bool = False
+    within_caps: bool = False
+
+
 class ApplySubmitRequest(BaseModel):
-    """POST /v1/apply/submit body — always rejected with 403."""
+    """POST /v1/apply/submit — refused unless env + authorization gates pass."""
 
     attempt_id: str
-    dry_run: bool = True
+    dry_run: bool = False
     confirm: bool = False
+    authorization: SubmitAuthorization = Field(default_factory=SubmitAuthorization)
 
 
 class ApplyAttemptResponse(BaseModel):
@@ -120,6 +143,8 @@ class ApplyAttemptResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     metadata: dict[str, Any] = Field(default_factory=dict)
+    confirmation_url: Optional[str] = None
+    confirmation_reference: Optional[str] = None
 
 
 class HealthResponse(BaseModel):

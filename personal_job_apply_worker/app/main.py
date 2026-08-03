@@ -1,12 +1,14 @@
 """FastAPI entrypoint for personal-job-apply-worker.
 
-Default fail-closed: dry-run draft only; submit disabled unless
-PERSONAL_JOB_APPLY_SUBMIT_ENABLED=true. CAPTCHA is never auto-solved.
+Default fail-closed: dry-run draft only. Unattended submit is allowed only when
+PERSONAL_JOB_APPLY_SUBMIT_ENABLED=true AND all authorization gates pass.
+CAPTCHA is never auto-solved.
 """
 
 from __future__ import annotations
 
 import os
+import time
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
@@ -22,25 +24,21 @@ from app.models import (
     StopReason,
 )
 from app.store import store
-from app.worker import ensure_artifacts_dir, run_draft
+from app.submit_policy import (
+    evaluate_submit_authorization,
+    submit_env_enabled,
+    verify_one_time_token,
+)
+from app.worker import ensure_artifacts_dir, run_draft, run_gated_submit
 
 app = FastAPI(
     title="Personal Job Apply Worker",
     description=(
-        "Playwright worker for ATS draft/fill. "
-        "Submit stays disabled unless PERSONAL_JOB_APPLY_SUBMIT_ENABLED=true. "
+        "Playwright worker for ATS draft/fill and fail-closed gated submit. "
         "LinkedIn URLs are rejected. CAPTCHA is never auto-solved."
     ),
     version=__version__,
 )
-
-
-def _submit_enabled() -> bool:
-    return os.environ.get("PERSONAL_JOB_APPLY_SUBMIT_ENABLED", "").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-    )
 
 
 @app.on_event("startup")
@@ -50,7 +48,7 @@ def _startup() -> None:
 
 @app.get("/health", response_model=HealthResponse)
 async def health() -> HealthResponse:
-    enabled = _submit_enabled()
+    enabled = submit_env_enabled()
     return HealthResponse(
         version=__version__,
         dry_run_only=not enabled,
@@ -60,13 +58,12 @@ async def health() -> HealthResponse:
 
 @app.post("/v1/apply/draft", response_model=ApplyAttemptResponse)
 async def apply_draft(body: ApplyDraftRequest) -> ApplyAttemptResponse:
-    # Pydantic already enforces dry_run=true; belt-and-suspenders:
     if body.dry_run is not True:
         raise HTTPException(
             status_code=400,
             detail={
                 "error": "dry_run_required",
-                "message": "dry_run=true is mandatory in this phase",
+                "message": "dry_run=true is mandatory for draft",
                 "stop_reason": StopReason.dry_run_required.value,
             },
         )
@@ -86,6 +83,8 @@ async def apply_draft(body: ApplyDraftRequest) -> ApplyAttemptResponse:
             "live_page": body.live_page,
             "network_mutations": body.network_mutations,
             "submit": body.submit,
+            "fixture_url": body.url if not body.live_page else None,
+            "url": body.url,
         }
     )
     attempt = store.create(metadata=meta, message="queued")
@@ -103,53 +102,116 @@ async def apply_draft(body: ApplyDraftRequest) -> ApplyAttemptResponse:
 
 @app.post("/v1/apply/submit")
 async def apply_submit(body: ApplySubmitRequest) -> JSONResponse:
-    """Fail-closed submit gate.
+    """Fail-closed conditional submit.
 
-    Even with PERSONAL_JOB_APPLY_SUBMIT_ENABLED=true, unattended click-submit is
-    refused here — CAPTCHA/login walls require human handoff or a dedicated
-    controlled canary runner. Default remains 403.
+    Requires env flag + live_submit_enabled + one-time token + approved adapter
+    + cleared captcha/login/otp/sensitive + profile/duplicate/caps gates.
+    CAPTCHA/login/OTP → human_required (never bypassed).
     """
     attempt = store.get(body.attempt_id)
-    if not _submit_enabled():
-        if attempt:
-            store.update(
-                body.attempt_id,
-                state=ApplyState.submit_disabled,
-                stop_reason=StopReason.submit_disabled,
-                message="Submit disabled (PERSONAL_JOB_APPLY_SUBMIT_ENABLED not set)",
-            )
+    if not body.confirm:
         return JSONResponse(
             status_code=403,
             content={
                 "attempt_id": body.attempt_id,
                 "state": ApplyState.submit_disabled.value,
                 "stop_reason": StopReason.submit_disabled.value,
-                "dry_run": True,
-                "final_url": attempt.final_url if attempt else None,
-                "screenshot_paths": attempt.screenshot_paths if attempt else [],
-                "message": "POST /v1/apply/submit is disabled (fail-closed default)",
+                "message": "confirm=true is required",
             },
         )
-    if attempt:
-        store.update(
-            body.attempt_id,
-            state=ApplyState.submit_disabled,
-            stop_reason=StopReason.submit_disabled,
-            message="Automated click-submit not enabled; use human handoff or canary runner",
-        )
-    return JSONResponse(
-        status_code=403,
-        content={
-            "attempt_id": body.attempt_id,
-            "state": ApplyState.submit_disabled.value,
-            "stop_reason": StopReason.submit_disabled.value,
-            "dry_run": False,
-            "message": (
-                "Submit flag acknowledged but unattended click-submit is refused "
-                "(CAPTCHA/policy). Use controlled canary/human handoff."
-            ),
-        },
+
+    auth = body.authorization.model_dump()
+    gate = evaluate_submit_authorization(
+        auth=auth,
+        adapter_used=(attempt.adapter_used if attempt else None) or auth.get("approved_adapter"),
+        draft_metadata=attempt.metadata if attempt else None,
     )
+    if not gate.ok:
+        state = (
+            ApplyState.human_required
+            if gate.human_required
+            else ApplyState.submit_disabled
+        )
+        stop = (
+            StopReason.captcha
+            if gate.code == "captcha"
+            else StopReason.login_wall
+            if gate.code == "login_wall"
+            else StopReason.otp
+            if gate.code == "otp"
+            else StopReason.sensitive_docs
+            if gate.code == "sensitive_docs"
+            else StopReason.policy
+            if gate.code not in {"submit_disabled", "live_submit_disabled"}
+            else StopReason.submit_disabled
+        )
+        if attempt:
+            store.update(
+                body.attempt_id,
+                state=state,
+                stop_reason=stop,
+                message=gate.message,
+                dry_run=True,
+            )
+        return JSONResponse(
+            status_code=403,
+            content={
+                "attempt_id": body.attempt_id,
+                "state": state.value,
+                "stop_reason": stop.value,
+                "code": gate.code,
+                "message": gate.message,
+                "human_required": gate.human_required,
+            },
+        )
+
+    # Register / verify one-time token (request may seed token store for first use)
+    token_rec = store.get_token(body.attempt_id)
+    if not token_rec:
+        # Allow caller to seed token atomically with first submit request
+        expires = time.time() + 3600
+        token_rec = {
+            "token": auth.get("one_time_token"),
+            "attempt_id": body.attempt_id,
+            "expires_at": expires,
+            "consumed": False,
+            **{k: auth.get(k) for k in auth},
+        }
+        store.put_token(body.attempt_id, token_rec)
+
+    tok_gate = verify_one_time_token(
+        token=str(auth.get("one_time_token") or ""),
+        expected_attempt_id=body.attempt_id,
+        token_store=token_rec,
+    )
+    if not tok_gate.ok:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "attempt_id": body.attempt_id,
+                "state": ApplyState.submit_disabled.value,
+                "stop_reason": StopReason.policy.value,
+                "code": tok_gate.code,
+                "message": tok_gate.message,
+            },
+        )
+
+    if not attempt:
+        return JSONResponse(
+            status_code=404,
+            content={
+                "attempt_id": body.attempt_id,
+                "state": ApplyState.failed.value,
+                "stop_reason": StopReason.invalid_url.value,
+                "message": "attempt not found — draft first",
+            },
+        )
+
+    result = await run_gated_submit(attempt_id=body.attempt_id, auth=auth)
+    status = 200 if result.state in (ApplyState.succeeded, ApplyState.submission_unknown) else 409
+    if result.state == ApplyState.human_required:
+        status = 409
+    return JSONResponse(status_code=status, content=result.model_dump(mode="json"))
 
 
 @app.get("/v1/apply/{attempt_id}", response_model=ApplyAttemptResponse)

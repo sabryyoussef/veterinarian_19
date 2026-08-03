@@ -1,0 +1,426 @@
+{
+  "name": "Personal Job Application Orchestrator \u2014 Production",
+  "nodes": [
+    {
+      "id": "manual",
+      "name": "Manual Production Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "set_input",
+      "name": "Production Inputs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        300
+      ],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "application_id",
+              "value": 30,
+              "type": "number"
+            },
+            {
+              "id": "a2",
+              "name": "idempotency_key",
+              "value": "uat-integrated-20260803-bebee-01",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "cv_facts_json",
+              "value": "{\"name\":\"UAT Candidate\",\"skills\":[\"Odoo\",\"Python\"]}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "sign_get",
+      "name": "Sign GET Payload Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        300
+      ],
+      "parameters": {
+        "jsCode": "\nconst crypto = require('crypto');\nconst base = String($env.ODOO_PROD_ORCH_BASE_URL || '').replace(/\\/$/, '');\nconst secret = String($env.ODOO_ORCH_WEBHOOK_SECRET_PROD || '');\nif (!base || !secret) throw new Error('missing_odoo_prod_env');\nconst appId = Number($input.first().json.application_id);\nconst idem = String($input.first().json.idempotency_key || '');\nconst cvFacts = String($input.first().json.cv_facts_json || '{}');\nconst raw = Buffer.from('');\nconst ts = Math.floor(Date.now()/1000).toString();\nconst sig = crypto.createHmac('sha256', secret).update(ts + '.').update(raw).digest('hex');\nreturn [{\n  json: {\n    application_id: appId,\n    idempotency_key: idem,\n    cv_facts_json: cvFacts,\n    odoo_base: base,\n    get_url: `${base}/linkedin/orchestrator/v1/applications/${appId}`,\n    ts,\n    signature: `sha256=${sig}`,\n    n8n_execution_hint: $execution?.id || 'manual-cli'\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "fetch_app",
+      "name": "Fetch Application Payload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.get_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Orchestrator-Timestamp",
+              "value": "={{ $json.ts }}"
+            },
+            {
+              "name": "X-Orchestrator-Signature",
+              "value": "={{ $json.signature }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "prep_dify",
+      "name": "Prepare Dify Inputs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        920,
+        300
+      ],
+      "parameters": {
+        "jsCode": "\nconst prev = $('Sign GET Payload Request').first().json;\nconst resp = $input.first().json;\nif (!resp.ok || !resp.data) throw new Error('odoo_fetch_failed:' + (resp.code || resp.error || 'unknown'));\nconst data = resp.data;\nif (Number(data.account_id) === 1) throw new Error('company_account_forbidden');\nconst job = data.job || {};\nconst profile = data.candidate_profile || {};\n// never invent sensitive answers \u2014 omit unset\nconst difyBody = {\n  inputs: {\n    job_json: JSON.stringify(job),\n    candidate_profile_json: JSON.stringify(profile),\n    cv_facts_json: prev.cv_facts_json\n  },\n  response_mode: 'blocking',\n  user: 'n8n-job-orch-prod'\n};\nconst difyKey = String($env.DIFY_API_KEY_JOB_PACK_PROD || '').trim();\nlet difyBase = String($env.DIFY_BASE_URL || '').trim().replace(/\\/$/, '');\nif (difyBase && !difyBase.endsWith('/v1')) difyBase += '/v1';\nif (!difyKey || !difyBase) throw new Error('missing_dify_prod_env');\nreturn [{\n  json: {\n    application_id: prev.application_id,\n    idempotency_key: prev.idempotency_key,\n    odoo_base: prev.odoo_base,\n    account_id: data.account_id,\n    apply_platform: job.apply_platform,\n    dify_url: difyBase + '/workflows/run',\n    dify_key: difyKey,\n    dify_body: difyBody,\n    policy: data.policy || {}\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "call_dify",
+      "name": "Call Dify Pack Generator Production",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.dify_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.dify_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.dify_body }}",
+        "options": {
+          "timeout": 180000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "validate_pack",
+      "name": "Validate Pack JSON Fail-Closed",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        300
+      ],
+      "parameters": {
+        "jsCode": "\nconst crypto = require('crypto');\nconst ctx = $('Prepare Dify Inputs').first().json;\nconst resp = $input.first().json;\nconst required = ['match_decision','exclusion_flags','selected_cv','cover_letter','screening_qa','missing_facts','risk_notes','recommended_channel'];\nconst sensitive = ['salary_expectation','notice_period','visa_sponsorship','uae_relocation'];\nconst matchOk = new Set(['shortlist','reject','needs_human']);\nconst channelOk = new Set(['browser_dry_run','manual_linkedin','email','manual_browser','skip']);\n\nif (resp.code || resp.status === 'failed' || (resp.data && resp.data.status === 'failed')) {\n  throw new Error('dify_failed:' + ((resp.data && resp.data.error) || resp.message || 'unknown'));\n}\nconst outputs = (resp.data && resp.data.outputs) || resp.outputs || {};\nlet pack = outputs.pack_json || outputs.text || outputs;\nif (typeof pack === 'string') {\n  try { pack = JSON.parse(pack); }\n  catch (e) {\n    const s = pack.indexOf('{'); const e2 = pack.lastIndexOf('}');\n    if (s < 0) throw new Error('pack_not_json');\n    pack = JSON.parse(pack.slice(s, e2+1));\n  }\n}\nif (!pack || typeof pack !== 'object') throw new Error('pack_not_object');\nif (pack.invented_facts) throw new Error('invented_facts_forbidden');\nfor (const k of required) if (!(k in pack)) throw new Error('missing_'+k);\nif (!matchOk.has(pack.match_decision)) throw new Error('bad_match_decision');\nif (!channelOk.has(pack.recommended_channel)) throw new Error('bad_recommended_channel');\nif (!Array.isArray(pack.missing_facts)) throw new Error('missing_facts_not_list');\nif (!Array.isArray(pack.screening_qa)) throw new Error('screening_qa_not_list');\n\n// Fail-closed enrichment: ensure unset sensitive fields are listed\nconst missing = new Set(pack.missing_facts.map(String));\nfor (const f of sensitive) missing.add(f); // profile sanitized omitted them in UAT\npack.missing_facts = Array.from(missing);\n\n// LinkedIn hard route\nif (String(ctx.apply_platform) === 'linkedin') {\n  pack.recommended_channel = 'manual_linkedin';\n} else if (pack.recommended_channel === 'skip' && ['bebee','greenhouse','lever','company_ats','aggregator'].includes(String(ctx.apply_platform))) {\n  pack.recommended_channel = 'browser_dry_run';\n}\n\nconst difyRunId = resp.workflow_run_id || (resp.data && resp.data.id) || '';\nconst secret = String($env.ODOO_ORCH_WEBHOOK_SECRET_PROD || '');\nconst packBodyObj = {\n  pack,\n  n8n_execution_id: String($execution?.id || 'manual-cli'),\n  dify_run_id: String(difyRunId)\n};\nconst raw = Buffer.from(JSON.stringify(packBodyObj));\nconst ts = Math.floor(Date.now()/1000).toString();\nconst sig = crypto.createHmac('sha256', secret).update(ts + '.').update(raw).digest('hex');\n\nreturn [{\n  json: {\n    application_id: ctx.application_id,\n    idempotency_key: ctx.idempotency_key,\n    odoo_base: ctx.odoo_base,\n    apply_platform: ctx.apply_platform,\n    pack,\n    dify_run_id: String(difyRunId),\n    pack_url: `${ctx.odoo_base}/linkedin/orchestrator/v1/applications/${ctx.application_id}/pack`,\n    pack_body: packBodyObj,\n    pack_raw: raw.toString(),\n    ts,\n    signature: `sha256=${sig}`,\n    worker_url: String($env.JOB_APPLY_WORKER_URL || 'http://uat-job-worker:8095').replace(/\\/$/, '')\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "write_pack",
+      "name": "Write Pack to Odoo Production",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.pack_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Orchestrator-Timestamp",
+              "value": "={{ $json.ts }}"
+            },
+            {
+              "name": "X-Orchestrator-Signature",
+              "value": "={{ $json.signature }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.pack_body }}",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "browser_draft",
+      "name": "Browser Worker Dry-Run",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Validate Pack JSON Fail-Closed').item.json.worker_url }}/v1/apply/draft",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ dry_run: true, url: 'bebee_like.html', adapter: 'bebee_like', metadata: { application_id: $('Validate Pack JSON Fail-Closed').item.json.application_id, idempotency_key: $('Validate Pack JSON Fail-Closed').item.json.idempotency_key }, applicant: { full_name: 'Alex Example', email: 'alex.example@example.test', cv_filename: 'test.pdf' } }) }}",
+        "options": {
+          "timeout": 120000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "prep_attempt",
+      "name": "Prepare Attempt Write",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2120,
+        300
+      ],
+      "parameters": {
+        "jsCode": "\nconst crypto = require('crypto');\nconst ctx = $('Validate Pack JSON Fail-Closed').first().json;\nconst packWrite = $('Write Pack to Odoo Production').first().json;\nconst worker = $input.first().json;\nif (!packWrite.ok) throw new Error('pack_write_failed:' + (packWrite.code || packWrite.error || 'unknown'));\nif (worker.stop_reason === 'linkedin_blocked') throw new Error('unexpected_linkedin');\nconst state = worker.state === 'drafted' ? 'drafted' : (worker.state === 'stopped' ? 'stopped' : 'failed');\nconst attemptBody = {\n  idempotency_key: ctx.idempotency_key,\n  dry_run: true,\n  state,\n  stop_reason: worker.stop_reason || 'none',\n  stop_detail: String(worker.message || '').slice(0, 500),\n  final_url: worker.final_url || 'fixture://bebee_like.html',\n  worker_attempt_id: worker.attempt_id || '',\n  n8n_execution_id: String($execution?.id || 'manual-cli'),\n  dify_run_id: ctx.dify_run_id,\n  response: {\n    sanitized: true,\n    state: worker.state,\n    stop_reason: worker.stop_reason,\n    adapter_used: worker.adapter_used,\n    filled_fields: worker.filled_fields || [],\n    screenshot_count: (worker.screenshot_paths || []).length\n  }\n};\nconst secret = String($env.ODOO_ORCH_WEBHOOK_SECRET_PROD || '');\nconst raw = Buffer.from(JSON.stringify(attemptBody));\nconst ts = Math.floor(Date.now()/1000).toString();\nconst sig = crypto.createHmac('sha256', secret).update(ts + '.').update(raw).digest('hex');\nreturn [{\n  json: {\n    application_id: ctx.application_id,\n    idempotency_key: ctx.idempotency_key,\n    dify_run_id: ctx.dify_run_id,\n    worker_attempt_id: worker.attempt_id,\n    attempt_url: `${ctx.odoo_base}/linkedin/orchestrator/v1/applications/${ctx.application_id}/attempts`,\n    attempt_body: attemptBody,\n    ts,\n    signature: `sha256=${sig}`,\n    worker_state: worker.state,\n    worker_stop_reason: worker.stop_reason\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "write_attempt",
+      "name": "Write Attempt to Odoo Production",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2360,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.attempt_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Orchestrator-Timestamp",
+              "value": "={{ $json.ts }}"
+            },
+            {
+              "name": "X-Orchestrator-Signature",
+              "value": "={{ $json.signature }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.attempt_body }}",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "summary",
+      "name": "Sanitized Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2600,
+        300
+      ],
+      "parameters": {
+        "jsCode": "\nconst prep = $('Prepare Attempt Write').first().json;\nconst att = $input.first().json;\nif (!att.ok) throw new Error('attempt_write_failed:' + (att.code || att.error || 'unknown'));\nreturn [{\n  json: {\n    ok: true,\n    application_id: prep.application_id,\n    attempt_id: att.attempt_id,\n    attempt_state: att.state,\n    idempotent: !!att.idempotent,\n    idempotency_key: prep.idempotency_key,\n    dify_run_id: prep.dify_run_id,\n    worker_attempt_id: prep.worker_attempt_id,\n    worker_state: prep.worker_state,\n    worker_stop_reason: prep.worker_stop_reason,\n    n8n_execution_id: String($execution?.id || 'manual-cli')\n  }\n}];\n"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Production Trigger": {
+      "main": [
+        [
+          {
+            "node": "Production Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Production Inputs": {
+      "main": [
+        [
+          {
+            "node": "Sign GET Payload Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign GET Payload Request": {
+      "main": [
+        [
+          {
+            "node": "Fetch Application Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Application Payload": {
+      "main": [
+        [
+          {
+            "node": "Prepare Dify Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Dify Inputs": {
+      "main": [
+        [
+          {
+            "node": "Call Dify Pack Generator Production",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Dify Pack Generator Production": {
+      "main": [
+        [
+          {
+            "node": "Validate Pack JSON Fail-Closed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Pack JSON Fail-Closed": {
+      "main": [
+        [
+          {
+            "node": "Write Pack to Odoo Production",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Pack to Odoo Production": {
+      "main": [
+        [
+          {
+            "node": "Browser Worker Dry-Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browser Worker Dry-Run": {
+      "main": [
+        [
+          {
+            "node": "Prepare Attempt Write",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Attempt Write": {
+      "main": [
+        [
+          {
+            "node": "Write Attempt to Odoo Production",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Attempt to Odoo Production": {
+      "main": [
+        [
+          {
+            "node": "Sanitized Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null
+}

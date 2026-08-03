@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "name": "Openinside careers",
+    "ats_type": "company_ats",
+    "enabled": true,
+    "last_http_status": 200,
+    "last_jobs_found": 2,
+    "board_token": "https://www.open-inside.com/jobs"
+  },
+  {
+    "id": 2,
+    "name": "Odoo S.A. careers",
+    "ats_type": "company_ats",
+    "enabled": true,
+    "last_http_status": 200,
+    "last_jobs_found": 16,
+    "board_token": "https://www.odoo.com/jobs"
+  },
+  {
+    "id": 3,
+    "name": "iCodde Lever",
+    "ats_type": "lever",
+    "enabled": true,
+    "last_http_status": 200,
+    "last_jobs_found": 4,
+    "board_token": "iCodde"
+  },
+  {
+    "id": 4,
+    "name": "Greenhouse \u2014 Acorel (probe)",
+    "ats_type": "greenhouse",
+    "enabled": true,
+    "last_http_status": 404,
+    "last_jobs_found": 0,
+    "board_token": "acorel"
+  },
+  {
+    "id": 5,
+    "name": "OpenEduCat Workable",
+    "ats_type": "workable",
+    "enabled": true,
+    "last_http_status": 200,
+    "last_jobs_found": 0,
+    "board_token": "openeducat"
+  },
+  {
+    "id": 6,
+    "name": "JSearch bridge (quota-owned by daily cron)",
+    "ats_type": "jsearch",
+    "enabled": true,
+    "last_http_status": 204,
+    "last_jobs_found": 0,
+    "board_token": "jsearch"
+  },
+  {
+    "id": 7,
+    "name": "Therp Greenhouse probe",
+    "ats_type": "greenhouse",
+    "enabled": true,
+    "last_http_status": 404,
+    "last_jobs_found": 0,
+    "board_token": "therp"
+  },
+  {
+    "id": 8,
+    "name": "Vauxoo Greenhouse probe",
+    "ats_type": "greenhouse",
+    "enabled": true,
+    "last_http_status": 404,
+    "last_jobs_found": 0,
+    "board_token": "vauxoo"
+  },
+  {
+    "id": 9,
+    "name": "Camptocamp Greenhouse probe",
+    "ats_type": "greenhouse",
+    "enabled": true,
+    "last_http_status": 404,
+    "last_jobs_found": 0,
+    "board_token": "camptocamp"
+  },
+  {
+    "id": 10,
+    "name": "Dynapps Greenhouse probe",
+    "ats_type": "greenhouse",
+    "enabled": true,
+    "last_http_status": 0,
+    "last_jobs_found": 0,
+    "board_token": "dynapps"
+  },
+  {
+    "id": 11,
+    "name": "ERPIFY Greenhouse probe",
+    "ats_type": "greenhouse",
+    "enabled": true,
+    "last_http_status": 404,
+    "last_jobs_found": 0,
+    "board_token": "erpify"
+  }
+]

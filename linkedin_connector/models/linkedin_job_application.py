@@ -37,6 +37,8 @@ class LinkedinJobApplication(models.Model):
             ("shortlisted", "Shortlisted"),
             ("pack_ready", "Pack Ready"),
             ("approved", "Approved"),
+            ("human_required", "Human Required"),
+            ("submission_unknown", "Submission Unknown"),
             ("applied", "Applied"),
             ("interview", "Interview"),
             ("rejected", "Rejected"),

@@ -244,3 +244,89 @@ class LinkedinJobOrchestratorController(http.Controller):
                 "ts": fields.Datetime.to_string(fields.Datetime.now()),
             }
         )
+
+    @http.route(
+        "/linkedin/orchestrator/v1/discovery/run",
+        type="http",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
+    )
+    def discovery_run(self, **kwargs):
+        body, err, _raw = _require_auth()
+        if err:
+            return err
+        try_canary = True
+        if isinstance(body, dict) and body.get("try_canary") is False:
+            try_canary = False
+        Source = request.env["linkedin.ats.source"].sudo()
+        try:
+            result = Source.run_discovery_cycle(try_canary=try_canary)
+            request.env.cr.commit()
+        except Exception as exc:
+            request.env.cr.rollback()
+            return _json_error(str(exc), status=500)
+        return request.make_json_response({"ok": True, "data": result})
+
+    @http.route(
+        "/linkedin/orchestrator/v1/discovery/status",
+        type="http",
+        auth="public",
+        methods=["GET"],
+        csrf=False,
+    )
+    def discovery_status(self, **kwargs):
+        body, err, _raw = _require_auth()
+        if err:
+            return err
+        ICP = request.env["ir.config_parameter"].sudo()
+        Job = request.env["linkedin.job"].sudo()
+        Source = request.env["linkedin.ats.source"].sudo()
+        import json
+
+        stats = {}
+        try:
+            stats = json.loads(
+                ICP.get_param("linkedin_connector.ats_discovery_last_stats_json", "{}")
+                or "{}"
+            )
+        except Exception:
+            stats = {}
+        live = ICP.get_param("linkedin_connector.live_submit_enabled", "False")
+        operating = (
+            "PERSONAL_JOB_APPLICATION_ORCHESTRATOR_PRODUCTION_LIVE"
+            if str(live).lower() in ("1", "true", "yes")
+            else "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY"
+        )
+        return request.make_json_response(
+            {
+                "ok": True,
+                "data": {
+                    "operating_state": operating,
+                    "last_run": ICP.get_param(
+                        "linkedin_connector.ats_discovery_last_run", ""
+                    ),
+                    "next_run": ICP.get_param(
+                        "linkedin_connector.ats_discovery_next_run", ""
+                    ),
+                    "stats": stats,
+                    "registry_enabled": Source.search_count([("enabled", "=", True)]),
+                    "registry_total": Source.search_count([]),
+                    "safe_canary_jobs": Job.search_count(
+                        [
+                            ("account_id", "=", 2),
+                            ("discovery_class", "=", "safe_canary_candidate"),
+                        ]
+                    ),
+                    "human_required_jobs": Job.search_count(
+                        [
+                            ("account_id", "=", 2),
+                            ("discovery_class", "=", "human_required"),
+                        ]
+                    ),
+                    "account1_apps": request.env["linkedin.job.application"]
+                    .sudo()
+                    .search_count([("account_id", "=", 1)]),
+                },
+            }
+        )

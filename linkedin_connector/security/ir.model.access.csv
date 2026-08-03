@@ -18,3 +18,5 @@ access_linkedin_apply_policy_user,linkedin.apply.policy user,model_linkedin_appl
 access_linkedin_apply_policy_manager,linkedin.apply.policy manager,model_linkedin_apply_policy,group_linkedin_job_hunt,1,1,1,1
 access_linkedin_apply_attempt_user,linkedin.apply.attempt user,model_linkedin_apply_attempt,base.group_user,1,0,0,0
 access_linkedin_apply_attempt_manager,linkedin.apply.attempt manager,model_linkedin_apply_attempt,group_linkedin_job_hunt,1,1,1,1
+access_linkedin_ats_source_user,linkedin.ats.source user,model_linkedin_ats_source,base.group_user,1,0,0,0
+access_linkedin_ats_source_manager,linkedin.ats.source manager,model_linkedin_ats_source,group_linkedin_job_hunt,1,1,1,1

@@ -53,12 +53,14 @@
         </field>
     </record>
     <record id="action_linkedin_candidate_profile" model="ir.actions.act_window">
-        <field name="name">Candidate Profiles</field>
+        <field name="name">Application Profile</field>
         <field name="res_model">linkedin.candidate.profile</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2)]</field>
+        <field name="context">{'default_account_id': 2}</field>
     </record>
     <menuitem id="menu_linkedin_candidate_profile"
-              name="Candidate Profiles"
+              name="Application Profile"
               parent="menu_linkedin_jobs"
               action="action_linkedin_candidate_profile"
               sequence="45"/>
@@ -67,9 +69,9 @@
         <field name="name">linkedin.apply.policy.form</field>
         <field name="model">linkedin.apply.policy</field>
         <field name="arch" type="xml">
-            <form string="Apply Policy">
+            <form string="Application Policy / Dashboard">
                 <sheet>
-                    <group>
+                    <group string="Controls">
                         <field name="name"/>
                         <field name="account_id"/>
                         <field name="kill_switch"/>
@@ -79,27 +81,62 @@
                         <field name="allowed_platforms"/>
                         <field name="min_score"/>
                         <field name="max_submits_per_day"/>
+                        <field name="max_submits_per_week"/>
                         <field name="max_submits_per_month"/>
+                        <field name="min_minutes_between_submits"/>
                         <field name="company_cooldown_days"/>
+                    </group>
+                    <group string="Personal dashboard (account)">
+                        <field name="jobs_count"/>
+                        <field name="applications_count"/>
+                        <field name="attempts_count"/>
+                        <field name="human_required_count"/>
+                        <field name="submission_unknown_count"/>
+                        <field name="applied_today_count"/>
+                        <field name="remaining_daily_limit"/>
+                        <field name="remaining_weekly_limit"/>
+                        <field name="profile_id"/>
+                        <field name="ats_sources_checked"/>
+                        <field name="new_direct_ats_jobs"/>
+                        <field name="safe_canary_count"/>
+                        <field name="last_discovery_run"/>
+                        <field name="next_discovery_run"/>
                     </group>
                     <div class="text-muted">
                         Submit flags default OFF. Kill switch default ON. LinkedIn auto-submit is always prohibited.
+                        Use the Jobs menu filters for Human Required / Submission Unknown / Applied Today.
                     </div>
                 </sheet>
                 <chatter/>
             </form>
         </field>
     </record>
+    <record id="view_linkedin_apply_policy_list" model="ir.ui.view">
+        <field name="name">linkedin.apply.policy.list</field>
+        <field name="model">linkedin.apply.policy</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="account_id"/>
+                <field name="kill_switch"/>
+                <field name="applied_today_count"/>
+                <field name="remaining_daily_limit"/>
+                <field name="remaining_weekly_limit"/>
+            </list>
+        </field>
+    </record>
     <record id="action_linkedin_apply_policy" model="ir.actions.act_window">
-        <field name="name">Apply Policies</field>
+        <field name="name">Application Policy</field>
         <field name="res_model">linkedin.apply.policy</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2)]</field>
+        <field name="context">{'default_account_id': 2}</field>
     </record>
     <menuitem id="menu_linkedin_apply_policy"
-              name="Apply Policies"
-              parent="menu_linkedin_config"
+              name="Application Policy"
+              parent="menu_linkedin_jobs"
               action="action_linkedin_apply_policy"
-              sequence="30"/>
+              sequence="5"/>
 
     <record id="view_linkedin_apply_attempt_list" model="ir.ui.view">
         <field name="name">linkedin.apply.attempt.list</field>
@@ -116,13 +153,135 @@
         </field>
     </record>
     <record id="action_linkedin_apply_attempt" model="ir.actions.act_window">
-        <field name="name">Apply Attempts</field>
+        <field name="name">Attempts</field>
         <field name="res_model">linkedin.apply.attempt</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2)]</field>
     </record>
     <menuitem id="menu_linkedin_apply_attempt"
-              name="Apply Attempts"
+              name="Attempts"
               parent="menu_linkedin_jobs"
               action="action_linkedin_apply_attempt"
               sequence="46"/>
+
+    <!-- Filtered menus for personal account id=2 -->
+    <record id="action_linkedin_jobs_personal" model="ir.actions.act_window">
+        <field name="name">Jobs</field>
+        <field name="res_model">linkedin.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2)]</field>
+        <field name="context">{'default_account_id': 2}</field>
+    </record>
+    <menuitem id="menu_linkedin_jobs_personal_dash"
+              name="Jobs (Personal)"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_jobs_personal"
+              sequence="1"/>
+
+    <record id="action_linkedin_apps_human_required" model="ir.actions.act_window">
+        <field name="name">Human Required</field>
+        <field name="res_model">linkedin.job.application</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2), ('state', '=', 'human_required')]</field>
+    </record>
+    <menuitem id="menu_linkedin_apps_human_required"
+              name="Human Required"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_apps_human_required"
+              sequence="50"/>
+
+    <record id="action_linkedin_apps_submission_unknown" model="ir.actions.act_window">
+        <field name="name">Submission Unknown</field>
+        <field name="res_model">linkedin.job.application</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2), ('state', '=', 'submission_unknown')]</field>
+    </record>
+    <menuitem id="menu_linkedin_apps_submission_unknown"
+              name="Submission Unknown"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_apps_submission_unknown"
+              sequence="51"/>
+
+    <record id="action_linkedin_apps_applied_today" model="ir.actions.act_window">
+        <field name="name">Applied Today</field>
+        <field name="res_model">linkedin.job.application</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2), ('state', '=', 'applied')]</field>
+        <field name="context">{'search_default_applied_today': 1}</field>
+    </record>
+    <menuitem id="menu_linkedin_apps_applied_today"
+              name="Applied Today"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_apps_applied_today"
+              sequence="52"/>
+
+    <record id="view_linkedin_ats_source_list" model="ir.ui.view">
+        <field name="name">linkedin.ats.source.list</field>
+        <field name="model">linkedin.ats.source</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="ats_type"/>
+                <field name="company"/>
+                <field name="region"/>
+                <field name="enabled"/>
+                <field name="last_check_at"/>
+                <field name="last_http_status"/>
+                <field name="last_jobs_found"/>
+                <field name="consecutive_failures"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_linkedin_ats_source_form" model="ir.ui.view">
+        <field name="name">linkedin.ats.source.form</field>
+        <field name="model">linkedin.ats.source</field>
+        <field name="arch" type="xml">
+            <form string="ATS Source">
+                <header>
+                    <button name="action_run_now" type="object" string="Run discovery now" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="ats_type"/>
+                        <field name="board_token"/>
+                        <field name="feed_url"/>
+                        <field name="company"/>
+                        <field name="region"/>
+                        <field name="enabled"/>
+                    </group>
+                    <group string="Last check">
+                        <field name="last_check_at"/>
+                        <field name="last_http_status"/>
+                        <field name="last_jobs_found"/>
+                        <field name="consecutive_failures"/>
+                        <field name="last_error"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_linkedin_ats_source" model="ir.actions.act_window">
+        <field name="name">ATS Sources</field>
+        <field name="res_model">linkedin.ats.source</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_linkedin_ats_source"
+              name="ATS Sources"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_ats_source"
+              sequence="6"/>
+
+    <record id="action_linkedin_jobs_safe_canary" model="ir.actions.act_window">
+        <field name="name">Safe Canary Candidates</field>
+        <field name="res_model">linkedin.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('account_id', '=', 2), ('discovery_class', '=', 'safe_canary_candidate')]</field>
+    </record>
+    <menuitem id="menu_linkedin_jobs_safe_canary"
+              name="Safe Canary Candidates"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_jobs_safe_canary"
+              sequence="7"/>
 </odoo>

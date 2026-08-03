@@ -11,6 +11,8 @@
                 <field name="title"/>
                 <field name="company"/>
                 <field name="location"/>
+                <field name="discovery_class" optional="show"/>
+                <field name="apply_platform" optional="show"/>
                 <field name="remote" widget="boolean_toggle" optional="show"/>
                 <field name="odoo_match" optional="show"/>
                 <field name="seniority_match" optional="show"/>

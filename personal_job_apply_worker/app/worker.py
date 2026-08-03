@@ -671,3 +671,235 @@ async def _run_live_page(
             message=f"Live worker error: {exc}",
             metadata=meta,
         )  # type: ignore[return-value]
+
+
+async def run_gated_submit(
+    *,
+    attempt_id: str,
+    auth: dict[str, Any],
+) -> ApplyAttemptResponse:
+    """Offline-fixture gated submit: fill, click once, require positive confirmation.
+
+    Live HTTP submit is intentionally not performed here without a prior CAPTCHA-free
+    draft and approved token; this path is for fixture/contract validation and
+    Production canaries that use local fixture URLs only unless metadata allows.
+    """
+    import re
+
+    attempt = store.get(attempt_id)
+    if not attempt:
+        created = store.create(
+            state=ApplyState.failed,
+            stop_reason=StopReason.invalid_url,
+            message="attempt not found",
+        )
+        return created
+
+    artifacts = ensure_artifacts_dir()
+    attempt_dir = artifacts / attempt_id
+    attempt_dir.mkdir(parents=True, mode=0o700, exist_ok=True)
+    screenshot_paths = list(attempt.screenshot_paths or [])
+    meta = dict(attempt.metadata or {})
+    meta["submit_auth_gates"] = {
+        k: auth.get(k)
+        for k in (
+            "live_submit_enabled",
+            "approved_adapter",
+            "score",
+            "captcha_cleared",
+            "login_cleared",
+            "otp_cleared",
+            "sensitive_docs_cleared",
+            "profile_complete",
+            "duplicate_cleared",
+            "within_caps",
+        )
+    }
+
+    fixture_name = meta.get("fixture_url") or meta.get("url") or ""
+    # Prefer adapter-named fixture when draft used offline HTML name in metadata.
+    if not fixture_name and attempt.adapter_used:
+        candidate = FIXTURES_DIR / f"{attempt.adapter_used}.html"
+        if candidate.is_file():
+            fixture_name = candidate.name
+
+    if not fixture_name:
+        # Fall back to final_url file basename
+        if attempt.final_url and attempt.final_url.startswith("file:"):
+            fixture_name = Path(urlparse(attempt.final_url).path).name
+
+    try:
+        fixture_path = resolve_offline_url(fixture_name or "greenhouse_like.html")
+    except Exception as exc:
+        return store.update(
+            attempt_id,
+            state=ApplyState.failed,
+            stop_reason=StopReason.invalid_url,
+            message=f"submit fixture resolve failed: {exc}",
+            metadata=meta,
+            dry_run=False,
+        )  # type: ignore[return-value]
+
+    applicant = ApplicantFixture()
+    cv_path = str(FIXTURES_DIR / "test.pdf")
+
+    try:
+        from playwright.async_api import async_playwright
+    except ImportError as exc:
+        return store.update(
+            attempt_id,
+            state=ApplyState.failed,
+            stop_reason=StopReason.none,
+            message=f"Playwright not installed: {exc}",
+            metadata=meta,
+            dry_run=False,
+        )  # type: ignore[return-value]
+
+    store.update(attempt_id, state=ApplyState.running, message="gated submit started", dry_run=False)
+
+    try:
+        async with async_playwright() as p:
+            browser = await p.chromium.launch(headless=True)
+            context = await browser.new_context(accept_downloads=False)
+            page = await context.new_page()
+            await page.goto(fixture_path.as_uri(), wait_until="domcontentloaded")
+
+            stop = await detect_stop_reason_on_page(page)
+            if stop is not None:
+                shot = attempt_dir / f"03_submit_stop_{stop.value}.png"
+                await page.screenshot(path=str(shot), full_page=True)
+                screenshot_paths.append(str(shot))
+                await browser.close()
+                # Consume token — ambiguous/blocked path must not retry
+                store.consume_token(attempt_id)
+                return store.update(
+                    attempt_id,
+                    state=ApplyState.human_required,
+                    stop_reason=stop,
+                    final_url=page.url,
+                    screenshot_paths=screenshot_paths,
+                    message=f"Submit aborted: {stop.value}",
+                    metadata=meta,
+                    dry_run=False,
+                )  # type: ignore[return-value]
+
+            adapters = get_adapter(auth.get("approved_adapter") or attempt.adapter_used)
+            chosen = None
+            for adapter in adapters:
+                if await adapter.can_handle(page):
+                    chosen = adapter
+                    break
+            if chosen is None:
+                await browser.close()
+                store.consume_token(attempt_id)
+                return store.update(
+                    attempt_id,
+                    state=ApplyState.human_required,
+                    stop_reason=StopReason.policy,
+                    message="No approved adapter matched page for submit",
+                    metadata=meta,
+                    dry_run=False,
+                )  # type: ignore[return-value]
+
+            result = await chosen.fill_draft(page, applicant, cv_path)
+            if result.stop_reason:
+                await browser.close()
+                store.consume_token(attempt_id)
+                return store.update(
+                    attempt_id,
+                    state=ApplyState.human_required,
+                    stop_reason=result.stop_reason,
+                    adapter_used=chosen.name,
+                    filled_fields=result.filled_fields,
+                    message=result.message,
+                    metadata=meta,
+                    dry_run=False,
+                )  # type: ignore[return-value]
+
+            shot_pre = attempt_dir / "03_presubmit_masked.png"
+            await page.screenshot(path=str(shot_pre), full_page=True)
+            screenshot_paths.append(str(shot_pre))
+
+            submit_btn = page.locator(
+                "#submit-application, button[type='submit'], input[type='submit']"
+            )
+            if await submit_btn.count() == 0:
+                await browser.close()
+                store.consume_token(attempt_id)
+                return store.update(
+                    attempt_id,
+                    state=ApplyState.submission_unknown,
+                    stop_reason=StopReason.policy,
+                    adapter_used=chosen.name,
+                    filled_fields=result.filled_fields,
+                    screenshot_paths=screenshot_paths,
+                    message="Submit control not found",
+                    metadata=meta,
+                    dry_run=False,
+                )  # type: ignore[return-value]
+
+            # Exactly one click
+            await submit_btn.first.click()
+            store.consume_token(attempt_id)
+            meta["submit_clicked"] = True
+            await page.wait_for_timeout(800)
+
+            final_url = page.url
+            body_text = (await page.inner_text("body")).lower()
+            shot_after = attempt_dir / "04_after_submit.png"
+            await page.screenshot(path=str(shot_after), full_page=True)
+            screenshot_paths.append(str(shot_after))
+            await browser.close()
+
+            thank_you = bool(
+                re.search(
+                    r"thank you|application received|we have received your application|"
+                    r"successfully submitted|reference:",
+                    body_text,
+                )
+            )
+            conf_ref = None
+            m = re.search(r"reference:\s*([A-Z0-9\-]+)", body_text, re.I)
+            if m:
+                conf_ref = m.group(1)
+
+            if thank_you:
+                return store.update(
+                    attempt_id,
+                    state=ApplyState.succeeded,
+                    stop_reason=StopReason.none,
+                    final_url=final_url,
+                    screenshot_paths=screenshot_paths,
+                    adapter_used=chosen.name,
+                    filled_fields=result.filled_fields,
+                    message="Positive confirmation after single submit",
+                    metadata=meta,
+                    dry_run=False,
+                    confirmation_url=final_url,
+                    confirmation_reference=conf_ref,
+                )  # type: ignore[return-value]
+
+            return store.update(
+                attempt_id,
+                state=ApplyState.submission_unknown,
+                stop_reason=StopReason.none,
+                final_url=final_url,
+                screenshot_paths=screenshot_paths,
+                adapter_used=chosen.name,
+                filled_fields=result.filled_fields,
+                message="Submit clicked once; confirmation unclear — no retry",
+                metadata=meta,
+                dry_run=False,
+                confirmation_url=final_url,
+            )  # type: ignore[return-value]
+    except Exception as exc:
+        store.consume_token(attempt_id)
+        return store.update(
+            attempt_id,
+            state=ApplyState.submission_unknown,
+            stop_reason=StopReason.none,
+            screenshot_paths=screenshot_paths,
+            message=f"Submit error (no retry): {exc}",
+            metadata=meta,
+            dry_run=False,
+        )  # type: ignore[return-value]

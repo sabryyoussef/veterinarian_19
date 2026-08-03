@@ -1,0 +1,37 @@
+{
+  "verdict": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY",
+  "module_version": "19.0.2.13.0",
+  "branch": "feature/personal-job-application-orchestrator",
+  "n8n_hunter": {
+    "id": "caweLvPrZEBjBfku",
+    "name": "Personal Direct ATS Candidate Hunter \u2014 Production",
+    "active": true
+  },
+  "n8n_submit": {
+    "id": "5X4dygwEwzNPalNc",
+    "active": false
+  },
+  "discovery_first_run": {
+    "ok": true,
+    "stats": {
+      "sources_checked": 11,
+      "new_jobs": 0,
+      "safe_canary": 0,
+      "human_required": 0,
+      "ineligible": 22,
+      "unsupported_ats": 0,
+      "errors": 1
+    },
+    "account_id": 2,
+    "canary": {},
+    "operating_state": "ATS_DISCOVERY_LIVE_WAITING_FOR_SAFE_CANARY"
+  },
+  "kill_switch": true,
+  "live_submit_enabled": false,
+  "worker_submit_enabled": false,
+  "account1_apps": 0,
+  "policy_preserved": true,
+  "cron": "LinkedIn: Direct ATS Discovery (6h) active",
+  "evidence_dir": "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/docs/uat_evidence/ats_discovery_20260803T134315Z",
+  "timestamp_utc": "20260803T135551Z"
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Seed Direct ATS employer registry (public boards / career indexes only) -->
+        <record id="ats_src_openinside" model="linkedin.ats.source">
+            <field name="name">Openinside careers</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://www.open-inside.com/jobs</field>
+            <field name="company">Openinside</field>
+            <field name="region">gulf</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Odoo partner career site (employer-owned). Gulf — sponsorship check required.</field>
+        </record>
+        <record id="ats_src_odoo_com" model="linkedin.ats.source">
+            <field name="name">Odoo S.A. careers</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://www.odoo.com/jobs</field>
+            <field name="company">Odoo</field>
+            <field name="region">europe</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Employer careers. Turnstile/passport usually human_required; still useful for inventory.</field>
+        </record>
+        <record id="ats_src_lever_icodde" model="linkedin.ats.source">
+            <field name="name">iCodde Lever</field>
+            <field name="ats_type">lever</field>
+            <field name="board_token">iCodde</field>
+            <field name="company">iCodde</field>
+            <field name="region">remote</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Public Lever postings; apply forms often hCaptcha → human_required.</field>
+        </record>
+        <record id="ats_src_gh_placeholder_odoo_partners" model="linkedin.ats.source">
+            <field name="name">Greenhouse — Acorel (probe)</field>
+            <field name="ats_type">greenhouse</field>
+            <field name="board_token">acorel</field>
+            <field name="company">Acorel</field>
+            <field name="region">europe</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Probe board; auto-disables after repeated 404.</field>
+        </record>
+        <record id="ats_src_workable_openeducat" model="linkedin.ats.source">
+            <field name="name">OpenEduCat Workable</field>
+            <field name="ats_type">workable</field>
+            <field name="board_token">openeducat</field>
+            <field name="company">OpenEduCat</field>
+            <field name="region">remote</field>
+            <field name="enabled" eval="True"/>
+        </record>
+        <record id="ats_src_jsearch_bridge" model="linkedin.ats.source">
+            <field name="name">JSearch bridge (quota-owned by daily cron)</field>
+            <field name="ats_type">jsearch</field>
+            <field name="board_token">jsearch</field>
+            <field name="region">egypt|uae|remote</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Discovery cycle skips API calls; daily JSearch cron imports separately.</field>
+        </record>
+
+        <record id="ir_cron_direct_ats_discovery" model="ir.cron">
+            <field name="name">LinkedIn: Direct ATS Discovery (6h)</field>
+            <field name="model_id" ref="model_linkedin_ats_source"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_direct_ats_discovery()</field>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

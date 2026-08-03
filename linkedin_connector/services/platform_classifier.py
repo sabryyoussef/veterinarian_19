@@ -9,6 +9,8 @@ PLATFORM_SELECTION = [
     ("bebee", "BeBee"),
     ("greenhouse", "Greenhouse"),
     ("lever", "Lever"),
+    ("ashby", "Ashby"),
+    ("workable", "Workable"),
     ("workday", "Workday"),
     ("company_ats", "Company ATS"),
     ("email", "Email"),
@@ -44,6 +46,10 @@ def classify_apply_url(url):
         return "greenhouse"
     if "lever.co" in host or "jobs.lever" in host:
         return "lever"
+    if "ashbyhq.com" in host:
+        return "ashby"
+    if "workable.com" in host:
+        return "workable"
     if "myworkdayjobs.com" in host or "workday" in host:
         return "workday"
     if any(
@@ -63,20 +69,16 @@ def classify_apply_url(url):
     if any(
         tok in host
         for tok in (
-            "ashbyhq.com",
             "smartrecruiters.com",
             "bamboohr.com",
-            "workable.com",
             "recruitee.com",
             "personio.",
             "teamtailor.com",
         )
     ):
         return "company_ats"
-    # Generic company career pages
     if host and not any(
-        tok in host
-        for tok in ("google.", "facebook.", "twitter.", "youtube.")
+        tok in host for tok in ("google.", "facebook.", "twitter.", "youtube.")
     ):
         if any(x in path for x in ("/careers", "/jobs", "/job/", "/apply")):
             return "company_ats"

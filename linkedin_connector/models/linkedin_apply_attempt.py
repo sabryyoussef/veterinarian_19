@@ -37,6 +37,8 @@ class LinkedinApplyAttempt(models.Model):
             ("awaiting_approval", "Awaiting approval"),
             ("submitted", "Submitted"),
             ("succeeded", "Succeeded"),
+            ("submission_unknown", "Submission Unknown"),
+            ("human_required", "Human Required"),
             ("stopped", "Stopped"),
             ("failed", "Failed"),
             ("rejected_policy", "Rejected by policy"),

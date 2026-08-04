@@ -1,0 +1,172 @@
+2026-08-04 04:38:08,532 3077127 INFO ? odoo: Odoo version 19.0 
+2026-08-04 04:38:08,532 3077127 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf 
+2026-08-04 04:38:08,532 3077127 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-08-04 04:38:08,532 3077127 INFO ? odoo: database: odoo@localhost:5432 
+2026-08-04 04:38:08,903 3077127 INFO ? odoo.service.server: HTTP service (werkzeug) running on master:18030 
+2026-08-04 04:38:08,933 3077127 INFO pet_spot_elsahel_test odoo.tests.common: Importing test framework 
+2026-08-04 04:38:08,999 3077127 INFO pet_spot_elsahel_test odoo.modules.loading: loading 1 modules... 
+2026-08-04 04:38:09,009 3077127 INFO pet_spot_elsahel_test odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-08-04 04:38:09,123 3077127 INFO pet_spot_elsahel_test odoo.modules.loading: updating modules list 
+2026-08-04 04:38:09,138 3077127 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-08-04 04:38:12,565 3077127 WARNING pet_spot_elsahel_test odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-04 04:38:12,566 3077127 WARNING pet_spot_elsahel_test odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-04 04:38:14,085 3077127 INFO pet_spot_elsahel_test odoo.modules.loading: loading 376 modules... 
+2026-08-04 04:38:14,106 3077127 WARNING pet_spot_elsahel_test odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-08-04 04:38:14,583 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,649 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,678 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,863 3077127 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/__init__.py:4: DeprecationWarning: Since 19.0, odoo.osv is deprecated use odoo.fields.Domain
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 456, in load_modules
+    load_module_graph(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 170, in load_module_graph
+    load_openerp_module(package.name)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/module.py", line 505, in load_openerp_module
+    __import__(qualname)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/__init__.py", line 1, in <module>
+    from . import models
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/__init__.py", line 23, in <module>
+    from . import linkedin_caught_jobs_dashboard
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_caught_jobs_dashboard.py", line 12, in <module>
+    from odoo.osv import expression
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/__init__.py", line 4, in <module>
+    warnings.warn("Since 19.0, odoo.osv is deprecated use odoo.fields.Domain", DeprecationWarning)
+ 
+2026-08-04 04:38:14,867 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,868 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,868 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,868 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,868 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:14,893 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:15,201 3077127 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/main.py:17: DeprecationWarning: Since 19.0, @route(type='json') is a deprecated alias to @route(type='jsonrpc')
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 456, in load_modules
+    load_module_graph(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 170, in load_module_graph
+    load_openerp_module(package.name)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/module.py", line 505, in load_openerp_module
+    __import__(qualname)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/__init__.py", line 2, in <module>
+    from . import controllers
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/__init__.py", line 1, in <module>
+    from . import main
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/main.py", line 17, in <module>
+    class PaymobController(http.Controller):
+ 
+2026-08-04 04:38:15,213 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:15,213 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:15,592 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:15,961 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:15,962 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,437 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,437 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,437 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,437 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,438 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,438 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,440 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,440 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,440 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,440 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,440 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,451 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,452 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,452 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,569 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,569 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,570 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,570 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,570 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,570 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,570 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,571 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,573 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,573 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,578 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,579 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,693 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,693 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,693 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,694 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,697 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,726 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,754 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,754 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,755 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,755 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,755 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,755 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,755 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,755 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,756 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,756 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,756 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,756 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,756 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,785 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,785 3077127 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:16,785 3077127 INFO pet_spot_elsahel_test odoo.modules.loading: 376 modules loaded in 2.70s, 0 queries (+0 extra) 
+2026-08-04 04:38:17,134 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_import_order_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:17,135 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_tax_behavior: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:17,136 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_stock_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:17,136 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.export_stock_interval_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:17,412 3077127 WARNING pet_spot_elsahel_test odoo.fields: stock.picking.shipblu_normalized_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:17,654 3077127 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-04 04:38:17,782 3077127 WARNING pet_spot_elsahel_test odoo.fields: Translated stored related field (shopify.public.category.map.public_categ_name) will not be computed correctly in all languages 
+2026-08-04 04:38:18,052 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_import_order_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:18,053 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_tax_behavior: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:18,053 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_stock_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:18,053 3077127 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.export_stock_interval_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:18,356 3077127 WARNING pet_spot_elsahel_test odoo.fields: stock.picking.shipblu_normalized_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:18,612 3077127 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-04 04:38:18,723 3077127 WARNING pet_spot_elsahel_test odoo.fields: Translated stored related field (shopify.public.category.map.public_categ_name) will not be computed correctly in all languages 
+2026-08-04 04:38:18,922 3077127 INFO pet_spot_elsahel_test odoo.registry: verifying fields for every extended model 
+2026-08-04 04:38:19,189 3077127 INFO pet_spot_elsahel_test odoo.registry: Models have no table: ai.embedding. 
+2026-08-04 04:38:19,190 3077127 INFO pet_spot_elsahel_test odoo.registry: Recreate table of model ai.embedding. 
+2026-08-04 04:38:19,197 3077127 ERROR pet_spot_elsahel_test odoo.registry: Model ai.embedding has no table. 
+2026-08-04 04:38:21,856 3077127 INFO pet_spot_elsahel_test odoo.modules.loading: Modules loaded. 
+2026-08-04 04:38:21,964 3077127 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.attachment_id 
+2026-08-04 04:38:21,965 3077127 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.content 
+2026-08-04 04:38:21,965 3077127 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.embedding_model 
+2026-08-04 04:38:22,010 3077127 INFO pet_spot_elsahel_test odoo.registry: Registry changed, signaling through the database 
+2026-08-04 04:38:22,012 3077127 INFO pet_spot_elsahel_test odoo.registry: Registry loaded in 13.107s 
+2026-08-04 04:38:22,014 3077127 INFO pet_spot_elsahel_test odoo.service.server: Starting post tests 
+2026-08-04 04:38:22,015 3077127 INFO pet_spot_elsahel_test odoo.service.server: 0 post-tests in 0.00s, 0 queries 
+2026-08-04 04:38:22,015 3077127 WARNING pet_spot_elsahel_test odoo.tests.result: 0 failed, 0 error(s) of 0 tests when loading database 'pet_spot_elsahel_test' 
+2026-08-04 04:38:22,015 3077127 INFO pet_spot_elsahel_test odoo.service.server: Initiating shutdown 
+2026-08-04 04:38:22,015 3077127 INFO pet_spot_elsahel_test odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-08-04 04:38:22,453 3077127 INFO pet_spot_elsahel_test odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 1 connections  

@@ -1,0 +1,5 @@
+COUNTS {'jobs': 132, 'apps': 15, 'applied': 10, 'live_submit': 'False'}
+ENABLED ['arbeitnow', 'lever', 'remoteok', 'remotive', 'workable']
+GATES True True
+FINAL {"enabled": ["arbeitnow", "lever", "remoteok", "remotive", "workable"], "scheduler": {"id": null, "active_before": null, "active_after": null, "action": "skipped"}, "deltas": {"jobs": 1, "apps": 0, "applied": 0}, "lifecycle": {"discovered": 126, "duplicate": 5, "needs_review": 1}}
+FINALIZE_OK

@@ -1,0 +1,109 @@
+{
+  "high_priority": [],
+  "needs_review": [
+    {
+      "id": 132,
+      "title": "Senior Software Engineer (Rust/Python) (f/m/d)",
+      "score": 45.0,
+      "channel": "arbeitnow",
+      "visa": "unknown",
+      "company": "Munich Electrification"
+    }
+  ],
+  "unknown_sponsorship": [
+    {
+      "id": 132,
+      "title": "Senior Software Engineer (Rust/Python) (f/m/d)",
+      "channel": "arbeitnow",
+      "lifecycle": "needs_review"
+    },
+    {
+      "id": 131,
+      "title": "Atenci\u00f3n a Clientes y Desarrollo Comercial B2B",
+      "channel": "lever",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 130,
+      "title": "Asesor de Seguros",
+      "channel": "lever",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 129,
+      "title": "Asesor de Protecci\u00f3n Financiera",
+      "channel": "lever",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 128,
+      "title": "Agente de Seguros",
+      "channel": "lever",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 127,
+      "title": "Agente de cobranza",
+      "channel": "lever",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 126,
+      "title": "Chef de projet Odoo",
+      "channel": "company_ats",
+      "lifecycle": "discovered"
+    },
+    {
+      "id": 125,
+      "title": "Spontaneous Job Application - Join Eezee-It Team",
+      "channel": "company_ats",
+      "lifecycle": "discovered"
+    }
+  ],
+  "techno_functional": [
+    {
+      "id": 10,
+      "title": "Odoo Techno Functional Consultant",
+      "channel": "unknown",
+      "lifecycle": "discovered",
+      "score": 65.0
+    }
+  ],
+  "arbeitnow_new": [
+    {
+      "id": 132,
+      "title": "Senior Software Engineer (Rust/Python) (f/m/d)",
+      "lifecycle": "needs_review",
+      "score": 45.0,
+      "visa": "unknown",
+      "apply": "https://www.arbeitnow.com/jobs/companies/munich-electrification/senior-software-engineer-rust-python-munich-193438"
+    }
+  ],
+  "dedupe_lever": [
+    {
+      "id": 131,
+      "title": "Atenci\u00f3n a Clientes y Desarrollo Comercial B2B",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 130,
+      "title": "Asesor de Seguros",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 129,
+      "title": "Asesor de Protecci\u00f3n Financiera",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 128,
+      "title": "Agente de Seguros",
+      "lifecycle": "duplicate"
+    },
+    {
+      "id": 127,
+      "title": "Agente de cobranza",
+      "lifecycle": "duplicate"
+    }
+  ]
+}

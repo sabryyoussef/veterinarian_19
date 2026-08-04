@@ -1,0 +1,172 @@
+{
+  "arbeitnow": {
+    "stats": {
+      "imported": 1,
+      "duplicates": 0,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 1,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 1,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 1, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:09\"}"
+  },
+  "remotive": {
+    "stats": {
+      "imported": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 0,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:09\"}"
+  },
+  "lever": {
+    "stats": {
+      "imported": 0,
+      "duplicates": 5,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 5,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 5, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:11\"}"
+  },
+  "greenhouse": {
+    "stats": {
+      "imported": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 0,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:11\"}"
+  },
+  "ashby": {
+    "stats": {
+      "imported": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 0,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:11\"}"
+  },
+  "jsearch": {
+    "stats": {
+      "error": "adapter",
+      "detail": "HTTPSConnectionPool(host='jsearch.p.rapidapi.com', port=443): Read timed out. (read timeout=25)"
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 0,
+    "last_jobs_found": 0,
+    "last_error": "HTTPSConnectionPool(host='jsearch.p.rapidapi.com', port=443): Read timed out. (read timeout=25)",
+    "health_json": false
+  },
+  "jooble": {
+    "status": "BLOCKED_CREDENTIALS"
+  },
+  "adzuna": {
+    "status": "BLOCKED_CREDENTIALS"
+  },
+  "workable": {
+    "stats": {
+      "imported": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 0,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:36:02\"}"
+  },
+  "smartrecruiters": {
+    "stats": {
+      "imported": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 0,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:36:03\"}"
+  },
+  "recruitee": {
+    "stats": {
+      "error": "adapter",
+      "detail": "http_404:{\"error\":\"Not Found\"}"
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 0,
+    "last_jobs_found": 0,
+    "last_error": "http_404:{\"error\":\"Not Found\"}",
+    "health_json": false
+  },
+  "remoteok": {
+    "stats": {
+      "imported": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "qualified": 0,
+      "updated": 0
+    },
+    "jobs_delta": 0,
+    "apps_delta": 0,
+    "applied_delta": 0,
+    "live_submit": "False",
+    "last_http": 200,
+    "last_jobs_found": 0,
+    "last_error": false,
+    "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:36:04\"}"
+  }
+}

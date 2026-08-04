@@ -1,0 +1,25 @@
+{
+  "scheduler": {
+    "id": 123,
+    "active_before": false,
+    "active_after": true,
+    "action": "activated",
+    "interval": "15 minutes"
+  },
+  "digest": {
+    "id": 112,
+    "active": true,
+    "action": "left_active_preexisting"
+  },
+  "cleanup": {
+    "id": 124,
+    "active_before": false,
+    "active_after": true,
+    "action": "activated"
+  },
+  "jsearch_daily_cron": {
+    "id": 113,
+    "active": true,
+    "note": "pre-existing daily JSearch cron left active; connector jsearch remains disabled after canary timeout"
+  }
+}

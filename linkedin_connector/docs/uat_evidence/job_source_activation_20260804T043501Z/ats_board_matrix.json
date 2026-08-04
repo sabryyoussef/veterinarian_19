@@ -1,0 +1,145 @@
+[
+  {
+    "id": 31,
+    "name": "Open Source Integrators Inc (workable)",
+    "ats_type": "workable",
+    "token": "open-source-integrators",
+    "enabled": true,
+    "action": "kept_empty",
+    "note": "HTTP200_EMPTY",
+    "last_http": 200,
+    "last_jobs": 0
+  },
+  {
+    "id": 3,
+    "name": "iCodde Lever",
+    "ats_type": "lever",
+    "token": "iCodde",
+    "enabled": true,
+    "action": "kept",
+    "note": "VERIFIED_LIVE",
+    "last_http": 200,
+    "last_jobs": 27
+  },
+  {
+    "id": 5,
+    "name": "OpenEduCat Workable",
+    "ats_type": "workable",
+    "token": "openeducat",
+    "enabled": true,
+    "action": "kept_empty",
+    "note": "HTTP200_EMPTY",
+    "last_http": 200,
+    "last_jobs": 0
+  },
+  {
+    "id": 19,
+    "name": "Greenhouse \u2014 Odoo PS probe",
+    "ats_type": "greenhouse",
+    "token": "odoops",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Greenhouse board token returns 404 (validated 2026-08-04)",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 20,
+    "name": "Camptocamp Lever",
+    "ats_type": "lever",
+    "token": "camptocamp",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: public Lever/Greenhouse board token returns 404 (validated 2026-08-04)",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 21,
+    "name": "Ashby \u2014 Odoo-adjacent probe",
+    "ats_type": "ashby",
+    "token": "odoo",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Ashby board token returns 404 (validated 2026-08-04)",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 22,
+    "name": "Softhealer Workable probe",
+    "ats_type": "workable",
+    "token": "softhealer",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Workable account returns 404 (validated 2026-08-04)",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 4,
+    "name": "Greenhouse \u2014 Acorel (probe)",
+    "ats_type": "greenhouse",
+    "token": "acorel",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Greenhouse board token returns 404",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 7,
+    "name": "Therp Greenhouse probe",
+    "ats_type": "greenhouse",
+    "token": "therp",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Greenhouse board token returns 404",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 8,
+    "name": "Vauxoo Greenhouse probe",
+    "ats_type": "greenhouse",
+    "token": "vauxoo",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Greenhouse board token returns 404",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 9,
+    "name": "Camptocamp Greenhouse probe",
+    "ats_type": "greenhouse",
+    "token": "camptocamp",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: public Lever/Greenhouse board token returns 404 (validated 2026-08-04)",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 10,
+    "name": "Dynapps Greenhouse probe",
+    "ats_type": "greenhouse",
+    "token": "dynapps",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Greenhouse board token returns 404",
+    "last_http": 404,
+    "last_jobs": 0
+  },
+  {
+    "id": 11,
+    "name": "ERPIFY Greenhouse probe",
+    "ats_type": "greenhouse",
+    "token": "erpify",
+    "enabled": false,
+    "action": "disabled_stale",
+    "note": "inactive: Greenhouse board token returns 404",
+    "last_http": 404,
+    "last_jobs": 0
+  }
+]

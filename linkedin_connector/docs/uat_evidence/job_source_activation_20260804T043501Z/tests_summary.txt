@@ -1,0 +1,71 @@
+===== tests_update_stdout.txt hits=0 size=19 =====
+===== tests_update_stderr.txt hits=217 size=135023 =====
+2026-08-04 04:38:51,403 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_hmac_signature_helper ... 
+2026-08-04 04:38:51,404 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_job_sets_platform_on_create ... 
+2026-08-04 04:38:51,408 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_pack_write_state_gate ... 
+2026-08-04 04:38:51,438 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_platform_classification ... 
+2026-08-04 04:38:51,439 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_policy_defaults_and_caps ... 
+2026-08-04 04:38:51,529 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_linkedin_smoke: Starting TestLinkedinConnectorSmoke.test_connected_false_without_tokens ... 
+2026-08-04 04:38:51,534 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_linkedin_smoke: Starting TestLinkedinConnectorSmoke.test_create_account_and_redirect_uri ... 
+2026-08-04 04:38:51,632 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_discovery_cap_limits_sources ... 
+2026-08-04 04:38:51,648 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_hit_creates_source_once_and_reuses ... 
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 106, in test_hit_creates_source_once_and_reuses
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 106, in test_hit_creates_source_once_and_reuses
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 106, in test_hit_creates_source_once_and_reuses
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 138, in test_hit_creates_source_once_and_reuses
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 138, in test_hit_creates_source_once_and_reuses
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 138, in test_hit_creates_source_once_and_reuses
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+2026-08-04 04:38:51,706 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_manual_seed_not_duplicated_by_same_board ... 
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 186, in test_manual_seed_not_duplicated_by_same_board
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 186, in test_manual_seed_not_duplicated_by_same_board
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 186, in test_manual_seed_not_duplicated_by_same_board
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+2026-08-04 04:38:51,735 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_miss_does_not_create_source ... 
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 69, in test_miss_does_not_create_source
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 69, in test_miss_does_not_create_source
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 69, in test_miss_does_not_create_source
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+2026-08-04 04:38:51,757 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_probe_does_not_write_partner ... 
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 243, in test_probe_does_not_write_partner
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 243, in test_probe_does_not_write_partner
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 243, in test_probe_does_not_write_partner
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+2026-08-04 04:38:51,787 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_recovery_unsticks_processing ... 
+2026-08-04 04:38:51,847 3078049 INFO pet_spot_elsahel_test odoo.tests.stats: linkedin_connector: 76 tests 5.95s 2944 queries 
+2026-08-04 04:38:51,847 3078049 INFO pet_spot_elsahel_test odoo.tests.result: 0 failed, 0 error(s) of 62 tests when loading database 'pet_spot_elsahel_test' 
+===== tests_stdout.txt hits=0 size=20 =====
+===== tests_stderr.txt hits=7 size=23222 =====
+2026-08-04 04:38:08,532 3077127 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf 
+2026-08-04 04:38:08,933 3077127 INFO pet_spot_elsahel_test odoo.tests.common: Importing test framework 
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/__init__.py", line 1, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/__init__.py", line 23, in <module>
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_caught_jobs_dashboard.py", line 12, in <module>
+2026-08-04 04:38:19,197 3077127 ERROR pet_spot_elsahel_test odoo.registry: Model ai.embedding has no table. 
+2026-08-04 04:38:22,015 3077127 WARNING pet_spot_elsahel_test odoo.tests.result: 0 failed, 0 error(s) of 0 tests when loading database 'pet_spot_elsahel_test' 

@@ -1,0 +1,22 @@
+{
+  "stamp": "20260804T043501Z",
+  "module": "19.0.2.20.0",
+  "jobs": 131,
+  "apps": 15,
+  "applied": 10,
+  "live_submit": "False",
+  "lifecycle": {
+    "discovered": 126,
+    "qualified": 0,
+    "high_priority": 0,
+    "needs_review": 5,
+    "rejected": 0,
+    "duplicate": 0,
+    "application_ready": 0
+  },
+  "by_channel": {
+    "company_ats": 110,
+    "unknown": 12,
+    "lever": 9
+  }
+}

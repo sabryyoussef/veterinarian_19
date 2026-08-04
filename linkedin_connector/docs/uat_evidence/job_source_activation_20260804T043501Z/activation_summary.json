@@ -1,0 +1,557 @@
+{
+  "verdict_hint": "JOB_SOURCE_DISCOVERY_ACTIVE_WITH_CREDENTIAL_BLOCKERS",
+  "before": {
+    "stamp": "20260804T043501Z",
+    "module": "19.0.2.20.0",
+    "jobs": 131,
+    "apps": 15,
+    "applied": 10,
+    "live_submit": "False",
+    "lifecycle": {
+      "discovered": 126,
+      "qualified": 0,
+      "high_priority": 0,
+      "needs_review": 5,
+      "rejected": 0,
+      "duplicate": 0,
+      "application_ready": 0
+    },
+    "by_channel": {
+      "company_ats": 110,
+      "unknown": 12,
+      "lever": 9
+    }
+  },
+  "after": {
+    "jobs": 132,
+    "apps": 15,
+    "applied": 10,
+    "live_submit": "False",
+    "lifecycle": {
+      "discovered": 126,
+      "duplicate": 5,
+      "needs_review": 1
+    },
+    "by_channel": {
+      "arbeitnow": 1,
+      "company_ats": 110,
+      "unknown": 12,
+      "lever": 9
+    },
+    "enabled_connectors": [
+      "arbeitnow",
+      "lever",
+      "remoteok",
+      "remotive",
+      "workable"
+    ]
+  },
+  "delta_jobs": 1,
+  "delta_apps": 0,
+  "delta_applied": 0,
+  "canaries": {
+    "arbeitnow": {
+      "stats": {
+        "imported": 1,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 1,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 1,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 1, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:09\"}"
+    },
+    "remotive": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:09\"}"
+    },
+    "lever": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 5,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 5,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 5, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:11\"}"
+    },
+    "greenhouse": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:11\"}"
+    },
+    "ashby": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:35:11\"}"
+    },
+    "jsearch": {
+      "stats": {
+        "error": "adapter",
+        "detail": "HTTPSConnectionPool(host='jsearch.p.rapidapi.com', port=443): Read timed out. (read timeout=25)"
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "HTTPSConnectionPool(host='jsearch.p.rapidapi.com', port=443): Read timed out. (read timeout=25)",
+      "health_json": false
+    },
+    "jooble": {
+      "status": "BLOCKED_CREDENTIALS"
+    },
+    "adzuna": {
+      "status": "BLOCKED_CREDENTIALS"
+    },
+    "workable": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:36:02\"}"
+    },
+    "smartrecruiters": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:36:03\"}"
+    },
+    "recruitee": {
+      "stats": {
+        "error": "adapter",
+        "detail": "http_404:{\"error\":\"Not Found\"}"
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "http_404:{\"error\":\"Not Found\"}",
+      "health_json": false
+    },
+    "remoteok": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": false,
+      "health_json": "{\"stats\": {\"imported\": 0, \"duplicates\": 0, \"rejected\": 0, \"qualified\": 0, \"updated\": 0}, \"at\": \"2026-08-04 04:36:04\"}"
+    }
+  },
+  "credentials": {
+    "jsearch": {
+      "icp_rapidapi_key": "MISSING_OR_EMPTY",
+      "env_LINKEDIN_JSEARCH_RAPIDAPI_KEY": "PRESENT",
+      "validation": "VALID"
+    },
+    "jooble": {
+      "icp": "MISSING",
+      "validation": "BLOCKED_CREDENTIALS"
+    },
+    "adzuna": {
+      "app_id": "MISSING",
+      "app_key": "MISSING",
+      "validation": "BLOCKED_CREDENTIALS"
+    }
+  },
+  "connectors": [
+    {
+      "code": "adzuna",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 10,
+      "monthly_request_limit": 80,
+      "trust_level": 70,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "BLOCKED_CREDENTIALS",
+      "compliance": "APPROVED_API"
+    },
+    {
+      "code": "arbeitnow",
+      "enabled": true,
+      "max_jobs_per_run": 15,
+      "daily_request_limit": 8,
+      "monthly_request_limit": 100,
+      "trust_level": 60,
+      "next_run_at": "2026-08-04 06:00:00",
+      "last_http": 200,
+      "last_jobs_found": 1,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_FEED"
+    },
+    {
+      "code": "ashby",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 85,
+      "next_run_at": "2026-08-04 16:36:11",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_ATS"
+    },
+    {
+      "code": "bayt",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 50,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    },
+    {
+      "code": "email_alert",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 70,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    },
+    {
+      "code": "forasna",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 50,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    },
+    {
+      "code": "greenhouse",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 85,
+      "next_run_at": "2026-08-04 16:36:11",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_ATS"
+    },
+    {
+      "code": "gulftalent",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 50,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    },
+    {
+      "code": "indeed_restricted",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 0,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "REJECTED_AUTOMATION"
+    },
+    {
+      "code": "jooble",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 10,
+      "monthly_request_limit": 80,
+      "trust_level": 70,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "BLOCKED_CREDENTIALS",
+      "compliance": "APPROVED_API"
+    },
+    {
+      "code": "jsearch",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 8,
+      "monthly_request_limit": 120,
+      "trust_level": 65,
+      "next_run_at": "2026-08-04 04:57:36",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "HTTPSConnectionPool(host='jsearch.p.rapidapi.com', port=443): Read timed out. (read timeout=25)",
+      "compliance": "APPROVED_API"
+    },
+    {
+      "code": "lever",
+      "enabled": true,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 85,
+      "next_run_at": "2026-08-04 06:30:00",
+      "last_http": 200,
+      "last_jobs_found": 5,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_ATS"
+    },
+    {
+      "code": "linkedin_restricted",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 0,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "REJECTED_AUTOMATION"
+    },
+    {
+      "code": "manual",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 90,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    },
+    {
+      "code": "naukrigulf",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 50,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    },
+    {
+      "code": "recruitee",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 80,
+      "next_run_at": "2026-08-04 04:56:03",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "http_404:{\"error\":\"Not Found\"}",
+      "compliance": "APPROVED_PUBLIC_ATS"
+    },
+    {
+      "code": "remoteok",
+      "enabled": true,
+      "max_jobs_per_run": 10,
+      "daily_request_limit": 6,
+      "monthly_request_limit": 80,
+      "trust_level": 40,
+      "next_run_at": "2026-08-04 06:05:00",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_FEED"
+    },
+    {
+      "code": "remotive",
+      "enabled": true,
+      "max_jobs_per_run": 15,
+      "daily_request_limit": 8,
+      "monthly_request_limit": 100,
+      "trust_level": 60,
+      "next_run_at": "2026-08-04 06:00:00",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_FEED"
+    },
+    {
+      "code": "smartrecruiters",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 80,
+      "next_run_at": "2026-08-05 04:41:03",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_ATS"
+    },
+    {
+      "code": "tanqeeb",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 50,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    },
+    {
+      "code": "workable",
+      "enabled": true,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 75,
+      "next_run_at": "2026-08-04 09:05:00",
+      "last_http": 200,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "APPROVED_PUBLIC_ATS"
+    },
+    {
+      "code": "wuzzuf",
+      "enabled": false,
+      "max_jobs_per_run": 5,
+      "daily_request_limit": 20,
+      "monthly_request_limit": 200,
+      "trust_level": 50,
+      "next_run_at": "",
+      "last_http": 0,
+      "last_jobs_found": 0,
+      "last_error": "",
+      "compliance": "MANUAL_DISCOVERY_ONLY"
+    }
+  ],
+  "scheduler": {
+    "id": 123,
+    "active_before": false,
+    "active_after": true,
+    "action": "activated",
+    "interval": "15 minutes"
+  },
+  "digest": {
+    "id": 112,
+    "active": true,
+    "action": "left_active_preexisting"
+  },
+  "cleanup": {
+    "id": 124,
+    "active_before": false,
+    "active_after": true,
+    "action": "activated"
+  },
+  "gates": {
+    "feed_ok": true,
+    "ats_ok": true
+  },
+  "backup": {
+    "path": "/home/sabry/private/job_orchestrator/backups/pet_spot_elsahel_pre_job_source_activation_20260804T042544Z.dump",
+    "sha256": "f06e8a4c3c56e397b3b57e2589497b483b105a3bfa5fbbdb5427bae65b5c9dde"
+  },
+  "module": "19.0.2.20.0",
+  "branch": "feature/job-source-expansion",
+  "verdict": "JOB_SOURCE_DISCOVERY_ACTIVE_WITH_CREDENTIAL_BLOCKERS"
+}

@@ -1,0 +1,1356 @@
+2026-08-04 04:38:24,183 3078049 INFO ? odoo: Odoo version 19.0 
+2026-08-04 04:38:24,183 3078049 INFO ? odoo: Using configuration file at /home/sabry/odoo_base/base_odoo_19/config/projects/pet_spot_elsahel_test.conf 
+2026-08-04 04:38:24,183 3078049 INFO ? odoo: addons paths: _NamespacePath(['/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/.filestore/addons/19.0', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/addons', '/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise', '/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel']) 
+2026-08-04 04:38:24,183 3078049 INFO ? odoo: database: odoo@localhost:5432 
+2026-08-04 04:38:24,592 3078049 INFO ? odoo.service.server: HTTP service (werkzeug) running on master:18031 
+2026-08-04 04:38:24,625 3078049 INFO pet_spot_elsahel_test odoo.tests.common: Importing test framework 
+2026-08-04 04:38:24,692 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading 1 modules... 
+2026-08-04 04:38:24,701 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-08-04 04:38:24,781 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: updating modules list 
+2026-08-04 04:38:24,792 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-08-04 04:38:28,343 3078049 WARNING pet_spot_elsahel_test odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-04 04:38:28,344 3078049 WARNING pet_spot_elsahel_test odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-04 04:38:29,633 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_module: ALLOW access to module.button_upgrade on ['LinkedIn Connector'] to user __system__ #1 via n/a 
+2026-08-04 04:38:29,633 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_module: ALLOW access to module.update_list on ['LinkedIn Connector'] to user __system__ #1 via n/a 
+2026-08-04 04:38:32,565 3078049 WARNING pet_spot_elsahel_test odoo.modules.module: Missing `author` key in manifest for 'petspot_sale_readiness', defaulting to '' 
+2026-08-04 04:38:33,814 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_module: ALLOW access to module.button_install on [] to user __system__ #1 via n/a 
+2026-08-04 04:38:33,960 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading 376 modules... 
+2026-08-04 04:38:33,984 3078049 WARNING pet_spot_elsahel_test odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer.six' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2026-08-04 04:38:34,476 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:34,541 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:34,570 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:34,732 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: Loading module linkedin_connector (90/376) 
+2026-08-04 04:38:34,948 3078049 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-04 04:38:35,013 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/__init__.py:4: DeprecationWarning: Since 19.0, odoo.osv is deprecated use odoo.fields.Domain
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 456, in load_modules
+    load_module_graph(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 170, in load_module_graph
+    load_openerp_module(package.name)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/module.py", line 505, in load_openerp_module
+    __import__(qualname)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/__init__.py", line 1, in <module>
+    from . import models
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/__init__.py", line 23, in <module>
+    from . import linkedin_caught_jobs_dashboard
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_caught_jobs_dashboard.py", line 12, in <module>
+    from odoo.osv import expression
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/__init__.py", line 4, in <module>
+    warnings.warn("Since 19.0, odoo.osv is deprecated use odoo.fields.Domain", DeprecationWarning)
+ 
+2026-08-04 04:38:35,017 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:35,018 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:35,018 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:35,018 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:35,018 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:35,101 3078049 INFO pet_spot_elsahel_test odoo.registry: module linkedin_connector: creating or updating database tables 
+2026-08-04 04:38:35,462 3078049 INFO pet_spot_elsahel_test odoo.registry: Models have no table: ai.embedding. 
+2026-08-04 04:38:35,462 3078049 INFO pet_spot_elsahel_test odoo.registry: Recreate table of model ai.embedding. 
+2026-08-04 04:38:35,464 3078049 ERROR pet_spot_elsahel_test odoo.registry: Model ai.embedding has no table. 
+2026-08-04 04:38:35,494 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/security/linkedin_security.xml 
+2026-08-04 04:38:35,714 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/security/ir.model.access.csv 
+2026-08-04 04:38:35,830 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/security/linkedin_bulk_wizard_access.xml 
+2026-08-04 04:38:35,833 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/data/ir_config_parameter_data.xml 
+2026-08-04 04:38:35,874 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/data/ir_cron_data.xml 
+2026-08-04 04:38:35,901 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/data/ats_source_data.xml 
+2026-08-04 04:38:35,941 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/data/answer_library_data.xml 
+2026-08-04 04:38:35,944 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/data/job_source_connector_data.xml 
+2026-08-04 04:38:35,994 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/data/job_score_filter_rule_data.xml 
+2026-08-04 04:38:36,029 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_post_views.xml 
+2026-08-04 04:38:36,108 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_stream_post_views.xml 
+2026-08-04 04:38:36,171 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_job_views.xml 
+2026-08-04 04:38:36,245 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_job_source_views.xml 
+2026-08-04 04:38:36,364 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_cv_version_views.xml 
+2026-08-04 04:38:36,389 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_job_application_views.xml 
+2026-08-04 04:38:36,427 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_answer_library_views.xml 
+2026-08-04 04:38:36,449 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_resume_views.xml 
+2026-08-04 04:38:36,471 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_message_views.xml 
+2026-08-04 04:38:36,513 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_account_views.xml 
+2026-08-04 04:38:36,593 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_bulk_wizard_views.xml 
+2026-08-04 04:38:36,615 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_settings_views.xml 
+2026-08-04 04:38:36,638 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_orchestrator_views.xml 
+2026-08-04 04:38:36,827 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_job_channel_source_views.xml 
+2026-08-04 04:38:36,884 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_caught_jobs_dashboard_views.xml 
+2026-08-04 04:38:36,911 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: loading linkedin_connector/views/linkedin_partner_ats_probe_views.xml 
+2026-08-04 04:38:37,183 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.attachment_id 
+2026-08-04 04:38:37,183 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.content 
+2026-08-04 04:38:37,183 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.embedding_model 
+2026-08-04 04:38:37,188 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on petget.document.animal_id 
+2026-08-04 04:38:37,188 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on petget.reminder.animal_id 
+2026-08-04 04:38:37,188 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on petget.note.animal_id 
+2026-08-04 04:38:37,190 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on appointment.answer.input.calendar_event_id 
+2026-08-04 04:38:37,215 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_ats_discovery: Starting TestAtsDiscovery.test_ats_source_model_and_isolation ... 
+2026-08-04 04:38:37,238 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://boards-api.greenhouse.io/v1/boards/this-board-should-404-zzzz/jobs?content=true 
+2026-08-04 04:38:37,238 3078049 ERROR pet_spot_elsahel_test odoo.addons.linkedin_connector.models.linkedin_ats_source: ATS source 74 failed 
+Traceback (most recent call last):
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_ats_source.py", line 331, in run_discovery_cycle
+    status, jobs = ats_feeds.fetch_greenhouse_jobs(src.board_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/services/ats_feeds.py", line 36, in fetch_greenhouse_jobs
+    r = _session().get(url, params={"content": "true"}, timeout=TIMEOUT)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/venv19/lib/python3.12/site-packages/requests/sessions.py", line 671, in get
+    return self.request("GET", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/venv19/lib/python3.12/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 408, in <lambda>
+    lambda s, r, **kwargs: cls._request_handler(s, r, **kwargs),
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 356, in _request_handler
+    raise BlockedRequest(f"External requests verboten (was {r.method} {r.url})")
+odoo.tests.common.BlockedRequest: External requests verboten (was GET https://boards-api.greenhouse.io/v1/boards/this-board-should-404-zzzz/jobs?content=true)
+2026-08-04 04:38:37,319 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_ats_discovery: Starting TestAtsDiscovery.test_classify_ineligible_linkedin ... 
+2026-08-04 04:38:37,320 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_ats_discovery: Starting TestAtsDiscovery.test_classify_score_informational_only ... 
+2026-08-04 04:38:37,322 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_ats_discovery: Starting TestAtsDiscovery.test_classify_score_no_longer_blocks ... 
+2026-08-04 04:38:37,323 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://boards.greenhouse.io/x/jobs/1 
+2026-08-04 04:38:37,323 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://boards.greenhouse.io/x/jobs/1: External requests verboten (was GET https://boards.greenhouse.io/x/jobs/1) 
+2026-08-04 04:38:37,323 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_ats_discovery: Starting TestAtsDiscovery.test_location_egypt_uae_remote ... 
+2026-08-04 04:38:37,324 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_ats_discovery: Starting TestAtsDiscovery.test_location_policy_gulf_requires_sponsor ... 
+2026-08-04 04:38:37,325 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_ats_discovery: Starting TestAtsDiscovery.test_platform_classifier_ats ... 
+2026-08-04 04:38:37,521 3078049 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-04 04:38:37,582 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-08-04 04:38:37,620 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: Module linkedin_connector loaded in 2.89s (incl. 0.43s test), 1468 queries (+88 test, +1468 other) 
+2026-08-04 04:38:37,646 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:37,892 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/main.py:17: DeprecationWarning: Since 19.0, @route(type='json') is a deprecated alias to @route(type='jsonrpc')
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 456, in load_modules
+    load_module_graph(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 170, in load_module_graph
+    load_openerp_module(package.name)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/module.py", line 505, in load_openerp_module
+    __import__(qualname)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/__init__.py", line 2, in <module>
+    from . import controllers
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/__init__.py", line 1, in <module>
+    from . import main
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/paymob/controllers/main.py", line 17, in <module>
+    class PaymobController(http.Controller):
+ 
+2026-08-04 04:38:37,902 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:37,902 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:38,399 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:38,716 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:38,716 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,158 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,158 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,158 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,158 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,158 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,159 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,162 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,163 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,163 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,163 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,163 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,184 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,184 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,185 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,328 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,328 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,329 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,329 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,330 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,330 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,330 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,331 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,334 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,334 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,340 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,340 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,462 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,462 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,463 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,463 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,466 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,494 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,524 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,524 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,524 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,524 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,525 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,525 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,525 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,525 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,525 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,525 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,525 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,526 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,526 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,554 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,554 3078049 WARNING pet_spot_elsahel_test odoo.registry: Model attribute '_sql_constraints' is no longer supported, please define model.Constraint on the model. 
+2026-08-04 04:38:39,554 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: 376 modules loaded in 5.59s, 1468 queries (+1556 extra) 
+2026-08-04 04:38:39,905 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_import_order_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:39,905 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_tax_behavior: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:39,905 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_stock_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:39,906 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.export_stock_interval_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:40,157 3078049 WARNING pet_spot_elsahel_test odoo.fields: stock.picking.shipblu_normalized_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:40,447 3078049 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-04 04:38:40,583 3078049 WARNING pet_spot_elsahel_test odoo.fields: Translated stored related field (shopify.public.category.map.public_categ_name) will not be computed correctly in all languages 
+2026-08-04 04:38:40,851 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_import_order_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:40,852 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_tax_behavior: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:40,852 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.shopify_stock_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:40,852 3078049 WARNING pet_spot_elsahel_test odoo.fields: res.config.settings.export_stock_interval_type: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:41,073 3078049 WARNING pet_spot_elsahel_test odoo.fields: stock.picking.shipblu_normalized_status: selection attribute will be ignored as the field is related 
+2026-08-04 04:38:41,489 3078049 WARNING pet_spot_elsahel_test odoo.fields: Field social.media.post.state: unknown parameter 'tracking', if this is an actual parameter you may want to override the method _valid_field_parameter on the relevant model in order to allow it 
+2026-08-04 04:38:41,604 3078049 WARNING pet_spot_elsahel_test odoo.fields: Translated stored related field (shopify.public.category.map.public_categ_name) will not be computed correctly in all languages 
+2026-08-04 04:38:42,622 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: Model dev.whatsapp.analysis.item is declared but cannot be loaded! (Perhaps a module was partially removed or renamed) 
+2026-08-04 04:38:42,811 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_raw_status should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.raw_status is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,811 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_normalized_status should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.normalized_status is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,812 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_business_reference should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.business_reference is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,812 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'stock.picking.shipblu_shipment_id' in dependency of stock.picking.shipblu_tracking_url should be searchable. This is necessary to determine which records to recompute when shipblu.shipment.tracking_url is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,828 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'sale.order.petspot_fulfillment_case_id' in dependency of sale.order.petspot_fulfillment_state should be searchable. This is necessary to determine which records to recompute when petspot.fulfillment.case.state is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,828 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'sale.order.petspot_fulfillment_case_id' in dependency of sale.order.petspot_fulfillment_path should be searchable. This is necessary to determine which records to recompute when petspot.fulfillment.case.path is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,853 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_feeding should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.feeding_guidance is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,853 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py:845: UserWarning: Field 'x_pets.x_petget_life_stage_id' in dependency of x_pets.x_petget_life_stage_care should be searchable. This is necessary to determine which records to recompute when petget.dog.life.stage.care_focus is modified. You should either make the field searchable, or simplify the field dependency.
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tools/func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 199, in new
+    load_modules(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/modules/loading.py", line 520, in load_modules
+    vacuum_cron._trigger(at=datetime.datetime.now() + datetime.timedelta(minutes=1))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 693, in _trigger
+    return self._trigger_list(at_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/addons/base/models/ir_cron.py", line 712, in _trigger_list
+    triggers = self.env['ir.cron.trigger'].sudo().create([
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/decorators.py", line 365, in create
+    return method(self, vals_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4706, in create
+    records = self._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/enterprise/ai_fields/models/models.py", line 43, in _create
+    return super()._create(data_list)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 4928, in _create
+    records.modified(self._fields, create=True)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6796, in modified
+    todo = [self._modified([self._fields[fname] for fname in fnames], create)]
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/models.py", line 6848, in _modified
+    tree = self.pool.get_trigger_tree(fields, select=select)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 568, in get_trigger_tree
+    if field in self._field_triggers
+  File "/usr/lib/python3.12/functools.py", line 998, in __get__
+    val = self.func(instance)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/registry.py", line 660, in _field_triggers
+    dependencies = list(field.resolve_depends(self))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/orm/fields.py", line 845, in resolve_depends
+    warnings.warn(
+ 
+2026-08-04 04:38:42,856 3078049 INFO pet_spot_elsahel_test odoo.registry: verifying fields for every extended model 
+2026-08-04 04:38:43,380 3078049 INFO pet_spot_elsahel_test odoo.registry: Models have no table: ai.embedding. 
+2026-08-04 04:38:43,381 3078049 INFO pet_spot_elsahel_test odoo.registry: Recreate table of model ai.embedding. 
+2026-08-04 04:38:43,388 3078049 ERROR pet_spot_elsahel_test odoo.registry: Model ai.embedding has no table. 
+2026-08-04 04:38:46,229 3078049 INFO pet_spot_elsahel_test odoo.modules.loading: Modules loaded. 
+2026-08-04 04:38:46,278 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.attachment_id 
+2026-08-04 04:38:46,278 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.content 
+2026-08-04 04:38:46,278 3078049 WARNING pet_spot_elsahel_test odoo.schema: Missing not-null constraint on ai.embedding.embedding_model 
+2026-08-04 04:38:46,304 3078049 INFO pet_spot_elsahel_test odoo.registry: Registry changed, signaling through the database 
+2026-08-04 04:38:46,305 3078049 INFO pet_spot_elsahel_test odoo.registry: Registry loaded in 21.711s 
+2026-08-04 04:38:46,306 3078049 INFO pet_spot_elsahel_test odoo.service.server: Starting post tests 
+2026-08-04 04:38:46,309 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_all_scores_policy: Starting TestAllScoresPolicy.test_auth_no_sponsor_hard_excluded ... 
+2026-08-04 04:38:46,314 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_all_scores_policy: Starting TestAllScoresPolicy.test_captcha_routes_to_human_required ... 
+2026-08-04 04:38:46,316 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_all_scores_policy: Starting TestAllScoresPolicy.test_company_account_isolation ... 
+2026-08-04 04:38:46,368 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://softhealer.com/jobs/apply/odoo-functional-consultant-uk-362 
+2026-08-04 04:38:46,369 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://softhealer.com/jobs/apply/odoo-functional-consultant-uk-362: External requests verboten (was GET https://softhealer.com/jobs/apply/odoo-functional-consultant-uk-362) 
+2026-08-04 04:38:46,375 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://softhealer.com/jobs/apply/digital-marketing-manager-team-lead-291 
+2026-08-04 04:38:46,375 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://softhealer.com/jobs/apply/digital-marketing-manager-team-lead-291: External requests verboten (was GET https://softhealer.com/jobs/apply/digital-marketing-manager-team-lead-291) 
+2026-08-04 04:38:46,381 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://softhealer.com/jobs/apply/business-development-executive-b2b-software-sales-363 
+2026-08-04 04:38:46,381 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://softhealer.com/jobs/apply/business-development-executive-b2b-software-sa: External requests verboten (was GET https://softhealer.com/jobs/apply/business-development-executive-b2b-software-sales-363) 
+2026-08-04 04:38:46,424 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/munich-electrification/senior-software-engineer-rust-python-munich-193438 
+2026-08-04 04:38:46,424 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/munich-electrification/senior-software-: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/munich-electrification/senior-software-engineer-rust-python-munich-193438) 
+2026-08-04 04:38:46,435 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/sumologic/presales-solutions-engineer-germany-449826 
+2026-08-04 04:38:46,435 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/sumologic/presales-solutions-engineer-g: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/sumologic/presales-solutions-engineer-germany-449826) 
+2026-08-04 04:38:46,445 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/wundergraph/senior-staff-golang-engineer-emea-frankfurt-237205 
+2026-08-04 04:38:46,445 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/wundergraph/senior-staff-golang-enginee: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/wundergraph/senior-staff-golang-engineer-emea-frankfurt-237205) 
+2026-08-04 04:38:46,459 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.co.uk/jobs/companies/alphasense/staff-cloud-platform-engineer-cloud-developer-experience-91688 
+2026-08-04 04:38:46,460 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.co.uk/jobs/companies/alphasense/staff-cloud-platform-engin: External requests verboten (was GET https://www.arbeitnow.co.uk/jobs/companies/alphasense/staff-cloud-platform-engineer-cloud-developer-experience-91688) 
+2026-08-04 04:38:46,469 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.co.uk/jobs/companies/mimica/staff-lead-platform-devops-engineer-europe-397645 
+2026-08-04 04:38:46,469 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.co.uk/jobs/companies/mimica/staff-lead-platform-devops-eng: External requests verboten (was GET https://www.arbeitnow.co.uk/jobs/companies/mimica/staff-lead-platform-devops-engineer-europe-397645) 
+2026-08-04 04:38:46,479 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/wayve/machine-learning-engineer-82085 
+2026-08-04 04:38:46,479 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/wayve/machine-learning-engineer-82085: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/wayve/machine-learning-engineer-82085) 
+2026-08-04 04:38:46,491 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.odoo.com/jobs/technical-consultant-education-2305 
+2026-08-04 04:38:46,492 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.odoo.com/jobs/technical-consultant-education-2305: External requests verboten (was GET https://www.odoo.com/jobs/technical-consultant-education-2305) 
+2026-08-04 04:38:46,516 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.co.uk/jobs/companies/couchbaseinc/sr-software-engineer-i-manchester-125640 
+2026-08-04 04:38:46,516 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.co.uk/jobs/companies/couchbaseinc/sr-software-engineer-i-m: External requests verboten (was GET https://www.arbeitnow.co.uk/jobs/companies/couchbaseinc/sr-software-engineer-i-manchester-125640) 
+2026-08-04 04:38:46,531 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.co.uk/jobs/companies/uipath/senior-software-engineer-machine-learning-services-london-112524 
+2026-08-04 04:38:46,531 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.co.uk/jobs/companies/uipath/senior-software-engineer-machi: External requests verboten (was GET https://www.arbeitnow.co.uk/jobs/companies/uipath/senior-software-engineer-machine-learning-services-london-112524) 
+2026-08-04 04:38:46,539 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.co.uk/jobs/companies/uipath/senior-forward-deployed-scientist-manchester-66283 
+2026-08-04 04:38:46,539 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.co.uk/jobs/companies/uipath/senior-forward-deployed-scient: External requests verboten (was GET https://www.arbeitnow.co.uk/jobs/companies/uipath/senior-forward-deployed-scientist-manchester-66283) 
+2026-08-04 04:38:46,549 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.co.uk/jobs/companies/motorway/principal-generative-ai-engineer-london-59996 
+2026-08-04 04:38:46,549 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.co.uk/jobs/companies/motorway/principal-generative-ai-engi: External requests verboten (was GET https://www.arbeitnow.co.uk/jobs/companies/motorway/principal-generative-ai-engineer-london-59996) 
+2026-08-04 04:38:46,576 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/cmbluenergyag/senior-software-engineer-data-ai-all-genders-alzenau-bavaria-3311 
+2026-08-04 04:38:46,576 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/cmbluenergyag/senior-software-engineer-: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/cmbluenergyag/senior-software-engineer-data-ai-all-genders-alzenau-bavaria-3311) 
+2026-08-04 04:38:46,586 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/deepsetai/value-engineer-berlin-364213 
+2026-08-04 04:38:46,586 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/deepsetai/value-engineer-berlin-364213: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/deepsetai/value-engineer-berlin-364213) 
+2026-08-04 04:38:46,594 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/deepsetai/growth-marketing-lead-berlin-109318 
+2026-08-04 04:38:46,594 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/deepsetai/growth-marketing-lead-berlin-: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/deepsetai/growth-marketing-lead-berlin-109318) 
+2026-08-04 04:38:46,602 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/deepsetai/product-engineering-tech-lead-berlin-107654 
+2026-08-04 04:38:46,602 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/deepsetai/product-engineering-tech-lead: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/deepsetai/product-engineering-tech-lead-berlin-107654) 
+2026-08-04 04:38:46,624 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/gotphoto/senior-platform-engineer-aws-all-genders-berlin-137961 
+2026-08-04 04:38:46,624 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/gotphoto/senior-platform-engineer-aws-a: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/gotphoto/senior-platform-engineer-aws-all-genders-berlin-137961) 
+2026-08-04 04:38:46,636 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.odoo.com/jobs/sales-internship-2506 
+2026-08-04 04:38:46,636 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.odoo.com/jobs/sales-internship-2506: External requests verboten (was GET https://www.odoo.com/jobs/sales-internship-2506) 
+2026-08-04 04:38:46,641 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.odoo.com/jobs/page/16 
+2026-08-04 04:38:46,641 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.odoo.com/jobs/page/16: External requests verboten (was GET https://www.odoo.com/jobs/page/16) 
+2026-08-04 04:38:46,644 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/wayve/data-engineer-352712 
+2026-08-04 04:38:46,644 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/wayve/data-engineer-352712: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/wayve/data-engineer-352712) 
+2026-08-04 04:38:46,658 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.co.uk/jobs/companies/ixllearning/educational-videos-actor-uk-ireland-freelance-26614 
+2026-08-04 04:38:46,658 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.co.uk/jobs/companies/ixllearning/educational-videos-actor-: External requests verboten (was GET https://www.arbeitnow.co.uk/jobs/companies/ixllearning/educational-videos-actor-uk-ireland-freelance-26614) 
+2026-08-04 04:38:46,667 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.arbeitnow.com/jobs/companies/okta/large-enterprise-account-executive-auth0-213227 
+2026-08-04 04:38:46,667 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.arbeitnow.com/jobs/companies/okta/large-enterprise-account-executive: External requests verboten (was GET https://www.arbeitnow.com/jobs/companies/okta/large-enterprise-account-executive-auth0-213227) 
+2026-08-04 04:38:46,689 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.openeducat.org/jobs/apply/python-developer-intern/ 
+2026-08-04 04:38:46,689 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.openeducat.org/jobs/apply/python-developer-intern/: External requests verboten (was GET https://www.openeducat.org/jobs/apply/python-developer-intern/) 
+2026-08-04 04:38:46,697 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.openeducat.org/jobs/apply/business-development-intern/ 
+2026-08-04 04:38:46,697 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.openeducat.org/jobs/apply/business-development-intern/: External requests verboten (was GET https://www.openeducat.org/jobs/apply/business-development-intern/) 
+2026-08-04 04:38:46,708 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.odoo.com/jobs/page/4 
+2026-08-04 04:38:46,708 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.odoo.com/jobs/page/4: External requests verboten (was GET https://www.odoo.com/jobs/page/4) 
+2026-08-04 04:38:46,712 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.odoo.com/jobs/page/3 
+2026-08-04 04:38:46,712 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.odoo.com/jobs/page/3: External requests verboten (was GET https://www.odoo.com/jobs/page/3) 
+2026-08-04 04:38:46,717 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.odoo.com/jobs/page/2 
+2026-08-04 04:38:46,717 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.odoo.com/jobs/page/2: External requests verboten (was GET https://www.odoo.com/jobs/page/2) 
+2026-08-04 04:38:46,724 3078049 INFO pet_spot_elsahel_test odoo.tests.common.requests: Blocking un-mocked external HTTP request GET https://www.openeducat.org/jobs/apply/digital-marketing-intern/ 
+2026-08-04 04:38:46,724 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.services.ats_feeds: detail fetch failed https://www.openeducat.org/jobs/apply/digital-marketing-intern/: External requests verboten (was GET https://www.openeducat.org/jobs/apply/digital-marketing-intern/) 
+2026-08-04 04:38:46,733 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_all_scores_policy: Starting TestAllScoresPolicy.test_dashboard_auto_eligible_ignores_score_floor ... 
+2026-08-04 04:38:46,774 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/expression.py:242: DeprecationWarning: Since 19.0, use odoo.fields.Domain
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_all_scores_policy.py", line 175, in test_dashboard_auto_eligible_ignores_score_floor
+    data = Dash.get_dashboard_data(period="all")
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_caught_jobs_dashboard.py", line 92, in get_dashboard_data
+    domain = expression.AND(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/expression.py", line 242, in AND
+    warnings.warn("Since 19.0, use odoo.fields.Domain", DeprecationWarning)
+ 
+2026-08-04 04:38:46,774 3078049 WARNING pet_spot_elsahel_test py.warnings: /home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/expression.py:173: DeprecationWarning: Since 19.0, use odoo.fields.Domain
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_all_scores_policy.py", line 175, in test_dashboard_auto_eligible_ignores_score_floor
+    data = Dash.get_dashboard_data(period="all")
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_caught_jobs_dashboard.py", line 92, in get_dashboard_data
+    domain = expression.AND(
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/expression.py", line 243, in AND
+    return combine(AND_OPERATOR, [TRUE_LEAF], [FALSE_LEAF], domains)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/expression.py", line 229, in combine
+    domain = normalize_domain(domain)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/osv/expression.py", line 173, in normalize_domain
+    warnings.warn("Since 19.0, use odoo.fields.Domain", DeprecationWarning)
+ 
+2026-08-04 04:38:46,856 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_all_scores_policy: Starting TestAllScoresPolicy.test_policy_min_score_zero_and_caps_still_enforced ... 
+2026-08-04 04:38:46,897 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_all_scores_policy: Starting TestAllScoresPolicy.test_score_only_blocker_reconsidered ... 
+2026-08-04 04:38:47,521 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_all_scores_policy: Starting TestAllScoresPolicy.test_score_zero_can_qualify_as_safe_canary ... 
+2026-08-04 04:38:47,530 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-08-04 04:38:47,652 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_account_isolation_and_company_exclusion ... 
+2026-08-04 04:38:47,777 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_action_open_job_rejects_company ... 
+2026-08-04 04:38:47,830 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_app_state_filter ... 
+2026-08-04 04:38:47,900 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_cairo_utc_boundaries_custom ... 
+2026-08-04 04:38:47,982 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_combined_filters_and_search ... 
+2026-08-04 04:38:48,069 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_custom_range_validation ... 
+2026-08-04 04:38:48,239 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_empty_dataset ... 
+2026-08-04 04:38:48,307 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_grouping_charts ... 
+2026-08-04 04:38:48,427 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_kpi_card_smart_actions_open_lists ... 
+2026-08-04 04:38:48,480 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_no_write_on_open_or_refresh ... 
+2026-08-04 04:38:48,648 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_pagination ... 
+2026-08-04 04:38:48,768 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_period_today_and_7d ... 
+2026-08-04 04:38:48,946 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_reconcile_total_against_orm ... 
+2026-08-04 04:38:49,082 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_safe_canary_filter_and_kpis ... 
+2026-08-04 04:38:49,262 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_caught_jobs_dashboard: Starting TestCaughtJobsDashboard.test_smart_actions_preserve_account ... 
+2026-08-04 04:38:49,317 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-08-04 04:38:49,350 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_account_isolation_company_requires_org ... 
+2026-08-04 04:38:49,444 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_account_isolation_fallback_forbidden ... 
+2026-08-04 04:38:49,518 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_account_isolation_personal_no_org ... 
+2026-08-04 04:38:49,592 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_application_approval_gate ... 
+2026-08-04 04:38:50,046 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_application_created_above_threshold ... 
+2026-08-04 04:38:50,198 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_application_not_auto_created_when_disabled ... 
+2026-08-04 04:38:50,291 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_author_urn_by_type ... 
+2026-08-04 04:38:50,399 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_dedupe_fingerprint ... 
+2026-08-04 04:38:50,491 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_digest_skips_when_live_disabled ... 
+2026-08-04 04:38:50,563 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.models.linkedin_job: linkedin.job digest skipped: linkedin_connector.live_job_search_enabled is False (enable only after UAT approval). 
+2026-08-04 04:38:50,564 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_job_direct_apply_blocked_without_app ... 
+2026-08-04 04:38:50,638 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_job_scoring_junior_low ... 
+2026-08-04 04:38:50,710 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_job_scoring_senior_odoo_high ... 
+2026-08-04 04:38:50,811 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_jsearch_key_prefers_environment_over_icp ... 
+2026-08-04 04:38:50,891 3078049 WARNING pet_spot_elsahel_test odoo.addons.linkedin_connector.models.linkedin_job: linkedin_connector.rapidapi_key is set in ir.config_parameter; prefer LINKEDIN_JSEARCH_RAPIDAPI_KEY via systemd EnvironmentFile and clear the ICP value. 
+2026-08-04 04:38:50,892 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_personal_post_ok ... 
+2026-08-04 04:38:50,966 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_post_purpose_cross_blocked ... 
+2026-08-04 04:38:51,062 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_post_write_isolation_blocked ... 
+2026-08-04 04:38:51,186 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_hunt: Starting TestLinkedinJobHunt.test_tips_batch_requires_personal ... 
+2026-08-04 04:38:51,277 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 1 checked, 1 removed 
+2026-08-04 04:38:51,319 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_application_rejects_company_account ... 
+2026-08-04 04:38:51,334 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_attempt_idempotency ... 
+2026-08-04 04:38:51,376 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_candidate_profile_omits_unset_sensitive ... 
+2026-08-04 04:38:51,403 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_hmac_signature_helper ... 
+2026-08-04 04:38:51,404 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_job_sets_platform_on_create ... 
+2026-08-04 04:38:51,408 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_pack_write_state_gate ... 
+2026-08-04 04:38:51,438 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_platform_classification ... 
+2026-08-04 04:38:51,439 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_job_orchestrator_p1: Starting TestJobOrchestratorP1.test_policy_defaults_and_caps ... 
+2026-08-04 04:38:51,495 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-08-04 04:38:51,529 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_linkedin_smoke: Starting TestLinkedinConnectorSmoke.test_connected_false_without_tokens ... 
+2026-08-04 04:38:51,534 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_linkedin_smoke: Starting TestLinkedinConnectorSmoke.test_create_account_and_redirect_uri ... 
+2026-08-04 04:38:51,547 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-08-04 04:38:51,632 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_discovery_cap_limits_sources ... 
+2026-08-04 04:38:51,648 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_hit_creates_source_once_and_reuses ... 
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 106, in test_hit_creates_source_once_and_reuses
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 106, in test_hit_creates_source_once_and_reuses
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 106, in test_hit_creates_source_once_and_reuses
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 138, in test_hit_creates_source_once_and_reuses
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 138, in test_hit_creates_source_once_and_reuses
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 138, in test_hit_creates_source_once_and_reuses
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+2026-08-04 04:38:51,706 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_manual_seed_not_duplicated_by_same_board ... 
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 186, in test_manual_seed_not_duplicated_by_same_board
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 186, in test_manual_seed_not_duplicated_by_same_board
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 186, in test_manual_seed_not_duplicated_by_same_board
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+2026-08-04 04:38:51,735 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_miss_does_not_create_source ... 
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 69, in test_miss_does_not_create_source
+    result = self.Probe.cron_probe_due(force=True, limit=1)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 69, in test_miss_does_not_create_source
+    result = self.Probe.cron_probe_due(force=True, limit=1)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 69, in test_miss_does_not_create_source
+    result = self.Probe.cron_probe_due(force=True, limit=1)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+2026-08-04 04:38:51,757 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_probe_does_not_write_partner ... 
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 243, in test_probe_does_not_write_partner
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 372, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 243, in test_probe_does_not_write_partner
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 397, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/command.py", line 133, in main
+    command().run(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 127, in run
+    main(args)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/cli/server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/service/server.py", line 1526, in preload_registries
+    result = loader.run_suite(post_install_suite, global_report=registry._assertion_report)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/loader.py", line 116, in run_suite
+    suite(results)
+  File "/usr/lib/python3.12/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/suite.py", line 47, in run
+    test(result)
+  File "/usr/lib/python3.12/unittest/case.py", line 690, in __call__
+    return self.run(*args, **kwds)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 379, in run
+    super().run(cast(TestResult, result))
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 216, in run
+    self._callTestMethod(testMethod)
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/case.py", line 184, in _callTestMethod
+    method()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/tests/test_partner_ats_probe.py", line 243, in test_probe_does_not_write_partner
+    self.Probe.cron_probe_due(force=True, limit=5)
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 439, in cron_probe_due
+    self._safe_commit()
+  File "/home/sabry/odoo_base/base_odoo_19/projects/pet_spot_elsahel/linkedin_connector/models/linkedin_partner_ats_probe.py", line 179, in _safe_commit
+    self.env.cr.commit()
+  File "/home/sabry/odoo_base/base_odoo_19/odoo19/odoo19/odoo/tests/common.py", line 1100, in forbidden
+    traceback.print_stack()
+2026-08-04 04:38:51,787 3078049 INFO pet_spot_elsahel_test odoo.addons.linkedin_connector.tests.test_partner_ats_probe: Starting TestPartnerAtsProbe.test_recovery_unsticks_processing ... 
+2026-08-04 04:38:51,809 3078049 INFO pet_spot_elsahel_test odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-08-04 04:38:51,847 3078049 INFO pet_spot_elsahel_test odoo.service.server: 55 post-tests in 5.54s, 2856 queries 
+2026-08-04 04:38:51,847 3078049 INFO pet_spot_elsahel_test odoo.tests.stats: linkedin_connector: 76 tests 5.95s 2944 queries 
+2026-08-04 04:38:51,847 3078049 INFO pet_spot_elsahel_test odoo.tests.result: 0 failed, 0 error(s) of 62 tests when loading database 'pet_spot_elsahel_test' 
+2026-08-04 04:38:51,847 3078049 INFO pet_spot_elsahel_test odoo.service.server: Initiating shutdown 
+2026-08-04 04:38:51,847 3078049 INFO pet_spot_elsahel_test odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-08-04 04:38:52,217 3078049 INFO pet_spot_elsahel_test odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 2 connections  

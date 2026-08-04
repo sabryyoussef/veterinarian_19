@@ -64,7 +64,7 @@ class JsearchAdapter(BaseJobSourceAdapter):
             "X-RapidAPI-Key": api_key,
             "X-RapidAPI-Host": JSEARCH_HOST,
         }
-        resp = safe_get(JSEARCH_URL, params=params, headers=headers)
+        resp = safe_get(JSEARCH_URL, params=params, headers=headers, timeout=60)
         data = resp.json() if resp.content else {}
         payload = data.get("data", [])
         if isinstance(payload, dict):

@@ -1,0 +1,3 @@
+SECOND_CANARY {"second_canary_stats": {"imported": 0, "duplicates": 0, "rejected": 0, "qualified": 0, "updated": 0}, "delta_jobs": 0, "delta_apps": 0, "delta_applied": 0, "last_http": 200, "last_jobs_found": 0, "last_error": false, "enabled": true}
+ENABLED_CONNECTORS ['workable', 'lever', 'remoteok', 'remotive', 'adzuna', 'arbeitnow', 'jooble', 'jsearch']
+TUNE_OK

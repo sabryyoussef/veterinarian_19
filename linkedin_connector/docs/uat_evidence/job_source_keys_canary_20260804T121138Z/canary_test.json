@@ -1,0 +1,97 @@
+{
+  "before": {
+    "label": "test",
+    "jobs": 162,
+    "apps": 14,
+    "applied": 1,
+    "live_submit": "False"
+  },
+  "after": {
+    "jobs": 162,
+    "apps": 14,
+    "applied": 1,
+    "live_submit": "False"
+  },
+  "delta_jobs": 0,
+  "delta_apps": 0,
+  "delta_applied": 0,
+  "results": {
+    "arbeitnow": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_error": false
+    },
+    "remotive": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_error": false
+    },
+    "lever": {
+      "stats": {
+        "error": "adapter",
+        "detail": "http_404:{\"ok\":false,\"error\":\"Document not found\"}"
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 0,
+      "last_error": "http_404:{\"ok\":false,\"error\":\"Document not found\"}"
+    },
+    "adzuna": {
+      "stats": {
+        "imported": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "qualified": 0,
+        "updated": 0
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 200,
+      "last_error": false
+    },
+    "jsearch": {
+      "stats": {
+        "error": "adapter",
+        "detail": "HTTPSConnectionPool(host='jsearch.p.rapidapi.com', port=443): Read timed out. (read timeout=25)"
+      },
+      "jobs_delta": 0,
+      "apps_delta": 0,
+      "applied_delta": 0,
+      "live_submit": "False",
+      "last_http": 0,
+      "last_error": "HTTPSConnectionPool(host='jsearch.p.rapidapi.com', port=443): Read timed out. (read timeout=25)"
+    },
+    "jooble": {
+      "status": "BLOCKED_CREDENTIALS"
+    }
+  },
+  "enabled": [],
+  "disabled": [],
+  "scheduler": {
+    "skipped": "test"
+  }
+}

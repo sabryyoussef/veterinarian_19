@@ -1,0 +1,22 @@
+{
+  "pet_spot_elsahel_test": {
+    "adzuna": "INSTALLED",
+    "jooble": "SKIPPED_MISSING",
+    "verify": [
+      "linkedin_connector.adzuna_app_id=PRESENT len=8",
+      "linkedin_connector.adzuna_app_key=PRESENT len=32",
+      "linkedin_connector.jooble_api_key=MISSING",
+      "linkedin_connector.live_submit_enabled=PRESENT len=5"
+    ]
+  },
+  "pet_spot_elsahel": {
+    "adzuna": "INSTALLED",
+    "jooble": "SKIPPED_MISSING",
+    "verify": [
+      "linkedin_connector.adzuna_app_id=PRESENT len=8",
+      "linkedin_connector.adzuna_app_key=PRESENT len=32",
+      "linkedin_connector.jooble_api_key=MISSING",
+      "linkedin_connector.live_submit_enabled=PRESENT len=5"
+    ]
+  }
+}

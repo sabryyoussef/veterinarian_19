@@ -33,8 +33,12 @@
                     <button name="action_shortlist" type="object" string="Shortlist"
                             invisible="state != 'discovered'" class="btn-secondary"/>
                     <button name="action_prepare_pack" type="object" string="Prepare pack"
-                            invisible="state not in ('discovered','shortlisted','pack_ready')"
+                            invisible="state not in ('discovered','shortlisted','pack_ready','rejected','human_required','failed','delivery_failed','missing_fact')"
                             class="btn-primary"/>
+                    <button name="action_reopen_for_approval" type="object" string="Reopen → Pack Ready"
+                            invisible="state not in ('rejected','human_required','failed','delivery_failed','missing_fact')"
+                            class="btn-secondary"
+                            groups="linkedin_connector.group_linkedin_job_hunt"/>
                     <button name="action_approve" type="object" string="Approve"
                             invisible="state != 'pack_ready'" class="btn-primary"
                             groups="linkedin_connector.group_linkedin_job_hunt"/>
@@ -53,9 +57,9 @@
                             class="btn-secondary"
                             groups="linkedin_connector.group_linkedin_job_hunt"/>
                     <button name="action_mark_confirmed_applied" type="object"
-                            string="Mark Confirmed Applied"
+                            string="Mark Applied"
                             invisible="state == 'applied'"
-                            class="btn-secondary"
+                            class="btn-primary"
                             groups="linkedin_connector.group_linkedin_job_hunt"/>
                     <button name="action_resolve_submission_unknown" type="object"
                             string="Resolve Submission Unknown"

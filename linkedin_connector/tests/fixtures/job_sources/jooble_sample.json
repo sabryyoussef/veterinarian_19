@@ -1,0 +1,14 @@
+{
+  "totalCount": 1,
+  "jobs": [
+    {
+      "id": 1001,
+      "title": "Senior Odoo Developer",
+      "company": "Acme ERP",
+      "location": "Cairo, Egypt",
+      "snippet": "Python PostgreSQL Odoo 17. Visa sponsorship available.",
+      "link": "https://jooble.org/j/1001-acme-odoo",
+      "updated": "2026-08-01T10:00:00Z"
+    }
+  ]
+}

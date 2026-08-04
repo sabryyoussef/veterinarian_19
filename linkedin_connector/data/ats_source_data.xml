@@ -90,6 +90,67 @@
             <field name="enabled" eval="True"/>
         </record>
 
+        <!-- Expanded Odoo-partner / Gulf public boards -->
+        <record id="ats_src_cybrosys_careers" model="linkedin.ats.source">
+            <field name="name">Cybrosys careers</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://www.cybrosys.com/careers/</field>
+            <field name="company">Cybrosys</field>
+            <field name="region">remote|india</field>
+            <field name="enabled" eval="True"/>
+        </record>
+        <record id="ats_src_aktiv_software" model="linkedin.ats.source">
+            <field name="name">Aktiv Software careers</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://www.aktivsoftware.com/careers/</field>
+            <field name="company">Aktiv Software</field>
+            <field name="region">remote|india</field>
+            <field name="enabled" eval="True"/>
+        </record>
+        <record id="ats_src_techreceptives" model="linkedin.ats.source">
+            <field name="name">Tech Receptives careers</field>
+            <field name="ats_type">company_ats</field>
+            <field name="board_token">https://techreceptives.com/jobs</field>
+            <field name="company">Tech Receptives</field>
+            <field name="region">remote|india</field>
+            <field name="enabled" eval="True"/>
+        </record>
+        <record id="ats_src_gh_odoo_ps" model="linkedin.ats.source">
+            <field name="name">Greenhouse — Odoo PS probe</field>
+            <field name="ats_type">greenhouse</field>
+            <field name="board_token">odoops</field>
+            <field name="company">Odoo PS</field>
+            <field name="region">europe|remote</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Probe; auto-disables after repeated 404.</field>
+        </record>
+        <record id="ats_src_lever_camptocamp" model="linkedin.ats.source">
+            <field name="name">Camptocamp Lever</field>
+            <field name="ats_type">lever</field>
+            <field name="board_token">camptocamp</field>
+            <field name="company">Camptocamp</field>
+            <field name="region">europe|remote</field>
+            <field name="enabled" eval="True"/>
+        </record>
+        <record id="ats_src_ashby_probe_odoo" model="linkedin.ats.source">
+            <field name="name">Ashby — Odoo-adjacent probe</field>
+            <field name="ats_type">ashby</field>
+            <field name="board_token">odoo</field>
+            <field name="company">Ashby probe</field>
+            <field name="region">remote</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Probe board token; expect auto-disable on 404.</field>
+        </record>
+        <record id="ats_src_workable_softhealer" model="linkedin.ats.source">
+            <field name="name">Softhealer Workable probe</field>
+            <field name="ats_type">workable</field>
+            <field name="board_token">softhealer</field>
+            <field name="company">Softhealer</field>
+            <field name="region">remote</field>
+            <field name="enabled" eval="True"/>
+            <field name="notes">Prefer company_ats softhealer.com/jobs; this is a secondary probe.</field>
+        </record>
+
         <record id="ir_cron_direct_ats_discovery" model="ir.cron">
             <field name="name">LinkedIn: Direct ATS Discovery (6h)</field>
             <field name="model_id" ref="model_linkedin_ats_source"/>

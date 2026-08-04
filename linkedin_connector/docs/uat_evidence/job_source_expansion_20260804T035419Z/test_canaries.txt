@@ -1,0 +1,20 @@
+BEFORE {"jobs": 68, "apps": 13, "live_submit": "False"}
+BLOCKED_CREDENTIALS jooble
+BLOCKED_CREDENTIALS adzuna
+CANARY {"arbeitnow": {"imported": 5, "duplicates": 0, "rejected": 0, "qualified": 5, "updated": 0}, "remotive": {"imported": 5, "duplicates": 0, "rejected": 0, "qualified": 5, "updated": 0}, "greenhouse": {"error": "adapter", "detail": "http_404:{\"status\":404,\"error\":\"Job not found\"}"}, "lever": {"error": "adapter", "detail": "http_404:{\"ok\":false,\"error\":\"Document not found\"}"}, "ashby": {"error": "adapter", "detail": "http_404:Not Found"}}
+AFTER {"jobs": 78, "apps": 13, "delta_jobs": 10, "delta_apps": 0}
+LIVE_SUBMIT False
+SAMPLE_COUNT 10
+SAMPLE {"id": 244, "title": "Product Sales Specialist - Pet Health (CST timezone)", "lifecycle": "qualified", "visa": "unknown", "remote_policy": "remote_country", "score": 10.0, "dup": false, "channel": "remotive", "rejections": []}
+SAMPLE {"id": 243, "title": "Content Reviewer - United States", "lifecycle": "qualified", "visa": "unknown", "remote_policy": "remote_country", "score": 10.0, "dup": false, "channel": "remotive", "rejections": []}
+SAMPLE {"id": 242, "title": "Business Development Representative", "lifecycle": "qualified", "visa": "unknown", "remote_policy": "remote_emea", "score": 35.0, "dup": false, "channel": "remotive", "rejections": []}
+SAMPLE {"id": 241, "title": "Data Labeling Specialists", "lifecycle": "qualified", "visa": "unknown", "remote_policy": "unknown", "score": 10.0, "dup": false, "channel": "remotive", "rejections": []}
+SAMPLE {"id": 240, "title": "Senior Graphic Designer", "lifecycle": "high_priority", "visa": "unknown", "remote_policy": "remote_emea", "score": 45.0, "dup": false, "channel": "remotive", "rejections": []}
+SAMPLE {"id": 239, "title": "Educational Videos Actor, UK & Ireland (Freelance)", "lifecycle": "qualified", "visa": "unknown", "remote_policy": "remote_country", "score": 10.0, "dup": false, "channel": "arbeitnow", "rejections": []}
+SAMPLE {"id": 238, "title": "Presales Solutions Engineer - GERMANY", "lifecycle": "high_priority", "visa": "unknown", "remote_policy": "remote_country", "score": 45.0, "dup": false, "channel": "arbeitnow", "rejections": []}
+SAMPLE {"id": 237, "title": "Senior Platform Engineer (AWS) (all genders)", "lifecycle": "qualified", "visa": "unknown", "remote_policy": "hybrid", "score": 25.0, "dup": false, "channel": "arbeitnow", "rejections": []}
+SAMPLE {"id": 236, "title": "Large Enterprise Account Executive Auth0", "lifecycle": "qualified", "visa": "unknown", "remote_policy": "hybrid", "score": 10.0, "dup": false, "channel": "arbeitnow", "rejections": []}
+SAMPLE {"id": 235, "title": "Senior/Staff Golang Engineer (EMEA)", "lifecycle": "high_priority", "visa": "unknown", "remote_policy": "remote_emea", "score": 45.0, "dup": false, "channel": "arbeitnow", "rejections": []}
+RESTRICTED {"error": "rejected_automation"}
+RESTRICTED_ENABLED False
+SHELL_EXIT=0

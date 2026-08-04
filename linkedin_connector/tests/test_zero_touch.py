@@ -68,10 +68,11 @@ class TestEvidenceOnlyApplied(TransactionCase):
             }
         )
 
-    def test_refuse_applied_without_evidence(self):
-        with self.assertRaises(UserError):
-            self.app.action_mark_confirmed_applied()
-        self.assertNotEqual(self.app.state, "applied")
+    def test_manual_applied_without_evidence(self):
+        self.app.action_mark_confirmed_applied()
+        self.assertEqual(self.app.state, "applied")
+        self.assertEqual(self.app.submission_channel, "manual")
+        self.assertEqual(self.app.evidence_kind, "manual_mark")
 
     def test_applied_with_evidence(self):
         self.app.write(

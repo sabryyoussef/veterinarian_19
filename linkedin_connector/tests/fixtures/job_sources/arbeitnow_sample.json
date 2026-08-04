@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "slug": "senior-odoo-developer-berlin",
+      "title": "Senior Odoo Developer",
+      "company_name": "Arbeitnow Co",
+      "location": "Berlin, Germany",
+      "remote": true,
+      "url": "https://www.arbeitnow.com/jobs/senior-odoo-developer-berlin",
+      "description": "Fully remote worldwide Odoo Python engineer. EU visa sponsorship offered.",
+      "tags": ["odoo", "python"],
+      "job_types": ["full-time"]
+    }
+  ],
+  "links": {"next": null}
+}

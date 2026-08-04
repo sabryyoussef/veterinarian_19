@@ -1,0 +1,50 @@
+        name        | latest_version |   state   
+--------------------+----------------+-----------
+ linkedin_connector | 19.0.2.18.1    | installed
+(1 row)
+
+ jobs 
+------
+   68
+(1 row)
+
+     sc      | count 
+-------------+-------
+ arbeitnow   |    32
+ company_ats |    26
+ lever       |     4
+ unknown     |     4
+ remotive    |     2
+(5 rows)
+
+ apps 
+------
+   13
+(1 row)
+
+ ats 
+-----
+  17
+(1 row)
+
+                        key                        |                                                          value                                                           
+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------
+ linkedin_connector.ats_discovery_last_run         | 2026-08-04 01:50:14
+ linkedin_connector.ats_discovery_last_stats_json  | {"errors": 1, "human_required": 5, "ineligible": 16, "new_jobs": 0, "safe_canary": 3, "sources_checked": 17, "unsupporte
+ linkedin_connector.ats_discovery_next_run         | 2026-08-04 07:50:14
+ linkedin_connector.auto_create_applications       | False
+ linkedin_connector.digest_top_n                   | 10
+ linkedin_connector.job_score_threshold            | 0
+ linkedin_connector.job_search_locations           | Remote|Egypt|United Arab Emirates
+ linkedin_connector.job_search_queries             | Senior Odoo Developer|Odoo Developer|Odoo Consultant|Senior Odoo
+ linkedin_connector.jsearch_daily_queries_json     | [{"query":"Odoo Developer in UAE","country":"ae","remote":false},{"query":"Odoo Developer in Egypt","country":"eg","remo
+ linkedin_connector.jsearch_max_jobs_per_day       | 120
+ linkedin_connector.jsearch_max_requests_per_day   | 8
+ linkedin_connector.jsearch_max_requests_per_month | 120
+ linkedin_connector.live_job_search_enabled        | False
+ linkedin_connector.live_submit_enabled            | False
+ linkedin_connector.orchestrator_webhook_secret    | [REDACTED]
+ linkedin_connector.pending_canary_application_id  | 96
+ linkedin_connector.pending_canary_job_id          | 190
+(17 rows)
+

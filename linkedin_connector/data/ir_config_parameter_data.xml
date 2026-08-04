@@ -26,11 +26,11 @@
     </record>
     <record id="icp_jsearch_max_requests_day" model="ir.config_parameter">
         <field name="key">linkedin_connector.jsearch_max_requests_per_day</field>
-        <field name="value">3</field>
+        <field name="value">8</field>
     </record>
     <record id="icp_jsearch_max_jobs_day" model="ir.config_parameter">
         <field name="key">linkedin_connector.jsearch_max_jobs_per_day</field>
-        <field name="value">30</field>
+        <field name="value">120</field>
     </record>
     <record id="icp_jsearch_max_requests_month" model="ir.config_parameter">
         <field name="key">linkedin_connector.jsearch_max_requests_per_month</field>
@@ -40,12 +40,81 @@
         <field name="key">linkedin_connector.digest_top_n</field>
         <field name="value">10</field>
     </record>
+    <record id="icp_partner_probe_enabled" model="ir.config_parameter">
+        <field name="key">linkedin_connector.partner_probe_enabled</field>
+        <field name="value">False</field>
+    </record>
+    <record id="icp_partner_probe_batch_size" model="ir.config_parameter">
+        <field name="key">linkedin_connector.partner_probe_batch_size</field>
+        <field name="value">40</field>
+    </record>
+    <record id="icp_partner_probe_max_concurrent" model="ir.config_parameter">
+        <field name="key">linkedin_connector.partner_probe_max_concurrent</field>
+        <field name="value">4</field>
+    </record>
+    <record id="icp_partner_probe_connect_timeout" model="ir.config_parameter">
+        <field name="key">linkedin_connector.partner_probe_connect_timeout</field>
+        <field name="value">3</field>
+    </record>
+    <record id="icp_partner_probe_read_timeout" model="ir.config_parameter">
+        <field name="key">linkedin_connector.partner_probe_read_timeout</field>
+        <field name="value">7</field>
+    </record>
+    <record id="icp_partner_probe_sync_batch" model="ir.config_parameter">
+        <field name="key">linkedin_connector.partner_probe_sync_batch</field>
+        <field name="value">500</field>
+    </record>
+    <record id="icp_ats_discovery_per_cycle_cap" model="ir.config_parameter">
+        <field name="key">linkedin_connector.ats_discovery_per_cycle_cap</field>
+        <field name="value">20</field>
+    </record>
     <record id="icp_jsearch_daily_queries_json" model="ir.config_parameter">
         <field name="key">linkedin_connector.jsearch_daily_queries_json</field>
-        <field name="value">[{"query":"Odoo Developer in UAE","country":"ae","remote":false},{"query":"Odoo Developer in Egypt","country":"eg","remote":false},{"query":"Remote Odoo Developer","country":"","remote":true}]</field>
+        <field name="value">[{"query":"Odoo Developer in UAE","country":"ae","remote":false},{"query":"Odoo Developer in Egypt","country":"eg","remote":false},{"query":"Odoo Developer in Saudi Arabia","country":"sa","remote":false},{"query":"Remote Odoo Developer","country":"","remote":true},{"query":"Python ERP Developer Remote","country":"","remote":true},{"query":"Odoo Consultant UAE","country":"ae","remote":false}]</field>
     </record>
     <record id="icp_orchestrator_webhook_secret" model="ir.config_parameter">
         <field name="key">linkedin_connector.orchestrator_webhook_secret</field>
+        <field name="value"></field>
+    </record>
+    <record id="icp_job_discovery_max_day" model="ir.config_parameter">
+        <field name="key">linkedin_connector.job_discovery_max_requests_per_day</field>
+        <field name="value">80</field>
+    </record>
+    <record id="icp_job_discovery_max_month" model="ir.config_parameter">
+        <field name="key">linkedin_connector.job_discovery_max_requests_per_month</field>
+        <field name="value">1200</field>
+    </record>
+    <record id="icp_salary_min_remote_usd" model="ir.config_parameter">
+        <field name="key">linkedin_connector.salary_min_remote_usd_month</field>
+        <field name="value">1000</field>
+    </record>
+    <record id="icp_salary_min_uae_aed" model="ir.config_parameter">
+        <field name="key">linkedin_connector.salary_min_uae_aed_month</field>
+        <field name="value">8000</field>
+    </record>
+    <record id="icp_salary_min_sa_sar" model="ir.config_parameter">
+        <field name="key">linkedin_connector.salary_min_sa_sar_month</field>
+        <field name="value">8000</field>
+    </record>
+    <record id="icp_salary_min_eg_egp" model="ir.config_parameter">
+        <field name="key">linkedin_connector.salary_min_eg_egp_month</field>
+        <field name="value">25000</field>
+    </record>
+    <record id="icp_job_lifecycle_qualify_threshold" model="ir.config_parameter">
+        <field name="key">linkedin_connector.job_lifecycle_qualify_threshold</field>
+        <field name="value">40</field>
+    </record>
+    <!-- Empty placeholders — set secrets out of band; never commit real values -->
+    <record id="icp_jooble_api_key" model="ir.config_parameter">
+        <field name="key">linkedin_connector.jooble_api_key</field>
+        <field name="value"></field>
+    </record>
+    <record id="icp_adzuna_app_id" model="ir.config_parameter">
+        <field name="key">linkedin_connector.adzuna_app_id</field>
+        <field name="value"></field>
+    </record>
+    <record id="icp_adzuna_app_key" model="ir.config_parameter">
+        <field name="key">linkedin_connector.adzuna_app_key</field>
         <field name="value"></field>
     </record>
 </odoo>

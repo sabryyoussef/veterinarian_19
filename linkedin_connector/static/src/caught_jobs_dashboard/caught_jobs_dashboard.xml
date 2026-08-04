@@ -63,6 +63,14 @@
                         </select>
                     </label>
                     <label class="o_lcj_field">
+                        <span>Source channel</span>
+                        <select class="o_input" t-model="state.sourceChannel">
+                            <t t-foreach="sourceChannelOptions" t-as="opt" t-key="opt_index">
+                                <option t-att-value="opt.value" t-esc="opt.label"/>
+                            </t>
+                        </select>
+                    </label>
+                    <label class="o_lcj_field">
                         <span>Min score</span>
                         <input type="number" class="o_input" t-model="state.minScore" min="0" max="100" step="1"/>
                     </label>
@@ -120,32 +128,93 @@
                 </section>
 
                 <section class="o_lcj_kpis">
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.total_jobs"/><div class="o_lcj_kpi_l">All Caught Jobs</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.pack_ready"/><div class="o_lcj_kpi_l">Pack Ready</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.queued"/><div class="o_lcj_kpi_l">Queued</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.drafted"/><div class="o_lcj_kpi_l">Drafted</div></div>
-                    <div class="o_lcj_kpi o_lcj_kpi_warn"><div class="o_lcj_kpi_v" t-esc="kpis.awaiting_human_challenge"/><div class="o_lcj_kpi_l">Awaiting Human Challenge</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.missing_fact"/><div class="o_lcj_kpi_l">Missing Fact</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.email_applications"/><div class="o_lcj_kpi_l">Email Applications</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.browser_applications"/><div class="o_lcj_kpi_l">Browser Applications</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.applied_today"/><div class="o_lcj_kpi_l">Applied Today</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.applied_total"/><div class="o_lcj_kpi_l">Applied Total</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.submission_unknown"/><div class="o_lcj_kpi_l">Submission Unknown</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.delivery_failed"/><div class="o_lcj_kpi_l">Delivery Failed</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.unsupported_ats"/><div class="o_lcj_kpi_l">Unsupported ATS</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.hard_excluded"/><div class="o_lcj_kpi_l">Hard Excluded</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.capacity_daily_remaining"/><div class="o_lcj_kpi_l">Daily Cap Left</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.capacity_weekly_remaining"/><div class="o_lcj_kpi_l">Weekly Cap Left</div></div>
-                    <div class="o_lcj_kpi o_lcj_kpi_ok"><div class="o_lcj_kpi_v" t-esc="kpis.auto_eligible"/><div class="o_lcj_kpi_l">Auto Eligible</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.average_score"/><div class="o_lcj_kpi_l">Avg Score (info)</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.safe_canary"/><div class="o_lcj_kpi_l">Safe Canary</div></div>
-                    <div class="o_lcj_kpi"><div class="o_lcj_kpi_v" t-esc="kpis.ats_sources_checked"/><div class="o_lcj_kpi_l">ATS Sources Checked</div></div>
-                    <div class="o_lcj_kpi o_lcj_kpi_wide">
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="all_jobs"
+                            t-on-click="openSmart" title="Open all caught jobs">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.total_jobs"/><div class="o_lcj_kpi_l">All Caught Jobs</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="pack_ready"
+                            t-on-click="openSmart" title="Open pack ready applications">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.pack_ready"/><div class="o_lcj_kpi_l">Pack Ready</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="queued"
+                            t-on-click="openSmart" title="Open queued applications">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.queued"/><div class="o_lcj_kpi_l">Queued</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="drafted"
+                            t-on-click="openSmart" title="Open drafted applications">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.drafted"/><div class="o_lcj_kpi_l">Drafted</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_warn o_lcj_kpi_click" data-key="human_required"
+                            t-on-click="openSmart" title="Open awaiting human challenge">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.awaiting_human_challenge"/><div class="o_lcj_kpi_l">Awaiting Human Challenge</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="missing_fact"
+                            t-on-click="openSmart" title="Open missing fact applications">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.missing_fact"/><div class="o_lcj_kpi_l">Missing Fact</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="email_apps"
+                            t-on-click="openSmart" title="Open email applications">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.email_applications"/><div class="o_lcj_kpi_l">Email Applications</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="browser_apps"
+                            t-on-click="openSmart" title="Open browser applications">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.browser_applications"/><div class="o_lcj_kpi_l">Browser Applications</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="applied_today"
+                            t-on-click="openSmart" title="Open applied today">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.applied_today"/><div class="o_lcj_kpi_l">Applied Today</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="applied"
+                            t-on-click="openSmart" title="Open all applied applications">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.applied_total"/><div class="o_lcj_kpi_l">Applied Total</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="submission_unknown"
+                            t-on-click="openSmart" title="Open submission unknown">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.submission_unknown"/><div class="o_lcj_kpi_l">Submission Unknown</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="delivery_failed"
+                            t-on-click="openSmart" title="Open delivery failed">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.delivery_failed"/><div class="o_lcj_kpi_l">Delivery Failed</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="unsupported"
+                            t-on-click="openSmart" title="Open unsupported ATS jobs">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.unsupported_ats"/><div class="o_lcj_kpi_l">Unsupported ATS</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="hard_excluded"
+                            t-on-click="openSmart" title="Open hard excluded jobs">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.hard_excluded"/><div class="o_lcj_kpi_l">Hard Excluded</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="policy"
+                            t-on-click="openSmart" title="Open application policy (caps)">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.capacity_daily_remaining"/><div class="o_lcj_kpi_l">Daily Cap Left</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="policy"
+                            t-on-click="openSmart" title="Open application policy (caps)">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.capacity_weekly_remaining"/><div class="o_lcj_kpi_l">Weekly Cap Left</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_ok o_lcj_kpi_click" data-key="auto_eligible"
+                            t-on-click="openSmart" title="Open auto eligible jobs">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.auto_eligible"/><div class="o_lcj_kpi_l">Auto Eligible</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="all_jobs"
+                            t-on-click="openSmart" title="Open all jobs (score is informational)">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.average_score"/><div class="o_lcj_kpi_l">Avg Score (info)</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="safe_canary"
+                            t-on-click="openSmart" title="Open safe canary jobs">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.safe_canary"/><div class="o_lcj_kpi_l">Safe Canary</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_click" data-key="ats_sources"
+                            t-on-click="openSmart" title="Open ATS sources">
+                        <div class="o_lcj_kpi_v" t-esc="kpis.ats_sources_checked"/><div class="o_lcj_kpi_l">ATS Sources Checked</div>
+                    </button>
+                    <button type="button" class="o_lcj_kpi o_lcj_kpi_wide o_lcj_kpi_click" data-key="policy"
+                            t-on-click="openSmart" title="Open application policy / discovery schedule">
                         <div class="o_lcj_kpi_l">Last Discovery</div>
                         <div class="o_lcj_kpi_s" t-esc="kpis.last_discovery_run_display"/>
                         <div class="o_lcj_kpi_l">Next Discovery</div>
                         <div class="o_lcj_kpi_s" t-esc="kpis.next_discovery_run_display"/>
-                    </div>
+                    </button>
                 </section>
 
                 <section class="o_lcj_charts">
@@ -173,6 +242,19 @@
                                 <div class="o_lcj_bar_track">
                                     <div class="o_lcj_bar_fill o_lcj_bar_alt"
                                          t-att-style="'width:' + barWidth(row.value, charts.by_platform)"/>
+                                </div>
+                                <span class="o_lcj_bar_val" t-esc="row.value"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="o_lcj_chart_card">
+                        <h2>Jobs by source channel</h2>
+                        <t t-foreach="charts.by_source_channel or []" t-as="row" t-key="row.label">
+                            <div class="o_lcj_bar_row">
+                                <span class="o_lcj_bar_label" t-esc="row.label"/>
+                                <div class="o_lcj_bar_track">
+                                    <div class="o_lcj_bar_fill"
+                                         t-att-style="'width:' + barWidth(row.value, charts.by_source_channel)"/>
                                 </div>
                                 <span class="o_lcj_bar_val" t-esc="row.value"/>
                             </div>
@@ -243,6 +325,7 @@
                                     <th data-sort="company" t-on-click="onSort">Company</th>
                                     <th>Location</th>
                                     <th data-sort="apply_platform" t-on-click="onSort">Platform</th>
+                                    <th data-sort="source_channel" t-on-click="onSort">Channel</th>
                                     <th data-sort="discovery_class" t-on-click="onSort">Class</th>
                                     <th data-sort="score" t-on-click="onSort">Score</th>
                                     <th>App state</th>
@@ -261,6 +344,7 @@
                                         <td t-esc="row.company"/>
                                         <td t-esc="row.location or (row.remote and 'Remote' or '—')"/>
                                         <td t-esc="row.platform"/>
+                                        <td t-esc="row.source_channel or '—'"/>
                                         <td>
                                             <span t-att-class="classBadge(row.discovery_class)"
                                                   t-esc="row.discovery_class"/>

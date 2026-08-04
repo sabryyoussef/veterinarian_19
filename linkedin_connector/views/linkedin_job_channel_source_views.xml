@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_linkedin_job_channel_source_list" model="ir.ui.view">
+        <field name="name">linkedin.job.channel.source.list</field>
+        <field name="model">linkedin.job.channel.source</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="enabled" widget="boolean_toggle"/>
+                <field name="name"/>
+                <field name="channel_type"/>
+                <field name="external_id"/>
+                <field name="url"/>
+                <field name="last_scan_at"/>
+                <field name="last_jobs_found"/>
+                <field name="last_error"/>
+                <button name="action_run_now" type="object" string="Scan now" icon="fa-refresh"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_linkedin_job_channel_source_form" model="ir.ui.view">
+        <field name="name">linkedin.job.channel.source.form</field>
+        <field name="model">linkedin.job.channel.source</field>
+        <field name="arch" type="xml">
+            <form string="Job channel source">
+                <header>
+                    <button name="action_run_now" type="object" string="Scan now" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="channel_type"/>
+                            <field name="enabled"/>
+                            <field name="account_id"/>
+                        </group>
+                        <group>
+                            <field name="external_id"/>
+                            <field name="url" widget="url"/>
+                            <field name="title"/>
+                            <field name="last_message_id"/>
+                            <field name="last_scan_at"/>
+                            <field name="last_jobs_found"/>
+                            <field name="last_error"/>
+                        </group>
+                    </group>
+                    <field name="notes"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_linkedin_job_channel_source" model="ir.actions.act_window">
+        <field name="name">Discovery Channels</field>
+        <field name="res_model">linkedin.job.channel.source</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_linkedin_job_channel_source"
+              name="Telegram / Facebook"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_channel_source"
+              sequence="95"/>
+</odoo>

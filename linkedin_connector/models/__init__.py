@@ -13,6 +13,13 @@ from . import linkedin_candidate_profile
 from . import linkedin_apply_policy
 from . import linkedin_apply_attempt
 from . import linkedin_ats_source
+from . import linkedin_partner_ats_probe
+from . import linkedin_job_source_connector
+from . import linkedin_job_source_link
+from . import linkedin_job_raw_payload
+from . import linkedin_job_rejection
+from . import linkedin_job_score_rule
+from . import linkedin_job_channel_source
 from . import linkedin_caught_jobs_dashboard
 from . import linkedin_resume
 from . import linkedin_message

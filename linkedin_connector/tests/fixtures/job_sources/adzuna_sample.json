@@ -1,0 +1,16 @@
+{
+  "count": 1,
+  "results": [
+    {
+      "id": "adz-55",
+      "title": "Odoo Integration Engineer",
+      "company": {"display_name": "Gulf Tech"},
+      "location": {"display_name": "Dubai", "area": ["United Arab Emirates", "Dubai"]},
+      "description": "Remote-friendly Odoo and Python role. Relocation support.",
+      "redirect_url": "https://www.adzuna.ae/details/adz-55",
+      "created": "2026-08-02T08:00:00Z",
+      "salary_min": 12000,
+      "salary_max": 18000
+    }
+  ]
+}

@@ -275,6 +275,41 @@ class TestCaughtJobsDashboard(TransactionCase):
         self.assertEqual(action["views"][0], [False, "list"])
         self.assertIn([False, "form"], action["views"])
 
+    def test_kpi_card_smart_actions_open_lists(self):
+        """Every KPI card key must open a personal-scoped list/form action."""
+        for key in (
+            "all_jobs",
+            "pack_ready",
+            "queued",
+            "drafted",
+            "human_required",
+            "missing_fact",
+            "email_apps",
+            "browser_apps",
+            "applied_today",
+            "applied",
+            "submission_unknown",
+            "delivery_failed",
+            "unsupported",
+            "hard_excluded",
+            "auto_eligible",
+            "safe_canary",
+            "ats_sources",
+            "policy",
+        ):
+            action = self.Dash.action_open_smart(key)
+            self.assertEqual(action["type"], "ir.actions.act_window", key)
+            self.assertTrue(action.get("views"), key)
+            self.assertEqual(action["views"][0], [False, "list"], key)
+            self.assertIn([False, "form"], action["views"], key)
+            if key != "ats_sources":
+                # ATS sources is global config; all others stay on personal account.
+                domain_str = str(action.get("domain") or [])
+                self.assertIn(str(PERSONAL_ACCOUNT_ID), domain_str, key)
+        human = self.Dash.action_open_smart("human_required")
+        self.assertEqual(human["res_model"], "linkedin.job")
+        self.assertIn(("discovery_class", "=", "human_required"), human["domain"])
+
     def test_empty_dataset(self):
         data = self.Dash.get_dashboard_data(
             period="all", search="zzz-no-such-job-qqq", min_score=99

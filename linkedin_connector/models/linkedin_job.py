@@ -20,8 +20,35 @@ _JSEARCH_LEGACY_PATH = "/search"
 _DEFAULT_JSEARCH_QUERIES = [
     {"query": "Odoo Developer in UAE", "country": "ae", "remote": False},
     {"query": "Odoo Developer in Egypt", "country": "eg", "remote": False},
+    {"query": "Odoo Developer in Saudi Arabia", "country": "sa", "remote": False},
     {"query": "Remote Odoo Developer", "country": "", "remote": True},
+    {"query": "Python ERP Developer Remote", "country": "", "remote": True},
+    {"query": "Odoo Consultant UAE", "country": "ae", "remote": False},
 ]
+
+_SOURCE_CHANNEL_VALUES = frozenset(
+    {
+        "jsearch",
+        "arbeitnow",
+        "remotive",
+        "remoteok",
+        "greenhouse",
+        "lever",
+        "ashby",
+        "workable",
+        "company_ats",
+        "linkedin_guest",
+        "telegram",
+        "facebook",
+        "manual",
+        "jooble",
+        "adzuna",
+        "smartrecruiters",
+        "recruitee",
+        "email_alert",
+        "unknown",
+    }
+)
 
 _LI_GUEST_URL = (
     "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
@@ -80,6 +107,33 @@ class LinkedinJob(models.Model):
         default="unknown",
         index=True,
     )
+    source_channel = fields.Selection(
+        selection=[
+            ("jsearch", "JSearch"),
+            ("arbeitnow", "Arbeitnow"),
+            ("remotive", "Remotive"),
+            ("remoteok", "RemoteOK"),
+            ("greenhouse", "Greenhouse"),
+            ("lever", "Lever"),
+            ("ashby", "Ashby"),
+            ("workable", "Workable"),
+            ("company_ats", "Company ATS"),
+            ("linkedin_guest", "LinkedIn Guest"),
+            ("telegram", "Telegram"),
+            ("facebook", "Facebook"),
+            ("manual", "Manual"),
+            ("jooble", "Jooble"),
+            ("adzuna", "Adzuna"),
+            ("smartrecruiters", "SmartRecruiters"),
+            ("recruitee", "Recruitee"),
+            ("email_alert", "Email Alert"),
+            ("unknown", "Unknown"),
+        ],
+        string="Source channel",
+        default="unknown",
+        index=True,
+        help="Discovery channel used to ingest this job (for dedupe audits and filters).",
+    )
     source = fields.Char(string="Source", default="JSearch")
     listed_at = fields.Datetime(string="Listed At")
     saved = fields.Boolean(string="Saved", default=False, index=True)
@@ -121,9 +175,145 @@ class LinkedinJob(models.Model):
     last_preflight_at = fields.Datetime()
     preflight_json = fields.Text()
 
+    # --- Job source expansion (additive; backward compatible) ---
+    lifecycle_state = fields.Selection(
+        [
+            ("discovered", "Discovered"),
+            ("normalized", "Normalized"),
+            ("duplicate", "Duplicate"),
+            ("rejected", "Rejected"),
+            ("qualified", "Qualified"),
+            ("high_priority", "High Priority"),
+            ("application_ready", "Application Ready"),
+            ("expired", "Expired"),
+            ("archived", "Archived"),
+            ("needs_review", "Needs Review"),
+        ],
+        default="discovered",
+        index=True,
+    )
+    connector_id = fields.Many2one(
+        "linkedin.job.source.connector", ondelete="set null", index=True
+    )
+    external_job_id = fields.Char(index=True, copy=False)
+    source_url = fields.Char()
+    original_application_url = fields.Char()
+    employer_domain = fields.Char()
+    country_code = fields.Char(size=8, index=True)
+    city = fields.Char()
+    location_text = fields.Char()
+    remote_policy = fields.Selection(
+        [
+            ("onsite", "On-site"),
+            ("hybrid", "Hybrid"),
+            ("remote_world", "Remote worldwide"),
+            ("remote_emea", "Remote EMEA"),
+            ("remote_eu", "Remote EU only"),
+            ("remote_us", "Remote US only"),
+            ("remote_country", "Remote country-restricted"),
+            ("relocation", "Relocation supported"),
+            ("unknown", "Unknown"),
+        ],
+        default="unknown",
+        index=True,
+    )
+    remote_eligibility = fields.Selection(
+        [
+            ("yes", "Yes"),
+            ("no", "No"),
+            ("unknown", "Unknown"),
+            ("needs_review", "Needs review"),
+        ],
+        default="unknown",
+        index=True,
+    )
+    visa_sponsorship = fields.Selection(
+        [("yes", "Yes"), ("no", "No"), ("unknown", "Unknown")],
+        default="unknown",
+        index=True,
+    )
+    relocation_support = fields.Selection(
+        [("yes", "Yes"), ("no", "No"), ("unknown", "Unknown")],
+        default="unknown",
+    )
+    work_auth_required = fields.Selection(
+        [("yes", "Yes"), ("no", "No"), ("unknown", "Unknown")],
+        default="unknown",
+    )
+    salary_min = fields.Float()
+    salary_max = fields.Float()
+    salary_currency = fields.Char(size=8)
+    salary_period = fields.Selection(
+        [
+            ("hour", "Hour"),
+            ("month", "Month"),
+            ("year", "Year"),
+            ("unknown", "Unknown"),
+        ],
+        default="unknown",
+    )
+    salary_status = fields.Selection(
+        [
+            ("known", "Known"),
+            ("unknown", "Unknown"),
+            ("below_preference", "Below preference"),
+            ("meets_preference", "Meets preference"),
+        ],
+        default="unknown",
+    )
+    experience_min = fields.Float()
+    experience_max = fields.Float()
+    skills_required = fields.Text()
+    skills_preferred = fields.Text()
+    language = fields.Char()
+    published_at = fields.Datetime()
+    expiry_at = fields.Datetime()
+    fetched_at = fields.Datetime()
+    description_fingerprint = fields.Char(index=True, copy=False)
+    source_trust_score = fields.Float(default=50.0)
+    raw_score = fields.Float(default=0.0)
+    normalized_score = fields.Float(default=0.0, index=True)
+    score_lines_json = fields.Text()
+    rejection_ids = fields.One2many("linkedin.job.rejection", "job_id", string="Rejections")
+    source_link_ids = fields.One2many(
+        "linkedin.job.source.link", "job_id", string="Source sightings"
+    )
+
     def _compute_application_count(self):
         for rec in self:
             rec.application_count = len(rec.application_ids)
+
+    @api.model
+    def _normalize_source_channel(self, channel=None, source=None, apply_platform=None, ats_type=None):
+        """Map free-text source / ATS type onto source_channel selection."""
+        raw = (channel or ats_type or apply_platform or "").strip().lower()
+        if raw in _SOURCE_CHANNEL_VALUES:
+            return raw
+        blob = " ".join(
+            x for x in [(channel or ""), (source or ""), (apply_platform or ""), (ats_type or "")] if x
+        ).lower()
+        for key in (
+            "arbeitnow",
+            "remotive",
+            "remoteok",
+            "jsearch",
+            "greenhouse",
+            "lever",
+            "ashby",
+            "workable",
+            "telegram",
+            "facebook",
+            "linkedin",
+        ):
+            if key in blob:
+                if key == "linkedin":
+                    return "linkedin_guest"
+                return key
+        if "ats:" in blob or "company" in blob or "career" in blob:
+            return "company_ats"
+        if "manual" in blob:
+            return "manual"
+        return "unknown"
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -134,6 +324,12 @@ class LinkedinJob(models.Model):
         for vals in vals_list:
             if not vals.get("apply_platform"):
                 vals["apply_platform"] = classify_apply_url(vals.get("apply_url"))
+            if not vals.get("source_channel"):
+                vals["source_channel"] = self._normalize_source_channel(
+                    channel=vals.get("source_channel"),
+                    source=vals.get("source"),
+                    apply_platform=vals.get("apply_platform"),
+                )
         records = super().create(vals_list)
         if not self.env.context.get("skip_job_postprocess"):
             records._score_and_dedupe()
@@ -341,16 +537,28 @@ class LinkedinJob(models.Model):
         for rec in self:
             score, breakdown, flags = rec._score_job_values()
             fp = rec._compute_fingerprint_value()
-            rec.with_context(skip_job_postprocess=True).write(
-                {
-                    "score": score,
-                    "score_breakdown": json.dumps(breakdown, sort_keys=True),
-                    "seniority_match": flags["seniority_match"],
-                    "odoo_match": flags["odoo_match"],
-                    "easy_apply_hint": flags["easy_apply_hint"],
-                    "fingerprint": fp,
-                }
-            )
+            # Public match score stays informational; also mirror raw/normalized
+            raw = float(score)
+            normalized = max(0.0, min(100.0, raw))
+            vals = {
+                "score": score,
+                "raw_score": raw,
+                "normalized_score": normalized,
+                "score_breakdown": json.dumps(breakdown, sort_keys=True),
+                "seniority_match": flags["seniority_match"],
+                "odoo_match": flags["odoo_match"],
+                "easy_apply_hint": flags["easy_apply_hint"],
+                "fingerprint": fp,
+            }
+            if not rec.description_fingerprint and (rec.description or rec.title):
+                from odoo.addons.linkedin_connector.services.job_sources.base import (
+                    description_fingerprint,
+                )
+
+                vals["description_fingerprint"] = description_fingerprint(
+                    "%s %s" % (rec.title or "", rec._plain_text_blob())
+                )
+            rec.with_context(skip_job_postprocess=True).write(vals)
         self._mark_duplicates()
 
     def _mark_duplicates(self):
@@ -366,7 +574,10 @@ class LinkedinJob(models.Model):
             if not twins:
                 if rec.is_duplicate:
                     rec.with_context(skip_job_postprocess=True).write(
-                        {"is_duplicate": False, "duplicate_of_id": False}
+                        {
+                            "is_duplicate": False,
+                            "duplicate_of_id": False,
+                        }
                     )
                 continue
             group = twins | rec
@@ -376,7 +587,318 @@ class LinkedinJob(models.Model):
                     "is_duplicate": job.id != canonical.id,
                     "duplicate_of_id": False if job.id == canonical.id else canonical.id,
                 }
+                if job.id != canonical.id:
+                    vals["lifecycle_state"] = "duplicate"
                 job.with_context(skip_job_postprocess=True).write(vals)
+                if job.id != canonical.id and job.connector_id:
+                    Link = self.env["linkedin.job.source.link"].sudo()
+                    if not Link.search_count(
+                        [
+                            ("job_id", "=", canonical.id),
+                            ("connector_id", "=", job.connector_id.id),
+                            ("external_id", "=", job.external_job_id or job.job_id or ""),
+                        ]
+                    ):
+                        Link.create(
+                            {
+                                "job_id": canonical.id,
+                                "connector_id": job.connector_id.id,
+                                "external_id": job.external_job_id or job.job_id or "",
+                                "source_url": job.source_url or job.apply_url or "",
+                            }
+                        )
+
+    @api.model
+    def _ingest_normalized_jobs(self, connector, raw_jobs, adapter):
+        """Normalize adapter rows → pipeline → create/update linkedin.job records."""
+        from odoo.addons.linkedin_connector.services.job_sources.pipeline import (
+            process_normalized_jobs,
+        )
+        from odoo.addons.linkedin_connector.services.ats_preflight import classify_preflight
+        from odoo.addons.linkedin_connector.services.platform_classifier import (
+            classify_apply_url,
+        )
+        from urllib.parse import urlparse
+
+        personal = self.env["linkedin.account"].get_personal_account()
+        if not personal or personal.account_type != "personal" or personal.id == 1:
+            personal = self.env["linkedin.account"].browse(2).exists()
+        if not personal or personal.id == 1:
+            return {"error": "no_personal_account", "imported": 0}
+
+        normalized = []
+        for raw in raw_jobs or []:
+            try:
+                row = adapter.normalize_job(raw) if hasattr(adapter, "normalize_job") else dict(raw)
+            except Exception:
+                _logger.info("normalize_job failed for %s", connector.code, exc_info=True)
+                continue
+            if not isinstance(row, dict):
+                continue
+            # Adapter may return dataclass-like
+            if hasattr(row, "keys") is False and hasattr(row, "__dict__"):
+                row = dict(row.__dict__)
+            uid = ""
+            try:
+                uid = adapter.build_source_uid(raw) if hasattr(adapter, "build_source_uid") else ""
+            except Exception:
+                uid = ""
+            row.setdefault("source_uid", uid or row.get("external_id") or "")
+            row.setdefault("adapter_key", connector.adapter_key)
+            row.setdefault("external_id", row.get("external_id") or row.get("id") or "")
+            if not row.get("apply_url") and hasattr(adapter, "extract_application_url"):
+                try:
+                    row["apply_url"] = adapter.extract_application_url(raw) or ""
+                except Exception:
+                    pass
+            if hasattr(adapter, "parse_remote_policy"):
+                try:
+                    pol = adapter.parse_remote_policy(raw)
+                    if isinstance(pol, dict):
+                        row.update(pol)
+                    elif isinstance(pol, str):
+                        row["remote_policy"] = pol
+                except Exception:
+                    pass
+            if hasattr(adapter, "parse_sponsorship"):
+                try:
+                    sp = adapter.parse_sponsorship(raw)
+                    if isinstance(sp, dict):
+                        row.setdefault("sponsorship", sp.get("visa_sponsorship") or sp.get("sponsorship"))
+                        row.setdefault("relocation", sp.get("relocation_support") or sp.get("relocation"))
+                        row.setdefault(
+                            "work_auth_required", sp.get("work_auth_required") or "unknown"
+                        )
+                except Exception:
+                    pass
+            if hasattr(adapter, "parse_salary"):
+                try:
+                    sal = adapter.parse_salary(raw)
+                    if isinstance(sal, dict):
+                        row.update({k: v for k, v in sal.items() if v is not None})
+                except Exception:
+                    pass
+            if hasattr(adapter, "parse_location"):
+                try:
+                    loc = adapter.parse_location(raw)
+                    if isinstance(loc, dict):
+                        row.update({k: v for k, v in loc.items() if v})
+                except Exception:
+                    pass
+            normalized.append(row)
+
+        # Cap
+        max_jobs = connector.max_jobs_per_run or 25
+        normalized = normalized[:max_jobs]
+
+        existing_keys = {}
+        for j in self.search(
+            [("connector_id", "=", connector.id), ("external_job_id", "!=", False)],
+            limit=5000,
+        ):
+            if j.external_job_id:
+                existing_keys[f"{connector.adapter_key}:{j.external_job_id}"] = j.external_job_id
+            if j.apply_url:
+                parsed = urlparse(j.apply_url)
+                key = (parsed.netloc + parsed.path).rstrip("/").lower()
+                if key:
+                    existing_keys[key] = j.external_job_id or str(j.id)
+
+        processed = process_normalized_jobs(
+            self.env,
+            normalized,
+            existing_keys=existing_keys,
+            trust_level=float(connector.trust_level or 50),
+            score_threshold=float(
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("linkedin_connector.job_lifecycle_qualify_threshold", "40")
+                or 40
+            ),
+        )
+
+        stats = {"imported": 0, "duplicates": 0, "rejected": 0, "qualified": 0, "updated": 0}
+        channel = self._normalize_source_channel(
+            channel=connector.adapter_key, source=connector.code
+        )
+        Rejection = self.env["linkedin.job.rejection"].sudo()
+        Link = self.env["linkedin.job.source.link"].sudo()
+
+        for row in processed:
+            ext = str(row.get("external_id") or row.get("source_uid") or "")[:128]
+            apply_url = (row.get("apply_url") or "")[:2000]
+            domain = [
+                ("account_id", "=", personal.id),
+                ("connector_id", "=", connector.id),
+                ("external_job_id", "=", ext),
+            ] if ext else [("account_id", "=", personal.id), ("apply_url", "=", apply_url)]
+            existing = self.search(domain, limit=1) if (ext or apply_url) else self.browse()
+
+            if row.get("is_duplicate"):
+                stats["duplicates"] += 1
+                if existing:
+                    existing.with_context(skip_job_postprocess=True).write(
+                        {"lifecycle_state": "duplicate", "is_duplicate": True}
+                    )
+                # Link to master if we can find by apply url
+                master = False
+                if apply_url:
+                    master = self.search(
+                        [
+                            ("account_id", "=", personal.id),
+                            ("apply_url", "=", apply_url),
+                            ("is_duplicate", "=", False),
+                        ],
+                        limit=1,
+                    )
+                if master and not Link.search_count(
+                    [("job_id", "=", master.id), ("connector_id", "=", connector.id), ("external_id", "=", ext)]
+                ):
+                    Link.create(
+                        {
+                            "job_id": master.id,
+                            "connector_id": connector.id,
+                            "external_id": ext,
+                            "source_url": row.get("source_url") or apply_url,
+                        }
+                    )
+                continue
+
+            employer_domain = ""
+            if apply_url:
+                try:
+                    employer_domain = urlparse(apply_url).netloc.lower()
+                except Exception:
+                    employer_domain = ""
+
+            lifecycle = row.get("lifecycle_state") or "discovered"
+            if lifecycle == "qualified" and float(row.get("score") or 0) >= 75:
+                lifecycle = "high_priority"
+
+            remote_policy = row.get("remote_policy") or "unknown"
+            _RP_MAP = {
+                "remote_region": "remote_emea",
+                "remote": "unknown",
+            }
+            remote_policy = _RP_MAP.get(remote_policy, remote_policy)
+            if remote_policy not in {
+                "onsite",
+                "hybrid",
+                "remote_world",
+                "remote_emea",
+                "remote_eu",
+                "remote_us",
+                "remote_country",
+                "relocation",
+                "unknown",
+            }:
+                remote_policy = "unknown"
+
+            vals = {
+                "account_id": personal.id,
+                "connector_id": connector.id,
+                "external_job_id": ext,
+                "job_id": ext or row.get("job_id") or "",
+                "title": (row.get("title") or "")[:256],
+                "company": (row.get("company") or "")[:256],
+                "location": (row.get("location") or row.get("location_text") or "")[:256],
+                "location_text": (row.get("location_text") or row.get("location") or "")[:256],
+                "city": (row.get("city") or "")[:128],
+                "country_code": (row.get("country") or row.get("country_code") or "")[:8],
+                "description": row.get("description") or "",
+                "apply_url": apply_url,
+                "original_application_url": apply_url,
+                "source_url": (row.get("source_url") or apply_url)[:2000],
+                "employer_domain": employer_domain[:128],
+                "remote": bool(row.get("remote")),
+                "remote_policy": remote_policy,
+                "remote_eligibility": row.get("remote_eligibility") or "unknown",
+                "visa_sponsorship": row.get("sponsorship") or row.get("visa_sponsorship") or "unknown",
+                "relocation_support": row.get("relocation") or row.get("relocation_support") or "unknown",
+                "work_auth_required": row.get("work_auth_required") or "unknown",
+                "salary_min": row.get("salary_min") or 0.0,
+                "salary_max": row.get("salary_max") or 0.0,
+                "salary_currency": (row.get("salary_currency") or "")[:8],
+                "salary_period": (row.get("salary_period") if row.get("salary_period") in ("hour","month","year","unknown") else "unknown"),
+                "salary_status": "known" if row.get("salary_min") else "unknown",
+                "skills_required": row.get("skills_required") or "",
+                "skills_preferred": row.get("skills_preferred") or "",
+                "language": row.get("language") or "",
+                "fetched_at": fields.Datetime.now(),
+                "description_fingerprint": row.get("description_fingerprint") or "",
+                "source_trust_score": float(connector.trust_level or 50),
+                "raw_score": float(row.get("score_raw") or row.get("score") or 0),
+                "normalized_score": float(row.get("score") or 0),
+                "score": float(row.get("score") or 0),
+                "score_breakdown": json.dumps(row.get("score_breakdown") or {}, sort_keys=True),
+                "score_lines_json": json.dumps(row.get("score_breakdown") or {}, sort_keys=True),
+                "lifecycle_state": lifecycle,
+                "source_channel": channel,
+                "source": connector.code,
+                "apply_platform": classify_apply_url(apply_url),
+            }
+
+            if lifecycle == "rejected":
+                stats["rejected"] += 1
+            elif lifecycle in ("qualified", "high_priority"):
+                stats["qualified"] += 1
+
+            if existing:
+                existing.with_context(skip_job_postprocess=True, skip_application_create=True).write(vals)
+                job = existing
+                stats["updated"] += 1
+            else:
+                job = self.with_context(skip_job_postprocess=True, skip_application_create=True).create(vals)
+                stats["imported"] += 1
+
+            # Structured rejections
+            for rej in row.get("rejection_reasons") or []:
+                if not Rejection.search_count(
+                    [("job_id", "=", job.id), ("reason_code", "=", rej.get("reason_code"))]
+                ):
+                    Rejection.create(
+                        {
+                            "job_id": job.id,
+                            "reason_code": rej.get("reason_code") or "unknown",
+                            "reason_label": rej.get("reason_label") or rej.get("reason_code") or "",
+                            "pipeline_stage": "hard_filter",
+                        }
+                    )
+
+            # Preflight classification (does not auto-apply)
+            try:
+                pref = classify_preflight(
+                    title=job.title or "",
+                    location=job.location or "",
+                    description=job._plain_text_blob(),
+                    apply_url=job.apply_url or "",
+                    remote=bool(job.remote),
+                    score=float(job.score or 0),
+                    ats_hint=job.apply_platform or "",
+                )
+                job.with_context(skip_job_postprocess=True).write(
+                    {
+                        "discovery_class": pref.get("discovery_class") or job.discovery_class,
+                        "discovery_blocker": pref.get("blocker") or pref.get("discovery_blocker") or job.discovery_blocker,
+                        "preflight_json": json.dumps(pref),
+                        "last_preflight_at": fields.Datetime.now(),
+                    }
+                )
+            except Exception:
+                _logger.info("preflight skipped for job %s", job.id, exc_info=True)
+
+            # Fingerprint + legacy dedupe without auto-app create
+            job.with_context(skip_application_create=True)._score_and_dedupe()
+
+            # Auto-create apps only for qualified / high_priority and never rejected/duplicate
+            if (
+                self._auto_create_applications_enabled()
+                and job.lifecycle_state in ("qualified", "high_priority", "application_ready")
+                and not job.is_duplicate
+            ):
+                job._maybe_create_applications()
+
+        return stats
 
     def _maybe_create_applications(self):
         """Create applications for jobs that pass hard gates (score is informational)."""
@@ -384,6 +906,8 @@ class LinkedinJob(models.Model):
         App = self.env["linkedin.job.application"]
         for rec in self:
             if rec.is_duplicate:
+                continue
+            if rec.lifecycle_state in ("rejected", "duplicate", "expired", "archived"):
                 continue
             if rec.account_id and rec.account_id.account_type == "company":
                 continue
@@ -405,6 +929,8 @@ class LinkedinJob(models.Model):
             else:
                 personal = self.env["linkedin.account"].get_personal_account()
             if not personal:
+                continue
+            if personal.account_type != "personal" or personal.id == 1:
                 continue
             state = "human_required" if dc == "human_required" else "discovered"
             App.create(
@@ -647,7 +1173,7 @@ class LinkedinJob(models.Model):
 
         self._jsearch_assert_endpoint(_JSEARCH_URL)
         imported_total = 0
-        for spec in self._jsearch_daily_queries()[:3]:
+        for spec in self._jsearch_daily_queries()[:4]:
             remaining = self._jsearch_jobs_remaining_today()
             if remaining <= 0:
                 _logger.warning("linkedin.job daily JSearch fail-closed: daily job import cap")
@@ -679,6 +1205,70 @@ class LinkedinJob(models.Model):
             imported_total,
             personal.id,
         )
+
+    @api.model
+    def _cron_daily_aggregators(self):
+        """Free aggregator pass (Arbeitnow + Remotive) for personal account id=2.
+
+        Prefer unified connectors when present; fall back to legacy wizard fetchers.
+        Gated by live_job_search_enabled. No RapidAPI quota. Does not auto-apply.
+        """
+        if not self._live_job_search_enabled():
+            _logger.info(
+                "linkedin.job aggregators skipped: live_job_search_enabled is False"
+            )
+            return
+        Conn = self.env["linkedin.job.source.connector"].sudo()
+        env_name = Conn._current_environment()
+        stats = {}
+        used_connectors = False
+        for code in ("arbeitnow", "remotive", "remoteok"):
+            conn = Conn.search(
+                [("code", "=", code), ("environment", "=", env_name)], limit=1
+            )
+            if not conn:
+                continue
+            used_connectors = True
+            # Temporary enable for this scheduled pass without persisting enabled=True
+            if not conn.enabled:
+                # Still allow legacy path below if none enabled; only run enabled connectors here
+                continue
+            try:
+                stats[code] = Conn._run_connector(conn)
+            except Exception:
+                _logger.exception("linkedin.job connector aggregator %s failed", code)
+                stats[code] = {"error": True}
+        if used_connectors and any(
+            Conn.search([("code", "in", ["arbeitnow", "remotive"]), ("environment", "=", env_name), ("enabled", "=", True)])
+        ):
+            _logger.info("linkedin.job aggregators via connectors stats=%s", stats)
+            return stats
+
+        personal = self.env["linkedin.account"].browse(2).exists()
+        if not personal or personal.account_type != "personal":
+            _logger.warning("linkedin.job aggregators: personal account id=2 missing")
+            return
+        Search = self.env["linkedin.job.search"].sudo()
+        wizard = Search.create(
+            {
+                "account_id": personal.id,
+                "keywords": "Odoo Python ERP",
+                "remote": True,
+                "source": "arbeitnow",
+            }
+        )
+        for method_name, label in (
+            ("_search_arbeitnow", "arbeitnow"),
+            ("_search_remotive", "remotive"),
+        ):
+            try:
+                created, updated = getattr(wizard, method_name)(wizard.keywords)
+                stats[label] = {"created": created, "updated": updated}
+            except Exception:
+                _logger.exception("linkedin.job aggregator %s failed", label)
+                stats[label] = {"error": True}
+        _logger.info("linkedin.job aggregators done account=2 stats=%s", stats)
+        return stats
 
     @api.model
     def _cairo_day_start_utc_naive(self):
@@ -1275,23 +1865,44 @@ class LinkedinJob(models.Model):
 
         state = sbody.get("state")
         if state == "succeeded":
-            app.write(
+            conf_url = (
+                sbody.get("confirmation_url")
+                or sbody.get("final_url")
+                or ""
+            ).strip()
+            conf_ref = (sbody.get("confirmation_reference") or "").strip()
+            evidence_result = app.action_record_submission_evidence(
                 {
-                    "state": "applied",
-                    "applied_at": fields.Datetime.now(),
+                    "ok": True,
+                    "kind": "worker_thank_you",
+                    "channel": "browser",
+                    "confirmation_url": conf_url,
+                    "confirmation_reference": conf_ref,
+                    "ambiguous": not bool(conf_url or conf_ref),
                 }
             )
             Attempt.create(
                 {
                     "application_id": app.id,
                     "dry_run": False,
-                    "state": "succeeded",
+                    "state": "succeeded" if evidence_result.get("applied") else "failed",
                     "stop_reason": "none",
-                    "final_url": sbody.get("confirmation_url") or sbody.get("final_url") or "",
+                    "final_url": conf_url,
                     "worker_attempt_id": attempt_id or "",
                     "idempotency_key": f"prod-canary-{app.id}-{int(time.time())}",
                 }
             )
+            if not evidence_result.get("applied"):
+                policy.write({"kill_switch": True})
+                ICP.set_param("linkedin_connector.live_submit_enabled", "False")
+                return {
+                    "ok": False,
+                    "verdict": "ALL_SCORES_APPLICATION_POLICY_BLOCKED",
+                    "error": "succeeded_without_evidence",
+                    "application_id": app.id,
+                    "job_id": job.id,
+                    "evidence": evidence_result,
+                }
             # Activate bounded live mode for account 2 only
             policy.write(
                 {
@@ -1314,8 +1925,8 @@ class LinkedinJob(models.Model):
                 "application_id": app.id,
                 "job_id": job.id,
                 "attempt_worker_id": attempt_id,
-                "confirmation_url": sbody.get("confirmation_url") or sbody.get("final_url"),
-                "confirmation_reference": sbody.get("confirmation_reference"),
+                "confirmation_url": conf_url,
+                "confirmation_reference": conf_ref,
                 "n8n_submit_workflow_id": wf_id,
                 "activate_n8n": True,
             }
@@ -1394,6 +2005,8 @@ class LinkedinJobSearch(models.TransientModel):
             ("auto", "Auto (JSearch search-v2 when key present)"),
             ("linkedin_guest", "LinkedIn Public (disallowed for Production cron)"),
             ("remoteok", "RemoteOK (free, remote jobs only)"),
+            ("arbeitnow", "Arbeitnow (free, remote jobs)"),
+            ("remotive", "Remotive (free, remote jobs)"),
             ("jsearch", "JSearch via RapidAPI (search-v2 only)"),
             ("browser", "Open LinkedIn.com in browser"),
         ],
@@ -1500,6 +2113,7 @@ class LinkedinJobSearch(models.TransientModel):
                     "description": desc,
                     "apply_url": item.get("url") or item.get("apply_url") or "",
                     "source": "RemoteOK",
+                    "source_channel": "remoteok",
                     "listed_at": listed,
                     "search_keywords": self.keywords,
                     "search_location": "Remote",
@@ -1514,6 +2128,167 @@ class LinkedinJobSearch(models.TransientModel):
                     Job.create(vals)
                     created += 1
 
+        return created, updated
+
+    # ------------------------------------------------------------------
+    # Arbeitnow — free public API, remote-friendly
+    # ------------------------------------------------------------------
+    def _search_arbeitnow(self, keywords):
+        """Import matching jobs from Arbeitnow public API."""
+        Job = self.env["linkedin.job"]
+        acc_id = self.account_id.id if self.account_id else False
+        tags = [t.strip().lower() for t in (keywords or "").split() if t.strip()]
+        created = updated = 0
+        try:
+            resp = requests.get(
+                "https://www.arbeitnow.com/api/job-board-api",
+                headers={"User-Agent": "OdooLinkedInConnector/1.0"},
+                timeout=30,
+            )
+        except requests.RequestException as exc:
+            _logger.warning("arbeitnow fetch failed: %s", exc)
+            return 0, 0
+        if resp.status_code != 200:
+            _logger.warning("arbeitnow HTTP %s", resp.status_code)
+            return 0, 0
+        payload = resp.json() or {}
+        jobs = payload.get("data") or []
+        if not isinstance(jobs, list):
+            return 0, 0
+        for item in jobs:
+            if not isinstance(item, dict):
+                continue
+            title = (item.get("title") or "").strip()
+            if not title:
+                continue
+            blob = " ".join(
+                [
+                    title,
+                    item.get("company_name") or "",
+                    item.get("description") or "",
+                    " ".join(item.get("tags") or []),
+                    " ".join(item.get("job_types") or []),
+                ]
+            ).lower()
+            if tags and not any(t in blob for t in tags):
+                continue
+            slug = (item.get("slug") or item.get("url") or title)[:80]
+            job_id = "arbeitnow_%s" % abs(hash(slug))
+            apply_url = (item.get("url") or "").strip()
+            if not apply_url:
+                continue
+            existing = Job.search([("job_id", "=", job_id)], limit=1)
+            if not existing:
+                existing = Job.search(
+                    [("apply_url", "=", apply_url), ("account_id", "=", acc_id or False)],
+                    limit=1,
+                )
+            desc = item.get("description") or ""
+            if desc and not desc.startswith("<"):
+                desc = "<p>%s</p>" % desc.replace("\n\n", "</p><p>").replace("\n", "<br/>")
+            vals = {
+                "job_id": job_id,
+                "title": title[:200],
+                "company": (item.get("company_name") or "")[:200],
+                "location": (item.get("location") or "Remote")[:200],
+                "remote": bool(item.get("remote")),
+                "description": desc,
+                "apply_url": apply_url,
+                "source": "Arbeitnow",
+                "source_channel": "arbeitnow",
+                "search_keywords": keywords,
+                "search_location": item.get("location") or "Remote",
+            }
+            if acc_id:
+                vals["account_id"] = acc_id
+            if existing:
+                existing.with_context(
+                    skip_application_create=True, skip_job_postprocess=True
+                ).write(vals)
+                existing.with_context(skip_application_create=True)._score_and_dedupe()
+                updated += 1
+            else:
+                Job.with_context(skip_application_create=True).create(vals)
+                created += 1
+        return created, updated
+
+    # ------------------------------------------------------------------
+    # Remotive — free public API, remote jobs
+    # ------------------------------------------------------------------
+    def _search_remotive(self, keywords):
+        """Import matching jobs from Remotive public API."""
+        Job = self.env["linkedin.job"]
+        acc_id = self.account_id.id if self.account_id else False
+        tags = [t.strip().lower() for t in (keywords or "").split() if t.strip()]
+        created = updated = 0
+        try:
+            resp = requests.get(
+                "https://remotive.com/api/remote-jobs",
+                params={"search": keywords or "odoo", "limit": 50},
+                headers={"User-Agent": "OdooLinkedInConnector/1.0"},
+                timeout=30,
+            )
+        except requests.RequestException as exc:
+            _logger.warning("remotive fetch failed: %s", exc)
+            return 0, 0
+        if resp.status_code != 200:
+            _logger.warning("remotive HTTP %s", resp.status_code)
+            return 0, 0
+        payload = resp.json() or {}
+        jobs = payload.get("jobs") or []
+        if not isinstance(jobs, list):
+            return 0, 0
+        for item in jobs:
+            if not isinstance(item, dict):
+                continue
+            title = (item.get("title") or "").strip()
+            if not title:
+                continue
+            blob = " ".join(
+                [
+                    title,
+                    item.get("company_name") or "",
+                    item.get("description") or "",
+                    item.get("category") or "",
+                    " ".join(item.get("tags") or []),
+                ]
+            ).lower()
+            if tags and not any(t in blob for t in tags):
+                continue
+            ext_id = item.get("id") or item.get("url") or title
+            job_id = "remotive_%s" % ext_id
+            apply_url = (item.get("url") or "").strip()
+            if not apply_url:
+                continue
+            existing = Job.search([("job_id", "=", job_id)], limit=1)
+            desc = item.get("description") or ""
+            if desc and not desc.startswith("<"):
+                desc = "<p>%s</p>" % desc.replace("\n\n", "</p><p>").replace("\n", "<br/>")
+            vals = {
+                "job_id": job_id[:120],
+                "title": title[:200],
+                "company": (item.get("company_name") or "")[:200],
+                "location": (item.get("candidate_required_location") or "Remote")[:200],
+                "remote": True,
+                "description": desc,
+                "apply_url": apply_url,
+                "source": "Remotive",
+                "source_channel": "remotive",
+                "employment_type": (item.get("job_type") or "")[:80],
+                "search_keywords": keywords,
+                "search_location": "Remote",
+            }
+            if acc_id:
+                vals["account_id"] = acc_id
+            if existing:
+                existing.with_context(
+                    skip_application_create=True, skip_job_postprocess=True
+                ).write(vals)
+                existing.with_context(skip_application_create=True)._score_and_dedupe()
+                updated += 1
+            else:
+                Job.with_context(skip_application_create=True).create(vals)
+                created += 1
         return created, updated
 
     # ------------------------------------------------------------------
@@ -1613,6 +2388,7 @@ class LinkedinJobSearch(models.TransientModel):
                     "remote": remote,
                     "apply_url": apply_url,
                     "source": "LinkedIn",
+                    "source_channel": "linkedin_guest",
                     "search_keywords": self.keywords,
                     "search_location": location or "",
                 }
@@ -1739,6 +2515,60 @@ class LinkedinJobSearch(models.TransientModel):
                         "title": _("Job Search"),
                         "message": _("No remote jobs found for '%s' on RemoteOK. "
                                      "Try different keywords or use JSearch source.") % self.keywords,
+                        "type": "warning",
+                        "sticky": True,
+                    },
+                }
+            return {
+                "type": "ir.actions.act_window",
+                "name": _("Jobs — %s") % self.keywords,
+                "res_model": "linkedin.job",
+                "view_mode": "list,form",
+                "domain": [("search_keywords", "=", self.keywords)],
+                "target": "current",
+            }
+
+        if source == "arbeitnow":
+            created, updated = self._search_arbeitnow(self.keywords)
+            total = created + updated
+            self.result_count = total
+            if total == 0:
+                return {
+                    "type": "ir.actions.client",
+                    "tag": "display_notification",
+                    "params": {
+                        "title": _("Job Search"),
+                        "message": _(
+                            "No remote jobs found for '%s' on Arbeitnow."
+                        )
+                        % self.keywords,
+                        "type": "warning",
+                        "sticky": True,
+                    },
+                }
+            return {
+                "type": "ir.actions.act_window",
+                "name": _("Jobs — %s") % self.keywords,
+                "res_model": "linkedin.job",
+                "view_mode": "list,form",
+                "domain": [("search_keywords", "=", self.keywords)],
+                "target": "current",
+            }
+
+        if source == "remotive":
+            created, updated = self._search_remotive(self.keywords)
+            total = created + updated
+            self.result_count = total
+            if total == 0:
+                return {
+                    "type": "ir.actions.client",
+                    "tag": "display_notification",
+                    "params": {
+                        "title": _("Job Search"),
+                        "message": _(
+                            "No remote jobs found for '%s' on Remotive."
+                        )
+                        % self.keywords,
                         "type": "warning",
                         "sticky": True,
                     },
@@ -1925,6 +2755,7 @@ class LinkedinJobSearch(models.TransientModel):
                             ]
                         )
                     )
+                    channel = Job._normalize_source_channel(source=source_label)
                     vals = {
                         "job_id": job_id,
                         "title": item.get("job_title") or existing.title,
@@ -1935,6 +2766,7 @@ class LinkedinJobSearch(models.TransientModel):
                         "description": desc_html or existing.description,
                         "apply_url": apply_url,
                         "source": source_label,
+                        "source_channel": channel,
                         "listed_at": self._parse_jsearch_date(item),
                         "search_keywords": query,
                         "search_location": country or ("remote" if remote else ""),
@@ -1965,6 +2797,7 @@ class LinkedinJobSearch(models.TransientModel):
                         ]
                     )
                 )
+                channel = Job._normalize_source_channel(source=source_label)
                 vals = {
                     "job_id": job_id,
                     "title": item.get("job_title") or "",
@@ -1975,6 +2808,7 @@ class LinkedinJobSearch(models.TransientModel):
                     "description": desc_html,
                     "apply_url": apply_url,
                     "source": source_label,
+                    "source_channel": channel,
                     "listed_at": self._parse_jsearch_date(item),
                     "search_keywords": query,
                     "search_location": country or ("remote" if remote else ""),

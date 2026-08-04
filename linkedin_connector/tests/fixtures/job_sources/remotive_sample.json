@@ -1,0 +1,17 @@
+{
+  "job-count": 1,
+  "jobs": [
+    {
+      "id": 42,
+      "title": "Odoo Developer",
+      "company_name": "Remotive Labs",
+      "candidate_required_location": "Anywhere",
+      "url": "https://remotive.com/remote-jobs/software-dev/odoo-developer-42",
+      "description": "Remote Odoo developer with Python and PostgreSQL.",
+      "job_type": "full_time",
+      "publication_date": "2026-07-30T12:00:00",
+      "tags": ["odoo", "python"],
+      "category": "Software Development"
+    }
+  ]
+}

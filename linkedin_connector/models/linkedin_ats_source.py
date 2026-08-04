@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from psycopg2 import IntegrityError
 
 _logger = logging.getLogger(__name__)
 
@@ -12,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class LinkedinAtsSource(models.Model):
     _name = "linkedin.ats.source"
     _description = "Direct ATS Employer Registry"
-    _order = "enabled desc, last_check_at desc, id"
+    _order = "enabled desc, discovery_priority desc, next_discovery_at asc, id"
 
     name = fields.Char(required=True)
     ats_type = fields.Selection(
@@ -30,10 +31,13 @@ class LinkedinAtsSource(models.Model):
     board_token = fields.Char(
         string="Board / site token",
         help="Greenhouse board token, Lever site slug, Ashby board, Workable account, or career index URL.",
+        index=True,
     )
+    board_token_normalized = fields.Char(index=True)
     company = fields.Char()
     region = fields.Char(help="egypt|uae|gulf|remote|europe|global")
     feed_url = fields.Char(string="Optional feed URL")
+    careers_url_normalized = fields.Char(index=True)
     enabled = fields.Boolean(default=True, index=True)
     last_check_at = fields.Datetime()
     last_http_status = fields.Integer()
@@ -41,6 +45,211 @@ class LinkedinAtsSource(models.Model):
     last_jobs_found = fields.Integer()
     consecutive_failures = fields.Integer(default=0)
     notes = fields.Text()
+    # Confirmed-registry link to partner (optional; manual seeds may omit)
+    partner_id = fields.Many2one("res.partner", index=True, ondelete="set null")
+    connector_id = fields.Many2one(
+        "linkedin.job.source.connector",
+        index=True,
+        ondelete="set null",
+        help="Optional job-source connector that owns this ATS board.",
+    )
+    is_primary_partner_source = fields.Boolean(
+        default=False,
+        index=True,
+        help="Auto-discovered primary source for partner; manual seeds leave False.",
+    )
+    last_discovery_at = fields.Datetime(index=True)
+    next_discovery_at = fields.Datetime(index=True, default=fields.Datetime.now)
+    discovery_interval_minutes = fields.Integer(default=360)
+    discovery_priority = fields.Integer(default=100, index=True)
+
+    def init(self):
+        cr = self.env.cr
+        cr.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS linkedin_ats_source_primary_partner_uniq
+            ON linkedin_ats_source (partner_id)
+            WHERE is_primary_partner_source IS TRUE AND partner_id IS NOT NULL
+            """
+        )
+        cr.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS linkedin_ats_source_board_uniq
+            ON linkedin_ats_source (ats_type, board_token_normalized)
+            WHERE board_token_normalized IS NOT NULL AND board_token_normalized <> ''
+              AND ats_type IN ('greenhouse', 'lever', 'ashby', 'workable')
+            """
+        )
+        cr.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS linkedin_ats_source_careers_uniq
+            ON linkedin_ats_source (careers_url_normalized)
+            WHERE careers_url_normalized IS NOT NULL AND careers_url_normalized <> ''
+              AND ats_type = 'company_ats'
+            """
+        )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        from odoo.addons.linkedin_connector.services.url_normalize import (
+            normalize_board_token,
+            normalize_website,
+        )
+
+        for vals in vals_list:
+            token = vals.get("board_token") or ""
+            if token and not vals.get("board_token_normalized"):
+                if vals.get("ats_type") == "company_ats":
+                    vals["board_token_normalized"] = normalize_website(token)
+                    vals.setdefault("careers_url_normalized", vals["board_token_normalized"])
+                else:
+                    vals["board_token_normalized"] = normalize_board_token(token)
+            if vals.get("careers_url_normalized"):
+                vals["careers_url_normalized"] = normalize_website(
+                    vals["careers_url_normalized"]
+                )
+            if not vals.get("next_discovery_at"):
+                vals["next_discovery_at"] = fields.Datetime.now()
+        return super().create(vals_list)
+
+    def write(self, vals):
+        from odoo.addons.linkedin_connector.services.url_normalize import (
+            normalize_board_token,
+            normalize_website,
+        )
+
+        if "board_token" in vals and "board_token_normalized" not in vals:
+            token = vals.get("board_token") or ""
+            # Per-record ats_type may differ; normalize conservatively
+            vals["board_token_normalized"] = (
+                normalize_website(token)
+                if any(r.ats_type == "company_ats" for r in self)
+                else normalize_board_token(token)
+            )
+        if vals.get("careers_url_normalized"):
+            vals["careers_url_normalized"] = normalize_website(
+                vals["careers_url_normalized"]
+            )
+        return super().write(vals)
+
+    @api.model
+    def create_or_reuse_from_probe(self, probe_rec, probe_res):
+        """Create enabled ATS source on hit, or reuse by normalized keys.
+
+        Returns (created: bool, reused: bool, collision: bool).
+        Misses/errors must never call this.
+        """
+        from odoo.addons.linkedin_connector.services.url_normalize import (
+            normalize_board_token,
+            normalize_website,
+        )
+
+        ats_type = (probe_res.get("ats_type") or "").strip()
+        if ats_type not in ("greenhouse", "lever", "ashby", "workable", "company_ats"):
+            return False, False, False
+
+        token_raw = (probe_res.get("board_token") or "").strip()
+        careers = normalize_website(
+            probe_res.get("careers_url_normalized")
+            or probe_res.get("careers_url")
+            or (token_raw if ats_type == "company_ats" else "")
+        )
+        token_norm = (
+            careers
+            if ats_type == "company_ats"
+            else normalize_board_token(token_raw)
+        )
+        if not token_norm:
+            return False, False, False
+
+        # Search existing
+        existing = self.browse()
+        if ats_type == "company_ats":
+            existing = self.search(
+                [("careers_url_normalized", "=", careers), ("ats_type", "=", "company_ats")],
+                limit=1,
+            )
+        else:
+            existing = self.search(
+                [
+                    ("ats_type", "=", ats_type),
+                    ("board_token_normalized", "=", token_norm),
+                ],
+                limit=1,
+            )
+        if not existing and probe_rec.partner_id:
+            existing = self.search(
+                [
+                    ("partner_id", "=", probe_rec.partner_id.id),
+                    ("is_primary_partner_source", "=", True),
+                ],
+                limit=1,
+            )
+
+        partner = probe_rec.partner_id
+        company_name = (partner.name if partner else "") or ""
+        name = f"{company_name} ({ats_type})" if company_name else f"Partner ATS {ats_type}"
+        now = fields.Datetime.now()
+
+        if existing:
+            vals = {
+                "enabled": True,
+                "next_discovery_at": now,
+                "discovery_priority": max(existing.discovery_priority or 0, 250),
+            }
+            if partner and not existing.partner_id:
+                vals["partner_id"] = partner.id
+            existing.write(vals)
+            probe_rec.write({"source_id": existing.id})
+            return False, True, False
+
+        vals = {
+            "name": name[:200],
+            "ats_type": ats_type,
+            "board_token": careers if ats_type == "company_ats" else token_raw,
+            "board_token_normalized": token_norm,
+            "careers_url_normalized": careers if ats_type == "company_ats" else False,
+            "company": company_name[:200] or False,
+            "enabled": True,
+            "partner_id": partner.id if partner else False,
+            "is_primary_partner_source": bool(partner),
+            "discovery_priority": 250,
+            "next_discovery_at": now,
+            "discovery_interval_minutes": 360,
+            "notes": f"auto_from_partner_probe:{probe_rec.id}",
+        }
+        try:
+            with self.env.cr.savepoint():
+                source = self.create(vals)
+            probe_rec.write({"source_id": source.id})
+            return True, False, False
+        except IntegrityError:
+            # savepoint rolled back automatically; re-search and link
+            if ats_type == "company_ats":
+                existing = self.search(
+                    [
+                        ("careers_url_normalized", "=", careers),
+                        ("ats_type", "=", "company_ats"),
+                    ],
+                    limit=1,
+                )
+            else:
+                existing = self.search(
+                    [
+                        ("ats_type", "=", ats_type),
+                        ("board_token_normalized", "=", token_norm),
+                    ],
+                    limit=1,
+                )
+            if existing:
+                probe_rec.write({"source_id": existing.id})
+                return False, True, True
+            _logger.warning(
+                "ATS source create collision unresolved partner=%s ats=%s",
+                partner.id if partner else None,
+                ats_type,
+            )
+            return False, False, True
 
     def action_run_now(self):
         self.env["linkedin.ats.source"].sudo().run_discovery_cycle(source_ids=self.ids)
@@ -58,6 +267,15 @@ class LinkedinAtsSource(models.Model):
         return personal
 
     @api.model
+    def _discovery_cap(self):
+        ICP = self.env["ir.config_parameter"].sudo()
+        try:
+            cap = int(ICP.get_param("linkedin_connector.ats_discovery_per_cycle_cap", "20") or 20)
+        except (TypeError, ValueError):
+            cap = 20
+        return max(1, min(200, cap))
+
+    @api.model
     def run_discovery_cycle(self, source_ids=None, try_canary=True):
         """Fetch public ATS feeds → import/score for account 2 → preflight classify.
 
@@ -73,10 +291,24 @@ class LinkedinAtsSource(models.Model):
         if personal.id == 1:
             raise UserError(_("Refusing discovery write to company account."))
 
-        domain = [("enabled", "=", True)]
+        now = fields.Datetime.now()
         if source_ids:
-            domain.append(("id", "in", list(source_ids)))
-        sources = self.search(domain)
+            sources = self.search(
+                [("id", "in", list(source_ids)), ("enabled", "=", True)]
+            )
+        else:
+            # Due + capped discovery (independent of probe)
+            cap = self._discovery_cap()
+            sources = self.search(
+                [
+                    ("enabled", "=", True),
+                    "|",
+                    ("next_discovery_at", "=", False),
+                    ("next_discovery_at", "<=", now),
+                ],
+                order="discovery_priority desc, next_discovery_at asc, id asc",
+                limit=cap,
+            )
         Job = self.env["linkedin.job"].sudo()
         stats = {
             "sources_checked": 0,
@@ -86,8 +318,8 @@ class LinkedinAtsSource(models.Model):
             "ineligible": 0,
             "unsupported_ats": 0,
             "errors": 0,
+            "discovery_cap": self._discovery_cap() if not source_ids else len(sources),
         }
-        now = fields.Datetime.now()
 
         for src in sources:
             stats["sources_checked"] += 1
@@ -153,10 +385,16 @@ class LinkedinAtsSource(models.Model):
                 fails = (fails or 0) + 1
             vals_src = {
                 "last_check_at": now,
+                "last_discovery_at": now,
                 "last_http_status": status or 0,
                 "last_error": err,
                 "last_jobs_found": len(jobs),
                 "consecutive_failures": fails,
+                "next_discovery_at": now
+                + timedelta(minutes=max(30, int(src.discovery_interval_minutes or 360))),
+                "discovery_priority": min(src.discovery_priority or 100, 200)
+                if status == 200
+                else (src.discovery_priority or 100),
             }
             # Auto-disable after repeated hard failures (404 boards)
             if fails >= 5 and status in (404, 410):
@@ -183,6 +421,11 @@ class LinkedinAtsSource(models.Model):
                     lambda j, c=canon: Job._canonical_apply_url(j.apply_url) == c
                 )[:1]
                 platform = item.get("ats") or classify_apply_url(apply_url)
+                channel = Job._normalize_source_channel(
+                    ats_type=src.ats_type,
+                    source=item.get("source") or f"ats:{src.ats_type}",
+                    apply_platform=platform,
+                )
                 job_vals = {
                     "account_id": personal.id,
                     "title": (item.get("title") or "")[:200],
@@ -196,6 +439,7 @@ class LinkedinAtsSource(models.Model):
                     in dict(Job._fields["apply_platform"].selection)
                     else classify_apply_url(apply_url),
                     "source": item.get("source") or f"ats:{src.ats_type}",
+                    "source_channel": channel,
                     "job_id": (item.get("external_id") or "")[:120] or False,
                     "listed_at": now,
                     "external_ats_id": (item.get("external_id") or "")[:120],

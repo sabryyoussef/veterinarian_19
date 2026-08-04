@@ -43,12 +43,107 @@
             <field name="active" eval="False"/>
         </record>
 
+        <!-- Free aggregators (Arbeitnow + Remotive); gated by live_job_search_enabled -->
+        <record id="ir_cron_daily_aggregators" model="ir.cron">
+            <field name="name">LinkedIn: Daily Aggregator Job Search</field>
+            <field name="model_id" ref="model_linkedin_job"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_daily_aggregators()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Telegram allowlist ingest (needs bot token + enabled sources) -->
+        <record id="ir_cron_telegram_ingest" model="ir.cron">
+            <field name="name">LinkedIn: Telegram Channel Ingest</field>
+            <field name="model_id" ref="model_linkedin_job_channel_source"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_telegram_ingest()</field>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Facebook scan stub (browser-assisted; needs named pages) -->
+        <record id="ir_cron_facebook_scan" model="ir.cron">
+            <field name="name">LinkedIn: Facebook Channel Scan</field>
+            <field name="model_id" ref="model_linkedin_job_channel_source"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_facebook_scan()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="False"/>
+        </record>
+
         <!-- 07:15 Africa/Cairo — internal digest only (no API, no email) -->
         <record id="ir_cron_daily_job_digest" model="ir.cron">
             <field name="name">LinkedIn: Daily Job Digest</field>
             <field name="model_id" ref="model_linkedin_job"/>
             <field name="state">code</field>
             <field name="code">model._cron_daily_job_digest()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Partner website probe pipeline (disabled until ICP partner_probe_enabled=True) -->
+        <record id="ir_cron_partner_ats_queue_sync" model="ir.cron">
+            <field name="name">LinkedIn: Partner ATS Queue Sync</field>
+            <field name="model_id" ref="model_linkedin_partner_ats_probe"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_partner_queue()</field>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="False"/>
+        </record>
+        <record id="ir_cron_partner_ats_probe" model="ir.cron">
+            <field name="name">LinkedIn: Partner ATS Website Probe</field>
+            <field name="model_id" ref="model_linkedin_partner_ats_probe"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_probe_due()</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="False"/>
+        </record>
+        <record id="ir_cron_partner_ats_probe_recover" model="ir.cron">
+            <field name="name">LinkedIn: Partner ATS Probe Recovery</field>
+            <field name="model_id" ref="model_linkedin_partner_ats_probe"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_recover_stuck_processing()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Unified job-source connector scheduler (one due connector per tick) -->
+        <record id="ir_cron_job_source_scheduler" model="ir.cron">
+            <field name="name">LinkedIn: Job Source Connector Scheduler</field>
+            <field name="model_id" ref="model_linkedin_job_source_connector"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_scheduler()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Raw payload retention cleanup -->
+        <record id="ir_cron_job_raw_payload_cleanup" model="ir.cron">
+            <field name="name">LinkedIn: Job Raw Payload Cleanup</field>
+            <field name="model_id" ref="model_linkedin_job_source_connector"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_raw_payload_cleanup()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="False"/>
+        </record>
+
+        <!-- Direct ATS discovery (still inactive by default) -->
+        <record id="ir_cron_direct_ats_discovery" model="ir.cron">
+            <field name="name">LinkedIn: Direct ATS Discovery</field>
+            <field name="model_id" ref="model_linkedin_ats_source"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_direct_ats_discovery()</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="active" eval="False"/>

@@ -32,6 +32,22 @@ const PLATFORM_OPTIONS = [
     { value: "unknown", label: "Unknown" },
 ];
 
+const SOURCE_CHANNEL_OPTIONS = [
+    { value: "", label: "All channels" },
+    { value: "jsearch", label: "JSearch" },
+    { value: "arbeitnow", label: "Arbeitnow" },
+    { value: "remotive", label: "Remotive" },
+    { value: "remoteok", label: "RemoteOK" },
+    { value: "greenhouse", label: "Greenhouse" },
+    { value: "lever", label: "Lever" },
+    { value: "ashby", label: "Ashby" },
+    { value: "workable", label: "Workable" },
+    { value: "company_ats", label: "Company ATS" },
+    { value: "telegram", label: "Telegram" },
+    { value: "facebook", label: "Facebook" },
+    { value: "linkedin_guest", label: "LinkedIn Guest" },
+];
+
 const APP_STATE_OPTIONS = [
     { value: "", label: "All app states" },
     { value: "discovered", label: "Discovered" },
@@ -65,6 +81,7 @@ export class LinkedinCaughtJobsDashboard extends Component {
         this.periods = PERIODS;
         this.classOptions = CLASS_OPTIONS;
         this.platformOptions = PLATFORM_OPTIONS;
+        this.sourceChannelOptions = SOURCE_CHANNEL_OPTIONS;
         this.appStateOptions = APP_STATE_OPTIONS;
         this.eligibilityOptions = ELIGIBILITY_OPTIONS;
 
@@ -74,6 +91,7 @@ export class LinkedinCaughtJobsDashboard extends Component {
             dateTo: "",
             discoveryClass: "",
             platform: "",
+            sourceChannel: "",
             minScore: "0",
             maxScore: "",
             search: "",
@@ -82,7 +100,7 @@ export class LinkedinCaughtJobsDashboard extends Component {
             hardExclusionReason: "",
             safeCanaryOnly: false,
             offset: 0,
-            limit: 40,
+            limit: 100,
             order: "discovered_at desc",
             loading: true,
             error: null,
@@ -114,7 +132,7 @@ export class LinkedinCaughtJobsDashboard extends Component {
     }
 
     get table() {
-        return this.state.data?.table || { rows: [], total: 0, offset: 0, limit: 40 };
+        return this.state.data?.table || { rows: [], total: 0, offset: 0, limit: 100 };
     }
 
     get periodMeta() {
@@ -177,6 +195,7 @@ export class LinkedinCaughtJobsDashboard extends Component {
                     date_to: this.state.period === "custom" ? this.state.dateTo : false,
                     discovery_class: this.state.discoveryClass || false,
                     platform: this.state.platform || false,
+                    source_channel: this.state.sourceChannel || false,
                     min_score: Number.isFinite(minScore) ? minScore : 0,
                     max_score: Number.isFinite(maxScore) ? maxScore : false,
                     search: this.state.search || "",
@@ -288,14 +307,18 @@ export class LinkedinCaughtJobsDashboard extends Component {
         if (!key) {
             return;
         }
-        const action = await this.orm.call(
-            "linkedin.caught.jobs.dashboard",
-            "action_open_smart",
-            [],
-            { key }
-        );
-        if (action) {
-            await this.action.doAction(action);
+        try {
+            const action = await this.orm.call(
+                "linkedin.caught.jobs.dashboard",
+                "action_open_smart",
+                [],
+                { key }
+            );
+            if (action) {
+                await this.action.doAction(action);
+            }
+        } catch (e) {
+            this.notification.add(e.message || String(e), { type: "danger" });
         }
     }
 

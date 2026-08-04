@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Job Source Connectors -->
+    <record id="view_linkedin_job_source_connector_list" model="ir.ui.view">
+        <field name="name">linkedin.job.source.connector.list</field>
+        <field name="model">linkedin.job.source.connector</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="adapter_key"/>
+                <field name="environment"/>
+                <field name="enabled"/>
+                <field name="compliance_class"/>
+                <field name="trust_level"/>
+                <field name="last_success_at"/>
+                <field name="last_error"/>
+                <field name="next_run_at"/>
+                <field name="consecutive_failures"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_linkedin_job_source_connector_form" model="ir.ui.view">
+        <field name="name">linkedin.job.source.connector.form</field>
+        <field name="model">linkedin.job.source.connector</field>
+        <field name="arch" type="xml">
+            <form string="Job Source Connector">
+                <header>
+                    <button name="action_run_now" type="object" string="Run Now" class="btn-primary"
+                            invisible="compliance_class == 'REJECTED_AUTOMATION'"/>
+                    <button name="action_reset_failures" type="object" string="Reset Failures"/>
+                    <field name="enabled" widget="boolean_toggle"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="adapter_key"/>
+                            <field name="source_type"/>
+                            <field name="environment"/>
+                            <field name="compliance_class"/>
+                        </group>
+                        <group>
+                            <field name="base_url"/>
+                            <field name="api_key_param"/>
+                            <field name="board_token"/>
+                            <field name="feed_url"/>
+                            <field name="trust_level"/>
+                            <field name="raw_archive_enabled"/>
+                        </group>
+                    </group>
+                    <group string="Limits">
+                        <group>
+                            <field name="fetch_interval_minutes"/>
+                            <field name="max_jobs_per_run"/>
+                            <field name="daily_request_limit"/>
+                            <field name="monthly_request_limit"/>
+                        </group>
+                        <group>
+                            <field name="requests_used_day"/>
+                            <field name="requests_used_month"/>
+                            <field name="rate_limit_until"/>
+                            <field name="next_run_at"/>
+                            <field name="auto_disable_after_failures"/>
+                            <field name="consecutive_failures"/>
+                        </group>
+                    </group>
+                    <group string="Health">
+                        <field name="last_success_at"/>
+                        <field name="last_http_status"/>
+                        <field name="last_jobs_found"/>
+                        <field name="last_error"/>
+                        <field name="cursor_json"/>
+                        <field name="health_json"/>
+                        <field name="compliance_notes"/>
+                        <field name="keyword_set_json"/>
+                        <field name="supported_countries"/>
+                    </group>
+                    <notebook>
+                        <page string="ATS Sources">
+                            <field name="ats_source_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_linkedin_job_source_connector" model="ir.actions.act_window">
+        <field name="name">Job Sources</field>
+        <field name="res_model">linkedin.job.source.connector</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_linkedin_jobs_qualified" model="ir.actions.act_window">
+        <field name="name">Qualified Jobs</field>
+        <field name="res_model">linkedin.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("lifecycle_state", "in", ["qualified", "high_priority", "application_ready"]), ("is_duplicate", "=", False)]</field>
+    </record>
+    <record id="action_linkedin_jobs_high_priority" model="ir.actions.act_window">
+        <field name="name">High Priority</field>
+        <field name="res_model">linkedin.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("lifecycle_state", "=", "high_priority")]</field>
+    </record>
+    <record id="action_linkedin_jobs_rejected" model="ir.actions.act_window">
+        <field name="name">Rejected Jobs</field>
+        <field name="res_model">linkedin.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("lifecycle_state", "=", "rejected")]</field>
+    </record>
+    <record id="action_linkedin_jobs_duplicates" model="ir.actions.act_window">
+        <field name="name">Duplicate Jobs</field>
+        <field name="res_model">linkedin.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">["|", ("is_duplicate", "=", True), ("lifecycle_state", "=", "duplicate")]</field>
+    </record>
+    <record id="action_linkedin_job_raw_payload" model="ir.actions.act_window">
+        <field name="name">Raw Payload Archive</field>
+        <field name="res_model">linkedin.job.raw.payload</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_linkedin_job_score_rule" model="ir.actions.act_window">
+        <field name="name">Score Rules</field>
+        <field name="res_model">linkedin.job.score.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_linkedin_job_filter_rule" model="ir.actions.act_window">
+        <field name="name">Filter Rules</field>
+        <field name="res_model">linkedin.job.filter.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_linkedin_job_raw_payload_list" model="ir.ui.view">
+        <field name="name">linkedin.job.raw.payload.list</field>
+        <field name="model">linkedin.job.raw.payload</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="fetched_at"/>
+                <field name="connector_id"/>
+                <field name="environment"/>
+                <field name="http_status"/>
+                <field name="is_error"/>
+                <field name="response_hash"/>
+                <field name="retention_until"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_linkedin_job_score_rule_list" model="ir.ui.view">
+        <field name="name">linkedin.job.score.rule.list</field>
+        <field name="model">linkedin.job.score.rule</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="rule_type"/>
+                <field name="category"/>
+                <field name="points"/>
+                <field name="mutex_group"/>
+                <field name="active"/>
+                <field name="pattern"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_linkedin_job_filter_rule_list" model="ir.ui.view">
+        <field name="name">linkedin.job.filter.rule.list</field>
+        <field name="model">linkedin.job.filter.rule</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="reason_code"/>
+                <field name="reason_label"/>
+                <field name="pattern"/>
+                <field name="require_explicit"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <menuitem id="menu_linkedin_job_sources"
+              name="Job Sources"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_source_connector"
+              sequence="5"/>
+    <menuitem id="menu_linkedin_jobs_qualified"
+              name="Qualified Jobs"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_jobs_qualified"
+              sequence="12"/>
+    <menuitem id="menu_linkedin_jobs_high_priority"
+              name="High Priority"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_jobs_high_priority"
+              sequence="13"/>
+    <menuitem id="menu_linkedin_jobs_rejected"
+              name="Rejected Jobs"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_jobs_rejected"
+              sequence="14"/>
+    <menuitem id="menu_linkedin_jobs_duplicates"
+              name="Duplicate Jobs"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_jobs_duplicates"
+              sequence="15"/>
+    <menuitem id="menu_linkedin_job_source_health"
+              name="Connector Health"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_source_connector"
+              sequence="90"/>
+    <menuitem id="menu_linkedin_job_raw_payload"
+              name="Raw Payloads"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_raw_payload"
+              sequence="91"/>
+    <menuitem id="menu_linkedin_job_score_rules"
+              name="Score Rules"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_score_rule"
+              sequence="92"/>
+    <menuitem id="menu_linkedin_job_filter_rules"
+              name="Filter Rules"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_job_filter_rule"
+              sequence="93"/>
+</odoo>

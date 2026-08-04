@@ -1,0 +1,53 @@
+        name        | latest_version |   state   
+--------------------+----------------+-----------
+ linkedin_connector | 19.0.2.20.0    | installed
+(1 row)
+
+ connectors 
+------------
+         22
+(1 row)
+
+        code         | enabled | environment |   compliance_class    
+---------------------+---------+-------------+-----------------------
+ adzuna              | f       | test        | APPROVED_API
+ arbeitnow           | f       | test        | APPROVED_PUBLIC_FEED
+ ashby               | f       | test        | APPROVED_PUBLIC_ATS
+ bayt                | f       | test        | MANUAL_DISCOVERY_ONLY
+ email_alert         | f       | test        | MANUAL_DISCOVERY_ONLY
+ forasna             | f       | test        | MANUAL_DISCOVERY_ONLY
+ greenhouse          | f       | test        | APPROVED_PUBLIC_ATS
+ gulftalent          | f       | test        | MANUAL_DISCOVERY_ONLY
+ indeed_restricted   | f       | test        | REJECTED_AUTOMATION
+ jooble              | f       | test        | APPROVED_API
+ jsearch             | f       | test        | APPROVED_API
+ lever               | f       | test        | APPROVED_PUBLIC_ATS
+ linkedin_restricted | f       | test        | REJECTED_AUTOMATION
+ manual              | f       | test        | MANUAL_DISCOVERY_ONLY
+ naukrigulf          | f       | test        | MANUAL_DISCOVERY_ONLY
+ recruitee           | f       | test        | APPROVED_PUBLIC_ATS
+ remoteok            | f       | test        | APPROVED_PUBLIC_FEED
+ remotive            | f       | test        | APPROVED_PUBLIC_FEED
+ smartrecruiters     | f       | test        | APPROVED_PUBLIC_ATS
+ tanqeeb             | f       | test        | MANUAL_DISCOVERY_ONLY
+ workable            | f       | test        | APPROVED_PUBLIC_ATS
+ wuzzuf              | f       | test        | MANUAL_DISCOVERY_ONLY
+(22 rows)
+
+ score_rules 
+-------------
+          16
+(1 row)
+
+ filter_rules 
+--------------
+            5
+(1 row)
+
+                     key                     | value 
+---------------------------------------------+-------
+ linkedin_connector.live_job_search_enabled  | False
+ linkedin_connector.auto_create_applications | False
+ linkedin_connector.live_submit_enabled      | False
+(3 rows)
+

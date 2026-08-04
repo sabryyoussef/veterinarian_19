@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="score_rule_odoo_title" model="linkedin.job.score.rule">
+            <field name="name">Odoo in title</field>
+            <field name="code">odoo_title</field>
+            <field name="sequence">10</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">role_fit</field>
+            <field name="match_scope">title</field>
+            <field name="pattern">\bodoo\b</field>
+            <field name="points">35</field>
+            <field name="mutex_group">odoo_mention</field>
+            <field name="reason_label">Odoo mentioned in title</field>
+        </record>
+        <record id="score_rule_senior" model="linkedin.job.score.rule">
+            <field name="name">Senior / Lead / Architect</field>
+            <field name="code">seniority</field>
+            <field name="sequence">20</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">role_fit</field>
+            <field name="match_scope">title</field>
+            <field name="pattern">\b(senior|lead|architect|principal)\b</field>
+            <field name="points">20</field>
+            <field name="mutex_group">seniority</field>
+        </record>
+        <record id="score_rule_python_pg" model="linkedin.job.score.rule">
+            <field name="name">Python and PostgreSQL</field>
+            <field name="code">python_pg</field>
+            <field name="sequence">30</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">technical_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">(?=.*\bpython\b)(?=.*\b(postgres|postgresql)\b)</field>
+            <field name="points">15</field>
+            <field name="mutex_group">python_pg</field>
+        </record>
+        <record id="score_rule_enterprise_sh" model="linkedin.job.score.rule">
+            <field name="name">Odoo Enterprise or Odoo.sh</field>
+            <field name="code">enterprise_sh</field>
+            <field name="sequence">40</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">technical_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(odoo\s*enterprise|odoo\.sh)\b</field>
+            <field name="points">10</field>
+            <field name="mutex_group">enterprise_sh</field>
+        </record>
+        <record id="score_rule_uae_sa" model="linkedin.job.score.rule">
+            <field name="name">UAE or Saudi Arabia</field>
+            <field name="code">uae_sa</field>
+            <field name="sequence">50</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">location_fit</field>
+            <field name="match_scope">location</field>
+            <field name="pattern">\b(uae|dubai|abu\s*dhabi|saudi|riyadh|jeddah|ksa)\b</field>
+            <field name="points">10</field>
+            <field name="mutex_group">geo_priority</field>
+        </record>
+        <record id="score_rule_visa_reloc" model="linkedin.job.score.rule">
+            <field name="name">Visa sponsorship or relocation</field>
+            <field name="code">visa_reloc</field>
+            <field name="sequence">60</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">authorization_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(visa\s+sponsorship|relocation\s+(support|package|assistance)|will\s+sponsor)\b</field>
+            <field name="points">10</field>
+            <field name="mutex_group">visa_reloc</field>
+        </record>
+        <record id="score_rule_remote_world" model="linkedin.job.score.rule">
+            <field name="name">Remote worldwide or EMEA</field>
+            <field name="code">remote_world_emea</field>
+            <field name="sequence">70</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">remote_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(remote\s+(worldwide|world|global|anywhere)|remote\s+emea|emea\s+remote)\b</field>
+            <field name="points">10</field>
+            <field name="mutex_group">remote_fit</field>
+        </record>
+        <record id="score_rule_business_apps" model="linkedin.job.score.rule">
+            <field name="name">Odoo business applications</field>
+            <field name="code">business_apps</field>
+            <field name="sequence">80</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">technical_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(accounting|crm|pos|inventory|hr|website|multi[- ]company)\b</field>
+            <field name="points">8</field>
+            <field name="mutex_group">business_apps</field>
+        </record>
+        <record id="score_rule_api_integ" model="linkedin.job.score.rule">
+            <field name="name">API or integration</field>
+            <field name="code">api_integ</field>
+            <field name="sequence">90</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">technical_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(api|integration|xml-rpc|json-rpc|webhook)\b</field>
+            <field name="points">8</field>
+            <field name="mutex_group">api_integ</field>
+        </record>
+        <record id="score_rule_devops" model="linkedin.job.score.rule">
+            <field name="name">Docker / Linux / DevOps</field>
+            <field name="code">devops</field>
+            <field name="sequence">100</field>
+            <field name="rule_type">bonus</field>
+            <field name="category">technical_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(docker|linux|devops|odoo\.sh)\b</field>
+            <field name="points">5</field>
+            <field name="mutex_group">devops</field>
+        </record>
+        <record id="score_rule_junior_penalty" model="linkedin.job.score.rule">
+            <field name="name">Junior / intern / trainee</field>
+            <field name="code">junior_penalty</field>
+            <field name="sequence">200</field>
+            <field name="rule_type">penalty</field>
+            <field name="category">role_fit</field>
+            <field name="match_scope">title</field>
+            <field name="pattern">\b(junior|intern|trainee|fresh\s+graduate)\b</field>
+            <field name="points">40</field>
+            <field name="mutex_group">junior</field>
+        </record>
+        <record id="score_rule_auth_penalty" model="linkedin.job.score.rule">
+            <field name="name">Auth required no sponsorship</field>
+            <field name="code">auth_no_sponsor_penalty</field>
+            <field name="sequence">210</field>
+            <field name="rule_type">penalty</field>
+            <field name="category">authorization_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(must\s+(already\s+)?have\s+(eu\s+)?work\s+authorization|no\s+visa\s+sponsorship|without\s+sponsorship)\b</field>
+            <field name="points">35</field>
+            <field name="mutex_group">auth_penalty</field>
+        </record>
+        <record id="score_rule_remote_country_penalty" model="linkedin.job.score.rule">
+            <field name="name">Unsupported remote country</field>
+            <field name="code">remote_us_only_penalty</field>
+            <field name="sequence">220</field>
+            <field name="rule_type">penalty</field>
+            <field name="category">remote_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(remote\s*[-—]?\s*us\s+(only|residents)|us\s+residents\s+only|must\s+be\s+located\s+in\s+the\s+united\s+states)\b</field>
+            <field name="points">30</field>
+            <field name="mutex_group">remote_restrict</field>
+        </record>
+        <record id="score_rule_pure_functional" model="linkedin.job.score.rule">
+            <field name="name">Pure functional no technical</field>
+            <field name="code">pure_functional_penalty</field>
+            <field name="sequence">230</field>
+            <field name="rule_type">penalty</field>
+            <field name="category">role_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">(?=.*\bfunctional\b)(?=.*\b(no\s+development|no\s+coding|non[- ]technical)\b)</field>
+            <field name="points">25</field>
+            <field name="mutex_group">pure_functional</field>
+        </record>
+        <record id="score_rule_non_odoo_erp" model="linkedin.job.score.rule">
+            <field name="name">Non-Odoo ERP primary</field>
+            <field name="code">non_odoo_erp_penalty</field>
+            <field name="sequence">240</field>
+            <field name="rule_type">penalty</field>
+            <field name="category">technical_fit</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(sap\s+only|oracle\s+only|dynamics\s+365\s+only|salesforce\s+only)\b</field>
+            <field name="points">20</field>
+            <field name="mutex_group">non_odoo</field>
+        </record>
+        <record id="score_rule_incomplete" model="linkedin.job.score.rule">
+            <field name="name">Missing employer / incomplete</field>
+            <field name="code">incomplete_penalty</field>
+            <field name="sequence">250</field>
+            <field name="rule_type">penalty</field>
+            <field name="category">source_quality</field>
+            <field name="match_scope">company</field>
+            <field name="pattern">^$</field>
+            <field name="points">15</field>
+            <field name="mutex_group">incomplete</field>
+        </record>
+
+        <!-- Hard filters: explicit evidence only -->
+        <record id="filter_rule_junior_title" model="linkedin.job.filter.rule">
+            <field name="name">Junior/intern title</field>
+            <field name="code">junior_title</field>
+            <field name="sequence">10</field>
+            <field name="match_scope">title</field>
+            <field name="pattern">\b(junior|intern|internship|trainee|fresh\s+graduate)\b</field>
+            <field name="reason_code">junior_only</field>
+            <field name="reason_label">Junior / intern / trainee role (title)</field>
+            <field name="require_explicit" eval="True"/>
+        </record>
+        <record id="filter_rule_us_remote_only" model="linkedin.job.filter.rule">
+            <field name="name">US remote only</field>
+            <field name="code">us_remote_only</field>
+            <field name="sequence">20</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(remote\s*[-—]?\s*us\s+(only|residents)|us\s+residents\s+only|must\s+be\s+based\s+in\s+the\s+(us|united\s+states))\b</field>
+            <field name="reason_code">unsupported_remote</field>
+            <field name="reason_label">Remote restricted to unsupported country (US only)</field>
+            <field name="require_explicit" eval="True"/>
+        </record>
+        <record id="filter_rule_eu_auth_no_sponsor" model="linkedin.job.filter.rule">
+            <field name="name">EU auth required no sponsorship</field>
+            <field name="code">eu_auth_no_sponsor</field>
+            <field name="sequence">30</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(must\s+(already\s+)?have\s+(eu|european)\s+work\s+authorization|no\s+visa\s+sponsorship.*eu|eu\s+citizenship\s+required)\b</field>
+            <field name="reason_code">auth_required_no_sponsorship</field>
+            <field name="reason_label">EU work authorization required without sponsorship</field>
+            <field name="require_explicit" eval="True"/>
+        </record>
+        <record id="filter_rule_pure_functional" model="linkedin.job.filter.rule">
+            <field name="name">Pure functional no technical</field>
+            <field name="code">pure_functional</field>
+            <field name="sequence">40</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">(?=.*\bfunctional\b)(?=.*\b(no\s+development|no\s+coding|non[- ]technical\s+role)\b)</field>
+            <field name="reason_code">pure_functional</field>
+            <field name="reason_label">Pure functional role with explicit no-development scope</field>
+            <field name="require_explicit" eval="True"/>
+        </record>
+        <record id="filter_rule_non_odoo" model="linkedin.job.filter.rule">
+            <field name="name">Non-Odoo ERP only</field>
+            <field name="code">non_odoo_erp</field>
+            <field name="sequence">50</field>
+            <field name="match_scope">blob</field>
+            <field name="pattern">\b(sap\s+only|oracle\s+ebs\s+only|dynamics\s+365\s+only|salesforce\s+only)\b</field>
+            <field name="reason_code">non_odoo_erp</field>
+            <field name="reason_label">Non-Odoo ERP is the primary platform</field>
+            <field name="require_explicit" eval="True"/>
+        </record>
+    </data>
+</odoo>

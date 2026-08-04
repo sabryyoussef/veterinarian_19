@@ -63,12 +63,12 @@ class ResConfigSettings(models.TransientModel):
     linkedin_jsearch_max_requests_per_day = fields.Char(
         string="JSearch max requests / day",
         config_parameter="linkedin_connector.jsearch_max_requests_per_day",
-        default="3",
+        default="8",
     )
     linkedin_jsearch_max_jobs_per_day = fields.Char(
         string="JSearch max imported jobs / day",
         config_parameter="linkedin_connector.jsearch_max_jobs_per_day",
-        default="30",
+        default="120",
     )
     linkedin_jsearch_max_requests_per_month = fields.Char(
         string="JSearch max requests / month",

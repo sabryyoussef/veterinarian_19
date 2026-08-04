@@ -261,9 +261,21 @@ class LinkedinJobApplication(models.Model):
 
     def action_prepare_pack(self):
         for rec in self:
-            if rec.state not in ("discovered", "shortlisted", "pack_ready"):
+            if rec.state not in (
+                "discovered",
+                "shortlisted",
+                "pack_ready",
+                "rejected",
+                "human_required",
+                "failed",
+                "delivery_failed",
+                "missing_fact",
+            ):
                 raise UserError(
-                    _("Prepare pack is only available before approval (discovered/shortlisted/pack ready).")
+                    _(
+                        "Prepare pack is available from discovered/shortlisted/pack ready "
+                        "(or reopen from rejected/human required)."
+                    )
                 )
             if not rec.cv_version_id:
                 default_cv = self.env["linkedin.cv.version"].search(
@@ -282,10 +294,36 @@ class LinkedinJobApplication(models.Model):
                     "screening_answers": rec._generate_screening_answers(),
                     "checklist": rec._generate_checklist(),
                     "state": "pack_ready",
+                    "next_required_action": "review_and_approve",
                 }
             )
             rec.message_post(body=_("Application pack prepared (draft). Review and edit before approving."))
         return True
+
+    def action_reopen_for_approval(self):
+        """Move rejected / human-required apps back to Pack Ready so Approve is available."""
+        if not self.env.user.has_group("linkedin_connector.group_linkedin_job_hunt"):
+            raise UserError(_("Only Job Hunt managers can reopen applications."))
+        reopenable = (
+            "rejected",
+            "human_required",
+            "failed",
+            "delivery_failed",
+            "missing_fact",
+            "unsupported_ats",
+            "hard_excluded",
+        )
+        for rec in self:
+            if rec.account_id.id == 1:
+                raise UserError(_("Company account id=1 cannot reopen applications."))
+            if rec.state == "applied":
+                raise UserError(_("Already applied — no reopen needed."))
+            if rec.state not in reopenable and rec.state != "pack_ready":
+                raise UserError(
+                    _("Cannot reopen from state %s. Use Prepare pack from discovered/shortlisted.")
+                    % (rec.state or "")
+                )
+        return self.action_prepare_pack()
 
     def action_approve(self):
         if not self.env.user.has_group("linkedin_connector.group_linkedin_job_hunt"):
@@ -332,15 +370,11 @@ class LinkedinJobApplication(models.Model):
         return {"type": "ir.actions.act_url", "url": self.apply_url, "target": "new"}
 
     def action_mark_applied(self):
-        """Deprecated unconstrained mark — redirects to evidence-gated confirmation.
-
-        Historical Softhealer/manual rows remain applied; new transitions require
-        confirmation_url, confirmation_reference, or email Message-ID evidence.
-        """
+        """Mark application as applied (manual or confirmed)."""
         return self.action_mark_confirmed_applied()
 
     def action_mark_confirmed_applied(self):
-        """Set state=applied only with verified external submission evidence."""
+        """Set state=applied for personal applications (manual mark allowed)."""
         allowed = (
             "approved",
             "human_required",
@@ -353,6 +387,9 @@ class LinkedinJobApplication(models.Model):
             "submitting",
             "submission_unknown",
             "delivery_failed",
+            "missing_fact",
+            "unsupported_ats",
+            "failed",
         )
         for rec in self:
             if rec.state == "applied":
@@ -363,13 +400,7 @@ class LinkedinJobApplication(models.Model):
                 raise UserError(
                     _("Cannot mark applied from state %s.") % (rec.state or "")
                 )
-            if not rec._has_verified_submission_evidence():
-                raise UserError(
-                    _(
-                        "Refuse applied without verified external evidence "
-                        "(thank-you/success URL, receipt/reference, or email Message-ID)."
-                    )
-                )
+            has_evidence = rec._has_verified_submission_evidence()
             vals = {
                 "state": "applied",
                 "applied_at": fields.Datetime.now(),
@@ -378,15 +409,23 @@ class LinkedinJobApplication(models.Model):
             }
             if not rec.submission_channel or rec.submission_channel == "unknown":
                 vals["submission_channel"] = "manual"
+            if not has_evidence and not rec.evidence_kind:
+                vals["evidence_kind"] = "manual_mark"
             rec.write(vals)
             if rec.job_id and rec.job_id.discovery_class == "human_required":
                 rec.job_id.sudo().write({"discovery_blocker": "confirmed_applied"})
-            rec.message_post(
-                body=_(
-                    "Confirmed applied with evidence (%s / %s)."
+            if has_evidence:
+                rec.message_post(
+                    body=_(
+                        "Marked applied with evidence (%s / %s)."
+                    )
+                    % (
+                        rec.evidence_kind or "manual",
+                        rec.confirmation_reference or rec.confirmation_url or "—",
+                    )
                 )
-                % (rec.evidence_kind or "manual", rec.confirmation_reference or rec.confirmation_url or "—")
-            )
+            else:
+                rec.message_post(body=_("Marked applied manually (no external evidence)."))
         return True
 
     def _has_verified_submission_evidence(self):
@@ -557,9 +596,9 @@ class LinkedinJobApplication(models.Model):
             raise UserError(_("Refuse transitions for company account."))
         if self.state == new_state:
             return True
-        # applied only via evidence helpers
+        # Prefer dedicated mark method, but allow forced/manual transitions.
         if new_state == "applied" and not force:
-            raise UserError(_("Use action_mark_confirmed_applied / evidence recorder for applied."))
+            return self.action_mark_confirmed_applied()
         allowed_from = {
             "queued": ("pack_ready", "approved", "discovered", "shortlisted"),
             "filling": ("queued", "approved", "pack_ready", "human_required"),

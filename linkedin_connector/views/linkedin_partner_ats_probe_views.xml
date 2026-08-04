@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_linkedin_partner_ats_probe_list" model="ir.ui.view">
+        <field name="name">linkedin.partner.ats.probe.list</field>
+        <field name="model">linkedin.partner.ats.probe</field>
+        <field name="arch" type="xml">
+            <list string="Partner ATS Probes" default_order="priority desc, next_probe_at, id">
+                <field name="priority"/>
+                <field name="partner_id"/>
+                <field name="website_normalized"/>
+                <field name="state"/>
+                <field name="next_probe_at"/>
+                <field name="last_probe_at"/>
+                <field name="detected_ats_type"/>
+                <field name="source_id"/>
+                <field name="attempt_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_linkedin_partner_ats_probe_form" model="ir.ui.view">
+        <field name="name">linkedin.partner.ats.probe.form</field>
+        <field name="model">linkedin.partner.ats.probe</field>
+        <field name="arch" type="xml">
+            <form string="Partner ATS Probe">
+                <sheet>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="company_id"/>
+                        <field name="website_normalized"/>
+                        <field name="website_fingerprint"/>
+                        <field name="state"/>
+                        <field name="priority"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="Schedule">
+                        <field name="next_probe_at"/>
+                        <field name="last_probe_at"/>
+                        <field name="locked_at"/>
+                        <field name="attempt_count"/>
+                        <field name="consecutive_error_count"/>
+                    </group>
+                    <group string="Result">
+                        <field name="detected_ats_type"/>
+                        <field name="detected_board_token"/>
+                        <field name="careers_url"/>
+                        <field name="careers_url_normalized"/>
+                        <field name="source_id"/>
+                        <field name="detected_pattern"/>
+                        <field name="last_http_status"/>
+                        <field name="last_error_code"/>
+                        <field name="last_error_message"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_linkedin_partner_ats_probe" model="ir.actions.act_window">
+        <field name="name">Partner ATS Probe Queue</field>
+        <field name="res_model">linkedin.partner.ats.probe</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_linkedin_partner_ats_probe_run" model="ir.actions.act_window">
+        <field name="name">Partner ATS Probe Runs</field>
+        <field name="res_model">linkedin.partner.ats.probe.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_linkedin_partner_ats_probe"
+              name="Partner Probe Queue"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_partner_ats_probe"
+              sequence="45"/>
+    <menuitem id="menu_linkedin_partner_ats_probe_run"
+              name="Partner Probe Runs"
+              parent="menu_linkedin_jobs"
+              action="action_linkedin_partner_ats_probe_run"
+              sequence="46"/>
+</odoo>

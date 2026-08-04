@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Seed job-source connectors (disabled by default). Secrets via ICP only. -->
+<odoo>
+    <data noupdate="1">
+        <!-- Official APIs -->
+        <record id="job_source_jooble_test" model="linkedin.job.source.connector">
+            <field name="name">Jooble (TEST)</field>
+            <field name="code">jooble</field>
+            <field name="source_type">official_api</field>
+            <field name="adapter_key">jooble</field>
+            <field name="base_url">https://jooble.org/api/</field>
+            <field name="api_key_param">linkedin_connector.jooble_api_key</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="1440"/>
+            <field name="max_jobs_per_run" eval="5"/>
+            <field name="daily_request_limit" eval="10"/>
+            <field name="monthly_request_limit" eval="80"/>
+            <field name="supported_countries">ae,sa,eg,de,nl,gb</field>
+            <field name="trust_level" eval="70"/>
+            <field name="compliance_class">APPROVED_API</field>
+            <field name="compliance_notes">Official Jooble API. Credentials via ICP. Disabled until key present.</field>
+        </record>
+        <record id="job_source_adzuna_test" model="linkedin.job.source.connector">
+            <field name="name">Adzuna (TEST)</field>
+            <field name="code">adzuna</field>
+            <field name="source_type">official_api</field>
+            <field name="adapter_key">adzuna</field>
+            <field name="base_url">https://api.adzuna.com/v1/api/jobs</field>
+            <field name="api_key_param">linkedin_connector.adzuna_app_key</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="1440"/>
+            <field name="max_jobs_per_run" eval="5"/>
+            <field name="daily_request_limit" eval="10"/>
+            <field name="monthly_request_limit" eval="80"/>
+            <field name="supported_countries">gb,de,nl,ae</field>
+            <field name="trust_level" eval="70"/>
+            <field name="compliance_class">APPROVED_API</field>
+            <field name="compliance_notes">Official Adzuna API. Needs app_id+app_key ICPs. Disabled until credentials present.</field>
+        </record>
+
+        <!-- Free aggregators -->
+        <record id="job_source_arbeitnow_test" model="linkedin.job.source.connector">
+            <field name="name">Arbeitnow (TEST)</field>
+            <field name="code">arbeitnow</field>
+            <field name="source_type">public_feed</field>
+            <field name="adapter_key">arbeitnow</field>
+            <field name="base_url">https://www.arbeitnow.com/api/job-board-api</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="1440"/>
+            <field name="max_jobs_per_run" eval="25"/>
+            <field name="daily_request_limit" eval="8"/>
+            <field name="monthly_request_limit" eval="100"/>
+            <field name="trust_level" eval="60"/>
+            <field name="compliance_class">APPROVED_PUBLIC_FEED</field>
+        </record>
+        <record id="job_source_remotive_test" model="linkedin.job.source.connector">
+            <field name="name">Remotive (TEST)</field>
+            <field name="code">remotive</field>
+            <field name="source_type">public_feed</field>
+            <field name="adapter_key">remotive</field>
+            <field name="base_url">https://remotive.com/api/remote-jobs</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="1440"/>
+            <field name="max_jobs_per_run" eval="25"/>
+            <field name="daily_request_limit" eval="8"/>
+            <field name="monthly_request_limit" eval="100"/>
+            <field name="trust_level" eval="60"/>
+            <field name="compliance_class">APPROVED_PUBLIC_FEED</field>
+        </record>
+        <record id="job_source_remoteok_test" model="linkedin.job.source.connector">
+            <field name="name">Remote OK (TEST)</field>
+            <field name="code">remoteok</field>
+            <field name="source_type">public_feed</field>
+            <field name="adapter_key">remoteok</field>
+            <field name="base_url">https://remoteok.com/api</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="1440"/>
+            <field name="max_jobs_per_run" eval="25"/>
+            <field name="daily_request_limit" eval="6"/>
+            <field name="monthly_request_limit" eval="80"/>
+            <field name="trust_level" eval="55"/>
+            <field name="compliance_class">APPROVED_PUBLIC_FEED</field>
+        </record>
+        <record id="job_source_jsearch_test" model="linkedin.job.source.connector">
+            <field name="name">JSearch (TEST)</field>
+            <field name="code">jsearch</field>
+            <field name="source_type">official_api</field>
+            <field name="adapter_key">jsearch</field>
+            <field name="base_url">https://jsearch.p.rapidapi.com/search-v2</field>
+            <field name="api_key_param">linkedin_connector.rapidapi_key</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="1440"/>
+            <field name="max_jobs_per_run" eval="20"/>
+            <field name="daily_request_limit" eval="8"/>
+            <field name="monthly_request_limit" eval="120"/>
+            <field name="trust_level" eval="65"/>
+            <field name="compliance_class">APPROVED_API</field>
+        </record>
+
+        <!-- Public ATS examples -->
+        <record id="job_source_greenhouse_generic_test" model="linkedin.job.source.connector">
+            <field name="name">Greenhouse boards (TEST)</field>
+            <field name="code">greenhouse</field>
+            <field name="source_type">public_ats</field>
+            <field name="adapter_key">greenhouse</field>
+            <field name="base_url">https://boards-api.greenhouse.io/v1/boards</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="720"/>
+            <field name="max_jobs_per_run" eval="50"/>
+            <field name="trust_level" eval="85"/>
+            <field name="compliance_class">APPROVED_PUBLIC_ATS</field>
+            <field name="compliance_notes">Uses linkedin.ats.source board tokens when board_token empty.</field>
+        </record>
+        <record id="job_source_lever_generic_test" model="linkedin.job.source.connector">
+            <field name="name">Lever postings (TEST)</field>
+            <field name="code">lever</field>
+            <field name="source_type">public_ats</field>
+            <field name="adapter_key">lever</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="720"/>
+            <field name="max_jobs_per_run" eval="50"/>
+            <field name="trust_level" eval="85"/>
+            <field name="compliance_class">APPROVED_PUBLIC_ATS</field>
+        </record>
+        <record id="job_source_ashby_generic_test" model="linkedin.job.source.connector">
+            <field name="name">Ashby boards (TEST)</field>
+            <field name="code">ashby</field>
+            <field name="source_type">public_ats</field>
+            <field name="adapter_key">ashby</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="720"/>
+            <field name="max_jobs_per_run" eval="50"/>
+            <field name="trust_level" eval="85"/>
+            <field name="compliance_class">APPROVED_PUBLIC_ATS</field>
+        </record>
+        <record id="job_source_workable_generic_test" model="linkedin.job.source.connector">
+            <field name="name">Workable (TEST)</field>
+            <field name="code">workable</field>
+            <field name="source_type">public_ats</field>
+            <field name="adapter_key">workable</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="fetch_interval_minutes" eval="720"/>
+            <field name="max_jobs_per_run" eval="50"/>
+            <field name="trust_level" eval="75"/>
+            <field name="compliance_class">APPROVED_PUBLIC_ATS</field>
+        </record>
+        <record id="job_source_smartrecruiters_test" model="linkedin.job.source.connector">
+            <field name="name">SmartRecruiters (TEST)</field>
+            <field name="code">smartrecruiters</field>
+            <field name="source_type">public_ats</field>
+            <field name="adapter_key">smartrecruiters</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="board_token">odoo</field>
+            <field name="max_jobs_per_run" eval="5"/>
+            <field name="trust_level" eval="80"/>
+            <field name="compliance_class">APPROVED_PUBLIC_ATS</field>
+        </record>
+        <record id="job_source_recruitee_test" model="linkedin.job.source.connector">
+            <field name="name">Recruitee (TEST)</field>
+            <field name="code">recruitee</field>
+            <field name="source_type">public_ats</field>
+            <field name="adapter_key">recruitee</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="board_token">odoo</field>
+            <field name="max_jobs_per_run" eval="5"/>
+            <field name="trust_level" eval="80"/>
+            <field name="compliance_class">APPROVED_PUBLIC_ATS</field>
+        </record>
+
+        <!-- Manual / restricted -->
+        <record id="job_source_manual_test" model="linkedin.job.source.connector">
+            <field name="name">Manual URL (TEST)</field>
+            <field name="code">manual</field>
+            <field name="source_type">manual</field>
+            <field name="adapter_key">manual</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="trust_level" eval="90"/>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+        </record>
+        <record id="job_source_email_alert_test" model="linkedin.job.source.connector">
+            <field name="name">Email Alert (TEST)</field>
+            <field name="code">email_alert</field>
+            <field name="source_type">email_alert</field>
+            <field name="adapter_key">email_alert</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="trust_level" eval="70"/>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+            <field name="compliance_notes">Disabled until safe mailbox workflow is configured.</field>
+        </record>
+        <record id="job_source_linkedin_restricted" model="linkedin.job.source.connector">
+            <field name="name">LinkedIn (Restricted)</field>
+            <field name="code">linkedin_restricted</field>
+            <field name="source_type">restricted</field>
+            <field name="adapter_key">linkedin</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="trust_level" eval="0"/>
+            <field name="compliance_class">REJECTED_AUTOMATION</field>
+            <field name="compliance_notes">No scrape/Easy Apply. Manual URL / alerts only.</field>
+        </record>
+        <record id="job_source_indeed_restricted" model="linkedin.job.source.connector">
+            <field name="name">Indeed (Restricted)</field>
+            <field name="code">indeed_restricted</field>
+            <field name="source_type">restricted</field>
+            <field name="adapter_key">indeed</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="trust_level" eval="0"/>
+            <field name="compliance_class">REJECTED_AUTOMATION</field>
+            <field name="compliance_notes">No scrape/automation. Manual / publisher API only if licensed.</field>
+        </record>
+
+        <!-- Regional manual-only placeholders -->
+        <record id="job_source_wuzzuf_manual" model="linkedin.job.source.connector">
+            <field name="name">Wuzzuf (Manual)</field>
+            <field name="code">wuzzuf</field>
+            <field name="source_type">manual</field>
+            <field name="adapter_key">manual</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+            <field name="compliance_notes">No official API proven. Manual discovery only.</field>
+        </record>
+        <record id="job_source_bayt_manual" model="linkedin.job.source.connector">
+            <field name="name">Bayt (Manual)</field>
+            <field name="code">bayt</field>
+            <field name="source_type">manual</field>
+            <field name="adapter_key">manual</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+        </record>
+        <record id="job_source_gulftalent_manual" model="linkedin.job.source.connector">
+            <field name="name">GulfTalent (Manual)</field>
+            <field name="code">gulftalent</field>
+            <field name="source_type">manual</field>
+            <field name="adapter_key">manual</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+        </record>
+        <record id="job_source_naukrigulf_manual" model="linkedin.job.source.connector">
+            <field name="name">Naukrigulf (Manual)</field>
+            <field name="code">naukrigulf</field>
+            <field name="source_type">manual</field>
+            <field name="adapter_key">manual</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+        </record>
+        <record id="job_source_tanqeeb_manual" model="linkedin.job.source.connector">
+            <field name="name">Tanqeeb (Manual)</field>
+            <field name="code">tanqeeb</field>
+            <field name="source_type">manual</field>
+            <field name="adapter_key">manual</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+        </record>
+        <record id="job_source_forasna_manual" model="linkedin.job.source.connector">
+            <field name="name">Forasna (Manual)</field>
+            <field name="code">forasna</field>
+            <field name="source_type">manual</field>
+            <field name="adapter_key">manual</field>
+            <field name="enabled" eval="False"/>
+            <field name="environment">test</field>
+            <field name="compliance_class">MANUAL_DISCOVERY_ONLY</field>
+        </record>
+    </data>
+</odoo>

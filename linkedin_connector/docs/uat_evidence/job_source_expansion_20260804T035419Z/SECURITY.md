@@ -1,0 +1,7 @@
+- live_submit_enabled=False on TEST and PROD after canaries
+- No API keys in source; ICP placeholders empty
+- SSRF blocks loopback/link-local/metadata
+- sanitize strips Authorization/api_key fields
+- RestrictedSourceAdapter raises ComplianceError
+- Applied count unchanged on PROD canaries
+- Account isolation tests passed

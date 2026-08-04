@@ -30,6 +30,8 @@ _ORDER_WHITELIST = {
     "discovery_class desc": "discovery_class desc",
     "apply_platform": "apply_platform",
     "apply_platform desc": "apply_platform desc",
+    "source_channel": "source_channel",
+    "source_channel desc": "source_channel desc",
     "id": "id",
     "id desc": "id desc",
 }
@@ -60,6 +62,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         date_to=False,
         discovery_class=False,
         platform=False,
+        source_channel=False,
         min_score=0.0,
         max_score=False,
         search="",
@@ -68,7 +71,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         hard_exclusion_reason=False,
         safe_canary_only=False,
         offset=0,
-        limit=40,
+        limit=100,
         order="discovered_at desc",
     ):
         """Return KPIs, chart series and a paginated job table.
@@ -95,6 +98,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                 self._filter_domain(
                     discovery_class=discovery_class,
                     platform=platform,
+                    source_channel=source_channel,
                     min_score=min_score,
                     max_score=max_score,
                     search=search,
@@ -112,7 +116,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         if "id" not in orm_order:
             orm_order = "%s, id desc" % orm_order
         offset = max(0, int(offset or 0))
-        limit = min(max(1, int(limit or 40)), 200)
+        limit = min(max(1, int(limit or 100)), 200)
 
         jobs = Job.search(domain, order=orm_order, offset=offset, limit=limit)
         app_map = self._application_map(jobs.ids)
@@ -137,6 +141,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "filters": {
                 "discovery_class": discovery_class or False,
                 "platform": platform or False,
+                "source_channel": source_channel or False,
                 "min_score": float(min_score or 0.0),
                 "max_score": float(max_score) if max_score not in (False, None, "") else False,
                 "search": search or "",
@@ -182,6 +187,9 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
     def action_open_smart(self, key):
         """Window actions preserving account_id=2 domain."""
         self._check_dashboard_access()
+        # Human-challenge card counts open jobs (discovery_class), not app state.
+        if key == "human_required":
+            return self._action_open_human_required()
         defs = {d["key"]: d for d in self._smart_action_defs()}
         if key not in defs:
             raise UserError(_("Unknown smart action: %s") % key)
@@ -196,6 +204,51 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "res_model": spec["res_model"],
             "view_mode": view_mode,
             "views": views,
+            "domain": spec["domain"],
+            "context": {"default_account_id": PERSONAL_ACCOUNT_ID},
+            "target": "current",
+        }
+
+    @api.model
+    def _human_required_open_job_domain(self, base_job_domain=None):
+        """Open human-challenge queue — same domain as the dashboard KPI.
+
+        Counts/opens jobs with discovery_class=human_required that are not
+        already applied (or submission_unknown). Application state alone is
+        not used: rejected apps can still leave the job awaiting a challenge.
+        """
+        App = self.env["linkedin.job.application"].sudo()
+        job_domain = expression.AND(
+            [
+                list(base_job_domain or self._base_domain()),
+                [("discovery_class", "=", "human_required")],
+            ]
+        )
+        terminal_job_ids = App.search(
+            [
+                ("account_id", "=", PERSONAL_ACCOUNT_ID),
+                ("state", "in", ("applied", "submission_unknown")),
+            ]
+        ).mapped("job_id").ids
+        if terminal_job_ids:
+            job_domain = expression.AND(
+                [job_domain, [("id", "not in", terminal_job_ids)]]
+            )
+        return {
+            "res_model": "linkedin.job",
+            "domain": job_domain,
+            "label": str(_("Awaiting Human Challenge")),
+        }
+
+    @api.model
+    def _action_open_human_required(self):
+        spec = self._human_required_open_job_domain()
+        return {
+            "type": "ir.actions.act_window",
+            "name": spec["label"],
+            "res_model": spec["res_model"],
+            "view_mode": "list,form",
+            "views": [[False, "list"], [False, "form"]],
             "domain": spec["domain"],
             "context": {"default_account_id": PERSONAL_ACCOUNT_ID},
             "target": "current",
@@ -318,6 +371,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         self,
         discovery_class=False,
         platform=False,
+        source_channel=False,
         min_score=0.0,
         max_score=False,
         search="",
@@ -335,6 +389,8 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             domain.append(("discovery_class", "=", discovery_class))
         if platform:
             domain.append(("apply_platform", "=", platform))
+        if source_channel:
+            domain.append(("source_channel", "=", source_channel))
         try:
             min_score = float(min_score or 0.0)
         except (TypeError, ValueError) as exc:
@@ -445,6 +501,7 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "location": job.location or "",
             "remote": bool(job.remote),
             "platform": job.apply_platform or "unknown",
+            "source_channel": job.source_channel or "unknown",
             "discovery_class": job.discovery_class or "unchecked",
             "score": job.score if job.score is not None else None,
             "blocker": app_extra.get("blocker") or (job.discovery_blocker or "")[:240],
@@ -500,7 +557,6 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         delivery_failed = 0
         email_apps = 0
         browser_apps = 0
-        terminal_job_ids = []
         if job_ids:
             applied = App.search_count(
                 [
@@ -572,25 +628,11 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                     ("submission_channel", "=", "browser"),
                 ]
             )
-            terminal_job_ids = App.search(
-                [
-                    ("account_id", "=", PERSONAL_ACCOUNT_ID),
-                    ("job_id", "in", job_ids),
-                    ("state", "in", ("applied", "submission_unknown")),
-                ]
-            ).mapped("job_id").ids
 
-        # Open human-required work: captcha/login jobs not yet applied
-        human_job_domain = expression.AND(
-            [domain, [("discovery_class", "=", "human_required")]]
-        )
-        if terminal_job_ids:
-            human_job_domain = expression.AND(
-                [human_job_domain, [("id", "not in", terminal_job_ids)]]
-            )
-        human = Job.search_count(human_job_domain)
-        # Application-state count is the actionable queue; fall back to open jobs
-        human_required_kpi = human_apps if human_apps else human
+        # Open human-required work: same domain as card click (jobs, not apps).
+        human_spec = self._human_required_open_job_domain(domain)
+        human_required_kpi = Job.search_count(human_spec["domain"])
+        human = human_required_kpi
 
         # Applied today (Cairo day) for personal account
         now = fields.Datetime.now()
@@ -696,6 +738,9 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
         by_platform_rows = Job._read_group(
             domain, groupby=["apply_platform"], aggregates=["__count"]
         )
+        by_channel_rows = Job._read_group(
+            domain, groupby=["source_channel"], aggregates=["__count"]
+        )
 
         # Per-day using listed_at (fallback create_date filled in Python for blanks)
         jobs = Job.search_read(
@@ -737,6 +782,10 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             "by_platform": [
                 {"label": (plat or "unknown"), "value": int(count or 0)}
                 for plat, count in by_platform_rows
+            ],
+            "by_source_channel": [
+                {"label": (ch or "unknown"), "value": int(count or 0)}
+                for ch, count in by_channel_rows
             ],
             "by_day": [
                 {"label": day, "value": day_counts[day]}
@@ -794,10 +843,36 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
 
     def _smart_action_defs(self):
         aid = PERSONAL_ACCOUNT_ID
+        # Applied today: start of user-local day in UTC
+        now_utc = fields.Datetime.now()
+        now_local = fields.Datetime.context_timestamp(self, now_utc)
+        start_local = datetime.combine(now_local.date(), time.min).replace(
+            tzinfo=now_local.tzinfo
+        )
+        today_start_utc = fields.Datetime.to_string(self._local_to_utc_naive(start_local))
         return [
+            {
+                "key": "all_jobs",
+                "label": str(_("All Caught Jobs")),
+                "res_model": "linkedin.job",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("is_duplicate", "=", False),
+                ],
+            },
             {
                 "key": "auto_eligible",
                 "label": str(_("Auto Eligible")),
+                "res_model": "linkedin.job",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("discovery_class", "=", "safe_canary_candidate"),
+                    ("is_duplicate", "=", False),
+                ],
+            },
+            {
+                "key": "safe_canary",
+                "label": str(_("Safe Canary")),
                 "res_model": "linkedin.job",
                 "domain": [
                     ("account_id", "=", aid),
@@ -832,10 +907,11 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
             {
                 "key": "human_required",
                 "label": str(_("Awaiting Human Challenge")),
-                "res_model": "linkedin.job.application",
+                "res_model": "linkedin.job",
                 "domain": [
                     ("account_id", "=", aid),
-                    ("state", "=", "human_required"),
+                    ("discovery_class", "=", "human_required"),
+                    ("is_duplicate", "=", False),
                 ],
             },
             {
@@ -904,6 +980,22 @@ class LinkedinCaughtJobsDashboard(models.AbstractModel):
                 "label": str(_("Applied Applications")),
                 "res_model": "linkedin.job.application",
                 "domain": [("account_id", "=", aid), ("state", "=", "applied")],
+            },
+            {
+                "key": "applied_today",
+                "label": str(_("Applied Today")),
+                "res_model": "linkedin.job.application",
+                "domain": [
+                    ("account_id", "=", aid),
+                    ("state", "=", "applied"),
+                    ("applied_at", ">=", today_start_utc),
+                ],
+            },
+            {
+                "key": "ats_sources",
+                "label": str(_("ATS Sources")),
+                "res_model": "linkedin.ats.source",
+                "domain": [],
             },
             {
                 "key": "answer_library",

@@ -245,10 +245,20 @@
                         <field name="name"/>
                         <field name="ats_type"/>
                         <field name="board_token"/>
+                        <field name="board_token_normalized" readonly="1"/>
                         <field name="feed_url"/>
+                        <field name="careers_url_normalized"/>
                         <field name="company"/>
                         <field name="region"/>
                         <field name="enabled"/>
+                        <field name="partner_id"/>
+                        <field name="is_primary_partner_source"/>
+                    </group>
+                    <group string="Discovery schedule">
+                        <field name="next_discovery_at"/>
+                        <field name="last_discovery_at"/>
+                        <field name="discovery_interval_minutes"/>
+                        <field name="discovery_priority"/>
                     </group>
                     <group string="Last check">
                         <field name="last_check_at"/>

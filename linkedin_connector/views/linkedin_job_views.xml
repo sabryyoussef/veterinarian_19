@@ -7,11 +7,17 @@
         <field name="model">linkedin.job</field>
         <field name="arch" type="xml">
             <list decoration-info="saved" decoration-muted="is_duplicate">
+                <field name="normalized_score" optional="show"/>
                 <field name="score"/>
+                <field name="lifecycle_state" optional="show"/>
                 <field name="title"/>
                 <field name="company"/>
                 <field name="location"/>
+                <field name="remote_policy" optional="show"/>
+                <field name="visa_sponsorship" optional="show"/>
                 <field name="discovery_class" optional="show"/>
+                <field name="source_channel" optional="show"/>
+                <field name="connector_id" optional="hide"/>
                 <field name="apply_platform" optional="show"/>
                 <field name="remote" widget="boolean_toggle" optional="show"/>
                 <field name="odoo_match" optional="show"/>
@@ -66,6 +72,8 @@
                             <field name="duplicate_of_id" invisible="not is_duplicate"/>
                             <field name="fingerprint" readonly="1"/>
                             <field name="account_id"/>
+                            <field name="source_channel"/>
+                            <field name="apply_platform"/>
                             <field name="search_keywords"/>
                             <field name="saved"/>
                             <field name="apply_url" widget="url"/>
@@ -73,8 +81,55 @@
                         </group>
                     </group>
                     <group string="Score breakdown">
+                        <field name="raw_score" readonly="1"/>
+                        <field name="normalized_score" readonly="1"/>
                         <field name="score_breakdown" readonly="1" nolabel="1" colspan="2"/>
+                        <field name="score_lines_json" readonly="1" nolabel="1" colspan="2"/>
                     </group>
+                    <notebook>
+                        <page string="Match &amp; Eligibility">
+                            <group>
+                                <group>
+                                    <field name="lifecycle_state"/>
+                                    <field name="remote_policy"/>
+                                    <field name="remote_eligibility"/>
+                                    <field name="visa_sponsorship"/>
+                                    <field name="relocation_support"/>
+                                    <field name="work_auth_required"/>
+                                    <field name="salary_status"/>
+                                </group>
+                                <group>
+                                    <field name="connector_id"/>
+                                    <field name="external_job_id"/>
+                                    <field name="source_url" widget="url"/>
+                                    <field name="original_application_url" widget="url"/>
+                                    <field name="employer_domain"/>
+                                    <field name="country_code"/>
+                                    <field name="city"/>
+                                    <field name="source_trust_score"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Rejections">
+                            <field name="rejection_ids">
+                                <list>
+                                    <field name="pipeline_stage"/>
+                                    <field name="reason_code"/>
+                                    <field name="reason_label"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Source history">
+                            <field name="source_link_ids">
+                                <list>
+                                    <field name="fetched_at"/>
+                                    <field name="connector_id"/>
+                                    <field name="external_id"/>
+                                    <field name="source_url"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                     <field name="description" widget="html"/>
                     <field name="application_ids" readonly="1">
                         <list>
@@ -102,7 +157,15 @@
                 <filter name="senior" string="Seniority match" domain="[('seniority_match','=',True)]"/>
                 <filter name="not_dup" string="Not duplicates" domain="[('is_duplicate','=',False)]"/>
                 <separator/>
+                <filter name="ch_jsearch" string="JSearch" domain="[('source_channel','=','jsearch')]"/>
+                <filter name="ch_arbeitnow" string="Arbeitnow" domain="[('source_channel','=','arbeitnow')]"/>
+                <filter name="ch_remotive" string="Remotive" domain="[('source_channel','=','remotive')]"/>
+                <filter name="ch_ats" string="Direct ATS" domain="[('source_channel','in',('greenhouse','lever','ashby','workable','company_ats'))]"/>
+                <filter name="ch_telegram" string="Telegram" domain="[('source_channel','=','telegram')]"/>
+                <filter name="ch_facebook" string="Facebook" domain="[('source_channel','=','facebook')]"/>
+                <separator/>
                 <filter name="group_company" string="Company" context="{'group_by': 'company'}"/>
+                <filter name="group_channel" string="Source channel" context="{'group_by': 'source_channel'}"/>
                 <filter name="group_account" string="Account" context="{'group_by': 'account_id'}"/>
             </search>
         </field>

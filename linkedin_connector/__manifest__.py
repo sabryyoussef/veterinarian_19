@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 {
     "name": "LinkedIn Connector",
-    "version": "19.0.2.17.1",
+    "version": "19.0.2.20.0",
     "category": "Marketing",
     "summary": "Full LinkedIn management: posts, schedule, feed, jobs, resumes, messages",
     "author": "Sabry Youssef, Resume project",
     "author_email": "vendorah2@gmail.com, abhorya@gmail.com",
     "website": "https://github.com/sabryyoussef",
     "license": "LGPL-3",
-    "depends": ["base", "web", "mail", "base_setup"],
+    "depends": ["base", "web", "mail", "base_setup", "odoo_partners"],
     "data": [
         "security/linkedin_security.xml",
         "security/ir.model.access.csv",
@@ -17,9 +17,12 @@
         "data/ir_cron_data.xml",
         "data/ats_source_data.xml",
         "data/answer_library_data.xml",
+        "data/job_source_connector_data.xml",
+        "data/job_score_filter_rule_data.xml",
         "views/linkedin_post_views.xml",
         "views/linkedin_stream_post_views.xml",
         "views/linkedin_job_views.xml",
+        "views/linkedin_job_source_views.xml",
         "views/linkedin_cv_version_views.xml",
         "views/linkedin_job_application_views.xml",
         "views/linkedin_answer_library_views.xml",
@@ -29,7 +32,9 @@
         "views/linkedin_bulk_wizard_views.xml",
         "views/linkedin_settings_views.xml",
         "views/linkedin_orchestrator_views.xml",
+        "views/linkedin_job_channel_source_views.xml",
         "views/linkedin_caught_jobs_dashboard_views.xml",
+        "views/linkedin_partner_ats_probe_views.xml",
     ],
     "assets": {
         "web.assets_backend": [

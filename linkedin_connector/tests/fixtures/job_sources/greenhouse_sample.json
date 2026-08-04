@@ -1,0 +1,13 @@
+{
+  "jobs": [
+    {
+      "id": 9001,
+      "title": "Odoo Consultant",
+      "absolute_url": "https://boards.greenhouse.io/acme/jobs/9001",
+      "company_name": "Acme",
+      "location": {"name": "Remote - EMEA"},
+      "content": "Senior Odoo implementation consultant. Python, PostgreSQL.",
+      "updated_at": "2026-08-01T00:00:00Z"
+    }
+  ]
+}

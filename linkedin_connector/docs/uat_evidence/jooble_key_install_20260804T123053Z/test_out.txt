@@ -1,0 +1,4 @@
+BEFORE {"jobs": 162, "apps": 14, "applied": 1, "live_submit": "False"}
+CANARY {"stats": {"imported": 5, "duplicates": 0, "rejected": 1, "qualified": 0, "updated": 0}, "before": {"jobs": 162, "apps": 14, "applied": 1, "live_submit": "False"}, "after": {"jobs": 167, "apps": 14, "applied": 1, "live_submit": "False"}, "delta_jobs": 5, "delta_apps": 0, "delta_applied": 0, "last_http": 200, "last_error": false}
+TEST_LEFT_DISABLED
+JOOBLE_CANARY_OK

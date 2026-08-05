@@ -283,3 +283,10 @@ veterinarian_19/                       ← repo root = addons_path
 ---
 
 *Built for Odoo 19 Enterprise veterinary industry demos — Edafa / neo_odoo, June 2026.*
+
+## Public notes
+Domain modules for veterinary clinic operations on Odoo 19.
+
+### Note
+Public code must not include real patient or client medical data. Use demo records only.
+
